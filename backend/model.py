@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 
-
-class ToDo(BaseModel):
-    title: str
-    description: str
+class CombatEntry(BaseModel):
+    character: str
+    result: int
+    active: str
+    type: str
+    details: str

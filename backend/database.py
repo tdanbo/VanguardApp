@@ -1,43 +1,26 @@
-from model import ToDo
+from model import CombatEntry
 import motor.motor_asyncio
 
 # tobiasdanbo
-# aXHkTyITkbUoFPNy
+# kYlQCbYjWXBPJj8A
 
 USER = "tobiasdanbo"
-PASSWORD = "aXHkTyITkbUoFPNy"
-connection_string = f"mongodb+srv://{USER}:{PASSWORD}@todolist.trkpluf.mongodb.net/"
+PASSWORD = "kYlQCbYjWXBPJj8A"
+connection_string = f"mongodb+srv://{USER}:{PASSWORD}@combatlog.d9ledam.mongodb.net/"
+
 
 client = motor.motor_asyncio.AsyncIOMotorClient(connection_string)
-database = client.TodoList
-collection = database.todo
+database = client.CombatLog
+collection = database.combatlog
 
-
-async def fetch_one_todo(title):
-    document = await collection.find_one({"title": title})
-    return document
-
-
-async def fetch_all_todos():
-    todos = []
+async def get_combat_entries():
+    combat_entries = []
     cursor = collection.find({})
     async for document in cursor:
-        todos.append(ToDo(**document))
-    return todos
+        combat_entries.append(CombatEntry(**document))
+    return combat_entries
 
-
-async def create_todo(todo):
-    document = todo
+async def create_combat_entry(log_entry):
+    document = log_entry
     result = await collection.insert_one(document)
     return document
-
-
-async def update_todo(title, desc):
-    await collection.update_one({"title": title}, {"$set": {"description": desc}})
-    document = await collection.find_one({"title": title})
-    return document
-
-
-async def remove_todo(title):
-    await collection.delete_one({"title": title})
-    return True
