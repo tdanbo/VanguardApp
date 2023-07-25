@@ -1,0 +1,3 @@
+function CombatEntryList() {
+  return "ok";
+}
