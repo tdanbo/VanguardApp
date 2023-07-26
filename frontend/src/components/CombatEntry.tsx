@@ -1,5 +1,4 @@
 import "bootstrap/dist/css/bootstrap.css";
-
 import * as Constants from "../Constants";
 
 interface CombatEntryProps {
@@ -33,20 +32,21 @@ function CombatEntry({
 
   return (
     <div
-      className="d-flex justify-content-between p-1 border rounded-1"
+      className="d-flex justify-content-between p-1"
       style={{
         backgroundColor: BackgroundColor(),
         height: "60px",
-        borderColor: Constants.DARK,
+        border: `1px solid ${Constants.BORDER}`,
       }}
     >
       <div
-        className="d-flex fw-bold align-items-center justify-content-center border rounded-1 fs-5"
+        className="d-flex fw-bold align-items-center justify-content-center rounded-2 fs-5"
         style={{
           backgroundColor: EntryColor(),
-          color: Constants.DARK,
+          color: Constants.FONT_LIGHT,
           aspectRatio: "1/1",
-          borderColor: Constants.DARK,
+          borderColor: "#000000",
+          border: `1px solid ${Constants.BORDER}`,
         }}
       >
         {RollEntry}
@@ -59,10 +59,15 @@ function CombatEntry({
       </div>
 
       <img
-        className="d-flex align-items-center justify-content-center border rounded-1"
+        className="d-flex align-items-center justify-content-center rounded-2"
         src="src\assets\characters\Alahara.png"
         alt={character}
-        style={{ width: "90px", height: "100%", objectFit: "cover" }}
+        style={{
+          width: "90px",
+          height: "100%",
+          objectFit: "cover",
+          border: `1px solid ${Constants.BORDER}`,
+        }}
       />
     </div>
   );

@@ -11,12 +11,12 @@ from database import (
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000",
+    "http://localhost:5173",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -27,10 +27,12 @@ app.add_middleware(
 def read_root():
     return {"Ping": "Pong"}
 
-@app.get("/api/combatlog/")
+
+@app.get("/api/combatlog")
 async def fetch_entries():
     response = await get_combat_entries()
     return response
+
 
 @app.post("/api/combatlog", response_model=CombatEntry)
 async def post_entry(log_entry: CombatEntry):

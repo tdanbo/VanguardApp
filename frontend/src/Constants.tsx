@@ -15,3 +15,5 @@ export const GREEN = "#5c6049";
 export const YELLOW = "#926f2b";
 export const WHITE = "#bfb6ac";
 export const BRIGHT_RED = "#923333";
+
+export const FONT_LIGHT = "#dedede";
