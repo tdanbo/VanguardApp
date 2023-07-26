@@ -1,3 +1,5 @@
+export const SECTION_HEIGHT = "90px";
+
 export const PRIMARY_HOVER = "#fffdf7";
 export const PRIMARY_DARKER = "#dbd7c8";
 export const PRIMARY = "#f0e8d9";

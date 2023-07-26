@@ -1,8 +1,8 @@
 import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.css";
-import CombatEntry from "./components/CombatEntry";
-import CombatEntryList from "./components/CombatEntryList";
+import CombatSection from "./components/CombatSection";
+import StatsSection from "./components/StatsSection";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -25,8 +25,13 @@ function App() {
 
   return (
     <>
-      <div>
-        <CombatEntryList combatLogList={combatLogList} />
+      <div className="d-flex justify-content-space-around">
+        <div className="w-100">
+          <StatsSection />
+        </div>
+        <div style={{ width: "500px" }}>
+          <CombatSection combatLogList={combatLogList} />
+        </div>
       </div>
     </>
   );

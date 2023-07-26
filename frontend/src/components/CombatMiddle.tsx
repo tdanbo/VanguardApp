@@ -1,7 +1,4 @@
-import "bootstrap/dist/css/bootstrap.css";
-
 import CombatEntry from "./CombatEntry";
-import CombatEntryRoll from "./CombatEntryRoll";
 import Header from "./Header";
 import * as Constants from "../Constants";
 
@@ -17,12 +14,9 @@ type CombatLogProps = {
   combatLogList: CombatLog[];
 };
 
-function CombatEntryList({ combatLogList }: CombatLogProps) {
+function CombatMiddle({ combatLogList }: CombatLogProps) {
   return (
-    <div
-      className="d-flex flex-column vh-100 p-1"
-      style={{ backgroundColor: Constants.DARK }}
-    >
+    <>
       <Header title={"Combat"} />
       <div
         className="flex-grow-1 overflow-auto d-flex flex-column-reverse"
@@ -40,15 +34,8 @@ function CombatEntryList({ combatLogList }: CombatLogProps) {
           />
         ))}
       </div>
-      <Header title={"Dice"} />
-      <div
-        className="d-flex flex-row p-2"
-        style={{ backgroundColor: Constants.PRIMARY }}
-      >
-        <CombatEntryRoll />
-      </div>
-    </div>
+    </>
   );
 }
 
-export default CombatEntryList;
+export default CombatMiddle;
