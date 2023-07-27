@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
-import StatBox from "./StatBox";
-import Header from "./Header";
-import * as Constants from "../Constants";
+import StatBox from "../StatBox";
+import TitleBox from "../TitleBox";
+import * as Constants from "../../Constants";
 
 const EntryRollButton = () => {
   return (
@@ -19,7 +19,7 @@ const EntryRollButton = () => {
 function CombatLower() {
   return (
     <>
-      <Header title={"Dice"} />
+      <TitleBox title={"Dice"} />
       <div
         className="d-flex flex-row p-2"
         style={{

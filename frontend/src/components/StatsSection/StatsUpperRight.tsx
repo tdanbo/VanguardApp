@@ -1,13 +1,11 @@
-import "bootstrap/dist/css/bootstrap.css";
-import StatBox from "./StatBox";
-import Header from "./Header";
-import * as Constants from "../Constants";
-import CorruptionBox from "./CorruptionBox";
+import TitleBox from "../TitleBox";
+import * as Constants from "../../Constants";
+import CorruptionBox from "../CorruptionBox";
 
 function StatsLower() {
   return (
     <>
-      <Header title={"Corruption"} />
+      <TitleBox title={"Corruption"} />
       <div
         className="d-flex flex-row p-2"
         style={{

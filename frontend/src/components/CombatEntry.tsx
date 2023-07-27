@@ -36,7 +36,7 @@ function CombatEntry({
       style={{
         backgroundColor: BackgroundColor(),
         height: "60px",
-        border: `1px solid ${Constants.BORDER}`,
+        borderTop: `1px solid ${Constants.BORDER}`,
       }}
     >
       <div

@@ -1,8 +1,8 @@
 import "bootstrap/dist/css/bootstrap.css";
 import CombatLower from "./CombatLower";
 import CombatMiddle from "./CombatMiddle";
-import Header from "./Header";
-import * as Constants from "../Constants";
+import TitleBox from "../TitleBox";
+import * as Constants from "../../Constants";
 
 type CombatLog = {
   character: string;

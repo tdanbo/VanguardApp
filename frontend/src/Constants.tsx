@@ -1,3 +1,6 @@
+export const INTENTORY_ENTRY_HEIGHT = "60px";
+export const SECTION_TITLE_HEIGHT = "30px";
+export const SECTION_WIDTH = "500px";
 export const SECTION_HEIGHT = "90px";
 
 export const PRIMARY_HOVER = "#fffdf7";

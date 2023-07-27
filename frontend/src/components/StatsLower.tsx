@@ -1,12 +1,11 @@
-import "bootstrap/dist/css/bootstrap.css";
 import StatBox from "./StatBox";
-import Header from "./Header";
+import TitleBox from "./TitleBox";
 import * as Constants from "../Constants";
 
 function StatsLower() {
   return (
     <>
-      <Header title={"Stats"} />
+      <TitleBox title={"Stats"} />
       <div
         className="d-flex flex-row p-2"
         style={{

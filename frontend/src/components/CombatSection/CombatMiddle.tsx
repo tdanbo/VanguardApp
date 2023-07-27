@@ -1,6 +1,6 @@
-import CombatEntry from "./CombatEntry";
-import Header from "./Header";
-import * as Constants from "../Constants";
+import CombatEntry from "../CombatEntry";
+import TitleBox from "../TitleBox";
+import * as Constants from "../../Constants";
 
 type CombatLog = {
   character: string;
@@ -17,7 +17,7 @@ type CombatLogProps = {
 function CombatMiddle({ combatLogList }: CombatLogProps) {
   return (
     <>
-      <Header title={"Combat"} />
+      <TitleBox title={"Combat"} />
       <div
         className="flex-grow-1 overflow-auto d-flex flex-column-reverse"
         style={{

@@ -1,10 +1,14 @@
 import "./App.css";
 
-import "bootstrap/dist/css/bootstrap.css";
-import CombatSection from "./components/CombatSection";
-import StatsSection from "./components/StatsSection";
+import CombatSection from "./components/CombatSection/CombatSection";
+import StatsSection from "./components/StatsSection/StatsSection";
+import InventorySection from "./components/InventorySection/InventorySection";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
+import * as Constants from "./Constants";
+
+import "bootstrap/dist/js/bootstrap";
 
 type CombatLog = {
   character: string;
@@ -26,10 +30,13 @@ function App() {
   return (
     <>
       <div className="d-flex justify-content-space-around">
+        <div style={{ width: Constants.SECTION_WIDTH }}>
+          <InventorySection combatLogList={combatLogList} />
+        </div>
         <div className="w-100">
           <StatsSection />
         </div>
-        <div style={{ width: "500px" }}>
+        <div style={{ width: Constants.SECTION_WIDTH }}>
           <CombatSection combatLogList={combatLogList} />
         </div>
       </div>
