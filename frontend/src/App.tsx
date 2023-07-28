@@ -3,6 +3,10 @@ import "./App.css";
 import CombatSection from "./components/CombatSection/CombatSection";
 import StatsSection from "./components/StatsSection/StatsSection";
 import InventorySection from "./components/InventorySection/InventorySection";
+import DropdownCharacter from "./components/DropdownCharacter";
+
+import { CharacterEntry } from "./Types";
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -19,6 +23,25 @@ type CombatLog = {
 };
 
 function App() {
+  const [selectedCharacter, setSelectedCharacter] =
+    useState<CharacterEntry | null>(null);
+
+  function getSelectedCharacter(selectedName: string) {
+    axios
+      .get(`http://localhost:8000/api/characterlog/${selectedName}`)
+      .then((response) => {
+        console.log(response.data);
+        setSelectedCharacter(response.data);
+      })
+      .catch((error) => {
+        console.error(`Error fetching character data: ${error}`);
+      });
+  }
+
+  useEffect(() => {
+    getSelectedCharacter("Default");
+  }, []);
+
   const [combatLogList, setCombatLog] = useState([] as CombatLog[]);
 
   useEffect(() => {
@@ -31,10 +54,19 @@ function App() {
     <>
       <div className="d-flex justify-content-space-around">
         <div style={{ width: Constants.SECTION_WIDTH }}>
-          <InventorySection combatLogList={combatLogList} />
+          <DropdownCharacter getSelectedCharacter={getSelectedCharacter} />
+          {selectedCharacter ? (
+            <InventorySection selectedCharacter={selectedCharacter} />
+          ) : (
+            <div>Loading...</div> // or whatever you want to show when selectedCharacter is null
+          )}
         </div>
         <div className="w-100">
-          <StatsSection />
+          {selectedCharacter ? (
+            <StatsSection selectedCharacter={selectedCharacter} />
+          ) : (
+            <div>Loading...</div> // or whatever you want to show when selectedCharacter is null
+          )}
         </div>
         <div style={{ width: Constants.SECTION_WIDTH }}>
           <CombatSection combatLogList={combatLogList} />

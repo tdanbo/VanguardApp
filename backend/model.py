@@ -11,7 +11,7 @@ class CombatEntry(BaseModel):
 
 class CharacterEntry(BaseModel):
     details: dict = {"name": "", "xp": 0, "unspent": 0, "movement": 0}
-    toughness: dict = {"current": 0, "max": 0, "pain": 0}
+    toughness: dict = {"damage": 0, "max": 0, "pain": 0}
     stats: dict = {
         "cunning": 0,
         "discreet": 0,

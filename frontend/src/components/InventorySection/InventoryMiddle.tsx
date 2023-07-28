@@ -3,7 +3,13 @@ import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 import InventoryEntry from "../InventoryEntry";
 
-const StatsMiddle: React.FC = () => {
+import { CharacterEntry } from "../../Types";
+
+interface StatsSectionProps {
+  selectedCharacter: CharacterEntry;
+}
+
+function InventoryMiddle({ selectedCharacter }: StatsSectionProps) {
   return (
     <>
       <TitleBox title={"Inventory"} />
@@ -46,6 +52,6 @@ const StatsMiddle: React.FC = () => {
       </div>
     </>
   );
-};
+}
 
-export default StatsMiddle;
+export default InventoryMiddle;

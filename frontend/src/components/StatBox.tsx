@@ -15,7 +15,7 @@ function StatBox({ type_name, type_value }: Props) {
           backgroundColor: Constants.PRIMARY_MEDIUM,
           border: `1px solid ${Constants.BORDER_LIGHT}`,
           margin: "2px 2px 2px 2px",
-          fontSize: "0.8rem",
+          fontSize: "1.1rem",
           fontWeight: "bold",
         }}
       >

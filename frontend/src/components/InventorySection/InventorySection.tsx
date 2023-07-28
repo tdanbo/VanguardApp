@@ -5,26 +5,20 @@ import InventoryMiddle from "./InventoryMiddle";
 import InventoryLowerLeft from "./InventoryLowerLeft";
 import InventoryLowerRight from "./InventoryLowerRight";
 
-type CombatLog = {
-  character: string;
-  result: number;
-  active: string;
-  type: string;
-  details: string;
-};
+import { CharacterEntry } from "../../Types";
 
-type CombatLogProps = {
-  combatLogList: CombatLog[];
-};
+interface StatsSectionProps {
+  selectedCharacter: CharacterEntry;
+}
 
-function CombatSection({ combatLogList }: CombatLogProps) {
+function InventorySection({ selectedCharacter }: StatsSectionProps) {
   return (
     <div
       className="d-flex flex-column vh-100 p-1"
       style={{ backgroundColor: Constants.DARK }}
     >
-      <InventoryUpper />
-      <InventoryMiddle />
+      <InventoryUpper selectedCharacter={selectedCharacter} />
+      <InventoryMiddle selectedCharacter={selectedCharacter} />
 
       <div className="row gx-2">
         <div className="col">
@@ -38,4 +32,4 @@ function CombatSection({ combatLogList }: CombatLogProps) {
   );
 }
 
-export default CombatSection;
+export default InventorySection;

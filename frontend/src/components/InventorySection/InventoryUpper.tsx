@@ -1,9 +1,15 @@
 import StatBox from "../StatBox";
 import * as Constants from "../../Constants";
 import CorruptionBox from "../CorruptionBox";
-import DropdownCharacter from "../DropdownCharacter";
 import DeleteCharacter from "../DeleteCharacter";
-function StatsLower() {
+
+import { CharacterEntry } from "../../Types";
+
+interface StatsSectionProps {
+  selectedCharacter: CharacterEntry;
+}
+
+function InventoryUpper({ selectedCharacter }: StatsSectionProps) {
   return (
     <>
       <div
@@ -11,7 +17,6 @@ function StatsLower() {
         style={{ height: Constants.SECTION_TITLE_HEIGHT }}
       >
         <DeleteCharacter />
-        <DropdownCharacter />
         <DeleteCharacter />
         <DeleteCharacter />
       </div>
@@ -24,12 +29,18 @@ function StatsLower() {
         }}
       >
         <CorruptionBox />
-        <StatBox type_name={"Xp"} type_value={50} />
-        <StatBox type_name={"Unspent"} type_value={14} />
-        <StatBox type_name={"Ft."} type_value={30} />
+        <StatBox type_name={"Xp"} type_value={selectedCharacter.details.xp} />
+        <StatBox
+          type_name={"Unspent"}
+          type_value={selectedCharacter.details.unspent}
+        />
+        <StatBox
+          type_name={"Ft."}
+          type_value={selectedCharacter.details.movement}
+        />
       </div>
     </>
   );
 }
 
-export default StatsLower;
+export default InventoryUpper;

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import * as Constants from "../Constants";
 import axios from "axios";
 
+import { CharacterEntry } from "../Types";
+
 interface CharacterDetails {
   name: string;
 }
@@ -10,21 +12,23 @@ interface CharacterLog {
   details: CharacterDetails;
 }
 
-function DropdownCharacter() {
-  const [characterLogList, setCharacterLog] = useState([] as CharacterLog[]);
+interface DropdownCharacterProps {
+  getSelectedCharacter: (selectedName: string) => void;
+}
 
+function DropdownCharacter({ getSelectedCharacter }: DropdownCharacterProps) {
+  const [characterLogList, setCharacterLog] = useState([] as CharacterLog[]);
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
   useEffect(() => {
     axios.get("http://localhost:8000/api/characterlog").then((response) => {
       setCharacterLog(response.data);
     });
   });
 
-  console.log(characterLogList);
-
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
-
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(event.target.value);
+    const selectedName = event.target.value;
+    setSelectedValue(selectedName);
+    getSelectedCharacter(selectedName);
   };
 
   return (
