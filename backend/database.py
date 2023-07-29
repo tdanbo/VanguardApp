@@ -1,6 +1,7 @@
 from model import CombatEntry
 from model import CharacterEntry
 import motor.motor_asyncio
+from functions import add_corruption
 
 # tobiasdanbo
 # E33ts3SKAOl1tR1W
@@ -36,8 +37,13 @@ async def create_combat_entry(log_entry):
 
 async def create_character_entry(log_entry):
     document = log_entry
-    result = await character_log_collection.insert_one(document)
-    return document
+    if await character_log_collection.find_one({"details.name": document["details"]["name"]}):
+        print("Character already exists")
+        return False
+    else:
+        updated_document = add_corruption(document)
+        result = await character_log_collection.insert_one(updated_document)
+        return document
 
 
 async def get_character_entries():

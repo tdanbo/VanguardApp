@@ -1,5 +1,7 @@
 import * as Constants from "../Constants";
 
+import ClearIcon from "@mui/icons-material/Clear";
+
 function DeleteCharacter() {
   return (
     <div
@@ -11,7 +13,7 @@ function DeleteCharacter() {
         border: `1px solid ${Constants.BORDER}`,
       }}
     >
-      a
+      <ClearIcon />
     </div>
   );
 }

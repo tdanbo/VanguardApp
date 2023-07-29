@@ -4,6 +4,8 @@ import CombatSection from "./components/CombatSection/CombatSection";
 import StatsSection from "./components/StatsSection/StatsSection";
 import InventorySection from "./components/InventorySection/InventorySection";
 import DropdownCharacter from "./components/DropdownCharacter";
+import DeleteCharacter from "./components/DeleteCharacter";
+import AddCharacter from "./components/AddCharacter";
 
 import { CharacterEntry } from "./Types";
 
@@ -44,17 +46,31 @@ function App() {
 
   const [combatLogList, setCombatLog] = useState([] as CombatLog[]);
 
+  // useEffect(() => {
+  //   axios.get("http://localhost:8000/api/combatlog").then((response) => {
+  //     setCombatLog(response.data);
+  //   });
+  // }); // This will check all the time);
+
   useEffect(() => {
     axios.get("http://localhost:8000/api/combatlog").then((response) => {
       setCombatLog(response.data);
     });
-  });
+  }, []); // add an empty array here);
 
   return (
     <>
       <div className="d-flex justify-content-space-around">
         <div style={{ width: Constants.SECTION_WIDTH }}>
-          <DropdownCharacter getSelectedCharacter={getSelectedCharacter} />
+          <div
+            className="d-flex"
+            style={{ height: Constants.SECTION_TITLE_HEIGHT }}
+          >
+            <DeleteCharacter />
+            <DropdownCharacter getSelectedCharacter={getSelectedCharacter} />
+            <AddCharacter />
+          </div>
+
           {selectedCharacter ? (
             <InventorySection selectedCharacter={selectedCharacter} />
           ) : (

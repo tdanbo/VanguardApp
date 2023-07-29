@@ -2,7 +2,7 @@ import StatBox from "../StatBox";
 import * as Constants from "../../Constants";
 import CorruptionBox from "../CorruptionBox";
 import DeleteCharacter from "../DeleteCharacter";
-
+import AddCharacter from "../AddCharacter";
 import { CharacterEntry } from "../../Types";
 
 interface StatsSectionProps {
@@ -12,14 +12,6 @@ interface StatsSectionProps {
 function InventoryUpper({ selectedCharacter }: StatsSectionProps) {
   return (
     <>
-      <div
-        className="d-flex"
-        style={{ height: Constants.SECTION_TITLE_HEIGHT }}
-      >
-        <DeleteCharacter />
-        <DeleteCharacter />
-        <DeleteCharacter />
-      </div>
       <div
         className="d-flex flex-col p-2"
         style={{

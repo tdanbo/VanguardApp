@@ -1,6 +1,16 @@
 import * as Constants from "../Constants";
+import AddIcon from "@mui/icons-material/Add";
+import AddCharacterForm from "./CharacterForm/AddCharacterForm";
+import { useState, useEffect } from "react";
+import Dialog from "@mui/material/Dialog";
 
 function AddCharacter() {
+  const [isOpen, setIsOpen] = useState(true);
+
+  useEffect(() => {
+    console.log("isOpen state changed:", isOpen);
+  }, [isOpen]);
+
   return (
     <div
       className="d-flex justify-content-center align-items-center"
@@ -11,7 +21,8 @@ function AddCharacter() {
         border: `1px solid ${Constants.BORDER}`,
       }}
     >
-      a
+      <AddIcon onClick={() => setIsOpen(true)} />
+      <AddCharacterForm open={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
 }
