@@ -9,7 +9,7 @@ import AddCharacter from "./components/AddCharacter";
 
 import { CharacterEntry } from "./Types";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 
 import * as Constants from "./Constants";

@@ -57,3 +57,8 @@ async def get_character_entries():
 async def fetch_one_character(name):
     document = await character_log_collection.find_one({"details.name": name})
     return document
+
+async def update_character(name: str, new_character_data: dict):
+    await character_log_collection.replace_one({"details.name": name}, new_character_data)
+    document = await character_log_collection.find_one({"details.name": name})
+    return document

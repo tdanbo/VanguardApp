@@ -62,7 +62,6 @@ function AddCharacterForm({ open, onClose }: CharacterProps) {
 
   // Post a todo
   const addCharacterHandler = () => {
-    console.log(character_json);
     axios
       .post("http://localhost:8000/api/characterlog", character_json)
       .then((res) => console.log(res));

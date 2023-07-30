@@ -9,6 +9,7 @@ from database import (
     create_combat_entry,
     create_character_entry,
     fetch_one_character,
+    update_character
 )
 
 app = FastAPI()
@@ -69,3 +70,10 @@ async def post_entry(log_entry: CharacterEntry):
     if response:
         return response
     raise HTTPException(404, f"Something went wrong")
+
+@app.put("/api/characterlog/{name}", response_model=CharacterEntry)
+async def put_character_log(name: str, updated_character: CharacterEntry):
+    response = await update_character(name, updated_character.model_dump())
+    if response:
+        return response
+    raise HTTPException(404, f"There is no character with the name {name}")

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import * as Constants from "../../Constants";
 
 interface StatInputProps {
@@ -6,18 +6,7 @@ interface StatInputProps {
   setState: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function RandomNumber() {
-  let number = Math.floor(Math.random() * 15);
-  if (number < 5) {
-    return 5;
-  } else {
-    return number;
-  }
-}
-
 function StatInputBox({ stat, setState }: StatInputProps) {
-  const [value, setValue] = useState(RandomNumber());
-
   return (
     <div className="input-group mb-1">
       <span
@@ -34,7 +23,6 @@ function StatInputBox({ stat, setState }: StatInputProps) {
         {stat}
       </span>
       <input
-        value={value}
         type="number"
         className="form-control "
         placeholder="0"

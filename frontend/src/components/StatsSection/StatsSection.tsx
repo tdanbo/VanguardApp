@@ -5,7 +5,7 @@ import * as Constants from "../../Constants";
 import StatsUpperLeft from "./StatsUpperLeft";
 import StatsUpperRight from "./StatsUpperRight";
 import StatsMiddle from "./StatsMiddle";
-import StatsLower from "../StatsLower";
+import StatsLower from "./StatsLower";
 
 import { CharacterEntry } from "../../Types";
 
@@ -24,7 +24,7 @@ function StatsSection({ selectedCharacter }: StatsSectionProps) {
           <StatsUpperLeft selectedCharacter={selectedCharacter} />
         </div>
         <div className="col">
-          <StatsUpperRight />
+          <StatsUpperRight selectedCharacter={selectedCharacter} />
         </div>
       </div>
       <StatsMiddle />

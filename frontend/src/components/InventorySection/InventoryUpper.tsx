@@ -20,7 +20,6 @@ function InventoryUpper({ selectedCharacter }: StatsSectionProps) {
           minHeight: Constants.SECTION_HEIGHT,
         }}
       >
-        <CorruptionBox />
         <StatBox type_name={"Xp"} type_value={selectedCharacter.details.xp} />
         <StatBox
           type_name={"Unspent"}

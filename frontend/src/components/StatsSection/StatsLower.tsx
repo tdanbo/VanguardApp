@@ -1,8 +1,8 @@
-import StatBox from "./StatBox";
-import TitleBox from "./TitleBox";
-import * as Constants from "../Constants";
+import StatBox from "../StatBox";
+import TitleBox from "../TitleBox";
+import * as Constants from "../../Constants";
 
-import { CharacterEntry } from "../Types";
+import { CharacterEntry } from "../../Types";
 
 interface StatsSectionProps {
   selectedCharacter: CharacterEntry;
