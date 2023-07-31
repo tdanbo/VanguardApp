@@ -7,7 +7,7 @@ function CorruptionControls() {
   return (
     <div className="flex w-full">
       <div
-        className="flex flex-grow-1 items-center justify-center rounded fw-bold"
+        className="flex-grow-1 fw-bold flex items-center justify-center rounded"
         style={{
           fontSize: "3rem",
           color: Constants.DARK,
@@ -22,7 +22,7 @@ function CorruptionControls() {
       </div>
       <div className="flex flex-col">
         <div
-          className="flex flex-grow-1 items-center justify-center rounded fw-bold"
+          className="flex-grow-1 fw-bold flex items-center justify-center rounded"
           style={{
             fontSize: "0.8rem",
             color: Constants.DARK,
@@ -36,7 +36,7 @@ function CorruptionControls() {
         </div>
 
         <div
-          className="flex flex-grow-1 items-center justify-center rounded fw-bold"
+          className="flex-grow-1 fw-bold flex items-center justify-center rounded"
           style={{
             fontSize: "0.8rem",
             color: Constants.DARK,

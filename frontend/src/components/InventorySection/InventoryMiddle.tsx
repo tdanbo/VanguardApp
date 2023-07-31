@@ -14,7 +14,7 @@ function InventoryMiddle({ selectedCharacter }: StatsSectionProps) {
     <>
       <TitleBox title={"Inventory"} />
       <div
-        className="flex-grow-1 overflow-auto flex flex-col-reverse"
+        className="flex-grow-1 flex flex-col-reverse overflow-auto"
         style={{
           backgroundColor: Constants.PRIMARY,
         }}

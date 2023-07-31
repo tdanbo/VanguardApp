@@ -58,7 +58,7 @@ function App() {
 
   return (
     <>
-      <div className="flex justify-content-space-around">
+      <div className="justify-content-space-around flex">
         <div style={{ width: Constants.SECTION_WIDTH }}>
           <div
             className="flex"

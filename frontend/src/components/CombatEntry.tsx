@@ -39,7 +39,7 @@ function CombatEntry({
       }}
     >
       <div
-        className="flex fw-bold items-center justify-center rounded-2 fs-5  bg-red-500"
+        className="fw-bold rounded-2 fs-5 flex items-center justify-center  bg-red-500"
         style={{
           backgroundColor: EntryColor(),
           color: Constants.FONT_LIGHT,
@@ -51,12 +51,12 @@ function CombatEntry({
         {RollEntry}
       </div>
       <div>
-        <div className="m-0 fw-bold flex justify-center fs-5">{character}</div>
+        <div className="fw-bold fs-5 m-0 flex justify-center">{character}</div>
         <div className="m-0 flex justify-center">{character}</div>
       </div>
 
       <img
-        className="flex items-center justify-center rounded-2"
+        className="rounded-2 flex items-center justify-center"
         src="src\assets\characters\Alahara.png"
         alt={character}
         style={{

@@ -14,14 +14,14 @@ interface StatsSectionProps {
 function StatsSection({ selectedCharacter }: StatsSectionProps) {
   return (
     <div
-      className="flex flex-col vh-100 p-1"
+      className="vh-100 flex flex-col p-1"
       style={{ backgroundColor: Constants.DARK }}
     >
-      <div className="flex flex-wrap  gx-2">
-        <div className="relative flex-grow max-w-full flex-1 px-4">
+      <div className="gx-2 flex  flex-wrap">
+        <div className="relative max-w-full flex-1 flex-grow px-4">
           <StatsUpperLeft selectedCharacter={selectedCharacter} />
         </div>
-        <div className="relative flex-grow max-w-full flex-1 px-4">
+        <div className="relative max-w-full flex-1 flex-grow px-4">
           <StatsUpperRight selectedCharacter={selectedCharacter} />
         </div>
       </div>

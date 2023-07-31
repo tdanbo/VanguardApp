@@ -24,7 +24,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
       }}
     >
       <div
-        className="flex justify-center items-center"
+        className="flex items-center justify-center"
         style={{
           backgroundColor: Constants.BLUE,
           width: "8px",
@@ -41,7 +41,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
         }}
       >
         <div
-          className="flex flex-grow-1"
+          className="flex-grow-1 flex"
           style={{
             backgroundColor: Constants.BORDER,
             width: "8px",
@@ -49,7 +49,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
           }}
         ></div>
         <div
-          className="flex flex-grow-1"
+          className="flex-grow-1 flex"
           style={{
             backgroundColor: Constants.BORDER,
             width: "8px",
@@ -65,7 +65,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
           }}
         >
           <div
-            className="flex flex-grow-1 rounded-1 justify-center items-center"
+            className="flex-grow-1 rounded-1 flex items-center justify-center"
             style={{
               backgroundColor: Constants.BORDER,
               width: "22px",
@@ -78,7 +78,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
             Ef
           </div>
           <div
-            className="flex flex-grow-1 rounded-1 justify-center items-center"
+            className="flex-grow-1 rounded-1 flex items-center justify-center"
             style={{
               backgroundColor: Constants.BORDER,
               width: "22px",
@@ -98,7 +98,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
           }}
         >
           <div
-            className="flex flex-grow-1 rounded-1 justify-center items-center"
+            className="flex-grow-1 rounded-1 flex items-center justify-center"
             style={{
               backgroundColor: Constants.BORDER,
               width: "22px",
@@ -111,7 +111,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
             Ef
           </div>
           <div
-            className="flex flex-grow-1 rounded-1 justify-center items-center"
+            className="flex-grow-1 rounded-1 flex items-center justify-center"
             style={{
               backgroundColor: Constants.BORDER,
               width: "22px",
@@ -125,8 +125,8 @@ function InventoryEntry({ index }: InventoryEntryProps) {
           </div>
         </div>
       </div>
-      <div className="flex flex-row flex-grow-1">
-        <div className="flex flex-col m-0 justify-center">
+      <div className="flex-grow-1 flex flex-row">
+        <div className="m-0 flex flex-col justify-center">
           <p
             className="mb-3"
             style={{
@@ -150,7 +150,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
         </div>
       </div>
       <div
-        className="flex rounded-1 justify-start items-center p-2 m-1"
+        className="rounded-1 m-1 flex items-center justify-start p-2"
         style={{
           backgroundColor: Constants.PRIMARY_HOVER,
           border: `1px solid ${Constants.BORDER}`,
