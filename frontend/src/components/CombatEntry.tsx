@@ -39,7 +39,7 @@ function CombatEntry({
       }}
     >
       <div
-        className="d-flex fw-bold align-items-center justify-content-center rounded-2 fs-5"
+        className="flex fw-bold align-items-center justify-content-center rounded-2 fs-5  bg-red-500"
         style={{
           backgroundColor: EntryColor(),
           color: Constants.FONT_LIGHT,

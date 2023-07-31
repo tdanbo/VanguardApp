@@ -1,5 +1,5 @@
 import "./App.css";
-
+import "./index.css";
 import CombatSection from "./components/CombatSection/CombatSection";
 import StatsSection from "./components/StatsSection/StatsSection";
 import InventorySection from "./components/InventorySection/InventorySection";
@@ -58,10 +58,10 @@ function App() {
 
   return (
     <>
-      <div className="d-flex justify-content-space-around">
+      <div className="flex justify-content-space-around">
         <div style={{ width: Constants.SECTION_WIDTH }}>
           <div
-            className="d-flex"
+            className="flex"
             style={{ height: Constants.SECTION_TITLE_HEIGHT }}
           >
             <DeleteCharacter />
@@ -75,7 +75,7 @@ function App() {
             <div>Loading...</div> // or whatever you want to show when selectedCharacter is null
           )}
         </div>
-        <div className="w-100">
+        <div className="w-full">
           {selectedCharacter ? (
             <StatsSection selectedCharacter={selectedCharacter} />
           ) : (

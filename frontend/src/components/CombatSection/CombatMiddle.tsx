@@ -19,7 +19,7 @@ function CombatMiddle({ combatLogList }: CombatLogProps) {
     <>
       <TitleBox title={"Combat"} />
       <div
-        className="flex-grow-1 overflow-auto d-flex flex-column-reverse"
+        className="flex-grow overflow-auto flex flex-col-reverse"
         style={{
           backgroundColor: Constants.DARK,
         }}

@@ -14,17 +14,17 @@ interface StatsSectionProps {
 function InventorySection({ selectedCharacter }: StatsSectionProps) {
   return (
     <div
-      className="d-flex flex-column vh-100 p-1"
+      className="flex flex-col h-screen p-1"
       style={{ backgroundColor: Constants.DARK }}
     >
       <InventoryUpper selectedCharacter={selectedCharacter} />
       <InventoryMiddle selectedCharacter={selectedCharacter} />
 
-      <div className="row gx-2">
-        <div className="col">
+      <div className="flex flex-wrap  gx-2">
+        <div className="relative flex-grow max-w-full flex-1 px-4">
           <InventoryLowerLeft />
         </div>
-        <div className="col-3">
+        <div className="w-1/4">
           <InventoryLowerRight />
         </div>
       </div>

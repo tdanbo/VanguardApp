@@ -17,7 +17,7 @@ type CombatLogProps = {
 function CombatSection({ combatLogList }: CombatLogProps) {
   return (
     <div
-      className="d-flex flex-column vh-100 p-1"
+      className="flex flex-col p-1" // missing from bootstrap vh-100
       style={{ backgroundColor: Constants.DARK }}
     >
       <CombatMiddle combatLogList={combatLogList} />
