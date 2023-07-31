@@ -5,9 +5,9 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 function CorruptionControls() {
   return (
-    <div className="d-flex w-100">
+    <div className="flex w-full">
       <div
-        className="d-flex flex-grow-1 align-items-center justify-content-center rounded fw-bold"
+        className="flex flex-grow-1 items-center justify-center rounded fw-bold"
         style={{
           fontSize: "3rem",
           color: Constants.DARK,
@@ -20,9 +20,9 @@ function CorruptionControls() {
       >
         I
       </div>
-      <div className="d-flex flex-column">
+      <div className="flex flex-col">
         <div
-          className="d-flex flex-grow-1 align-items-center justify-content-center rounded fw-bold"
+          className="flex flex-grow-1 items-center justify-center rounded fw-bold"
           style={{
             fontSize: "0.8rem",
             color: Constants.DARK,
@@ -36,7 +36,7 @@ function CorruptionControls() {
         </div>
 
         <div
-          className="d-flex flex-grow-1 align-items-center justify-content-center rounded fw-bold"
+          className="flex flex-grow-1 items-center justify-center rounded fw-bold"
           style={{
             fontSize: "0.8rem",
             color: Constants.DARK,

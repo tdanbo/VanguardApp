@@ -70,9 +70,9 @@ function CorruptionBox({
   };
 
   return (
-    <div className="d-flex flex-column w-100">
+    <div className="flex flex-col w-full">
       <div
-        className="d-flex flex-grow-1 align-items-center justify-content-center rounded fw-bold"
+        className="flex flex-grow-1 items-center justify-center rounded fw-bold"
         style={{
           fontSize: "0.8rem",
           color: Constants.PRIMARY,

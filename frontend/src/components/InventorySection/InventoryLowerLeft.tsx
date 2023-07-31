@@ -7,7 +7,7 @@ function StatsLower() {
     <div>
       <TitleBox title={"Active"} />
       <div
-        className="d-flex flex-row p-1"
+        className="flex flex-row p-1"
         style={{
           backgroundColor: Constants.PRIMARY,
           height: Constants.SECTION_HEIGHT,

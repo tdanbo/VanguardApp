@@ -8,9 +8,9 @@ interface StatInputProps {
 
 function StatInputBox({ stat, setState }: StatInputProps) {
   return (
-    <div className="input-group mb-1">
+    <div className="relative flex items-stretch w-full mb-1">
       <span
-        className="input-group-text w-50 justify-content-center"
+        className="input-group-text w-1/2 justify-center"
         id="basic-addon1"
         style={{
           color: Constants.DARK,
@@ -24,7 +24,7 @@ function StatInputBox({ stat, setState }: StatInputProps) {
       </span>
       <input
         type="number"
-        className="form-control "
+        className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded "
         placeholder="0"
         aria-label="Username"
         aria-describedby="basic-addon1"

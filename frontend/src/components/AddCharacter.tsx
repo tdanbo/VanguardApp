@@ -13,7 +13,7 @@ function AddCharacter() {
 
   return (
     <div
-      className="d-flex justify-content-center align-items-center"
+      className="flex justify-center items-center"
       style={{
         backgroundColor: Constants.PRIMARY_LIGHTER,
         width: Constants.SECTION_TITLE_HEIGHT,

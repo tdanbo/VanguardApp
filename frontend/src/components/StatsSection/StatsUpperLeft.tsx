@@ -21,7 +21,7 @@ function StatsUpperLeft({ selectedCharacter }: StatsSectionProps) {
     <>
       <TitleBox title={"Toughness"} />
       <div
-        className="d-flex flex-row p-2"
+        className="flex flex-row p-2"
         style={{
           backgroundColor: Constants.PRIMARY,
           height: Constants.SECTION_HEIGHT,

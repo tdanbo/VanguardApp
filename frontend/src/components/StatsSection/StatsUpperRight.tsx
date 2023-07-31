@@ -22,7 +22,7 @@ function StatsLower({ selectedCharacter }: StatsSectionProps) {
     <>
       <TitleBox title={"Corruption"} />
       <div
-        className="d-flex flex-row p-2"
+        className="flex flex-row p-2"
         style={{
           backgroundColor: Constants.PRIMARY,
           height: Constants.SECTION_HEIGHT,

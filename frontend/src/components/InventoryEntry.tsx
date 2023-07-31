@@ -14,7 +14,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
   };
   return (
     <div
-      className="d-flex"
+      className="flex"
       style={{
         backgroundColor: BackgroundColor(),
         padding: "1px",
@@ -24,7 +24,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
       }}
     >
       <div
-        className="d-flex justify-content-center align-items-center"
+        className="flex justify-center items-center"
         style={{
           backgroundColor: Constants.BLUE,
           width: "8px",
@@ -34,14 +34,14 @@ function InventoryEntry({ index }: InventoryEntryProps) {
         x
       </div>
       <div
-        className="d-flex flex-column"
+        className="flex flex-col"
         style={{
           backgroundColor: BackgroundColor(),
           marginLeft: "1px",
         }}
       >
         <div
-          className="d-flex flex-grow-1"
+          className="flex flex-grow-1"
           style={{
             backgroundColor: Constants.BORDER,
             width: "8px",
@@ -49,7 +49,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
           }}
         ></div>
         <div
-          className="d-flex flex-grow-1"
+          className="flex flex-grow-1"
           style={{
             backgroundColor: Constants.BORDER,
             width: "8px",
@@ -57,15 +57,15 @@ function InventoryEntry({ index }: InventoryEntryProps) {
           }}
         ></div>
       </div>
-      <div className="d-flex px-2 py-1">
+      <div className="flex px-2 py-1">
         <div
-          className="d-flex flex-column"
+          className="flex flex-col"
           style={{
             backgroundColor: BackgroundColor(),
           }}
         >
           <div
-            className="d-flex flex-grow-1 rounded-1 justify-content-center align-items-center"
+            className="flex flex-grow-1 rounded-1 justify-center items-center"
             style={{
               backgroundColor: Constants.BORDER,
               width: "22px",
@@ -78,7 +78,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
             Ef
           </div>
           <div
-            className="d-flex flex-grow-1 rounded-1 justify-content-center align-items-center"
+            className="flex flex-grow-1 rounded-1 justify-center items-center"
             style={{
               backgroundColor: Constants.BORDER,
               width: "22px",
@@ -92,13 +92,13 @@ function InventoryEntry({ index }: InventoryEntryProps) {
           </div>
         </div>
         <div
-          className="d-flex flex-column"
+          className="flex flex-col"
           style={{
             backgroundColor: BackgroundColor(),
           }}
         >
           <div
-            className="d-flex flex-grow-1 rounded-1 justify-content-center align-items-center"
+            className="flex flex-grow-1 rounded-1 justify-center items-center"
             style={{
               backgroundColor: Constants.BORDER,
               width: "22px",
@@ -111,7 +111,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
             Ef
           </div>
           <div
-            className="d-flex flex-grow-1 rounded-1 justify-content-center align-items-center"
+            className="flex flex-grow-1 rounded-1 justify-center items-center"
             style={{
               backgroundColor: Constants.BORDER,
               width: "22px",
@@ -125,10 +125,10 @@ function InventoryEntry({ index }: InventoryEntryProps) {
           </div>
         </div>
       </div>
-      <div className="d-flex flex-row flex-grow-1">
-        <div className="d-flex flex-column m-0 justify-content-center">
+      <div className="flex flex-row flex-grow-1">
+        <div className="flex flex-col m-0 justify-center">
           <p
-            className="card-title"
+            className="mb-3"
             style={{
               fontSize: "15px",
               fontWeight: "bold",
@@ -138,7 +138,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
             Dagger
           </p>
           <p
-            className="card-subtitle"
+            className="-mt-2 mb-0"
             style={{
               fontSize: "11px",
               fontWeight: "bold",
@@ -150,7 +150,7 @@ function InventoryEntry({ index }: InventoryEntryProps) {
         </div>
       </div>
       <div
-        className="d-flex rounded-1 justify-content-start align-items-center p-2 m-1"
+        className="flex rounded-1 justify-start items-center p-2 m-1"
         style={{
           backgroundColor: Constants.PRIMARY_HOVER,
           border: `1px solid ${Constants.BORDER}`,

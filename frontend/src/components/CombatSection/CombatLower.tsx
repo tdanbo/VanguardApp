@@ -5,7 +5,7 @@ import * as Constants from "../../Constants";
 const EntryRollButton = () => {
   return (
     <div
-      className="d-flex rounded ml-1 mb-1 mt-1"
+      className="flex rounded ml-1 mb-1 mt-1"
       style={{
         backgroundColor: Constants.BRIGHT_RED,
         minWidth: "19px",

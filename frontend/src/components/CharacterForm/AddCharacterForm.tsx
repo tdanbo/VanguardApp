@@ -107,7 +107,7 @@ function AddCharacterForm({ open, onClose }: CharacterProps) {
           <StatInputBox stat="Vigilant" setState={setVigilant} />
           <StatInputBox stat="Accurate" setState={setAccurate} />
           <button
-            className="btn mt-3"
+            className="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline mt-3"
             onClick={addCharacterHandler}
             type="button"
             style={{

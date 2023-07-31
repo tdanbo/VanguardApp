@@ -3,13 +3,13 @@ import * as Constants from "../Constants";
 function AbilityEntry() {
   return (
     <div
-      className="d-flex m-1"
+      className="flex m-1"
       style={{
         backgroundColor: Constants.PRIMARY_DARKER,
       }}
     >
       <div
-        className="d-flex justify-content-center align-items-center"
+        className="flex justify-center items-center"
         style={{
           backgroundColor: Constants.PURPLE,
           width: "20px",
@@ -19,18 +19,18 @@ function AbilityEntry() {
       >
         x
       </div>
-      <div className="d-flex flex-column flex-grow-1">
+      <div className="flex flex-col flex-grow-1">
         <div
-          className="d-flex flex-grow-2"
+          className="flex flex-grow-2"
           style={{
             backgroundColor: Constants.DARK,
             borderBottom: `1px solid ${Constants.BORDER}`,
           }}
         >
-          <div className="d-flex flex-row flex-grow-1 m-2">
-            <div className="d-flex flex-column m-0 justify-content-center">
+          <div className="flex flex-row flex-grow-1 m-2">
+            <div className="flex flex-col m-0 justify-center">
               <h5
-                className="card-title"
+                className="mb-3"
                 style={{
                   color: Constants.FONT_LIGHT,
                 }}
@@ -40,7 +40,7 @@ function AbilityEntry() {
             </div>
           </div>
           <div
-            className="d-flex rounded-1 justify-content-center align-items-center m-1"
+            className="flex rounded-1 justify-center items-center m-1"
             style={{
               backgroundColor: Constants.PURPLE,
               border: `1px solid #3d3d3c`,
@@ -53,7 +53,7 @@ function AbilityEntry() {
             N
           </div>
           <div
-            className="d-flex rounded-1 justify-content-center align-items-center m-1"
+            className="flex rounded-1 justify-center items-center m-1"
             style={{
               backgroundColor: Constants.DARK,
               border: `1px solid #3d3d3c`,
@@ -66,7 +66,7 @@ function AbilityEntry() {
             A
           </div>
           <div
-            className="d-flex rounded-1 justify-content-center align-items-center m-1"
+            className="flex rounded-1 justify-center items-center m-1"
             style={{
               backgroundColor: Constants.DARK,
               border: `1px solid #3d3d3c`,
@@ -80,7 +80,7 @@ function AbilityEntry() {
           </div>
         </div>
         <div
-          className="d-flex flex-grow-2 py-1"
+          className="flex flex-grow-2 py-1"
           style={{
             color: Constants.BORDER_DARK,
             backgroundColor: Constants.PRIMARY_DARKER,
@@ -93,15 +93,15 @@ function AbilityEntry() {
           Mystical Power, Sorcery, 1 Permanent Corruption
         </div>
         <div
-          className="d-flex d-flex-row flex-grow-1"
+          className="flex d-flex-row flex-grow-1"
           style={{
             backgroundColor: Constants.PRIMARY_DARKER,
             borderBottom: `1px solid ${Constants.BORDER}`,
           }}
         >
-          <div className="d-flex flex-grow-1 align-items-center p-2">
+          <div className="flex flex-grow-1 items-center p-2">
             <div
-              className="d-flex flex-grow-2 align-items-center p-2"
+              className="flex flex-grow-2 items-center p-2"
               style={{
                 backgroundColor: Constants.PRIMARY_DARKER,
                 color: Constants.PURPLE,
@@ -113,7 +113,7 @@ function AbilityEntry() {
               NOVICE
             </div>
             <div
-              className="d-flex flex-grow-1 align-items-center p-2"
+              className="flex flex-grow-1 items-center p-2"
               style={{
                 backgroundColor: Constants.PRIMARY_DARKER,
                 color: Constants.DARK,
@@ -130,7 +130,7 @@ function AbilityEntry() {
               it to make a type specimen book.
             </div>
             <div
-              className="d-flex rounded-1 justify-content-start align-items-center p-2 m-1"
+              className="flex rounded-1 justify-start items-center p-2 m-1"
               style={{
                 backgroundColor: Constants.PRIMARY_HOVER,
                 border: `1px solid ${Constants.BORDER}`,

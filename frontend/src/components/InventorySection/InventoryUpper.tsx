@@ -13,7 +13,7 @@ function InventoryUpper({ selectedCharacter }: StatsSectionProps) {
   return (
     <>
       <div
-        className="d-flex flex-col p-2"
+        className="flex flex-col p-2"
         style={{
           backgroundColor: Constants.PRIMARY,
           height: Constants.SECTION_HEIGHT,

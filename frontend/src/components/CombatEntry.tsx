@@ -31,7 +31,7 @@ function CombatEntry({
 
   return (
     <div
-      className="d-flex justify-content-between p-1"
+      className="flex justify-between p-1"
       style={{
         backgroundColor: BackgroundColor(),
         height: "60px",
@@ -39,7 +39,7 @@ function CombatEntry({
       }}
     >
       <div
-        className="flex fw-bold align-items-center justify-content-center rounded-2 fs-5  bg-red-500"
+        className="flex fw-bold items-center justify-center rounded-2 fs-5  bg-red-500"
         style={{
           backgroundColor: EntryColor(),
           color: Constants.FONT_LIGHT,
@@ -51,14 +51,12 @@ function CombatEntry({
         {RollEntry}
       </div>
       <div>
-        <div className="m-0 fw-bold d-flex justify-content-center fs-5">
-          {character}
-        </div>
-        <div className="m-0 d-flex justify-content-center">{character}</div>
+        <div className="m-0 fw-bold flex justify-center fs-5">{character}</div>
+        <div className="m-0 flex justify-center">{character}</div>
       </div>
 
       <img
-        className="d-flex align-items-center justify-content-center rounded-2"
+        className="flex items-center justify-center rounded-2"
         src="src\assets\characters\Alahara.png"
         alt={character}
         style={{
