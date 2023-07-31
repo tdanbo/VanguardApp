@@ -19,28 +19,26 @@ function AbilityEntry() {
       >
         x
       </div>
-      <div className="flex-grow-1 flex flex-col">
+      <div className="flex-col">
         <div
-          className="flex-grow-2 flex"
+          className="flex flex grow"
           style={{
             backgroundColor: Constants.DARK,
             borderBottom: `1px solid ${Constants.BORDER}`,
           }}
         >
-          <div className="flex-grow-1 m-2 flex flex-row">
-            <div className="m-0 flex flex-col justify-center">
-              <h5
-                className="mb-3"
-                style={{
-                  color: Constants.FONT_LIGHT,
-                }}
-              >
-                Black Bolt
-              </h5>
-            </div>
+          <div className="m-3 flex grow flex-row">
+            <h5
+              className="items-center justify-start"
+              style={{
+                color: Constants.FONT_LIGHT,
+              }}
+            >
+              Black Bolt
+            </h5>
           </div>
           <div
-            className="rounded-1 m-1 flex items-center justify-center"
+            className="m-1 flex items-center justify-center rounded"
             style={{
               backgroundColor: Constants.PURPLE,
               border: `1px solid #3d3d3c`,
@@ -53,7 +51,7 @@ function AbilityEntry() {
             N
           </div>
           <div
-            className="rounded-1 m-1 flex items-center justify-center"
+            className="m-1 flex items-center justify-center rounded"
             style={{
               backgroundColor: Constants.DARK,
               border: `1px solid #3d3d3c`,
@@ -66,7 +64,7 @@ function AbilityEntry() {
             A
           </div>
           <div
-            className="rounded-1 m-1 flex items-center justify-center"
+            className="m-1 flex items-center justify-center rounded"
             style={{
               backgroundColor: Constants.DARK,
               border: `1px solid #3d3d3c`,
@@ -80,12 +78,11 @@ function AbilityEntry() {
           </div>
         </div>
         <div
-          className="flex-grow-2 flex py-1"
+          className="h-50 flex h-10 grow md:p-4"
           style={{
             color: Constants.BORDER_DARK,
             backgroundColor: Constants.PRIMARY_DARKER,
             borderBottom: `1px solid ${Constants.BORDER}`,
-            padding: "75px",
             fontSize: "12px",
             fontWeight: "bold",
           }}
@@ -99,9 +96,9 @@ function AbilityEntry() {
             borderBottom: `1px solid ${Constants.BORDER}`,
           }}
         >
-          <div className="flex-grow-1 flex items-center p-2">
+          <div className="flex items-center p-2">
             <div
-              className="flex-grow-2 flex items-center p-2"
+              className="flex items-center p-2"
               style={{
                 backgroundColor: Constants.PRIMARY_DARKER,
                 color: Constants.PURPLE,

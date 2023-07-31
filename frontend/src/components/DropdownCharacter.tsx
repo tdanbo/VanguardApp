@@ -32,28 +32,26 @@ function DropdownCharacter({ getSelectedCharacter }: DropdownCharacterProps) {
   };
 
   return (
-    <div className="flex-grow-1 flex">
-      <select
-        className="form-select rounded-none p-0"
-        style={{
-          backgroundColor: Constants.PRIMARY_LIGHTER,
-          color: Constants.RED,
-          border: `1px solid ${Constants.BORDER}`,
-        }}
-        value={selectedValue || ""}
-        onChange={handleSelect}
-      >
-        <option value="">Select an option</option>
-        {characterLogList.map((characterEntry) => (
-          <option
-            key={characterEntry.details.name}
-            value={characterEntry.details.name}
-          >
-            {characterEntry.details.name}
-          </option>
-        ))}
-      </select>
-    </div>
+    <select
+      className="flex grow"
+      style={{
+        backgroundColor: Constants.PRIMARY_LIGHTER,
+        color: Constants.RED,
+        border: `1px solid ${Constants.BORDER}`,
+      }}
+      value={selectedValue || ""}
+      onChange={handleSelect}
+    >
+      <option value="">Select an option</option>
+      {characterLogList.map((characterEntry) => (
+        <option
+          key={characterEntry.details.name}
+          value={characterEntry.details.name}
+        >
+          {characterEntry.details.name}
+        </option>
+      ))}
+    </select>
   );
 }
 

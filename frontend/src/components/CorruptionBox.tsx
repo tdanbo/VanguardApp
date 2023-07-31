@@ -70,20 +70,18 @@ function CorruptionBox({
   };
 
   return (
-    <div className="flex w-full flex-col">
-      <div
-        className="flex-grow-1 fw-bold flex items-center justify-center rounded"
-        style={{
-          fontSize: "0.8rem",
-          color: Constants.PRIMARY,
-          backgroundColor: BackgroundColor(),
-          border: `1px solid ${Constants.BORDER_LIGHT}`,
-          margin: "2px 2px 2px 2px",
-        }}
-        onClick={UpdateCorruptionState}
-      >
-        <LocalFireDepartmentIcon />
-      </div>
+    <div
+      className="fw-bold flex w-full grow items-center justify-center rounded"
+      style={{
+        fontSize: "0.8rem",
+        color: Constants.PRIMARY,
+        backgroundColor: BackgroundColor(),
+        border: `1px solid ${Constants.BORDER_LIGHT}`,
+        margin: "2px 2px 2px 2px",
+      }}
+      onClick={UpdateCorruptionState}
+    >
+      <LocalFireDepartmentIcon />
     </div>
   );
 }

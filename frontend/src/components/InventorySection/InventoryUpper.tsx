@@ -1,8 +1,5 @@
 import StatBox from "../StatBox";
 import * as Constants from "../../Constants";
-import CorruptionBox from "../CorruptionBox";
-import DeleteCharacter from "../DeleteCharacter";
-import AddCharacter from "../AddCharacter";
 import { CharacterEntry } from "../../Types";
 
 interface StatsSectionProps {
@@ -13,7 +10,7 @@ function InventoryUpper({ selectedCharacter }: StatsSectionProps) {
   return (
     <>
       <div
-        className="flex flex-col p-2"
+        className="flex flex-row p-1"
         style={{
           backgroundColor: Constants.PRIMARY,
           height: Constants.SECTION_HEIGHT,
