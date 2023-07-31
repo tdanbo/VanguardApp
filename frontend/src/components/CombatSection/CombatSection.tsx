@@ -1,7 +1,5 @@
-import "bootstrap/dist/css/bootstrap.css";
 import CombatLower from "./CombatLower";
 import CombatMiddle from "./CombatMiddle";
-import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 
 type CombatLog = {

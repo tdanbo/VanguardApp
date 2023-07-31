@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.css";
 import * as Constants from "../Constants";
 
 interface CombatEntryProps {

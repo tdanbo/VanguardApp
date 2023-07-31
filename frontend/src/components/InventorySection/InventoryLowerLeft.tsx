@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.css";
 import StatBox from "../StatBox";
 import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";

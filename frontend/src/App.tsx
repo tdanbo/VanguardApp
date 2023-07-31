@@ -14,8 +14,6 @@ import axios from "axios";
 
 import * as Constants from "./Constants";
 
-import "bootstrap/dist/js/bootstrap";
-
 type CombatLog = {
   character: string;
   result: number;
