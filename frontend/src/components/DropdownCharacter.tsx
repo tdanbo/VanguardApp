@@ -32,9 +32,9 @@ function DropdownCharacter({ getSelectedCharacter }: DropdownCharacterProps) {
   };
 
   return (
-    <div className="flex flex-grow-1">
+    <div className="flex-grow-1 flex">
       <select
-        className="form-select p-0 rounded-none"
+        className="form-select rounded-none p-0"
         style={{
           backgroundColor: Constants.PRIMARY_LIGHTER,
           color: Constants.RED,

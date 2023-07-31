@@ -9,7 +9,7 @@ interface NameInputProps {
 
 function NameInputBox({ setState }: NameInputProps) {
   return (
-    <div className="relative flex items-stretch w-full mb-3">
+    <div className="relative mb-3 flex w-full items-stretch">
       <span
         className="input-group-text"
         id="basic-addon1"
@@ -24,7 +24,7 @@ function NameInputBox({ setState }: NameInputProps) {
       </span>
       <input
         type="text"
-        className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
+        className="mb-1 block w-full appearance-none rounded border border-gray-200 bg-white px-2 py-1 text-base leading-normal text-gray-800"
         placeholder="Character Name"
         aria-label="Character Name"
         aria-describedby="basic-addon1"

@@ -5,7 +5,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 function DeleteCharacter() {
   return (
     <div
-      className="flex justify-center items-center"
+      className="flex items-center justify-center"
       style={{
         backgroundColor: Constants.PRIMARY_LIGHTER,
         width: Constants.SECTION_TITLE_HEIGHT,

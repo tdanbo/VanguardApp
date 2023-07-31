@@ -3,13 +3,13 @@ import * as Constants from "../Constants";
 function AbilityEntry() {
   return (
     <div
-      className="flex m-1"
+      className="m-1 flex"
       style={{
         backgroundColor: Constants.PRIMARY_DARKER,
       }}
     >
       <div
-        className="flex justify-center items-center"
+        className="flex items-center justify-center"
         style={{
           backgroundColor: Constants.PURPLE,
           width: "20px",
@@ -19,16 +19,16 @@ function AbilityEntry() {
       >
         x
       </div>
-      <div className="flex flex-col flex-grow-1">
+      <div className="flex-grow-1 flex flex-col">
         <div
-          className="flex flex-grow-2"
+          className="flex-grow-2 flex"
           style={{
             backgroundColor: Constants.DARK,
             borderBottom: `1px solid ${Constants.BORDER}`,
           }}
         >
-          <div className="flex flex-row flex-grow-1 m-2">
-            <div className="flex flex-col m-0 justify-center">
+          <div className="flex-grow-1 m-2 flex flex-row">
+            <div className="m-0 flex flex-col justify-center">
               <h5
                 className="mb-3"
                 style={{
@@ -40,7 +40,7 @@ function AbilityEntry() {
             </div>
           </div>
           <div
-            className="flex rounded-1 justify-center items-center m-1"
+            className="rounded-1 m-1 flex items-center justify-center"
             style={{
               backgroundColor: Constants.PURPLE,
               border: `1px solid #3d3d3c`,
@@ -53,7 +53,7 @@ function AbilityEntry() {
             N
           </div>
           <div
-            className="flex rounded-1 justify-center items-center m-1"
+            className="rounded-1 m-1 flex items-center justify-center"
             style={{
               backgroundColor: Constants.DARK,
               border: `1px solid #3d3d3c`,
@@ -66,7 +66,7 @@ function AbilityEntry() {
             A
           </div>
           <div
-            className="flex rounded-1 justify-center items-center m-1"
+            className="rounded-1 m-1 flex items-center justify-center"
             style={{
               backgroundColor: Constants.DARK,
               border: `1px solid #3d3d3c`,
@@ -80,7 +80,7 @@ function AbilityEntry() {
           </div>
         </div>
         <div
-          className="flex flex-grow-2 py-1"
+          className="flex-grow-2 flex py-1"
           style={{
             color: Constants.BORDER_DARK,
             backgroundColor: Constants.PRIMARY_DARKER,
@@ -93,15 +93,15 @@ function AbilityEntry() {
           Mystical Power, Sorcery, 1 Permanent Corruption
         </div>
         <div
-          className="flex d-flex-row flex-grow-1"
+          className="d-flex-row flex-grow-1 flex"
           style={{
             backgroundColor: Constants.PRIMARY_DARKER,
             borderBottom: `1px solid ${Constants.BORDER}`,
           }}
         >
-          <div className="flex flex-grow-1 items-center p-2">
+          <div className="flex-grow-1 flex items-center p-2">
             <div
-              className="flex flex-grow-2 items-center p-2"
+              className="flex-grow-2 flex items-center p-2"
               style={{
                 backgroundColor: Constants.PRIMARY_DARKER,
                 color: Constants.PURPLE,
@@ -113,7 +113,7 @@ function AbilityEntry() {
               NOVICE
             </div>
             <div
-              className="flex flex-grow-1 items-center p-2"
+              className="flex-grow-1 flex items-center p-2"
               style={{
                 backgroundColor: Constants.PRIMARY_DARKER,
                 color: Constants.DARK,
@@ -130,7 +130,7 @@ function AbilityEntry() {
               it to make a type specimen book.
             </div>
             <div
-              className="flex rounded-1 justify-start items-center p-2 m-1"
+              className="rounded-1 m-1 flex items-center justify-start p-2"
               style={{
                 backgroundColor: Constants.PRIMARY_HOVER,
                 border: `1px solid ${Constants.BORDER}`,

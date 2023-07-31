@@ -34,10 +34,10 @@ function CorruptionBox({
 
     // Convert the dictionary to a list
     let corruptionKeysList: string[] = Object.keys(
-      selectedCharacter.corruption
+      selectedCharacter.corruption,
     );
     let corruptionValuesList: number[] = Object.values(
-      selectedCharacter.corruption
+      selectedCharacter.corruption,
     ) as number[];
 
     // Sort the list
@@ -54,7 +54,7 @@ function CorruptionBox({
     axios
       .put(
         `http://localhost:8000/api/characterlog/${selectedCharacter.details.name}`,
-        selectedCharacter
+        selectedCharacter,
       )
       .then((res) => console.log(res));
   }, [update]);
@@ -70,9 +70,9 @@ function CorruptionBox({
   };
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex w-full flex-col">
       <div
-        className="flex flex-grow-1 items-center justify-center rounded fw-bold"
+        className="flex-grow-1 fw-bold flex items-center justify-center rounded"
         style={{
           fontSize: "0.8rem",
           color: Constants.PRIMARY,
