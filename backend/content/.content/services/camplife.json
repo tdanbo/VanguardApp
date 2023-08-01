@@ -1,0 +1,11 @@
+{
+    "Foot soldier": {
+      "Cost": "5 ortegs"
+    },
+    "Rider": {
+      "Cost": "5 shillings"
+    },
+    "Knight": {
+      "Cost": "1 thaler"
+    }
+  }

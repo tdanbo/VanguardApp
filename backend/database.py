@@ -11,6 +11,7 @@ PASSWORD = "E33ts3SKAOl1tR1W"
 SESSION = "SessionA"
 COMBAT_LOG = "CombatLog"
 CHARACTER_LOG = "CharacterLog"
+CONTENT = "equipment"
 connection_string = (
     f"mongodb+srv://{USER}:{PASSWORD}@vanguardsessions.xbafis6.mongodb.net/"
 )
@@ -19,7 +20,7 @@ client = motor.motor_asyncio.AsyncIOMotorClient(connection_string)
 database = client[SESSION]
 combat_log_collection = database[COMBAT_LOG]
 character_log_collection = database[CHARACTER_LOG]
-
+content_collection = database[CONTENT]
 
 async def get_combat_entries():
     combat_entries = []
@@ -60,5 +61,9 @@ async def fetch_one_character(name):
 
 async def update_character(name: str, new_character_data: dict):
     await character_log_collection.replace_one({"details.name": name}, new_character_data)
+    document = await character_log_collection.find_one({"details.name": name})
+    return document
+
+async def fetch_one_equipment(name):
     document = await character_log_collection.find_one({"details.name": name})
     return document

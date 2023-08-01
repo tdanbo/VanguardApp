@@ -19,7 +19,7 @@ function StatsLower({ selectedCharacter }: StatsSectionProps) {
   const corruption = Object.values(selectedCharacter.corruption) as number[];
   const [update, setUpdater] = useState(0);
   return (
-    <>
+    <div className="grow flex-row pl-1">
       <TitleBox title={"Corruption"} />
       <div
         className="flex flex-row p-2"
@@ -41,7 +41,7 @@ function StatsLower({ selectedCharacter }: StatsSectionProps) {
         ))}
         <CorruptionControls />
       </div>
-    </>
+    </div>
   );
 }
 

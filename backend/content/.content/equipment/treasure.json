@@ -1,0 +1,26 @@
+{
+    "Thaler": {
+        "Quantity": 1,
+        "Type": "Currency",
+        "Quality": [],
+        "Cost": "",
+        "Name": "Thaler",
+        "Category": "treasure"
+    },
+    "Shillings": {
+        "Quantity": 1,
+        "Type": "Currency",
+        "Quality": [],
+        "Cost": "",
+        "Name": "Shillings",
+        "Category": "treasure"
+    },
+    "Ortegs": {
+        "Quantity": 1,
+        "Type": "Currency",
+        "Quality": [],
+        "Cost": "",
+        "Name": "Ortegs",
+        "Category": "treasure"
+    }
+}

@@ -1,0 +1,565 @@
+{
+    "Bastard Sword 1": {
+        "Roll": [
+            "Damage",
+            "1d8"
+        ],
+        "Quality": [
+            "Bastard Weapon"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "One-hand Weapon",
+        "Cost": "50 thaler",
+        "Name": "Bastard Sword 1",
+        "Category": "quality_weapon"
+    },
+    "Fencing Sword": {
+        "Roll": [
+            "Damage",
+            "1d8"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Quality": [
+            "Precise"
+        ],
+        "Type": "One-hand Weapon",
+        "Cost": "25 thaler",
+        "Name": "Fencing Sword",
+        "Category": "quality_weapon"
+    },
+    "Crow's Beak": {
+        "Roll": [
+            "Damage",
+            "1D8+1"
+        ],
+        "Quality": [
+            "Deep Impact"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "One-hand Weapon",
+        "Cost": "25 thaler",
+        "Name": "Crow's Beak",
+        "Category": "quality_weapon"
+    },
+    "Lance 1": {
+        "Roll": [
+            "Damage",
+            "1d8"
+        ],
+        "Quality": [
+            "Bastard Weapon",
+            "Long"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "One-hand Weapon",
+        "Cost": "15 thaler",
+        "Name": "Lance 1",
+        "Category": "quality_weapon"
+    },
+    "Flail": {
+        "Roll": [
+            "Damage",
+            "1d8"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Quality": [
+            "Jointed"
+        ],
+        "Type": "One-hand Weapon",
+        "Cost": "25 thaler",
+        "Name": "Flail",
+        "Category": "quality_weapon"
+    },
+    "Long-hammer 1": {
+        "Roll": [
+            "Damage",
+            "1d8"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Quality": [
+            "Bastard Weapon",
+            "Unwieldy"
+        ],
+        "Type": "One-hand Weapon",
+        "Cost": "50 thaler",
+        "Name": "Long-hammer 1",
+        "Category": "quality_weapon"
+    },
+    "Long-Whip": {
+        "Roll": [
+            "Damage",
+            "1D6"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Quality": [
+            "Jointed",
+            "Ensnaring",
+            "Blunt"
+        ],
+        "Type": "One-hand Weapon",
+        "Cost": "10 thaler",
+        "Name": "Long-Whip",
+        "Category": "quality_weapon"
+    },
+    "Estoc": {
+        "Roll": [
+            "Damage",
+            "1D8+1"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Quality": [
+            "Deep Impact"
+        ],
+        "Type": "One-hand Weapon",
+        "Cost": "25 thaler",
+        "Name": "Estoc",
+        "Category": "quality_weapon"
+    },
+    "Assassin's Blade": {
+        "Roll": [
+            "Damage",
+            "1d6"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Quality": [
+            "Short",
+            "Concealed"
+        ],
+        "Type": "Short Weapon",
+        "Cost": "5 thaler",
+        "Name": "Assassin's Blade",
+        "Category": "quality_weapon"
+    },
+    "Parrying Dagger": {
+        "Roll": [
+            "Damage",
+            "1d6"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Quality": [
+            "Short",
+            "Balanced 1"
+        ],
+        "Type": "Short Weapon",
+        "Cost": "5 thaler",
+        "Name": "Parrying Dagger",
+        "Category": "quality_weapon"
+    },
+    "Stiletto": {
+        "Roll": [
+            "Damage",
+            "1D6+1"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Quality": [
+            "Short",
+            "Deep Impact"
+        ],
+        "Type": "Short Weapon",
+        "Cost": "5 thaler",
+        "Name": "Stiletto",
+        "Category": "quality_weapon"
+    },
+    "Halberd": {
+        "Roll": [
+            "Damage",
+            "1D8+1"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Long",
+            "Deep Impact"
+        ],
+        "Type": "Long Weapon",
+        "Cost": "15 thaler",
+        "Name": "Halberd",
+        "Category": "quality_weapon"
+    },
+    "Pike": {
+        "Roll": [
+            "Damage",
+            "1D8"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Long",
+            "Precise"
+        ],
+        "Type": "Long Weapon",
+        "Cost": "15 thaler",
+        "Name": "Pike",
+        "Category": "quality_weapon"
+    },
+    "Sturdy Staff": {
+        "Roll": [
+            "Damage",
+            "1D6"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Long",
+            "Blunt"
+        ],
+        "Type": "Long Weapon",
+        "Cost": "1 shilling",
+        "Name": "Sturdy Staff",
+        "Category": "quality_weapon"
+    },
+    "Wooden Staff": {
+        "Roll": [
+            "Damage",
+            "1D6"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Long",
+            "Blunt"
+        ],
+        "Type": "Long Weapon",
+        "Cost": "1 shilling",
+        "Name": "Wooden Staff",
+        "Category": "quality_weapon"
+    },
+    "Quarterstaff": {
+        "Roll": [
+            "Damage",
+            "1D6"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Long",
+            "Blunt"
+        ],
+        "Type": "Long Weapon",
+        "Cost": "1 shilling",
+        "Name": "Quarterstaff",
+        "Category": "quality_weapon"
+    },
+    "Chain Staff": {
+        "Roll": [
+            "Damage",
+            "1D8"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Long",
+            "Ensnaring"
+        ],
+        "Type": "Long Weapon",
+        "Cost": "15 thaler",
+        "Name": "Chain Staff",
+        "Category": "quality_weapon"
+    },
+    "Lance 2": {
+        "Roll": [
+            "Damage",
+            "1D8"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Long",
+            "Bastard Weapon",
+            "Precise"
+        ],
+        "Type": "Long Weapon",
+        "Cost": "15 thaler",
+        "Name": "Lance 2",
+        "Category": "quality_weapon"
+    },
+    "Knuckles": {
+        "Roll": [
+            "Damage",
+            "1D4"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Quality": [
+            "Short"
+        ],
+        "Type": "Hand Weapon",
+        "Cost": "",
+        "Name": "Knuckles",
+        "Category": "quality_weapon"
+    },
+    "Battle Claw": {
+        "Roll": [
+            "Damage",
+            "1D4+1"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Quality": [
+            "Short",
+            "Deep Impact"
+        ],
+        "Type": "Hand Weapon",
+        "Cost": "1 thaler",
+        "Name": "Battle Claw",
+        "Category": "quality_weapon"
+    },
+    "Shield": {
+        "Roll": [
+            "Damage",
+            "1d4"
+        ],
+        "Quality": [
+            "Short",
+            "Balanced 1"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Hand Weapon",
+        "Cost": "3 thaler",
+        "Name": "Shield",
+        "Category": "quality_weapon"
+    },
+    "Buckler": {
+        "Roll": [
+            "Damage",
+            "1d4"
+        ],
+        "Quality": [
+            "Short",
+            "Flexible",
+            "Balanced 1"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Hand Weapon",
+        "Cost": "15 thaler",
+        "Name": "Buckler",
+        "Category": "quality_weapon"
+    },
+    "Steel Shield": {
+        "Roll": [
+            "Damage",
+            "1d4"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Quality": [
+            "Short",
+            "Balanced 2"
+        ],
+        "Type": "Hand Weapon",
+        "Cost": "15 thaler",
+        "Name": "Steel Shield",
+        "Category": "quality_weapon"
+    },
+    "Bastard Sword 2": {
+        "Roll": [
+            "Damage",
+            "1D10"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Bastard Weapon",
+            "Precise"
+        ],
+        "Type": "Heavy Weapon",
+        "Cost": "50 thaler",
+        "Name": "Bastard Sword 2",
+        "Category": "quality_weapon"
+    },
+    "Double-axe": {
+        "Roll": [
+            "Damage",
+            "1D10"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Deep Impact"
+        ],
+        "Type": "Heavy Weapon",
+        "Cost": "50 thaler",
+        "Name": "Double-axe",
+        "Category": "quality_weapon"
+    },
+    "Battle Flail": {
+        "Roll": [
+            "Damage",
+            "1D10"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Jointed"
+        ],
+        "Type": "Heavy Weapon",
+        "Cost": "50 thaler",
+        "Name": "Battle Flail",
+        "Category": "quality_weapon"
+    },
+    "Executioner's Axe": {
+        "Roll": [
+            "Damage",
+            "1D10"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Deep Impact",
+            "Massive",
+            "Unwieldy"
+        ],
+        "Type": "Heavy Weapon",
+        "Cost": "50 thaler",
+        "Name": "Executioner's Axe",
+        "Category": "quality_weapon"
+    },
+    "Warhammer": {
+        "Roll": [
+            "Damage",
+            "1D10"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Blood-letting",
+            "Massive",
+            "Unwieldy"
+        ],
+        "Type": "Heavy Weapon",
+        "Cost": "50 thaler",
+        "Name": "Warhammer",
+        "Category": "quality_weapon"
+    },
+    "Long-hammer 2": {
+        "Roll": [
+            "Damage",
+            "1D10"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Bastard Weapon",
+            "Massive",
+            "Unwieldy",
+            "Precise"
+        ],
+        "Type": "Heavy Weapon",
+        "Cost": "50 thaler",
+        "Name": "Long-hammer 2",
+        "Category": "quality_weapon"
+    },
+    "Executioner's Sword": {
+        "Roll": [
+            "Damage",
+            "1D10"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Precise",
+            "Massive",
+            "Unwieldy"
+        ],
+        "Type": "Heavy Weapon",
+        "Cost": "50 thaler",
+        "Name": "Executioner's Sword",
+        "Category": "quality_weapon"
+    },
+    "Heavy Flail": {
+        "Roll": [
+            "Damage",
+            "1D10"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Jointed",
+            "Massive",
+            "Unwieldy"
+        ],
+        "Type": "Heavy Weapon",
+        "Cost": "50 thaler",
+        "Name": "Heavy Flail",
+        "Category": "quality_weapon"
+    },
+    "Grappling Axe 2": {
+        "Roll": [
+            "Damage",
+            "1D10+1"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Bastard Weapon",
+            "Deep Impact",
+            "Unwieldy",
+            "Precise"
+        ],
+        "Type": "Heavy Weapon",
+        "Cost": "50 thaler",
+        "Name": "Grappling Axe 2",
+        "Category": "quality_weapon"
+    }
+}

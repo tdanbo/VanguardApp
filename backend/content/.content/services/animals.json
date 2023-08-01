@@ -1,0 +1,29 @@
+{
+    "Bull": {
+        "Cost": "10 thaler"
+    },
+    "Chicken": {
+        "Cost": "8 ortegs"
+    },
+    "Cow": {
+        "Cost": "1 thaler"
+    },
+    "Dog": {
+        "Cost": "1 shilling"
+    },
+    "Donkey": {
+        "Cost": "3 thaler"
+    },
+    "Ox": {
+        "Cost": "4 thaler"
+    },
+    "Pig": {
+        "Cost": "1 thaler"
+    },
+    "Rooster": {
+        "Cost": "5 shillings"
+    },
+    "Sheep": {
+        "Cost": "15 ortegs"
+    }
+}

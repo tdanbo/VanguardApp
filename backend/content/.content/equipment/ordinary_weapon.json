@@ -1,0 +1,162 @@
+{
+    "Dagger": {
+        "Roll": [
+            "Damage",
+            "1d6"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Quality": [
+            "Short"
+        ],
+        "Type": "Short Weapon",
+        "Cost": "1 thaler",
+        "Name": "Dagger",
+        "Category": "ordinary_weapon"
+    },
+    "Dirk": {
+        "Roll": [
+            "Damage",
+            "1d6"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Quality": [
+            "Short"
+        ],
+        "Type": "Short Weapon",
+        "Cost": "1 thaler",
+        "Name": "Dirk",
+        "Category": "ordinary_weapon"
+    },
+    "Knife": {
+        "Roll": [
+            "Damage",
+            "1d6"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Quality": [
+            "Short"
+        ],
+        "Type": "Short Weapon",
+        "Cost": "1 thaler",
+        "Name": "Knife",
+        "Category": "ordinary_weapon"
+    },
+    "Sword": {
+        "Roll": [
+            "Damage",
+            "1d8"
+        ],
+        "Quality": [],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "One-hand Weapon",
+        "Cost": "5 Thaler",
+        "Name": "Sword",
+        "Category": "ordinary_weapon"
+    },
+    "Axe": {
+        "Roll": [
+            "Damage",
+            "1d8"
+        ],
+        "Quality": [],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "One-hand Weapon",
+        "Cost": "5 Thaler",
+        "Name": "Axe",
+        "Category": "ordinary_weapon"
+    },
+    "Mace": {
+        "Roll": [
+            "Damage",
+            "1d8"
+        ],
+        "Quality": [],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "One-hand Weapon",
+        "Cost": "5 Thaler",
+        "Name": "Mace",
+        "Category": "ordinary_weapon"
+    },
+    "Spear": {
+        "Roll": [
+            "Damage",
+            "1D8"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Long"
+        ],
+        "Type": "Long Weapon",
+        "Cost": "3 thaler",
+        "Name": "Spear",
+        "Category": "ordinary_weapon"
+    },
+    "Greatsword": {
+        "Roll": [
+            "Damage",
+            "1D10"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Long"
+        ],
+        "Type": "Heavy Weapon",
+        "Cost": "10 thaler",
+        "Name": "Greatsword",
+        "Category": "ordinary_weapon"
+    },
+    "Greatsaxe": {
+        "Roll": [
+            "Damage",
+            "1D10"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Long"
+        ],
+        "Type": "Heavy Weapon",
+        "Cost": "10 thaler",
+        "Name": "Greatsaxe",
+        "Category": "ordinary_weapon"
+    },
+    "Maul": {
+        "Roll": [
+            "Damage",
+            "1D10"
+        ],
+        "Equip": [
+            "2H"
+        ],
+        "Quality": [
+            "Long"
+        ],
+        "Type": "Heavy Weapon",
+        "Cost": "10 thaler",
+        "Name": "Maul",
+        "Category": "ordinary_weapon"
+    }
+}

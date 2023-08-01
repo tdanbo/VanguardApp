@@ -1,0 +1,50 @@
+{
+    "Light Armor": {
+        "Roll": [
+            "Armor",
+            "1d4"
+        ],
+        "Quality": [
+            "Impeding -2"
+        ],
+        "Equip": [
+            "AR"
+        ],
+        "Type": "Light Armor",
+        "Cost": "2 thaler",
+        "Name": "Light Armor",
+        "Category": "ordinary_armor"
+    },
+    "Medium Armor": {
+        "Roll": [
+            "Armor",
+            "1d6"
+        ],
+        "Quality": [
+            "Impeding -3"
+        ],
+        "Equip": [
+            "AR"
+        ],
+        "Type": "Medium Armor",
+        "Cost": "5 thaler",
+        "Name": "Medium Armor",
+        "Category": "ordinary_armor"
+    },
+    "Heavy Armor": {
+        "Roll": [
+            "Armor",
+            "1d8"
+        ],
+        "Quality": [
+            "Impeding -4"
+        ],
+        "Equip": [
+            "AR"
+        ],
+        "Type": "Heavy Armor",
+        "Cost": "10 thaler",
+        "Name": "Heavy Armor",
+        "Category": "ordinary_armor"
+    }
+}

@@ -4,6 +4,9 @@ import InventoryUpper from "./InventoryUpper";
 import InventoryMiddle from "./InventoryMiddle";
 import InventoryLowerLeft from "./InventoryLowerLeft";
 import InventoryLowerRight from "./InventoryLowerRight";
+import StatsLower from "../StatsSection/StatsLower";
+
+import CombatLower from "../CombatSection/CombatLower";
 
 import { CharacterEntry } from "../../Types";
 
@@ -14,19 +17,14 @@ interface StatsSectionProps {
 function InventorySection({ selectedCharacter }: StatsSectionProps) {
   return (
     <div
-      className="flex h-screen flex-col p-1"
+      className="flex h-screen flex-col px-1"
       style={{ backgroundColor: Constants.DARK }}
     >
       <InventoryUpper selectedCharacter={selectedCharacter} />
       <InventoryMiddle selectedCharacter={selectedCharacter} />
-
-      <div className="gx-2 flex  flex-wrap">
-        <div className="relative max-w-full flex-1 flex-grow px-4">
-          <InventoryLowerLeft />
-        </div>
-        <div className="w-1/4">
-          <InventoryLowerRight />
-        </div>
+      <div className="flex">
+        <InventoryLowerLeft />
+        <InventoryLowerRight />
       </div>
     </div>
   );

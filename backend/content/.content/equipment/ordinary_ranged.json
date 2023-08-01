@@ -1,0 +1,47 @@
+{
+    "Bow": {
+        "Roll": [
+            "Damage",
+            "1d8"
+        ],
+        "Quality": [],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Ranged Weapon",
+        "Cost": "5 thaler",
+        "Name": "Bow",
+        "Category": "ordinary_ranged"
+    },
+    "Crossbow": {
+        "Roll": [
+            "Damage",
+            "1d10"
+        ],
+        "Quality": [],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Ranged Weapon",
+        "Cost": "8 thaler",
+        "Name": "Crossbow",
+        "Category": "ordinary_ranged"
+    },
+    "Throwing Weapon": {
+        "Roll": [
+            "Damage",
+            "1d6+1"
+        ],
+        "Quality": [],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Throwing Weapon",
+        "Cost": "2 thaler",
+        "Name": "Throwing Weapon",
+        "Category": "ordinary_ranged"
+    }
+}

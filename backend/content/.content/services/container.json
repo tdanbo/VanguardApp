@@ -1,0 +1,41 @@
+{
+    "Backpack": {
+        "Cost": "1 Thaler"
+    },
+    "Barrel": {
+        "Cost": "4 Ortegs"
+    },
+    "Basket": {
+        "Cost": "2 Ortegs"
+    },
+    "Belt pouch": {
+        "Cost": "5 Ortegs"
+    },
+    "Chest Small": {
+        "Cost": "3 Shillings"
+    },
+    "Chest Large": {
+        "Cost": "1 Thaler"
+    },
+    "Clay pitcher": {
+        "Cost": "5 Ortegs"
+    },
+    "Coin purse": {
+        "Cost": "3 Ortegs"
+    },
+    "Decorated box": {
+        "Cost": "2-5 Thaler"
+    },
+    "Glass vial": {
+        "Cost": "1 Shilling"
+    },
+    "Knapsack": {
+        "Cost": "1 Shilling"
+    },
+    "Quiver": {
+        "Cost": "1 Shilling"
+    },
+    "Sack": {
+        "Cost": "2 Ortegs"
+    }
+}

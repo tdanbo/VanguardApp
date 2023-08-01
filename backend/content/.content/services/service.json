@@ -1,0 +1,23 @@
+{
+	"Bath, at an inn": {
+		"Cost": "3 ortegs"
+	},
+	"Bodyguard": {
+		"Cost": "1 shilling/day"
+	},
+	"Cartographer": {
+		"Cost": "1 thaler"
+	},
+	"Medicus": {
+		"Cost": "1 shilling + cost for any alchemical preparations"
+	},
+	"Mystic, ritual": {
+		"Cost": "10 thaler"
+	},
+	"Road/city toll": {
+		"Cost": "1 orteg"
+	},
+	"Washing of clothes": {
+		"Cost": "7 ortegs"
+	}
+}

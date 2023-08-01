@@ -1,0 +1,156 @@
+{
+    "Artifact Catalogue": {
+        "Description": "This well-thumbed copy compiling all the troll smith Xavaundo's knowledge was recorded by Master Balinda of Ordo Magica and gives a +1 bonus to success tests with Artifact Crafting.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Quantity": 1,
+        "Type": "Tool",
+        "Name": "Artifact Catalogue",
+        "Category": "tool"
+    },
+    "Bestiary": {
+        "Description": "A richly illustrated catalogue of the dangers of the world, including marginal notes from previous owners regarding the best ways to avoid monsters \u2013 or how to combat them effectively. The bestiary gives a +1 bonus to success tests with Beast Lore.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Quantity": 1,
+        "Type": "Tool",
+        "Name": "Bestiary",
+        "Category": "tool"
+    },
+    "Cartographer's Instruments": {
+        "Description": "Writing utensils, parchment, compass, ruler and a sextant are the base instruments of a trained cartographer. Using these tools gives a +1 bonus on all success tests when trying to draw accurate maps.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Quantity": 1,
+        "Type": "Tool",
+        "Name": "Cartographer's Instruments",
+        "Category": "tool"
+    },
+    "Cheating Kit": {
+        "Description": "Weighted dice, marked cards and game pieces give the player character a +1 bonus on all success tests when gambling (see the boon Cheat on page 52 for risks on cheating at games).",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Quantity": 1,
+        "Type": "Tool",
+        "Name": "Cheating Kit",
+        "Category": "tool"
+    },
+    "Climbing Gear": {
+        "Description": "A collection of ropes, buckles, hooks and tools used for climbing in difficult terrain. Climbing gear gives a +1 bonus to all success tests for climbing.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Quantity": 1,
+        "Type": "Tool",
+        "Name": "Climbing Gear",
+        "Category": "tool"
+    },
+    "Disguise Kit": {
+        "Description": "Make-up, wigs and wax for altering facial features is included in the kit, together with an array of basic clothes of local significance. The kit gives a +1 bonus on all success tests when trying to fool someone with a disguise.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Quantity": 1,
+        "Type": "Tool",
+        "Name": "Disguise Kit",
+        "Category": "tool"
+    },
+    "Excavation Tools": {
+        "Description": "A couple of shovels, a small skewer, a strainer and a bucket, together with brushes, a knotted measuring line and a loupe. Excavation tools give a +1 bonus to finding treasures in the ruins of the world.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Quantity": 1,
+        "Type": "Tool",
+        "Name": "Excavation Tools",
+        "Category": "tool"
+    },
+    "Field Laboratory": {
+        "Description": "Burner, retort stand, pipettes, mortar and other instruments needed by an alchemist. The field laboratory gives a +1 bonus to all success tests with Alchemy.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Quantity": 1,
+        "Type": "Tool",
+        "Name": "Field Laboratory",
+        "Category": "tool"
+    },
+    "Field Library": {
+        "Description": "Half a dozen reference books along with a dozen scrolls on more specialized topics. The field library gives a +1 bonus to all success tests with Loremaster.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Quantity": 1,
+        "Type": "Tool",
+        "Name": "Field Library",
+        "Category": "tool"
+    },
+    "Field Smithy": {
+        "Description": "The portable field smithy is a must for all traveling blacksmiths. It consists of a collection of tools, a field furnace with a water bath and a small anvil. Anyone using the smithy gains a +1 bonus to success tests with Blacksmith.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Quantity": 1,
+        "Type": "Tool",
+        "Name": "Field Smithy",
+        "Category": "tool"
+    },
+    "Field Surgeon's Instrument Kit": {
+        "Description": "The kit of a field surgeon contains tools to burn, cut and treat wounds and diseases, and gives a +1 bonus on all success tests with the ability Medicus.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Quantity": 1,
+        "Type": "Tool",
+        "Name": "Field Surgeon's Instrument Kit",
+        "Category": "tool"
+    },
+    "Forgery Kit": {
+        "Description": "Aside from a loupe, paper, parchment and a collection of pens and ink, this package includes stamps, seals and pre-printed stationery from a long list of organizations, trading houses and similar. The kit gives the user a +1 bonus on all success tests when trying to fool someone with a forged document.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Quantity": 1,
+        "Type": "Tool",
+        "Name": "Forgery Kit",
+        "Category": "tool"
+    },
+    "Poison Manual": {
+        "Description": "A manual on the use of poisons, richly illustrated with examples on what to do, and not do, in order to successfully brew decoctions and elixirs. Anyone using the manual gains a +1 bonus on all success tests with Poisoner.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Quantity": 1,
+        "Type": "Tool",
+        "Name": "Poison Manual",
+        "Category": "tool"
+    },
+    "Trapper's Manual": {
+        "Description": "A used copy of the famous ogre Crueljaw's lustful tome that contains a lengthy record of traps, from simple mare snares and needle-traps in box lids to massive contraptions suited for a king's burial mound. The book gives a +1 bonus to all success tests with Trapper.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Quantity": 1,
+        "Type": "Tool",
+        "Name": "Trapper's Manual",
+        "Category": "tool"
+    }
+}

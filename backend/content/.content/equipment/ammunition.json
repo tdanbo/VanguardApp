@@ -1,0 +1,157 @@
+{
+    "Arrow": {
+        "Quantity": 1,
+        "Quality": [],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Arrow",
+        "Cost": "1 shilling",
+        "Name": "Arrow",
+        "Category": "ammunition"
+    },
+    "Precision Arrow": {
+        "Quantity": 1,
+        "Quality": [
+            "Precise"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Arrow",
+        "Cost": "5 shillings",
+        "Name": "Precision Arrow",
+        "Category": "ammunition"
+    },
+    "Flame Arrow": {
+        "Quantity": 1,
+        "Quality": [
+            "Flaming"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Arrow",
+        "Cost": "5 shillings",
+        "Name": "Flame Arrow",
+        "Category": "ammunition"
+    },
+    "Snaring Arrow": {
+        "Quantity": 1,
+        "Quality": [
+            "Snaring",
+            "Special"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Arrow",
+        "Cost": "5 shillings",
+        "Name": "Snaring Arrow",
+        "Category": "ammunition"
+    },
+    "Hammer Head": {
+        "Quantity": 1,
+        "Quality": [
+            "Stun",
+            "Special"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Arrow",
+        "Cost": "5 shillings",
+        "Name": "Hammer Head",
+        "Category": "ammunition"
+    },
+    "Armor-piercing Head": {
+        "Quantity": 1,
+        "Quality": [
+            "Deep Impact"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Arrow",
+        "Cost": "5 shillings",
+        "Name": "Armor-piercing Head",
+        "Category": "ammunition"
+    },
+    "Rope Cutter": {
+        "Quantity": 1,
+        "Quality": [
+            "Cut",
+            "Special"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Arrow",
+        "Cost": "5 shillings",
+        "Name": "Rope Cutter",
+        "Category": "ammunition"
+    },
+    "Swallow's Tail": {
+        "Quantity": 1,
+        "Quality": [
+            "Blood-letting"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Arrow",
+        "Cost": "5 shillings",
+        "Name": "Swallow's Tail",
+        "Category": "ammunition"
+    },
+    "Whistler": {
+        "Quantity": 1,
+        "Quality": [
+            "Whistle",
+            "Special"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Arrow",
+        "Cost": "5 shillings",
+        "Name": "Whistler",
+        "Category": "ammunition"
+    },
+    "Grappling Hook": {
+        "Quantity": 1,
+        "Quality": [
+            "Grapple",
+            "Special"
+        ],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Arrow",
+        "Cost": "5 shillings",
+        "Name": "Grappling Hook",
+        "Category": "ammunition"
+    },
+    "Firetube Charge": {
+        "Quantity": 1,
+        "Quality": [],
+        "Equip": [
+            "MH",
+            "OH"
+        ],
+        "Type": "Arrow",
+        "Cost": "1 Thaler",
+        "Name": "Firetube Charge",
+        "Category": "ammunition"
+    }
+}

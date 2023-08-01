@@ -1,0 +1,23 @@
+{
+    "Artisan": {
+        "Cost": "1 thaler"
+    },
+    "Knight, freelance": {
+        "Cost": "2 thaler"
+    },
+    "Laborer, countryside": {
+        "Cost": "1 orteg"
+    },
+    "Laborer, town": {
+        "Cost": "1 shilling"
+    },
+    "Medicus": {
+        "Cost": "1 thaler"
+    },
+    "Sellsword": {
+        "Cost": "1 shilling"
+    },
+    "Rider": {
+        "Cost": "1 thaler"
+    }
+}

@@ -7,6 +7,7 @@ import DropdownCharacter from "./components/DropdownCharacter";
 import DeleteCharacter from "./components/DeleteCharacter";
 import AddCharacter from "./components/AddCharacter";
 
+import TitleBox from "./components/TitleBox";
 import { CharacterEntry } from "./Types";
 
 import React, { useState, useEffect, useReducer } from "react";
@@ -57,36 +58,37 @@ function App() {
   }, []); // add an empty array here);
 
   return (
-    <>
-      <div className="justify-content-space-around flex">
-        <div style={{ width: Constants.SECTION_WIDTH }}>
-          <div
-            className="flex"
-            style={{ height: Constants.SECTION_TITLE_HEIGHT }}
-          >
-            <DeleteCharacter />
-            <DropdownCharacter getSelectedCharacter={getSelectedCharacter} />
-            <AddCharacter />
-          </div>
+    <div className="flex">
+      <div className="w-1/4">
+        <div
+          className="flex px-1"
+          style={{
+            height: Constants.SECTION_TITLE_HEIGHT,
+            backgroundColor: Constants.DARK,
+          }}
+        >
+          <DeleteCharacter />
+          <DropdownCharacter getSelectedCharacter={getSelectedCharacter} />
+          <AddCharacter />
+        </div>
 
-          {selectedCharacter ? (
-            <InventorySection selectedCharacter={selectedCharacter} />
-          ) : (
-            <div>Loading...</div> // or whatever you want to show when selectedCharacter is null
-          )}
-        </div>
-        <div className="w-full">
-          {selectedCharacter ? (
-            <StatsSection selectedCharacter={selectedCharacter} />
-          ) : (
-            <div>Loading...</div> // or whatever you want to show when selectedCharacter is null
-          )}
-        </div>
-        <div style={{ width: Constants.SECTION_WIDTH }}>
-          <CombatSection combatLogList={combatLogList} />
-        </div>
+        {selectedCharacter ? (
+          <InventorySection selectedCharacter={selectedCharacter} />
+        ) : (
+          <div>Loading...</div> // or whatever you want to show when selectedCharacter is null
+        )}
       </div>
-    </>
+      <div>
+        {selectedCharacter ? (
+          <StatsSection selectedCharacter={selectedCharacter} />
+        ) : (
+          <div>Loading...</div> // or whatever you want to show when selectedCharacter is null
+        )}
+      </div>
+      <div className="w-1/4">
+        <CombatSection combatLogList={combatLogList} />
+      </div>
+    </div>
   );
 }
 

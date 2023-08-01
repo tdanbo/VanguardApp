@@ -4,10 +4,10 @@ import * as Constants from "../../Constants";
 
 function StatsLower() {
   return (
-    <div>
-      <TitleBox title={"Active"} />
+    <div className="grow flex-row pr-1">
+      <TitleBox title={"ACTIVE"} />
       <div
-        className="flex flex-row p-1"
+        className="flex grow flex-row p-2"
         style={{
           backgroundColor: Constants.PRIMARY,
           height: Constants.SECTION_HEIGHT,

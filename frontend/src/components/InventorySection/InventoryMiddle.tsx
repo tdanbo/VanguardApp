@@ -2,7 +2,7 @@ import React from "react";
 import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 import InventoryEntry from "../InventoryEntry";
-
+import OpenEquipmentBrowser from "../EquipmentBrowser/OpenEquipmentBrowser";
 import { CharacterEntry } from "../../Types";
 
 interface StatsSectionProps {
@@ -12,13 +12,40 @@ interface StatsSectionProps {
 function InventoryMiddle({ selectedCharacter }: StatsSectionProps) {
   return (
     <>
-      <TitleBox title={"Inventory"} />
+      <div className="flex">
+        <OpenEquipmentBrowser />
+        <TitleBox title={"Inventory"} />
+      </div>
       <div
-        className="flex-grow-1 flex flex-col-reverse overflow-auto"
+        className="flex flex-grow flex-col-reverse overflow-auto"
         style={{
           backgroundColor: Constants.PRIMARY,
         }}
       >
+        <InventoryEntry index={1} />
+        <InventoryEntry index={2} />
+        <InventoryEntry index={3} />
+        <InventoryEntry index={4} />
+        <InventoryEntry index={5} />
+        <InventoryEntry index={6} />
+        <InventoryEntry index={1} />
+        <InventoryEntry index={2} />
+        <InventoryEntry index={3} />
+        <InventoryEntry index={4} />
+        <InventoryEntry index={5} />
+        <InventoryEntry index={6} />
+        <InventoryEntry index={1} />
+        <InventoryEntry index={2} />
+        <InventoryEntry index={3} />
+        <InventoryEntry index={4} />
+        <InventoryEntry index={5} />
+        <InventoryEntry index={6} />
+        <InventoryEntry index={1} />
+        <InventoryEntry index={2} />
+        <InventoryEntry index={3} />
+        <InventoryEntry index={4} />
+        <InventoryEntry index={5} />
+        <InventoryEntry index={6} />
         <InventoryEntry index={1} />
         <InventoryEntry index={2} />
         <InventoryEntry index={3} />

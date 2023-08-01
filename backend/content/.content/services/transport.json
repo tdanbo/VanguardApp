@@ -1,0 +1,32 @@
+{
+	"Canoe": {
+		"Cost": "2 thaler"
+	},
+	"Cart": {
+		"Cost": "1 thaler"
+	},
+	"Galley": {
+		"Cost": "1 000 thaler"
+	},
+	"Mule": {
+		"Cost": "3 thaler"
+	},
+	"Riding horse Light": {
+		"Cost": "5 thaler"
+	},
+	"Riding horse Heavy": {
+		"Cost": "7 thaler"
+	},
+	"Rowing boat": {
+		"Cost": "3 thaler"
+	},
+	"River boat": {
+		"Cost": "200 thaler"
+	},
+	"Sleigh": {
+		"Cost": "2 thaler"
+	},
+	"Wagon": {
+		"Cost": "5 thaler"
+	}
+}

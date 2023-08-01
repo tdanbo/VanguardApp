@@ -8,7 +8,7 @@ const StatsMiddle: React.FC = () => {
     <>
       <TitleBox title={"Abilities & Powers"} />
       <div
-        className="flex-grow-1 flex flex-col-reverse overflow-auto p-2"
+        className="flex-col-reverse overflow-auto p-2"
         style={{
           backgroundColor: Constants.PRIMARY,
         }}

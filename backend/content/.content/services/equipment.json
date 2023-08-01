@@ -1,0 +1,125 @@
+{
+    "Bandages": {
+        "Cost": "5 ortegs"
+    },
+    "Bear trap": {
+        "Cost": "5 shillings"
+    },
+    "Blanket": {
+        "Cost": "2 ortegs"
+    },
+    "Brass bell": {
+        "Cost": "6 shillings"
+    },
+    "Climbing equipment": {
+        "Cost": "1 thaler"
+    },
+    "Crayons": {
+        "Cost": "1 orteg"
+    },
+    "Drinking horn": {
+        "Cost": "2 ortegs"
+    },
+    "Drum": {
+        "Cost": "3 shillings"
+    },
+    "Bedroll": {
+        "Cost": "5 ortegs"
+    },
+    "Cooking pan": {
+        "Cost": "1 orteg"
+    },
+    "Firewood": {
+        "Cost": "2 ortegs"
+    },
+    "Flint and steel": {
+        "Cost": "2 ortegs"
+    },
+    "Rope": {
+        "Cost": "1 shilling"
+    },
+    "Waterskin": {
+        "Cost": "3 shillings"
+    },
+    "Fishing line and hook": {
+        "Cost": "3 ortegs"
+    },
+    "Fishing net": {
+        "Cost": "1 shilling"
+    },
+    "Flute": {
+        "Cost": "3 shillings"
+    },
+    "Grappling hook": {
+        "Cost": "1 thaler"
+    },
+    "Horn": {
+        "Cost": "4 ortegs"
+    },
+    "Hour glass": {
+        "Cost": "4 thaler"
+    },
+    "Ink and feather": {
+        "Cost": "1 shilling"
+    },
+    "Ladder": {
+        "Cost": "7 ortegs"
+    },
+    "Lamp oil": {
+        "Cost": "1 orteg"
+    },
+    "Lantern": {
+        "Cost": "4 ortegs"
+    },
+    "Lockpicks": {
+        "Cost": "1 thaler"
+    },
+    "Needle and thread": {
+        "Cost": "1 orteg"
+    },
+    "Paper": {
+        "Cost": "3 ortegs"
+    },
+    "Parchment": {
+        "Cost": "2 ortegs"
+    },
+    "Pocket mirror": {
+        "Cost": "7 thaler"
+    },
+    "Rope ladder": {
+        "Cost": "3 shillings"
+    },
+    "Snares": {
+        "Cost": "3 shillings"
+    },
+    "Snow shoes": {
+        "Cost": "5 shillings"
+    },
+    "Soap": {
+        "Cost": "5 ortegs"
+    },
+    "Spy glass": {
+        "Cost": "10 thaler"
+    },
+    "Tankard": {
+        "Cost": "1 orteg"
+    },
+    "Tent": {
+        "Cost": "3 shillings"
+    },
+    "Torch": {
+        "Cost": "1 orteg"
+    },
+    "Wax candle": {
+        "Cost": "4 ortegs"
+    },
+    "Weapon maintenance kit": {
+        "Cost": "5 shillings"
+    },
+    "Whetstone": {
+        "Cost": "4 ortegs"
+    },
+    "Whistle": {
+        "Cost": "2 shillings"
+    }
+}

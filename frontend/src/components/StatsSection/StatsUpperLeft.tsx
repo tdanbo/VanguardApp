@@ -18,10 +18,10 @@ function StatsUpperLeft({ selectedCharacter }: StatsSectionProps) {
   const Pain = Math.ceil(selectedCharacter.stats.strong / 2);
 
   return (
-    <>
+    <div className="grow flex-row pr-1">
       <TitleBox title={"Toughness"} />
       <div
-        className="flex flex-row p-2"
+        className="flex grow flex-row p-2"
         style={{
           backgroundColor: Constants.PRIMARY,
           height: Constants.SECTION_HEIGHT,
@@ -32,7 +32,7 @@ function StatsUpperLeft({ selectedCharacter }: StatsSectionProps) {
         <StatBox type_name={"Maximum"} type_value={Maximum} />
         <StatBox type_name={"Pain"} type_value={Pain} />
       </div>
-    </>
+    </div>
   );
 }
 

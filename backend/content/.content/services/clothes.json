@@ -1,0 +1,59 @@
+{
+    "Torn rags": {
+        "Cost": "5 ortegs"
+    },
+    "Simple garb": {
+        "Cost": "1 shilling"
+    },
+    "Artisan's garb": {
+        "Cost": "5 shillings"
+    },
+    "Burgher's garb": {
+        "Cost": "1 thaler"
+    },
+    "Noble's garb": {
+        "Cost": "10+ thaler"
+    },
+    "Boots": {
+        "Cost": "1 shilling"
+    },
+    "Cap": {
+        "Cost": "2 to 4 ortegs"
+    },
+    "Cloak": {
+        "Cost": "2 to 6 ortegs"
+    },
+    "Coat": {
+        "Cost": "5 to 10 ortegs"
+    },
+    "Dress": {
+        "Cost": "1 to 10 shillings"
+    },
+    "Gown": {
+        "Cost": "1 to 5 ortegs"
+    },
+    "Hat": {
+        "Cost": "2 to 4 ortegs"
+    },
+    "Mask": {
+        "Cost": "5 to 10 ortegs"
+    },
+    "Pants": {
+        "Cost": "1 to 5 ortegs"
+    },
+    "Robe": {
+        "Cost": "1 to 5 shillings"
+    },
+    "Scarf": {
+        "Cost": "1 to 2 ortegs"
+    },
+    "Shirt": {
+        "Cost": "1 to 4 ortegs"
+    },
+    "Skirt": {
+        "Cost": "5 to 10 ortegs"
+    },
+    "Tunic": {
+        "Cost": "2 to 7 ortegs"
+    }
+}

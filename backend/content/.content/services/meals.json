@@ -1,0 +1,29 @@
+{
+    "Beer/Ale": {
+      "Cost": "2 ortegs"
+    },
+    "Bread": {
+      "Cost": "1 orteg"
+    },
+    "Casserole": {
+      "Cost": "2 ortegs"
+    },
+    "Cheese": {
+      "Cost": "2 ortegs"
+    },
+    "Meat": {
+      "Cost": "5 ortegs"
+    },
+    "Stew": {
+      "Cost": "1 orteg"
+    },
+    "Wine": {
+      "Cost": "3 ortegs"
+    },
+    "Inn, Countryside feast": {
+      "Cost": "1 shilling"
+    },
+    "Inn, Town feast": {
+      "Cost": "1 thaler"
+    }
+  }

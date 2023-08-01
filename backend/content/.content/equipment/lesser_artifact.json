@@ -1,0 +1,322 @@
+{
+    "Animal Mask": {
+        "Description": "Blood wading witches tend to identify with the beasts of the wild, a sentiment embodied by the wearing of animal masks. Every animal mask with mystical properties symbolizes an animal and gives a +1 bonus on an attribute associated with that animal - Discreet, Quick, Cunning, Strong or Vigilant.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Animal Mask",
+        "Category": "lesser_artifact"
+    },
+    "Bark Mask": {
+        "Description": "Green weaving witches often cover their faces with a mask of bark, as a symbol of their connection to nature. Many of these masks are infused with power and provide one re-roll per scene on a test related to plants and anything growing, for example Thorn Cloak and Entangling Vines. The re-roll may be used for tests to activate such powers or to resist the effect of such powers.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Bark Mask",
+        "Category": "lesser_artifact"
+    },
+    "Burial Shroud": {
+        "Description": "The spiritualists among the witches often wear a shroud over their head when contacting the spirits of the dead, since this makes the spirits calmer and allows for a deeper connection. A mystic using such an artifact gains a +1 bonus to Resolute in all tests when dealing with spirits - both when trying to control them (as in the power Tormenting Spirits) and when trying to resist the effect of monstrous traits used by spirits, involving the Resolute attribute.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Burial Shroud",
+        "Category": "lesser_artifact"
+    },
+    "Death Mask": {
+        "Description": "The necromancers' aspiration to dominate death has led to the use of hideous death masks that have been infused with power. A death mask gives a +1 bonus on tests for all powers and rituals affecting the intersection between life and death, for instance the power Revenant Strike and the ritual Raise Undead.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Death Mask",
+        "Category": "lesser_artifact"
+    },
+    "Healing Spider": {
+        "Description": "A small spider figurine which is placed on an open wound, where it quickly covers itself and the wound in a web that heals 1d12 Toughness over the course of a day. The spider cannot heal damage from poison or other internal injuries. When done, the spider creeps up from the wound to be reused on new ones. The one treated by the healing spider suffers one point in temporary corruption.",
+        "Cost": "4 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Healing Spider",
+        "Category": "lesser_artifact"
+    },
+    "Iron Crown": {
+        "Description": "Demonologists often wear a crown of rusty iron when tearing at the world's fabric. These crowns give a +1 bonus when manipulating the world, as with the mystical powers Exorcize and Teleport, or the ritual Summon Daemon.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Iron Crown",
+        "Category": "lesser_artifact"
+    },
+    "Iron Pact Ring": {
+        "Description": "The ring fully protects its carrier from corruptive surroundings, like the taint in Davokar's darkest parts or the blight transferred through bites and claws (not from mystical powers or other voluntary sources). He who has bound himself to the ring suffers 1d4 damage from all corruption he willingly accepts. Once during each night's sleep, he who is bound to the ring may send a dream message to someone else with a ring - they must know the person exists.",
+        "Cost": "",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Iron Pact Ring",
+        "Category": "lesser_artifact"
+    },
+    "Marlit Cape": {
+        "Description": "The skin of a marlit, a reptile known for its sneaky hunting style, is treated with preserving alchemical preparations so that it keeps its camouflaging properties after the death of the beast. The wearer has a +1 bonus to Discreet when sneaking and hiding.",
+        "Cost": "4 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Marlit Cape",
+        "Category": "lesser_artifact"
+    },
+    "Mummified Hand": {
+        "Description": "<b>Free</b> 1d4 corruption: With a successful roll against Resolute, the owner of the amulet may once per turn reroll a success test. <b>Active</b> 1d6 corruption: Word of Doom: If the owner of the amulet masters the ability Leader he can utter words of doom over his enemWord of Doom: If the owner of the amulet masters the ability Leader he can utter words of doom over his enemies. With a successful roll against Resolute the enemy's chance of making a successful hit is reduced for the remainder of the scene – the owner may make two attempts against Defense to avoid physical attacks.ies. With a successful roll against Resolute the enemy's chance of making a successful hit is reduced for the remainder of the scene - the owner may make two attempts against Defense to avoid physical attacks.",
+        "Cost": "",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Mummified Hand",
+        "Category": "lesser_artifact"
+    },
+    "Meeting Stone": {
+        "Description": "A stone is loaded with an invitation to a specific person, who upon receiving and touching the artifact instinctively knows where the stone's owner is waiting. Only a mystic (with at least one mystical power) can activate a meeting stone.",
+        "Cost": "2 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Meeting Stone",
+        "Category": "lesser_artifact"
+    },
+    "Mind Prism": {
+        "Description": "The illusionists of Ordo Magica often use a prism to describe how the perception of reality may be broken down and understood. Some of these crystals are filled with so much suggestive energies that they provide a +1 bonus to all tests related to the creation of illusions.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Mind Prism",
+        "Category": "lesser_artifact"
+    },
+    "Mystical Focus": {
+        "Description": "A tradition-specific focus gives a +1 bonus on all tests related to all powers of the tradition, but limited to one use per scene. The bonus may be used together with other lesser artifacts that also provide a bonus to success tests for the mystical power in question. A mystical focus is bound to the user as other, higher artifacts - that is, by spending an experience point or by willingly accepting one point in permanent corruption.",
+        "Cost": "12 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Mystical Focus",
+        "Category": "lesser_artifact"
+    },
+    "Order Medallion": {
+        "Description": "The medallions of Ordo Magica are given to novices and stay with the wizards for their entire career. When the wizard reaches adept level, the medallion transforms to symbolize this step; the same thing happens when reaching master level. Some chapters have made the order medallion mandatory and have also bound certain functions to it, such as the ability to open doors which are closed to outsiders/novices/adepts and to activate the chapter's magic circle.",
+        "Cost": "2 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Order Medallion",
+        "Category": "lesser_artifact"
+    },
+    "Pest Mask": {
+        "Description": "In a world full of contagions and poisons it is no wonder that many methods - effective or only superstitious - have been developed to resist such phenomena. The Confessors of the Sun Church, for instance, carry pest masks to protect themselves. They allow the wearer to use their Resolute instead of Strong on tests to resist sicknesses and poisons.",
+        "Cost": "8 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Pest Mask",
+        "Category": "lesser_artifact"
+    },
+    "Ritual Codex": {
+        "Description": "A ritual is penned down in a codex so that another ritualist can perform it without having previously learned the ritual. The codex can only be used once.",
+        "Cost": "4 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Ritual Codex",
+        "Category": "lesser_artifact"
+    },
+    "Ritual Focus": {
+        "Description": "A tradition-specific object which gives a +1 bonus on success tests for all rituals belonging to the tradition. See examples to the right.",
+        "Cost": "8 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Ritual Focus",
+        "Category": "lesser_artifact"
+    },
+    "Ritual Seal": {
+        "Description": "The artifact crafter binds a ritual to a seal; when broken, the effect of the ritual is triggered. The creator of the seal need not know the ritual, but must be in the company of one who does when it is created (or have access to a ritual codex explaining the ritual; the codex is destroyed with this act). He or she who breaks the seal suffers from temporary corruption as usual.",
+        "Cost": "12 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Ritual Seal",
+        "Category": "lesser_artifact"
+    },
+    "Ruler's Ring": {
+        "Description": "Prominent mind-warping wizards often carry a gold ring on a finger, around the wrist or upper arm, or on the head in the form of a headband. To them, this represents the noble endeavor of the ruler. These rings are often instilled with the ability to dominate all living beings. If so, the gold ring gives a +1 bonus to all test involving powers and rituals of Wizardry affecting the will of the target, for example the use of, and resistance to, Bend Will and Telepathic Interrogation.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Ruler's Ring",
+        "Category": "lesser_artifact"
+    },
+    "Rune Staff": {
+        "Description": "The hallmark of the staff mage is his or her personal staff, carved with the runes of the elements. In the hand of its owner, the staff emits a protective aura (Armor +1d4), and is also the instrument through which the mage wields his or her powers.",
+        "Cost": "12 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Rune Staff",
+        "Category": "lesser_artifact"
+    },
+    "Soul Stone": {
+        "Description": "A Soul Stone is the item required to perform the ritual with the same name.",
+        "Cost": "12 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Soul Stone",
+        "Category": "lesser_artifact"
+    },
+    "Spark Stone": {
+        "Description": "The power of a Pyromancer is increased by this glowing amber. The spark stone is a weaker version of the renowned Sun Stones that the master pyromancers of old could craft from summoned fire spirits. Nowadays, the fire wizards have to make do with lesser artifacts, far from as powerful but still a great help to those whose skills relate to fire and burning. All powers with fire effects gain a +1 bonus to the effect die when used by someone with a spark stone in hand or on top of his or her staff.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Spark Stone",
+        "Category": "lesser_artifact"
+    },
+    "Spell Scroll Novice": {
+        "Description": "Artifact crafters in Ordo Magica can bind a mystical power at the novice, adept or master level (depending on the level of the artifact) to a scroll. The power may then be activated by someone else who has Wizardry at a level equal to or higher than the level of the power, or someone who has the ability Loremaster at adept level. Whoever activates the scroll suffers temporary corruption as usual and the scroll is spent upon activation.",
+        "Cost": "2 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Spell Scroll Novice",
+        "Category": "lesser_artifact"
+    },
+    "Spell Scroll Adept": {
+        "Description": "Artifact crafters in Ordo Magica can bind a mystical power at the novice, adept or master level (depending on the level of the artifact) to a scroll. The power may then be activated by someone else who has Wizardry at a level equal to or higher than the level of the power, or someone who has the ability Loremaster at adept level. Whoever activates the scroll suffers temporary corruption as usual and the scroll is spent upon activation.",
+        "Cost": "4 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Spell Scroll Adept",
+        "Category": "lesser_artifact"
+    },
+    "Spell Scroll Master": {
+        "Description": "Artifact crafters in Ordo Magica can bind a mystical power at the novice, adept or master level (depending on the level of the artifact) to a scroll. The power may then be activated by someone else who has Wizardry at a level equal to or higher than the level of the power, or someone who has the ability Loremaster at adept level. Whoever activates the scroll suffers temporary corruption as usual and the scroll is spent upon activation.",
+        "Cost": "6 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Spell Scroll Master",
+        "Category": "lesser_artifact"
+    },
+    "Spell Seal Novice": {
+        "Description": "An artifact crafter has bound a mystical power at the novice or adept level (depending on the level of the artifact) to a seal; when the seal is broken, the power is activated. Whoever breaks the seal suffers temporary corruption as usual and the seal is spent when broken.",
+        "Cost": "8 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Spell Seal Novice",
+        "Category": "lesser_artifact"
+    },
+    "Spell Seal Adept": {
+        "Description": "An artifact crafter has bound a mystical power at the novice or adept level (depending on the level of the artifact) to a seal; when the seal is broken, the power is activated. Whoever breaks the seal suffers temporary corruption as usual and the seal is spent when broken.",
+        "Cost": "12 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Spell Seal Adept",
+        "Category": "lesser_artifact"
+    },
+    "Staff Foot": {
+        "Description": "A staff foot forged with strengthening spells can give the staff of a staff mage extra power when used as a weapon. The artifact is attached to the staff and gives a +1 bonus on the effect tests of all melee or ranged attacks, and on all powers which directly use the staff as a weapon. Even if this artifact most often is attached to a rune staff, it may be attached to an ordinary wooden staff with the same effect.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Staff Foot",
+        "Category": "lesser_artifact"
+    },
+    "Staff Head": {
+        "Description": "A special ornament at the top of the staff mage's staff can provide extra focus. The staff head - often a beautiful stone encased in meteoric iron - gives a +1 bonus to all success tests that do not directly involve the staff as a weapon, as for instance Blood Storm and Sphere.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Staff Head",
+        "Category": "lesser_artifact"
+    },
+    "Sun Mask": {
+        "Description": "The sun masks of the theurgs bestow spiritual warmth to the cold-hearted and spread light where no other light can reach. Worn by a theurg, they can also assist in combat against undead and abominations. The mask radiates light around the wearer as if it is a torch; also, all powers with holy or banishing effects have a +1 bonus to effect tests.",
+        "Cost": "10 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Sun Mask",
+        "Category": "lesser_artifact"
+    },
+    "Toad Guard": {
+        "Description": "A figurine in the form of a toad acts as an alarm. The user - who has to know at least one mystical power - whispers a triggering condition to the figurine; the trigger has to be of a physical nature and must occur close to the toad guard, for example that \u00e2\u0080\u009csomeone passes through the grove\u00e2\u0080\u009d or \u00e2\u0080\u009cthe door is opened from outside.\u00e2\u0080\u009d If activated, the toad will wake everyone with a loud croaking.",
+        "Cost": "1 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Toad Guard",
+        "Category": "lesser_artifact"
+    },
+    "Transcendental Weapon": {
+        "Description": "These weapons were forged to allow a wielder to strike from a distance. Only mystics (defined as someone who has learned at least one mystical power) know how to use such an artifact. The attack is rolled as if in melee combat but may hit distant targets and requires a clear line of sight, just as ranged attacks. Active abilities may be used, but at one level lower: a master may use the adept level of the ability through the transcendental weapon; an adept may use the novice level. A novice cannot use the ability together with a transcendental weapon.",
+        "Cost": "12 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Transcendental Weapon",
+        "Category": "lesser_artifact"
+    },
+    "Witch Braid": {
+        "Description": "This braid is made from three types of hair or fur and keeps death at bay, giving a +1 bonus to Strong during death tests. Non-player characters with the braid get to make death tests, with the +1 bonus.",
+        "Cost": "8 thaler",
+        "Quality": [
+            "Effect"
+        ],
+        "Type": "Lesser Artifact",
+        "Name": "Witch Braid",
+        "Category": "lesser_artifact"
+    }
+}

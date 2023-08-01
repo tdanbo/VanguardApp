@@ -1,0 +1,23 @@
+{
+    "Artisan tool": {
+      "Cost": "1 thaler"
+    },
+    "Chain": {
+      "Cost": "1 thaler"
+    },
+    "Hammer": {
+      "Cost": "1 thaler"
+    },
+    "Mining pick": {
+      "Cost": "5 shilling"
+    },
+    "Scythe": {
+      "Cost": "1 thaler"
+    },
+    "Shovel": {
+      "Cost": "3 shilling"
+    },
+    "Sledgehammer": {
+      "Cost": "1 thaler"
+    }
+  }

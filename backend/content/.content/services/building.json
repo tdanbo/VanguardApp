@@ -1,0 +1,29 @@
+{
+    "Croft": {
+        "Cost": "10 thaler"
+    },
+    "Farm": {
+        "Cost": "100 thaler"
+    },
+    "Watch tower, wood": {
+        "Cost": "100 thaler"
+    },
+    "Watch tower, stone": {
+        "Cost": "400 thaler"
+    },
+    "Fort, wood": {
+        "Cost": "500 thaler"
+    },
+    "Estate": {
+        "Cost": "1000 thaler"
+    },
+    "Fort, stone": {
+        "Cost": "2000 thaler"
+    },
+    "Keep": {
+        "Cost": "5000 thaler"
+    },
+    "Castle": {
+        "Cost": "10000+ thaler"
+    }
+}

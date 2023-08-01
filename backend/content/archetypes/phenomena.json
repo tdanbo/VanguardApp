@@ -1,0 +1,47 @@
+{
+    "resistance":{
+        "weak":{
+            "damage":[3,4,5],
+            "abilities":[],
+            "distribution":[]
+        },
+        "ordinary":{
+            "damage":[5,6,7],
+            "abilities":["novice","novice","adept"],
+            "distribution":["attack","defense","utility"]
+        },
+        "challenging":{
+            "damage":[7,8,9],
+            "abilities":["adept","master","master"],
+            "distribution":["attack","defense","utility"]
+        },
+        "strong":{
+            "damage":[9,10,11],
+            "abilities":["master","master","master","master","master"],
+            "distribution":["attack","attack","defense","utility","utility"]
+        },
+        "mighty":{
+            "damage":[11,12,13],
+            "abilities":["master","master","master","master","master","master","master","master","master","master"],
+            "distribution":["attack","attack","attack","attack","defense","defense","defense","defense","utility","utility"]
+        },
+        "legendary":{
+            "damage":[13,14,15],
+            "abilities":["master","master","master","master","master","master","master","master","master","master","master","master","master","master","master","master","master","master","master","master"],
+            "distribution":["attack","attack","attack","attack","attack","attack","attack","attack","defense","defense","defense","defense","defense","defense","defense","defense","utility","utility","utility","utility"]
+
+        }
+    },
+    "stats":{
+        "1": ["DIS","QUI","ACC"],
+        "2": ["VIG","CUN"],
+        "3": ["RES","STR","PER"]
+    },
+    "tactics":[
+        "Moves around the battlefield in order to seize or create opportunities to attack with Advantage.",
+        "Keeps the player characters at a distance, trying to bind them, damage them as a group, or help its allies.",
+        "Seeks to engage the player characters in melee combat.",
+        "Keeps the player characters at a distance while launching ranged attacks."
+    ]
+}
+
