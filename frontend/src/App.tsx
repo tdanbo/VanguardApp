@@ -33,7 +33,7 @@ function App() {
       .then((response) => {
         console.log(response.data);
         setSelectedCharacter(response.data);
-      }, [])
+      })
       .catch((error) => {
         console.error(`Error fetching character data: ${error}`);
       });
