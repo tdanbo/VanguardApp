@@ -31,3 +31,13 @@ export interface CharacterEntry {
   inventory: Record<string, unknown>;
   equipment: Record<string, unknown>;
 }
+
+export interface ItemEntry {
+  roll: string[];
+  quality: string[];
+  equip: string[];
+  type: string;
+  cost: string;
+  name: string;
+  category: string;
+}

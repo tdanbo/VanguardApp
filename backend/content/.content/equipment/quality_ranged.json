@@ -1,205 +1,109 @@
 {
-    "Alchemical Firetube": {
-        "Roll": [
-            "Damage",
-            "1d12"
-        ],
-        "Quality": [
-            "Flaming",
-            "Area Effect (cone)"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Ranged Weapon",
-        "Cost": "10 thaler",
-        "Name": "Alchemical Firetube",
-        "Category": "quality_ranged"
-    },
-    "Blowpipe": {
-        "Quality": [
-            "Special"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Ranged Weapon",
-        "Cost": "2 thaler",
-        "Name": "Blowpipe",
-        "Category": "quality_ranged"
-    },
-    "Arbalest": {
-        "Roll": [
-            "Damage",
-            "1d10+1"
-        ],
-        "Quality": [
-            "Deep Impact"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Ranged Weapon",
-        "Cost": "40 thaler",
-        "Name": "Arbalest",
-        "Category": "quality_ranged"
-    },
-    "Small Crossbow": {
-        "Roll": [
-            "Damage",
-            "1d10"
-        ],
-        "Quality": [
-            "Concealed"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Ranged Weapon",
-        "Cost": "40 thaler",
-        "Name": "Small Crossbow",
-        "Category": "quality_ranged"
-    },
-    "Repeating Crossbow": {
-        "Roll": [
-            "Damage",
-            "1d10"
-        ],
-        "Quality": [
-            "Special",
-            "Repeater"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Ranged Weapon",
-        "Cost": "40 thaler",
-        "Name": "Repeating Crossbow",
-        "Category": "quality_ranged"
-    },
-    "Longbow": {
-        "Roll": [
-            "Damage",
-            "1d8"
-        ],
-        "Quality": [
-            "Precise"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Ranged Weapon",
-        "Cost": "25 thaler",
-        "Name": "Longbow",
-        "Category": "quality_ranged"
-    },
-    "Horsema's Longbow": {
-        "Roll": [
-            "Damage",
-            "1d8"
-        ],
-        "Quality": [
-            "Precise"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Ranged Weapon",
-        "Cost": "50 thaler",
-        "Name": "Horsema's Longbow",
-        "Category": "quality_ranged"
-    },
-    "Composite Bow": {
-        "Roll": [
-            "Damage",
-            "1d8+1"
-        ],
-        "Quality": [
-            "Deep Impact"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Ranged Weapon",
-        "Cost": "25 thaler",
-        "Name": "Composite Bow",
-        "Category": "quality_ranged"
-    },
-    "Alchemical Grenade": {
-        "Roll": [
-            "Damage",
-            "1d10"
-        ],
-        "Quality": [
-            "Flaming",
-            "Area Effect (radius)"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Throwing Weapon",
-        "Cost": "1 thaler",
-        "Name": "Alchemical Grenade",
-        "Category": "quality_ranged"
-    },
-    "Bolas": {
-        "Roll": [
-            "Damage",
-            "1d6"
-        ],
-        "Quality": [
-            "Tackle"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Throwing Weapon",
-        "Cost": "2 thaler",
-        "Name": "Bolas",
-        "Category": "quality_ranged"
-    },
-    "Throwing Wing": {
-        "Roll": [
-            "Damage",
-            "1d6"
-        ],
-        "Quality": [
-            "Returning"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Throwing Weapon",
-        "Cost": "10 thaler",
-        "Name": "Throwing Wing",
-        "Category": "quality_ranged"
-    },
-    "Spear Sling": {
-        "Roll": [
-            "Damage",
-            "1d6+1"
-        ],
-        "Quality": [
-            "Deep Impact"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Throwing Weapon",
-        "Cost": "10 thaler",
-        "Name": "Spear Sling",
-        "Category": "quality_ranged"
-    }
+  "Alchemical Firetube": {
+    "roll": ["Damage", "1d12"],
+    "quality": ["Flaming", "Area Effect (cone)"],
+    "equip": ["MH", "OH"],
+    "type": "Ranged Weapon",
+    "cost": "10 thaler",
+    "name": "Alchemical Firetube",
+    "category": "quality_ranged"
+  },
+  "Blowpipe": {
+    "quality": ["Special"],
+    "equip": ["MH", "OH"],
+    "type": "Ranged Weapon",
+    "cost": "2 thaler",
+    "name": "Blowpipe",
+    "category": "quality_ranged"
+  },
+  "Arbalest": {
+    "roll": ["Damage", "1d10+1"],
+    "quality": ["Deep Impact"],
+    "equip": ["MH", "OH"],
+    "type": "Ranged Weapon",
+    "cost": "40 thaler",
+    "name": "Arbalest",
+    "category": "quality_ranged"
+  },
+  "Small Crossbow": {
+    "roll": ["Damage", "1d10"],
+    "quality": ["Concealed"],
+    "equip": ["MH", "OH"],
+    "type": "Ranged Weapon",
+    "cost": "40 thaler",
+    "name": "Small Crossbow",
+    "category": "quality_ranged"
+  },
+  "Repeating Crossbow": {
+    "roll": ["Damage", "1d10"],
+    "quality": ["Special", "Repeater"],
+    "equip": ["MH", "OH"],
+    "type": "Ranged Weapon",
+    "cost": "40 thaler",
+    "name": "Repeating Crossbow",
+    "category": "quality_ranged"
+  },
+  "Longbow": {
+    "roll": ["Damage", "1d8"],
+    "quality": ["Precise"],
+    "equip": ["MH", "OH"],
+    "type": "Ranged Weapon",
+    "cost": "25 thaler",
+    "name": "Longbow",
+    "category": "quality_ranged"
+  },
+  "Horsema's Longbow": {
+    "roll": ["Damage", "1d8"],
+    "quality": ["Precise"],
+    "equip": ["MH", "OH"],
+    "type": "Ranged Weapon",
+    "cost": "50 thaler",
+    "name": "Horsema's Longbow",
+    "category": "quality_ranged"
+  },
+  "Composite Bow": {
+    "roll": ["Damage", "1d8+1"],
+    "quality": ["Deep Impact"],
+    "equip": ["MH", "OH"],
+    "type": "Ranged Weapon",
+    "cost": "25 thaler",
+    "name": "Composite Bow",
+    "category": "quality_ranged"
+  },
+  "Alchemical Grenade": {
+    "roll": ["Damage", "1d10"],
+    "quality": ["Flaming", "Area Effect (radius)"],
+    "equip": ["MH", "OH"],
+    "type": "Throwing Weapon",
+    "cost": "1 thaler",
+    "name": "Alchemical Grenade",
+    "category": "quality_ranged"
+  },
+  "Bolas": {
+    "roll": ["Damage", "1d6"],
+    "quality": ["Tackle"],
+    "equip": ["MH", "OH"],
+    "type": "Throwing Weapon",
+    "cost": "2 thaler",
+    "name": "Bolas",
+    "category": "quality_ranged"
+  },
+  "Throwing Wing": {
+    "roll": ["Damage", "1d6"],
+    "quality": ["Returning"],
+    "equip": ["MH", "OH"],
+    "type": "Throwing Weapon",
+    "cost": "10 thaler",
+    "name": "Throwing Wing",
+    "category": "quality_ranged"
+  },
+  "Spear Sling": {
+    "roll": ["Damage", "1d6+1"],
+    "quality": ["Deep Impact"],
+    "equip": ["MH", "OH"],
+    "type": "Throwing Weapon",
+    "cost": "10 thaler",
+    "name": "Spear Sling",
+    "category": "quality_ranged"
+  }
 }

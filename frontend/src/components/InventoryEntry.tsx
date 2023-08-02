@@ -1,10 +1,19 @@
 import * as Constants from "../Constants";
 
+import { ItemEntry } from "../Types";
+
+import { TYPE_COLORS } from "../Constants";
+import { Color } from "react-bootstrap/esm/types";
+
 interface InventoryEntryProps {
   index: number;
+  browser: boolean;
+  item: ItemEntry;
 }
 
-function InventoryEntry({ index }: InventoryEntryProps) {
+function InventoryEntry({ index, item, browser }: InventoryEntryProps) {
+  console.log(item.quality);
+  const COLOR = TYPE_COLORS[item.category] || "defaultColor";
   const BackgroundColor = () => {
     if (index % 2 === 0) {
       return Constants.PRIMARY;
@@ -23,16 +32,30 @@ function InventoryEntry({ index }: InventoryEntryProps) {
         borderTop: `1px solid ${Constants.BORDER}`,
       }}
     >
-      <div
-        className="flex items-center justify-center"
-        style={{
-          backgroundColor: Constants.BLUE,
-          width: "8px",
-          fontSize: "10px",
-        }}
-      >
-        x
-      </div>
+      {browser ? (
+        <div
+          className="flex items-center justify-center"
+          style={{
+            backgroundColor: COLOR,
+            width: "16px",
+            fontSize: "14px",
+            fontWeight: "bold",
+          }}
+        >
+          +
+        </div>
+      ) : (
+        <div
+          className="flex items-center justify-center"
+          style={{
+            backgroundColor: COLOR,
+            width: "8px",
+            fontSize: "10px",
+          }}
+        >
+          x
+        </div>
+      )}
       <div
         className="flex flex-col"
         style={{
@@ -40,89 +63,50 @@ function InventoryEntry({ index }: InventoryEntryProps) {
           marginLeft: "1px",
         }}
       >
-        <div
-          className="flex grow"
-          style={{
-            backgroundColor: Constants.BORDER,
-            width: "8px",
-            marginBottom: "1px",
-          }}
-        ></div>
-        <div
-          className="flex grow"
-          style={{
-            backgroundColor: Constants.BORDER,
-            width: "8px",
-            marginTop: "1px",
-          }}
-        ></div>
+        {!browser && (
+          <>
+            <div
+              className="flex grow"
+              style={{
+                backgroundColor: Constants.BORDER,
+                width: "8px",
+                marginBottom: "1px",
+              }}
+            ></div>
+            <div
+              className="flex grow"
+              style={{
+                backgroundColor: Constants.BORDER,
+                width: "8px",
+                marginTop: "1px",
+              }}
+            ></div>
+          </>
+        )}
       </div>
       <div className="flex px-2 py-1">
         <div
-          className="flex flex-col"
+          className="grid grid-cols-2 gap-0"
           style={{
             backgroundColor: BackgroundColor(),
           }}
         >
-          <div
-            className="flex grow items-center justify-center rounded"
-            style={{
-              backgroundColor: Constants.BORDER,
-              width: "22px",
-              margin: "1px",
-              color: Constants.BLUE,
-              fontSize: "11px",
-              fontWeight: "bold",
-            }}
-          >
-            Ef
-          </div>
-          <div
-            className="flex grow items-center justify-center rounded"
-            style={{
-              backgroundColor: Constants.BORDER,
-              width: "22px",
-              margin: "1px",
-              color: Constants.BLUE,
-              fontSize: "11px",
-              fontWeight: "bold",
-            }}
-          >
-            Ef
-          </div>
-        </div>
-        <div
-          className="flex flex-col"
-          style={{
-            backgroundColor: BackgroundColor(),
-          }}
-        >
-          <div
-            className="flex grow items-center justify-center rounded"
-            style={{
-              backgroundColor: Constants.BORDER,
-              width: "22px",
-              margin: "1px",
-              color: Constants.BLUE,
-              fontSize: "11px",
-              fontWeight: "bold",
-            }}
-          >
-            Ef
-          </div>
-          <div
-            className="flex grow items-center justify-center rounded"
-            style={{
-              backgroundColor: Constants.BORDER,
-              width: "22px",
-              margin: "1px",
-              color: Constants.BLUE,
-              fontSize: "11px",
-              fontWeight: "bold",
-            }}
-          >
-            Ef
-          </div>
+          {item.quality.map((item, index) => (
+            <div
+              className="flex grow items-center justify-center rounded"
+              style={{
+                backgroundColor: Constants.BORDER,
+                width: "22px",
+                height: "22px",
+                margin: "1px",
+                color: COLOR,
+                fontSize: "10px",
+                fontWeight: "bold",
+              }}
+            >
+              {item.slice(0, 2)}
+            </div>
+          ))}
         </div>
       </div>
       <div className="flex grow flex-row">
@@ -135,17 +119,17 @@ function InventoryEntry({ index }: InventoryEntryProps) {
               color: Constants.DARK,
             }}
           >
-            Dagger
+            {item.name}
           </p>
           <p
             className="-mt-2 mb-0"
             style={{
               fontSize: "11px",
               fontWeight: "bold",
-              color: Constants.BLUE,
+              color: COLOR,
             }}
           >
-            Short Weapon
+            {item.type}
           </p>
         </div>
       </div>

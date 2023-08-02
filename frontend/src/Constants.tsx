@@ -1,4 +1,4 @@
-export const INTENTORY_ENTRY_HEIGHT = "60px";
+export const INTENTORY_ENTRY_HEIGHT = "65px";
 export const SECTION_TITLE_HEIGHT = "30px";
 export const SECTION_WIDTH = "500px";
 export const SECTION_HEIGHT = "90px";
@@ -22,3 +22,33 @@ export const WHITE = "#bfb6ac";
 export const BRIGHT_RED = "#923333";
 
 export const FONT_LIGHT = "#dedede";
+
+export type ColorType = string;
+
+export const TYPE_COLORS: Record<ColorType, string> = {
+  attack: RED,
+  damage: RED,
+  ability: RED,
+  defense: BLUE,
+  armor: BLUE,
+  casting: PURPLE,
+  mystical_power: PURPLE,
+  ritual: PURPLE,
+  elixirs: PURPLE,
+  sneaking: GREEN,
+  ammunition: RED,
+  monsterous_trait: GREEN,
+  test: YELLOW,
+  skill_test: YELLOW,
+  provision: GREEN,
+  treasure: YELLOW,
+  ordinary_weapon: RED,
+  ordinary_ranged: RED,
+  ordinary_armor: BLUE,
+  quality_weapon: RED,
+  quality_ranged: RED,
+  quality_armor: BLUE,
+  general_good: YELLOW,
+  lesser_artifact: BRIGHT_RED,
+  corruption: DARK,
+};

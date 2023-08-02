@@ -21,62 +21,14 @@ function InventoryMiddle({ selectedCharacter }: StatsSectionProps) {
         style={{
           backgroundColor: Constants.PRIMARY,
         }}
-      >
-        <InventoryEntry index={1} />
-        <InventoryEntry index={2} />
-        <InventoryEntry index={3} />
-        <InventoryEntry index={4} />
-        <InventoryEntry index={5} />
-        <InventoryEntry index={6} />
-        <InventoryEntry index={1} />
-        <InventoryEntry index={2} />
-        <InventoryEntry index={3} />
-        <InventoryEntry index={4} />
-        <InventoryEntry index={5} />
-        <InventoryEntry index={6} />
-        <InventoryEntry index={1} />
-        <InventoryEntry index={2} />
-        <InventoryEntry index={3} />
-        <InventoryEntry index={4} />
-        <InventoryEntry index={5} />
-        <InventoryEntry index={6} />
-        <InventoryEntry index={1} />
-        <InventoryEntry index={2} />
-        <InventoryEntry index={3} />
-        <InventoryEntry index={4} />
-        <InventoryEntry index={5} />
-        <InventoryEntry index={6} />
-        <InventoryEntry index={1} />
-        <InventoryEntry index={2} />
-        <InventoryEntry index={3} />
-        <InventoryEntry index={4} />
-        <InventoryEntry index={5} />
-        <InventoryEntry index={6} />
-        <InventoryEntry index={1} />
-        <InventoryEntry index={2} />
-        <InventoryEntry index={3} />
-        <InventoryEntry index={4} />
-        <InventoryEntry index={5} />
-        <InventoryEntry index={6} />
-        <InventoryEntry index={1} />
-        <InventoryEntry index={2} />
-        <InventoryEntry index={3} />
-        <InventoryEntry index={4} />
-        <InventoryEntry index={5} />
-        <InventoryEntry index={6} />
-      </div>
+      ></div>
       <TitleBox title={"Equipment"} />
       <div
         className="flex flex-col"
         style={{
           backgroundColor: Constants.PRIMARY,
         }}
-      >
-        <InventoryEntry index={1} />
-        <InventoryEntry index={2} />
-        <InventoryEntry index={3} />
-        <InventoryEntry index={4} />
-      </div>
+      ></div>
     </>
   );
 }

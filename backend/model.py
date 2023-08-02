@@ -26,3 +26,13 @@ class CharacterEntry(BaseModel):
     abilities: dict = {}
     inventory: dict = {}
     equipment: dict = {}
+
+
+class ItemEntry(BaseModel):
+    roll: list
+    quality: list
+    equip: list
+    type: str
+    cost: str
+    name: str
+    category: str

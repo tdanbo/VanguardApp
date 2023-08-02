@@ -23,7 +23,7 @@ function DropdownCharacter({ getSelectedCharacter }: DropdownCharacterProps) {
     axios.get("http://localhost:8000/api/characterlog").then((response) => {
       setCharacterLog(response.data);
     });
-  });
+  }, []);
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedName = event.target.value;

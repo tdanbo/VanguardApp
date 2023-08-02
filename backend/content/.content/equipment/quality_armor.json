@@ -1,295 +1,155 @@
 {
-    "Woven Silk": {
-        "Roll": [
-            "Armor",
-            "1d4"
-        ],
-        "Quality": [
-            "Impeding 0",
-            "Flexible"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Light Armor",
-        "Cost": "10 thaler",
-        "Name": "Woven Silk",
-        "Category": "quality_armor"
-    },
-    "Witch Gown": {
-        "Roll": [
-            "Armor",
-            "1d4"
-        ],
-        "Quality": [
-            "Impeding 0",
-            "Flexible"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Light Armor",
-        "Cost": "10 thaler",
-        "Name": "Witch Gown",
-        "Category": "quality_armor"
-    },
-    "Studded Leather": {
-        "Roll": [
-            "Armor",
-            "1d4+1"
-        ],
-        "Quality": [
-            "Impeding -2",
-            "Reinforced"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Light Armor",
-        "Cost": "10 thaler",
-        "Name": "Studded Leather",
-        "Category": "quality_armor"
-    },
-    "Order Cloak": {
-        "Roll": [
-            "Armor",
-            "1d4"
-        ],
-        "Quality": [
-            "Impeding 0",
-            "Flexible"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Light Armor",
-        "Cost": "10 thaler",
-        "Name": "Order Cloak",
-        "Category": "quality_armor"
-    },
-    "Skald's Cuirass": {
-        "Roll": [
-            "Armor",
-            "1d4+1"
-        ],
-        "Quality": [
-            "Impeding 0",
-            "Reinforced",
-            "Flexible"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Light Armor",
-        "Cost": "50 thaler",
-        "Name": "Skald's Cuirass",
-        "Category": "quality_armor"
-    },
-    "Wolf Skin": {
-        "Roll": [
-            "Armor",
-            "1d4"
-        ],
-        "Quality": [
-            "Impeding -3",
-            "Cumbersome"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Light Armor",
-        "Cost": "1 thaler",
-        "Name": "Wolf Skin",
-        "Category": "quality_armor"
-    },
-    "Concealed Armor": {
-        "Roll": [
-            "Armor",
-            "1d4"
-        ],
-        "Quality": [
-            "Impeding 0",
-            "Concealed",
-            "Flexible"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Light Armor",
-        "Cost": "50 thaler",
-        "Name": "Concealed Armor",
-        "Category": "quality_armor"
-    },
-    "Blessed Robe": {
-        "Roll": [
-            "Armor",
-            "1d4"
-        ],
-        "Quality": [
-            "Impeding 0",
-            "Flexible"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Light Armor",
-        "Cost": "10 thaler",
-        "Name": "Blessed Robe",
-        "Category": "quality_armor"
-    },
-    "Double Chain Mail": {
-        "Roll": [
-            "Armor",
-            "1d6+1"
-        ],
-        "Quality": [
-            "Impeding -1",
-            "Reinforced",
-            "Flexible"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Medium Armor",
-        "Cost": "125 thaler",
-        "Name": "Double Chain Mail",
-        "Category": "quality_armor"
-    },
-    "Crow Armor": {
-        "Roll": [
-            "Armor",
-            "1d6"
-        ],
-        "Quality": [
-            "Impeding -4",
-            "Cumbersome"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Medium Armor",
-        "Cost": "2 thaler",
-        "Name": "Crow Armor",
-        "Category": "quality_armor"
-    },
-    "Lacquered Silk Cuirass": {
-        "Roll": [
-            "Armor",
-            "1d6"
-        ],
-        "Quality": [
-            "Impeding -1",
-            "Flexible"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Medium Armor",
-        "Cost": "25 thaler",
-        "Name": "Lacquered Silk Cuirass",
-        "Category": "quality_armor"
-    },
-    "Laminated Armor": {
-        "Roll": [
-            "Armor",
-            "1d6+1"
-        ],
-        "Quality": [
-            "Impeding -3",
-            "Reinforced"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Medium Armor",
-        "Cost": "25 thaler",
-        "Name": "Laminated Armor",
-        "Category": "quality_armor"
-    },
-    "Field Armor": {
-        "Roll": [
-            "Armor",
-            "1d8+1"
-        ],
-        "Quality": [
-            "Impeding -4",
-            "Reinforced"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Heavy Armor",
-        "Cost": "50 thaler",
-        "Name": "Field Armor",
-        "Category": "quality_armor"
-    },
-    "Full Plate": {
-        "Roll": [
-            "Armor",
-            "1d8"
-        ],
-        "Quality": [
-            "Impeding -2",
-            "Flexible"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Heavy Armor",
-        "Cost": "50 thaler",
-        "Name": "Full Plate",
-        "Category": "quality_armor"
-    },
-    "Field Armor of the Pansars": {
-        "Roll": [
-            "Armor",
-            "1d8+1"
-        ],
-        "Quality": [
-            "Impeding -2",
-            "Reinforced",
-            "Flexible"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Heavy Armor",
-        "Cost": "250 thaler",
-        "Name": "Field Armor of the Pansars",
-        "Category": "quality_armor"
-    },
-    "Templar Full Plate": {
-        "Roll": [
-            "Armor",
-            "1d8"
-        ],
-        "Quality": [
-            "Impeding -4",
-            "Hallowed"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Heavy Armor",
-        "Cost": "100 thaler",
-        "Name": "Templar Full Plate",
-        "Category": "quality_armor"
-    },
-    "Wrath Armor": {
-        "Roll": [
-            "Armor",
-            "1d8"
-        ],
-        "Quality": [
-            "Impeding -4",
-            "Retributive"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Heavy Armor",
-        "Cost": "100 thaler",
-        "Name": "Wrath Armor",
-        "Category": "quality_armor"
-    }
+  "Woven Silk": {
+    "roll": ["Armor", "1d4"],
+    "quality": ["Impeding 0", "Flexible"],
+    "equip": ["AR"],
+    "type": "Light Armor",
+    "cost": "10 thaler",
+    "name": "Woven Silk",
+    "category": "quality_armor"
+  },
+  "Witch Gown": {
+    "roll": ["Armor", "1d4"],
+    "quality": ["Impeding 0", "Flexible"],
+    "equip": ["AR"],
+    "type": "Light Armor",
+    "cost": "10 thaler",
+    "name": "Witch Gown",
+    "category": "quality_armor"
+  },
+  "Studded Leather": {
+    "roll": ["Armor", "1d4+1"],
+    "quality": ["Impeding -2", "Reinforced"],
+    "equip": ["AR"],
+    "type": "Light Armor",
+    "cost": "10 thaler",
+    "name": "Studded Leather",
+    "category": "quality_armor"
+  },
+  "Order Cloak": {
+    "roll": ["Armor", "1d4"],
+    "quality": ["Impeding 0", "Flexible"],
+    "equip": ["AR"],
+    "type": "Light Armor",
+    "cost": "10 thaler",
+    "name": "Order Cloak",
+    "category": "quality_armor"
+  },
+  "Skald's Cuirass": {
+    "roll": ["Armor", "1d4+1"],
+    "quality": ["Impeding 0", "Reinforced", "Flexible"],
+    "equip": ["AR"],
+    "type": "Light Armor",
+    "cost": "50 thaler",
+    "name": "Skald's Cuirass",
+    "category": "quality_armor"
+  },
+  "Wolf Skin": {
+    "roll": ["Armor", "1d4"],
+    "quality": ["Impeding -3", "Cumbersome"],
+    "equip": ["AR"],
+    "type": "Light Armor",
+    "cost": "1 thaler",
+    "name": "Wolf Skin",
+    "category": "quality_armor"
+  },
+  "Concealed Armor": {
+    "roll": ["Armor", "1d4"],
+    "quality": ["Impeding 0", "Concealed", "Flexible"],
+    "equip": ["AR"],
+    "type": "Light Armor",
+    "cost": "50 thaler",
+    "name": "Concealed Armor",
+    "category": "quality_armor"
+  },
+  "Blessed Robe": {
+    "roll": ["Armor", "1d4"],
+    "quality": ["Impeding 0", "Flexible"],
+    "equip": ["AR"],
+    "type": "Light Armor",
+    "cost": "10 thaler",
+    "name": "Blessed Robe",
+    "category": "quality_armor"
+  },
+  "Double Chain Mail": {
+    "roll": ["Armor", "1d6+1"],
+    "quality": ["Impeding -1", "Reinforced", "Flexible"],
+    "equip": ["AR"],
+    "type": "Medium Armor",
+    "cost": "125 thaler",
+    "name": "Double Chain Mail",
+    "category": "quality_armor"
+  },
+  "Crow Armor": {
+    "roll": ["Armor", "1d6"],
+    "quality": ["Impeding -4", "Cumbersome"],
+    "equip": ["AR"],
+    "type": "Medium Armor",
+    "cost": "2 thaler",
+    "name": "Crow Armor",
+    "category": "quality_armor"
+  },
+  "Lacquered Silk Cuirass": {
+    "roll": ["Armor", "1d6"],
+    "quality": ["Impeding -1", "Flexible"],
+    "equip": ["AR"],
+    "type": "Medium Armor",
+    "cost": "25 thaler",
+    "name": "Lacquered Silk Cuirass",
+    "category": "quality_armor"
+  },
+  "Laminated Armor": {
+    "roll": ["Armor", "1d6+1"],
+    "quality": ["Impeding -3", "Reinforced"],
+    "equip": ["AR"],
+    "type": "Medium Armor",
+    "cost": "25 thaler",
+    "name": "Laminated Armor",
+    "category": "quality_armor"
+  },
+  "Field Armor": {
+    "roll": ["Armor", "1d8+1"],
+    "quality": ["Impeding -4", "Reinforced"],
+    "equip": ["AR"],
+    "type": "Heavy Armor",
+    "cost": "50 thaler",
+    "name": "Field Armor",
+    "category": "quality_armor"
+  },
+  "Full Plate": {
+    "roll": ["Armor", "1d8"],
+    "quality": ["Impeding -2", "Flexible"],
+    "equip": ["AR"],
+    "type": "Heavy Armor",
+    "cost": "50 thaler",
+    "name": "Full Plate",
+    "category": "quality_armor"
+  },
+  "Field Armor of the Pansars": {
+    "roll": ["Armor", "1d8+1"],
+    "quality": ["Impeding -2", "Reinforced", "Flexible"],
+    "equip": ["AR"],
+    "type": "Heavy Armor",
+    "cost": "250 thaler",
+    "name": "Field Armor of the Pansars",
+    "category": "quality_armor"
+  },
+  "Templar Full Plate": {
+    "roll": ["Armor", "1d8"],
+    "quality": ["Impeding -4", "Hallowed"],
+    "equip": ["AR"],
+    "type": "Heavy Armor",
+    "cost": "100 thaler",
+    "name": "Templar Full Plate",
+    "category": "quality_armor"
+  },
+  "Wrath Armor": {
+    "roll": ["Armor", "1d8"],
+    "quality": ["Impeding -4", "Retributive"],
+    "equip": ["AR"],
+    "type": "Heavy Armor",
+    "cost": "100 thaler",
+    "name": "Wrath Armor",
+    "category": "quality_armor"
+  }
 }

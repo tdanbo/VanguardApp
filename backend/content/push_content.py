@@ -13,17 +13,16 @@ for CATEGORY in os.listdir(".content"):
         dictionary = json.load(
             open(".content\\" + CATEGORY + "\\" + subcategory, encoding="utf8")
         )
-
+        print(subcategory)
         for item in dictionary:
             item_dictionary = dictionary[item]
             if "Name" not in item_dictionary:
-
                 item_dictionary["Name"] = item
                 print(item_dictionary)
-            
-            # item_dictionary["Name"] = item
-            # print(item_dictionary)
-            collection.insert_one(item_dictionary)
+
+        #     # item_dictionary["Name"] = item
+        #     # print(item_dictionary)
+        #     collection.insert_one(item_dictionary)
 
 # async def create_database_entry(log_entry):
 #     document = log_entry

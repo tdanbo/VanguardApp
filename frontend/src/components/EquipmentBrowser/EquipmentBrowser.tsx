@@ -1,14 +1,17 @@
 import * as Constants from "../../Constants";
 import CategoryButton from "./CategoryButton";
-
+import InventoryEntry from "../InventoryEntry";
 import { useState, useEffect } from "react";
+
+import { ItemEntry } from "../../Types";
 
 import axios from "axios";
 
-type Character = {
-  title: string;
-  description: string;
-};
+import { CharacterEntry } from "../../Types";
+
+interface StatsSectionProps {
+  selectedCharacter: CharacterEntry;
+}
 
 interface CharacterProps {
   open: boolean;
@@ -17,6 +20,14 @@ interface CharacterProps {
 
 function EquipmentBrowser({ open, onClose }: CharacterProps) {
   if (!open) return null;
+
+  const [itemEntry, setItemList] = useState([] as ItemEntry[]);
+
+  useEffect(() => {
+    axios.get("http://localhost:8000/api/equipment").then((response) => {
+      setItemList(response.data);
+    });
+  }, []); // add an empty array here);
 
   return (
     <>
@@ -44,8 +55,8 @@ function EquipmentBrowser({ open, onClose }: CharacterProps) {
           borderRadius: "10px",
         }}
       >
-        <form className="d-grid gap-2">
-          <div className="flex">
+        <form className="d-grid gap-1">
+          <div className="flex pb-5">
             <CategoryButton category="Equipment" />
             <CategoryButton category="Equipment" />
             <CategoryButton category="Equipment" />
@@ -53,13 +64,13 @@ function EquipmentBrowser({ open, onClose }: CharacterProps) {
             <CategoryButton category="Equipment" />
             <CategoryButton category="Equipment" />
           </div>
-          <div className="flex">
-            <CategoryButton category="Equipment" />
-            <CategoryButton category="Equipment" />
-            <CategoryButton category="Equipment" />
-            <CategoryButton category="Equipment" />
-            <CategoryButton category="Equipment" />
-            <CategoryButton category="Equipment" />
+          <div
+            className="flex flex-grow flex-col-reverse overflow-auto"
+            style={{ height: "500px" }}
+          >
+            {itemEntry.map((item, index) => (
+              <InventoryEntry browser={true} index={index} item={item} />
+            ))}
           </div>
         </form>
       </div>
