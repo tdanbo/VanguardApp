@@ -4,15 +4,58 @@ import { ItemEntry } from "../Types";
 
 import { TYPE_COLORS } from "../Constants";
 import { Color } from "react-bootstrap/esm/types";
+import { CharacterEntry } from "../Types";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 interface InventoryEntryProps {
   index: number;
   browser: boolean;
   item: ItemEntry;
+  selectedCharacter: CharacterEntry;
+  update: number;
+  setUpdater: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function InventoryEntry({ index, item, browser }: InventoryEntryProps) {
-  console.log(item.quality);
+function InventoryEntry({
+  index,
+  item,
+  browser,
+  selectedCharacter,
+  setUpdater,
+  update,
+}: InventoryEntryProps) {
+  const UpdateInventoryState = () => {
+    let inventoryList: string[] = Object.keys(selectedCharacter.inventory);
+
+    inventoryList.some((key, index) => {
+      const itemSlot = selectedCharacter.inventory[key];
+      if (
+        itemSlot === null ||
+        (typeof itemSlot === "object" && Object.keys(itemSlot).length === 0)
+      ) {
+        console.log("Found an empty slot!");
+        selectedCharacter.inventory[key] = item;
+        return true; // This will break the loop.
+      }
+      return false; // This will continue the loop.
+    });
+
+    console.log(selectedCharacter.inventory);
+    setUpdater((prevUpdate) => prevUpdate + 1);
+  };
+
+  const UpdateInventoryEquip = () => {};
+
+  useEffect(() => {
+    axios
+      .put(
+        `http://localhost:8000/api/characterlog/${selectedCharacter.details.name}`,
+        selectedCharacter,
+      )
+      .then((res) => console.log(res));
+  }, [update]);
+
   const COLOR = TYPE_COLORS[item.category] || "defaultColor";
   const BackgroundColor = () => {
     if (index % 2 === 0) {
@@ -33,7 +76,7 @@ function InventoryEntry({ index, item, browser }: InventoryEntryProps) {
       }}
     >
       {browser ? (
-        <div
+        <button
           className="flex items-center justify-center"
           style={{
             backgroundColor: COLOR,
@@ -41,11 +84,12 @@ function InventoryEntry({ index, item, browser }: InventoryEntryProps) {
             fontSize: "14px",
             fontWeight: "bold",
           }}
+          onClick={UpdateInventoryState}
         >
           +
-        </div>
+        </button>
       ) : (
-        <div
+        <button
           className="flex items-center justify-center"
           style={{
             backgroundColor: COLOR,
@@ -54,7 +98,7 @@ function InventoryEntry({ index, item, browser }: InventoryEntryProps) {
           }}
         >
           x
-        </div>
+        </button>
       )}
       <div
         className="flex flex-col"
@@ -65,22 +109,17 @@ function InventoryEntry({ index, item, browser }: InventoryEntryProps) {
       >
         {!browser && (
           <>
-            <div
-              className="flex grow"
-              style={{
-                backgroundColor: Constants.BORDER,
-                width: "8px",
-                marginBottom: "1px",
-              }}
-            ></div>
-            <div
-              className="flex grow"
-              style={{
-                backgroundColor: Constants.BORDER,
-                width: "8px",
-                marginTop: "1px",
-              }}
-            ></div>
+            {console.log(item.equip)}
+            {item.equip.map((item, index) => (
+              <div
+                className="flex grow"
+                style={{
+                  backgroundColor: Constants.BORDER,
+                  width: "8px",
+                  marginBottom: "1px",
+                }}
+              ></div>
+            ))}
           </>
         )}
       </div>

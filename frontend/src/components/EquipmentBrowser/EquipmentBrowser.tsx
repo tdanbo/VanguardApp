@@ -9,16 +9,21 @@ import axios from "axios";
 
 import { CharacterEntry } from "../../Types";
 
-interface StatsSectionProps {
-  selectedCharacter: CharacterEntry;
-}
-
 interface CharacterProps {
   open: boolean;
   onClose: () => void;
+  selectedCharacter: CharacterEntry;
+  setUpdater: React.Dispatch<React.SetStateAction<number>>;
+  update: number;
 }
 
-function EquipmentBrowser({ open, onClose }: CharacterProps) {
+function EquipmentBrowser({
+  open,
+  onClose,
+  selectedCharacter,
+  setUpdater,
+  update,
+}: CharacterProps) {
   if (!open) return null;
 
   const [itemEntry, setItemList] = useState([] as ItemEntry[]);
@@ -69,7 +74,14 @@ function EquipmentBrowser({ open, onClose }: CharacterProps) {
             style={{ height: "500px" }}
           >
             {itemEntry.map((item, index) => (
-              <InventoryEntry browser={true} index={index} item={item} />
+              <InventoryEntry
+                browser={true}
+                index={index}
+                item={item}
+                selectedCharacter={selectedCharacter}
+                setUpdater={setUpdater}
+                update={update}
+              />
             ))}
           </div>
         </form>

@@ -2,7 +2,7 @@ from model import CombatEntry
 from model import CharacterEntry
 from model import ItemEntry
 import motor.motor_asyncio
-from functions import add_corruption
+from functions import add_corruption, add_inventory, add_equipment
 
 # tobiasdanbo
 # E33ts3SKAOl1tR1W
@@ -48,8 +48,10 @@ async def create_character_entry(log_entry):
         print("Character already exists")
         return False
     else:
-        updated_document = add_corruption(document)
-        result = await character_log_collection.insert_one(updated_document)
+        added_corruption = add_corruption(document)
+        added_inventory = add_inventory(added_corruption)
+        added_equipment = add_equipment(added_inventory)
+        result = await character_log_collection.insert_one(added_equipment)
         return document
 
 

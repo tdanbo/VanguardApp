@@ -3,7 +3,19 @@ import AddIcon from "@mui/icons-material/Add";
 import EquipmentBrowser from "./EquipmentBrowser";
 import { useState, useEffect } from "react";
 
-function OpenEquipmentBrowser() {
+import { CharacterEntry } from "../../Types";
+
+interface EquipmentProps {
+  selectedCharacter: CharacterEntry;
+  setUpdater: React.Dispatch<React.SetStateAction<number>>;
+  update: number;
+}
+
+function OpenEquipmentBrowser({
+  selectedCharacter,
+  setUpdater,
+  update,
+}: EquipmentProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -21,7 +33,13 @@ function OpenEquipmentBrowser() {
       }}
     >
       <AddIcon onClick={() => setIsOpen(true)} />
-      <EquipmentBrowser open={isOpen} onClose={() => setIsOpen(false)} />
+      <EquipmentBrowser
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        selectedCharacter={selectedCharacter}
+        setUpdater={setUpdater}
+        update={update}
+      />
     </div>
   );
 }
