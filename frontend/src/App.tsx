@@ -27,6 +27,33 @@ function App() {
   const [selectedCharacter, setSelectedCharacter] =
     useState<CharacterEntry | null>(null);
 
+  const onDeleteItem = (id: string) => {
+    if (!selectedCharacter) return;
+
+    const updatedInventory = selectedCharacter.inventory.filter(
+      (item) => item.id !== id,
+    );
+
+    const updatedCharacter = {
+      ...selectedCharacter,
+      inventory: updatedInventory,
+    };
+
+    setSelectedCharacter(updatedCharacter);
+    postSelectedCharacter(updatedCharacter);
+  };
+
+  function postSelectedCharacter(updatedCharacter: CharacterEntry) {
+    console.log("Updating Character");
+    // selectedCharacter.inventory = inventory; THIS WILL UPDATE THE INVENTORY< BUT NOT PROC THE RE-RENDER
+    axios
+      .put(
+        `http://localhost:8000/api/characterlog/${updatedCharacter.details.name}`,
+        updatedCharacter,
+      )
+      .then((res) => console.log(res));
+  }
+
   function getSelectedCharacter(selectedName: string) {
     axios
       .get(`http://localhost:8000/api/characterlog/${selectedName}`)
@@ -57,9 +84,11 @@ function App() {
     });
   }, []); // add an empty array here);
 
+  console.log("BUILDING APP");
+
   return (
     <div className="flex">
-      <div className="w-1/4">
+      <div className="w-1/2">
         <div
           className="flex px-1"
           style={{
@@ -73,7 +102,10 @@ function App() {
         </div>
 
         {selectedCharacter ? (
-          <InventorySection selectedCharacter={selectedCharacter} />
+          <InventorySection
+            selectedCharacter={selectedCharacter}
+            onDeleteItem={onDeleteItem}
+          />
         ) : (
           <div>Loading...</div> // or whatever you want to show when selectedCharacter is null
         )}
@@ -85,7 +117,7 @@ function App() {
           <div>Loading...</div> // or whatever you want to show when selectedCharacter is null
         )}
       </div>
-      <div className="w-1/4">
+      <div className="w-1/2">
         <CombatSection combatLogList={combatLogList} />
       </div>
     </div>

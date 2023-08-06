@@ -1,9 +1,11 @@
 import * as Constants from "../../Constants";
 import AddIcon from "@mui/icons-material/Add";
-import EquipmentBrowser from "./EquipmentBrowser";
+import EquipmentBrowser from "./_EquipmentBrowser";
 import { useState, useEffect } from "react";
 
 import { CharacterEntry } from "../../Types";
+
+import React, { useCallback } from "react";
 
 interface EquipmentProps {
   selectedCharacter: CharacterEntry;
@@ -17,6 +19,7 @@ function OpenEquipmentBrowser({
   update,
 }: EquipmentProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const onClose = useCallback(() => setIsOpen(false), []);
 
   useEffect(() => {
     console.log("isOpen state changed:", isOpen);
@@ -35,7 +38,7 @@ function OpenEquipmentBrowser({
       <AddIcon onClick={() => setIsOpen(true)} />
       <EquipmentBrowser
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={onClose}
         selectedCharacter={selectedCharacter}
         setUpdater={setUpdater}
         update={update}

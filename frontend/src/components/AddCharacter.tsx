@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Dialog from "@mui/material/Dialog";
 
 function AddCharacter() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     console.log("isOpen state changed:", isOpen);

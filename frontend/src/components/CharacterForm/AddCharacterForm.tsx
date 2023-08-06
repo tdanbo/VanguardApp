@@ -50,9 +50,9 @@ function AddCharacterForm({ open, onClose }: CharacterProps) {
       vigilant: vigilant,
     },
     corruption: {},
-    abilities: {},
-    inventory: {},
-    equipment: {},
+    abilities: [],
+    inventory: [],
+    equipment: [],
   };
 
   // Post a todo

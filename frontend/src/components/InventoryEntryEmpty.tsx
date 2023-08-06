@@ -1,12 +1,5 @@
 import * as Constants from "../Constants";
-
-import { ItemEntry } from "../Types";
-
-import { TYPE_COLORS } from "../Constants";
-import { Color } from "react-bootstrap/esm/types";
 import { CharacterEntry } from "../Types";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import chroma from "chroma-js";
 
 interface InventoryEntryEmptyProps {
@@ -22,16 +15,15 @@ function InventoryEntryEmpty({
   const DARKER_PRIMARY_DARKER = chroma(Constants.PRIMARY_DARKER)
     .darken(1)
     .hex();
-  const color = chroma("blue").darken().hex();
   const BackgroundColor = () => {
     if (index % 2 === 0) {
-      if (index > selectedCharacter.stats.strong) {
+      if (index - 1 >= selectedCharacter.stats.strong) {
         return DARKER_PRIMARY;
       } else {
         return Constants.PRIMARY;
       }
     } else {
-      if (index > selectedCharacter.stats.strong) {
+      if (index - 1 >= selectedCharacter.stats.strong) {
         return DARKER_PRIMARY_DARKER;
       } else {
         return Constants.PRIMARY_DARKER;

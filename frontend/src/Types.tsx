@@ -27,9 +27,9 @@ export interface CharacterEntry {
   toughness: Toughness;
   stats: Stats;
   corruption: Record<string, unknown>;
-  abilities: Record<string, unknown>;
-  inventory: Record<string, unknown>;
-  equipment: Record<string, unknown>;
+  abilities: string[];
+  inventory: ItemEntry[];
+  equipment: ItemEntry[];
 }
 
 export interface ItemEntry {
@@ -40,4 +40,5 @@ export interface ItemEntry {
   cost: string;
   name: string;
   category: string;
+  id: string;
 }

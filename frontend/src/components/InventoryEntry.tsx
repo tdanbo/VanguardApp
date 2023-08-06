@@ -3,10 +3,10 @@ import * as Constants from "../Constants";
 import { ItemEntry } from "../Types";
 
 import { TYPE_COLORS } from "../Constants";
-import { Color } from "react-bootstrap/esm/types";
 import { CharacterEntry } from "../Types";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import chroma from "chroma-js";
 
 interface InventoryEntryProps {
   index: number;
@@ -15,6 +15,8 @@ interface InventoryEntryProps {
   selectedCharacter: CharacterEntry;
   update: number;
   setUpdater: React.Dispatch<React.SetStateAction<number>>;
+  id: string;
+  onDeleteItem: (id: string) => void;
 }
 
 function InventoryEntry({
@@ -24,30 +26,69 @@ function InventoryEntry({
   selectedCharacter,
   setUpdater,
   update,
+  id,
+  onDeleteItem,
 }: InventoryEntryProps) {
-  const UpdateInventoryState = () => {
-    let inventoryList: string[] = Object.keys(selectedCharacter.inventory);
-
-    inventoryList.some((key, index) => {
-      const itemSlot = selectedCharacter.inventory[key];
-      if (
-        itemSlot === null ||
-        (typeof itemSlot === "object" && Object.keys(itemSlot).length === 0)
-      ) {
-        console.log("Found an empty slot!");
-        selectedCharacter.inventory[key] = item;
-        return true; // This will break the loop.
+  const DARKER_PRIMARY = chroma(Constants.PRIMARY).darken(1).hex();
+  const DARKER_PRIMARY_DARKER = chroma(Constants.PRIMARY_DARKER)
+    .darken(1)
+    .hex();
+  const BackgroundColor = () => {
+    if (index % 2 === 0) {
+      if (browser) {
+        return Constants.PRIMARY_DARKER;
       }
-      return false; // This will continue the loop.
-    });
+      if (index >= selectedCharacter.stats.strong) {
+        return DARKER_PRIMARY_DARKER;
+      } else {
+        return Constants.PRIMARY_DARKER;
+      }
+    } else {
+      if (browser) {
+        return Constants.PRIMARY;
+      }
+      if (index >= selectedCharacter.stats.strong) {
+        return DARKER_PRIMARY;
+      } else {
+        return Constants.PRIMARY;
+      }
+    }
+  };
 
-    console.log(selectedCharacter.inventory);
+  const COLOR = TYPE_COLORS[item.category] || "defaultColor";
+
+  const generateRandomId = (length = 10) => {
+    return Math.random()
+      .toString(36)
+      .substring(2, 2 + length);
+  };
+
+  const AddInventorySlot = () => {
+    console.log("Adding Item");
+    if (
+      selectedCharacter.inventory.length ===
+      Math.ceil(selectedCharacter.stats.strong * 2)
+    ) {
+      console.log("Inventory is full");
+      return;
+    } else {
+      console.log("Adding Item");
+      const itemWithId = {
+        ...item,
+        id: generateRandomId(),
+      };
+      selectedCharacter.inventory.push(itemWithId);
+    }
     setUpdater((prevUpdate) => prevUpdate + 1);
   };
 
-  const UpdateInventoryEquip = () => {};
+  const DeleteInventorySlot = (id: string) => {
+    onDeleteItem(id);
+  };
 
   useEffect(() => {
+    console.log("Updating Character");
+    // selectedCharacter.inventory = inventory; THIS WILL UPDATE THE INVENTORY< BUT NOT PROC THE RE-RENDER
     axios
       .put(
         `http://localhost:8000/api/characterlog/${selectedCharacter.details.name}`,
@@ -56,14 +97,6 @@ function InventoryEntry({
       .then((res) => console.log(res));
   }, [update]);
 
-  const COLOR = TYPE_COLORS[item.category] || "defaultColor";
-  const BackgroundColor = () => {
-    if (index % 2 === 0) {
-      return Constants.PRIMARY;
-    } else {
-      return Constants.PRIMARY_DARKER;
-    }
-  };
   return (
     <div
       className="flex"
@@ -84,7 +117,7 @@ function InventoryEntry({
             fontSize: "14px",
             fontWeight: "bold",
           }}
-          onClick={UpdateInventoryState}
+          onClick={AddInventorySlot}
         >
           +
         </button>
@@ -96,6 +129,7 @@ function InventoryEntry({
             width: "8px",
             fontSize: "10px",
           }}
+          onClick={() => DeleteInventorySlot(id)}
         >
           x
         </button>
@@ -109,9 +143,9 @@ function InventoryEntry({
       >
         {!browser && (
           <>
-            {console.log(item.equip)}
             {item.equip.map((item, index) => (
               <div
+                key={index}
                 className="flex grow"
                 style={{
                   backgroundColor: Constants.BORDER,
@@ -132,6 +166,7 @@ function InventoryEntry({
         >
           {item.quality.map((item, index) => (
             <div
+              key={index}
               className="flex grow items-center justify-center rounded"
               style={{
                 backgroundColor: Constants.BORDER,

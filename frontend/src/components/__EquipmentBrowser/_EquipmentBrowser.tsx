@@ -24,15 +24,15 @@ function EquipmentBrowser({
   setUpdater,
   update,
 }: CharacterProps) {
-  if (!open) return null;
-
   const [itemEntry, setItemList] = useState([] as ItemEntry[]);
 
-  useEffect(() => {
-    axios.get("http://localhost:8000/api/equipment").then((response) => {
-      setItemList(response.data);
-    });
-  }, []); // add an empty array here);
+  // useEffect(() => {
+  //   axios.get("http://localhost:8000/api/equipment").then((response) => {
+  //     setItemList(response.data);
+  //   });
+  // }, []); // add an empty array here);
+
+  if (!open) return null;
 
   return (
     <>
@@ -62,19 +62,20 @@ function EquipmentBrowser({
       >
         <form className="d-grid gap-1">
           <div className="flex pb-5">
-            <CategoryButton category="Equipment" />
-            <CategoryButton category="Equipment" />
-            <CategoryButton category="Equipment" />
-            <CategoryButton category="Equipment" />
-            <CategoryButton category="Equipment" />
-            <CategoryButton category="Equipment" />
+            <CategoryButton key="1" category="Equipment" />
+            <CategoryButton key="2" category="Equipment" />
+            <CategoryButton key="3" category="Equipment" />
+            <CategoryButton key="4" category="Equipment" />
+            <CategoryButton key="5" category="Equipment" />
+            <CategoryButton key="6" category="Equipment" />
           </div>
           <div
             className="flex flex-grow flex-col-reverse overflow-auto"
             style={{ height: "500px" }}
           >
-            {itemEntry.map((item, index) => (
+            {/* {itemEntry.map((item, index) => (
               <InventoryEntry
+                key={index}
                 browser={true}
                 index={index}
                 item={item}
@@ -82,7 +83,7 @@ function EquipmentBrowser({
                 setUpdater={setUpdater}
                 update={update}
               />
-            ))}
+            ))} */}
           </div>
         </form>
       </div>

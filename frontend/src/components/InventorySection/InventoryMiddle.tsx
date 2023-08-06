@@ -2,24 +2,33 @@ import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 import InventoryEntry from "../InventoryEntry";
 import InventoryEntryEmpty from "../InventoryEntryEmpty";
-import OpenEquipmentBrowser from "../EquipmentBrowser/OpenEquipmentBrowser";
 import { CharacterEntry } from "../../Types";
 import { useState } from "react";
-import { ItemEntry } from "../../Types";
+import EquipmentBrowser from "../EquiptmentModal/EquipmentBrowser";
 
 interface StatsSectionProps {
   selectedCharacter: CharacterEntry;
+  onDeleteItem: (id: string) => void;
 }
 
-function InventoryMiddle({ selectedCharacter }: StatsSectionProps) {
+function InventoryMiddle({
+  selectedCharacter,
+  onDeleteItem,
+}: StatsSectionProps) {
   const [update, setUpdater] = useState(0);
+  const totalSlots = selectedCharacter.stats.strong * 2;
+  const empty_slots =
+    selectedCharacter.stats.strong * 2 - selectedCharacter.inventory.length;
+
+  console.log(empty_slots);
   return (
     <>
       <div className="flex">
-        <OpenEquipmentBrowser
+        <EquipmentBrowser
           selectedCharacter={selectedCharacter}
           setUpdater={setUpdater}
           update={update}
+          onDeleteItem={onDeleteItem}
         />
         <TitleBox title={"Inventory"} />
       </div>
@@ -29,31 +38,32 @@ function InventoryMiddle({ selectedCharacter }: StatsSectionProps) {
           backgroundColor: Constants.PRIMARY,
         }}
       >
-        {Object.keys(selectedCharacter.inventory).map((key, index) => {
-          const item = selectedCharacter.inventory[key] as ItemEntry;
-          if (!item || Object.keys(item).length === 0) {
-            console.log("Found an empty slot!");
-            console.log(selectedCharacter);
+        {Array.from({ length: totalSlots }).map((_, index) => {
+          const item = selectedCharacter.inventory[index];
+          if (item) {
+            return (
+              <InventoryEntry
+                key={index}
+                browser={false}
+                index={index}
+                item={item}
+                selectedCharacter={selectedCharacter}
+                setUpdater={setUpdater}
+                onDeleteItem={onDeleteItem}
+                update={update}
+                id={item.id}
+              />
+            );
+          } else if (index >= selectedCharacter.inventory.length) {
             return (
               <InventoryEntryEmpty
                 key={index}
-                index={index}
+                index={index + 1}
                 selectedCharacter={selectedCharacter}
               />
             );
           }
-
-          return (
-            <InventoryEntry
-              key={index}
-              index={index}
-              item={item}
-              selectedCharacter={selectedCharacter}
-              setUpdater={setUpdater}
-              update={update}
-              browser={false}
-            />
-          );
+          return null;
         })}
       </div>
       <TitleBox title={"Equipment"} />
@@ -63,10 +73,8 @@ function InventoryMiddle({ selectedCharacter }: StatsSectionProps) {
           backgroundColor: Constants.PRIMARY,
         }}
       >
-        {Object.keys(selectedCharacter.equipment).map((key, index) => {
-          const item = selectedCharacter.equipment[key] as ItemEntry;
+        {selectedCharacter.equipment.map((item, index) => {
           if (!item || Object.keys(item).length === 0) {
-            console.log("Found an empty slot!");
             return (
               <InventoryEntryEmpty
                 key={index}
@@ -85,6 +93,8 @@ function InventoryMiddle({ selectedCharacter }: StatsSectionProps) {
               setUpdater={setUpdater}
               update={update}
               browser={false}
+              id={item.id}
+              onDeleteItem={onDeleteItem}
             />
           );
         })}

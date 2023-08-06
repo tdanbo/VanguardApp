@@ -23,9 +23,9 @@ class CharacterEntry(BaseModel):
         "accurate": 0,
     }
     corruption: dict = {}
-    abilities: dict = {}
-    inventory: dict = {}
-    equipment: dict = {}
+    abilities: list = []
+    inventory: list = []
+    equipment: list = []
 
 
 class ItemEntry(BaseModel):
