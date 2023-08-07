@@ -86,17 +86,6 @@ function InventoryEntry({
     onDeleteItem(id);
   };
 
-  useEffect(() => {
-    console.log("Updating Character");
-    // selectedCharacter.inventory = inventory; THIS WILL UPDATE THE INVENTORY< BUT NOT PROC THE RE-RENDER
-    axios
-      .put(
-        `http://localhost:8000/api/characterlog/${selectedCharacter.details.name}`,
-        selectedCharacter,
-      )
-      .then((res) => console.log(res));
-  }, [update]);
-
   return (
     <div
       className="flex"
