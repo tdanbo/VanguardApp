@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "../contexts/CharacterContext.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

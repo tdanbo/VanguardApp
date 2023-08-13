@@ -5,19 +5,7 @@ import InventoryEntry from "../InventoryEntry";
 import { CharacterEntry, ItemEntry } from "../../Types";
 import axios from "axios";
 
-interface EquipmentBrowserProps {
-  selectedCharacter: CharacterEntry;
-  setUpdater: React.Dispatch<React.SetStateAction<number>>;
-  update: number;
-  onDeleteItem: (id: string) => void;
-}
-
-function EquipmentBrowser({
-  selectedCharacter,
-  setUpdater,
-  update,
-  onDeleteItem,
-}: EquipmentBrowserProps) {
+function EquipmentBrowser() {
   // Declare a state variable to hold the modal open/close status
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -93,10 +81,7 @@ function EquipmentBrowser({
                   browser={true}
                   index={index}
                   item={item}
-                  selectedCharacter={selectedCharacter}
-                  setUpdater={setUpdater}
-                  update={update}
-                  onDeleteItem={onDeleteItem}
+                  equipped={""}
                   id={""}
                 />
               ))}

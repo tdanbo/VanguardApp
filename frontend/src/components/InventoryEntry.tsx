@@ -4,31 +4,33 @@ import { ItemEntry } from "../Types";
 
 import { TYPE_COLORS } from "../Constants";
 import { CharacterEntry } from "../Types";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useContext } from "react";
+
+import { CharacterContext } from "../contexts/CharacterContext";
+import {
+  onDeleteItem,
+  onEquipItem,
+  onUnequipItem,
+  onAddInventoryItem,
+} from "../functions/CharacterFunctions";
 import chroma from "chroma-js";
 
 interface InventoryEntryProps {
   index: number;
   browser: boolean;
+  equipped: string;
   item: ItemEntry;
-  selectedCharacter: CharacterEntry;
-  update: number;
-  setUpdater: React.Dispatch<React.SetStateAction<number>>;
   id: string;
-  onDeleteItem: (id: string) => void;
 }
 
 function InventoryEntry({
   index,
   item,
   browser,
-  selectedCharacter,
-  setUpdater,
-  update,
+  equipped,
   id,
-  onDeleteItem,
 }: InventoryEntryProps) {
+  const { character, setCharacter } = useContext(CharacterContext);
   const DARKER_PRIMARY = chroma(Constants.PRIMARY).darken(1).hex();
   const DARKER_PRIMARY_DARKER = chroma(Constants.PRIMARY_DARKER)
     .darken(1)
@@ -38,7 +40,7 @@ function InventoryEntry({
       if (browser) {
         return Constants.PRIMARY_DARKER;
       }
-      if (index >= selectedCharacter.stats.strong) {
+      if (index >= character.stats.strong) {
         return DARKER_PRIMARY_DARKER;
       } else {
         return Constants.PRIMARY_DARKER;
@@ -47,7 +49,7 @@ function InventoryEntry({
       if (browser) {
         return Constants.PRIMARY;
       }
-      if (index >= selectedCharacter.stats.strong) {
+      if (index >= character.stats.strong) {
         return DARKER_PRIMARY;
       } else {
         return Constants.PRIMARY;
@@ -57,33 +59,33 @@ function InventoryEntry({
 
   const COLOR = TYPE_COLORS[item.category] || "defaultColor";
 
-  const generateRandomId = (length = 10) => {
-    return Math.random()
-      .toString(36)
-      .substring(2, 2 + length);
+  const DeleteInventorySlot = (id: string) => {
+    const updatedCharacter = onDeleteItem({ id, character });
+    if (updatedCharacter) {
+      setCharacter(updatedCharacter);
+    }
+  };
+
+  const EquipInventorySlot = (id: string, hand: string) => {
+    const updatedCharacter = onEquipItem({ id, character, item, hand });
+    if (updatedCharacter) {
+      setCharacter(updatedCharacter);
+    }
+  };
+
+  const UnequipInventorySlot = (equipped: string) => {
+    const updatedCharacter = onUnequipItem({ character, item, equipped });
+    if (updatedCharacter) {
+      setCharacter(updatedCharacter);
+    }
   };
 
   const AddInventorySlot = () => {
-    console.log("Adding Item");
-    if (
-      selectedCharacter.inventory.length ===
-      Math.ceil(selectedCharacter.stats.strong * 2)
-    ) {
-      console.log("Inventory is full");
-      return;
-    } else {
-      console.log("Adding Item");
-      const itemWithId = {
-        ...item,
-        id: generateRandomId(),
-      };
-      selectedCharacter.inventory.push(itemWithId);
+    const updatedCharacter = onAddInventoryItem({ character, item });
+    if (updatedCharacter) {
+      console.log("updatedCharacter", updatedCharacter);
+      setCharacter(updatedCharacter);
     }
-    setUpdater((prevUpdate) => prevUpdate + 1);
-  };
-
-  const DeleteInventorySlot = (id: string) => {
-    onDeleteItem(id);
   };
 
   return (
@@ -97,32 +99,43 @@ function InventoryEntry({
         borderTop: `1px solid ${Constants.BORDER}`,
       }}
     >
-      {browser ? (
-        <button
-          className="flex items-center justify-center"
-          style={{
-            backgroundColor: COLOR,
-            width: "16px",
-            fontSize: "14px",
-            fontWeight: "bold",
-          }}
-          onClick={AddInventorySlot}
-        >
-          +
-        </button>
-      ) : (
-        <button
-          className="flex items-center justify-center"
-          style={{
-            backgroundColor: COLOR,
-            width: "8px",
-            fontSize: "10px",
-          }}
-          onClick={() => DeleteInventorySlot(id)}
-        >
-          x
-        </button>
-      )}
+      {
+        browser ? (
+          <button
+            className="flex items-center justify-center"
+            style={{
+              backgroundColor: COLOR,
+              width: "16px",
+              fontSize: "14px",
+              fontWeight: "bold",
+            }}
+            onClick={() => AddInventorySlot()}
+          >
+            +
+          </button>
+        ) : equipped === "" ? (
+          <button
+            className="flex items-center justify-center"
+            style={{
+              backgroundColor: COLOR,
+              width: "8px",
+              fontSize: "10px",
+            }}
+            onClick={() => DeleteInventorySlot(id)}
+          >
+            x
+          </button> // else part for equipped
+        ) : (
+          <button
+            className="flex items-center justify-center"
+            style={{
+              backgroundColor: COLOR,
+              width: "8px",
+              fontSize: "10px",
+            }}
+          ></button>
+        ) // else part for equipped
+      }
       <div
         className="flex flex-col"
         style={{
@@ -130,21 +143,40 @@ function InventoryEntry({
           marginLeft: "1px",
         }}
       >
-        {!browser && (
-          <>
-            {item.equip.map((item, index) => (
-              <div
-                key={index}
-                className="flex grow"
-                style={{
-                  backgroundColor: Constants.BORDER,
-                  width: "8px",
-                  marginBottom: "1px",
-                }}
-              ></div>
-            ))}
-          </>
-        )}
+        {
+          !browser ? ( // if browser is false
+            equipped === "" ? ( // if equipped is an empty string
+              <>
+                {item.equip.map((hand, index) => (
+                  <div
+                    key={index}
+                    className="flex grow"
+                    style={{
+                      backgroundColor: Constants.BORDER,
+                      width: "8px",
+                      marginBottom: "1px",
+                    }}
+                    onClick={() => EquipInventorySlot(id, hand)}
+                  ></div>
+                ))}
+              </>
+            ) : (
+              // else part for equipped
+              <>
+                <div
+                  key={index} // Note: You might get an error here if index is not defined in this scope
+                  className="flex grow"
+                  style={{
+                    backgroundColor: Constants.BORDER,
+                    width: "8px",
+                    marginBottom: "1px",
+                  }}
+                  onClick={() => UnequipInventorySlot(equipped)}
+                ></div>
+              </>
+            )
+          ) : null // if browser is true, render nothing
+        }
       </div>
       <div className="flex px-2 py-1">
         <div

@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import * as Constants from "../Constants";
 import axios from "axios";
 
-import { CharacterEntry } from "../Types";
+import { CharacterContext } from "../contexts/CharacterContext";
 
+import { getCharacterEntry } from "../functions/CharacterFunctions";
+import { CharacterEntry } from "../Types";
 interface CharacterDetails {
   name: string;
 }
@@ -12,23 +14,31 @@ interface CharacterLog {
   details: CharacterDetails;
 }
 
-interface DropdownCharacterProps {
-  getSelectedCharacter: (selectedName: string) => void;
-}
-
-function DropdownCharacter({ getSelectedCharacter }: DropdownCharacterProps) {
+function DropdownCharacter() {
+  const { character, setCharacter } = useContext(CharacterContext);
   const [characterLogList, setCharacterLog] = useState([] as CharacterLog[]);
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
+
   useEffect(() => {
     axios.get("http://localhost:8000/api/characterlog").then((response) => {
       setCharacterLog(response.data);
     });
   }, []);
 
-  const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSelect = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedName = event.target.value;
     setSelectedValue(selectedName);
-    getSelectedCharacter(selectedName);
+
+    try {
+      const updatedCharacter: CharacterEntry = await getCharacterEntry(
+        selectedName,
+      );
+      setCharacter(updatedCharacter);
+    } catch (error) {
+      console.error("Failed to get character details:", error);
+    }
+
+    console.log(character);
   };
 
   return (

@@ -2,11 +2,12 @@ import StatBox from "../StatBox";
 import * as Constants from "../../Constants";
 import { CharacterEntry } from "../../Types";
 import TitleBox from "../TitleBox";
-interface StatsSectionProps {
-  selectedCharacter: CharacterEntry;
-}
 
-function InventoryUpper({ selectedCharacter }: StatsSectionProps) {
+import React, { useState, useContext } from "react";
+import { CharacterContext } from "../../contexts/CharacterContext";
+
+function InventoryUpper() {
+  const { character, setCharacter } = useContext(CharacterContext);
   return (
     <div className="grow flex-row">
       <>
@@ -18,15 +19,12 @@ function InventoryUpper({ selectedCharacter }: StatsSectionProps) {
             minHeight: Constants.SECTION_HEIGHT,
           }}
         >
-          <StatBox type_name={"Xp"} type_value={selectedCharacter.details.xp} />
+          <StatBox type_name={"Xp"} type_value={character.details.xp} />
           <StatBox
             type_name={"Unspent"}
-            type_value={selectedCharacter.details.unspent}
+            type_value={character.details.unspent}
           />
-          <StatBox
-            type_name={"Ft."}
-            type_value={selectedCharacter.details.movement}
-          />
+          <StatBox type_name={"Ft."} type_value={character.details.movement} />
         </div>
       </>
     </div>

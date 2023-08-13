@@ -4,18 +4,18 @@ import * as Constants from "../../Constants";
 
 import { CharacterEntry } from "../../Types";
 
-interface StatsSectionProps {
-  selectedCharacter: CharacterEntry;
-}
+import React, { useState, useContext } from "react";
+import { CharacterContext } from "../../contexts/CharacterContext";
 
-function StatsUpperLeft({ selectedCharacter }: StatsSectionProps) {
+function StatsUpperLeft() {
+  const { character, setCharacter } = useContext(CharacterContext);
   let Maximum = 10;
-  if (selectedCharacter.stats.strong > 10) {
-    Maximum = selectedCharacter.stats.strong;
+  if (character.stats.strong > 10) {
+    Maximum = character.stats.strong;
   }
 
-  const Current = Maximum - selectedCharacter.toughness.damage;
-  const Pain = Math.ceil(selectedCharacter.stats.strong / 2);
+  const Current = Maximum - character.toughness.damage;
+  const Pain = Math.ceil(character.stats.strong / 2);
 
   return (
     <div className="grow flex-row pr-1">

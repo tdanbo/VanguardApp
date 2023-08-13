@@ -3,33 +3,30 @@ import * as Constants from "../../Constants";
 import InventoryEntry from "../InventoryEntry";
 import InventoryEntryEmpty from "../InventoryEntryEmpty";
 import { CharacterEntry } from "../../Types";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import EquipmentBrowser from "../EquiptmentModal/EquipmentBrowser";
+
+import { CharacterContext } from "../../contexts/CharacterContext";
 
 interface StatsSectionProps {
   selectedCharacter: CharacterEntry;
   onDeleteItem: (id: string) => void;
 }
 
-function InventoryMiddle({
-  selectedCharacter,
-  onDeleteItem,
-}: StatsSectionProps) {
-  const [update, setUpdater] = useState(0);
-  const totalSlots = selectedCharacter.stats.strong * 2;
-  const empty_slots =
-    selectedCharacter.stats.strong * 2 - selectedCharacter.inventory.length;
+function InventoryMiddle() {
+  const { character, setCharacter } = useContext(CharacterContext);
 
-  console.log(empty_slots);
+  // const [update, setUpdater] = useState(0);
+  const totalSlots = character.stats.strong * 2;
+  const empty_slots = character.stats.strong * 2 - character.inventory.length;
+
+  const equipped_slots = ["AR", "MH", "OH"];
+
+  // console.log(empty_slots);
   return (
     <>
       <div className="flex">
-        <EquipmentBrowser
-          selectedCharacter={selectedCharacter}
-          setUpdater={setUpdater}
-          update={update}
-          onDeleteItem={onDeleteItem}
-        />
+        <EquipmentBrowser />
         <TitleBox title={"Inventory"} />
       </div>
       <div
@@ -39,7 +36,7 @@ function InventoryMiddle({
         }}
       >
         {Array.from({ length: totalSlots }).map((_, index) => {
-          const item = selectedCharacter.inventory[index];
+          const item = character.inventory[index];
           if (item) {
             return (
               <InventoryEntry
@@ -47,21 +44,12 @@ function InventoryMiddle({
                 browser={false}
                 index={index}
                 item={item}
-                selectedCharacter={selectedCharacter}
-                setUpdater={setUpdater}
-                onDeleteItem={onDeleteItem}
-                update={update}
                 id={item.id}
+                equipped={""}
               />
             );
-          } else if (index >= selectedCharacter.inventory.length) {
-            return (
-              <InventoryEntryEmpty
-                key={index}
-                index={index + 1}
-                selectedCharacter={selectedCharacter}
-              />
-            );
+          } else if (index >= character.inventory.length) {
+            return <InventoryEntryEmpty key={index} index={index + 1} />;
           }
           return null;
         })}
@@ -73,15 +61,9 @@ function InventoryMiddle({
           backgroundColor: Constants.PRIMARY,
         }}
       >
-        {selectedCharacter.equipment.map((item, index) => {
+        {character.equipment.map((item, index) => {
           if (!item || Object.keys(item).length === 0) {
-            return (
-              <InventoryEntryEmpty
-                key={index}
-                index={index}
-                selectedCharacter={selectedCharacter}
-              />
-            );
+            return <InventoryEntryEmpty key={index} index={index} />;
           }
 
           return (
@@ -89,12 +71,9 @@ function InventoryMiddle({
               key={index}
               index={index}
               item={item}
-              selectedCharacter={selectedCharacter}
-              setUpdater={setUpdater}
-              update={update}
               browser={false}
               id={item.id}
-              onDeleteItem={onDeleteItem}
+              equipped={equipped_slots[index]}
             />
           );
         })}

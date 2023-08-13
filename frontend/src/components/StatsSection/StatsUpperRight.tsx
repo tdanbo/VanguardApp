@@ -7,16 +7,16 @@ import { useState } from "react";
 
 import { CharacterEntry } from "../../Types";
 
-interface StatsSectionProps {
-  selectedCharacter: CharacterEntry;
-}
+import React, { useContext } from "react";
+import { CharacterContext } from "../../contexts/CharacterContext";
 
 interface CorruptionEntry {
   corruption: number;
 }
 
-function StatsLower({ selectedCharacter }: StatsSectionProps) {
-  const corruption = Object.values(selectedCharacter.corruption) as number[];
+function StatsLower() {
+  const { character, setCharacter } = useContext(CharacterContext);
+  const corruption = Object.values(character.corruption) as number[];
   const [update, setUpdater] = useState(0);
   return (
     <div className="grow flex-row pl-1">
@@ -33,7 +33,7 @@ function StatsLower({ selectedCharacter }: StatsSectionProps) {
           <CorruptionBox
             key={key}
             corruptionState={value}
-            selectedCharacter={selectedCharacter}
+            selectedCharacter={character}
             setUpdater={setUpdater}
             update={update}
             field={"token" + key}

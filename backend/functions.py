@@ -13,7 +13,7 @@ def add_corruption(document):
 
 def add_equipment(document):
     print("adding equipment")
-    for i in range(4):
+    for i in range(3):
         document["equipment"].append({})
     print(document)
     return document

@@ -10,117 +10,44 @@ import AddCharacter from "./components/AddCharacter";
 import TitleBox from "./components/TitleBox";
 import { CharacterEntry } from "./Types";
 
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 
 import * as Constants from "./Constants";
 
-type CombatLog = {
-  character: string;
-  result: number;
-  active: string;
-  type: string;
-  details: string;
-};
+import CharacterProvider from "./contexts/CharacterContext";
+
+import { CharacterContext } from "./contexts/CharacterContext";
 
 function App() {
-  const [selectedCharacter, setSelectedCharacter] =
-    useState<CharacterEntry | null>(null);
-
-  const onDeleteItem = (id: string) => {
-    if (!selectedCharacter) return;
-
-    const updatedInventory = selectedCharacter.inventory.filter(
-      (item) => item.id !== id,
-    );
-
-    const updatedCharacter = {
-      ...selectedCharacter,
-      inventory: updatedInventory,
-    };
-
-    setSelectedCharacter(updatedCharacter);
-    postSelectedCharacter(updatedCharacter);
-  };
-
-  function postSelectedCharacter(updatedCharacter: CharacterEntry) {
-    console.log("Updating Character");
-    // selectedCharacter.inventory = inventory; THIS WILL UPDATE THE INVENTORY< BUT NOT PROC THE RE-RENDER
-    axios
-      .put(
-        `http://localhost:8000/api/characterlog/${updatedCharacter.details.name}`,
-        updatedCharacter,
-      )
-      .then((res) => console.log(res));
-  }
-
-  function getSelectedCharacter(selectedName: string) {
-    axios
-      .get(`http://localhost:8000/api/characterlog/${selectedName}`)
-      .then((response) => {
-        console.log(response.data);
-        setSelectedCharacter(response.data);
-      })
-      .catch((error) => {
-        console.error(`Error fetching character data: ${error}`);
-      });
-  }
-
-  useEffect(() => {
-    getSelectedCharacter("Default");
-  }, []);
-
-  const [combatLogList, setCombatLog] = useState([] as CombatLog[]);
-
-  // useEffect(() => {
-  //   axios.get("http://localhost:8000/api/combatlog").then((response) => {
-  //     setCombatLog(response.data);
-  //   });
-  // }); // This will check all the time);
-
-  useEffect(() => {
-    axios.get("http://localhost:8000/api/combatlog").then((response) => {
-      setCombatLog(response.data);
-    });
-  }, []); // add an empty array here);
-
-  console.log("BUILDING APP");
+  const { character, setCharacter } = useContext(CharacterContext);
+  console.log(character);
 
   return (
-    <div className="flex">
-      <div className="w-1/2">
-        <div
-          className="flex px-1"
-          style={{
-            height: Constants.SECTION_TITLE_HEIGHT,
-            backgroundColor: Constants.DARK,
-          }}
-        >
-          <DeleteCharacter />
-          <DropdownCharacter getSelectedCharacter={getSelectedCharacter} />
-          <AddCharacter />
+    <CharacterProvider>
+      <div className="flex">
+        <div className="w-1/2">
+          <div
+            className="flex px-1"
+            style={{
+              height: Constants.SECTION_TITLE_HEIGHT,
+              backgroundColor: Constants.DARK,
+            }}
+          >
+            <DeleteCharacter />
+            <DropdownCharacter />
+            <AddCharacter />
+          </div>
+          <InventorySection />
         </div>
-
-        {selectedCharacter ? (
-          <InventorySection
-            selectedCharacter={selectedCharacter}
-            onDeleteItem={onDeleteItem}
-          />
-        ) : (
-          <div>Loading...</div> // or whatever you want to show when selectedCharacter is null
-        )}
+        <div>
+          <StatsSection />
+        </div>
+        {/* <div className="w-1/2">
+          <CombatSection combatLogList={combatLogList} />
+        </div> */}
       </div>
-      <div>
-        {selectedCharacter ? (
-          <StatsSection selectedCharacter={selectedCharacter} />
-        ) : (
-          <div>Loading...</div> // or whatever you want to show when selectedCharacter is null
-        )}
-      </div>
-      <div className="w-1/2">
-        <CombatSection combatLogList={combatLogList} />
-      </div>
-    </div>
+    </CharacterProvider>
   );
 }
 
