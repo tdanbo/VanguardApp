@@ -1,6 +1,7 @@
 from model import CombatEntry
 from model import CharacterEntry
 from model import ItemEntry
+from model import AbilityEntry
 import motor.motor_asyncio
 from functions import add_corruption, add_equipment
 
@@ -13,6 +14,7 @@ SESSION = "SessionA"
 COMBAT_LOG = "CombatLog"
 CHARACTER_LOG = "CharacterLog"
 EQUIPMENT = "Equipment"
+ABILITIES = "Abilities"
 connection_string = (
     f"mongodb+srv://{USER}:{PASSWORD}@vanguardsessions.xbafis6.mongodb.net/"
 )
@@ -24,7 +26,7 @@ character_log_collection = database[CHARACTER_LOG]
 
 database = client["Content"]
 content_collection = database[EQUIPMENT]
-
+ability_collection = database[ABILITIES]
 
 async def get_combat_entries():
     combat_entries = []
@@ -81,3 +83,10 @@ async def get_equipment_entries():
     async for document in cursor:
         equipment_entries.append(ItemEntry(**document))
     return equipment_entries
+
+async def get_abilities_entries():
+    abilities_entries = []
+    cursor = ability_collection.find({})
+    async for document in cursor:
+        abilities_entries.append(AbilityEntry(**document))
+    return abilities_entries

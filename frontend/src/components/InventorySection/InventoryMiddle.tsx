@@ -4,7 +4,7 @@ import InventoryEntry from "../InventoryEntry";
 import InventoryEntryEmpty from "../InventoryEntryEmpty";
 import { CharacterEntry } from "../../Types";
 import { useState, useContext } from "react";
-import EquipmentBrowser from "../EquiptmentModal/EquipmentBrowser";
+import EquipmentBrowser from "../Modals/EquipmentBrowser";
 
 import { CharacterContext } from "../../contexts/CharacterContext";
 

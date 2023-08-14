@@ -3,6 +3,7 @@ import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 
 import { CharacterEntry } from "../../Types";
+import StatSettings from "../Modals/StatSettings";
 
 import React, { useState, useContext } from "react";
 import { CharacterContext } from "../../contexts/CharacterContext";
@@ -11,7 +12,10 @@ function StatsLower() {
   const { character, setCharacter } = useContext(CharacterContext);
   return (
     <>
-      <TitleBox title={"Stats"} />
+      <div className="flex">
+        <StatSettings />
+        <TitleBox title={"Stats"} />
+      </div>
       <div
         className="flex flex-row p-2"
         style={{

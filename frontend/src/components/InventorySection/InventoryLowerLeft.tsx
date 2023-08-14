@@ -1,4 +1,4 @@
-import StatBox from "../StatBox";
+import ModifierBox from "../ModifierBox";
 import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 
@@ -14,11 +14,11 @@ function StatsLower() {
           minHeight: Constants.SECTION_HEIGHT,
         }}
       >
-        <StatBox type_name={"A"} type_value={0} />
-        <StatBox type_name={"A"} type_value={0} />
-        <StatBox type_name={"A"} type_value={0} />
-        <StatBox type_name={"A"} type_value={0} />
-        <StatBox type_name={"A"} type_value={0} />
+        <ModifierBox type_name={"A"} type_value={0} />
+        <ModifierBox type_name={"A"} type_value={0} />
+        <ModifierBox type_name={"A"} type_value={0} />
+        <ModifierBox type_name={"A"} type_value={0} />
+        <ModifierBox type_name={"A"} type_value={0} />
       </div>
     </div>
   );

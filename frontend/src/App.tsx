@@ -7,26 +7,15 @@ import DropdownCharacter from "./components/DropdownCharacter";
 import DeleteCharacter from "./components/DeleteCharacter";
 import AddCharacter from "./components/AddCharacter";
 
-import TitleBox from "./components/TitleBox";
-import { CharacterEntry } from "./Types";
-
-import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
-
 import * as Constants from "./Constants";
 
 import CharacterProvider from "./contexts/CharacterContext";
 
-import { CharacterContext } from "./contexts/CharacterContext";
-
 function App() {
-  const { character, setCharacter } = useContext(CharacterContext);
-  console.log(character);
-
   return (
     <CharacterProvider>
       <div className="flex">
-        <div className="w-1/2">
+        <div className="w-1/3">
           <div
             className="flex px-1"
             style={{
@@ -40,12 +29,12 @@ function App() {
           </div>
           <InventorySection />
         </div>
-        <div>
+        <div className="w-full">
           <StatsSection />
         </div>
-        {/* <div className="w-1/2">
-          <CombatSection combatLogList={combatLogList} />
-        </div> */}
+        <div className="w-1/3">
+          <CombatSection />
+        </div>
       </div>
     </CharacterProvider>
   );

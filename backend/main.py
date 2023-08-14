@@ -11,6 +11,7 @@ from database import (
     fetch_one_character,
     update_character,
     get_equipment_entries,
+    get_abilities_entries
 )
 
 app = FastAPI()
@@ -84,4 +85,9 @@ async def put_character_log(name: str, updated_character: CharacterEntry):
 @app.get("/api/equipment")
 async def fetch_equipment_entries():
     response = await get_equipment_entries()
+    return response
+
+@app.get("/api/abilities")
+async def fetch_abilities_entries():
+    response = await get_abilities_entries()
     return response

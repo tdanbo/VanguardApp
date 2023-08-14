@@ -1,7 +1,7 @@
 import axios from "axios";
 import { CharacterEntry } from "../Types";
 import { createContext, useState } from "react";
-import { ItemEntry } from "../Types";
+import { ItemEntry, AbilityEntry } from "../Types";
 interface onDeleteProps {
   id: string;
   character: CharacterEntry;
@@ -35,10 +35,46 @@ interface onAddCharacterProps {
   character: CharacterEntry;
 }
 
+interface onAddAbilityProps {
+  ability: AbilityEntry;
+  character: CharacterEntry;
+}
+
 const generateRandomId = (length = 10) => {
   return Math.random()
     .toString(36)
     .substring(2, 2 + length);
+};
+
+export function onDeleteAbility({ id, character }: onDeleteProps) {
+  if (!character) return;
+
+  const updatedInventory = character.abilities.filter((item) => item.id !== id);
+
+  const updatedCharacter = {
+    ...character,
+    abilities: updatedInventory,
+  };
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
+}
+
+export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
+  console.log("Adding Ability");
+  const abilityWithId = {
+    ...ability,
+    id: generateRandomId(),
+  };
+
+  const newAbilities: AbilityEntry[] = [...character.abilities, abilityWithId];
+
+  const updatedCharacter = {
+    ...character,
+    abilities: newAbilities,
+  };
+
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
 };
 
 export const onAddInventoryItem = ({
@@ -130,7 +166,7 @@ export function onDeleteItem({ id, character }: onDeleteProps) {
   return updatedCharacter;
 }
 
-function postSelectedCharacter(updatedCharacter: CharacterEntry) {
+export function postSelectedCharacter(updatedCharacter: CharacterEntry) {
   console.log("Updating Character");
   // selectedCharacter.inventory = inventory; THIS WILL UPDATE THE INVENTORY< BUT NOT PROC THE RE-RENDER
   axios
@@ -140,29 +176,3 @@ function postSelectedCharacter(updatedCharacter: CharacterEntry) {
     )
     .then((res) => console.log(res));
 }
-
-// type CombatLog = {
-//     character: string;
-//     result: number;
-//     active: string;
-//     type: string;
-//     details: string;
-//   };
-
-// useEffect(() => {
-//   getSelectedCharacter("Default");
-// }, []);
-
-// const [combatLogList, setCombatLog] = useState([] as CombatLog[]);
-
-// useEffect(() => {
-//   axios.get("http://localhost:8000/api/combatlog").then((response) => {
-//     setCombatLog(response.data);
-//   });
-// }); // This will check all the time);
-
-// useEffect(() => {
-//   axios.get("http://localhost:8000/api/combatlog").then((response) => {
-//     setCombatLog(response.data);
-//   });
-// }, []); // add an empty array here);

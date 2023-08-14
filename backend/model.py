@@ -36,3 +36,15 @@ class ItemEntry(BaseModel):
     cost: str
     name: str
     category: str
+
+class AbilityEntry(BaseModel):
+    name: str
+    requirement: str
+    tradition: str
+    description: str
+    novice: str
+    adept: str
+    master: str
+    type: str
+    tag: str
+    

@@ -1,19 +1,13 @@
 import * as Constants from "../Constants";
+import { CombatEntry } from "../Types";
 
-interface CombatEntryProps {
-  character: string;
-  entryType: string;
-  entryResult: number;
+interface CombatEntryItemProps {
+  combatEntry: CombatEntry;
   index: number;
 }
 
-function CombatEntry({
-  character,
-  entryType,
-  entryResult,
-  index,
-}: CombatEntryProps) {
-  const RollEntry = entryResult;
+function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
+  const RollEntry = 0;
 
   const BackgroundColor = () => {
     if (index % 2 === 0) {
@@ -24,7 +18,7 @@ function CombatEntry({
   };
 
   const EntryColor = () => {
-    if (entryType === "attack") {
+    if (combatEntry.type === "attack") {
       return Constants.RED;
     }
   };
@@ -51,14 +45,16 @@ function CombatEntry({
         {RollEntry}
       </div>
       <div>
-        <div className="fw-bold fs-5 m-0 flex justify-center">{character}</div>
-        <div className="m-0 flex justify-center">{character}</div>
+        <div className="fw-bold fs-5 m-0 flex justify-center">
+          {combatEntry.character}
+        </div>
+        <div className="m-0 flex justify-center">{combatEntry.character}</div>
       </div>
 
       <img
         className="rounded-2 flex items-center justify-center"
         src="src\assets\characters\Alahara.png"
-        alt={character}
+        alt={combatEntry.character}
         style={{
           width: "90px",
           height: "100%",
@@ -70,4 +66,4 @@ function CombatEntry({
   );
 }
 
-export default CombatEntry;
+export default CombatEntryItem;

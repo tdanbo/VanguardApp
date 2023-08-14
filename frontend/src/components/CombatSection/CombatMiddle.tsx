@@ -1,20 +1,24 @@
-import CombatEntry from "../CombatEntry";
 import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 
-type CombatLog = {
-  character: string;
-  result: number;
-  active: string;
-  type: string;
-  details: string;
-};
+import CombatEntryItem from "../CombatEntryItem";
+import { CombatEntry } from "../../Types";
 
-type CombatLogProps = {
-  combatLogList: CombatLog[];
-};
+import { getCombatLog } from "../../functions/CombatFunctions";
 
-function CombatMiddle({ combatLogList }: CombatLogProps) {
+import { useState, useEffect } from "react";
+
+function CombatMiddle() {
+  const [combatLog, setCombatLog] = useState<CombatEntry[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getCombatLog();
+      setCombatLog(data);
+    }
+
+    fetchData();
+  }, []);
   return (
     <>
       <TitleBox title={"Combat"} />
@@ -24,14 +28,8 @@ function CombatMiddle({ combatLogList }: CombatLogProps) {
           backgroundColor: Constants.DARK,
         }}
       >
-        {[...combatLogList].reverse().map((item, index) => (
-          <CombatEntry
-            character={item.character}
-            entryType={item.active}
-            entryResult={item.result}
-            index={index}
-            key={index} // Don't forget to assign a key
-          />
+        {[...combatLog].reverse().map((item, index) => (
+          <CombatEntryItem key={index} combatEntry={item} index={index} />
         ))}
       </div>
     </>

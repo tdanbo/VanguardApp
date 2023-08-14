@@ -59,13 +59,6 @@ function InventoryEntry({
 
   const COLOR = TYPE_COLORS[item.category] || "defaultColor";
 
-  const DeleteInventorySlot = (id: string) => {
-    const updatedCharacter = onDeleteItem({ id, character });
-    if (updatedCharacter) {
-      setCharacter(updatedCharacter);
-    }
-  };
-
   const EquipInventorySlot = (id: string, hand: string) => {
     const updatedCharacter = onEquipItem({ id, character, item, hand });
     if (updatedCharacter) {
@@ -84,6 +77,13 @@ function InventoryEntry({
     const updatedCharacter = onAddInventoryItem({ character, item });
     if (updatedCharacter) {
       console.log("updatedCharacter", updatedCharacter);
+      setCharacter(updatedCharacter);
+    }
+  };
+
+  const DeleteInventorySlot = (id: string) => {
+    const updatedCharacter = onDeleteItem({ id, character });
+    if (updatedCharacter) {
       setCharacter(updatedCharacter);
     }
   };
