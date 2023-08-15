@@ -63,10 +63,10 @@ function StatSettings() {
         <div style={overlayStyles} onClick={handleClose}>
           <div style={modalStyles} onClick={stopPropagation}>
             <div className="flex-col">
-              <StatDropdown Active={"Attack"} />
-              <StatDropdown Active={"Defense"} />
-              <StatDropdown Active={"Spell Casting"} />
-              <StatDropdown Active={"Sneaking"} />
+              <StatDropdown active={"attack"} />
+              <StatDropdown active={"defense"} />
+              <StatDropdown active={"casting"} />
+              <StatDropdown active={"sneaking"} />
             </div>
           </div>
         </div>

@@ -17,13 +17,14 @@ interface CharacterLog {
 function DropdownCharacter() {
   const { character, setCharacter } = useContext(CharacterContext);
   const [characterLogList, setCharacterLog] = useState([] as CharacterLog[]);
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
 
   useEffect(() => {
     axios.get("http://localhost:8000/api/characterlog").then((response) => {
       setCharacterLog(response.data);
     });
   }, []);
+
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
 
   const handleSelect = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedName = event.target.value;

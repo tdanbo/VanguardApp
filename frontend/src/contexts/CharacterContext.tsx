@@ -24,6 +24,12 @@ const defaultCharacter: CharacterEntry = {
     vigilant: 0,
     accurate: 0,
   },
+  actives: {
+    attack: "accurate",
+    defense: "quick",
+    casting: "resolute",
+    sneaking: "discreet",
+  },
   corruption: {},
   abilities: [],
   inventory: [],

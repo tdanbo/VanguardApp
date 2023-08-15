@@ -1,17 +1,51 @@
 import * as Constants from "../Constants";
 import { useState } from "react";
+import { CharacterContext } from "../contexts/CharacterContext";
+import { useContext } from "react";
+
+import { onUpdateActive } from "../functions/CharacterFunctions";
 
 interface StatDropdownProps {
-  Active: string;
+  active: string;
 }
 
-function StatDropdown({ Active }: StatDropdownProps) {
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+function StatDropdown({ active }: StatDropdownProps) {
+  const { character, setCharacter } = useContext(CharacterContext);
+  const [selectedValue, setSelectedValue] = useState<string | null>(
+    character.actives[active],
+  );
+
+  // Get all the current active values from the character
+  const activeValues = Object.values(character.actives);
+
+  // Define all possible options
+  const allOptions = [
+    "cunning",
+    "discreet",
+    "persuasive",
+    "quick",
+    "resolute",
+    "strong",
+    "vigilant",
+    "accurate",
+  ];
+
+  // Filter out the options that are already in character.actives values
+  const availableOptions = allOptions.filter(
+    (option) =>
+      option === character.actives[active] || !activeValues.includes(option),
+  );
 
   const handleSelect = async (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedName = event.target.value;
-    setSelectedValue(selectedName);
+    const stat = event.target.value;
+    setSelectedValue(stat);
+    const updatedcharacter = onUpdateActive({ active, stat, character });
+    setCharacter(updatedcharacter);
   };
+
+  function toTitleCase(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
 
   return (
     <div className="m-0 flex p-1">
@@ -23,7 +57,7 @@ function StatDropdown({ Active }: StatDropdownProps) {
           border: `1px solid ${Constants.BORDER}`,
         }}
       >
-        {Active}
+        {toTitleCase(active)}
       </div>
       <select
         className="bold flex w-40 grow rounded-r text-center font-bold"
@@ -35,14 +69,11 @@ function StatDropdown({ Active }: StatDropdownProps) {
         value={selectedValue || ""}
         onChange={handleSelect}
       >
-        <option value="Cunning">Cunning</option>
-        <option value="Discreet">Discreet</option>
-        <option value="Persuasive">Persuasive</option>
-        <option value="Quick">Quick</option>
-        <option value="Resolute">Resolute</option>
-        <option value="Strong">Strong</option>
-        <option value="Vigilant">Vigilant</option>
-        <option value="Accurate">Accurate</option>
+        {availableOptions.map((option) => (
+          <option key={option} value={option}>
+            {toTitleCase(option)}
+          </option>
+        ))}
       </select>
     </div>
   );

@@ -22,11 +22,16 @@ interface Stats {
   accurate: number;
 }
 
+export interface Actives {
+  [key: string]: string;
+}
+
 export interface CharacterEntry {
   details: CharacterDetails;
   toughness: Toughness;
   stats: Stats;
   corruption: Record<string, unknown>;
+  actives: Actives;
   abilities: AbilityEntry[];
   inventory: ItemEntry[];
   equipment: ItemEntry[];

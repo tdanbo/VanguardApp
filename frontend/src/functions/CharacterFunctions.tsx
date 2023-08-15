@@ -46,6 +46,27 @@ const generateRandomId = (length = 10) => {
     .substring(2, 2 + length);
 };
 
+interface onUpdateActiveProps {
+  active: string;
+  stat: string;
+  character: CharacterEntry;
+}
+
+export function onUpdateActive({
+  active,
+  stat,
+  character,
+}: onUpdateActiveProps) {
+  const updatedCharacter = {
+    ...character,
+  };
+
+  updatedCharacter.actives[active] = stat;
+  console.log(updatedCharacter);
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
+}
+
 export function onDeleteAbility({ id, character }: onDeleteProps) {
   if (!character) return;
 
