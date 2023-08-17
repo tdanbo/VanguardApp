@@ -1,8 +1,11 @@
-import ModifierBox from "../ModifierBox";
+import ActiveBox from "../ActiveBox";
 import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
+import { CharacterContext } from "../../contexts/CharacterContext";
+import { useContext } from "react";
 
 function StatsLower() {
+  const { character, setCharacter } = useContext(CharacterContext);
   return (
     <div className="grow flex-row pr-1">
       <TitleBox title={"ACTIVE"} />
@@ -14,11 +17,27 @@ function StatsLower() {
           minHeight: Constants.SECTION_HEIGHT,
         }}
       >
-        <ModifierBox type_name={"A"} type_value={0} />
-        <ModifierBox type_name={"A"} type_value={0} />
-        <ModifierBox type_name={"A"} type_value={0} />
-        <ModifierBox type_name={"A"} type_value={0} />
-        <ModifierBox type_name={"A"} type_value={0} />
+        <ActiveBox
+          active="sneaking"
+          type_name={character.actives.sneaking.stat}
+          type_value={character.actives.sneaking.mod}
+        />
+        <ActiveBox
+          active="casting"
+          type_name={character.actives.casting.stat}
+          type_value={character.actives.casting.mod}
+        />
+
+        <ActiveBox
+          active="defense"
+          type_name={character.actives.defense.stat}
+          type_value={character.actives.defense.mod}
+        />
+        <ActiveBox
+          active="attack"
+          type_name={character.actives.attack.stat}
+          type_value={character.actives.attack.mod}
+        />
       </div>
     </div>
   );

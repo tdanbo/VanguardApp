@@ -10,12 +10,12 @@ import { CharacterContext } from "../../contexts/CharacterContext";
 function StatsUpperLeft() {
   const { character, setCharacter } = useContext(CharacterContext);
   let Maximum = 10;
-  if (character.stats.strong > 10) {
-    Maximum = character.stats.strong;
+  if (character.stats.strong.value > 10) {
+    Maximum = character.stats.strong.value;
   }
 
-  const Current = Maximum - character.toughness.damage;
-  const Pain = Math.ceil(character.stats.strong / 2);
+  const Current = Maximum - character.toughness.damage.value;
+  const Pain = Math.ceil(character.stats.strong.value / 2);
 
   return (
     <div className="grow flex-row pr-1">

@@ -11,22 +11,26 @@ class CombatEntry(BaseModel):
 
 class CharacterEntry(BaseModel):
     details: dict = {"name": "", "xp": 0, "unspent": 0, "movement": 0}
-    toughness: dict = {"damage": 0, "max": 0, "pain": 0}
+    toughness: dict = {
+        "damage": {"value": 0, "mod": 0},
+        "max": {"value": 0, "mod": 0},
+        "pain": {"value": 0, "mod": 0},
+    }
     stats: dict = {
-        "cunning": 0,
-        "discreet": 0,
-        "persuasive": 0,
-        "quick": 0,
-        "resolute": 0,
-        "strong": 0,
-        "vigilant": 0,
-        "accurate": 0,
+        "cunning": {"value": 0, "mod": 0},
+        "discreet": {"value": 0, "mod": 0},
+        "persuasive": {"value": 0, "mod": 0},
+        "quick": {"value": 0, "mod": 0},
+        "resolute": {"value": 0, "mod": 0},
+        "strong": {"value": 0, "mod": 0},
+        "vigilant": {"value": 0, "mod": 0},
+        "accurate": {"value": 0, "mod": 0},
     }
     actives: dict = {
-        "attack":"accurate",
-        "defense":"quick",
-        "casting":"resolute",
-        "sneaking":"discreet",
+        "attack": {"stat": "accurate", "mod": 0},
+        "defense": {"stat": "quick", "mod": 0},
+        "casting": {"stat": "resolute", "mod": 0},
+        "sneaking": {"stat": "discreet", "mod": 0},
     }
     corruption: dict = {}
     abilities: list = []
@@ -43,6 +47,7 @@ class ItemEntry(BaseModel):
     name: str
     category: str
 
+
 class AbilityEntry(BaseModel):
     name: str
     requirement: str
@@ -53,4 +58,3 @@ class AbilityEntry(BaseModel):
     master: str
     type: str
     tag: str
-    

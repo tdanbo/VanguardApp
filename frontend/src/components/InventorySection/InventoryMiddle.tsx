@@ -17,8 +17,9 @@ function InventoryMiddle() {
   const { character, setCharacter } = useContext(CharacterContext);
 
   // const [update, setUpdater] = useState(0);
-  const totalSlots = character.stats.strong * 2;
-  const empty_slots = character.stats.strong * 2 - character.inventory.length;
+  const totalSlots = character.stats.strong.value * 2;
+  const empty_slots =
+    character.stats.strong.value * 2 - character.inventory.length;
 
   const equipped_slots = ["AR", "MH", "OH"];
 

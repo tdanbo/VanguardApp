@@ -6,24 +6,37 @@ interface CharacterDetails {
 }
 
 interface Toughness {
-  damage: number;
-  max: number;
-  pain: number;
+  damage: Stat;
+  max: Stat;
+  pain: Stat;
+}
+
+interface Stat {
+  value: number;
+  mod: number;
 }
 
 interface Stats {
-  cunning: number;
-  discreet: number;
-  persuasive: number;
-  quick: number;
-  resolute: number;
-  strong: number;
-  vigilant: number;
-  accurate: number;
+  cunning: Stat;
+  discreet: Stat;
+  persuasive: Stat;
+  quick: Stat;
+  resolute: Stat;
+  strong: Stat;
+  vigilant: Stat;
+  accurate: Stat;
+}
+
+interface Active {
+  stat: string;
+  mod: number;
 }
 
 export interface Actives {
-  [key: string]: string;
+  attack: Active;
+  defense: Active;
+  casting: Active;
+  sneaking: Active;
 }
 
 export interface CharacterEntry {

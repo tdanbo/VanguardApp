@@ -3,7 +3,7 @@ import NameInputBox from "./NameInputBox";
 import * as Constants from "../../Constants";
 
 import { useState, useEffect } from "react";
-
+import { CharacterEntry } from "../../Types";
 import axios from "axios";
 
 type Character = {
@@ -18,16 +18,16 @@ interface CharacterProps {
 
 function AddCharacterForm({ open, onClose }: CharacterProps) {
   const [name, setName] = useState("");
-  const [accurate, setAccurate] = useState("");
-  const [cunning, setCunning] = useState("");
-  const [discreet, setDiscreet] = useState("");
-  const [persuasive, setPersuasive] = useState("");
-  const [quick, setQuick] = useState("");
-  const [resolute, setResolute] = useState("");
-  const [strong, setStrong] = useState("");
-  const [vigilant, setVigilant] = useState("");
+  const [accurate, setAccurate] = useState(0);
+  const [cunning, setCunning] = useState(0);
+  const [discreet, setDiscreet] = useState(0);
+  const [persuasive, setPersuasive] = useState(0);
+  const [quick, setQuick] = useState(0);
+  const [resolute, setResolute] = useState(0);
+  const [strong, setStrong] = useState(0);
+  const [vigilant, setVigilant] = useState(0);
 
-  const character_json = {
+  const character_json: CharacterEntry = {
     details: {
       movement: 0,
       name: name,
@@ -35,19 +35,25 @@ function AddCharacterForm({ open, onClose }: CharacterProps) {
       xp: 0,
     },
     toughness: {
-      max: 0,
-      pain: 0,
-      damage: 0,
+      max: { value: 0, mod: 0 },
+      pain: { value: 0, mod: 0 },
+      damage: { value: 0, mod: 0 },
     },
     stats: {
-      accurate: accurate,
-      cunning: cunning,
-      discreet: discreet,
-      persuasive: persuasive,
-      quick: quick,
-      resolute: resolute,
-      strong: strong,
-      vigilant: vigilant,
+      accurate: { value: accurate, mod: 0 },
+      cunning: { value: cunning, mod: 0 },
+      discreet: { value: discreet, mod: 0 },
+      persuasive: { value: persuasive, mod: 0 },
+      quick: { value: quick, mod: 0 },
+      resolute: { value: resolute, mod: 0 },
+      strong: { value: strong, mod: 0 },
+      vigilant: { value: vigilant, mod: 0 },
+    },
+    actives: {
+      attack: { stat: "accurate", mod: 0 },
+      defense: { stat: "quick", mod: 0 },
+      casting: { stat: "resolute", mod: 0 },
+      sneaking: { stat: "discreet", mod: 0 },
     },
     corruption: {},
     abilities: [],

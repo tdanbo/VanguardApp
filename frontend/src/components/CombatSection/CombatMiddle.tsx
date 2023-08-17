@@ -12,12 +12,12 @@ function CombatMiddle() {
   const [combatLog, setCombatLog] = useState<CombatEntry[]>([]);
 
   useEffect(() => {
-    async function fetchData() {
+    const intervalId = setInterval(async () => {
       const data = await getCombatLog();
       setCombatLog(data);
-    }
+    }, 1000); // Polls every 5 seconds
 
-    fetchData();
+    return () => clearInterval(intervalId); // Clear the interval when the component is unmounted
   }, []);
   return (
     <>

@@ -3,7 +3,7 @@ import * as Constants from "../../Constants";
 
 interface StatInputProps {
   stat: string;
-  setState: React.Dispatch<React.SetStateAction<string>>;
+  setState: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function StatInputBox({ stat, setState }: StatInputProps) {
@@ -35,7 +35,7 @@ function StatInputBox({ stat, setState }: StatInputProps) {
           fontSize: "1.1rem",
           fontWeight: "bold",
         }}
-        onChange={(event) => setState(event.target.value)}
+        onChange={(event) => setState(parseInt(event.target.value))}
       />
     </div>
   );

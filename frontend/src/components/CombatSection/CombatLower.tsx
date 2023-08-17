@@ -1,4 +1,4 @@
-import ModifierBox from "../ModifierBox";
+import DiceBox from "../DiceBox";
 import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 
@@ -27,12 +27,12 @@ function CombatLower() {
           minHeight: Constants.SECTION_HEIGHT,
         }}
       >
-        <ModifierBox type_name={"d4"} type_value={0} />
-        <ModifierBox type_name={"d6"} type_value={0} />
-        <ModifierBox type_name={"d8"} type_value={0} />
-        <ModifierBox type_name={"d10"} type_value={0} />
-        <ModifierBox type_name={"d12"} type_value={0} />
-        <ModifierBox type_name={"d20"} type_value={0} />
+        <DiceBox type_name={"d4"} type_value={2} />
+        <DiceBox type_name={"d6"} type_value={2} />
+        <DiceBox type_name={"d8"} type_value={1} />
+        <DiceBox type_name={"d10"} type_value={2} />
+        <DiceBox type_name={"d12"} type_value={1} />
+        <DiceBox type_name={"d20"} type_value={3} />
       </div>
     </>
   );

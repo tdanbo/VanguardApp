@@ -13,10 +13,10 @@ function StatBox({ type_name, type_value }: Props) {
 
   let active = "";
 
-  Object.entries(character.actives).forEach(([key, value]) => {
-    console.log(value);
+  Object.entries(character.actives).forEach(([key, dict]) => {
+    console.log(dict.stat);
     console.log(type_name);
-    if (value === type_name) {
+    if (dict.stat === type_name) {
       console.log("below is the value");
       active = key;
     }

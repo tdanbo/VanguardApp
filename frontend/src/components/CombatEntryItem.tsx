@@ -7,8 +7,6 @@ interface CombatEntryItemProps {
 }
 
 function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
-  const RollEntry = 0;
-
   const BackgroundColor = () => {
     if (index % 2 === 0) {
       return Constants.PRIMARY;
@@ -42,7 +40,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
           border: `1px solid ${Constants.BORDER}`,
         }}
       >
-        {RollEntry}
+        {combatEntry.result}
       </div>
       <div>
         <div className="fw-bold fs-5 m-0 flex justify-center">

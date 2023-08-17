@@ -33,7 +33,8 @@ function StatDropdown({ active }: StatDropdownProps) {
   // Filter out the options that are already in character.actives values
   const availableOptions = allOptions.filter(
     (option) =>
-      option === character.actives[active] || !activeValues.includes(option),
+      option === character.actives[active].value ||
+      !activeValues.includes(option),
   );
 
   const handleSelect = async (event: React.ChangeEvent<HTMLSelectElement>) => {
