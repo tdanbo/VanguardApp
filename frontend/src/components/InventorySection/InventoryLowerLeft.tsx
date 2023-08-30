@@ -3,9 +3,11 @@ import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import { useContext } from "react";
+import { getActiveModifiers } from "../../functions/CharacterFunctions";
 
 function StatsLower() {
   const { character, setCharacter } = useContext(CharacterContext);
+  // const character_modifiers = getActiveModifiers(character);
   return (
     <div className="grow flex-row pr-1">
       <TitleBox title={"ACTIVE"} />

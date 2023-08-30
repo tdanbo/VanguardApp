@@ -90,3 +90,7 @@ async def get_abilities_entries():
     async for document in cursor:
         abilities_entries.append(AbilityEntry(**document))
     return abilities_entries
+
+async def delete_character(name: str):
+    await character_log_collection.delete_one({"details.name": name})
+    return True

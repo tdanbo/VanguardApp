@@ -1,4 +1,4 @@
-import StatBox from "../StatBox";
+import DetailsBox from "../StatBox";
 import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 
@@ -28,9 +28,9 @@ function StatsUpperLeft() {
           minHeight: Constants.SECTION_HEIGHT,
         }}
       >
-        <StatBox type_name={"Toughness"} type_value={Current} />
-        <StatBox type_name={"Maximum"} type_value={Maximum} />
-        <StatBox type_name={"Pain"} type_value={Pain} />
+        <DetailsBox type_name={"Toughness"} type_value={Current} />
+        <DetailsBox type_name={"Maximum"} type_value={Maximum} />
+        <DetailsBox type_name={"Pain"} type_value={Pain} />
       </div>
     </div>
   );

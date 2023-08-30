@@ -16,13 +16,13 @@ function InventoryEntryEmpty({ index }: InventoryEntryEmptyProps) {
     .hex();
   const BackgroundColor = () => {
     if (index % 2 === 0) {
-      if (index - 1 >= character.stats.strong) {
+      if (index - 1 >= character.stats.strong.value) {
         return DARKER_PRIMARY;
       } else {
         return Constants.PRIMARY;
       }
     } else {
-      if (index - 1 >= character.stats.strong) {
+      if (index - 1 >= character.stats.strong.value) {
         return DARKER_PRIMARY_DARKER;
       } else {
         return Constants.PRIMARY_DARKER;

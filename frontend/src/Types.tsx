@@ -1,8 +1,8 @@
 interface CharacterDetails {
   name: string;
-  xp: number;
-  unspent: number;
+  xp_earned: number;
   movement: number;
+  modifier: number;
 }
 
 interface Toughness {
@@ -31,6 +31,8 @@ interface Active {
   stat: string;
   mod: number;
 }
+
+export type ActiveKey = "attack" | "defense" | "casting" | "sneaking";
 
 export interface Actives {
   attack: Active;
@@ -63,10 +65,11 @@ export interface ItemEntry {
 
 export type CombatEntry = {
   character: string;
-  result: number;
-  active: string;
   type: string;
-  details: string;
+  dice: string;
+  result: number;
+  success: boolean;
+  modifier: number;
 };
 
 export type AbilityEntry = {
@@ -80,4 +83,5 @@ export type AbilityEntry = {
   type: string;
   tag: string;
   id: string;
+  level: string;
 };

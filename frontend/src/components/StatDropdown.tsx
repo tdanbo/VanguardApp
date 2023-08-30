@@ -4,15 +4,16 @@ import { CharacterContext } from "../contexts/CharacterContext";
 import { useContext } from "react";
 
 import { onUpdateActive } from "../functions/CharacterFunctions";
+import { ActiveKey } from "../Types";
 
 interface StatDropdownProps {
-  active: string;
+  active: ActiveKey;
 }
 
 function StatDropdown({ active }: StatDropdownProps) {
   const { character, setCharacter } = useContext(CharacterContext);
   const [selectedValue, setSelectedValue] = useState<string | null>(
-    character.actives[active],
+    character.actives[active].stat,
   );
 
   // Get all the current active values from the character
@@ -33,8 +34,9 @@ function StatDropdown({ active }: StatDropdownProps) {
   // Filter out the options that are already in character.actives values
   const availableOptions = allOptions.filter(
     (option) =>
-      option === character.actives[active].value ||
-      !activeValues.includes(option),
+      option ===
+        character.actives[active as keyof typeof character.actives].stat ||
+      !activeValues.some((active) => active.stat === option),
   );
 
   const handleSelect = async (event: React.ChangeEvent<HTMLSelectElement>) => {

@@ -7,6 +7,7 @@ import { CharacterContext } from "../contexts/CharacterContext";
 import {
   onDeleteAbility,
   onAddAbilityItem,
+  onChangeAbilityLevel,
 } from "../functions/CharacterFunctions";
 
 interface LevelComponentProps {
@@ -67,13 +68,12 @@ interface AbilityEntryItemProps {
 function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
   const { character, setCharacter } = useContext(CharacterContext);
   const [abilityLevel, setAbilityLevel] = useState<string>(
-    browser ? "Master" : "Novice",
+    browser ? "Master" : ability.level,
   );
 
   const AddAbilitySlot = () => {
     const updatedCharacter = onAddAbilityItem({ character, ability });
     if (updatedCharacter) {
-      console.log("updatedCharacter", updatedCharacter);
       setCharacter(updatedCharacter);
     }
   };
@@ -85,8 +85,12 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
     }
   };
 
-  function handleLevelChange(level: string) {
+  function handleLevelChange(id: string, level: string) {
     setAbilityLevel(level);
+    const updatedCharacter = onChangeAbilityLevel({ id, level, character });
+    if (updatedCharacter) {
+      setCharacter(updatedCharacter);
+    }
   }
 
   return (
@@ -144,42 +148,51 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
           <div
             className="m-1 flex items-center justify-center rounded"
             style={{
-              backgroundColor: Constants.PURPLE,
+              backgroundColor:
+                ability.level === "Novice" ||
+                ability.level === "Adept" ||
+                ability.level === "Master"
+                  ? Constants.PURPLE
+                  : Constants.DARK,
               border: `1px solid #3d3d3c`,
               color: Constants.FONT_LIGHT,
               fontSize: "11px",
               fontWeight: "bold",
               width: "30px",
             }}
-            onClick={() => handleLevelChange("Novice")}
+            onClick={() => handleLevelChange(ability.id, "Novice")}
           >
             N
           </div>
           <div
             className="m-1 flex items-center justify-center rounded"
             style={{
-              backgroundColor: Constants.DARK,
+              backgroundColor:
+                ability.level === "Adept" || ability.level === "Master"
+                  ? Constants.PURPLE
+                  : Constants.DARK,
               border: `1px solid #3d3d3c`,
               color: Constants.FONT_LIGHT,
               fontSize: "11px",
               fontWeight: "bold",
               width: "30px",
             }}
-            onClick={() => handleLevelChange("Adept")}
+            onClick={() => handleLevelChange(ability.id, "Adept")}
           >
             A
           </div>
           <div
             className="m-1 flex items-center justify-center rounded"
             style={{
-              backgroundColor: Constants.DARK,
+              backgroundColor:
+                ability.level === "Master" ? Constants.PURPLE : Constants.DARK,
               border: `1px solid #3d3d3c`,
               color: Constants.FONT_LIGHT,
               fontSize: "11px",
               fontWeight: "bold",
               width: "30px",
             }}
-            onClick={() => handleLevelChange("Master")}
+            onClick={() => handleLevelChange(ability.id, "Master")}
           >
             M
           </div>

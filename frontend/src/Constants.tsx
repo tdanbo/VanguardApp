@@ -51,4 +51,12 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   general_good: YELLOW,
   lesser_artifact: BRIGHT_RED,
   corruption: DARK,
+  vigilant: YELLOW,
+  strong: YELLOW,
+  resolute: YELLOW,
+  quick: YELLOW,
+  persuasive: YELLOW,
+  discreet: YELLOW,
+  cunning: YELLOW,
+  accurate: YELLOW,
 };

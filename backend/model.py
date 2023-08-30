@@ -3,14 +3,14 @@ from pydantic import BaseModel
 
 class CombatEntry(BaseModel):
     character: str
-    result: int
-    active: str
     type: str
-    details: str
-
+    dice: str
+    result: int
+    success: bool
+    modifier: int
 
 class CharacterEntry(BaseModel):
-    details: dict = {"name": "", "xp": 0, "unspent": 0, "movement": 0}
+    details: dict = {"name": "", "xp_earned": 0, "movement": 0, "modifier": 0}
     toughness: dict = {
         "damage": {"value": 0, "mod": 0},
         "max": {"value": 0, "mod": 0},
@@ -58,3 +58,4 @@ class AbilityEntry(BaseModel):
     master: str
     type: str
     tag: str
+    level: str

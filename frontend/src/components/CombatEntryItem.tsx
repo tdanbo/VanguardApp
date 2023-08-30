@@ -16,9 +16,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   };
 
   const EntryColor = () => {
-    if (combatEntry.type === "attack") {
-      return Constants.RED;
-    }
+    return Constants.TYPE_COLORS[combatEntry.type] || Constants.BORDER_DARK;
   };
 
   return (
@@ -31,7 +29,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
       }}
     >
       <div
-        className="fw-bold rounded-2 fs-5 flex items-center justify-center"
+        className="flex items-center justify-center rounded text-lg font-bold"
         style={{
           backgroundColor: EntryColor(),
           color: Constants.FONT_LIGHT,
@@ -39,18 +37,33 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
           borderColor: "#000000",
           border: `1px solid ${Constants.BORDER}`,
         }}
+        title={`Dice: ${combatEntry.dice}
+        Modifier: ${combatEntry.modifier}`}
       >
         {combatEntry.result}
       </div>
-      <div>
-        <div className="fw-bold fs-5 m-0 flex justify-center">
-          {combatEntry.character}
+      <div className="flex flex-grow flex-col justify-center">
+        <div className="text-m flex items-center justify-center font-bold uppercase ">
+          {combatEntry.modifier > 0
+            ? `+${combatEntry.modifier}`
+            : combatEntry.modifier === 0
+            ? ""
+            : `${combatEntry.modifier}`}{" "}
+          {combatEntry.type}
         </div>
-        <div className="m-0 flex justify-center">{combatEntry.character}</div>
+        {combatEntry.success === true ? (
+          <div className="flex items-center justify-center text-sm">
+            {combatEntry.character}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center text-sm">
+            {combatEntry.character}
+          </div>
+        )}
       </div>
 
       <img
-        className="rounded-2 flex items-center justify-center"
+        className="rounded-2 flex items-center justify-center rounded"
         src="src\assets\characters\Alahara.png"
         alt={combatEntry.character}
         style={{

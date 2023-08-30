@@ -3,6 +3,8 @@ import AddIcon from "@mui/icons-material/Add";
 import { useState, CSSProperties } from "react";
 
 import StatDropdown from "../StatDropdown";
+import { Actives } from "../../Types";
+type ActiveKey = keyof Actives;
 
 function StatSettings() {
   // Declare a state variable to hold the modal open/close status
@@ -63,10 +65,10 @@ function StatSettings() {
         <div style={overlayStyles} onClick={handleClose}>
           <div style={modalStyles} onClick={stopPropagation}>
             <div className="flex-col">
-              <StatDropdown active={"attack"} />
-              <StatDropdown active={"defense"} />
-              <StatDropdown active={"casting"} />
-              <StatDropdown active={"sneaking"} />
+              <StatDropdown active={"attack" as ActiveKey} />
+              <StatDropdown active={"defense" as ActiveKey} />
+              <StatDropdown active={"casting" as ActiveKey} />
+              <StatDropdown active={"sneaking" as ActiveKey} />
             </div>
           </div>
         </div>

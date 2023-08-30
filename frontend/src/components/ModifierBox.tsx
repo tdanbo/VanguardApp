@@ -1,11 +1,37 @@
 import * as Constants from "../Constants";
-
+import { MouseEvent, useState, useContext } from "react";
+import { CharacterContext } from "../contexts/CharacterContext";
+import { setBaseModifier } from "../functions/CharacterFunctions";
 type Props = {
   type_name: string;
   type_value: number;
 };
 
-function ModifierBox({ type_name, type_value }: Props) {
+function ModifierBox({ type_name }: Props) {
+  const { character, setCharacter } = useContext(CharacterContext);
+
+  const handleClick = (event: MouseEvent) => {
+    event.preventDefault();
+    switch (event.button) {
+      case 0:
+        setCharacter(
+          setBaseModifier(character, character.details.modifier - 1),
+        );
+        break;
+      case 2:
+        setCharacter(
+          setBaseModifier(character, character.details.modifier + 1),
+        );
+        break;
+      default:
+        console.log("Unexpected button clicked:", event.button);
+    }
+  };
+
+  const handleRightClick = (event: MouseEvent) => {
+    event.preventDefault();
+  };
+
   return (
     <div className="flex w-full flex-col">
       <div
@@ -18,8 +44,10 @@ function ModifierBox({ type_name, type_value }: Props) {
           fontSize: "1.1rem",
           fontWeight: "bold",
         }}
+        onMouseDown={handleClick}
+        onContextMenu={handleRightClick}
       >
-        {type_value}
+        {character.details.modifier}
       </div>
       <div
         className="flex grow items-center justify-center rounded-b "

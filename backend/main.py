@@ -11,7 +11,8 @@ from database import (
     fetch_one_character,
     update_character,
     get_equipment_entries,
-    get_abilities_entries
+    get_abilities_entries,
+    delete_character
 )
 
 app = FastAPI()
@@ -91,3 +92,10 @@ async def fetch_equipment_entries():
 async def fetch_abilities_entries():
     response = await get_abilities_entries()
     return response
+
+@app.delete("/api/characterlog/{name}")
+async def delete_character_log(name: str):
+    response = await delete_character(name)
+    if response:
+        return "Successfully deleted character"
+    raise HTTPException(404, f"There is no character with the name {name}")

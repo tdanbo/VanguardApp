@@ -40,7 +40,7 @@ function InventoryEntry({
       if (browser) {
         return Constants.PRIMARY_DARKER;
       }
-      if (index >= character.stats.strong) {
+      if (index >= character.stats.strong.value) {
         return DARKER_PRIMARY_DARKER;
       } else {
         return Constants.PRIMARY_DARKER;
@@ -49,7 +49,7 @@ function InventoryEntry({
       if (browser) {
         return Constants.PRIMARY;
       }
-      if (index >= character.stats.strong) {
+      if (index >= character.stats.strong.value) {
         return DARKER_PRIMARY;
       } else {
         return Constants.PRIMARY;
@@ -76,7 +76,6 @@ function InventoryEntry({
   const AddInventorySlot = () => {
     const updatedCharacter = onAddInventoryItem({ character, item });
     if (updatedCharacter) {
-      console.log("updatedCharacter", updatedCharacter);
       setCharacter(updatedCharacter);
     }
   };
@@ -239,7 +238,7 @@ function InventoryEntry({
           height: "22px",
         }}
       >
-        119x
+        {item.roll[1]}
       </div>
     </div>
   );

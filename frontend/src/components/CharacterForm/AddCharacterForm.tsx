@@ -31,8 +31,8 @@ function AddCharacterForm({ open, onClose }: CharacterProps) {
     details: {
       movement: 0,
       name: name,
-      unspent: 50,
-      xp: 0,
+      xp_earned: 50,
+      modifier: 0,
     },
     toughness: {
       max: { value: 0, mod: 0 },

@@ -1,5 +1,5 @@
 import * as Constants from "../Constants";
-import { Roll } from "../functions/CombatFunctions";
+import { useRoll } from "../functions/CombatFunctions";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useContext } from "react";
 type Props = {
@@ -8,18 +8,15 @@ type Props = {
 };
 
 function DiceBox({ type_name, type_value }: Props) {
-  const { character, setCharacter } = useContext(CharacterContext);
-  const modifier = 0;
+  const onRollDice = useRoll();
 
-  const onRollDice = () => {
-    console.log("Rolling Dice");
-    const RollResult = Roll({
-      character,
-      dice: type_name,
-      count: type_value,
-      modifier,
+  const RollDice = () => {
+    onRollDice({
+      dice: "d20",
+      count: 1,
+      target: 0,
+      type: "Custom",
     });
-    console.log(RollResult);
   };
 
   return (
@@ -46,7 +43,7 @@ function DiceBox({ type_name, type_value }: Props) {
           fontSize: "0.8rem",
           fontWeight: "bold",
         }}
-        onClick={() => onRollDice()}
+        onClick={RollDice}
       >
         {type_name.toUpperCase()}
       </div>

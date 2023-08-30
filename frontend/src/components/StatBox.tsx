@@ -1,8 +1,8 @@
 import * as Constants from "../Constants";
 import AutoFixNormalIcon from "@mui/icons-material/AutoFixNormal";
 import { CharacterContext } from "../contexts/CharacterContext";
-import { useContext } from "react";
-
+import { useContext, useState, useEffect } from "react";
+import { useRoll } from "../functions/CombatFunctions";
 type Props = {
   type_name: string;
   type_value: number;
@@ -10,20 +10,52 @@ type Props = {
 
 function StatBox({ type_name, type_value }: Props) {
   const { character, setCharacter } = useContext(CharacterContext);
+  const [value, setValue] = useState<number>(type_value);
+
+  useEffect(() => {
+    setValue(type_value);
+  }, [type_value]);
 
   let active = "";
+  let active_mod = 0;
 
   Object.entries(character.actives).forEach(([key, dict]) => {
-    console.log(dict.stat);
-    console.log(type_name);
     if (dict.stat === type_name) {
-      console.log("below is the value");
       active = key;
+      active_mod = dict.mod;
     }
   });
 
+  const handleSkillMouseEnter = () => {
+    setValue(type_value + character.details.modifier);
+  };
+
+  const handleActiveMouseEnter = () => {
+    setValue(type_value + active_mod + character.details.modifier);
+  };
+
+  const handleMouseLeave = () => {
+    setValue(type_value);
+  };
+
+  const onRollDice = useRoll();
+
+  const handleSkillRoll = () => {
+    onRollDice({
+      dice: "d20",
+      count: 1,
+      target: value,
+      type: type_name,
+    });
+  };
+
   const handleActiveRoll = () => {
-    console.log(active);
+    onRollDice({
+      dice: "d20",
+      count: 1,
+      target: value,
+      type: active,
+    });
   };
 
   return (
@@ -39,7 +71,7 @@ function StatBox({ type_name, type_value }: Props) {
           fontWeight: "bold",
         }}
       >
-        {type_value}
+        {value}
       </div>
       <div className="flex">
         {active === "" ? ( // if active is an empty string
@@ -52,6 +84,9 @@ function StatBox({ type_name, type_value }: Props) {
               fontSize: "0.8rem",
               fontWeight: "bold",
             }}
+            onMouseEnter={handleSkillMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={handleSkillRoll}
           >
             {type_name.toUpperCase()}
           </div>
@@ -70,6 +105,8 @@ function StatBox({ type_name, type_value }: Props) {
                 fontWeight: "bold",
                 padding: "4px",
               }}
+              onMouseEnter={handleActiveMouseEnter}
+              onMouseLeave={handleMouseLeave}
               onClick={handleActiveRoll}
             ></img>
             <div
@@ -81,6 +118,9 @@ function StatBox({ type_name, type_value }: Props) {
                 fontSize: "0.8rem",
                 fontWeight: "bold",
               }}
+              onMouseEnter={handleSkillMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onClick={handleSkillRoll}
             >
               {type_name.toUpperCase()}
             </div>

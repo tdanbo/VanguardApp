@@ -1,6 +1,7 @@
 import axios from "axios";
 import { CharacterEntry, CombatEntry } from "../Types";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { CharacterContext } from "../contexts/CharacterContext";
 
 export async function getCombatLog(): Promise<CombatEntry[]> {
   const response = await axios.get<CombatEntry[]>(
@@ -10,10 +11,10 @@ export async function getCombatLog(): Promise<CombatEntry[]> {
 }
 
 interface RollDiceProps {
-  character: CharacterEntry;
   dice: string;
+  type: string;
   count: number;
-  modifier: number;
+  target: number;
 }
 
 function extractDiceValue(str: string) {
@@ -21,33 +22,43 @@ function extractDiceValue(str: string) {
   return match ? parseInt(match[1], 10) : null;
 }
 
-export function Roll({ character, dice, count, modifier }: RollDiceProps) {
-  const dice_number = extractDiceValue(dice);
+export function useRoll() {
+  const { character, setCharacter } = useContext(CharacterContext);
 
-  if (!dice_number) {
-    throw new Error("Invalid dice string format");
-  }
+  return ({ dice, count, target, type }: RollDiceProps) => {
+    const dice_number = extractDiceValue(dice);
 
-  let total = 0;
-  for (let i = 0; i < count; i++) {
-    total += Math.floor(Math.random() * dice_number) + 1;
-  }
+    if (!dice_number) {
+      throw new Error("Invalid dice string format");
+    }
 
-  const roll_result = total + (modifier || 0);
+    let total = 0;
+    for (let i = 0; i < count; i++) {
+      total += Math.floor(Math.random() * dice_number) + 1;
+    }
 
-  console.log(roll_result);
+    const roll_result = total;
 
-  const NewCombatEntry: CombatEntry = {
-    character: character.details.name,
-    result: roll_result,
-    active: "attack",
-    type: "attack",
-    details: "string",
+    let success = true;
+    if (roll_result > target) {
+      success = false;
+    }
+
+    console.log(roll_result);
+
+    const NewCombatEntry: CombatEntry = {
+      character: character.details.name,
+      type: type,
+      dice: dice,
+      result: roll_result,
+      success: success,
+      modifier: character.details.modifier,
+    };
+
+    postCombatLog(NewCombatEntry);
+
+    return roll_result;
   };
-
-  postCombatLog(NewCombatEntry);
-
-  return roll_result;
 }
 
 export function postCombatLog(NewCombatEntry: CombatEntry) {
