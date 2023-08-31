@@ -11,7 +11,7 @@ category = "equipment"
 
 collection = DATABASE[category.capitalize()]
 
-upload_list = ["quality_weapon", "quality_armor", "elixirs"]
+upload_list = ["quality_weapon", "quality_armor", "elixirs", "ammunition","quality_ranged"] 
 for item in upload_list:
     json_path = os.path.join(".content", category, item + ".json")
     dictionary = json.load(open(json_path, encoding="utf8"))

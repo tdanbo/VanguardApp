@@ -18,15 +18,12 @@ interface LevelComponentProps {
   type: string;
 }
 
-function LevelComponent({ level, ability, type }: LevelComponentProps) {
-  // const onRollDice = useRoll();
+const EntryColor = (type: string) => {
+  return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.BORDER_DARK;
+};
 
-  // onRollDice({
-  //   dice: "d20",
-  //   count: 1,
-  //   target: 0,
-  //   type: type,
-  // });
+function LevelComponent({ level, ability, type }: LevelComponentProps) {
+  const onRollDice = useRoll();
 
   return (
     <div
@@ -37,7 +34,7 @@ function LevelComponent({ level, ability, type }: LevelComponentProps) {
         className="flex items-center p-2"
         style={{
           backgroundColor: Constants.PRIMARY_DARKER,
-          color: Constants.PURPLE,
+          color: EntryColor(type),
           fontSize: "11px",
           fontWeight: "bold",
           width: "100px",
@@ -55,20 +52,28 @@ function LevelComponent({ level, ability, type }: LevelComponentProps) {
       >
         {ability.description}
       </div>
-      {Object.keys(ability.roll).map((key, index) => {
+      {Array.from(ability.roll).map((roll, index) => {
         return (
           <div
             className="rounded-1 m-1 flex items-center justify-start p-2"
             style={{
               backgroundColor: Constants.PRIMARY_HOVER,
               border: `1px solid ${Constants.BORDER}`,
-              color: Constants.PURPLE,
+              color: EntryColor(type),
               fontSize: "11px",
               fontWeight: "bold",
               height: "22px",
             }}
+            onClick={() =>
+              onRollDice({
+                dice: roll.dice,
+                count: 1,
+                target: 0,
+                type: roll.type,
+              })
+            }
           >
-            {index}
+            {roll.dice}
           </div>
         );
       })}
@@ -120,7 +125,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
         <div
           className="flex items-center justify-center"
           style={{
-            backgroundColor: Constants.PURPLE,
+            backgroundColor: EntryColor(ability.type),
             width: "20px",
             fontSize: "10px",
             borderBottom: `1px solid ${Constants.BORDER}`,
@@ -133,7 +138,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
         <div
           className="flex items-center justify-center"
           style={{
-            backgroundColor: Constants.PURPLE,
+            backgroundColor: EntryColor(ability.type),
             width: "20px",
             fontSize: "10px",
             borderBottom: `1px solid ${Constants.BORDER}`,
@@ -168,7 +173,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
                 ability.level === "Novice" ||
                 ability.level === "Adept" ||
                 ability.level === "Master"
-                  ? Constants.PURPLE
+                  ? EntryColor(ability.type)
                   : Constants.DARK,
               border: `1px solid #3d3d3c`,
               color: Constants.FONT_LIGHT,
@@ -185,7 +190,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
             style={{
               backgroundColor:
                 ability.level === "Adept" || ability.level === "Master"
-                  ? Constants.PURPLE
+                  ? EntryColor(ability.type)
                   : Constants.DARK,
               border: `1px solid #3d3d3c`,
               color: Constants.FONT_LIGHT,
@@ -201,7 +206,9 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
             className="m-1 flex items-center justify-center rounded"
             style={{
               backgroundColor:
-                ability.level === "Master" ? Constants.PURPLE : Constants.DARK,
+                ability.level === "Master"
+                  ? EntryColor(ability.type)
+                  : Constants.DARK,
               border: `1px solid #3d3d3c`,
               color: Constants.FONT_LIGHT,
               fontSize: "11px",

@@ -1,7 +1,7 @@
 import * as Constants from "../Constants";
 
 import { ItemEntry } from "../Types";
-
+import Quantity from "./Modals/Quantity";
 import { TYPE_COLORS } from "../Constants";
 import { CharacterEntry } from "../Types";
 import { useContext } from "react";
@@ -12,6 +12,7 @@ import {
   onEquipItem,
   onUnequipItem,
   onAddInventoryItem,
+  onUseAmmunition,
 } from "../functions/CharacterFunctions";
 import chroma from "chroma-js";
 
@@ -91,6 +92,23 @@ function InventoryEntry({
   const onRollDice = useRoll();
 
   const handleRoll = () => {
+    onRollDice({
+      dice: item.roll.dice,
+      count: 1,
+      target: 0,
+      type: item.roll.type,
+    });
+  };
+
+  const handleRangeRoll = () => {
+    const { updatedCharacter, hasAmmunition } = onUseAmmunition(character);
+    setCharacter(updatedCharacter);
+    if (!hasAmmunition) {
+      console.log("no ammo");
+      // handle case when onUseAmmunition is false
+      return;
+    }
+
     onRollDice({
       dice: item.roll.dice,
       count: 1,
@@ -248,24 +266,12 @@ function InventoryEntry({
             color: COLOR,
             height: "22px",
           }}
-          onClick={handleRoll}
+          onClick={item.type === "Ranged Weapon" ? handleRangeRoll : handleRoll}
         >
           {item.roll.dice}
         </div>
       )}
-      {item.quantity.bulk === true && (
-        <div
-          className="m-1 flex items-center justify-start rounded p-2 text-xs font-bold"
-          style={{
-            backgroundColor: Constants.PRIMARY_HOVER,
-            border: `1px solid ${COLOR}`,
-            color: COLOR,
-            height: "22px",
-          }}
-        >
-          {item.quantity.count}x
-        </div>
-      )}
+      {item.quantity.bulk === true && <Quantity item={item} />}
     </div>
   );
 }

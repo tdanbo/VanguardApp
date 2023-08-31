@@ -1,256 +1,189 @@
 {
-    "Arrow": {
-        "quantity": {
-            "count": 1,
-            "bulk": false
-        },
-        "quality": [],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "type": "Arrow",
-        "cost": "1 shilling",
-        "name": "Arrow",
-        "category": "ammunition",
-        "roll": {
-            "roll": false,
-            "dice": "",
-            "type": ""
-        },
-        "equip": []
+  "Arrow": {
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Precision Arrow": {
-        "quantity": {
-            "count": 1,
-            "bulk": false
-        },
-        "quality": [
-            "Precise"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "type": "Arrow",
-        "cost": "5 shillings",
-        "name": "Precision Arrow",
-        "category": "ammunition",
-        "roll": {
-            "roll": false,
-            "dice": "",
-            "type": ""
-        },
-        "equip": []
-    },
-    "Flame Arrow": {
-        "quantity": {
-            "count": 1,
-            "bulk": false
-        },
-        "quality": [
-            "Flaming"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "type": "Arrow",
-        "cost": "5 shillings",
-        "name": "Flame Arrow",
-        "category": "ammunition",
-        "roll": {
-            "roll": false,
-            "dice": "",
-            "type": ""
-        },
-        "equip": []
-    },
-    "Snaring Arrow": {
-        "quantity": {
-            "count": 1,
-            "bulk": false
-        },
-        "quality": [
-            "Snaring",
-            "Special"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "type": "Arrow",
-        "cost": "5 shillings",
-        "name": "Snaring Arrow",
-        "category": "ammunition",
-        "roll": {
-            "roll": false,
-            "dice": "",
-            "type": ""
-        },
-        "equip": []
-    },
-    "Hammer Head": {
-        "quantity": {
-            "count": 1,
-            "bulk": false
-        },
-        "quality": [
-            "Stun",
-            "Special"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "type": "Arrow",
-        "cost": "5 shillings",
-        "name": "Hammer Head",
-        "category": "ammunition",
-        "roll": {
-            "roll": false,
-            "dice": "",
-            "type": ""
-        },
-        "equip": []
-    },
-    "Armor-piercing Head": {
-        "quantity": {
-            "count": 1,
-            "bulk": false
-        },
-        "quality": [
-            "Deep Impact"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "type": "Arrow",
-        "cost": "5 shillings",
-        "name": "Armor-piercing Head",
-        "category": "ammunition",
-        "roll": {
-            "roll": false,
-            "dice": "",
-            "type": ""
-        },
-        "equip": []
-    },
-    "Rope Cutter": {
-        "quantity": {
-            "count": 1,
-            "bulk": false
-        },
-        "quality": [
-            "Cut",
-            "Special"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "type": "Arrow",
-        "cost": "5 shillings",
-        "name": "Rope Cutter",
-        "category": "ammunition",
-        "roll": {
-            "roll": false,
-            "dice": "",
-            "type": ""
-        },
-        "equip": []
-    },
-    "Swallow's Tail": {
-        "quantity": {
-            "count": 1,
-            "bulk": false
-        },
-        "quality": [
-            "Blood-letting"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "type": "Arrow",
-        "cost": "5 shillings",
-        "name": "Swallow's Tail",
-        "category": "ammunition",
-        "roll": {
-            "roll": false,
-            "dice": "",
-            "type": ""
-        },
-        "equip": []
-    },
-    "Whistler": {
-        "quantity": {
-            "count": 1,
-            "bulk": false
-        },
-        "quality": [
-            "Whistle",
-            "Special"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "type": "Arrow",
-        "cost": "5 shillings",
-        "name": "Whistler",
-        "category": "ammunition",
-        "roll": {
-            "roll": false,
-            "dice": "",
-            "type": ""
-        },
-        "equip": []
-    },
-    "Grappling Hook": {
-        "quantity": {
-            "count": 1,
-            "bulk": false
-        },
-        "quality": [
-            "Grapple",
-            "Special"
-        ],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "type": "Arrow",
-        "cost": "5 shillings",
-        "name": "Grappling Hook",
-        "category": "ammunition",
-        "roll": {
-            "roll": false,
-            "dice": "",
-            "type": ""
-        },
-        "equip": []
-    },
-    "Firetube Charge": {
-        "quantity": {
-            "count": 1,
-            "bulk": false
-        },
-        "quality": [],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "type": "Arrow",
-        "cost": "1 Thaler",
-        "name": "Firetube Charge",
-        "category": "ammunition",
-        "roll": {
-            "roll": false,
-            "dice": "",
-            "type": ""
-        },
-        "equip": []
+    "quality": [],
+    "equip": ["MH", "OH"],
+    "type": "Arrow",
+    "cost": "1 shilling",
+    "name": "Arrow",
+    "category": "ammunition",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     }
+  },
+  "Precision Arrow": {
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "quality": ["Precise"],
+    "equip": ["MH", "OH"],
+    "type": "Arrow",
+    "cost": "5 shillings",
+    "name": "Precision Arrow",
+    "category": "ammunition",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    }
+  },
+  "Flame Arrow": {
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "quality": ["Flaming"],
+    "equip": ["MH", "OH"],
+    "type": "Arrow",
+    "cost": "5 shillings",
+    "name": "Flame Arrow",
+    "category": "ammunition",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    }
+  },
+  "Snaring Arrow": {
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "quality": ["Snaring", "Special"],
+    "equip": ["MH", "OH"],
+    "type": "Arrow",
+    "cost": "5 shillings",
+    "name": "Snaring Arrow",
+    "category": "ammunition",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    }
+  },
+  "Hammer Head": {
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "quality": ["Stun", "Special"],
+    "equip": ["MH", "OH"],
+    "type": "Arrow",
+    "cost": "5 shillings",
+    "name": "Hammer Head",
+    "category": "ammunition",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    }
+  },
+  "Armor-piercing Head": {
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "quality": ["Deep Impact"],
+    "equip": ["MH", "OH"],
+    "type": "Arrow",
+    "cost": "5 shillings",
+    "name": "Armor-piercing Head",
+    "category": "ammunition",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    }
+  },
+  "Rope Cutter": {
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "quality": ["Cut", "Special"],
+    "equip": ["MH", "OH"],
+    "type": "Arrow",
+    "cost": "5 shillings",
+    "name": "Rope Cutter",
+    "category": "ammunition",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    }
+  },
+  "Swallow's Tail": {
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "quality": ["Blood-letting"],
+    "equip": ["MH", "OH"],
+    "type": "Arrow",
+    "cost": "5 shillings",
+    "name": "Swallow's Tail",
+    "category": "ammunition",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    }
+  },
+  "Whistler": {
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "quality": ["Whistle", "Special"],
+    "equip": ["MH", "OH"],
+    "type": "Arrow",
+    "cost": "5 shillings",
+    "name": "Whistler",
+    "category": "ammunition",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    }
+  },
+  "Grappling Hook": {
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "quality": ["Grapple", "Special"],
+    "equip": ["MH", "OH"],
+    "type": "Arrow",
+    "cost": "5 shillings",
+    "name": "Grappling Hook",
+    "category": "ammunition",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    }
+  },
+  "Firetube Charge": {
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "quality": [],
+    "equip": ["MH", "OH"],
+    "type": "Arrow",
+    "cost": "1 Thaler",
+    "name": "Firetube Charge",
+    "category": "ammunition",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    }
+  }
 }

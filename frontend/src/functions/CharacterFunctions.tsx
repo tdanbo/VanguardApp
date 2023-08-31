@@ -150,18 +150,93 @@ export const getCharacterMovement = (character: CharacterEntry) => {
   return calculated_speed;
 };
 
-// Calculating speed
-// base_speed = 40
-// if quick <= 5:
-//     stat_modifier = -10
-// elif quick >= 15:
-//     stat_modifier = 10
-// else:
-//     stat_modifier = cons.MOVEMENT[quick]
+export const onAddCorruption = (character: CharacterEntry, value: number) => {
+  const character_corruption = character.corruption;
 
-// total_impeding = self.SPEED * 5
-// adjusted_base = base_speed + stat_modifier
-// calculated_speed = adjusted_base + total_impeding
+  let count = 0;
+
+  Object.keys(character_corruption).forEach((key) => {
+    if (count === value) {
+      return;
+    }
+
+    if (character_corruption[key] === 0) {
+      character_corruption[key] = 1;
+      count += 1;
+    } else {
+      return;
+    }
+  });
+
+  Object.keys(character_corruption).forEach((key) => {
+    if (count === value) {
+      return;
+    }
+
+    if (character_corruption[key] === 1) {
+      character_corruption[key] = 2;
+      count += 1;
+    } else {
+      return;
+    }
+  });
+
+  const updatedCharacter = {
+    ...character,
+    corruption: character_corruption,
+  };
+
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
+};
+
+export const onChangeCorruptionLevel = (
+  character: CharacterEntry,
+  state: string,
+) => {
+  const character_details = character.details;
+
+  if (state === "add") {
+    if (character_details.corruption >= 3) {
+      character_details.corruption = 3;
+    } else {
+      character_details.corruption += 1;
+    }
+  } else {
+    if (character_details.corruption <= 1) {
+      character_details.corruption = 1;
+    } else {
+      character_details.corruption -= 1;
+    }
+  }
+
+  const updatedCharacter = {
+    ...character,
+    details: character_details,
+  };
+
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
+};
+
+export const onResetCorruption = (character: CharacterEntry) => {
+  const character_corruption = character.corruption;
+
+  Object.keys(character_corruption).forEach((key) => {
+    if (character_corruption[key] === 1) {
+      character_corruption[key] = 0;
+    }
+  });
+
+  const updatedCharacter = {
+    ...character,
+    corruption: character_corruption,
+  };
+
+  postSelectedCharacter(updatedCharacter);
+
+  return updatedCharacter;
+};
 
 export const getCharacterXp = (character: CharacterEntry) => {
   let xp_spent = 0;
@@ -345,6 +420,72 @@ export function onDeleteItem({ id, character }: onDeleteProps) {
   };
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
+}
+
+interface onChangeQuantityProps {
+  id: string;
+  count: number;
+  character: CharacterEntry;
+}
+
+export function onChangeQuantity({
+  id,
+  count,
+  character,
+}: onChangeQuantityProps) {
+  const inventory = character.inventory;
+  const equipment = character.equipment;
+
+  console.log(count);
+
+  inventory.forEach((item) => {
+    if (item.id === id) {
+      item.quantity.count = count;
+    }
+  });
+
+  equipment.forEach((item) => {
+    if (item.id === id) {
+      item.quantity.count = count;
+    }
+  });
+
+  const updatedCharacter = {
+    ...character,
+    inventory: inventory,
+    equipment: equipment,
+  };
+
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
+}
+
+export function onUseAmmunition(character: CharacterEntry): {
+  updatedCharacter: CharacterEntry;
+  hasAmmunition: boolean;
+} {
+  const equipment = character.equipment;
+
+  const hasAmmunition = equipment.some(
+    (item) => item.category === "ammunition" && item.quantity.count > 0,
+  );
+
+  const updatedEquipment = equipment.map((item) => {
+    if (item.category === "ammunition" && item.quantity.count > 0) {
+      item.quantity.count -= 1;
+      return item;
+    }
+    return item;
+  });
+
+  const updatedCharacter = {
+    ...character,
+    equipment: updatedEquipment,
+  };
+
+  postSelectedCharacter(updatedCharacter);
+
+  return { updatedCharacter, hasAmmunition };
 }
 
 export function onDeleteSelectedCharacter(updatedCharacter: CharacterEntry) {
