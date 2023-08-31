@@ -3,6 +3,8 @@ import { AbilityEntry } from "../Types";
 import { useState, useContext } from "react";
 
 import { CharacterContext } from "../contexts/CharacterContext";
+import { useRoll } from "../functions/CombatFunctions";
+import { Ability } from "../Types";
 
 import {
   onDeleteAbility,
@@ -12,10 +14,20 @@ import {
 
 interface LevelComponentProps {
   level: string;
-  abilityDescription: string;
+  ability: Ability;
+  type: string;
 }
 
-function LevelComponent({ level, abilityDescription }: LevelComponentProps) {
+function LevelComponent({ level, ability, type }: LevelComponentProps) {
+  // const onRollDice = useRoll();
+
+  // onRollDice({
+  //   dice: "d20",
+  //   count: 1,
+  //   target: 0,
+  //   type: type,
+  // });
+
   return (
     <div
       className="flex items-center p-2"
@@ -41,21 +53,25 @@ function LevelComponent({ level, abilityDescription }: LevelComponentProps) {
           fontSize: "14px",
         }}
       >
-        {abilityDescription}
+        {ability.description}
       </div>
-      <div
-        className="rounded-1 m-1 flex items-center justify-start p-2"
-        style={{
-          backgroundColor: Constants.PRIMARY_HOVER,
-          border: `1px solid ${Constants.BORDER}`,
-          color: Constants.PURPLE,
-          fontSize: "11px",
-          fontWeight: "bold",
-          height: "22px",
-        }}
-      >
-        1d6
-      </div>
+      {Object.keys(ability.roll).map((key, index) => {
+        return (
+          <div
+            className="rounded-1 m-1 flex items-center justify-start p-2"
+            style={{
+              backgroundColor: Constants.PRIMARY_HOVER,
+              border: `1px solid ${Constants.BORDER}`,
+              color: Constants.PURPLE,
+              fontSize: "11px",
+              fontWeight: "bold",
+              height: "22px",
+            }}
+          >
+            {index}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -219,18 +235,21 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
           {abilityLevel === "Novice" && (
             <LevelComponent
               level="Novice"
-              abilityDescription={ability.novice}
+              ability={ability.novice}
+              type={ability.type}
             />
           )}
           {abilityLevel === "Adept" && (
             <>
               <LevelComponent
                 level="Novice"
-                abilityDescription={ability.novice}
+                ability={ability.novice}
+                type={ability.type}
               />
               <LevelComponent
                 level="Adept"
-                abilityDescription={ability.adept}
+                ability={ability.adept}
+                type={ability.type}
               />
             </>
           )}
@@ -238,15 +257,18 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
             <>
               <LevelComponent
                 level="Novice"
-                abilityDescription={ability.novice}
+                ability={ability.novice}
+                type={ability.type}
               />
               <LevelComponent
                 level="Adept"
-                abilityDescription={ability.adept}
+                ability={ability.adept}
+                type={ability.type}
               />
               <LevelComponent
                 level="Master"
-                abilityDescription={ability.master}
+                ability={ability.master}
+                type={ability.type}
               />
             </>
           )}

@@ -1,47 +1,56 @@
 {
-    "Bow": {
-        "Roll": [
-            "Damage",
-            "1d8"
-        ],
-        "Quality": [],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Ranged Weapon",
-        "Cost": "5 thaler",
-        "Name": "Bow",
-        "Category": "ordinary_ranged"
+  "Bow": {
+    "roll": {
+      "roll": true,
+      "type": "damage",
+      "dice": "1d8"
     },
-    "Crossbow": {
-        "Roll": [
-            "Damage",
-            "1d10"
-        ],
-        "Quality": [],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Ranged Weapon",
-        "Cost": "8 thaler",
-        "Name": "Crossbow",
-        "Category": "ordinary_ranged"
+    "quality": [],
+    "Equip": ["MH", "OH"],
+    "type": "Ranged Weapon",
+    "cost": "5 thaler",
+    "name": "Bow",
+    "category": "ordinary_ranged",
+    "quantity": {
+      "count": 1,
+      "bulk": false
     },
-    "Throwing Weapon": {
-        "Roll": [
-            "Damage",
-            "1d6+1"
-        ],
-        "Quality": [],
-        "Equip": [
-            "MH",
-            "OH"
-        ],
-        "Type": "Throwing Weapon",
-        "Cost": "2 thaler",
-        "Name": "Throwing Weapon",
-        "Category": "ordinary_ranged"
-    }
+    "equip": []
+  },
+  "Crossbow": {
+    "roll": {
+      "roll": true,
+      "type": "damage",
+      "dice": "1d10"
+    },
+    "quality": [],
+    "Equip": ["MH", "OH"],
+    "type": "Ranged Weapon",
+    "cost": "8 thaler",
+    "name": "Crossbow",
+    "category": "ordinary_ranged",
+    "quantity": {
+      "count": 1,
+      "bulk": false
+    },
+    "equip": []
+  },
+  "Throwing Weapon": {
+    "roll": {
+      "roll": true,
+      "type": "damage",
+      "dice": "1d6+1"
+    },
+    "quality": [],
+    "Equip": ["MH", "OH"],
+    "type": "Throwing Weapon",
+    "cost": "2 thaler",
+    "name": "Throwing Weapon",
+    "category": "ordinary_ranged",
+    "quantity": {
+      "count": 1,
+      "bulk": false
+    },
+    "equip": []
+  }
 }

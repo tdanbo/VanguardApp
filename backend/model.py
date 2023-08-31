@@ -39,8 +39,9 @@ class CharacterEntry(BaseModel):
 
 
 class ItemEntry(BaseModel):
-    roll: list
+    roll: dict = {}
     quality: list
+    quantity: dict = {}
     equip: list
     type: str
     cost: str
@@ -53,9 +54,9 @@ class AbilityEntry(BaseModel):
     requirement: str
     tradition: str
     description: str
-    novice: str
-    adept: str
-    master: str
+    novice: dict = {}
+    adept: dict = {}
+    master: dict = {}
     type: str
     tag: str
     level: str

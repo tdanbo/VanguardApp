@@ -7,13 +7,13 @@ client = pymongo.MongoClient(cons.CONNECT)
 CONTENT = "Content"
 DATABASE = client[CONTENT]
 
-CATEGORY = "equipment"
+category = "equipment"
 
-collection = DATABASE[CATEGORY.capitalize()]
+collection = DATABASE[category.capitalize()]
 
-upload_list = ["quality_weapon", "quality_armor"]
+upload_list = ["quality_weapon", "quality_armor", "elixirs"]
 for item in upload_list:
-    json_path = os.path.join(".content", CATEGORY, item + ".json")
+    json_path = os.path.join(".content", category, item + ".json")
     dictionary = json.load(open(json_path, encoding="utf8"))
     for item in dictionary:
         item_dictionary = dictionary[item]

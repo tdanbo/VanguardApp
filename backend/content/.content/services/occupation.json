@@ -1,23 +1,23 @@
 {
-    "Artisan": {
-        "Cost": "1 thaler"
-    },
-    "Knight, freelance": {
-        "Cost": "2 thaler"
-    },
-    "Laborer, countryside": {
-        "Cost": "1 orteg"
-    },
-    "Laborer, town": {
-        "Cost": "1 shilling"
-    },
-    "Medicus": {
-        "Cost": "1 thaler"
-    },
-    "Sellsword": {
-        "Cost": "1 shilling"
-    },
-    "Rider": {
-        "Cost": "1 thaler"
-    }
+  "Artisan": {
+    "cost": "1 thaler"
+  },
+  "Knight, freelance": {
+    "cost": "2 thaler"
+  },
+  "Laborer, countryside": {
+    "cost": "1 orteg"
+  },
+  "Laborer, town": {
+    "cost": "1 shilling"
+  },
+  "Medicus": {
+    "cost": "1 thaler"
+  },
+  "Sellsword": {
+    "cost": "1 shilling"
+  },
+  "Rider": {
+    "cost": "1 thaler"
+  }
 }

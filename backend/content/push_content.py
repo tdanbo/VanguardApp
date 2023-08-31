@@ -7,20 +7,20 @@ client = pymongo.MongoClient(cons.CONNECT)
 CONTENT = "Content"
 DATABASE = client[CONTENT]
 
-for CATEGORY in os.listdir(".content"):
-    collection = DATABASE[CATEGORY.capitalize()]
-    for subcategory in os.listdir(".content\\" + CATEGORY):
+for category in os.listdir(".content"):
+    collection = DATABASE[category.capitalize()]
+    for subcategory in os.listdir(".content\\" + category):
         dictionary = json.load(
-            open(".content\\" + CATEGORY + "\\" + subcategory, encoding="utf8")
+            open(".content\\" + category + "\\" + subcategory, encoding="utf8")
         )
         print(subcategory)
         for item in dictionary:
             item_dictionary = dictionary[item]
-            if "Name" not in item_dictionary:
-                item_dictionary["Name"] = item
+            if "name" not in item_dictionary:
+                item_dictionary["name"] = item
                 print(item_dictionary)
 
-        #     # item_dictionary["Name"] = item
+        #     # item_dictionary["name"] = item
         #     # print(item_dictionary)
         #     collection.insert_one(item_dictionary)
 

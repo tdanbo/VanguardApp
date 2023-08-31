@@ -1,24 +1,42 @@
 {
     "Ration Food": {
-        "Description": "Eating this provides a day's ration, and grants 1 toughness of natural healing - can be used once a day.",
-        "Cost": "2 shillings",
-        "Quality": [
+        "description": "Eating this provides a day's ration, and grants 1 toughness of natural healing - can be used once a day.",
+        "cost": "2 shillings",
+        "quality": [
             "Effect"
         ],
-        "Quantity": 1,
-        "Type": "Provision",
-        "Name": "Ration Food",
-        "Category": "provision"
+        "quantity": {
+            "count": 1,
+            "bulk": true
+        },
+        "type": "Provision",
+        "name": "Ration Food",
+        "category": "provision",
+        "roll": {
+            "roll": false,
+            "dice": "",
+            "type": ""
+        },
+        "equip": []
     },
     "Ration Water": {
-        "Description": "Drinking this will provide a days worth of drinking water, and clear all temporary corruption - can be used once a day.",
-        "Cost": "2 shillings",
-        "Quality": [
+        "description": "Drinking this will provide a days worth of drinking water, and clear all temporary corruption - can be used once a day.",
+        "cost": "2 shillings",
+        "quality": [
             "Effect"
         ],
-        "Quantity": 1,
-        "Type": "Provision",
-        "Name": "Ration Water",
-        "Category": "provision"
+        "quantity": {
+            "count": 1,
+            "bulk": true
+        },
+        "type": "Provision",
+        "name": "Ration Water",
+        "category": "provision",
+        "roll": {
+            "roll": false,
+            "dice": "",
+            "type": ""
+        },
+        "equip": []
     }
 }

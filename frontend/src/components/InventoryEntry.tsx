@@ -5,7 +5,7 @@ import { ItemEntry } from "../Types";
 import { TYPE_COLORS } from "../Constants";
 import { CharacterEntry } from "../Types";
 import { useContext } from "react";
-
+import { useRoll } from "../functions/CombatFunctions";
 import { CharacterContext } from "../contexts/CharacterContext";
 import {
   onDeleteItem,
@@ -30,6 +30,7 @@ function InventoryEntry({
   equipped,
   id,
 }: InventoryEntryProps) {
+  console.log(item);
   const { character, setCharacter } = useContext(CharacterContext);
   const DARKER_PRIMARY = chroma(Constants.PRIMARY).darken(1).hex();
   const DARKER_PRIMARY_DARKER = chroma(Constants.PRIMARY_DARKER)
@@ -85,6 +86,17 @@ function InventoryEntry({
     if (updatedCharacter) {
       setCharacter(updatedCharacter);
     }
+  };
+
+  const onRollDice = useRoll();
+
+  const handleRoll = () => {
+    onRollDice({
+      dice: item.roll.dice,
+      count: 1,
+      target: 0,
+      type: item.roll.type,
+    });
   };
 
   return (
@@ -227,19 +239,33 @@ function InventoryEntry({
           </p>
         </div>
       </div>
-      <div
-        className="m-1 flex items-center justify-start rounded p-2"
-        style={{
-          backgroundColor: Constants.PRIMARY_HOVER,
-          border: `1px solid ${Constants.BORDER}`,
-          color: Constants.DARK,
-          fontSize: "11px",
-          fontWeight: "bold",
-          height: "22px",
-        }}
-      >
-        {item.roll[1]}
-      </div>
+      {item.roll.roll === true && (
+        <div
+          className="m-1 flex items-center justify-start rounded p-2 text-xs font-bold"
+          style={{
+            backgroundColor: Constants.PRIMARY_HOVER,
+            border: `1px solid ${COLOR}`,
+            color: COLOR,
+            height: "22px",
+          }}
+          onClick={handleRoll}
+        >
+          {item.roll.dice}
+        </div>
+      )}
+      {item.quantity.bulk === true && (
+        <div
+          className="m-1 flex items-center justify-start rounded p-2 text-xs font-bold"
+          style={{
+            backgroundColor: Constants.PRIMARY_HOVER,
+            border: `1px solid ${COLOR}`,
+            color: COLOR,
+            height: "22px",
+          }}
+        >
+          {item.quantity.count}x
+        </div>
+      )}
     </div>
   );
 }

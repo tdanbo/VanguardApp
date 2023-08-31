@@ -1,59 +1,59 @@
 {
-    "Torn rags": {
-        "Cost": "5 ortegs"
-    },
-    "Simple garb": {
-        "Cost": "1 shilling"
-    },
-    "Artisan's garb": {
-        "Cost": "5 shillings"
-    },
-    "Burgher's garb": {
-        "Cost": "1 thaler"
-    },
-    "Noble's garb": {
-        "Cost": "10+ thaler"
-    },
-    "Boots": {
-        "Cost": "1 shilling"
-    },
-    "Cap": {
-        "Cost": "2 to 4 ortegs"
-    },
-    "Cloak": {
-        "Cost": "2 to 6 ortegs"
-    },
-    "Coat": {
-        "Cost": "5 to 10 ortegs"
-    },
-    "Dress": {
-        "Cost": "1 to 10 shillings"
-    },
-    "Gown": {
-        "Cost": "1 to 5 ortegs"
-    },
-    "Hat": {
-        "Cost": "2 to 4 ortegs"
-    },
-    "Mask": {
-        "Cost": "5 to 10 ortegs"
-    },
-    "Pants": {
-        "Cost": "1 to 5 ortegs"
-    },
-    "Robe": {
-        "Cost": "1 to 5 shillings"
-    },
-    "Scarf": {
-        "Cost": "1 to 2 ortegs"
-    },
-    "Shirt": {
-        "Cost": "1 to 4 ortegs"
-    },
-    "Skirt": {
-        "Cost": "5 to 10 ortegs"
-    },
-    "Tunic": {
-        "Cost": "2 to 7 ortegs"
-    }
+  "Torn rags": {
+    "cost": "5 ortegs"
+  },
+  "Simple garb": {
+    "cost": "1 shilling"
+  },
+  "Artisan's garb": {
+    "cost": "5 shillings"
+  },
+  "Burgher's garb": {
+    "cost": "1 thaler"
+  },
+  "Noble's garb": {
+    "cost": "10+ thaler"
+  },
+  "Boots": {
+    "cost": "1 shilling"
+  },
+  "Cap": {
+    "cost": "2 to 4 ortegs"
+  },
+  "Cloak": {
+    "cost": "2 to 6 ortegs"
+  },
+  "Coat": {
+    "cost": "5 to 10 ortegs"
+  },
+  "Dress": {
+    "cost": "1 to 10 shillings"
+  },
+  "Gown": {
+    "cost": "1 to 5 ortegs"
+  },
+  "Hat": {
+    "cost": "2 to 4 ortegs"
+  },
+  "Mask": {
+    "cost": "5 to 10 ortegs"
+  },
+  "Pants": {
+    "cost": "1 to 5 ortegs"
+  },
+  "Robe": {
+    "cost": "1 to 5 shillings"
+  },
+  "Scarf": {
+    "cost": "1 to 2 ortegs"
+  },
+  "Shirt": {
+    "cost": "1 to 4 ortegs"
+  },
+  "Skirt": {
+    "cost": "5 to 10 ortegs"
+  },
+  "Tunic": {
+    "cost": "2 to 7 ortegs"
+  }
 }

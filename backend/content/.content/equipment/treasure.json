@@ -1,26 +1,53 @@
 {
     "Thaler": {
-        "Quantity": 1,
-        "Type": "Currency",
-        "Quality": [],
-        "Cost": "",
-        "Name": "Thaler",
-        "Category": "treasure"
+        "quantity": {
+            "count": 1,
+            "bulk": true
+        },
+        "type": "Currency",
+        "quality": [],
+        "cost": "",
+        "name": "Thaler",
+        "category": "treasure",
+        "roll": {
+            "roll": false,
+            "dice": "",
+            "type": ""
+        },
+        "equip": []
     },
     "Shillings": {
-        "Quantity": 1,
-        "Type": "Currency",
-        "Quality": [],
-        "Cost": "",
-        "Name": "Shillings",
-        "Category": "treasure"
+        "quantity": {
+            "count": 1,
+            "bulk": true
+        },
+        "type": "Currency",
+        "quality": [],
+        "cost": "",
+        "name": "Shillings",
+        "category": "treasure",
+        "roll": {
+            "roll": false,
+            "dice": "",
+            "type": ""
+        },
+        "equip": []
     },
     "Ortegs": {
-        "Quantity": 1,
-        "Type": "Currency",
-        "Quality": [],
-        "Cost": "",
-        "Name": "Ortegs",
-        "Category": "treasure"
+        "quantity": {
+            "count": 1,
+            "bulk": true
+        },
+        "type": "Currency",
+        "quality": [],
+        "cost": "",
+        "name": "Ortegs",
+        "category": "treasure",
+        "roll": {
+            "roll": false,
+            "dice": "",
+            "type": ""
+        },
+        "equip": []
     }
 }

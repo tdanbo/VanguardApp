@@ -1,11 +1,11 @@
 {
-    "Countryside hayloft": {
-        "Cost": "1 orteg"
-    },
-    "Inn, countryside": {
-        "Cost": "5 ortegs"
-    },
-    "Inn, town": {
-        "Cost": "1+ shilling"
-    }
+  "countryside hayloft": {
+    "cost": "1 orteg"
+  },
+  "Inn, countryside": {
+    "cost": "5 ortegs"
+  },
+  "Inn, town": {
+    "cost": "1+ shilling"
+  }
 }

@@ -52,10 +52,22 @@ export interface CharacterEntry {
   equipment: ItemEntry[];
 }
 
+interface Roll {
+  roll: boolean;
+  dice: string;
+  type: string;
+}
+
+interface Quantity {
+  count: number;
+  bulk: boolean;
+}
+
 export interface ItemEntry {
-  roll: string[];
+  roll: Roll;
   quality: string[];
   equip: string[];
+  quantity: Quantity;
   type: string;
   cost: string;
   name: string;
@@ -72,14 +84,24 @@ export type CombatEntry = {
   modifier: number;
 };
 
+export interface AbilityRoll {
+  dice: string;
+  type: string;
+}
+
+export interface Ability {
+  description: string;
+  roll: AbilityRoll[];
+}
+
 export type AbilityEntry = {
   name: string;
   requirement: string;
   tradition: string;
   description: string;
-  novice: string;
-  adept: string;
-  master: string;
+  novice: Ability;
+  adept: Ability;
+  master: Ability;
   type: string;
   tag: string;
   id: string;

@@ -1,50 +1,56 @@
 {
-    "Light Armor": {
-        "Roll": [
-            "Armor",
-            "1d4"
-        ],
-        "Quality": [
-            "Impeding -2"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Light Armor",
-        "Cost": "2 thaler",
-        "Name": "Light Armor",
-        "Category": "ordinary_armor"
+  "Light Armor": {
+    "roll": {
+      "roll": true,
+      "type": "armor",
+      "dice": "1d4"
     },
-    "Medium Armor": {
-        "Roll": [
-            "Armor",
-            "1d6"
-        ],
-        "Quality": [
-            "Impeding -3"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Medium Armor",
-        "Cost": "5 thaler",
-        "Name": "Medium Armor",
-        "Category": "ordinary_armor"
+    "quality": ["Impeding -2"],
+    "Equip": ["AR"],
+    "type": "Light Armor",
+    "cost": "2 thaler",
+    "name": "Light Armor",
+    "category": "ordinary_armor",
+    "quantity": {
+      "count": 1,
+      "bulk": false
     },
-    "Heavy Armor": {
-        "Roll": [
-            "Armor",
-            "1d8"
-        ],
-        "Quality": [
-            "Impeding -4"
-        ],
-        "Equip": [
-            "AR"
-        ],
-        "Type": "Heavy Armor",
-        "Cost": "10 thaler",
-        "Name": "Heavy Armor",
-        "Category": "ordinary_armor"
-    }
+    "equip": []
+  },
+  "Medium Armor": {
+    "roll": {
+      "roll": true,
+      "type": "armor",
+      "dice": "1d6"
+    },
+    "quality": ["Impeding -3"],
+    "Equip": ["AR"],
+    "type": "Medium Armor",
+    "cost": "5 thaler",
+    "name": "Medium Armor",
+    "category": "ordinary_armor",
+    "quantity": {
+      "count": 1,
+      "bulk": false
+    },
+    "equip": []
+  },
+  "Heavy Armor": {
+    "roll": {
+      "roll": true,
+      "type": "armor",
+      "dice": "1d8"
+    },
+    "quality": ["Impeding -4"],
+    "Equip": ["AR"],
+    "type": "Heavy Armor",
+    "cost": "10 thaler",
+    "name": "Heavy Armor",
+    "category": "ordinary_armor",
+    "quantity": {
+      "count": 1,
+      "bulk": false
+    },
+    "equip": []
+  }
 }

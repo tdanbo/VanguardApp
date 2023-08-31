@@ -1,29 +1,29 @@
 {
-    "Croft": {
-        "Cost": "10 thaler"
-    },
-    "Farm": {
-        "Cost": "100 thaler"
-    },
-    "Watch tower, wood": {
-        "Cost": "100 thaler"
-    },
-    "Watch tower, stone": {
-        "Cost": "400 thaler"
-    },
-    "Fort, wood": {
-        "Cost": "500 thaler"
-    },
-    "Estate": {
-        "Cost": "1000 thaler"
-    },
-    "Fort, stone": {
-        "Cost": "2000 thaler"
-    },
-    "Keep": {
-        "Cost": "5000 thaler"
-    },
-    "Castle": {
-        "Cost": "10000+ thaler"
-    }
+  "Croft": {
+    "cost": "10 thaler"
+  },
+  "Farm": {
+    "cost": "100 thaler"
+  },
+  "Watch tower, wood": {
+    "cost": "100 thaler"
+  },
+  "Watch tower, stone": {
+    "cost": "400 thaler"
+  },
+  "Fort, wood": {
+    "cost": "500 thaler"
+  },
+  "Estate": {
+    "cost": "1000 thaler"
+  },
+  "Fort, stone": {
+    "cost": "2000 thaler"
+  },
+  "Keep": {
+    "cost": "5000 thaler"
+  },
+  "Castle": {
+    "cost": "10000+ thaler"
+  }
 }

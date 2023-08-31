@@ -1,464 +1,758 @@
 {
-    "Antidote Weak": {
-        "Description": "A weak antidote lowers the effect of a poison by one degree; a strong poison becomes moderate, a moderate poison becomes weak and a weak poison is completely neutralized. The antidote does not affect any damage that a character has already suffered. Requires a passed Cunning test to take effect.",
-        "Cost": "1 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Antidote Weak",
-        "Category": "elixirs"
+  "Antidote Weak": {
+    "description": "A weak antidote lowers the effect of a poison by one degree; a strong poison becomes moderate, a moderate poison becomes weak and a weak poison is completely neutralized. The antidote does not affect any damage that a character has already suffered. Requires a passed Cunning test to take effect.",
+    "cost": "1 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Antidote Moderate": {
-        "Description": "A moderate antidote lowers the effect of a poison by two degrees; a strong poison becomes weak, while both moderate and weak poisons are completely neutralized. The antidote does not affect any damage that a character has already suffered. Requires a passed Cunning test to take effect.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Antidote Moderate",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Antidote Weak",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Antidote Strong": {
-        "Description": "A strong antidote lowers the effect of a poison by three degrees, which usually means that the poison is completely neutralized. The antidote does not affect any damage that a character has already suffered. Requires a passed Cunning test to take effect.",
-        "Cost": "3 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Antidote Strong",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Antidote Moderate": {
+    "description": "A moderate antidote lowers the effect of a poison by two degrees; a strong poison becomes weak, while both moderate and weak poisons are completely neutralized. The antidote does not affect any damage that a character has already suffered. Requires a passed Cunning test to take effect.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Antidote Candle Weak": {
-        "Description": "When lit, this candle emits fumes that work as an antidote on all around it. A weak antidote candle affects every poisoned creature in the vicinity and reduces the effect of ongoing poisons by one level - a strong poison becomes moderate, a moderate weak  and a weak is neutralized. A moderate antidote can- dle does the same, but with a two level reduction: a  strong poison becomes weak while moderate and weak ones are neutralized. Note that this does not affect damage already suffered.",
-        "Cost": "6 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Antidote Candle Weak",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Antidote Moderate",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Antidote Candle Moderate": {
-        "Description": "When lit, this candle emits fumes that work as an antidote on all around it. A weak antidote candle affects every poisoned creature in the vicinity and reduces the effect of ongoing poisons by one level - a strong poison becomes moderate, a moderate weak  and a weak is neutralized. A moderate antidote can- dle does the same, but with a two level reduction: a  strong poison becomes weak while moderate and weak ones are neutralized. Note that this does not affect damage already suffered.",
-        "Cost": "9 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Antidote Candle Moderate",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Antidote Strong": {
+    "description": "A strong antidote lowers the effect of a poison by three degrees, which usually means that the poison is completely neutralized. The antidote does not affect any damage that a character has already suffered. Requires a passed Cunning test to take effect.",
+    "cost": "3 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Concentrated Magic": {
-        "Description": "A dose of mystical essence, which gives a mystic a second chance to succeed with a Resolute test the next time he or she attempts to use a mystical power.",
-        "Cost": "1 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Concentrated Magic",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Antidote Strong",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Choking Spores": {
-        "Description": "Choking Spores are produced from Davokar's lichens and mushrooms. The elixir is used specifically with the Strangler ability.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Choking Spores",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Antidote Candle Weak": {
+    "description": "When lit, this candle emits fumes that work as an antidote on all around it. A weak antidote candle affects every poisoned creature in the vicinity and reduces the effect of ongoing poisons by one level - a strong poison becomes moderate, a moderate weak  and a weak is neutralized. A moderate antidote can- dle does the same, but with a two level reduction: a  strong poison becomes weak while moderate and weak ones are neutralized. Note that this does not affect damage already suffered.",
+    "cost": "6 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Drone Dew": {
-        "Description": "Drone Dew is a liquid elixir made from drone spores, also containing accelerants.  A person who ingests a dose of the elixir imme- diately falls asleep if he or she does not pass a Strong  test, and stays asleep for an hour or until suffer- ing any damage. If the test is passed, the person  is instead dazed, with the effect that he or she is limited to one action per turn and cannot use any active abilities for an hour.",
-        "Cost": "4 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Drone Dew",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Antidote Candle Weak",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Elemental Essence": {
-        "Description": "When applying a dose of elemental essence, either one weapon, four throwing weapons or all the arrows/bolts in a quiver deal 1D4 elemental damage for the duration of a scene. The alchemist must choose which element to prepare: fire, cold, acid or lightning.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Elemental Essence",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Antidote Candle Moderate": {
+    "description": "When lit, this candle emits fumes that work as an antidote on all around it. A weak antidote candle affects every poisoned creature in the vicinity and reduces the effect of ongoing poisons by one level - a strong poison becomes moderate, a moderate weak  and a weak is neutralized. A moderate antidote can- dle does the same, but with a two level reduction: a  strong poison becomes weak while moderate and weak ones are neutralized. Note that this does not affect damage already suffered.",
+    "cost": "9 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Elixir of Life": {
-        "Description": "Consuming an Elixir of Life gives the drinker regenerative powers that heal 1D6 points of Toughness during 1D6 turns, on the character's initiative. Sadly the character also suffers 1 temporary corruption for each turn the elixir is in effect.",
-        "Cost": "6 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Elixir of Life",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Antidote Candle Moderate",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Eye Drops": {
-        "Description": "These drops will immediately return the gift of sight to a temporarily blinded creature.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Eye Drops",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Concentrated Magic": {
+    "description": "A dose of mystical essence, which gives a mystic a second chance to succeed with a Resolute test the next time he or she attempts to use a mystical power.",
+    "cost": "1 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Fire Dye": {
-        "Description": "Fire dye consists of salts that change the color of any fire they are cast into. If the colors are ascribed a specific meaning known to the user and an allied  observer it can be used for signaling over long dis- tances. They are also used for entertainment among  the wealthy, and by charlatans to impress commoners.",
-        "Cost": "1 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Fire Dye",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Concentrated Magic",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Flash Powder": {
-        "Description": "A finely grained powder that emits a blinding light when thrown. Flash Powder is used with the novice level of the ability Pyrotechnics.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Flash Powder",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Choking Spores": {
+    "description": "Choking Spores are produced from Davokar's lichens and mushrooms. The elixir is used specifically with the Strangler ability.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Ghost Candle": {
-        "Description": "The fumes from this candle make invisible things at a location or in a room visible.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Ghost Candle",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Choking Spores",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Herbal Cure": {
-        "Description": "An herbal cure consists of an alchemical poultice coupled with bandages. It smells vile but heals 1 point of Toughness. The herbal cure has greater effect if used by a character with the Medicus ability.",
-        "Cost": "1 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Herbal Cure",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Drone Dew": {
+    "description": "Drone Dew is a liquid elixir made from drone spores, also containing accelerants.  A person who ingests a dose of the elixir imme- diately falls asleep if he or she does not pass a Strong  test, and stays asleep for an hour or until suffer- ing any damage. If the test is passed, the person  is instead dazed, with the effect that he or she is limited to one action per turn and cannot use any active abilities for an hour.",
+    "cost": "4 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Holy Water": {
-        "Description": "Holy water, instilled with the light of Prios, can heal wounds and sooth souls. It works as a Herbal Cure  Equipment  Here you will find descriptions of equipment that the characters may need during their adventures, along with items and services they may require when relaxing and recuperating. The objects and services listed are available in all major settlements in Ambria but can also be manufactured by skilled player characters.  120 Tobias Danbo (Order #38481454)  * Black market only  with +1 on the effect test (meaning +2 Toughness if used without the ability Medicus), and it also removes 1 point of temporary corruption.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Holy Water",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Drone Dew",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Homing Arrow": {
-        "Description": "The alchemist marinates an arrow in homing essences, thereby creating an arrow that flies past other combatants, i.e. it does not require clear line of sight. However, the archer must see some part of the target and must roll a normal attack test in order to successfully hit.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Homing Arrow",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Elemental Essence": {
+    "description": "When applying a dose of elemental essence, either one weapon, four throwing weapons or all the arrows/bolts in a quiver deal 1D4 elemental damage for the duration of a scene. The alchemist must choose which element to prepare: fire, cold, acid or lightning.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Homunculus": {
-        "Description": "A seed is planted and one day later a miniature servant sprouts from the ground. The homunculus is small as a child, has no abilities and all attribute values are 5 (+5). It serves its maker loyally then withers away after a month; all it leaves behind is a pile of dirt. Creating a homunculus is a true violation of the natural order, meaning that the one using the seed suffers 1d6 temporary corruption.",
-        "Cost": "2 thaler*",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Homunculus",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Elemental Essence",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Poison Weak": {
-        "Description": "A weak poison deals 1D4 damage each turn for 1D4 turns.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Poison Weak",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Elixir of Life": {
+    "description": "Consuming an Elixir of Life gives the drinker regenerative powers that heal 1D6 points of Toughness during 1D6 turns, on the character's initiative. Sadly the character also suffers 1 temporary corruption for each turn the elixir is in effect.",
+    "cost": "6 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Poison Moderate": {
-        "Description": "A moderate poison deals 1D6 damage each turn for 1D6 turns.",
-        "Cost": "4 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Poison Moderate",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Elixir of Life",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Poison Strong": {
-        "Description": "A strong poison deals 1D8 damage each turn for 1D8 turns.",
-        "Cost": "6 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Poison Strong",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Eye Drops": {
+    "description": "These drops will immediately return the gift of sight to a temporarily blinded creature.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Poison Candle Weak": {
-        "Description": "A seemingly ordinary candle that emits poi- sonous fumes when lit; revealed with a passed  [Vigilant &lt; alchemist's Discreet]. The poison is air- borne and affects everyone in the room or in the  vicinity. The candle must burn for 1d4 turns before the poison is released, so the assassin can light it and leave the room before it takes effect. A weak poison candle deals 2 damage per turn, a moderate 3 damage per turn.",
-        "Cost": "8 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Poison Candle Weak",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Eye Drops",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Poison Candle Moderate": {
-        "Description": "A seemingly ordinary candle that emits poi- sonous fumes when lit; revealed with a passed  [Vigilant &lt; alchemist's Discreet]. The poison is air- borne and affects everyone in the room or in the  vicinity. The candle must burn for 1d4 turns before the poison is released, so the assassin can light it and leave the room before it takes effect. A weak poison candle deals 2 damage per turn, a moderate 3 damage per turn.",
-        "Cost": "12 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Poison Candle Moderate",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Fire Dye": {
+    "description": "Fire dye consists of salts that change the color of any fire they are cast into. If the colors are ascribed a specific meaning known to the user and an allied  observer it can be used for signaling over long dis- tances. They are also used for entertainment among  the wealthy, and by charlatans to impress commoners.",
+    "cost": "1 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Protective Oil": {
-        "Description": "The alchemical oil protects against elemental damage by providing 1D4 additional Armor against one of the elements for the duration of a scene. The alchemist must choose which of the elements that the oil shields against: fire, cold, acid or lightning.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Protective Oil",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Fire Dye",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Purple Sap Weak": {
-        "Description": "Removes 1d4 temporary corruption from the user's soul.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Purple Sap Weak",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Flash Powder": {
+    "description": "A finely grained powder that emits a blinding light when thrown. Flash Powder is used with the novice level of the ability Pyrotechnics.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Purple Sap Moderate": {
-        "Description": "Removes 1d6 temporary corruption from the user's soul.",
-        "Cost": "4 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Purple Sap Moderate",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Flash Powder",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Purple Sap Strong": {
-        "Description": "Removes 1d8 temporary corruption from the user's soul.",
-        "Cost": "6 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Purple Sap Strong",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Ghost Candle": {
+    "description": "The fumes from this candle make invisible things at a location or in a room visible.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Revealing Light": {
-        "Description": "A wax candle that when lit makes living creatures (not undead or abominations) glow softly in the dark, making it harder to stay hidden (a second chance to fail tests for sneaking up on someone, or a second chance to pass tests to discover someone sneaking). This affects everyone in the room or the vicinity, including the one who lit the candle.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Revealing Light",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Ghost Candle",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Shadow Tint": {
-        "Description": "This horribly sickening elixir was once used by mystics wanting to hide just how close they were to becoming thoroughly corrupt, making it a welcomed addition to all sorcerers' collections of mystical decoctions. Whomever manages to force down the sludge, distorts his or her shadow for a whole scene, making it appear as if the value in total corruption is 1d6 points lower.",
-        "Cost": "3 thaler*",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Shadow Tint",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Herbal Cure": {
+    "description": "An herbal cure consists of an alchemical poultice coupled with bandages. It smells vile but heals 1 point of Toughness. The herbal cure has greater effect if used by a character with the Medicus ability.",
+    "cost": "1 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Smoke Bomb": {
-        "Description": "The smoke bomb is a ceramic vessel that emits dense alchemical smoke when crushed, and it is used with the adept level of the ability Pyrotechnics. The smoke fills a room or covers a group of people engaged inmelee combat.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Smoke Bomb",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Herbal Cure",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Spirit Friend": {
-        "Description": "The miraculous drug called Spirit Friend is cooked in a cauldron, but it is not the liquid that is bottled, but the vapors. The gray-white smoke is captured in small ceramic jars and inhaled when needed. Spirit Friend gives the user level I in the trait Spirit Form. The effect lasts for 1d4 turns, to the price of as many points in temporary corruption.",
-        "Cost": "12 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Spirit Friend",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Holy Water": {
+    "description": "Holy water, instilled with the light of Prios, can heal wounds and sooth souls. It works as a Herbal Cure  Equipment  Here you will find descriptions of equipment that the characters may need during their adventures, along with items and services they may require when relaxing and recuperating. The objects and services listed are available in all major settlements in Ambria but can also be manufactured by skilled player characters.  120 Tobias Danbo (Order #38481454)  * Black market only  with +1 on the effect test (meaning +2 Toughness if used without the ability Medicus), and it also removes 1 point of temporary corruption.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Spore Bomb": {
-        "Description": "The spore bomb is used together with the Strangler ability.",
-        "Cost": "3 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Spore Bomb",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Holy Water",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Stun Bolt": {
-        "Description": "The alchemist covers a crossbow bolt in a fast acting muscle relaxant; anyone hit by the bolt must pass a [Strong -Damage] test or fall to the ground. The monstrous trait Robust gives +2 in Strong per level when rolling this test.",
-        "Cost": "1 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Stun Bolt",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Homing Arrow": {
+    "description": "The alchemist marinates an arrow in homing essences, thereby creating an arrow that flies past other combatants, i.e. it does not require clear line of sight. However, the archer must see some part of the target and must roll a normal attack test in order to successfully hit.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Thorn Beasties": {
-        "Description": "A handful of seeds are thrown to the  ground and one turn later 1d4 thorn beas- ties appear to serve the user. The thorn  beasties are small, vaguely humanoid creatures made of thorns; they do not speak but squeak and crack as twigs that are bent and rubbed together. The beasties live during a single scene before drying up to look like thorny witch dolls. The summoning of the thorn beasties is a clear violation of the natural order, meaning that the one  using the seeds suffers 1d6 tem- porary corruption.",
-        "Cost": "4 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Thorn Beasties",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Homing Arrow",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Thunder Ball": {
-        "Description": "An alchemical load that is thrown and detonates amidst a sudden, loud flash, used with the master level of the ability Pyrotechnics.",
-        "Cost": "3 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Thunder Ball",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Homunculus": {
+    "description": "A seed is planted and one day later a miniature servant sprouts from the ground. The homunculus is small as a child, has no abilities and all attribute values are 5 (+5). It serves its maker loyally then withers away after a month; all it leaves behind is a pile of dirt. Creating a homunculus is a true violation of the natural order, meaning that the one using the seed suffers 1d6 temporary corruption.",
+    "cost": "2 thaler*",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Transforming Draught Weak": {
-        "Description": "This is a powerful mutagen which transforms the body of the user in a monstrous way. During a scene the user is twisted into a bestial half-creature and has a second chance to fail all Persuasive tests until the effect wears off. The draught gives the selected trait at levelI, to the cost of 1d4 temporary corruption.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Transforming Draught Weak",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Homunculus",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Transforming Draught Moderate": {
-        "Description": "This is a powerful mutagen which transforms the body of the user in a monstrous way. During a scene the user is twisted into a bestial half-creature and has a second chance to fail all Persuasive tests until the effect wears off. The draught gives the selected trait at levelI, to the cost of 1d6 temporary corruption.",
-        "Cost": "4 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Transforming Draught Moderate",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Poison Weak": {
+    "description": "A weak poison deals 1D4 damage each turn for 1D4 turns.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Transforming Draught Strong": {
-        "Description": "This is a powerful mutagen which transforms the body of the user in a monstrous way. During a scene the user is twisted into a bestial half-creature and has a second chance to fail all Persuasive tests until the effect wears off. The draught gives the selected trait at levelI, to the cost of 1d8 temporary corruption.",
-        "Cost": "6 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Transforming Draught Strong",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Poison Weak",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Twilight Tincture": {
-        "Description": "temporarily made an undead body come to life: the skin regained its redness, the body temperature rose, and the smell of the breath improved dramatically. The effect lasts for a week per passed [Strong -permanent corruption] test. If the test fails, the effect lingers for one more day before dissipating completely. On thoroughly corrupt creatures the effect only lasts for a day per dose, no test is made.",
-        "Cost": "12 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Twilight Tincture",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Poison Moderate": {
+    "description": "A moderate poison deals 1D6 damage each turn for 1D6 turns.",
+    "cost": "4 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "War Paint": {
-        "Description": "Mystically charged paints can help a warrior in combat. War paint adds +1 to either Quick or Strong during an entire scene, and the warrior decides which attribute to boost when the paint is applied.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "War Paint",
-        "Category": "elixirs"
+    "type": "Elixir",
+    "name": "Poison Moderate",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
     },
-    "Wild Chew": {
-        "Description": "The red chewing resin called Wild Chew is a strong stimulant that makes the chewer more alert, less cautious and much more aggressive. One dose of Wild Chew moves 2 points in Discreet, Cunning and Resolute to Quick, Strong and Accurate for the rest of the day. During the upcoming scene, the user feels weak and has -2 on all attributes. With time, Wild Chew is highly addictive and severe withdrawal symptoms will occur unless the user consumes one dose each week, with the risk of permanent madness or death. No known drugs can counteract this.",
-        "Cost": "1 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Wild Chew",
-        "Category": "elixirs"
+    "equip": []
+  },
+  "Poison Strong": {
+    "description": "A strong poison deals 1D8 damage each turn for 1D8 turns.",
+    "cost": "6 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
     },
-    "Wraith Dust": {
-        "Description": "The wraith dust forces an incorporeal being (a creature with the monstrous trait Spirit Form) to take physical form for the duration of a scene. The dust must be thrown with a [Accurate &lt; Defense] test; if hit the spirit takes damage as living creatures do.",
-        "Cost": "2 thaler",
-        "Quality": [
-            "Effect"
-        ],
-        "Quantity": 1,
-        "Type": "Elixir",
-        "Name": "Wraith Dust",
-        "Category": "elixirs"
-    }
+    "type": "Elixir",
+    "name": "Poison Strong",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Poison Candle Weak": {
+    "description": "A seemingly ordinary candle that emits poi- sonous fumes when lit; revealed with a passed  [Vigilant &lt; alchemist's Discreet]. The poison is air- borne and affects everyone in the room or in the  vicinity. The candle must burn for 1d4 turns before the poison is released, so the assassin can light it and leave the room before it takes effect. A weak poison candle deals 2 damage per turn, a moderate 3 damage per turn.",
+    "cost": "8 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Poison Candle Weak",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Poison Candle Moderate": {
+    "description": "A seemingly ordinary candle that emits poi- sonous fumes when lit; revealed with a passed  [Vigilant &lt; alchemist's Discreet]. The poison is air- borne and affects everyone in the room or in the  vicinity. The candle must burn for 1d4 turns before the poison is released, so the assassin can light it and leave the room before it takes effect. A weak poison candle deals 2 damage per turn, a moderate 3 damage per turn.",
+    "cost": "12 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Poison Candle Moderate",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Protective Oil": {
+    "description": "The alchemical oil protects against elemental damage by providing 1D4 additional Armor against one of the elements for the duration of a scene. The alchemist must choose which of the elements that the oil shields against: fire, cold, acid or lightning.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Protective Oil",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Purple Sap Weak": {
+    "description": "Removes 1d4 temporary corruption from the user's soul.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Purple Sap Weak",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Purple Sap Moderate": {
+    "description": "Removes 1d6 temporary corruption from the user's soul.",
+    "cost": "4 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Purple Sap Moderate",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Purple Sap Strong": {
+    "description": "Removes 1d8 temporary corruption from the user's soul.",
+    "cost": "6 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Purple Sap Strong",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Revealing Light": {
+    "description": "A wax candle that when lit makes living creatures (not undead or abominations) glow softly in the dark, making it harder to stay hidden (a second chance to fail tests for sneaking up on someone, or a second chance to pass tests to discover someone sneaking). This affects everyone in the room or the vicinity, including the one who lit the candle.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Revealing Light",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Shadow Tint": {
+    "description": "This horribly sickening elixir was once used by mystics wanting to hide just how close they were to becoming thoroughly corrupt, making it a welcomed addition to all sorcerers' collections of mystical decoctions. Whomever manages to force down the sludge, distorts his or her shadow for a whole scene, making it appear as if the value in total corruption is 1d6 points lower.",
+    "cost": "3 thaler*",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Shadow Tint",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Smoke Bomb": {
+    "description": "The smoke bomb is a ceramic vessel that emits dense alchemical smoke when crushed, and it is used with the adept level of the ability Pyrotechnics. The smoke fills a room or covers a group of people engaged inmelee combat.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Smoke Bomb",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Spirit Friend": {
+    "description": "The miraculous drug called Spirit Friend is cooked in a cauldron, but it is not the liquid that is bottled, but the vapors. The gray-white smoke is captured in small ceramic jars and inhaled when needed. Spirit Friend gives the user level I in the trait Spirit Form. The effect lasts for 1d4 turns, to the price of as many points in temporary corruption.",
+    "cost": "12 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Spirit Friend",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Spore Bomb": {
+    "description": "The spore bomb is used together with the Strangler ability.",
+    "cost": "3 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Spore Bomb",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Stun Bolt": {
+    "description": "The alchemist covers a crossbow bolt in a fast acting muscle relaxant; anyone hit by the bolt must pass a [Strong -Damage] test or fall to the ground. The monstrous trait Robust gives +2 in Strong per level when rolling this test.",
+    "cost": "1 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Stun Bolt",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Thorn Beasties": {
+    "description": "A handful of seeds are thrown to the  ground and one turn later 1d4 thorn beas- ties appear to serve the user. The thorn  beasties are small, vaguely humanoid creatures made of thorns; they do not speak but squeak and crack as twigs that are bent and rubbed together. The beasties live during a single scene before drying up to look like thorny witch dolls. The summoning of the thorn beasties is a clear violation of the natural order, meaning that the one  using the seeds suffers 1d6 tem- porary corruption.",
+    "cost": "4 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Thorn Beasties",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Thunder Ball": {
+    "description": "An alchemical load that is thrown and detonates amidst a sudden, loud flash, used with the master level of the ability Pyrotechnics.",
+    "cost": "3 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Thunder Ball",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Transforming Draught Weak": {
+    "description": "This is a powerful mutagen which transforms the body of the user in a monstrous way. During a scene the user is twisted into a bestial half-creature and has a second chance to fail all Persuasive tests until the effect wears off. The draught gives the selected trait at levelI, to the cost of 1d4 temporary corruption.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Transforming Draught Weak",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Transforming Draught Moderate": {
+    "description": "This is a powerful mutagen which transforms the body of the user in a monstrous way. During a scene the user is twisted into a bestial half-creature and has a second chance to fail all Persuasive tests until the effect wears off. The draught gives the selected trait at levelI, to the cost of 1d6 temporary corruption.",
+    "cost": "4 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Transforming Draught Moderate",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Transforming Draught Strong": {
+    "description": "This is a powerful mutagen which transforms the body of the user in a monstrous way. During a scene the user is twisted into a bestial half-creature and has a second chance to fail all Persuasive tests until the effect wears off. The draught gives the selected trait at levelI, to the cost of 1d8 temporary corruption.",
+    "cost": "6 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Transforming Draught Strong",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Twilight Tincture": {
+    "description": "temporarily made an undead body come to life: the skin regained its redness, the body temperature rose, and the smell of the breath improved dramatically. The effect lasts for a week per passed [Strong -permanent corruption] test. If the test fails, the effect lingers for one more day before dissipating completely. On thoroughly corrupt creatures the effect only lasts for a day per dose, no test is made.",
+    "cost": "12 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Twilight Tincture",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "War Paint": {
+    "description": "Mystically charged paints can help a warrior in combat. War paint adds +1 to either Quick or Strong during an entire scene, and the warrior decides which attribute to boost when the paint is applied.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "War Paint",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Wild Chew": {
+    "description": "The red chewing resin called Wild Chew is a strong stimulant that makes the chewer more alert, less cautious and much more aggressive. One dose of Wild Chew moves 2 points in Discreet, Cunning and Resolute to Quick, Strong and Accurate for the rest of the day. During the upcoming scene, the user feels weak and has -2 on all attributes. With time, Wild Chew is highly addictive and severe withdrawal symptoms will occur unless the user consumes one dose each week, with the risk of permanent madness or death. No known drugs can counteract this.",
+    "cost": "1 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Wild Chew",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  },
+  "Wraith Dust": {
+    "description": "The wraith dust forces an incorporeal being (a creature with the monstrous trait Spirit Form) to take physical form for the duration of a scene. The dust must be thrown with a [Accurate &lt; Defense] test; if hit the spirit takes damage as living creatures do.",
+    "cost": "2 thaler",
+    "quality": ["Effect"],
+    "quantity": {
+      "count": 1,
+      "bulk": true
+    },
+    "type": "Elixir",
+    "name": "Wraith Dust",
+    "category": "elixirs",
+    "roll": {
+      "roll": false,
+      "dice": "",
+      "type": ""
+    },
+    "equip": []
+  }
 }

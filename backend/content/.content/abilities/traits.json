@@ -1,110 +1,232 @@
 {
-    "Earth Bound": {
-        "name": "Earth Bound",
-        "requirement": "Dwarf",
-        "tradition": "",
-        "description": "The creature is bound to the world in an intimate way, as if originating from the bones of the world and still being part of its foundation. It has no soul and suffers damage instead of corruption; temporary corruption causes bleeding wounds on its body. Permanent corruption instead causes a permanent reduction to the basis for calculating the creatures Pain Threshold. In practice, this means that the Pain Threshold is reduced by 1 for every other point the creature suffers in permanent corruption. Its Toughness is not affected. If the Pain Threshold is reduced to zero, the creature dies of internal bleeding and failing organs. Once dead, the creature cannot become undead and it cannot be contacted with the ritual Necromancy. The corpse decays and reunites with the slop and dust of creation, without leaving any kind of spiritual trace behind.",
-        "novice": "",
-        "adept": "",
-        "master": "",
-        "type": "Trait",
-        "tag": "utility",
-        "level": "Novice"
+  "Earth Bound": {
+    "name": "Earth Bound",
+    "requirement": "Dwarf",
+    "tradition": "",
+    "description": "The creature is bound to the world in an intimate way, as if originating from the bones of the world and still being part of its foundation. It has no soul and suffers damage instead of corruption; temporary corruption causes bleeding wounds on its body. Permanent corruption instead causes a permanent reduction to the basis for calculating the creatures Pain Threshold. In practice, this means that the Pain Threshold is reduced by 1 for every other point the creature suffers in permanent corruption. Its Toughness is not affected. If the Pain Threshold is reduced to zero, the creature dies of internal bleeding and failing organs. Once dead, the creature cannot become undead and it cannot be contacted with the ritual Necromancy. The corpse decays and reunites with the slop and dust of creation, without leaving any kind of spiritual trace behind.",
+    "novice": {
+      "description": "",
+      "roll": []
     },
-    "Long-lived": {
-        "name": "Long-lived",
-        "requirement": "Changeling, Elf, or Ogre",
-        "tradition": "",
-        "description": "Once adulthood is reached, the aging process of the character slows down. The character can live up to two or even three centuries if its life is not shortened by violence, poison or disease. The creature's long lifespan makes it prone to do things at a slow pace, but this is compensated by the attitude that what is worth doing is worth doing well, which over time results in a considerable degree of expertise. Long-lived has no effect besides what it implies in terms of playing the role.",
-        "novice": "",
-        "adept": "",
-        "master": "",
-        "type": "Trait",
-        "tag": "flavour",
-        "level": "Novice"
+    "adept": {
+      "description": "",
+      "roll": []
     },
-    "Robust": {
-        "name": "Robust",
-        "requirement": "Ogre, Troll, or Dark Blood",
-        "tradition": "",
-        "description": "The character belongs to a race of creatures that are naturally tall and often continue to grow their entire lives. But there are variations: some grow quickly, others more slowly while some hardly seems to grow at all.",
-        "novice": "<b>Special</b>. The character is close to seven feet tall and very strong. Such a towering body is easier to hit in combat, which is balanced by a greater natural toughness. The character's Defense is based on [Quick-2] and it can only use light armor, which must be custom-made and therefore costs twice the normal price. In return, the character naturally ignores 1D4 damage from each hit taken, in addition to any armor it wears. Furthermore, it can deal 1D4 extra damage with one melee attack each turn.",
-        "adept": "<b>Special</b>. The character is over eight feet tall, weighs about 500 pounds and has skin as though as bark. A creature like this packs quite the punch but is also easy to hit. The character's Defense is based on [Quick-3] and it can only use light armor, which must be custom-made and costs three times the normal price. In return, the character naturally ignores 1D6 damage from each hit taken, in addition to any armor it wears. Furthermore, it can also deal 1D6 extra damage with one melee attack each turn.",
-        "master": "<b>Special</b>. The character is close to ten feet tall, weighs about half a ton and crushes lesser creatures while enemy weapons have a hard time penetrating its stone-like skin. It Is very easy to hit a creature of this size, but equally hard to wound it seriously. The character's Defense is based on [Quick-4] and it can only use light armor (custom-made, costing four times the normal price). In return, the character ignores 1D8 damage from each hit taken, in addition to any armor it wears. Finally, it can deal 1D8 extra damage with one melee attack each turn.",
-        "type": "Trait",
-        "tag": "defense",
-        "level": "Novice"
+    "master": {
+      "description": "",
+      "roll": []
     },
-    "Short-lived": {
-        "name": "Short-lived",
-        "requirement": "Goblin",
-        "tradition": "",
-        "description": "The character's life is short, even under favorable living conditions. All members of its race tend to reach adulthood in a handful of years, after which they start to lose their youthful vigor so that only a few ever live to see the age of forty. On the other hand, they are quick to learn and adapt to new surroundings, and they are often ready to face the world at the age of five. Short-lived has no effect besides what it implies in terms of playing the role.",
-        "novice": "",
-        "adept": "",
-        "master": "",
-        "type": "Trait",
-        "tag": "flavour",
-        "level": "Novice"
+    "type": "Trait",
+    "tag": "utility",
+    "level": "Novice"
+  },
+  "Long-lived": {
+    "name": "Long-lived",
+    "requirement": "Changeling, Elf, or Ogre",
+    "tradition": "",
+    "description": "Once adulthood is reached, the aging process of the character slows down. The character can live up to two or even three centuries if its life is not shortened by violence, poison or disease. The creature's long lifespan makes it prone to do things at a slow pace, but this is compensated by the attitude that what is worth doing is worth doing well, which over time results in a considerable degree of expertise. Long-lived has no effect besides what it implies in terms of playing the role.",
+    "novice": {
+      "description": "",
+      "roll": []
     },
-    "Survival Instinct": {
-        "name": "Survival Instinct",
-        "requirement": "Goblin",
-        "tradition": "",
-        "description": "The character belongs to a race with a short lifespan but with a life-force comparable to that of more long-lived races. For some individuals this energy shows itself in clamorous hollering and an acute restlessness; for others it manifests itself in a more useful survival instinct.",
-        "novice": "<b>Free</b>. Thanks to its explosive survival instinct, the character may perform one extra Movement Action once per scene.",
-        "adept": "<b>Reaction</b>. The character trusts its instincts and has learned that rolling with the punches often saves your life. The character's finely honed survival instinct provides it with a permanent +1D4 to Armor.",
-        "master": "<b>Free</b>. There resides a powerful fighting spirit within each member of the character's race, and that spirit can show itself when the character is backed into a corner. The character has nurtured this hot-tempered aggression and may sacrifice a Movement Action once per scene to perform an extra Combat Action.",
-        "type": "Trait",
-        "tag": "utility",
-        "level": "Novice"
+    "adept": {
+      "description": "",
+      "roll": []
     },
-    "Wisdom of the Ages": {
-        "name": "Wisdom of the Ages",
-        "requirement": "Elf",
-        "tradition": "",
-        "description": "Through the eons, the elves have amassed a vast collective wisdom; a deep well of knowledge and insights which many elves can access through meditation. The character is one of those who may use the know-how of previous generations to solve problems at hand. It is not without risks; in the twilight of the world, the process spawns corruption. Wisdom of the Ages gives temporary corruption as if it was a mystical power.",
-        "novice": "<b>Full turn</b>. The character gets lost in a short trance. With a passed Resolute test, it gains access to the novice level of an optional ability, Mystical traditions, Ritualist and Mystical Power excluded. The ability can be used for the rest of the day, before fading from memory",
-        "adept": "<b>Active</b>. The character's closer connection to the collective memory makes the trance even shorter; other than that it works like the novice level.",
-        "master": "<b>Active</b>. The character can dig deeper into the collective memory. With a passed Resolute test, it gains access to the adept level of an optional ability, Mystical traditions, Ritualist and Mystical Power excluded. The ability can be used for the rest of the day, before fading from memory.",
-        "type": "Trait",
-        "tag": "utility",
-        "level": "Novice"
+    "master": {
+      "description": "",
+      "roll": []
     },
-    "Provocative": {
-        "name": "Provocative",
-        "requirement": "Andrik",
-        "tradition": "",
-        "description": "If the enemy already is in a berserk rage no need to roll is necessary, the andrik automatically succeeds taunting the enemy to their wit's end. Enemies with the Steadfast ability will be able to roll resistance every round to regain their senses. When using Provocative the andrik immediately loses the advantage of the trait Diminutive.",
-        "novice": "<b>Free</b>. The andrik can with a successful [Resolute &lt; Cunning] roll get an enemy unduly provoked, allowing the andrik a second chance to succeed in all Defense and resistance rolls against this enemy. Only one target at a time may be thrown off in this way. The effect persists for the rest of the battle without further rolls, but if the andrik wants to provoke another enemy this will require a new roll.",
-        "adept": "<b>Free</b>. The andrik's ability to infuriate the enemy gives them not only a second chance to successfully roll Defense and resistances but the enemy also becomes careless to incoming attacks; a successful [Resolute &lt; Cunning] roll gives the andrik a second chance to succeed with attack rolls against the offended enemy.This in addition to the effects of Level I, against one enemy at a time and for the rest of battle unless the andrik wants to change the target of their heckling.",
-        "master": "<b>Active</b>. The andrik is a supreme mocker and can with quacking singing and obscene dance bring an entire group of enemies off balance with a successful [Cunning] roll. This turns all the enemies vermilion with unreasoning anger and the andrik gets a second chance on Defense and resistance, as well as attack, rolls against all affected enemies for the rest of the battle.",
-        "type": "Trait",
-        "tag": "defense",
-        "level": "Novice"
+    "type": "Trait",
+    "tag": "flavour",
+    "level": "Novice"
+  },
+  "Robust": {
+    "name": "Robust",
+    "requirement": "Ogre, Troll, or Dark Blood",
+    "tradition": "",
+    "description": "The character belongs to a race of creatures that are naturally tall and often continue to grow their entire lives. But there are variations: some grow quickly, others more slowly while some hardly seems to grow at all.",
+    "novice": {
+      "description": "<b>Special</b>. The character is close to seven feet tall and very strong. Such a towering body is easier to hit in combat, which is balanced by a greater natural toughness. The character's Defense is based on [Quick-2] and it can only use light armor, which must be custom-made and therefore costs twice the normal price. In return, the character naturally ignores 1D4 damage from each hit taken, in addition to any armor it wears. Furthermore, it can deal 1D4 extra damage with one melee attack each turn.",
+      "roll": [
+        {
+          "type": "trait",
+          "dice": "1d4"
+        },
+        {
+          "type": "trait",
+          "dice": "1d4"
+        }
+      ]
     },
-    "Bushcraft": {
-        "name": "Bushcraft",
-        "requirement": "",
-        "tradition": "",
-        "description": "",
-        "novice": "The person can read the signs of the wilds, knows what areas to avoid and is used to finding food, water and shelter in harsh environments. While moving through Bright Davokar and the outskirts of the mountains. The person can pass a Vigilant test to gather 1D6 rations of food and water per day, or 1D10 rations if that is the person\u2019s sole focus (no movement).",
-        "adept": "The same as novice but works in Wild Davokar and the deep mountain valleys.",
-        "master": "The same as adept but works in Dark Davokar and the underworld.",
-        "type": "Trait",
-        "tag": "flavour",
-        "level": "Novice"
+    "adept": {
+      "description": "<b>Special</b>. The character is over eight feet tall, weighs about 500 pounds and has skin as though as bark. A creature like this packs quite the punch but is also easy to hit. The character's Defense is based on [Quick-3] and it can only use light armor, which must be custom-made and costs three times the normal price. In return, the character naturally ignores 1D6 damage from each hit taken, in addition to any armor it wears. Furthermore, it can also deal 1D6 extra damage with one melee attack each turn.",
+      "roll": [
+        {
+          "type": "trait",
+          "dice": "1d6"
+        },
+        {
+          "type": "trait",
+          "dice": "1d6"
+        }
+      ]
     },
-    "Privileged": {
-        "name": "Privileged",
-        "requirement": "",
-        "tradition": "",
-        "description": "The character belongs to a race of high social standing within its society, and is therefore given advantages that others simply cannot have or must pay in either silver or hard work to obtain. The character gets a second chance to succeed when taking on social challenges within its own society, and does not have to roll the dice unless it strives to accomplish something which is questionable or that may be next to impossible to achieve. Additionally, the character starts with 50 thaler in its purse.",
-        "novice": "",
-        "adept": "",
-        "master": "",
-        "type": "Trait",
-        "tag": "flavour",
-        "level": "Novice"
-    }
+    "master": {
+      "description": "<b>Special</b>. The character is close to ten feet tall, weighs about half a ton and crushes lesser creatures while enemy weapons have a hard time penetrating its stone-like skin. It Is very easy to hit a creature of this size, but equally hard to wound it seriously. The character's Defense is based on [Quick-4] and it can only use light armor (custom-made, costing four times the normal price). In return, the character ignores 1D8 damage from each hit taken, in addition to any armor it wears. Finally, it can deal 1D8 extra damage with one melee attack each turn.",
+      "roll": [
+        {
+          "type": "trait",
+          "dice": "1d8"
+        },
+        {
+          "type": "trait",
+          "dice": "1d8"
+        }
+      ]
+    },
+    "type": "Trait",
+    "tag": "defense",
+    "level": "Novice"
+  },
+  "Short-lived": {
+    "name": "Short-lived",
+    "requirement": "Goblin",
+    "tradition": "",
+    "description": "The character's life is short, even under favorable living conditions. All members of its race tend to reach adulthood in a handful of years, after which they start to lose their youthful vigor so that only a few ever live to see the age of forty. On the other hand, they are quick to learn and adapt to new surroundings, and they are often ready to face the world at the age of five. Short-lived has no effect besides what it implies in terms of playing the role.",
+    "novice": {
+      "description": "",
+      "roll": []
+    },
+    "adept": {
+      "description": "",
+      "roll": []
+    },
+    "master": {
+      "description": "",
+      "roll": []
+    },
+    "type": "Trait",
+    "tag": "flavour",
+    "level": "Novice"
+  },
+  "Survival Instinct": {
+    "name": "Survival Instinct",
+    "requirement": "Goblin",
+    "tradition": "",
+    "description": "The character belongs to a race with a short lifespan but with a life-force comparable to that of more long-lived races. For some individuals this energy shows itself in clamorous hollering and an acute restlessness; for others it manifests itself in a more useful survival instinct.",
+    "novice": {
+      "description": "<b>Free</b>. Thanks to its explosive survival instinct, the character may perform one extra Movement Action once per scene.",
+      "roll": []
+    },
+    "adept": {
+      "description": "<b>Reaction</b>. The character trusts its instincts and has learned that rolling with the punches often saves your life. The character's finely honed survival instinct provides it with a permanent +1D4 to Armor.",
+      "roll": [
+        {
+          "type": "trait",
+          "dice": "1d4"
+        }
+      ]
+    },
+    "master": {
+      "description": "<b>Free</b>. There resides a powerful fighting spirit within each member of the character's race, and that spirit can show itself when the character is backed into a corner. The character has nurtured this hot-tempered aggression and may sacrifice a Movement Action once per scene to perform an extra Combat Action.",
+      "roll": []
+    },
+    "type": "Trait",
+    "tag": "utility",
+    "level": "Novice"
+  },
+  "Wisdom of the Ages": {
+    "name": "Wisdom of the Ages",
+    "requirement": "Elf",
+    "tradition": "",
+    "description": "Through the eons, the elves have amassed a vast collective wisdom; a deep well of knowledge and insights which many elves can access through meditation. The character is one of those who may use the know-how of previous generations to solve problems at hand. It is not without risks; in the twilight of the world, the process spawns corruption. Wisdom of the Ages gives temporary corruption as if it was a mystical power.",
+    "novice": {
+      "description": "<b>Full turn</b>. The character gets lost in a short trance. With a passed Resolute test, it gains access to the novice level of an optional ability, Mystical traditions, Ritualist and Mystical Power excluded. The ability can be used for the rest of the day, before fading from memory",
+      "roll": []
+    },
+    "adept": {
+      "description": "<b>Active</b>. The character's closer connection to the collective memory makes the trance even shorter; other than that it works like the novice level.",
+      "roll": []
+    },
+    "master": {
+      "description": "<b>Active</b>. The character can dig deeper into the collective memory. With a passed Resolute test, it gains access to the adept level of an optional ability, Mystical traditions, Ritualist and Mystical Power excluded. The ability can be used for the rest of the day, before fading from memory.",
+      "roll": []
+    },
+    "type": "Trait",
+    "tag": "utility",
+    "level": "Novice"
+  },
+  "Provocative": {
+    "name": "Provocative",
+    "requirement": "Andrik",
+    "tradition": "",
+    "description": "If the enemy already is in a berserk rage no need to roll is necessary, the andrik automatically succeeds taunting the enemy to their wit's end. Enemies with the Steadfast ability will be able to roll resistance every round to regain their senses. When using Provocative the andrik immediately loses the advantage of the trait Diminutive.",
+    "novice": {
+      "description": "<b>Free</b>. The andrik can with a successful [Resolute &lt; Cunning] roll get an enemy unduly provoked, allowing the andrik a second chance to succeed in all Defense and resistance rolls against this enemy. Only one target at a time may be thrown off in this way. The effect persists for the rest of the battle without further rolls, but if the andrik wants to provoke another enemy this will require a new roll.",
+      "roll": []
+    },
+    "adept": {
+      "description": "<b>Free</b>. The andrik's ability to infuriate the enemy gives them not only a second chance to successfully roll Defense and resistances but the enemy also becomes careless to incoming attacks; a successful [Resolute &lt; Cunning] roll gives the andrik a second chance to succeed with attack rolls against the offended enemy.This in addition to the effects of Level I, against one enemy at a time and for the rest of battle unless the andrik wants to change the target of their heckling.",
+      "roll": []
+    },
+    "master": {
+      "description": "<b>Active</b>. The andrik is a supreme mocker and can with quacking singing and obscene dance bring an entire group of enemies off balance with a successful [Cunning] roll. This turns all the enemies vermilion with unreasoning anger and the andrik gets a second chance on Defense and resistance, as well as attack, rolls against all affected enemies for the rest of the battle.",
+      "roll": []
+    },
+    "type": "Trait",
+    "tag": "defense",
+    "level": "Novice"
+  },
+  "Bushcraft": {
+    "name": "Bushcraft",
+    "requirement": "",
+    "tradition": "",
+    "description": "",
+    "novice": {
+      "description": "The person can read the signs of the wilds, knows what areas to avoid and is used to finding food, water and shelter in harsh environments. While moving through Bright Davokar and the outskirts of the mountains. The person can pass a Vigilant test to gather 1D6 rations of food and water per day, or 1D10 rations if that is the person\u2019s sole focus (no movement).",
+      "roll": [
+        {
+          "type": "trait",
+          "dice": "1d6"
+        },
+        {
+          "type": "trait",
+          "dice": "1d10"
+        }
+      ]
+    },
+    "adept": {
+      "description": "The same as novice but works in Wild Davokar and the deep mountain valleys.",
+      "roll": []
+    },
+    "master": {
+      "description": "The same as adept but works in Dark Davokar and the underworld.",
+      "roll": []
+    },
+    "type": "Trait",
+    "tag": "flavour",
+    "level": "Novice"
+  },
+  "Privileged": {
+    "name": "Privileged",
+    "requirement": "",
+    "tradition": "",
+    "description": "The character belongs to a race of high social standing within its society, and is therefore given advantages that others simply cannot have or must pay in either silver or hard work to obtain. The character gets a second chance to succeed when taking on social challenges within its own society, and does not have to roll the dice unless it strives to accomplish something which is questionable or that may be next to impossible to achieve. Additionally, the character starts with 50 thaler in its purse.",
+    "novice": {
+      "description": "",
+      "roll": []
+    },
+    "adept": {
+      "description": "",
+      "roll": []
+    },
+    "master": {
+      "description": "",
+      "roll": []
+    },
+    "type": "Trait",
+    "tag": "flavour",
+    "level": "Novice"
+  }
 }
