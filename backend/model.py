@@ -8,6 +8,7 @@ class CombatEntry(BaseModel):
     result: int
     success: bool
     modifier: int
+    add: bool
 
 class CharacterEntry(BaseModel):
     details: dict = {"name": "", "xp_earned": 0, "movement": 0, "modifier": 0, "corruption": 0}
@@ -32,7 +33,11 @@ class CharacterEntry(BaseModel):
         "casting": {"stat": "resolute", "mod": 0},
         "sneaking": {"stat": "discreet", "mod": 0},
     }
-    corruption: dict = {}
+    corruption: dict = {
+        "corruption1": {},
+        "corruption2": {},
+        "corruption3": {},
+    }
     abilities: list = []
     inventory: list = []
     equipment: list = []

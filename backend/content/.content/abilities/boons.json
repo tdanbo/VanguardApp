@@ -156,11 +156,11 @@
       "roll": [
         {
           "type": "boon",
-          "dice": "1d6"
+          "dice": "d6"
         },
         {
           "type": "boon",
-          "dice": "1d10"
+          "dice": "d10"
         }
       ]
     },

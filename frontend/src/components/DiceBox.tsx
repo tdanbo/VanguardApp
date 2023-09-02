@@ -12,16 +12,17 @@ function DiceBox({ type_name, type_value }: Props) {
 
   const RollDice = () => {
     onRollDice({
-      dice: "d20",
+      dice: type_name,
       count: 1,
       target: 0,
-      type: "Custom",
+      type: "Dice",
+      add_mod: true,
     });
   };
 
   return (
     <div className="flex w-full flex-col">
-      <div
+      {/* <div
         className="flex grow items-center justify-center  rounded-t"
         style={{
           color: Constants.RED,
@@ -33,7 +34,7 @@ function DiceBox({ type_name, type_value }: Props) {
         }}
       >
         {type_value}
-      </div>
+      </div> */}
       <div
         className="flex grow items-center justify-center rounded-b "
         style={{

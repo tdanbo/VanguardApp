@@ -31,7 +31,6 @@ function InventoryEntry({
   equipped,
   id,
 }: InventoryEntryProps) {
-  console.log(item);
   const { character, setCharacter } = useContext(CharacterContext);
   const DARKER_PRIMARY = chroma(Constants.PRIMARY).darken(1).hex();
   const DARKER_PRIMARY_DARKER = chroma(Constants.PRIMARY_DARKER)
@@ -97,6 +96,7 @@ function InventoryEntry({
       count: 1,
       target: 0,
       type: item.roll.type,
+      add_mod: true,
     });
   };
 
@@ -114,6 +114,7 @@ function InventoryEntry({
       count: 1,
       target: 0,
       type: item.roll.type,
+      add_mod: true,
     });
   };
 

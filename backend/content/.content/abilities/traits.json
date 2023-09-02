@@ -51,11 +51,11 @@
       "roll": [
         {
           "type": "trait",
-          "dice": "1d4"
+          "dice": "d4"
         },
         {
           "type": "trait",
-          "dice": "1d4"
+          "dice": "d4"
         }
       ]
     },
@@ -64,11 +64,11 @@
       "roll": [
         {
           "type": "trait",
-          "dice": "1d6"
+          "dice": "d6"
         },
         {
           "type": "trait",
-          "dice": "1d6"
+          "dice": "d6"
         }
       ]
     },
@@ -77,11 +77,11 @@
       "roll": [
         {
           "type": "trait",
-          "dice": "1d8"
+          "dice": "d8"
         },
         {
           "type": "trait",
-          "dice": "1d8"
+          "dice": "d8"
         }
       ]
     },
@@ -124,7 +124,7 @@
       "roll": [
         {
           "type": "trait",
-          "dice": "1d4"
+          "dice": "d4"
         }
       ]
     },
@@ -188,11 +188,11 @@
       "roll": [
         {
           "type": "trait",
-          "dice": "1d6"
+          "dice": "d6"
         },
         {
           "type": "trait",
-          "dice": "1d10"
+          "dice": "d10"
         }
       ]
     },

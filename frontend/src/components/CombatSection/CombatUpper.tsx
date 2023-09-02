@@ -1,21 +1,23 @@
-import DetailsBox from "../StatBox";
+import DetailsBox from "../DetailsBox";
+import ToughnessBox from "../ToughnessBox";
 import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 
 import { CharacterEntry } from "../../Types";
 
+import {
+  onAddToughness,
+  onSubToughness,
+} from "../../functions/CharacterFunctions";
+
 import React, { useState, useContext } from "react";
 import { CharacterContext } from "../../contexts/CharacterContext";
 
-function StatsUpperLeft() {
+function CombatUpper() {
   const { character, setCharacter } = useContext(CharacterContext);
-  let Maximum = 10;
-  if (character.stats.strong.value > 10) {
-    Maximum = character.stats.strong.value;
-  }
 
-  const Current = Maximum - character.toughness.damage.value;
-  const Pain = Math.ceil(character.stats.strong.value / 2);
+  const current =
+    character.toughness.max.value - character.toughness.damage.value;
 
   return (
     <div className="grow flex-row pr-1">
@@ -28,12 +30,17 @@ function StatsUpperLeft() {
           minHeight: Constants.SECTION_HEIGHT,
         }}
       >
-        <DetailsBox type_name={"Toughness"} type_value={Current} />
-        <DetailsBox type_name={"Maximum"} type_value={Maximum} />
-        <DetailsBox type_name={"Pain"} type_value={Pain} />
+        <ToughnessBox
+          onAddFunction={onAddToughness}
+          onSubFunction={onSubToughness}
+        />
+        <DetailsBox
+          type_name={"Pain"}
+          type_value={character.toughness.pain.value}
+        />
       </div>
     </div>
   );
 }
 
-export default StatsUpperLeft;
+export default CombatUpper;

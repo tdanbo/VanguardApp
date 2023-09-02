@@ -1,8 +1,12 @@
-import DetailsBox from "../StatBox";
+import DetailsBox from "../DetailsBox";
+import XpBox from "../XpBox";
 import * as Constants from "../../Constants";
 import { CharacterEntry } from "../../Types";
 import TitleBox from "../TitleBox";
-
+import {
+  onAddUnspentXp,
+  onSubUnspentXp,
+} from "../../functions/CharacterFunctions";
 import React, { useState, useContext } from "react";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import {
@@ -30,10 +34,9 @@ function InventoryUpper() {
             minHeight: Constants.SECTION_HEIGHT,
           }}
         >
-          <DetailsBox type_name={"Xp"} type_value={xp_spent} />
-          <DetailsBox
-            type_name={"Unspent"}
-            type_value={character.details.xp_earned - xp_spent}
+          <XpBox
+            onAddFunction={onAddUnspentXp}
+            onSubFunction={onSubUnspentXp}
           />
           <DetailsBox type_name={"Ft."} type_value={movement} />
         </div>

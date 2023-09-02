@@ -20,6 +20,7 @@ export const GREEN = "#5c6049";
 export const YELLOW = "#926f2b";
 export const WHITE = "#bfb6ac";
 export const BRIGHT_RED = "#923333";
+export const GREY = "#8f8e89";
 
 export const FONT_LIGHT = "#dedede";
 
@@ -48,7 +49,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   quality_weapon: RED,
   quality_ranged: RED,
   quality_armor: BLUE,
-  general_good: YELLOW,
+  general_good: GREY,
   lesser_artifact: BRIGHT_RED,
   corruption: DARK,
   vigilant: YELLOW,

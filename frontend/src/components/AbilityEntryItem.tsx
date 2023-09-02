@@ -14,7 +14,8 @@ import {
 
 interface LevelComponentProps {
   level: string;
-  ability: Ability;
+  ability: AbilityEntry;
+  ability_level: Ability;
   type: string;
 }
 
@@ -22,9 +23,13 @@ const EntryColor = (type: string) => {
   return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.BORDER_DARK;
 };
 
-function LevelComponent({ level, ability, type }: LevelComponentProps) {
+function LevelComponent({
+  level,
+  ability,
+  ability_level,
+  type,
+}: LevelComponentProps) {
   const onRollDice = useRoll();
-
   return (
     <div
       className="flex items-center p-2"
@@ -50,9 +55,9 @@ function LevelComponent({ level, ability, type }: LevelComponentProps) {
           fontSize: "14px",
         }}
       >
-        {ability.description}
+        {ability_level.description}
       </div>
-      {Array.from(ability.roll).map((roll, index) => {
+      {Array.from(ability_level.roll).map((roll, index) => {
         return (
           <div
             className="rounded-1 m-1 flex items-center justify-start p-2"
@@ -69,7 +74,8 @@ function LevelComponent({ level, ability, type }: LevelComponentProps) {
                 dice: roll.dice,
                 count: 1,
                 target: 0,
-                type: roll.type,
+                type: ability.name,
+                add_mod: true,
               })
             }
           >
@@ -242,7 +248,8 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
           {abilityLevel === "Novice" && (
             <LevelComponent
               level="Novice"
-              ability={ability.novice}
+              ability={ability}
+              ability_level={ability.novice}
               type={ability.type}
             />
           )}
@@ -250,12 +257,14 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
             <>
               <LevelComponent
                 level="Novice"
-                ability={ability.novice}
+                ability={ability}
+                ability_level={ability.novice}
                 type={ability.type}
               />
               <LevelComponent
                 level="Adept"
-                ability={ability.adept}
+                ability={ability}
+                ability_level={ability.adept}
                 type={ability.type}
               />
             </>
@@ -264,17 +273,20 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
             <>
               <LevelComponent
                 level="Novice"
-                ability={ability.novice}
+                ability={ability}
+                ability_level={ability.novice}
                 type={ability.type}
               />
               <LevelComponent
                 level="Adept"
-                ability={ability.adept}
+                ability={ability}
+                ability_level={ability.adept}
                 type={ability.type}
               />
               <LevelComponent
                 level="Master"
-                ability={ability.master}
+                ability={ability}
+                ability_level={ability.master}
                 type={ability.type}
               />
             </>

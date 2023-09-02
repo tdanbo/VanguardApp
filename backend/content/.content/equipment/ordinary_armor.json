@@ -3,7 +3,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d4"
+      "dice": "d4"
     },
     "quality": ["Impeding -2"],
     "Equip": ["AR"],
@@ -21,7 +21,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d6"
+      "dice": "d6"
     },
     "quality": ["Impeding -3"],
     "Equip": ["AR"],
@@ -39,7 +39,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "quality": ["Impeding -4"],
     "Equip": ["AR"],

@@ -46,6 +46,7 @@ function StatBox({ type_name, type_value }: Props) {
       count: 1,
       target: value,
       type: type_name,
+      add_mod: false,
     });
   };
 
@@ -55,6 +56,7 @@ function StatBox({ type_name, type_value }: Props) {
       count: 1,
       target: value,
       type: active,
+      add_mod: false,
     });
   };
 
@@ -80,7 +82,7 @@ function StatBox({ type_name, type_value }: Props) {
             style={{
               backgroundColor: Constants.PRIMARY_LIGHTER,
               border: `1px solid ${Constants.BORDER_LIGHT}`,
-              margin: "2px 2px 2px 0px",
+              margin: "2px 2px 2px 2px",
               fontSize: "0.8rem",
               fontWeight: "bold",
             }}

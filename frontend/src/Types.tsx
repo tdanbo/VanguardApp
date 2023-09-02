@@ -46,7 +46,11 @@ export interface CharacterEntry {
   details: CharacterDetails;
   toughness: Toughness;
   stats: Stats;
-  corruption: Record<string, unknown>;
+  corruption: {
+    corruption1: Record<string, unknown>;
+    corruption2: Record<string, unknown>;
+    corruption3: Record<string, unknown>;
+  };
   actives: Actives;
   abilities: AbilityEntry[];
   inventory: ItemEntry[];
@@ -83,6 +87,7 @@ export type CombatEntry = {
   result: number;
   success: boolean;
   modifier: number;
+  add: boolean;
 };
 
 export interface AbilityRoll {

@@ -3,7 +3,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d4"
+      "dice": "d4"
     },
     "quality": ["Impeding 0", "Flexible"],
     "equip": ["AR"],
@@ -20,7 +20,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d4"
+      "dice": "d4"
     },
     "quality": ["Impeding 0", "Flexible"],
     "equip": ["AR"],
@@ -37,7 +37,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d4+1"
+      "dice": "d4+1"
     },
     "quality": ["Impeding -2", "Reinforced"],
     "equip": ["AR"],
@@ -54,7 +54,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d4"
+      "dice": "d4"
     },
     "quality": ["Impeding 0", "Flexible"],
     "equip": ["AR"],
@@ -71,7 +71,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d4+1"
+      "dice": "d4+1"
     },
     "quality": ["Impeding 0", "Reinforced", "Flexible"],
     "equip": ["AR"],
@@ -88,7 +88,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d4"
+      "dice": "d4"
     },
     "quality": ["Impeding -3", "Cumbersome"],
     "equip": ["AR"],
@@ -105,7 +105,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d4"
+      "dice": "d4"
     },
     "quality": ["Impeding 0", "Concealed", "Flexible"],
     "equip": ["AR"],
@@ -122,7 +122,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d4"
+      "dice": "d4"
     },
     "quality": ["Impeding 0", "Flexible"],
     "equip": ["AR"],
@@ -139,7 +139,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d6+1"
+      "dice": "d6+1"
     },
     "quality": ["Impeding -1", "Reinforced", "Flexible"],
     "equip": ["AR"],
@@ -156,7 +156,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d6"
+      "dice": "d6"
     },
     "quality": ["Impeding -4", "Cumbersome"],
     "equip": ["AR"],
@@ -173,7 +173,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d6"
+      "dice": "d6"
     },
     "quality": ["Impeding -1", "Flexible"],
     "equip": ["AR"],
@@ -190,7 +190,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d6+1"
+      "dice": "d6+1"
     },
     "quality": ["Impeding -3", "Reinforced"],
     "equip": ["AR"],
@@ -207,7 +207,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d8+1"
+      "dice": "d8+1"
     },
     "quality": ["Impeding -4", "Reinforced"],
     "equip": ["AR"],
@@ -224,7 +224,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "quality": ["Impeding -2", "Flexible"],
     "equip": ["AR"],
@@ -241,7 +241,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d8+1"
+      "dice": "d8+1"
     },
     "quality": ["Impeding -2", "Reinforced", "Flexible"],
     "equip": ["AR"],
@@ -258,7 +258,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "quality": ["Impeding -4", "Hallowed"],
     "equip": ["AR"],
@@ -275,7 +275,7 @@
     "roll": {
       "roll": true,
       "type": "armor",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "quality": ["Impeding -4", "Retributive"],
     "equip": ["AR"],

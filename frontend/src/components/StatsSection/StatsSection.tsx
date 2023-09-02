@@ -1,7 +1,7 @@
 import * as Constants from "../../Constants";
 
-import StatsUpperLeft from "./StatsUpperLeft";
-import StatsUpperRight from "./StatsUpperRight";
+import StatsUpperLeft from "../CombatSection/CombatUpper";
+import StatsUpper from "./StatsUpper";
 import StatsMiddle from "./StatsMiddle";
 import StatsLower from "./StatsLower";
 
@@ -12,8 +12,7 @@ function StatsSection() {
       style={{ backgroundColor: Constants.DARK }}
     >
       <div className="flex">
-        <StatsUpperLeft />
-        <StatsUpperRight />
+        <StatsUpper />
       </div>
       <StatsMiddle />
       <StatsLower />

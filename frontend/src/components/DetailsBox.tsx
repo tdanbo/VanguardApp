@@ -27,7 +27,7 @@ function DetailsBox({ type_name, type_value }: Props) {
           style={{
             backgroundColor: Constants.PRIMARY_LIGHTER,
             border: `1px solid ${Constants.BORDER_LIGHT}`,
-            margin: "2px 2px 2px 0px",
+            margin: "2px 2px 2px 2px",
             fontSize: "0.8rem",
             fontWeight: "bold",
           }}

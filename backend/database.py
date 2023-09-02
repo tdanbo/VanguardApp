@@ -3,7 +3,7 @@ from model import CharacterEntry
 from model import ItemEntry
 from model import AbilityEntry
 import motor.motor_asyncio
-from functions import add_corruption, add_equipment
+from functions import add_corruption, add_equipment, add_max_toughness, add_pain_threshold
 
 # tobiasdanbo
 # E33ts3SKAOl1tR1W
@@ -52,7 +52,10 @@ async def create_character_entry(log_entry):
     else:
         added_corruption = add_corruption(document)
         added_equipment = add_equipment(added_corruption)
-        result = await character_log_collection.insert_one(added_equipment)
+        added_toughess = add_max_toughness(added_equipment)
+        added_pain_threshold = add_pain_threshold(added_toughess)
+        updated_character = added_pain_threshold
+        result = await character_log_collection.insert_one(updated_character)
         return document
 
 

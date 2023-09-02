@@ -151,43 +151,51 @@ export const getCharacterMovement = (character: CharacterEntry) => {
 };
 
 export const onAddCorruption = (character: CharacterEntry, value: number) => {
-  const character_corruption = character.corruption;
+  // const character_corruption = character.corruption;
+  // let count = 0;
+  // Object.keys(character_corruption).forEach((key) => {
+  //   if (count === value) {
+  //     return;
+  //   }
+  //   if (character_corruption[key] === 0) {
+  //     character_corruption[key] = 1;
+  //     count += 1;
+  //   } else {
+  //     return;
+  //   }
+  // });
+  // Object.keys(character_corruption).forEach((key) => {
+  //   if (count === value) {
+  //     return;
+  //   }
+  //   if (character_corruption[key] === 1) {
+  //     character_corruption[key] = 2;
+  //     count += 1;
+  //   } else {
+  //     return;
+  //   }
+  // });
+  // const updatedCharacter = {
+  //   ...character,
+  //   corruption: character_corruption,
+  // };
+  // postSelectedCharacter(updatedCharacter);
+  // return updatedCharacter;
+};
 
-  let count = 0;
-
-  Object.keys(character_corruption).forEach((key) => {
-    if (count === value) {
-      return;
-    }
-
-    if (character_corruption[key] === 0) {
-      character_corruption[key] = 1;
-      count += 1;
-    } else {
-      return;
-    }
-  });
-
-  Object.keys(character_corruption).forEach((key) => {
-    if (count === value) {
-      return;
-    }
-
-    if (character_corruption[key] === 1) {
-      character_corruption[key] = 2;
-      count += 1;
-    } else {
-      return;
-    }
-  });
-
-  const updatedCharacter = {
-    ...character,
-    corruption: character_corruption,
-  };
-
-  postSelectedCharacter(updatedCharacter);
-  return updatedCharacter;
+export const onResetCorruption = (character: CharacterEntry) => {
+  // const character_corruption = character.corruption;
+  // Object.keys(character_corruption).forEach((key) => {
+  //   if (character_corruption[key] === 1) {
+  //     character_corruption[key] = 0;
+  //   }
+  // });
+  // const updatedCharacter = {
+  //   ...character,
+  //   corruption: character_corruption,
+  // };
+  // postSelectedCharacter(updatedCharacter);
+  // return updatedCharacter;
 };
 
 export const onChangeCorruptionLevel = (
@@ -216,25 +224,6 @@ export const onChangeCorruptionLevel = (
   };
 
   postSelectedCharacter(updatedCharacter);
-  return updatedCharacter;
-};
-
-export const onResetCorruption = (character: CharacterEntry) => {
-  const character_corruption = character.corruption;
-
-  Object.keys(character_corruption).forEach((key) => {
-    if (character_corruption[key] === 1) {
-      character_corruption[key] = 0;
-    }
-  });
-
-  const updatedCharacter = {
-    ...character,
-    corruption: character_corruption,
-  };
-
-  postSelectedCharacter(updatedCharacter);
-
   return updatedCharacter;
 };
 
@@ -273,6 +262,15 @@ export const getActiveModifiers = (character: CharacterEntry) => {
   character_actives["defense"].mod = 0;
   character_actives["casting"].mod = 0;
   character_actives["sneaking"].mod = 0;
+
+  const overburden = character.stats.strong.value - character.inventory.length;
+
+  if (overburden < 0) {
+    console.log("Overburdened");
+    character_actives["defense"].mod += overburden;
+  } else {
+    console.log("Not Overburdened");
+  }
 
   character.equipment.forEach((item) => {
     if (!item.quality || item.quality.length === 0) {
@@ -354,8 +352,10 @@ export const onAddInventoryItem = ({
       inventory: newInventory,
     };
 
-    postSelectedCharacter(updatedCharacter);
-    return updatedCharacter;
+    const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
+
+    postSelectedCharacter(updatedModifiersCharacter);
+    return updatedModifiersCharacter;
   }
 };
 
@@ -418,8 +418,10 @@ export function onDeleteItem({ id, character }: onDeleteProps) {
     ...character,
     inventory: updatedInventory,
   };
-  postSelectedCharacter(updatedCharacter);
-  return updatedCharacter;
+  const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
+
+  postSelectedCharacter(updatedModifiersCharacter);
+  return updatedModifiersCharacter;
 }
 
 interface onChangeQuantityProps {
@@ -486,6 +488,94 @@ export function onUseAmmunition(character: CharacterEntry): {
   postSelectedCharacter(updatedCharacter);
 
   return { updatedCharacter, hasAmmunition };
+}
+
+export function onAddToughness(character: CharacterEntry) {
+  console.log("Adding Toughness");
+  const character_toughness = character.toughness;
+
+  const value_step = 1;
+
+  if (character_toughness.damage.value === 0) {
+    return character;
+  } else {
+    character_toughness.damage.value -= value_step;
+  }
+
+  const updatedCharacter = {
+    ...character,
+    toughness: character_toughness,
+  };
+
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
+}
+
+export function onSubToughness(character: CharacterEntry) {
+  console.log("Subtracting Toughness");
+  const character_toughness = character.toughness;
+
+  const value_step = 1;
+
+  if (character_toughness.damage.value === character_toughness.max.value) {
+    return character;
+  } else {
+    character_toughness.damage.value += value_step;
+  }
+
+  const updatedCharacter = {
+    ...character,
+    toughness: character_toughness,
+  };
+
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
+}
+
+export function onAddUnspentXp(character: CharacterEntry) {
+  console.log("Adding XP");
+  let character_xp_earned = character.details.xp_earned;
+
+  const value_step = 1;
+  character_xp_earned += value_step;
+
+  const updatedCharacter = {
+    ...character,
+    details: {
+      ...character.details,
+      xp_earned: character_xp_earned,
+    },
+  };
+
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
+}
+
+export function onSubUnspentXp(character: CharacterEntry) {
+  console.log("Adding XP");
+  let character_combined_xp =
+    character.details.xp_earned - getCharacterXp(character);
+
+  console.log(character_combined_xp);
+
+  const value_step = 1;
+
+  if (character_combined_xp <= 0) {
+    return character;
+  } else {
+    character.details.xp_earned -= value_step;
+  }
+
+  const updatedCharacter = {
+    ...character,
+    details: {
+      ...character.details,
+      xp_earned: character.details.xp_earned,
+    },
+  };
+
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
 }
 
 export function onDeleteSelectedCharacter(updatedCharacter: CharacterEntry) {

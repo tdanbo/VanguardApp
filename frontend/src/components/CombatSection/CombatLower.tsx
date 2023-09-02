@@ -33,6 +33,7 @@ function CombatLower() {
         <DiceBox type_name={"d10"} type_value={2} />
         <DiceBox type_name={"d12"} type_value={1} />
         <DiceBox type_name={"d20"} type_value={3} />
+        <DiceBox type_name={"d100"} type_value={3} />
       </div>
     </>
   );

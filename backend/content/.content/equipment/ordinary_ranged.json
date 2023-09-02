@@ -3,7 +3,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "quality": [],
     "Equip": ["MH", "OH"],
@@ -21,7 +21,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "quality": [],
     "Equip": ["MH", "OH"],
@@ -39,7 +39,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d6+1"
+      "dice": "d6+1"
     },
     "quality": [],
     "Equip": ["MH", "OH"],

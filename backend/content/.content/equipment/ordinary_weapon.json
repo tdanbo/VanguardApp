@@ -3,7 +3,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d6"
+      "dice": "d6"
     },
     "Equip": ["MH", "OH"],
     "quality": ["Short"],
@@ -21,7 +21,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d6"
+      "dice": "d6"
     },
     "Equip": ["MH", "OH"],
     "quality": ["Short"],
@@ -39,7 +39,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d6"
+      "dice": "d6"
     },
     "Equip": ["MH", "OH"],
     "quality": ["Short"],
@@ -57,7 +57,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "quality": [],
     "Equip": ["MH", "OH"],
@@ -75,7 +75,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "quality": [],
     "Equip": ["MH", "OH"],
@@ -93,7 +93,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "quality": [],
     "Equip": ["MH", "OH"],
@@ -111,7 +111,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "Equip": ["2H"],
     "quality": ["Long"],
@@ -129,7 +129,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "Equip": ["2H"],
     "quality": ["Long"],
@@ -147,7 +147,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "Equip": ["2H"],
     "quality": ["Long"],
@@ -165,7 +165,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "Equip": ["2H"],
     "quality": ["Long"],

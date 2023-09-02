@@ -47,7 +47,9 @@ function ModifierBox({ type_name }: Props) {
         onMouseDown={handleClick}
         onContextMenu={handleRightClick}
       >
-        {character.details.modifier}
+        {character.details.modifier > 0
+          ? "+" + character.details.modifier
+          : character.details.modifier}
       </div>
       <div
         className="flex grow items-center justify-center rounded-b "

@@ -30,7 +30,11 @@ const defaultCharacter: CharacterEntry = {
     casting: { stat: "resolute", mod: 0 },
     sneaking: { stat: "discreet", mod: 0 },
   },
-  corruption: {},
+  corruption: {
+    corruption1: {},
+    corruption2: {},
+    corruption3: {},
+  },
   abilities: [],
   inventory: [],
   equipment: [],

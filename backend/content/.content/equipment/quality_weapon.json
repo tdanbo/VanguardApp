@@ -3,7 +3,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "quality": ["Bastard Weapon"],
     "equip": ["MH", "OH"],
@@ -20,7 +20,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "equip": ["MH", "OH"],
     "quality": ["Precise"],
@@ -37,7 +37,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8+1"
+      "dice": "d8+1"
     },
     "quality": ["Deep Impact"],
     "equip": ["MH", "OH"],
@@ -54,7 +54,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "quality": ["Bastard Weapon", "Long"],
     "equip": ["MH", "OH"],
@@ -71,7 +71,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "equip": ["MH", "OH"],
     "quality": ["Jointed"],
@@ -88,7 +88,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "equip": ["MH", "OH"],
     "quality": ["Bastard Weapon", "Unwieldy"],
@@ -105,7 +105,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d6"
+      "dice": "d6"
     },
     "equip": ["MH", "OH"],
     "quality": ["Jointed", "Ensnaring", "Blunt"],
@@ -122,7 +122,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8+1"
+      "dice": "d8+1"
     },
     "equip": ["MH", "OH"],
     "quality": ["Deep Impact"],
@@ -139,7 +139,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d6"
+      "dice": "d6"
     },
     "equip": ["MH", "OH"],
     "quality": ["Short", "Concealed"],
@@ -156,7 +156,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d6"
+      "dice": "d6"
     },
     "equip": ["MH", "OH"],
     "quality": ["Short", "Balanced 1"],
@@ -173,7 +173,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d6+1"
+      "dice": "d6+1"
     },
     "equip": ["MH", "OH"],
     "quality": ["Short", "Deep Impact"],
@@ -190,7 +190,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8+1"
+      "dice": "d8+1"
     },
     "equip": ["2H"],
     "quality": ["Long", "Deep Impact"],
@@ -207,7 +207,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "equip": ["2H"],
     "quality": ["Long", "Precise"],
@@ -224,7 +224,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d6"
+      "dice": "d6"
     },
     "equip": ["2H"],
     "quality": ["Long", "Blunt"],
@@ -241,7 +241,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d6"
+      "dice": "d6"
     },
     "equip": ["2H"],
     "quality": ["Long", "Blunt"],
@@ -258,7 +258,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d6"
+      "dice": "d6"
     },
     "equip": ["2H"],
     "quality": ["Long", "Blunt"],
@@ -275,7 +275,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "equip": ["2H"],
     "quality": ["Long", "Ensnaring"],
@@ -292,7 +292,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "equip": ["2H"],
     "quality": ["Long", "Bastard Weapon", "Precise"],
@@ -309,7 +309,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d4"
+      "dice": "d4"
     },
     "equip": ["MH", "OH"],
     "quality": ["Short"],
@@ -326,7 +326,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d4+1"
+      "dice": "d4+1"
     },
     "equip": ["MH", "OH"],
     "quality": ["Short", "Deep Impact"],
@@ -343,7 +343,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d4"
+      "dice": "d4"
     },
     "quality": ["Short", "Balanced 1"],
     "equip": ["MH", "OH"],
@@ -360,7 +360,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d4"
+      "dice": "d4"
     },
     "quality": ["Short", "Flexible", "Balanced 1"],
     "equip": ["MH", "OH"],
@@ -377,7 +377,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d4"
+      "dice": "d4"
     },
     "equip": ["MH", "OH"],
     "quality": ["Short", "Balanced 2"],
@@ -394,7 +394,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "equip": ["2H"],
     "quality": ["Bastard Weapon", "Precise"],
@@ -411,7 +411,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "equip": ["2H"],
     "quality": ["Deep Impact"],
@@ -428,7 +428,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "equip": ["2H"],
     "quality": ["Jointed"],
@@ -445,7 +445,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "equip": ["2H"],
     "quality": ["Deep Impact", "Massive", "Unwieldy"],
@@ -462,7 +462,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "equip": ["2H"],
     "quality": ["Blood-letting", "Massive", "Unwieldy"],
@@ -479,7 +479,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "equip": ["2H"],
     "quality": ["Bastard Weapon", "Massive", "Unwieldy", "Precise"],
@@ -496,7 +496,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "equip": ["2H"],
     "quality": ["Precise", "Massive", "Unwieldy"],
@@ -513,7 +513,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "equip": ["2H"],
     "quality": ["Jointed", "Massive", "Unwieldy"],
@@ -530,7 +530,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10+1"
+      "dice": "d10+1"
     },
     "equip": ["2H"],
     "quality": ["Bastard Weapon", "Deep Impact", "Unwieldy", "Precise"],

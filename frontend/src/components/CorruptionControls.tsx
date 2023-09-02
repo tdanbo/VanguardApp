@@ -11,7 +11,7 @@ import { MouseEvent, useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useRoll } from "../functions/CombatFunctions";
 
-function CorruptionControls() {
+function CorruptionControls2() {
   const { character, setCharacter } = useContext(CharacterContext);
 
   const onRollDice = useRoll();
@@ -22,20 +22,21 @@ function CorruptionControls() {
       count: 1,
       target: 0,
       type: "corruption",
+      add_mod: true,
     });
 
     const updated_character = onAddCorruption(character, dice_result);
 
-    if (updated_character) {
-      setCharacter(updated_character);
-    }
+    // if (updated_character) {
+    //   setCharacter(updated_character);
+    // }
   };
 
   const HandleResetCorruption = () => {
-    const updatedCharacter = onResetCorruption(character);
-    if (updatedCharacter) {
-      setCharacter(updatedCharacter);
-    }
+    // const updatedCharacter = onResetCorruption(character);
+    // if (updatedCharacter) {
+    //   setCharacter(updatedCharacter);
+    // }
   };
 
   const HandleCorruptionLevel = (event: MouseEvent) => {
@@ -58,22 +59,6 @@ function CorruptionControls() {
 
   return (
     <div className="flex">
-      <div
-        className="flex items-center justify-center rounded font-bold"
-        style={{
-          fontSize: "3rem",
-          color: Constants.DARK,
-          backgroundColor: Constants.PRIMARY,
-          border: `1px solid ${Constants.BORDER}`,
-          margin: "2px 2px 2px 2px",
-          width: "80px",
-          maxWidth: "80px",
-        }}
-        onMouseDown={HandleCorruptionLevel}
-        onContextMenu={handleRightClick}
-      >
-        {character.details.corruption}
-      </div>
       <div className="flex flex-col">
         <div
           className="fw-bold flex grow items-center justify-center rounded"
@@ -107,4 +92,4 @@ function CorruptionControls() {
   );
 }
 
-export default CorruptionControls;
+export default CorruptionControls2;

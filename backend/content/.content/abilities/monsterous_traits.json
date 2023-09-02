@@ -241,7 +241,7 @@
       "roll": [
         {
           "type": "monsterous trait",
-          "dice": "1d4"
+          "dice": "d4"
         }
       ]
     },
@@ -250,7 +250,7 @@
       "roll": [
         {
           "type": "monsterous trait",
-          "dice": "1d6"
+          "dice": "d6"
         }
       ]
     },
@@ -259,7 +259,7 @@
       "roll": [
         {
           "type": "monsterous trait",
-          "dice": "1d8"
+          "dice": "d8"
         }
       ]
     },
@@ -571,15 +571,15 @@
       "roll": [
         {
           "type": "monsterous trait",
-          "dice": "1d8"
+          "dice": "d8"
         },
         {
           "type": "monsterous trait",
-          "dice": "1d4"
+          "dice": "d4"
         },
         {
           "type": "monsterous trait",
-          "dice": "1d10"
+          "dice": "d10"
         }
       ]
     },
@@ -588,7 +588,7 @@
       "roll": [
         {
           "type": "monsterous trait",
-          "dice": "1d12"
+          "dice": "d12"
         }
       ]
     },
@@ -597,7 +597,7 @@
       "roll": [
         {
           "type": "monsterous trait",
-          "dice": "1d20"
+          "dice": "d20"
         }
       ]
     },
@@ -809,7 +809,7 @@
       "roll": [
         {
           "type": "monsterous trait",
-          "dice": "1d4"
+          "dice": "d4"
         }
       ]
     },
@@ -818,11 +818,11 @@
       "roll": [
         {
           "type": "monsterous trait",
-          "dice": "1d4"
+          "dice": "d4"
         },
         {
           "type": "monsterous trait",
-          "dice": "1d8"
+          "dice": "d8"
         }
       ]
     },
@@ -1245,7 +1245,7 @@
       "roll": [
         {
           "type": "monsterous trait",
-          "dice": "1d6"
+          "dice": "d6"
         }
       ]
     },

@@ -3,7 +3,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d12"
+      "dice": "d12"
     },
     "quality": ["Flaming", "Area Effect (cone)"],
     "equip": ["MH", "OH"],
@@ -37,7 +37,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10+1"
+      "dice": "d10+1"
     },
     "quality": ["Deep Impact"],
     "equip": ["MH", "OH"],
@@ -54,7 +54,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "quality": ["Concealed"],
     "equip": ["MH", "OH"],
@@ -71,7 +71,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "quality": ["Special", "Repeater"],
     "equip": ["MH", "OH"],
@@ -88,7 +88,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "quality": ["Precise"],
     "equip": ["MH", "OH"],
@@ -105,7 +105,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8"
+      "dice": "d8"
     },
     "quality": ["Precise"],
     "equip": ["MH", "OH"],
@@ -122,7 +122,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d8+1"
+      "dice": "d8+1"
     },
     "quality": ["Deep Impact"],
     "equip": ["MH", "OH"],
@@ -139,7 +139,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d10"
+      "dice": "d10"
     },
     "quality": ["Flaming", "Area Effect (radius)"],
     "equip": ["MH", "OH"],
@@ -156,7 +156,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d6"
+      "dice": "d6"
     },
     "quality": ["Tackle"],
     "equip": ["MH", "OH"],
@@ -173,7 +173,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d6"
+      "dice": "d6"
     },
     "quality": ["Returning"],
     "equip": ["MH", "OH"],
@@ -190,7 +190,7 @@
     "roll": {
       "roll": true,
       "type": "damage",
-      "dice": "1d6+1"
+      "dice": "d6+1"
     },
     "quality": ["Deep Impact"],
     "equip": ["MH", "OH"],

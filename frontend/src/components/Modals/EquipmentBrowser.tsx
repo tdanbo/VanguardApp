@@ -1,33 +1,76 @@
-import * as Constants from "../../Constants";
-import AddIcon from "@mui/icons-material/Add";
-import { useState, useEffect, CSSProperties } from "react";
-import InventoryEntry from "../InventoryEntry";
-import { CharacterEntry, ItemEntry } from "../../Types";
+import React, { useState, useEffect, CSSProperties, useContext } from "react";
 import axios from "axios";
+import InventoryEntry from "../InventoryEntry";
+import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
+import * as Constants from "../../Constants";
+import { CharacterContext } from "../../contexts/CharacterContext";
+import { onAddInventoryItem } from "../../functions/CharacterFunctions";
+import { ItemEntry } from "../../Types";
 
 function EquipmentBrowser() {
-  // Declare a state variable to hold the modal open/close status
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Function to handle the modal open
-  const handleOpen = () => {
-    console.log("Opening Modal");
-    setIsModalOpen(true);
-  };
-
-  // Function to handle the modal close
-  const handleClose = () => {
-    console.log("Closing Modal");
-    setIsModalOpen(false);
-  };
-
   const [itemList, setItemList] = useState([] as ItemEntry[]);
+  const [filteredItems, setFilteredItems] = useState([] as ItemEntry[]);
+  const [search, setSearch] = useState("");
+  const { character, setCharacter } = useContext(CharacterContext);
 
   useEffect(() => {
     axios.get("http://localhost:8000/api/equipment").then((response) => {
       setItemList(response.data);
     });
-  }, []); // add an empty array here);
+  }, []);
+
+  useEffect(() => {
+    setFilteredItems(
+      itemList.filter((item) => {
+        return item.name.toLowerCase().includes(search.toLowerCase());
+      }),
+    );
+  }, [search, itemList]);
+
+  const handleOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const toTitleCase = (str: string) => {
+    return str.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
+    });
+  };
+
+  const GeneralGood: ItemEntry = {
+    roll: {
+      roll: false,
+      dice: "",
+      type: "",
+    },
+    quality: [],
+    equip: [],
+    quantity: {
+      count: 0,
+      bulk: false,
+    },
+    type: "General Good",
+    cost: "",
+    name: toTitleCase(search),
+    category: "general_good",
+    id: "",
+  };
+
+  const AddInventorySlot = () => {
+    const updatedCharacter = onAddInventoryItem({
+      character,
+      item: GeneralGood,
+    });
+    if (updatedCharacter) {
+      setCharacter(updatedCharacter);
+    }
+  };
 
   const modalStyles: CSSProperties = {
     position: "fixed",
@@ -71,11 +114,24 @@ function EquipmentBrowser() {
       {isModalOpen && (
         <div style={overlayStyles} onClick={handleClose}>
           <div style={modalStyles} onClick={stopPropagation}>
+            <div className="mb-2 flex flex-grow flex-row">
+              <input
+                className="flex-grow"
+                onChange={(e) => setSearch(e.target.value)}
+              ></input>
+              <button
+                className="flex-none"
+                style={{ backgroundColor: Constants.BORDER }}
+                onClick={AddInventorySlot}
+              >
+                {filteredItems.length > 0 ? <SearchIcon /> : <AddIcon />}
+              </button>
+            </div>
             <div
-              className="flex flex-grow flex-col-reverse overflow-auto"
+              className="flex flex-grow flex-col overflow-auto"
               style={{ height: "500px" }}
             >
-              {itemList.map((item, index) => (
+              {filteredItems.map((item, index) => (
                 <InventoryEntry
                   key={index}
                   browser={true}
@@ -92,4 +148,5 @@ function EquipmentBrowser() {
     </div>
   );
 }
+
 export default EquipmentBrowser;

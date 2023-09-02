@@ -37,8 +37,15 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
           borderColor: "#000000",
           border: `1px solid ${Constants.BORDER}`,
         }}
-        title={`Dice: ${combatEntry.dice}
-        Modifier: ${combatEntry.modifier}`}
+        title={
+          combatEntry.add
+            ? `Dice: 1${combatEntry.dice}\nRoll: ${
+                combatEntry.result - combatEntry.modifier
+              }\nRoll Modified: ${combatEntry.modifier}\nResult: ${
+                combatEntry.result
+              }`
+            : `Dice: 1${combatEntry.dice}\nRoll: ${combatEntry.result}\nRoll Modified: 0\nResult: ${combatEntry.result}`
+        }
       >
         {combatEntry.result}
       </div>
