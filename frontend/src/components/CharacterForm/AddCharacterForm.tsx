@@ -33,7 +33,6 @@ function AddCharacterForm({ open, onClose }: CharacterProps) {
       name: name,
       xp_earned: 50,
       modifier: 0,
-      corruption: 1,
     },
     toughness: {
       max: { value: 0, mod: 0 },

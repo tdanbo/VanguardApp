@@ -1,7 +1,7 @@
 import DiceBox from "../DiceBox";
 import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
-
+import CorruptionRoll from "../CorruptionRoll";
 const EntryRollButton = () => {
   return (
     <div
@@ -27,6 +27,7 @@ function CombatLower() {
           minHeight: Constants.SECTION_HEIGHT,
         }}
       >
+        <CorruptionRoll />
         <DiceBox type_name={"d4"} type_value={2} />
         <DiceBox type_name={"d6"} type_value={2} />
         <DiceBox type_name={"d8"} type_value={1} />

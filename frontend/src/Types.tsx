@@ -3,7 +3,6 @@ interface CharacterDetails {
   xp_earned: number;
   movement: number;
   modifier: number;
-  corruption: number;
 }
 
 interface Toughness {

@@ -11,7 +11,7 @@ class CombatEntry(BaseModel):
     add: bool
 
 class CharacterEntry(BaseModel):
-    details: dict = {"name": "", "xp_earned": 0, "movement": 0, "modifier": 0, "corruption": 0}
+    details: dict = {"name": "", "xp_earned": 0, "movement": 0, "modifier": 0}
     toughness: dict = {
         "damage": {"value": 0, "mod": 0},
         "max": {"value": 0, "mod": 0},

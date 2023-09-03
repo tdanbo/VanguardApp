@@ -1,60 +1,12 @@
 import * as Constants from "../Constants";
 
-import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import {
-  onResetCorruption,
-  onChangeCorruptionLevel,
-  onAddCorruption,
-} from "../functions/CharacterFunctions";
-import { MouseEvent, useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
-import { useRoll } from "../functions/CombatFunctions";
-
 function CorruptionControls2() {
-  const { character, setCharacter } = useContext(CharacterContext);
-
-  const onRollDice = useRoll();
-
-  const RollDice = () => {
-    const dice_result = onRollDice({
-      dice: "d4",
-      count: 1,
-      target: 0,
-      type: "corruption",
-      add_mod: true,
-    });
-
-    const updated_character = onAddCorruption(character, dice_result);
-
-    // if (updated_character) {
-    //   setCharacter(updated_character);
-    // }
+  const addCorruption = () => {
+    console.log("add corruption");
   };
 
-  const HandleResetCorruption = () => {
-    // const updatedCharacter = onResetCorruption(character);
-    // if (updatedCharacter) {
-    //   setCharacter(updatedCharacter);
-    // }
-  };
-
-  const HandleCorruptionLevel = (event: MouseEvent) => {
-    event.preventDefault();
-    switch (event.button) {
-      case 0:
-        setCharacter(onChangeCorruptionLevel(character, "sub"));
-        break;
-      case 2:
-        setCharacter(onChangeCorruptionLevel(character, "add"));
-        break;
-      default:
-        console.log("Unexpected button clicked:", event.button);
-    }
-  };
-
-  const handleRightClick = (event: MouseEvent) => {
-    event.preventDefault();
+  const removeCorruption = () => {
+    console.log("remove corruption");
   };
 
   return (
@@ -69,9 +21,9 @@ function CorruptionControls2() {
             margin: "2px 2px 2px 2px",
             width: "40px",
           }}
-          onClick={() => RollDice()}
+          onClick={() => removeCorruption()}
         >
-          <LocalFireDepartmentIcon />
+          -
         </div>
 
         <div
@@ -83,9 +35,9 @@ function CorruptionControls2() {
             margin: "2px 2px 2px 2px",
             width: "40px",
           }}
-          onClick={() => HandleResetCorruption()}
+          onClick={() => addCorruption()}
         >
-          <RestartAltIcon />
+          +
         </div>
       </div>
     </div>

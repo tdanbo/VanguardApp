@@ -180,10 +180,11 @@ export const onAddCorruption = (character: CharacterEntry, value: number) => {
   //   corruption: character_corruption,
   // };
   // postSelectedCharacter(updatedCharacter);
-  // return updatedCharacter;
+  return character;
 };
 
 export const onResetCorruption = (character: CharacterEntry) => {
+  return character;
   // const character_corruption = character.corruption;
   // Object.keys(character_corruption).forEach((key) => {
   //   if (character_corruption[key] === 1) {
@@ -198,34 +199,34 @@ export const onResetCorruption = (character: CharacterEntry) => {
   // return updatedCharacter;
 };
 
-export const onChangeCorruptionLevel = (
-  character: CharacterEntry,
-  state: string,
-) => {
-  const character_details = character.details;
+// export const onChangeCorruptionLevel = (
+//   character: CharacterEntry,
+//   state: string,
+// ) => {
+//   const character_details = character.details;
 
-  if (state === "add") {
-    if (character_details.corruption >= 3) {
-      character_details.corruption = 3;
-    } else {
-      character_details.corruption += 1;
-    }
-  } else {
-    if (character_details.corruption <= 1) {
-      character_details.corruption = 1;
-    } else {
-      character_details.corruption -= 1;
-    }
-  }
+//   if (state === "add") {
+//     if (character_details.corruption >= 3) {
+//       character_details.corruption = 3;
+//     } else {
+//       character_details.corruption += 1;
+//     }
+//   } else {
+//     if (character_details.corruption <= 1) {
+//       character_details.corruption = 1;
+//     } else {
+//       character_details.corruption -= 1;
+//     }
+//   }
 
-  const updatedCharacter = {
-    ...character,
-    details: character_details,
-  };
+//   const updatedCharacter = {
+//     ...character,
+//     details: character_details,
+//   };
 
-  postSelectedCharacter(updatedCharacter);
-  return updatedCharacter;
-};
+//   postSelectedCharacter(updatedCharacter);
+//   return updatedCharacter;
+// };
 
 export const getCharacterXp = (character: CharacterEntry) => {
   let xp_spent = 0;

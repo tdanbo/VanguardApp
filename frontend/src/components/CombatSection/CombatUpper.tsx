@@ -4,6 +4,7 @@ import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 
 import { CharacterEntry } from "../../Types";
+import RestBox from "../RestBox";
 
 import {
   onAddToughness,
@@ -21,6 +22,7 @@ function CombatUpper() {
 
   return (
     <div className="grow flex-row pr-1">
+      <RestBox />
       <TitleBox title={"Toughness"} />
       <div
         className="flex grow flex-row p-2"
