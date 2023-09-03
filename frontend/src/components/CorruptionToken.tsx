@@ -1,10 +1,4 @@
 import * as Constants from "../Constants";
-import axios from "axios";
-
-import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
-
-import { CharacterEntry } from "../Types";
-import { useEffect } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSkull } from "@fortawesome/free-solid-svg-icons";

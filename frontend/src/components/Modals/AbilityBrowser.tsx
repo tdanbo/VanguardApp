@@ -1,5 +1,4 @@
 import * as Constants from "../../Constants";
-import AddIcon from "@mui/icons-material/Add";
 import { useState, useEffect, CSSProperties } from "react";
 import AbilityEntryItem from "../AbilityEntryItem";
 import { AbilityEntry } from "../../Types";

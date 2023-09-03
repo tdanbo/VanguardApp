@@ -3,7 +3,6 @@ import * as Constants from "../Constants";
 
 import { useContext } from "react";
 
-import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { onAddCorruption } from "../functions/CharacterFunctions";
 

@@ -1,8 +1,8 @@
 import * as Constants from "../Constants";
-import AddIcon from "@mui/icons-material/Add";
 import AddCharacterForm from "./CharacterForm/AddCharacterForm";
 import { useState, useEffect } from "react";
-import Dialog from "@mui/material/Dialog";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function AddCharacter() {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +21,7 @@ function AddCharacter() {
         border: `1px solid ${Constants.BORDER}`,
       }}
     >
-      <AddIcon onClick={() => setIsOpen(true)} />
+      <FontAwesomeIcon icon={faPlus} onClick={() => setIsOpen(true)} />
       <AddCharacterForm open={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );

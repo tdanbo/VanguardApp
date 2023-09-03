@@ -1,6 +1,8 @@
 import * as Constants from "../Constants";
 
-import ClearIcon from "@mui/icons-material/Clear";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+
 import { CharacterContext } from "../contexts/CharacterContext";
 import {
   getCharacterEntry,
@@ -8,6 +10,7 @@ import {
 } from "../functions/CharacterFunctions";
 import { useContext } from "react";
 import { CharacterEntry } from "../Types";
+
 function DeleteCharacter() {
   const { character, setCharacter } = useContext(CharacterContext);
 
@@ -26,7 +29,7 @@ function DeleteCharacter() {
       }}
       onClick={() => handleDelete(character)}
     >
-      <ClearIcon />
+      <FontAwesomeIcon icon={faXmark} />
     </div>
   );
 }

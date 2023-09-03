@@ -1,5 +1,4 @@
 import * as Constants from "../Constants";
-import AutoFixNormalIcon from "@mui/icons-material/AutoFixNormal";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useContext, useState, useEffect } from "react";
 import { useRoll } from "../functions/CombatFunctions";
@@ -117,7 +116,6 @@ function StatBox({ type_name, type_value }: Props) {
           <>
             <button
               className="flex h-7 w-7 items-center justify-center rounded-bl "
-              src={`src/assets/icons/${active}.png`}
               style={{
                 backgroundColor: Constants.PRIMARY_LIGHTER,
                 borderLeft: `1px solid ${Constants.BORDER_LIGHT}`,

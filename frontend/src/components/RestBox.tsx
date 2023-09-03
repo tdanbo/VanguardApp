@@ -1,8 +1,6 @@
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import * as Constants from "../Constants";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
-import { onResetCorruption } from "../functions/CharacterFunctions";
 import { RestCharacter } from "../functions/CharacterFunctions";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
