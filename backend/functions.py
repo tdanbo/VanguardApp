@@ -6,10 +6,8 @@ def add_corruption(document):
     print(document)
 
     resolute = int(document["stats"]["resolute"]["value"])
-    max_corruption = math.ceil(resolute / 2)
-    for level in range(3):
-        for i in range(max_corruption):
-            document["corruption"]["corruption" + str(level+1)]["token" + str(i)] = 0
+    threshold = math.ceil(resolute / 2)
+    document["corruption"]["threshold"] = threshold
     return document
 
 

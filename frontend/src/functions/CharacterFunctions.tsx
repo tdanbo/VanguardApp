@@ -151,82 +151,53 @@ export const getCharacterMovement = (character: CharacterEntry) => {
 };
 
 export const onAddCorruption = (character: CharacterEntry, value: number) => {
-  // const character_corruption = character.corruption;
-  // let count = 0;
-  // Object.keys(character_corruption).forEach((key) => {
-  //   if (count === value) {
-  //     return;
-  //   }
-  //   if (character_corruption[key] === 0) {
-  //     character_corruption[key] = 1;
-  //     count += 1;
-  //   } else {
-  //     return;
-  //   }
-  // });
-  // Object.keys(character_corruption).forEach((key) => {
-  //   if (count === value) {
-  //     return;
-  //   }
-  //   if (character_corruption[key] === 1) {
-  //     character_corruption[key] = 2;
-  //     count += 1;
-  //   } else {
-  //     return;
-  //   }
-  // });
-  // const updatedCharacter = {
-  //   ...character,
-  //   corruption: character_corruption,
-  // };
-  // postSelectedCharacter(updatedCharacter);
-  return character;
+  let character_corruption = { ...character.corruption };
+
+  for (let i = 0; i < value; i++) {
+    if (character_corruption.temporary === character_corruption.threshold) {
+      character_corruption.permanent += 1;
+    } else {
+      character_corruption.temporary += 1;
+    }
+  }
+
+  const updatedCharacter = {
+    ...character,
+    corruption: character_corruption,
+  };
+
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
+};
+
+export const onRemoveCorruption = (
+  character: CharacterEntry,
+  value: number,
+) => {
+  let character_corruption = character.corruption;
+
+  character_corruption.temporary -= value;
+
+  const updatedCharacter = {
+    ...character,
+    corruption: character_corruption,
+  };
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
 };
 
 export const onResetCorruption = (character: CharacterEntry) => {
-  return character;
-  // const character_corruption = character.corruption;
-  // Object.keys(character_corruption).forEach((key) => {
-  //   if (character_corruption[key] === 1) {
-  //     character_corruption[key] = 0;
-  //   }
-  // });
-  // const updatedCharacter = {
-  //   ...character,
-  //   corruption: character_corruption,
-  // };
-  // postSelectedCharacter(updatedCharacter);
-  // return updatedCharacter;
+  let character_corruption = character.corruption;
+
+  character_corruption.temporary = 0;
+
+  const updatedCharacter = {
+    ...character,
+    corruption: character_corruption,
+  };
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
 };
-
-// export const onChangeCorruptionLevel = (
-//   character: CharacterEntry,
-//   state: string,
-// ) => {
-//   const character_details = character.details;
-
-//   if (state === "add") {
-//     if (character_details.corruption >= 3) {
-//       character_details.corruption = 3;
-//     } else {
-//       character_details.corruption += 1;
-//     }
-//   } else {
-//     if (character_details.corruption <= 1) {
-//       character_details.corruption = 1;
-//     } else {
-//       character_details.corruption -= 1;
-//     }
-//   }
-
-//   const updatedCharacter = {
-//     ...character,
-//     details: character_details,
-//   };
-
-//   postSelectedCharacter(updatedCharacter);
-//   return updatedCharacter;
-// };
 
 export const getCharacterXp = (character: CharacterEntry) => {
   let xp_spent = 0;
@@ -533,6 +504,48 @@ export function onSubToughness(character: CharacterEntry) {
   return updatedCharacter;
 }
 
+export function onAddPermCorruption(character: CharacterEntry) {
+  console.log("Adding Corruption");
+  const character_corruption = character.corruption;
+
+  const value_step = 1;
+
+  if (character_corruption.permanent === character_corruption.threshold * 3) {
+    return character;
+  } else {
+    character_corruption.permanent += value_step;
+  }
+
+  const updatedCharacter = {
+    ...character,
+    corruption: character_corruption,
+  };
+
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
+}
+
+export function onSubPermCorruption(character: CharacterEntry) {
+  console.log("Removing Corruption");
+  const character_corruption = character.corruption;
+
+  const value_step = 1;
+
+  if (character_corruption.permanent === 0) {
+    return character;
+  } else {
+    character_corruption.permanent -= value_step;
+  }
+
+  const updatedCharacter = {
+    ...character,
+    corruption: character_corruption,
+  };
+
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
+}
+
 export function onAddUnspentXp(character: CharacterEntry) {
   console.log("Adding XP");
   let character_xp_earned = character.details.xp_earned;
@@ -577,6 +590,64 @@ export function onSubUnspentXp(character: CharacterEntry) {
 
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
+}
+
+function RestFood(character: CharacterEntry) {
+  const thoughness = character.toughness;
+  const inventory = character.inventory;
+
+  const hasFood = inventory.some(
+    (item) => item.name === "Ration Food" && item.quantity.count > 0,
+  );
+
+  const updatedInventory = inventory.map((item) => {
+    if (item.name === "Ration Food" && item.quantity.count > 0) {
+      item.quantity.count -= 1;
+      return item;
+    }
+    return item;
+  });
+
+  if (hasFood === true) {
+    const updatedCharacter = {
+      ...character,
+      inventory: updatedInventory,
+    };
+    onAddToughness(updatedCharacter);
+    return updatedCharacter;
+  }
+  return character;
+}
+
+function RestWater(character: CharacterEntry) {
+  const inventory = character.inventory;
+  const hasWater = inventory.some(
+    (item) => item.name === "Ration Water" && item.quantity.count > 0,
+  );
+
+  const updatedInventory = inventory.map((item) => {
+    if (item.name === "Ration Water" && item.quantity.count > 0) {
+      item.quantity.count -= 1;
+      return item;
+    }
+    return item;
+  });
+
+  if (hasWater === true) {
+    const updatedCharacter = {
+      ...character,
+      inventory: updatedInventory,
+    };
+    onResetCorruption(updatedCharacter);
+    return updatedCharacter;
+  }
+  return character;
+}
+
+export function RestCharacter(character: CharacterEntry) {
+  const food_character = RestFood(character);
+  const water_character = RestWater(food_character);
+  return water_character;
 }
 
 export function onDeleteSelectedCharacter(updatedCharacter: CharacterEntry) {

@@ -39,6 +39,10 @@ function InventoryUpper() {
             onSubFunction={onSubUnspentXp}
           />
           <DetailsBox type_name={"Ft."} type_value={movement} />
+          <DetailsBox
+            type_name={"Pain"}
+            type_value={character.toughness.pain.value}
+          />
         </div>
       </>
     </div>

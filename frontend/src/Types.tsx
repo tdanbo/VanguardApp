@@ -41,15 +41,17 @@ export interface Actives {
   sneaking: Active;
 }
 
+type Corruption = {
+  permanent: number;
+  temporary: number;
+  threshold: number;
+};
+
 export interface CharacterEntry {
   details: CharacterDetails;
   toughness: Toughness;
   stats: Stats;
-  corruption: {
-    corruption1: Record<string, unknown>;
-    corruption2: Record<string, unknown>;
-    corruption3: Record<string, unknown>;
-  };
+  corruption: Corruption;
   actives: Actives;
   abilities: AbilityEntry[];
   inventory: ItemEntry[];

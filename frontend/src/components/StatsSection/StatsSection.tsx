@@ -11,9 +11,7 @@ function StatsSection() {
       className="flex h-screen flex-col"
       style={{ backgroundColor: Constants.DARK }}
     >
-      <div className="flex">
-        <StatsUpper />
-      </div>
+      <StatsUpper />
       <StatsMiddle />
       <StatsLower />
     </div>

@@ -1,5 +1,6 @@
 import DetailsBox from "../DetailsBox";
 import ToughnessBox from "../ToughnessBox";
+import CorruptionBox from "../CorruptionBox";
 import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 
@@ -9,6 +10,8 @@ import RestBox from "../RestBox";
 import {
   onAddToughness,
   onSubToughness,
+  onAddPermCorruption,
+  onSubPermCorruption,
 } from "../../functions/CharacterFunctions";
 
 import React, { useState, useContext } from "react";
@@ -21,9 +24,11 @@ function CombatUpper() {
     character.toughness.max.value - character.toughness.damage.value;
 
   return (
-    <div className="grow flex-row pr-1">
-      <RestBox />
-      <TitleBox title={"Toughness"} />
+    <div className="flex-col">
+      <div className="flex">
+        <RestBox />
+        <TitleBox title={"Toughness"} />
+      </div>
       <div
         className="flex grow flex-row p-2"
         style={{
@@ -32,13 +37,13 @@ function CombatUpper() {
           minHeight: Constants.SECTION_HEIGHT,
         }}
       >
+        <CorruptionBox
+          onAddFunction={onAddPermCorruption}
+          onSubFunction={onSubPermCorruption}
+        />
         <ToughnessBox
           onAddFunction={onAddToughness}
           onSubFunction={onSubToughness}
-        />
-        <DetailsBox
-          type_name={"Pain"}
-          type_value={character.toughness.pain.value}
         />
       </div>
     </div>

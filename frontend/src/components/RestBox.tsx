@@ -3,19 +3,20 @@ import * as Constants from "../Constants";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { onResetCorruption } from "../functions/CharacterFunctions";
+import { RestCharacter } from "../functions/CharacterFunctions";
 
 function RestBox() {
   const { character, setCharacter } = useContext(CharacterContext);
 
   const HandleRest = () => {
-    const updatedCharacter = onResetCorruption(character);
+    const updatedCharacter = RestCharacter(character);
     if (updatedCharacter) {
       setCharacter(updatedCharacter);
     }
   };
   return (
     <div
-      className="fw-bold flex grow items-center justify-center rounded"
+      className="fw-bold flex items-center justify-center"
       style={{
         color: Constants.DARK,
         backgroundColor: Constants.PRIMARY,

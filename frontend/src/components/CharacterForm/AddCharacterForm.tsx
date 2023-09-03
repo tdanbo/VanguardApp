@@ -56,9 +56,9 @@ function AddCharacterForm({ open, onClose }: CharacterProps) {
       sneaking: { stat: "discreet", mod: 0 },
     },
     corruption: {
-      corruption1: {},
-      corruption2: {},
-      corruption3: {},
+      permanent: 0,
+      temporary: 0,
+      threshold: 0,
     },
     abilities: [],
     inventory: [],
