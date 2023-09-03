@@ -4,6 +4,10 @@ import { useState, CSSProperties } from "react";
 
 import StatDropdown from "../StatDropdown";
 import { Actives } from "../../Types";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+
 type ActiveKey = keyof Actives;
 
 function StatSettings() {
@@ -50,16 +54,17 @@ function StatSettings() {
   return (
     <div>
       <div
-        className="flex items-center justify-center"
+        className="flex h-full flex-col items-center justify-center"
         style={{
-          backgroundColor: Constants.PRIMARY_LIGHTER,
-          width: Constants.SECTION_TITLE_HEIGHT,
+          backgroundColor: Constants.DARK,
           minWidth: Constants.SECTION_TITLE_HEIGHT,
-          border: `1px solid ${Constants.BORDER}`,
+          borderRight: `1px solid ${Constants.BORDER_DARK}`,
+          borderLeft: `1px solid ${Constants.BORDER_DARK}`,
+          color: Constants.PRIMARY_DARKER,
         }}
         onClick={handleOpen}
       >
-        <AddIcon />
+        <FontAwesomeIcon icon={faGear} />
       </div>
       {isModalOpen && (
         <div style={overlayStyles} onClick={handleClose}>

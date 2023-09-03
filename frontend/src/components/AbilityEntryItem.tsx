@@ -42,7 +42,6 @@ function LevelComponent({
           color: EntryColor(type),
           fontSize: "11px",
           fontWeight: "bold",
-          width: "100px",
         }}
       >
         {level}
@@ -132,7 +131,8 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
           className="flex items-center justify-center"
           style={{
             backgroundColor: EntryColor(ability.type),
-            width: "20px",
+            width: "15px",
+            minWidth: "15px",
             fontSize: "10px",
             borderBottom: `1px solid ${Constants.BORDER}`,
           }}
@@ -145,7 +145,8 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
           className="flex items-center justify-center"
           style={{
             backgroundColor: EntryColor(ability.type),
-            width: "20px",
+            width: "15px",
+            minWidth: "15px",
             fontSize: "10px",
             borderBottom: `1px solid ${Constants.BORDER}`,
           }}

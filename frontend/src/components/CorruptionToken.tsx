@@ -6,6 +6,9 @@ import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import { CharacterEntry } from "../Types";
 import { useEffect } from "react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSkull } from "@fortawesome/free-solid-svg-icons";
+
 interface CorruptionProps {
   state: number;
 }
@@ -17,7 +20,7 @@ function CorruptionToken({ state }: CorruptionProps) {
     } else if (state === 2) {
       return Constants.DARK;
     } else {
-      return Constants.PRIMARY; // This is the base color for the corruption box
+      return Constants.PRIMARY_MEDIUM; // This is the base color for the corruption box
     }
   };
 
@@ -25,14 +28,14 @@ function CorruptionToken({ state }: CorruptionProps) {
     <div
       className="fw-bold flex w-full grow items-center justify-center rounded"
       style={{
-        fontSize: "0.8rem",
+        fontSize: "1.5rem",
         color: Constants.PRIMARY,
         backgroundColor: BackgroundColor(),
         border: `1px solid ${Constants.BORDER_LIGHT}`,
         margin: "2px 2px 2px 2px",
       }}
     >
-      <LocalFireDepartmentIcon />
+      <FontAwesomeIcon icon={faSkull} />
     </div>
   );
 }

@@ -4,7 +4,7 @@ import * as Constants from "../../Constants";
 
 function StatsLower() {
   return (
-    <div className="grow flex-row pl-1">
+    <div className="flex w-1/2 grow flex-col pl-1">
       <TitleBox title={"MODIFIER"} />
       <div
         className="flex grow flex-row p-2"

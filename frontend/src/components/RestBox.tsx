@@ -5,6 +5,9 @@ import { CharacterContext } from "../contexts/CharacterContext";
 import { onResetCorruption } from "../functions/CharacterFunctions";
 import { RestCharacter } from "../functions/CharacterFunctions";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMoon } from "@fortawesome/free-solid-svg-icons";
+
 function RestBox() {
   const { character, setCharacter } = useContext(CharacterContext);
 
@@ -16,17 +19,17 @@ function RestBox() {
   };
   return (
     <div
-      className="fw-bold flex items-center justify-center"
+      className="flex flex-col items-center justify-center"
       style={{
-        color: Constants.DARK,
-        backgroundColor: Constants.PRIMARY,
-        border: `1px solid ${Constants.BORDER}`,
-        margin: "2px 2px 2px 2px",
-        width: "40px",
+        backgroundColor: Constants.DARK,
+        minWidth: Constants.SECTION_TITLE_HEIGHT,
+        borderRight: `1px solid ${Constants.BORDER_DARK}`,
+        borderLeft: `1px solid ${Constants.BORDER_DARK}`,
+        color: Constants.PRIMARY_DARKER,
       }}
-      onClick={() => HandleRest()}
+      onClick={HandleRest}
     >
-      <RestartAltIcon />
+      <FontAwesomeIcon icon={faMoon} />
     </div>
   );
 }

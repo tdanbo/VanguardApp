@@ -3,6 +3,15 @@ import AutoFixNormalIcon from "@mui/icons-material/AutoFixNormal";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useContext, useState, useEffect } from "react";
 import { useRoll } from "../functions/CombatFunctions";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faVolumeXmark,
+  faBolt,
+  faShieldHalved,
+  faCrosshairs,
+} from "@fortawesome/free-solid-svg-icons";
+
 type Props = {
   type_name: string;
   type_value: number;
@@ -60,6 +69,18 @@ function StatBox({ type_name, type_value }: Props) {
     });
   };
 
+  const icon = (active: string) => {
+    if (active === "sneaking") {
+      return <FontAwesomeIcon icon={faVolumeXmark} />;
+    } else if (active === "casting") {
+      return <FontAwesomeIcon icon={faBolt} />;
+    } else if (active === "defense") {
+      return <FontAwesomeIcon icon={faShieldHalved} />;
+    } else if (active === "attack") {
+      return <FontAwesomeIcon icon={faCrosshairs} />;
+    }
+  };
+
   return (
     <div className="flex w-full flex-col">
       <div
@@ -94,8 +115,8 @@ function StatBox({ type_name, type_value }: Props) {
           </div>
         ) : (
           <>
-            <img
-              className="h-7 w-7 items-center justify-center rounded-bl "
+            <button
+              className="flex h-7 w-7 items-center justify-center rounded-bl "
               src={`src/assets/icons/${active}.png`}
               style={{
                 backgroundColor: Constants.PRIMARY_LIGHTER,
@@ -103,14 +124,15 @@ function StatBox({ type_name, type_value }: Props) {
                 borderBottom: `1px solid ${Constants.BORDER_LIGHT}`,
                 borderTop: `1px solid ${Constants.BORDER_LIGHT}`,
                 margin: "2px 0px 2px 2px",
-                fontSize: "0.8rem",
-                fontWeight: "bold",
+                fontSize: "1.0rem",
                 padding: "4px",
               }}
               onMouseEnter={handleActiveMouseEnter}
               onMouseLeave={handleMouseLeave}
               onClick={handleActiveRoll}
-            ></img>
+            >
+              {icon(active)}
+            </button>
             <div
               className="flex h-7 grow items-center justify-center rounded-br pr-6"
               style={{

@@ -7,7 +7,7 @@ type Props = {
 const TitleBox = ({ title }: Props) => {
   return (
     <div
-      className="flex items-center justify-center p-1"
+      className="flex grow items-center justify-center p-1"
       style={{
         color: Constants.FONT_LIGHT,
         backgroundColor: Constants.DARK,

@@ -2,6 +2,10 @@ import * as Constants from "../Constants";
 import { onAddCorruption } from "../functions/CharacterFunctions";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
 function CorruptionAdd() {
   const { character, setCharacter } = useContext(CharacterContext);
 
@@ -12,16 +16,16 @@ function CorruptionAdd() {
 
   return (
     <button
-      className="fw-bold flex w-1/4 grow items-center justify-center rounded"
+      className="flex w-1/4 grow items-center justify-center rounded text-2xl font-bold"
       style={{
-        color: Constants.DARK,
-        backgroundColor: Constants.PRIMARY,
+        color: Constants.BORDER,
+        backgroundColor: Constants.PRIMARY_LIGHTER,
         border: `1px solid ${Constants.BORDER}`,
         margin: "2px 2px 2px 2px",
       }}
       onClick={() => addCorruption()}
     >
-      +
+      <FontAwesomeIcon icon={faPlus} />
     </button>
   );
 }

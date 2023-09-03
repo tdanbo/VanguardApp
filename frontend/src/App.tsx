@@ -16,17 +16,6 @@ function App() {
     <CharacterProvider>
       <div className="flex">
         <div className="w-1/3">
-          <div
-            className="flex px-1"
-            style={{
-              height: Constants.SECTION_TITLE_HEIGHT,
-              backgroundColor: Constants.DARK,
-            }}
-          >
-            <DeleteCharacter />
-            <DropdownCharacter />
-            <AddCharacter />
-          </div>
           <InventorySection />
         </div>
         <div className="w-full">

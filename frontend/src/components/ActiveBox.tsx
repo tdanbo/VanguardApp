@@ -1,9 +1,13 @@
 import * as Constants from "../Constants";
-import { CharacterContext } from "../contexts/CharacterContext";
-import { useContext } from "react";
 import { useState } from "react";
 
-// src={`src/assets/icons/${type_name}.png`}
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faShieldHalved,
+  faBolt,
+  faCrosshairs,
+  faVolumeXmark,
+} from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
   active: string;
@@ -13,7 +17,19 @@ type Props = {
 
 function ActiveBox({ active, type_name, type_value }: Props) {
   const [value, setValue] = useState(type_value);
-  console.log(type_name);
+
+  const icon = (active: string) => {
+    if (active === "sneaking") {
+      return <FontAwesomeIcon icon={faVolumeXmark} />;
+    } else if (active === "casting") {
+      return <FontAwesomeIcon icon={faBolt} />;
+    } else if (active === "defense") {
+      return <FontAwesomeIcon icon={faShieldHalved} />;
+    } else if (active === "attack") {
+      return <FontAwesomeIcon icon={faCrosshairs} />;
+    }
+  };
+
   return (
     <div className="flex w-full flex-col">
       <div
@@ -22,26 +38,27 @@ function ActiveBox({ active, type_name, type_value }: Props) {
           color: Constants.RED,
           backgroundColor: Constants.PRIMARY_MEDIUM,
           border: `1px solid ${Constants.BORDER_LIGHT}`,
-          margin: "2px 2px 2px 2px",
-          fontSize: "1.1rem",
+          margin: "2px 2px 1px 2px",
+          fontSize: "1.2rem",
           fontWeight: "bold",
         }}
         onClick={() => setValue(value + 1)}
       >
-        {type_value}
+        {value}
       </div>
-      <img
-        className="h-8 w-8 items-center justify-center rounded-b "
-        src={`src/assets/icons/${active}.png`}
+      <div
+        className="flex grow items-center justify-center rounded-b "
         style={{
           backgroundColor: Constants.PRIMARY_LIGHTER,
           border: `1px solid ${Constants.BORDER_LIGHT}`,
-          margin: "2px 0px 2px 2px",
-          fontSize: "0.8rem",
-          fontWeight: "bold",
+          margin: "1px 2px 2px 2px",
+          fontSize: "1.0rem",
           padding: "4px",
+          color: Constants.DARK,
         }}
-      ></img>
+      >
+        {icon(active)}
+      </div>
     </div>
   );
 }

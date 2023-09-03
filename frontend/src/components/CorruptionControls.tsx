@@ -29,14 +29,14 @@ function CorruptionControls() {
   return (
     <>
       <CorruptionRemove />
-      <div className="flex w-1/2 flex-col"></div>
+      <div className="flex flex-col p-2"></div>
       {[...Array(temporary_corruption)].map((_, index) => (
         <CorruptionToken key={index} state={1} />
       ))}
       {[...Array(clean_corruption)].map((_, index) => (
         <CorruptionToken key={index} state={0} />
       ))}
-      <div className="flex w-1/2 flex-col"></div>
+      <div className="flex flex-col p-2"></div>
       <CorruptionAdd />
     </>
   );

@@ -7,6 +7,9 @@ import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { onAddCorruption } from "../functions/CharacterFunctions";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSkull } from "@fortawesome/free-solid-svg-icons";
+
 function CorruptionRoll() {
   const { character, setCharacter } = useContext(CharacterContext);
 
@@ -30,17 +33,16 @@ function CorruptionRoll() {
 
   return (
     <div
-      className="fw-bold flex grow items-center justify-center rounded"
+      className="flex w-full flex-col items-center justify-center rounded"
       style={{
-        color: Constants.DARK,
-        backgroundColor: Constants.PRIMARY,
+        color: Constants.FONT_LIGHT,
+        backgroundColor: Constants.DARK,
         border: `1px solid ${Constants.BORDER}`,
         margin: "2px 2px 2px 2px",
-        width: "40px",
       }}
       onClick={() => RollDice()}
     >
-      <LocalFireDepartmentIcon />
+      <FontAwesomeIcon icon={faSkull} />
     </div>
   );
 }

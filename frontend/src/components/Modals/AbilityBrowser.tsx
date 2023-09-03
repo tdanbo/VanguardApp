@@ -5,6 +5,9 @@ import AbilityEntryItem from "../AbilityEntryItem";
 import { AbilityEntry } from "../../Types";
 import axios from "axios";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
 function AbilityBrowser() {
   // Declare a state variable to hold the modal open/close status
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,16 +60,19 @@ function AbilityBrowser() {
   return (
     <div>
       <div
-        className="flex items-center justify-center"
+        className="flex h-full flex-col items-center justify-center"
         style={{
-          backgroundColor: Constants.PRIMARY_LIGHTER,
-          width: Constants.SECTION_TITLE_HEIGHT,
+          backgroundColor: Constants.DARK,
           minWidth: Constants.SECTION_TITLE_HEIGHT,
-          border: `1px solid ${Constants.BORDER}`,
+          borderRight: `1px solid ${Constants.BORDER_DARK}`,
+          borderLeft: `1px solid ${Constants.BORDER_DARK}`,
         }}
         onClick={handleOpen}
       >
-        <AddIcon />
+        <FontAwesomeIcon
+          icon={faPlus}
+          style={{ color: Constants.PRIMARY_DARKER }}
+        />
       </div>
       {isModalOpen && (
         <div style={overlayStyles} onClick={handleClose}>

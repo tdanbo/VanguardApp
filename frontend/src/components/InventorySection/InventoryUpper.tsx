@@ -15,6 +15,10 @@ import {
   getActiveModifiers,
 } from "../../functions/CharacterFunctions";
 
+import DeleteCharacter from "../DeleteCharacter";
+import DropdownCharacter from "../DropdownCharacter";
+import AddCharacter from "../AddCharacter";
+
 function InventoryUpper() {
   const { character, setCharacter } = useContext(CharacterContext);
   console.log("Sneaking mod: ");
@@ -26,6 +30,14 @@ function InventoryUpper() {
   return (
     <div className="grow flex-row">
       <>
+        <div
+          className="flex"
+          style={{ height: Constants.SECTION_TITLE_HEIGHT }}
+        >
+          <DeleteCharacter />
+          <DropdownCharacter />
+          <AddCharacter />
+        </div>
         <div
           className="flex grow flex-row p-2"
           style={{

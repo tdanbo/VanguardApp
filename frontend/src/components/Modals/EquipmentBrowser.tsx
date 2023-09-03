@@ -8,6 +8,9 @@ import { CharacterContext } from "../../contexts/CharacterContext";
 import { onAddInventoryItem } from "../../functions/CharacterFunctions";
 import { ItemEntry } from "../../Types";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
 function EquipmentBrowser() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemList, setItemList] = useState([] as ItemEntry[]);
@@ -100,16 +103,19 @@ function EquipmentBrowser() {
   return (
     <div>
       <div
-        className="flex items-center justify-center"
+        className="flex h-full flex-col items-center justify-center"
         style={{
-          backgroundColor: Constants.PRIMARY_LIGHTER,
-          width: Constants.SECTION_TITLE_HEIGHT,
+          backgroundColor: Constants.DARK,
           minWidth: Constants.SECTION_TITLE_HEIGHT,
-          border: `1px solid ${Constants.BORDER}`,
+          borderRight: `1px solid ${Constants.BORDER_DARK}`,
+          borderLeft: `1px solid ${Constants.BORDER_DARK}`,
         }}
         onClick={handleOpen}
       >
-        <AddIcon />
+        <FontAwesomeIcon
+          icon={faPlus}
+          style={{ color: Constants.PRIMARY_DARKER }}
+        />
       </div>
       {isModalOpen && (
         <div style={overlayStyles} onClick={handleClose}>

@@ -1,43 +1,32 @@
 import * as Constants from "../Constants";
 
 import { onRemoveCorruption } from "../functions/CharacterFunctions";
-import { MouseEvent, useContext } from "react";
+import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinus } from "@fortawesome/free-solid-svg-icons";
 
 function CorruptionRemove() {
   const { character, setCharacter } = useContext(CharacterContext);
 
-  const handleClick = (event: MouseEvent) => {
-    event.preventDefault();
-    switch (event.button) {
-      case 0:
-        setCharacter(onRemoveCorruption(character, 1));
-        break;
-      case 2:
-        setCharacter(onRemoveCorruption(character, 2));
-        break;
-      default:
-        console.log("Unexpected button clicked:", event.button);
-    }
-  };
-
-  const handleRightClick = (event: MouseEvent) => {
-    event.preventDefault();
+  const removeCorruption = () => {
+    const updated_character = onRemoveCorruption(character, 1);
+    setCharacter(updated_character);
   };
 
   return (
     <button
-      className="fw-bold flex w-1/4 grow items-center justify-center rounded"
+      className="flex w-1/4 grow items-center justify-center rounded text-2xl font-bold"
       style={{
-        color: Constants.DARK,
-        backgroundColor: Constants.PRIMARY,
+        color: Constants.BORDER,
+        backgroundColor: Constants.PRIMARY_LIGHTER,
         border: `1px solid ${Constants.BORDER}`,
         margin: "2px 2px 2px 2px",
       }}
-      onMouseDown={handleClick}
-      onContextMenu={handleRightClick}
+      onClick={() => removeCorruption()}
     >
-      -
+      <FontAwesomeIcon icon={faMinus} />
     </button>
   );
 }
