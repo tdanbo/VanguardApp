@@ -1,5 +1,4 @@
 import * as Constants from "../../Constants";
-import AddIcon from "@mui/icons-material/Add";
 import { useState, CSSProperties } from "react";
 
 import StatDropdown from "../StatDropdown";

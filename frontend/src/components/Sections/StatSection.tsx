@@ -8,10 +8,10 @@ import StatSettings from "../Modals/StatSettings";
 import React, { useState, useContext } from "react";
 import { CharacterContext } from "../../contexts/CharacterContext";
 
-function StatsLower() {
+function StatSection() {
   const { character, setCharacter } = useContext(CharacterContext);
   return (
-    <>
+    <div className="p-1">
       <div className="flex">
         <StatSettings />
         <TitleBox title={"Stats"} />
@@ -54,8 +54,8 @@ function StatsLower() {
           type_value={character.stats.accurate.value}
         />
       </div>
-    </>
+    </div>
   );
 }
 
-export default StatsLower;
+export default StatSection;

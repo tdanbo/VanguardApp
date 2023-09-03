@@ -19,7 +19,7 @@ import DeleteCharacter from "../DeleteCharacter";
 import DropdownCharacter from "../DropdownCharacter";
 import AddCharacter from "../AddCharacter";
 
-function InventoryUpper() {
+function DetailsSection() {
   const { character, setCharacter } = useContext(CharacterContext);
   console.log("Sneaking mod: ");
   console.log(character.actives.sneaking.mod);
@@ -28,37 +28,29 @@ function InventoryUpper() {
   const movement = getCharacterMovement(character);
 
   return (
-    <div className="grow flex-row">
-      <>
-        <div
-          className="flex"
-          style={{ height: Constants.SECTION_TITLE_HEIGHT }}
-        >
-          <DeleteCharacter />
-          <DropdownCharacter />
-          <AddCharacter />
-        </div>
-        <div
-          className="flex grow flex-row p-2"
-          style={{
-            backgroundColor: Constants.PRIMARY,
-            height: Constants.SECTION_HEIGHT,
-            minHeight: Constants.SECTION_HEIGHT,
-          }}
-        >
-          <XpBox
-            onAddFunction={onAddUnspentXp}
-            onSubFunction={onSubUnspentXp}
-          />
-          <DetailsBox type_name={"Ft."} type_value={movement} />
-          <DetailsBox
-            type_name={"Pain"}
-            type_value={character.toughness.pain.value}
-          />
-        </div>
-      </>
+    <div className="grow flex-row p-1">
+      <div className="flex" style={{ height: Constants.SECTION_TITLE_HEIGHT }}>
+        <DeleteCharacter />
+        <DropdownCharacter />
+        <AddCharacter />
+      </div>
+      <div
+        className="flex grow flex-row p-2"
+        style={{
+          backgroundColor: Constants.PRIMARY,
+          height: Constants.SECTION_HEIGHT,
+          minHeight: Constants.SECTION_HEIGHT,
+        }}
+      >
+        <XpBox onAddFunction={onAddUnspentXp} onSubFunction={onSubUnspentXp} />
+        <DetailsBox type_name={"Ft."} type_value={movement} />
+        <DetailsBox
+          type_name={"Pain"}
+          type_value={character.toughness.pain.value}
+        />
+      </div>
     </div>
   );
 }
 
-export default InventoryUpper;
+export default DetailsSection;

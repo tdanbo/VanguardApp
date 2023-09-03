@@ -5,10 +5,10 @@ import { CharacterContext } from "../../contexts/CharacterContext";
 import { useContext } from "react";
 import AbilityEntryItem from "../AbilityEntryItem";
 
-const StatsMiddle: React.FC = () => {
+function AbilitySection() {
   const { character, setCharacter } = useContext(CharacterContext);
   return (
-    <>
+    <div className="p-1">
       <div className="flex">
         <AbilityBrowser />
         <TitleBox title={"Abilities"} />
@@ -25,8 +25,8 @@ const StatsMiddle: React.FC = () => {
           );
         })}
       </div>
-    </>
+    </div>
   );
-};
+}
 
-export default StatsMiddle;
+export default AbilitySection;

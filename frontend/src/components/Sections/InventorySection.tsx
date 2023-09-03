@@ -13,7 +13,7 @@ interface StatsSectionProps {
   onDeleteItem: (id: string) => void;
 }
 
-function InventoryMiddle() {
+function InventorySection() {
   const { character, setCharacter } = useContext(CharacterContext);
 
   // const [update, setUpdater] = useState(0);
@@ -21,11 +21,9 @@ function InventoryMiddle() {
   const empty_slots =
     character.stats.strong.value * 2 - character.inventory.length;
 
-  const equipped_slots = ["AR", "MH", "OH"];
-
   // console.log(empty_slots);
   return (
-    <>
+    <div className="flex-col p-1">
       <div className="flex">
         <EquipmentBrowser />
         <TitleBox title={"Inventory"} />
@@ -55,32 +53,8 @@ function InventoryMiddle() {
           return null;
         })}
       </div>
-      <TitleBox title={"Equipment"} />
-      <div
-        className="flex flex-col"
-        style={{
-          backgroundColor: Constants.PRIMARY,
-        }}
-      >
-        {character.equipment.map((item, index) => {
-          if (!item || Object.keys(item).length === 0) {
-            return <InventoryEntryEmpty key={index} index={index} />;
-          }
-
-          return (
-            <InventoryEntry
-              key={index}
-              index={index}
-              item={item}
-              browser={false}
-              id={item.id}
-              equipped={equipped_slots[index]}
-            />
-          );
-        })}
-      </div>
-    </>
+    </div>
   );
 }
 
-export default InventoryMiddle;
+export default InventorySection;

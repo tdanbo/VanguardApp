@@ -2,9 +2,9 @@ import ModifierBox from "../ModifierBox";
 import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 
-function StatsLower() {
+function ModifierSection() {
   return (
-    <div className="flex w-1/2 grow flex-col pl-1">
+    <div className="flex w-1/2 grow flex-col p-1">
       <TitleBox title={"MODIFIER"} />
       <div
         className="flex grow flex-row p-2"
@@ -20,4 +20,4 @@ function StatsLower() {
   );
 }
 
-export default StatsLower;
+export default ModifierSection;

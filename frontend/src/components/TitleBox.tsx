@@ -12,6 +12,7 @@ const TitleBox = ({ title }: Props) => {
         color: Constants.FONT_LIGHT,
         backgroundColor: Constants.DARK,
         height: Constants.SECTION_TITLE_HEIGHT,
+        maxHeight: Constants.SECTION_TITLE_HEIGHT,
       }}
     >
       {title.toUpperCase()}

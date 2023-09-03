@@ -16,9 +16,9 @@ interface CorruptionEntry {
   corruption: number;
 }
 
-function StatsUpper() {
+function CorruptionSection() {
   return (
-    <>
+    <div className="rounded p-1">
       <div className="flex">
         <TitleBox title={"Corruption"} />
       </div>
@@ -32,8 +32,8 @@ function StatsUpper() {
       >
         <CorruptionControls />
       </div>
-    </>
+    </div>
   );
 }
 
-export default StatsUpper;
+export default CorruptionSection;

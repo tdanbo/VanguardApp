@@ -1,3 +1,4 @@
+@@ -1,53 +0,0 @@
 import DetailsBox from "../DetailsBox";
 import ToughnessBox from "../ToughnessBox";
 import CorruptionBox from "../CorruptionBox";
