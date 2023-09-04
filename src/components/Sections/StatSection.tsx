@@ -2,14 +2,13 @@ import StatBox from "../StatBox";
 import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 
-import { CharacterEntry } from "../../Types";
 import StatSettings from "../Modals/StatSettings";
 
-import React, { useState, useContext } from "react";
+import { useContext } from "react";
 import { CharacterContext } from "../../contexts/CharacterContext";
 
 function StatSection() {
-  const { character, setCharacter } = useContext(CharacterContext);
+  const { character } = useContext(CharacterContext);
   return (
     <>
       <div className="flex">

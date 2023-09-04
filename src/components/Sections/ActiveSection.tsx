@@ -3,10 +3,9 @@ import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import { useContext } from "react";
-import { getActiveModifiers } from "../../functions/CharacterFunctions";
 
 function ActiveSection() {
-  const { character, setCharacter } = useContext(CharacterContext);
+  const { character } = useContext(CharacterContext);
   // const character_modifiers = getActiveModifiers(character);
   return (
     <div className="flex w-1/2 grow flex-col pr-1">

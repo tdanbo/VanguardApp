@@ -12,15 +12,7 @@ import {
   onSubPermCorruption,
 } from "../../functions/CharacterFunctions";
 
-import React, { useContext } from "react";
-import { CharacterContext } from "../../contexts/CharacterContext";
-
 function ToughnessSection() {
-  const { character, setCharacter } = useContext(CharacterContext);
-
-  const current =
-    character.toughness.max.value - character.toughness.damage.value;
-
   return (
     <>
       <div className="flex">

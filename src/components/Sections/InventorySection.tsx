@@ -2,24 +2,16 @@ import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 import InventoryEntry from "../InventoryEntry";
 import InventoryEntryEmpty from "../InventoryEntryEmpty";
-import { CharacterEntry } from "../../Types";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import EquipmentBrowser from "../Modals/EquipmentBrowser";
 
 import { CharacterContext } from "../../contexts/CharacterContext";
 
-interface StatsSectionProps {
-  selectedCharacter: CharacterEntry;
-  onDeleteItem: (id: string) => void;
-}
-
 function InventorySection() {
-  const { character, setCharacter } = useContext(CharacterContext);
+  const { character } = useContext(CharacterContext);
 
   // const [update, setUpdater] = useState(0);
   const totalSlots = character.stats.strong.value * 2;
-  const empty_slots =
-    character.stats.strong.value * 2 - character.inventory.length;
 
   // console.log(empty_slots);
   return (
@@ -29,7 +21,7 @@ function InventorySection() {
         <TitleBox title={"Inventory"} />
       </div>
       <div
-        className="grow flex-col-reverse overflow-auto"
+        className="flex flex-grow flex-col-reverse overflow-auto"
         style={{
           backgroundColor: Constants.PRIMARY,
         }}

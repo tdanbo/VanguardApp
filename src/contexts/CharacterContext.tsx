@@ -1,5 +1,4 @@
-import { createContext, useContext, useState } from "react";
-import axios from "axios";
+import { createContext, useState } from "react";
 import { CharacterEntry } from "../Types";
 
 const defaultCharacter: CharacterEntry = {

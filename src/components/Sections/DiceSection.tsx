@@ -2,18 +2,6 @@ import DiceBox from "../DiceBox";
 import TitleBox from "../TitleBox";
 import * as Constants from "../../Constants";
 import CorruptionRoll from "../CorruptionRoll";
-const EntryRollButton = () => {
-  return (
-    <div
-      className="mb-1 ml-1 mt-1 flex rounded"
-      style={{
-        backgroundColor: Constants.BRIGHT_RED,
-        minWidth: "19px",
-        border: `1px solid ${Constants.BORDER_LIGHT}`,
-      }}
-    ></div>
-  );
-};
 
 function DiceSection() {
   return (

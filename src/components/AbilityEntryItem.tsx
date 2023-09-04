@@ -56,7 +56,7 @@ function LevelComponent({
       >
         {ability_level.description}
       </div>
-      {Array.from(ability_level.roll).map((roll, index) => {
+      {Array.from(ability_level.roll).map((roll) => {
         return (
           <div
             className="rounded-1 m-1 flex items-center justify-start p-2"

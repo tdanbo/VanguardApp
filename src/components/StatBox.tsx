@@ -17,7 +17,7 @@ type Props = {
 };
 
 function StatBox({ type_name, type_value }: Props) {
-  const { character, setCharacter } = useContext(CharacterContext);
+  const { character } = useContext(CharacterContext);
   const [value, setValue] = useState<number>(type_value);
 
   useEffect(() => {

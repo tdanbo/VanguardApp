@@ -1,17 +1,9 @@
 import * as Constants from "../Constants";
-import { MouseEvent, useState, useContext } from "react";
+import { MouseEvent, useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { setBaseModifier } from "../functions/CharacterFunctions";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDiceFive } from "@fortawesome/free-solid-svg-icons";
-
-type Props = {
-  type_name: string;
-  type_value: number;
-};
-
-function ModifierBox({ type_name }: Props) {
+function ModifierBox() {
   const { character, setCharacter } = useContext(CharacterContext);
 
   const handleClick = (event: MouseEvent) => {

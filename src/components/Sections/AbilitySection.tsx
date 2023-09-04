@@ -6,7 +6,7 @@ import { useContext } from "react";
 import AbilityEntryItem from "../AbilityEntryItem";
 
 function AbilitySection() {
-  const { character, setCharacter } = useContext(CharacterContext);
+  const { character } = useContext(CharacterContext);
   return (
     <>
       <div className="flex">

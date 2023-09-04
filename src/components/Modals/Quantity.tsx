@@ -1,5 +1,5 @@
 import * as Constants from "../../Constants";
-import { useState, useEffect, CSSProperties, useContext } from "react";
+import { useState, CSSProperties, useContext } from "react";
 import { ItemEntry } from "../../Types";
 import { onChangeQuantity } from "../../functions/CharacterFunctions";
 import { CharacterContext } from "../../contexts/CharacterContext";
@@ -9,7 +9,7 @@ interface QuantityProps {
 }
 
 function Quantity({ item }: QuantityProps) {
-  const { character, setCharacter } = useContext(CharacterContext);
+  const { character } = useContext(CharacterContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputValue, setInputValue] = useState<number>(0);
 

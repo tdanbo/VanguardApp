@@ -15,7 +15,7 @@ type Props = {
   type_value: number;
 };
 
-function ActiveBox({ active, type_name, type_value }: Props) {
+function ActiveBox({ active, type_value }: Props) {
   const [value, setValue] = useState(type_value);
 
   const icon = (active: string) => {

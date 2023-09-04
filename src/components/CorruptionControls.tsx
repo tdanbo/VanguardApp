@@ -1,23 +1,12 @@
-import TitleBox from "./TitleBox";
-import * as Constants from "./../Constants";
 import CorruptionToken from "./CorruptionToken";
 import CorruptionAdd from "./CorruptionAdd";
 import CorruptionRemove from "./CorruptionRemove";
 
-import { useState } from "react";
-
-import { CharacterEntry } from "./../Types";
-
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { CharacterContext } from "./../contexts/CharacterContext";
 
-interface CorruptionEntry {
-  corruption: number;
-}
-
 function CorruptionControls() {
-  const { character, setCharacter } = useContext(CharacterContext);
-  const [update, setUpdater] = useState(0);
+  const { character } = useContext(CharacterContext);
 
   const temporary_corruption = character.corruption.temporary;
   const clean_corruption =

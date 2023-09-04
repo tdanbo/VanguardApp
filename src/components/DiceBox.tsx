@@ -1,13 +1,11 @@
 import * as Constants from "../Constants";
 import { useRoll } from "../functions/CombatFunctions";
-import { CharacterContext } from "../contexts/CharacterContext";
-import { useContext } from "react";
 type Props = {
   type_name: string;
   type_value: number;
 };
 
-function DiceBox({ type_name, type_value }: Props) {
+function DiceBox({ type_name }: Props) {
   const onRollDice = useRoll();
 
   const RollDice = () => {

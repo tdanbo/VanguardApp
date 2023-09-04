@@ -1,6 +1,5 @@
 import axios from "axios";
 import { CharacterEntry } from "../Types";
-import { createContext, useState } from "react";
 import { ItemEntry, AbilityEntry, ActiveKey } from "../Types";
 interface onDeleteProps {
   id: string;
@@ -593,7 +592,6 @@ export function onSubUnspentXp(character: CharacterEntry) {
 }
 
 function RestFood(character: CharacterEntry) {
-  const thoughness = character.toughness;
   const inventory = character.inventory;
 
   const hasFood = inventory.some(

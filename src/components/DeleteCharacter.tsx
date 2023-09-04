@@ -4,10 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import { CharacterContext } from "../contexts/CharacterContext";
-import {
-  getCharacterEntry,
-  onDeleteSelectedCharacter,
-} from "../functions/CharacterFunctions";
+import { onDeleteSelectedCharacter } from "../functions/CharacterFunctions";
 import { useContext } from "react";
 import { CharacterEntry } from "../Types";
 

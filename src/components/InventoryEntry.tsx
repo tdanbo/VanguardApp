@@ -3,7 +3,6 @@ import * as Constants from "../Constants";
 import { ItemEntry } from "../Types";
 import Quantity from "./Modals/Quantity";
 import { TYPE_COLORS } from "../Constants";
-import { CharacterEntry } from "../Types";
 import { useContext } from "react";
 import { useRoll } from "../functions/CombatFunctions";
 import { CharacterContext } from "../contexts/CharacterContext";

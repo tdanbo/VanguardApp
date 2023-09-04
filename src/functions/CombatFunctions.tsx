@@ -1,6 +1,6 @@
 import axios from "axios";
-import { CharacterEntry, CombatEntry } from "../Types";
-import { useEffect, useState, useContext } from "react";
+import { CombatEntry } from "../Types";
+import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { setBaseModifier } from "./CharacterFunctions";
 

@@ -1,7 +1,6 @@
 import * as Constants from "../Constants";
 import { CharacterEntry } from "../Types";
 import { CharacterContext } from "../contexts/CharacterContext";
-import { getCharacterXp } from "../functions/CharacterFunctions";
 import { useContext } from "react";
 
 type Props = {

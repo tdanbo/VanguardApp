@@ -2,14 +2,9 @@ import StatInputBox from "./StatInputBox";
 import NameInputBox from "./NameInputBox";
 import * as Constants from "../../Constants";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { CharacterEntry } from "../../Types";
 import axios from "axios";
-
-type Character = {
-  title: string;
-  description: string;
-};
 
 interface CharacterProps {
   open: boolean;

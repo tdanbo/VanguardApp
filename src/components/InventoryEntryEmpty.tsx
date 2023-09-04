@@ -1,5 +1,4 @@
 import * as Constants from "../Constants";
-import { CharacterEntry } from "../Types";
 import chroma from "chroma-js";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
@@ -8,7 +7,7 @@ interface InventoryEntryEmptyProps {
 }
 
 function InventoryEntryEmpty({ index }: InventoryEntryEmptyProps) {
-  const { character, setCharacter } = useContext(CharacterContext);
+  const { character } = useContext(CharacterContext);
 
   const DARKER_PRIMARY = chroma(Constants.PRIMARY).darken(1).hex();
   const DARKER_PRIMARY_DARKER = chroma(Constants.PRIMARY_DARKER)

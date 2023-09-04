@@ -6,7 +6,7 @@ import { CharacterContext } from "../../contexts/CharacterContext";
 import { useContext } from "react";
 
 function EquipmentSection() {
-  const { character, setCharacter } = useContext(CharacterContext);
+  const { character } = useContext(CharacterContext);
   const equipped_slots = ["AR", "MH", "OH"];
   return (
     <>

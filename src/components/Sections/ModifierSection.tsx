@@ -14,7 +14,7 @@ function ModifierSection() {
           minHeight: Constants.SECTION_HEIGHT,
         }}
       >
-        <ModifierBox type_name={"A"} type_value={0} />
+        <ModifierBox />
       </div>
     </div>
   );
