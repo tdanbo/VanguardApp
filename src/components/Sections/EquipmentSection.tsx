@@ -19,6 +19,7 @@ function EquipmentSection() {
       >
         {character.equipment.map((item, index) => {
           if (!item || Object.keys(item).length === 0) {
+            console.log("Empty item: ", item, index);
             return <InventoryEntryEmpty key={index} index={index} />;
           }
 

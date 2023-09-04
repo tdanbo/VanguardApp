@@ -34,7 +34,7 @@ function DetailsSection() {
         <AddCharacter />
       </div>
       <div
-        className="flex grow flex-row p-2"
+        className="flex flex-row p-2"
         style={{
           backgroundColor: Constants.PRIMARY,
           height: Constants.SECTION_HEIGHT,

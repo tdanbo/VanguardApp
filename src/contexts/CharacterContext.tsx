@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { CharacterEntry } from "../Types";
+import { CharacterEntry, ItemEntry } from "../Types";
 
 const defaultCharacter: CharacterEntry = {
   details: {
@@ -32,11 +32,11 @@ const defaultCharacter: CharacterEntry = {
   corruption: {
     permanent: 0,
     temporary: 0,
-    threshold: 0,
+    threshold: 10,
   },
   abilities: [],
   inventory: [],
-  equipment: [],
+  equipment: [{} as ItemEntry, {} as ItemEntry, {} as ItemEntry],
 };
 
 interface CharacterContextType {
