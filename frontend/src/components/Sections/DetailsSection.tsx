@@ -28,8 +28,14 @@ function DetailsSection() {
   const movement = getCharacterMovement(character);
 
   return (
-    <div className="grow flex-row p-1">
-      <div className="flex" style={{ height: Constants.SECTION_TITLE_HEIGHT }}>
+    <>
+      <div
+        className="flex"
+        style={{
+          height: Constants.SECTION_TITLE_HEIGHT,
+          minHeight: Constants.SECTION_TITLE_HEIGHT,
+        }}
+      >
         <DeleteCharacter />
         <DropdownCharacter />
         <AddCharacter />
@@ -49,7 +55,7 @@ function DetailsSection() {
           type_value={character.toughness.pain.value}
         />
       </div>
-    </div>
+    </>
   );
 }
 

@@ -18,10 +18,8 @@ interface CorruptionEntry {
 
 function CorruptionSection() {
   return (
-    <div className="rounded p-1">
-      <div className="flex">
-        <TitleBox title={"Corruption"} />
-      </div>
+    <>
+      <TitleBox title={"Corruption"} />
       <div
         className="flex p-2"
         style={{
@@ -32,7 +30,7 @@ function CorruptionSection() {
       >
         <CorruptionControls />
       </div>
-    </div>
+    </>
   );
 }
 

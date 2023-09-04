@@ -15,24 +15,22 @@ function CombatSection() {
     const intervalId = setInterval(async () => {
       const data = await getCombatLog();
       setCombatLog(data);
-    }, 1000); // Polls every 5 seconds
+    }, 1000); // Polls every second
 
     return () => clearInterval(intervalId); // Clear the interval when the component is unmounted
   }, []);
   return (
-    <div className={`flex h-full flex-grow flex-col`}>
+    <>
       <TitleBox title={"Combat"} />
       <div
-        className="flex flex-col-reverse overflow-auto"
-        style={{
-          backgroundColor: Constants.DARK,
-        }}
+        className="flex flex-grow flex-col-reverse overflow-auto"
+        style={{ backgroundColor: Constants.DARK }}
       >
         {[...combatLog].reverse().map((item, index) => (
           <CombatEntryItem key={index} combatEntry={item} index={index} />
         ))}
       </div>
-    </div>
+    </>
   );
 }
 

@@ -9,7 +9,7 @@ function EquipmentSection() {
   const { character, setCharacter } = useContext(CharacterContext);
   const equipped_slots = ["AR", "MH", "OH"];
   return (
-    <div className="p-1">
+    <>
       <TitleBox title={"Equipment"} />
       <div
         className="flex flex-col"
@@ -34,7 +34,7 @@ function EquipmentSection() {
           );
         })}
       </div>
-    </div>
+    </>
   );
 }
 

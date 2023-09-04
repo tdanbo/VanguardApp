@@ -8,7 +8,7 @@ import AbilityEntryItem from "../AbilityEntryItem";
 function AbilitySection() {
   const { character, setCharacter } = useContext(CharacterContext);
   return (
-    <div className="p-1">
+    <>
       <div className="flex">
         <AbilityBrowser />
         <TitleBox title={"Abilities"} />
@@ -25,7 +25,7 @@ function AbilitySection() {
           );
         })}
       </div>
-    </div>
+    </>
   );
 }
 

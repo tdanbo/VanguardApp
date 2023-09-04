@@ -4,7 +4,7 @@ import * as Constants from "../../Constants";
 
 function ModifierSection() {
   return (
-    <div className="flex w-1/2 grow flex-col p-1">
+    <div className="flex w-1/2 grow flex-col pl-1">
       <TitleBox title={"MODIFIER"} />
       <div
         className="flex grow flex-row p-2"

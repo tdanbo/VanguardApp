@@ -9,7 +9,7 @@ function ActiveSection() {
   const { character, setCharacter } = useContext(CharacterContext);
   // const character_modifiers = getActiveModifiers(character);
   return (
-    <div className="flex w-1/2 grow flex-col p-1 ">
+    <div className="flex w-1/2 grow flex-col pr-1">
       <TitleBox title={"ACTIVE"} />
       <div
         className="flex grow flex-row p-2"

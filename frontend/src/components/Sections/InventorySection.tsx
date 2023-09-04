@@ -23,13 +23,13 @@ function InventorySection() {
 
   // console.log(empty_slots);
   return (
-    <div className="flex-col p-1">
+    <>
       <div className="flex">
         <EquipmentBrowser />
         <TitleBox title={"Inventory"} />
       </div>
       <div
-        className="flex flex-grow flex-col-reverse overflow-auto"
+        className="grow flex-col-reverse overflow-auto"
         style={{
           backgroundColor: Constants.PRIMARY,
         }}
@@ -53,7 +53,7 @@ function InventorySection() {
           return null;
         })}
       </div>
-    </div>
+    </>
   );
 }
 

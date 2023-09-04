@@ -22,7 +22,7 @@ function ToughnessSection() {
     character.toughness.max.value - character.toughness.damage.value;
 
   return (
-    <div className="flex flex-col p-1">
+    <>
       <div className="flex">
         <RestBox />
         <TitleBox title={"Toughness"} />
@@ -44,7 +44,7 @@ function ToughnessSection() {
           onSubFunction={onSubToughness}
         />
       </div>
-    </div>
+    </>
   );
 }
 

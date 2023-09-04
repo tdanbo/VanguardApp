@@ -11,7 +11,7 @@ import { CharacterContext } from "../../contexts/CharacterContext";
 function StatSection() {
   const { character, setCharacter } = useContext(CharacterContext);
   return (
-    <div className="p-1">
+    <>
       <div className="flex">
         <StatSettings />
         <TitleBox title={"Stats"} />
@@ -54,7 +54,7 @@ function StatSection() {
           type_value={character.stats.accurate.value}
         />
       </div>
-    </div>
+    </>
   );
 }
 

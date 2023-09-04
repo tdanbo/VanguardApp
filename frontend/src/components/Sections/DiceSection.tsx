@@ -17,7 +17,7 @@ const EntryRollButton = () => {
 
 function DiceSection() {
   return (
-    <div className="flex flex-col p-1">
+    <>
       <TitleBox title={"Dice"} />
       <div
         className="flex flex-row p-2"
@@ -36,7 +36,7 @@ function DiceSection() {
         <DiceBox type_name={"d20"} type_value={3} />
         <DiceBox type_name={"d100"} type_value={3} />
       </div>
-    </div>
+    </>
   );
 }
 

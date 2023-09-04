@@ -20,7 +20,7 @@ function DeleteCharacter() {
   };
   return (
     <div
-      className="flex items-center justify-center"
+      className="flex h-full items-center justify-center"
       style={{
         backgroundColor: Constants.PRIMARY_LIGHTER,
         width: Constants.SECTION_TITLE_HEIGHT,
