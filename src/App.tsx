@@ -19,11 +19,13 @@ import DiceSection from "./components/Sections/DiceSection";
 import * as Constants from "./Constants";
 
 import CharacterProvider from "./contexts/CharacterContext";
+import SelectSession from "./components/Modals/SelectSession";
 
 function App() {
   return (
     <CharacterProvider>
       <div className="flex" style={{ backgroundColor: Constants.DARK }}>
+        <SelectSession />
         <div className="flex h-screen w-1/3 flex-col px-1">
           <DetailsSection />
           <InventorySection />

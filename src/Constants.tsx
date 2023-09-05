@@ -61,3 +61,9 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   cunning: YELLOW,
   accurate: YELLOW,
 };
+
+export const NEW_BORDER = "#242c31";
+export const BUTTON = "#1d2427";
+export const WIDGET_BG = "#0f1619";
+export const BG = "#07090b";
+export const BUTTON_LIGHT = "#ffffff";
