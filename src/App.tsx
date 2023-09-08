@@ -19,34 +19,37 @@ import DiceSection from "./components/Sections/DiceSection";
 import * as Constants from "./Constants";
 
 import CharacterProvider from "./contexts/CharacterContext";
+import SessionProvider from "./contexts/SessionContext";
 import SelectSession from "./components/Modals/SelectSession";
 
 function App() {
   return (
-    <CharacterProvider>
-      <div className="flex" style={{ backgroundColor: Constants.DARK }}>
-        <SelectSession />
-        <div className="flex h-screen w-1/3 flex-col px-1">
-          <DetailsSection />
-          <InventorySection />
-          <EquipmentSection />
-          <div className="flex">
-            <ActiveSection />
-            <ModifierSection />
+    <SessionProvider>
+      <CharacterProvider>
+        <div className="flex" style={{ backgroundColor: Constants.DARK }}>
+          <SelectSession />
+          <div className="flex h-screen w-1/3 flex-col px-1">
+            <DetailsSection />
+            <InventorySection />
+            <EquipmentSection />
+            <div className="flex">
+              <ActiveSection />
+              <ModifierSection />
+            </div>
+          </div>
+          <div className="flex h-screen w-full flex-col px-1">
+            <CorruptionSection />
+            <AbilitySection />
+            <StatsSection />
+          </div>
+          <div className="flex h-screen w-1/3 flex-col px-1">
+            <ToughnessSection />
+            <CombatSection />
+            <DiceSection />
           </div>
         </div>
-        <div className="flex h-screen w-full flex-col px-1">
-          <CorruptionSection />
-          <AbilitySection />
-          <StatsSection />
-        </div>
-        <div className="flex h-screen w-1/3 flex-col px-1">
-          <ToughnessSection />
-          <CombatSection />
-          <DiceSection />
-        </div>
-      </div>
-    </CharacterProvider>
+      </CharacterProvider>
+    </SessionProvider>
   );
 }
 

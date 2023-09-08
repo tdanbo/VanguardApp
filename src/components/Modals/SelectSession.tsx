@@ -1,32 +1,30 @@
 import * as Constants from "../../Constants";
-import { useState, CSSProperties, useContext } from "react";
+import { useState, CSSProperties, useContext, useEffect } from "react";
 import { ItemEntry } from "../../Types";
 import { onChangeQuantity } from "../../functions/CharacterFunctions";
 import { CharacterContext } from "../../contexts/CharacterContext";
+import { SessionContext } from "../../contexts/SessionContext";
+
+import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faMinus, faCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faMinus,
+  faCheck,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 
 function SelectSession() {
   const { character } = useContext(CharacterContext);
+  // const { session, setSession } = useContext(SessionContext);
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [inputValue, setInputValue] = useState<number>(0);
+  const [token, setToken] = useState(null);
 
   const handleClose = () => {
     console.log("Closing Modal");
     setIsModalOpen(false);
-  };
-
-  const dividerStyles: CSSProperties = {
-    borderTop: `1px solid ${Constants.NEW_BORDER}`,
-    marginTop: "10px",
-    marginBottom: "10px",
-  };
-
-  const bottomDividerStyles: CSSProperties = {
-    borderTop: `1px solid ${Constants.NEW_BORDER}`,
-    marginTop: "auto", // This pushes the divider to the bottom
-    marginBottom: "10px",
   };
 
   const modalStyles: CSSProperties = {
@@ -70,14 +68,6 @@ function SelectSession() {
     cursor: "pointer",
   };
 
-  const containerStyles: CSSProperties = {
-    position: "relative",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    zIndex: 1000,
-  };
-
   const smallCircleButtonStyles: CSSProperties = {
     ...circleButtonStyles,
     width: "35px",
@@ -97,26 +87,62 @@ function SelectSession() {
     e.stopPropagation();
   };
 
+  const [username, setUsername] = useState<string | null>(null);
+
+  const fetchUsername = async () => {
+    try {
+      const res = await axios.get("http://localhost:8000/username", {
+        withCredentials: true,
+      });
+      const fetchedUsername = res.data.user;
+
+      if (fetchedUsername) {
+        setUsername(fetchedUsername);
+      } else {
+        console.log("Username is not present in the response.");
+      }
+    } catch (error) {
+      console.error("Error fetching username from cookie:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsername();
+  }, []);
+
+  console.log("Username:", username);
+
+  const handleLogin = () => {
+    axios.get("http://localhost:8000/login").then((res) => {
+      const authURL = res.data.url;
+      console.log(authURL);
+      window.location.href = authURL;
+    });
+  };
+
   return (
     <div>
       {isModalOpen && (
-        <div style={overlayStyles} onClick={handleClose}>
+        <div style={overlayStyles}>
+          {/* <div style={overlayStyles} onClick={handleClose}> */}
           <div
             className="flex h-1/2 flex-col items-center rounded-lg"
             style={modalStyles}
             onClick={stopPropagation}
           >
             <div className="flex w-full p-10">
-              <input
-                type="text"
-                className="center h-10 flex-row rounded-l-lg"
+              <button
+                className="center h-10 flex-row rounded-l-lg px-10"
                 style={{
                   backgroundColor: Constants.BUTTON_LIGHT,
                   border: `1px solid ${Constants.NEW_BORDER}`,
                   textAlign: "center",
                 }}
-                placeholder="Session Name"
-              />
+                onClick={handleLogin}
+              >
+                Login Using Discord
+              </button>
+
               <div
                 className="flex h-10 w-10 items-center justify-center rounded-r-lg"
                 style={{
@@ -128,10 +154,7 @@ function SelectSession() {
                   borderBottom: `1px solid ${Constants.NEW_BORDER}`,
                 }}
               >
-                <FontAwesomeIcon
-                  icon={faPlus}
-                  style={{ color: Constants.NEW_BORDER }}
-                />
+                <FontAwesomeIcon icon={faUser} />
               </div>
             </div>
             <div className="w-full flex-col px-10">
