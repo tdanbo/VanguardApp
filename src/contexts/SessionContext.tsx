@@ -1,10 +1,18 @@
 import { createContext, useState } from "react";
+import { SessionEntry } from "../Types";
 
-const defaultSession: String = "";
+const defaultSession: SessionEntry = {
+  name: "",
+  description: "",
+  id: "",
+  date: "",
+  owner: "",
+  users: [],
+};
 
 interface SessionContextType {
-  session: String;
-  setSession: React.Dispatch<React.SetStateAction<String>>;
+  session: SessionEntry;
+  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
 }
 
 const defaultContextValue: SessionContextType = {
@@ -21,7 +29,7 @@ export const SessionContext =
 
 const SessionProvider: React.FC<SessionProviderProps> = ({ children }) => {
   const [selectedSession, setSelectedSession] =
-    useState<String>(defaultSession);
+    useState<SessionEntry>(defaultSession);
 
   return (
     <SessionContext.Provider

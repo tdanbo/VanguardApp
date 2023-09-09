@@ -48,6 +48,7 @@ type Corruption = {
 };
 
 export interface CharacterEntry {
+  id: string;
   details: CharacterDetails;
   toughness: Toughness;
   stats: Stats;
@@ -89,6 +90,15 @@ export type CombatEntry = {
   success: boolean;
   modifier: number;
   add: boolean;
+};
+
+export type SessionEntry = {
+  name: string;
+  description: string;
+  id: string;
+  date: string;
+  owner: string;
+  users: string[];
 };
 
 export interface AbilityRoll {

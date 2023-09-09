@@ -1,5 +1,4 @@
 import * as Constants from "../Constants";
-import AddCharacterForm from "./CharacterForm/AddCharacterForm";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -22,7 +21,6 @@ function AddCharacter() {
       }}
     >
       <FontAwesomeIcon icon={faPlus} onClick={() => setIsOpen(true)} />
-      <AddCharacterForm open={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
 }

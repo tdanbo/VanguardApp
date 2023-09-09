@@ -666,3 +666,9 @@ export function postSelectedCharacter(updatedCharacter: CharacterEntry) {
     )
     .then((res) => console.log(res));
 }
+
+export function addNewCharacter(NewCharacterEntry: CharacterEntry) {
+  axios
+    .post("http://localhost:8000/api/characterlog/", NewCharacterEntry)
+    .then((res) => console.log(res));
+}

@@ -1,12 +1,35 @@
 import React from "react";
-import * as Constants from "../../Constants";
+import * as Constants from "../../../Constants";
 
 interface StatInputProps {
   stat: string;
-  setState: React.Dispatch<React.SetStateAction<number>>;
+  value: number;
+  selectedValue: number;
+  setSelectedValue: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function StatInputBox({ stat, setState }: StatInputProps) {
+function StatInputBox({
+  stat,
+  value,
+  selectedValue,
+  setSelectedValue,
+}: StatInputProps) {
+  let newValue = value;
+  if (selectedValue === 0) {
+    console.log("selectedValue is 0");
+    setSelectedValue(value);
+  }
+  // if (selectedValue === 0) {
+  //   setSelectedValue(value);
+  // } else {
+  //   setSelectedValue(0);
+  //   newValue = selectedValue;
+  // }
+
+  const handleClick = () => {
+    setSelectedValue(value);
+  };
+
   return (
     <div className="relative mb-1 flex w-full items-stretch">
       <span
@@ -22,8 +45,7 @@ function StatInputBox({ stat, setState }: StatInputProps) {
       >
         {stat}
       </span>
-      <input
-        type="number"
+      <button
         className="mb-1 block w-full appearance-none rounded border border-gray-200 bg-white px-2 py-1 text-base leading-normal text-gray-800 "
         placeholder="0"
         aria-label="Username"
@@ -35,8 +57,9 @@ function StatInputBox({ stat, setState }: StatInputProps) {
           fontSize: "1.1rem",
           fontWeight: "bold",
         }}
-        onChange={(event) => setState(parseInt(event.target.value))}
-      />
+      >
+        {newValue}
+      </button>
     </div>
   );
 }

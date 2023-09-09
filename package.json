@@ -13,17 +13,20 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@mui/icons-material": "^5.14.1",
     "@mui/material": "^5.14.2",
+    "@types/uuid": "^9.0.3",
     "axios": "^1.4.0",
     "chroma": "^0.0.1",
     "chroma-js": "^2.4.2",
     "popper.js": "^1.16.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/chroma-js": "^2.4.0",

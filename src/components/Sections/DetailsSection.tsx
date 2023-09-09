@@ -9,9 +9,9 @@ import { useContext } from "react";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import { getCharacterMovement } from "../../functions/CharacterFunctions";
 
-import DeleteCharacter from "../DeleteCharacter";
-import DropdownCharacter from "../DropdownCharacter";
-import AddCharacter from "../AddCharacter";
+import CharacterLabel from "../CharacterLabel";
+
+import SelectorComponent from "../../components/SelectorPage/Selector";
 
 function DetailsSection() {
   const { character } = useContext(CharacterContext);
@@ -29,9 +29,8 @@ function DetailsSection() {
           minHeight: Constants.SECTION_TITLE_HEIGHT,
         }}
       >
-        <DeleteCharacter />
-        <DropdownCharacter />
-        <AddCharacter />
+        <SelectorComponent />
+        <CharacterLabel />
       </div>
       <div
         className="flex flex-row p-2"
