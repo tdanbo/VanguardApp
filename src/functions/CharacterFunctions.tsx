@@ -648,15 +648,6 @@ export function RestCharacter(character: CharacterEntry) {
   return water_character;
 }
 
-export function onDeleteSelectedCharacter(updatedCharacter: CharacterEntry) {
-  // selectedCharacter.inventory = inventory; THIS WILL UPDATE THE INVENTORY< BUT NOT PROC THE RE-RENDER
-  axios
-    .delete(
-      `http://localhost:8000/api/characterlog/${updatedCharacter.details.name}`,
-    )
-    .then((res) => console.log(res));
-}
-
 export function postSelectedCharacter(updatedCharacter: CharacterEntry) {
   // selectedCharacter.inventory = inventory; THIS WILL UPDATE THE INVENTORY< BUT NOT PROC THE RE-RENDER
   axios

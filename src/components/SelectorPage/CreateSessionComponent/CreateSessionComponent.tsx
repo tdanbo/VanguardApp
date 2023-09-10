@@ -3,6 +3,7 @@ import * as Constants from "../../../Constants";
 import * as Styles from "../SelectorStyles";
 import CreateSessionButtons from "./CreateSessionButtons";
 import { useState } from "react";
+import { CharacterEntry } from "../../../Types";
 
 interface LoginProps {
   setSelector: (selector: string) => void;
@@ -33,9 +34,9 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
         >
           Create Session
         </div>
-        <div className="h-0.5 w-full bg-zinc-800"></div>
+        <div className="my-5 h-0.5 w-full bg-zinc-800"></div>
         <div
-          className="flex flex-col justify-center space-y-2 overflow-auto"
+          className="my-5 flex flex-col justify-center space-y-2 overflow-auto"
           style={{ height: "400px" }}
         >
           <input

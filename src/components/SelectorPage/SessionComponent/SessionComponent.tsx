@@ -13,16 +13,18 @@ interface LoginProps {
 
 function CreateSessionComponent({ setSelector }: LoginProps) {
   const { user } = useContext(UserContext);
-  const [sessionLog, setSessionLog] = useState<SessionEntry[]>([]);
+  const [sessions, setSessions] = useState<SessionEntry[]>([]);
 
   useEffect(() => {
     async function fetchData() {
       const data = await getSessions(user);
-      setSessionLog(data);
+      setSessions(data);
     }
 
     fetchData();
   }, []);
+
+  console.log(sessions);
 
   return (
     <div
@@ -36,18 +38,18 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
         >
           Sessions
         </div>
-        <div className="h-0.5 w-full bg-zinc-800"></div>
+        <div className="my-5 h-0.5 w-full bg-zinc-800"></div>
         <div
-          className="flex flex-col justify-center space-y-2 overflow-auto"
+          className="my-5 flex flex-col justify-center space-y-2 overflow-auto"
           style={{ height: "400px" }}
         >
-          {[...sessionLog].reverse().map((item, index) => (
+          {[...sessions].reverse().map((item, index) => (
             <SessionBox setSelector={setSelector} sessionprop={item} />
           ))}
         </div>
         <div className="my-5 h-0.5 w-full bg-zinc-800"></div>
       </div>
-      <SessionButtons setSelector={setSelector} />
+      <SessionButtons setSelector={setSelector} setSessions={setSessions} />
     </div>
   );
 }

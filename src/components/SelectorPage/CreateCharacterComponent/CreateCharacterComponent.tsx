@@ -8,6 +8,7 @@ import { CharacterEntry } from "../../../Types";
 
 interface LoginProps {
   setSelector: (selector: string) => void;
+  setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
 }
 
 interface Stats {
@@ -16,7 +17,10 @@ interface Stats {
   label: string;
 }
 
-function CreateCharacterComponent({ setSelector }: LoginProps) {
+function CreateCharacterComponent({
+  setSelector,
+  setCharacterLog,
+}: LoginProps) {
   const [characterName, setCharacterName] = useState("");
 
   const [selectedValue, setSelectedValue] = useState(0);
@@ -88,7 +92,7 @@ function CreateCharacterComponent({ setSelector }: LoginProps) {
         </div>
         <div className="my-5 h-0.5 w-full bg-zinc-800"></div>
         <div
-          className="flex flex-col justify-center space-y-2 overflow-auto"
+          className="my-5 flex flex-col justify-center space-y-2 overflow-auto"
           style={{ height: "400px" }}
         >
           <input
@@ -138,6 +142,7 @@ function CreateCharacterComponent({ setSelector }: LoginProps) {
         setSelector={setSelector}
         character_name={characterName}
         stats={stats}
+        setCharacterLog={setCharacterLog}
       />
     </div>
   );

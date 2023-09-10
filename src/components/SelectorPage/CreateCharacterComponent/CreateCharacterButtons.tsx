@@ -9,6 +9,7 @@ import { useContext, useState } from "react";
 import { CharacterEntry, SessionEntry } from "../../../Types";
 import { addNewCharacter } from "../../../functions/CharacterFunctions";
 import { CharacterContext } from "../../../contexts/CharacterContext";
+import { getCharacters } from "../../../functions/SessionsFunctions";
 
 interface Stats {
   id: number;
@@ -20,12 +21,14 @@ interface CreateSessionsProps {
   setSelector: (selector: string) => void;
   character_name: string;
   stats: Stats[];
+  setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
 }
 
 function CreateCharacterButtons({
   setSelector,
   character_name,
   stats,
+  setCharacterLog,
 }: CreateSessionsProps) {
   const { session } = useContext(SessionContext);
   const { setCharacter } = useContext(CharacterContext);
@@ -69,9 +72,11 @@ function CreateCharacterButtons({
     equipment: [],
   };
 
-  const handlePostCharacter = () => {
-    addNewCharacter(NewCharacterEntry);
+  const handlePostCharacter = async () => {
     setSelector("characterSelect");
+    await addNewCharacter(NewCharacterEntry);
+    const characters = await getCharacters(session.id);
+    setCharacterLog(characters);
   };
 
   return (

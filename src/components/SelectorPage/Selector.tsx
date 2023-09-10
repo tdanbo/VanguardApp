@@ -3,7 +3,7 @@ import { useState, CSSProperties, useContext, useEffect } from "react";
 import { CharacterContext } from "../../contexts/CharacterContext";
 
 import LoginComponent from "./LoginComponent/LoginComponent";
-
+import { CharacterEntry } from "../../Types";
 import SessionComponent from "./SessionComponent/SessionComponent";
 import SessionButtons from "./SessionComponent/SessionButtons";
 
@@ -12,11 +12,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CreateSessionComponent from "./CreateSessionComponent/CreateSessionComponent";
 import SelectCharacterComponent from "./SelectCharacterComponent/SelectCharacterComponent";
 import CreateCharacterComponent from "./CreateCharacterComponent/CreateCharacterComponent";
+import GamemasterComponent from "./GamemasterComponent/GamemasterComponent";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 function SelectorComponent() {
   const { character } = useContext(CharacterContext);
   const [isModalOpen, setIsModalOpen] = useState(true);
+
+  const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
 
   const renderContent = (selectorValue: string) => {
     switch (selectorValue) {
@@ -31,12 +34,24 @@ function SelectorComponent() {
           <SelectCharacterComponent
             setSelector={setSelector}
             closeModal={handleClose}
+            characterLog={characterLog}
+            setCharacterLog={setCharacterLog}
           />
         );
       case "createCharacter":
-        return <CreateCharacterComponent setSelector={setSelector} />;
+        return (
+          <CreateCharacterComponent
+            setSelector={setSelector}
+            setCharacterLog={setCharacterLog}
+          />
+        );
       case "gamemaster":
-        return <div>Gamemaster Content</div>;
+        return (
+          <GamemasterComponent
+            setSelector={setSelector}
+            closeModal={handleClose}
+          />
+        );
       case "close":
         return <div>Add User Content</div>;
       default:

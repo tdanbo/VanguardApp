@@ -4,6 +4,8 @@ import { SessionContext } from "../../../contexts/SessionContext";
 import {
   leaveSession,
   getSessions,
+  deleteSession,
+  deleteAllSessionCharacters,
 } from "../../../functions/SessionsFunctions";
 import * as Styles from "../SelectorStyles";
 import * as Constants from "../../../Constants";
@@ -12,21 +14,35 @@ import {
   faPlus,
   faAngleLeft,
   faXmark,
+  faHatWizard,
+  faLink,
 } from "@fortawesome/free-solid-svg-icons";
-import { CharacterEntry } from "../../../Types";
 
 interface LoginProps {
   setSelector: (selector: string) => void;
-  setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
 }
 
-function SelectCharacterButtons({ setSelector, setCharacterLog }: LoginProps) {
+async function copyTextToClipboard(text: string) {
+  try {
+    await navigator.clipboard.writeText(text);
+    console.log("Text successfully copied to clipboard");
+  } catch (err) {
+    console.error("Failed to copy text: ", err);
+  }
+}
+
+function GamemasterButtons({ setSelector }: LoginProps) {
   const { user } = useContext(UserContext);
   const { session, setSession } = useContext(SessionContext);
 
-  const handleLeaveSession = async () => {
-    console.log("Leaving Session");
-    const sessions = await leaveSession(session.id, user);
+  const handleLinkCopy = () => {
+    copyTextToClipboard(session.id); // Use any of the methods above
+  };
+
+  const handleDeleteSession = async () => {
+    console.log("Deleting Session");
+    const sessions = await deleteSession(session.id, user);
+    const delete_characters = await deleteAllSessionCharacters(session.id);
     setSelector("session");
   };
   return (
@@ -45,14 +61,20 @@ function SelectCharacterButtons({ setSelector, setCharacterLog }: LoginProps) {
       </div>
       <div
         style={Styles.largeCircleButtonStyles}
-        onClick={() => setSelector("createCharacter")}
+        onClick={() => setSelector("sessions")}
       >
         <FontAwesomeIcon
-          icon={faPlus}
+          icon={faHatWizard}
           style={{ color: Constants.FONT_LIGHT }}
         />
       </div>
-      <div style={Styles.smallCircleButtonStyles} onClick={handleLeaveSession}>
+      <div style={Styles.largeCircleButtonStyles} onClick={handleLinkCopy}>
+        <FontAwesomeIcon
+          icon={faLink}
+          style={{ color: Constants.FONT_LIGHT }}
+        />
+      </div>
+      <div style={Styles.smallCircleButtonStyles} onClick={handleDeleteSession}>
         {" "}
         <FontAwesomeIcon
           icon={faXmark}
@@ -62,4 +84,4 @@ function SelectCharacterButtons({ setSelector, setCharacterLog }: LoginProps) {
     </div>
   );
 }
-export default SelectCharacterButtons;
+export default GamemasterButtons;

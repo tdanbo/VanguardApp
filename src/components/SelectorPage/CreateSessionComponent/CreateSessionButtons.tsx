@@ -49,12 +49,12 @@ function CreateSessionButtons({
     id: generateID(),
     date: formatDate(currentDate),
     owner: user,
-    users: [user],
+    users: [],
   };
 
-  const handlePostSession = () => {
+  const handlePostSession = async () => {
     console.log(NewSessionEntry);
-    postSession(NewSessionEntry);
+    await postSession(NewSessionEntry);
     setSelector("session");
   };
 
@@ -62,27 +62,30 @@ function CreateSessionButtons({
     <div className="mb-5 mt-3 flex justify-center">
       {" "}
       {/* Adjust the margin-bottom if necessary */}
-      <div style={Styles.largeCircleButtonStyles}>
+      <div
+        style={Styles.largeCircleButtonStyles}
+        onClick={() => setSelector("session")}
+      >
         <FontAwesomeIcon
           icon={faAngleLeft}
           style={{ color: Constants.FONT_LIGHT }}
-          onClick={() => setSelector("session")}
         />
       </div>
-      <div style={Styles.largeCircleButtonStyles}>
-        {sessionName === "" ? (
+      {sessionName === "" ? (
+        <div style={Styles.largeCircleButtonStyles}>
           <FontAwesomeIcon
             icon={faCheck}
             style={{ color: Constants.NEW_BORDER }}
           />
-        ) : (
+        </div>
+      ) : (
+        <div style={Styles.largeCircleButtonStyles} onClick={handlePostSession}>
           <FontAwesomeIcon
             icon={faCheck}
             style={{ color: Constants.FONT_LIGHT }}
-            onClick={handlePostSession}
           />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
