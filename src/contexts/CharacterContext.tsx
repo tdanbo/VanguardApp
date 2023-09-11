@@ -2,6 +2,7 @@ import { createContext, useState } from "react";
 import { CharacterEntry, ItemEntry } from "../Types";
 
 const defaultCharacter: CharacterEntry = {
+  id: "",
   details: {
     name: "",
     xp_earned: 0,

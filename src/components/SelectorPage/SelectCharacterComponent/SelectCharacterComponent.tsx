@@ -7,6 +7,7 @@ import { CharacterEntry } from "../../../Types";
 import { getCharacters } from "../../../functions/SessionsFunctions";
 import { UserContext } from "../../../contexts/UserContext";
 import { SessionContext } from "../../../contexts/SessionContext";
+import { useWebSocket } from "../../../contexts/WebSocketContext";
 
 interface LoginProps {
   setSelector: (selector: string) => void;
@@ -23,6 +24,7 @@ function SelectCharacterComponent({
 }: LoginProps) {
   const { user } = useContext(UserContext);
   const { session } = useContext(SessionContext);
+  const { charactersResponse, sendRequest } = useWebSocket();
 
   useEffect(() => {
     getCharacters(session.id).then((response) => {
@@ -30,30 +32,13 @@ function SelectCharacterComponent({
     });
   }, []);
 
-  const [ws, setWs] = useState<WebSocket | null>(null);
-
   useEffect(() => {
-    const wsLocal = new WebSocket(`ws://localhost:8000/ws/${user}`);
-    wsLocal.onopen = () => {
-      console.log("connected");
-    };
-    wsLocal.onmessage = (e) => {
-      console.log(e.data);
-    };
-    setWs(wsLocal);
-
-    return () => {
-      if (wsLocal) {
-        wsLocal.close();
-      }
-    };
-  }, []);
-
-  const sendMessage = () => {
-    if (ws) {
-      ws.send("Sending some stuff");
+    if (charactersResponse) {
+      console.log("Server sending stuff");
+      setCharacterLog(charactersResponse);
     }
-  };
+  }, [charactersResponse]);
+
   return (
     <div
       className="flex w-1/5 flex-col justify-center"
@@ -71,22 +56,22 @@ function SelectCharacterComponent({
           className="my-5 flex flex-col justify-center space-y-2 overflow-auto"
           style={{ height: "400px" }}
         >
-          {[...characterLog].reverse().map((character) => (
-            <CharacterBox
-              setSelector={setSelector}
-              selectedCharacter={character}
-              closeModal={closeModal}
-            />
-          ))}
+          {[...characterLog]
+            .reverse()
+            .map(
+              (character) => (
+                console.log(character),
+                (
+                  <CharacterBox
+                    setSelector={setSelector}
+                    selectedCharacter={character}
+                    closeModal={closeModal}
+                  />
+                )
+              ),
+            )}
         </div>
         <div className="my-5 h-0.5 w-full bg-zinc-800"></div>
-        <button
-          className="flex h-10 w-full items-center justify-center rounded-lg"
-          style={{ backgroundColor: Constants.BUTTON }}
-          onClick={sendMessage}
-        >
-          Send Message
-        </button>
       </div>
       <SelectCharacterButtons
         setSelector={setSelector}

@@ -7,6 +7,8 @@ import { CharacterEntry, SessionEntry } from "../../../Types";
 import { getCharacters } from "../../../functions/SessionsFunctions";
 import { UserContext } from "../../../contexts/UserContext";
 import { SessionContext } from "../../../contexts/SessionContext";
+import { useWebSocket } from "../../../contexts/WebSocketContext";
+
 import UserSimpleBox from "./UserSimpleBox";
 
 import CharacterSimpleBox from "./CharacterSimpleBox";
@@ -22,6 +24,8 @@ function GamemasterComponent({ setSelector, closeModal }: LoginProps) {
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
   const [userLog, setUserLog] = useState<string[]>([]);
 
+  const { charactersResponse } = useWebSocket();
+
   useEffect(() => {
     setUserLog(session.users);
   }, [session.users]);
@@ -31,6 +35,12 @@ function GamemasterComponent({ setSelector, closeModal }: LoginProps) {
       setCharacterLog(response);
     });
   }, []);
+
+  useEffect(() => {
+    if (charactersResponse) {
+      setCharacterLog(charactersResponse);
+    }
+  }, [charactersResponse]);
 
   return (
     <div

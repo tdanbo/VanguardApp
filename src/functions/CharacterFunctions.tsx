@@ -658,8 +658,11 @@ export function postSelectedCharacter(updatedCharacter: CharacterEntry) {
     .then((res) => console.log(res));
 }
 
-export function addNewCharacter(NewCharacterEntry: CharacterEntry) {
-  axios
+export async function addNewCharacter(NewCharacterEntry: CharacterEntry) {
+  return axios
     .post("http://localhost:8000/api/characterlog/", NewCharacterEntry)
-    .then((res) => console.log(res));
+    .then((res) => {
+      console.log(res);
+      return res;
+    });
 }

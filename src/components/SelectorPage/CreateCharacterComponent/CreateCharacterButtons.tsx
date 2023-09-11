@@ -10,6 +10,7 @@ import { CharacterEntry, SessionEntry } from "../../../Types";
 import { addNewCharacter } from "../../../functions/CharacterFunctions";
 import { CharacterContext } from "../../../contexts/CharacterContext";
 import { getCharacters } from "../../../functions/SessionsFunctions";
+import { useWebSocket } from "../../../contexts/WebSocketContext";
 
 interface Stats {
   id: number;
@@ -32,6 +33,7 @@ function CreateCharacterButtons({
 }: CreateSessionsProps) {
   const { session } = useContext(SessionContext);
   const { setCharacter } = useContext(CharacterContext);
+  const { sendRequest } = useWebSocket();
 
   const NewCharacterEntry: CharacterEntry = {
     id: session.id,
@@ -72,11 +74,14 @@ function CreateCharacterButtons({
     equipment: [],
   };
 
+  function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   const handlePostCharacter = async () => {
     setSelector("characterSelect");
     await addNewCharacter(NewCharacterEntry);
-    const characters = await getCharacters(session.id);
-    setCharacterLog(characters);
+    sendRequest("characters"); // asking websocket to update session characters for all clients
   };
 
   return (

@@ -11,14 +11,15 @@ import { useState, useEffect } from "react";
 function CombatSection() {
   const [combatLog, setCombatLog] = useState<CombatEntry[]>([]);
 
-  useEffect(() => {
-    const intervalId = setInterval(async () => {
-      const data = await getCombatLog();
-      setCombatLog(data);
-    }, 1000); // Polls every second
+  // useEffect(() => {
+  //   const intervalId = setInterval(async () => {
+  //     const data = await getCombatLog();
+  //     setCombatLog(data);
+  //   }, 1000); // Polls every second
 
-    return () => clearInterval(intervalId); // Clear the interval when the component is unmounted
-  }, []);
+  //   return () => clearInterval(intervalId); // Clear the interval when the component is unmounted
+  // }, []);
+
   return (
     <>
       <TitleBox title={"Combat"} />

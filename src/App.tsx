@@ -21,32 +21,36 @@ import * as Constants from "./Constants";
 import CharacterProvider from "./contexts/CharacterContext";
 import UserProvider from "./contexts/UserContext";
 import SessionProvider from "./contexts/SessionContext";
+import { WebSocketProvider } from "./contexts/WebSocketContext";
+
 function App() {
   return (
     <UserProvider>
       <SessionProvider>
         <CharacterProvider>
-          <div className="flex" style={{ backgroundColor: Constants.DARK }}>
-            <div className="flex h-screen w-1/3 flex-col px-1">
-              <DetailsSection />
-              <InventorySection />
-              <EquipmentSection />
-              <div className="flex">
-                <ActiveSection />
-                <ModifierSection />
+          <WebSocketProvider>
+            <div className="flex" style={{ backgroundColor: Constants.DARK }}>
+              <div className="flex h-screen w-1/3 flex-col px-1">
+                <DetailsSection />
+                <InventorySection />
+                <EquipmentSection />
+                <div className="flex">
+                  <ActiveSection />
+                  <ModifierSection />
+                </div>
+              </div>
+              <div className="flex h-screen w-full flex-col px-1">
+                <CorruptionSection />
+                <AbilitySection />
+                <StatsSection />
+              </div>
+              <div className="flex h-screen w-1/3 flex-col px-1">
+                <ToughnessSection />
+                <CombatSection />
+                <DiceSection />
               </div>
             </div>
-            <div className="flex h-screen w-full flex-col px-1">
-              <CorruptionSection />
-              <AbilitySection />
-              <StatsSection />
-            </div>
-            <div className="flex h-screen w-1/3 flex-col px-1">
-              <ToughnessSection />
-              <CombatSection />
-              <DiceSection />
-            </div>
-          </div>
+          </WebSocketProvider>
         </CharacterProvider>
       </SessionProvider>
     </UserProvider>

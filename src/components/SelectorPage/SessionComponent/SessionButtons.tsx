@@ -5,6 +5,7 @@ import { UserContext } from "../../../contexts/UserContext";
 import { SessionEntry } from "../../../Types";
 import * as Constants from "../../../Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useWebSocket } from "../../../contexts/WebSocketContext";
 import {
   faPlus,
   faMinus,
@@ -23,6 +24,7 @@ function SessionButtons({ setSelector, setSessions }: LoginProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [sessionID, setSessionID] = useState<string>("");
   const { user } = useContext(UserContext);
+  const { sendRequest } = useWebSocket();
 
   // Function to toggle the visibility
   const toggleVisibility = () => {

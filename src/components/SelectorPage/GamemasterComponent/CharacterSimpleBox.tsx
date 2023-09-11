@@ -11,7 +11,7 @@ import {
 } from "../../../functions/SessionsFunctions";
 import { useContext } from "react";
 import { SessionContext } from "../../../contexts/SessionContext";
-
+import { useWebSocket } from "../../../contexts/WebSocketContext";
 interface CharacterSimpleBoxProps {
   character: CharacterEntry;
   setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
@@ -22,14 +22,14 @@ function CharacterSimpleBox({
   setCharacterLog,
 }: CharacterSimpleBoxProps) {
   const { session, setSession } = useContext(SessionContext);
+  const { sendRequest } = useWebSocket();
 
   const onHandleDeleteCharacter = async () => {
     const delete_characters = await deleteSessionCharacter(
       character.details.name,
       session.id,
     );
-    const characters = await getCharacters(session.id);
-    setCharacterLog(characters);
+    sendRequest("characters");
   };
 
   return (
