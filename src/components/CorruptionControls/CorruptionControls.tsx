@@ -4,7 +4,6 @@ import { useContext } from "react";
 import { CharacterContext } from "../../contexts/CharacterContext";
 
 import styled from "styled-components";
-import CorruptionBox from "../CorruptionBox";
 
 import {
   onAddPermCorruption,
@@ -36,10 +35,6 @@ function CorruptionControls() {
       {[...Array(clean_corruption)].map((_, index) => (
         <CorruptionToken key={index} state={0} />
       ))}
-      <CorruptionBox
-        onAddFunction={onAddPermCorruption}
-        onSubFunction={onSubPermCorruption}
-      />
     </Container>
   );
 }

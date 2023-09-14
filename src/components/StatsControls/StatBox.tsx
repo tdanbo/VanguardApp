@@ -3,7 +3,7 @@ import { CharacterContext } from "../../contexts/CharacterContext";
 import { useContext, useState, useEffect } from "react";
 import { useRoll } from "../../functions/CombatFunctions";
 
-import "./StatsControls.css";
+import styled from "styled-components";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -82,33 +82,57 @@ function StatBox({ type_name, type_value }: Props) {
     }
   };
 
+  const Container = styled.div`
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    background-color: coral;
+  `;
+
+  const ActiveButton = styled.button`
+    display: flex;
+    background-color: rgb(0, 255, 0);
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+  `;
+
+  const ValueName = styled.button`
+    display: flex;
+    flex-grow: 1;
+    background-color: rgb(0, 255, 0);
+    align-items: center;
+
+    width: 20px;
+  `;
+
+  const ValueButton = styled.button`
+    display: flex;
+    background-color: rgb(0, 255, 0);
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+  `;
+
   return (
-    <div className="stats_div">
-      <button
+    <Container>
+      <ActiveButton
         className="active_button"
         onMouseEnter={handleActiveMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleActiveRoll}
       >
         {icon(active)}
-      </button>
-      <div
-        className="flex grow items-center rounded-br"
-        style={{
-          backgroundColor: Constants.PRIMARY_LIGHTER,
-          border: `1px solid ${Constants.BORDER_LIGHT}`,
-          margin: "2px 2px 2px 0px",
-          fontSize: "0.8rem",
-          fontWeight: "bold",
-        }}
+      </ActiveButton>
+      <ValueName
         onMouseEnter={handleSkillMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleSkillRoll}
       >
         {type_name.toUpperCase()}
-      </div>
-      <div className="value_button">{value}</div>
-    </div>
+      </ValueName>
+      <ValueButton>{value}</ValueButton>
+    </Container>
   );
 }
 

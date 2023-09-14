@@ -6,7 +6,7 @@ import { useContext } from "react";
 import EquipmentBrowser from "../Modals/EquipmentBrowser";
 
 import { CharacterContext } from "../../contexts/CharacterContext";
-
+import styled from "styled-components";
 function InventorySection() {
   const { character } = useContext(CharacterContext);
 
@@ -14,8 +14,15 @@ function InventorySection() {
   const totalSlots = character.stats.strong.value * 2;
 
   // console.log(empty_slots);
+  const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background-color: rgb(255, 150, 0);
+    gap: 10px;
+  `;
   return (
-    <>
+    <Container>
       {Array.from({ length: 20 }).map((_, index) => {
         return <InventoryEntryEmpty key={index} index={index + 1} />;
       })}
@@ -37,7 +44,7 @@ function InventorySection() {
         }
         return null;
       })} */}
-    </>
+    </Container>
   );
 }
 

@@ -18,8 +18,6 @@ import CharacterProvider from "./contexts/CharacterContext";
 import UserProvider from "./contexts/UserContext";
 import SessionProvider from "./contexts/SessionContext";
 import { WebSocketProvider } from "./contexts/WebSocketContext";
-
-import CorruptionBox from "./components/CorruptionBox";
 import ToughnessBox from "./components/ToughnessBox/ToughnessBox";
 import StatsControls from "./components/StatsControls/StatsControls";
 import PortraitBox from "./components/PortraixBox/PortraitBox";
@@ -34,7 +32,9 @@ import {
 } from "./functions/CharacterFunctions";
 import AbilityBrowser from "./components/Modals/AbilityBrowser";
 
-import Navigator from "./components/Navigation/Navigator";
+import CharacterNavigation from "./components/NavigationControl/CharacterNavigation";
+import HealthNavigation from "./components/NavigationControl/HealthNavigation";
+import InventoryNavigation from "./components/NavigationControl/InventoryNavigation";
 
 function App() {
   const Row = styled.div`
@@ -62,36 +62,62 @@ function App() {
   const StatsContainer = styled.div`
     display: flex;
     background-color: rgb(255, 150, 0);
-    height: 85%;
     margin: 20px;
     gap: 20px;
+    height: 40%;
   `;
 
   const HealthContainer = styled.div`
     display: flex;
     background-color: rgb(255, 150, 0);
-    height: 15%;
     margin: 20px;
     gap: 20px;
-  `;
-
-  const NavigationContainer = styled.div`
-    display: flex;
-    background-color: rgb(255, 150, 0);
-    height: 15%;
-    margin: 20px;
-    gap: 20px;
+    height: 10%;
   `;
 
   const InventoryContainer = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     background-color: rgb(255, 150, 0);
-    height: 85%;
-    overflow: scroll;
-    scrollbar-width: none;
     margin: 20px;
     gap: 20px;
+    height: 50%;
+    overflow: scroll;
+  `;
+
+  const ColumnNarrow = styled.div`
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(60, 120, 99);
+    height: 100%;
+    width: 50px;
+  `;
+
+  const NavigationTop = styled.div`
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 150, 0);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 40%;
+  `;
+
+  const NavigationMid = styled.div`
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 150, 0);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 10%;
+  `;
+
+  const NavigationBot = styled.div`
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 150, 0);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 50%;
   `;
 
   return (
@@ -101,6 +127,17 @@ function App() {
           <WebSocketProvider>
             <Row>
               <Column></Column>
+              <ColumnNarrow>
+                <NavigationTop>
+                  <CharacterNavigation />
+                </NavigationTop>
+                <NavigationMid>
+                  <HealthNavigation />
+                </NavigationMid>
+                <NavigationBot>
+                  <InventoryNavigation />
+                </NavigationBot>
+              </ColumnNarrow>
               <ColumnM>
                 <StatsContainer>
                   <PortraitBox />
@@ -113,13 +150,6 @@ function App() {
                     onSubFunction={onSubToughness}
                   />
                 </HealthContainer>
-                <NavigationContainer>
-                  <EquipmentBrowser />
-                  <Navigator navigation={"Combat"} />
-                  <Navigator navigation={"Inventory"} />
-                  <Navigator navigation={"Consumables"} />
-                  <AbilityBrowser />
-                </NavigationContainer>
                 <InventoryContainer>
                   <InventorySection />
                 </InventoryContainer>

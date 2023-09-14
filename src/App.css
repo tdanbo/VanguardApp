@@ -44,3 +44,14 @@ body {
   background-color: rgb(123, 57, 150);
   width: 70%;
 }
+
+/* For webkit browsers like Chrome, Safari */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* For Firefox */
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}

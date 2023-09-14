@@ -3,7 +3,6 @@ import StatBox from "./StatBox";
 import { useContext } from "react";
 import { CharacterContext } from "../../contexts/CharacterContext";
 
-import "./StatsControls.css";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -11,6 +10,7 @@ const Container = styled.div`
   flex: 1;
   flex-direction: column;
   background-color: coral;
+  gap: 10px;
 `;
 
 function StatsControls() {

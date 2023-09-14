@@ -7,18 +7,16 @@ interface NavigationProps {
 
 const Container = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-grow: 1;
   align-items: center;
   justify-content: center;
   background-color: rgb(189, 50, 187);
   &:hover {
     background-color: rgb(255, 0, 170);
   }
-  width: 50px;
-  height: 50px;
 `;
 
-function Navigator({ icon }: NavigationProps) {
+function EquipmentNavigator({ icon }: NavigationProps) {
   return (
     <Container>
       <FontAwesomeIcon icon={icon} />
@@ -26,4 +24,4 @@ function Navigator({ icon }: NavigationProps) {
   );
 }
 
-export default Navigator;
+export default EquipmentNavigator;

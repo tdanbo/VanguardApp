@@ -7,7 +7,7 @@ interface NavigationProps {
 
 const Container = styled.div`
   display: flex;
-  flex-direction: row;
+
   align-items: center;
   justify-content: center;
   background-color: rgb(189, 50, 187);
@@ -18,7 +18,7 @@ const Container = styled.div`
   height: 50px;
 `;
 
-function Navigator({ icon }: NavigationProps) {
+function AbilitiesNavigator({ icon }: NavigationProps) {
   return (
     <Container>
       <FontAwesomeIcon icon={icon} />
@@ -26,4 +26,4 @@ function Navigator({ icon }: NavigationProps) {
   );
 }
 
-export default Navigator;
+export default AbilitiesNavigator;
