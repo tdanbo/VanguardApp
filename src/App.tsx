@@ -13,7 +13,7 @@ import CombatSection from "./components/Sections/CombatSection";
 import DiceSection from "./components/Sections/DiceSection";
 
 import * as Constants from "./Constants";
-
+import styled from "styled-components";
 import CharacterProvider from "./contexts/CharacterContext";
 import UserProvider from "./contexts/UserContext";
 import SessionProvider from "./contexts/SessionContext";
@@ -21,9 +21,10 @@ import { WebSocketProvider } from "./contexts/WebSocketContext";
 
 import CorruptionBox from "./components/CorruptionBox";
 import ToughnessBox from "./components/ToughnessBox/ToughnessBox";
-import CorruptionControls from "./components/CorruptionControls/CorruptionControls";
 import StatsControls from "./components/StatsControls/StatsControls";
 import PortraitBox from "./components/PortraixBox/PortraitBox";
+import EquipmentBrowser from "./components/Modals/EquipmentBrowser";
+import CorruptionControls from "./components/CorruptionControls/CorruptionControls";
 
 import {
   onAddToughness,
@@ -31,75 +32,100 @@ import {
   onAddPermCorruption,
   onSubPermCorruption,
 } from "./functions/CharacterFunctions";
+import AbilityBrowser from "./components/Modals/AbilityBrowser";
+
+import Navigator from "./components/Navigation/Navigator";
 
 function App() {
+  const Row = styled.div`
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(45, 99, 99);
+    height: 100%;
+  `;
+  const Column = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: rgb(45, 99, 99);
+    height: 100%;
+  `;
+
+  const ColumnM = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: rgb(60, 120, 99);
+    height: 100%;
+  `;
+
+  const StatsContainer = styled.div`
+    display: flex;
+    background-color: rgb(255, 150, 0);
+    height: 85%;
+    margin: 20px;
+    gap: 20px;
+  `;
+
+  const HealthContainer = styled.div`
+    display: flex;
+    background-color: rgb(255, 150, 0);
+    height: 15%;
+    margin: 20px;
+    gap: 20px;
+  `;
+
+  const NavigationContainer = styled.div`
+    display: flex;
+    background-color: rgb(255, 150, 0);
+    height: 15%;
+    margin: 20px;
+    gap: 20px;
+  `;
+
+  const InventoryContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 150, 0);
+    height: 85%;
+    overflow: scroll;
+    scrollbar-width: none;
+    margin: 20px;
+    gap: 20px;
+  `;
+
   return (
     <UserProvider>
       <SessionProvider>
         <CharacterProvider>
           <WebSocketProvider>
-            {/* <div className="flex" style={{ backgroundColor: Constants.DARK }}>
-              <div className="flex h-screen w-1/3 flex-col"></div>
-              <div className="flex h-screen w-1/3 flex-col">
-                <div className="flex h-1/2 flex-col">
-                  <div className="flex">
-                    <PortraitBox />
-                    <StatsSection />
-                  </div>
-                  <div className="flex flex-row">
-                    <CorruptionControls />
-                    <CorruptionBox
-                      onAddFunction={onAddPermCorruption}
-                      onSubFunction={onSubPermCorruption}
-                    />
-
-                    <ToughnessBox
-                      onAddFunction={onAddToughness}
-                      onSubFunction={onSubToughness}
-                    />
-                  </div>
-                </div>
-                <div className="h-1/2 flex-col">
+            <Row>
+              <Column></Column>
+              <ColumnM>
+                <StatsContainer>
+                  <PortraitBox />
+                  <StatsControls />
+                </StatsContainer>
+                <HealthContainer>
+                  <CorruptionControls />
+                  <ToughnessBox
+                    onAddFunction={onAddToughness}
+                    onSubFunction={onSubToughness}
+                  />
+                </HealthContainer>
+                <NavigationContainer>
+                  <EquipmentBrowser />
+                  <Navigator navigation={"Combat"} />
+                  <Navigator navigation={"Inventory"} />
+                  <Navigator navigation={"Consumables"} />
+                  <AbilityBrowser />
+                </NavigationContainer>
+                <InventoryContainer>
                   <InventorySection />
-                </div>
-              </div>
-              <div className="flex h-screen w-1/3 flex-col">
-                <CombatSection />
-                <DiceSection />
-              </div>
-            </div> */}
-            <div className="row">
-              <div className="column"></div>
-              <div className="column">
-                <div className="middle">
-                  <div className="upper">
-                    <div className="portrait">
-                      <PortraitBox />
-                    </div>
-                    <div className="stats">
-                      <StatsControls />
-                    </div>
-                  </div>
-                  <div className="survivability">
-                    <div className="corruption">
-                      <CorruptionControls />
-                      <ToughnessBox
-                        onAddFunction={onAddToughness}
-                        onSubFunction={onSubToughness}
-                      />
-                    </div>
-                    <div className="toughness">
-                      <ToughnessBox
-                        onAddFunction={onAddToughness}
-                        onSubFunction={onSubToughness}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="middle"></div>
-              </div>
-              <div className="column"></div>
-            </div>
+                </InventoryContainer>
+              </ColumnM>
+              <Column></Column>
+            </Row>
           </WebSocketProvider>
         </CharacterProvider>
       </SessionProvider>
@@ -114,7 +140,6 @@ function App() {
 <ModifierSection />
 <DetailsSection 
 <RestBox />
-<EquipmentBrowser />
         <StatSettings />
 />*/
 }

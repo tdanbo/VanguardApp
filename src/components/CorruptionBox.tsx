@@ -1,8 +1,10 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Constants from "../Constants";
 import { CharacterEntry } from "../Types";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useContext } from "react";
-
+import styled from "styled-components";
+import { faSkull } from "@fortawesome/free-solid-svg-icons";
 type Props = {
   onAddFunction: (character: CharacterEntry) => CharacterEntry;
   onSubFunction: (character: CharacterEntry) => CharacterEntry;
@@ -21,69 +23,44 @@ function CorruptionBox({ onAddFunction, onSubFunction }: Props) {
     setCharacter(updated_character);
   };
 
+  const Container = styled.div`
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    background-color: coral;
+  `;
+
+  const Value = styled.div`
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 0, 170);
+    font-size: 1.5em;
+    font-weight: bold;
+    color: white;
+    width: 120px;
+    min-width: 120px;
+  `;
+
+  const Icon = styled.div`
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: rgb(189, 188, 187);
+  `;
+
   return (
-    <div className="flex w-1/3 flex-col">
-      <div
-        className="flex grow items-center justify-center  rounded-t"
-        style={{
-          color: Constants.RED,
-          backgroundColor: Constants.PRIMARY_MEDIUM,
-          border: `1px solid ${Constants.BORDER_LIGHT}`,
-          margin: "2px 2px 2px 2px",
-          fontSize: "1.1rem",
-          fontWeight: "bold",
-        }}
-      >
+    <Container>
+      <Value>
         {character.corruption.permanent} / {character.corruption.threshold * 3}
-      </div>
-      <div className="flex">
-        <button
-          className="h-7 w-7 items-center justify-center rounded-bl "
-          // src={`src/assets/icons/${active}.png`}
-          style={{
-            color: Constants.BORDER,
-            backgroundColor: Constants.PRIMARY_LIGHTER,
-            borderLeft: `1px solid ${Constants.BORDER_LIGHT}`,
-            borderBottom: `1px solid ${Constants.BORDER_LIGHT}`,
-            borderTop: `1px solid ${Constants.BORDER_LIGHT}`,
-            margin: "2px 0px 2px 2px",
-            fontSize: "1.0rem",
-            fontWeight: "bold",
-          }}
-          onClick={handleSub}
-        >
-          -
-        </button>
-        <div
-          className="flex h-7 grow items-center justify-center"
-          style={{
-            backgroundColor: Constants.PRIMARY_LIGHTER,
-            border: `1px solid ${Constants.BORDER_LIGHT}`,
-            margin: "2px 0px 2px 0px",
-            fontSize: "0.8rem",
-            fontWeight: "bold",
-          }}
-        >
-          CORRUPTION
-        </div>
-        <button
-          className="h-7 w-7 items-center justify-center rounded-br "
-          style={{
-            color: Constants.BORDER,
-            backgroundColor: Constants.PRIMARY_LIGHTER,
-            borderRight: `1px solid ${Constants.BORDER_LIGHT}`,
-            borderBottom: `1px solid ${Constants.BORDER_LIGHT}`,
-            borderTop: `1px solid ${Constants.BORDER_LIGHT}`,
-            margin: "2px 2px 2px 0px",
-            fontSize: "1.0rem",
-            fontWeight: "bold",
-          }}
-          onClick={handleAdd}
-        >
-          +
-        </button>
-      </div>
-    </div>
+      </Value>
+      {/* <Icon>
+        <FontAwesomeIcon icon={faSkull} />
+      </Icon> */}
+    </Container>
   );
 }
 

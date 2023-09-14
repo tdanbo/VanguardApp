@@ -93,7 +93,7 @@ function StatBox({ type_name, type_value }: Props) {
         {icon(active)}
       </button>
       <div
-        className="flex grow items-center rounded-br pr-6"
+        className="flex grow items-center rounded-br"
         style={{
           backgroundColor: Constants.PRIMARY_LIGHTER,
           border: `1px solid ${Constants.BORDER_LIGHT}`,

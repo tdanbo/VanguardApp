@@ -1,8 +1,14 @@
-import * as Constants from "../../Constants";
-import "./PortraitBox.css";
+import styled from "styled-components";
+
+const Container = styled.div`
+  display: flex;
+  flex: 2;
+  flex-direction: row;
+  background-color: coral;
+`;
 
 function PortraitBox() {
-  return <div className="portrait_container">WHAT</div>;
+  return <Container></Container>;
 }
 
 export default PortraitBox;

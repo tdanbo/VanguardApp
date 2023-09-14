@@ -4,11 +4,19 @@ import { useContext } from "react";
 import { CharacterContext } from "../../contexts/CharacterContext";
 
 import "./StatsControls.css";
+import styled from "styled-components";
+
+const Container = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: coral;
+`;
 
 function StatsControls() {
   const { character } = useContext(CharacterContext);
   return (
-    <div className="stats_container">
+    <Container>
       <StatBox
         type_name={"cunning"}
         type_value={character.stats.cunning.value}
@@ -35,7 +43,7 @@ function StatsControls() {
         type_name={"accurate"}
         type_value={character.stats.accurate.value}
       />
-    </div>
+    </Container>
   );
 }
 

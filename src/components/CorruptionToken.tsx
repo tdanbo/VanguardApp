@@ -2,10 +2,19 @@ import * as Constants from "../Constants";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSkull } from "@fortawesome/free-solid-svg-icons";
-
+import styled from "styled-components";
 interface CorruptionProps {
   state: number;
 }
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${Constants.PRIMARY_MEDIUM};
+  border: 1px solid ${Constants.BORDER_DARK};
+  flex-grow: 1;
+`;
 
 function CorruptionToken({ state }: CorruptionProps) {
   const BackgroundColor = () => {
@@ -19,16 +28,9 @@ function CorruptionToken({ state }: CorruptionProps) {
   };
 
   return (
-    <div
-      className="fw-bold flex w-full grow items-center justify-center rounded"
-      style={{
-        color: Constants.PRIMARY,
-        backgroundColor: BackgroundColor(),
-        border: `1px solid ${Constants.BORDER_LIGHT}`,
-      }}
-    >
+    <Container>
       <FontAwesomeIcon icon={faSkull} />
-    </div>
+    </Container>
   );
 }
 

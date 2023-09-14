@@ -16,31 +16,27 @@ function InventorySection() {
   // console.log(empty_slots);
   return (
     <>
-      <div
-        className="flex flex-grow flex-col-reverse overflow-auto"
-        style={{
-          backgroundColor: Constants.PRIMARY,
-        }}
-      >
-        {Array.from({ length: totalSlots }).map((_, index) => {
-          const item = character.inventory[index];
-          if (item) {
-            return (
-              <InventoryEntry
-                key={index}
-                browser={false}
-                index={index}
-                item={item}
-                id={item.id}
-                equipped={""}
-              />
-            );
-          } else if (index >= character.inventory.length) {
-            return <InventoryEntryEmpty key={index} index={index + 1} />;
-          }
-          return null;
-        })}
-      </div>
+      {Array.from({ length: 20 }).map((_, index) => {
+        return <InventoryEntryEmpty key={index} index={index + 1} />;
+      })}
+      {/* {Array.from({ length: totalSlots }).map((_, index) => {
+        const item = character.inventory[index];
+        if (item) {
+          return (
+            <InventoryEntry
+              key={index}
+              browser={false}
+              index={index}
+              item={item}
+              id={item.id}
+              equipped={""}
+            />
+          );
+        } else if (index >= character.inventory.length) {
+          return <InventoryEntryEmpty key={index} index={index + 1} />;
+        }
+        return null;
+      })} */}
     </>
   );
 }

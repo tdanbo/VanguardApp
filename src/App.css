@@ -21,13 +21,6 @@ body {
   height: 100%; /* Assuming you're using a setup like create-react-app, adjust if you have a different root */
 }
 
-.row {
-  display: flex;
-  flex-direction: row;
-  background-color: rgb(45, 99, 99);
-  height: 100%;
-}
-
 .column {
   display: flex;
   flex-direction: column;

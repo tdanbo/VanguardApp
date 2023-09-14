@@ -1,8 +1,0 @@
-.portrait_container {
-  display: flex;
-  flex-grow: 1;
-  background-color: rgb(43, 226, 217);
-  margin: 20px;
-  align-items: center;
-  justify-content: center;
-}
