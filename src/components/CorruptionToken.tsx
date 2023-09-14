@@ -22,11 +22,9 @@ function CorruptionToken({ state }: CorruptionProps) {
     <div
       className="fw-bold flex w-full grow items-center justify-center rounded"
       style={{
-        fontSize: "1.5rem",
         color: Constants.PRIMARY,
         backgroundColor: BackgroundColor(),
         border: `1px solid ${Constants.BORDER_LIGHT}`,
-        margin: "2px 2px 2px 2px",
       }}
     >
       <FontAwesomeIcon icon={faSkull} />

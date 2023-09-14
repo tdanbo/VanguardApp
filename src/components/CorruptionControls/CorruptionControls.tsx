@@ -1,9 +1,8 @@
-import CorruptionToken from "./CorruptionToken";
-import CorruptionAdd from "./CorruptionAdd";
-import CorruptionRemove from "./CorruptionRemove";
+import CorruptionToken from "../CorruptionToken";
+import "./CorruptionControls.css";
 
 import { useContext } from "react";
-import { CharacterContext } from "./../contexts/CharacterContext";
+import { CharacterContext } from "../../contexts/CharacterContext";
 
 function CorruptionControls() {
   const { character } = useContext(CharacterContext);
@@ -16,18 +15,14 @@ function CorruptionControls() {
   console.log("Clean corruption: ", clean_corruption);
 
   return (
-    <>
-      <CorruptionRemove />
-      <div className="flex flex-col p-2"></div>
+    <div className="corruption_container">
       {[...Array(temporary_corruption)].map((_, index) => (
         <CorruptionToken key={index} state={1} />
       ))}
       {[...Array(clean_corruption)].map((_, index) => (
         <CorruptionToken key={index} state={0} />
       ))}
-      <div className="flex flex-col p-2"></div>
-      <CorruptionAdd />
-    </>
+    </div>
   );
 }
 

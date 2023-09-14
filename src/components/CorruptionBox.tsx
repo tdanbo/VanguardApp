@@ -22,7 +22,7 @@ function CorruptionBox({ onAddFunction, onSubFunction }: Props) {
   };
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-1/3 flex-col">
       <div
         className="flex grow items-center justify-center  rounded-t"
         style={{

@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: coral;
+  margin: 20px;
+}
+
+.value {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(255, 0, 170);
+  height: 50%;
+  font-size: 2em;
+  font-weight: bold;
+  color: white;
+}
+
+.buttons_row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(145, 26, 95);
+}
+
+.icon {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: rgb(189, 188, 187);
+}
+
+.button {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: rgb(189, 188, 187);
+}

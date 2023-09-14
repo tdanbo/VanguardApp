@@ -16,10 +16,6 @@ function InventorySection() {
   // console.log(empty_slots);
   return (
     <>
-      <div className="flex">
-        <EquipmentBrowser />
-        <TitleBox title={"Inventory"} />
-      </div>
       <div
         className="flex flex-grow flex-col-reverse overflow-auto"
         style={{
