@@ -16,19 +16,27 @@ interface Stat {
   mod: number;
 }
 
-interface Stats {
-  cunning: Stat;
-  discreet: Stat;
-  persuasive: Stat;
-  quick: Stat;
-  resolute: Stat;
-  strong: Stat;
-  vigilant: Stat;
-  accurate: Stat;
+interface Stat {
+  value: number;
+  mod: number;
 }
 
-interface Active {
-  stat: string;
+type StatName =
+  | "cunning"
+  | "discreet"
+  | "persuasive"
+  | "quick"
+  | "resolute"
+  | "strong"
+  | "vigilant"
+  | "accurate";
+
+type Stats = {
+  [key in StatName]: Stat;
+};
+
+export interface Active {
+  stat: StatName;
   mod: number;
 }
 

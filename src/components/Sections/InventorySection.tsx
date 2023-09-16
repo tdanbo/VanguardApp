@@ -18,7 +18,6 @@ function InventorySection() {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    background-color: rgb(255, 150, 0);
     gap: 10px;
   `;
   return (

@@ -1,16 +1,8 @@
-import CorruptionToken from "../CorruptionToken";
-
 import { useContext } from "react";
-import { CharacterContext } from "../../contexts/CharacterContext";
+import { CharacterContext } from "../contexts/CharacterContext";
 
 import styled from "styled-components";
-
-import * as Constants from "../../Constants";
-
-import {
-  onAddPermCorruption,
-  onSubPermCorruption,
-} from "../../functions/CharacterFunctions";
+import ActiveBox from "./ActiveBox";
 
 function CorruptionControls() {
   const { character } = useContext(CharacterContext);
@@ -24,19 +16,19 @@ function CorruptionControls() {
 
   const Container = styled.div`
     display: flex;
-    flex: 1;
+    flex: 2;
     flex-direction: row;
-    gap: ${Constants.WIDGET_GAB};
+    gap: 10px;
   `;
+
+  character.actives.attack;
 
   return (
     <Container>
-      {[...Array(temporary_corruption)].map((_, index) => (
-        <CorruptionToken key={index} state={"filled"} />
-      ))}
-      {[...Array(clean_corruption)].map((_, index) => (
-        <CorruptionToken key={index} state={"empty"} />
-      ))}
+      <ActiveBox active_name={"attack"} active={character.actives.attack} />
+      <ActiveBox active_name={"defense"} active={character.actives.defense} />
+      <ActiveBox active_name={"sneaking"} active={character.actives.sneaking} />
+      <ActiveBox active_name={"casting"} active={character.actives.casting} />
     </Container>
   );
 }

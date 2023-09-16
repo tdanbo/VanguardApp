@@ -30,7 +30,7 @@ function StatBox({ type_name, type_value }: Props) {
   let active_mod = 0;
 
   Object.entries(character.actives).forEach(([key, dict]) => {
-    if (dict.stat === type_name) {
+    if (dict.stat === type_name.toLowerCase()) {
       active = key;
       active_mod = dict.mod;
     }
@@ -86,7 +86,7 @@ function StatBox({ type_name, type_value }: Props) {
     display: flex;
     flex: 1;
     flex-direction: row;
-    background-color: coral;
+    gap: ${Constants.WIDGET_GAB};
   `;
 
   const ActiveButton = styled.button`
@@ -94,7 +94,12 @@ function StatBox({ type_name, type_value }: Props) {
     background-color: rgb(0, 255, 0);
     align-items: center;
     justify-content: center;
+    color: ${Constants.WIDGET_SECONDARY_FONT};
     width: 50px;
+
+    background-color: ${Constants.WIDGET_BACKGROUND};
+    border: 1px solid ${Constants.WIDGET_BORDER};
+    border-radius: ${Constants.BORDER_RADIUS};
   `;
 
   const ValueName = styled.button`
@@ -102,16 +107,28 @@ function StatBox({ type_name, type_value }: Props) {
     flex-grow: 1;
     background-color: rgb(0, 255, 0);
     align-items: center;
-
+    justify-content: center;
+    color: ${Constants.WIDGET_SECONDARY_FONT};
     width: 20px;
+    color: ${Constants.WIDGET_SECONDARY_FONT};
+    font-size: 14px;
+    font-weight: bold;
+    background-color: ${Constants.WIDGET_BACKGROUND};
+    border: 1px solid ${Constants.WIDGET_BORDER};
+    border-radius: ${Constants.BORDER_RADIUS};
   `;
 
   const ValueButton = styled.button`
     display: flex;
-    background-color: rgb(0, 255, 0);
     align-items: center;
     justify-content: center;
     width: 50px;
+    color: ${Constants.WIDGET_PRIMARY_FONT};
+    font-size: 1.25rem;
+    font-weight: bold;
+    background-color: ${Constants.WIDGET_BACKGROUND};
+    border: 1px solid ${Constants.WIDGET_BORDER};
+    border-radius: ${Constants.BORDER_RADIUS};
   `;
 
   return (
@@ -129,7 +146,7 @@ function StatBox({ type_name, type_value }: Props) {
         onMouseLeave={handleMouseLeave}
         onClick={handleSkillRoll}
       >
-        {type_name.toUpperCase()}
+        {type_name}
       </ValueName>
       <ValueButton>{value}</ValueButton>
     </Container>

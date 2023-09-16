@@ -18,9 +18,8 @@ import CharacterProvider from "./contexts/CharacterContext";
 import UserProvider from "./contexts/UserContext";
 import SessionProvider from "./contexts/SessionContext";
 import { WebSocketProvider } from "./contexts/WebSocketContext";
-import ToughnessBox from "./components/ToughnessBox/ToughnessBox";
+import HealthBox from "./components/HealthBox";
 import StatsControls from "./components/StatsControls/StatsControls";
-import PortraitBox from "./components/PortraixBox/PortraitBox";
 import EquipmentBrowser from "./components/Modals/EquipmentBrowser";
 import CorruptionControls from "./components/CorruptionControls/CorruptionControls";
 
@@ -30,38 +29,68 @@ import {
   onAddPermCorruption,
   onSubPermCorruption,
 } from "./functions/CharacterFunctions";
-import AbilityBrowser from "./components/Modals/AbilityBrowser";
 
 import CharacterNavigation from "./components/NavigationControl/CharacterNavigation";
 import HealthNavigation from "./components/NavigationControl/HealthNavigation";
 import InventoryNavigation from "./components/NavigationControl/InventoryNavigation";
+import ActiveControls from "./components/ActiveControls";
 
+import OverburdenBox from "./components/OverburdenBox";
+import CurrencyBox from "./components/CurrencyBox";
+import XpBox from "./components/XpBox";
+
+import { onAddUnspentXp } from "./functions/CharacterFunctions";
+import { onSubUnspentXp } from "./functions/CharacterFunctions";
+import CharacterNameBox from "./components/CharacterNameBox";
+import { useContext } from "react";
+
+import { CharacterContext } from "./contexts/CharacterContext";
 function App() {
   const Row = styled.div`
     display: flex;
     flex-direction: row;
-    background-color: rgb(45, 99, 99);
     height: 100%;
   `;
+
+  const HeaderContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    min-height: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 5px;
+    gap: 20px;
+  `;
+
+  const FooterContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+
+    min-height: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 5px;
+    gap: 20px;
+  `;
+
   const Column = styled.div`
     display: flex;
     flex-direction: column;
     flex: 1;
-    background-color: rgb(45, 99, 99);
+    background-color: ${Constants.BACKGROUND};
     height: 100%;
   `;
 
-  const ColumnM = styled.div`
+  const ColumnNarrow = styled.div`
     display: flex;
     flex-direction: column;
-    flex: 1;
-    background-color: rgb(60, 120, 99);
+    background-color: ${Constants.BACKGROUND};
     height: 100%;
+    width: 50px;
   `;
 
   const StatsContainer = styled.div`
     display: flex;
-    background-color: rgb(255, 150, 0);
     margin: 20px;
     gap: 20px;
     height: 40%;
@@ -69,7 +98,6 @@ function App() {
 
   const HealthContainer = styled.div`
     display: flex;
-    background-color: rgb(255, 150, 0);
     margin: 20px;
     gap: 20px;
     height: 10%;
@@ -78,26 +106,16 @@ function App() {
   const InventoryContainer = styled.div`
     display: flex;
     flex-direction: row;
-    background-color: rgb(255, 150, 0);
     margin: 20px;
     gap: 20px;
     height: 50%;
     overflow: scroll;
   `;
 
-  const ColumnNarrow = styled.div`
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(60, 120, 99);
-    height: 100%;
-    width: 50px;
-  `;
-
   const NavigationTop = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: rgb(255, 150, 0);
-    margin-top: 20px;
+    margin-top: 75px;
     margin-bottom: 20px;
     height: 40%;
   `;
@@ -105,7 +123,6 @@ function App() {
   const NavigationMid = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: rgb(255, 150, 0);
     margin-top: 20px;
     margin-bottom: 20px;
     height: 10%;
@@ -114,10 +131,19 @@ function App() {
   const NavigationBot = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: rgb(255, 150, 0);
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 75px;
     height: 50%;
+  `;
+
+  const BrowserContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+    margin-bottom: 75px;
+    gap: 20px;
+    height: 100%;
+    overflow: scroll;
   `;
 
   return (
@@ -126,7 +152,11 @@ function App() {
         <CharacterProvider>
           <WebSocketProvider>
             <Row>
-              <Column></Column>
+              <Column>
+                <BrowserContainer>
+                  <EquipmentBrowser />
+                </BrowserContainer>
+              </Column>
               <ColumnNarrow>
                 <NavigationTop>
                   <CharacterNavigation />
@@ -138,22 +168,33 @@ function App() {
                   <InventoryNavigation />
                 </NavigationBot>
               </ColumnNarrow>
-              <ColumnM>
+              <Column>
+                <HeaderContainer>
+                  <CharacterNameBox />
+                  <XpBox
+                    onAddFunction={onAddUnspentXp}
+                    onSubFunction={onSubUnspentXp}
+                  />
+                </HeaderContainer>
                 <StatsContainer>
-                  <PortraitBox />
-                  <StatsControls />
-                </StatsContainer>
-                <HealthContainer>
-                  <CorruptionControls />
-                  <ToughnessBox
+                  <HealthBox
                     onAddFunction={onAddToughness}
                     onSubFunction={onSubToughness}
                   />
+                  <StatsControls />
+                </StatsContainer>
+                <HealthContainer>
+                  <ActiveControls />
+                  <CorruptionControls />
                 </HealthContainer>
                 <InventoryContainer>
                   <InventorySection />
                 </InventoryContainer>
-              </ColumnM>
+                <FooterContainer>
+                  <OverburdenBox />
+                  <CurrencyBox />
+                </FooterContainer>
+              </Column>
               <Column></Column>
             </Row>
           </WebSocketProvider>

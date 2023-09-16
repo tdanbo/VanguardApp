@@ -8,58 +8,105 @@ import {
   faCrosshairs,
   faVolumeXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { Container } from "@mui/material";
+import styled from "styled-components";
+import { CharacterContext } from "../contexts/CharacterContext";
+import { useContext } from "react";
+import { Active } from "../Types";
 
 type Props = {
-  active: string;
-  type_name: string;
-  type_value: number;
+  active: Active;
+  active_name: string;
 };
 
-function ActiveBox({ active, type_value }: Props) {
-  const [value, setValue] = useState(type_value);
+function ActiveBox({ active_name, active }: Props) {
+  const { character } = useContext(CharacterContext);
 
-  const icon = (active: string) => {
-    if (active === "sneaking") {
+  const active_value = character.stats[active.stat].value - active.mod;
+
+  const [value, setValue] = useState(active_value);
+
+  const icon = (active_name: string) => {
+    if (active_name === "sneaking") {
       return <FontAwesomeIcon icon={faVolumeXmark} />;
-    } else if (active === "casting") {
+    } else if (active_name === "casting") {
       return <FontAwesomeIcon icon={faBolt} />;
-    } else if (active === "defense") {
+    } else if (active_name === "defense") {
       return <FontAwesomeIcon icon={faShieldHalved} />;
-    } else if (active === "attack") {
+    } else if (active_name === "attack") {
       return <FontAwesomeIcon icon={faCrosshairs} />;
     }
   };
 
+  const Container = styled.div`
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+  `;
+
+  const Row = styled.div`
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    gap: 2px;
+  `;
+
+  const Value = styled.div`
+    display: flex;
+    flex: 2;
+    align-items: center;
+    justify-content: center;
+    border-radius: ${Constants.BORDER_RADIUS};
+    font-size: 2rem;
+    font-weight: bold;
+    color: ${Constants.WIDGET_PRIMARY_FONT};
+    border: 1px solid ${Constants.WIDGET_BORDER};
+    background-color: ${Constants.WIDGET_BACKGROUND};
+  `;
+
+  const Modifier = styled.div`
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    border-radius: ${Constants.BORDER_RADIUS};
+
+    font-size: 1rem;
+    font-weight: bold;
+    color: ${Constants.WIDGET_SECONDARY_FONT};
+    border: 1px solid ${Constants.WIDGET_BORDER};
+    background-color: ${Constants.WIDGET_BACKGROUND};
+  `;
+
+  type DiceProps = {
+    color: string;
+  };
+
+  const Dice = styled.div<DiceProps>`
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    border-radius: ${Constants.BORDER_RADIUS};
+    font-size: 1rem;
+    font-weight: bold;
+    color: ${(props) => props.color};
+    border: 1px solid ${Constants.WIDGET_BORDER};
+    background-color: ${Constants.WIDGET_BACKGROUND};
+  `;
+
+  // border: 1px solid ${Constants.BORDER_LIGHT};
+  // background-color: ${Constants.PRIMARY_MEDIUM};
+
   return (
-    <div className="flex w-full flex-col">
-      <div
-        className="flex grow items-center justify-center  rounded-t"
-        style={{
-          color: Constants.RED,
-          backgroundColor: Constants.PRIMARY_MEDIUM,
-          border: `1px solid ${Constants.BORDER_LIGHT}`,
-          margin: "2px 2px 1px 2px",
-          fontSize: "1.2rem",
-          fontWeight: "bold",
-        }}
-        onClick={() => setValue(value + 1)}
-      >
-        {value}
-      </div>
-      <div
-        className="flex grow items-center justify-center rounded-b "
-        style={{
-          backgroundColor: Constants.PRIMARY_LIGHTER,
-          border: `1px solid ${Constants.BORDER_LIGHT}`,
-          margin: "1px 2px 2px 2px",
-          fontSize: "1.0rem",
-          padding: "4px",
-          color: Constants.DARK,
-        }}
-      >
-        {icon(active)}
-      </div>
-    </div>
+    <Container>
+      <Value onClick={() => setValue(value + 1)}>{value}</Value>
+      <Row>
+        <Modifier>0</Modifier>
+        <Dice color={Constants.TYPE_COLORS[active_name]}>d20</Dice>
+      </Row>
+    </Container>
   );
 }
 

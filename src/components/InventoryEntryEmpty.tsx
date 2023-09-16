@@ -1,27 +1,19 @@
 import * as Constants from "../Constants";
+import styled from "styled-components";
 interface InventoryEntryEmptyProps {
   index: number;
 }
 
 function InventoryEntryEmpty({ index }: InventoryEntryEmptyProps) {
-  const BackgroundColor = () => {
-    if (index % 2 === 0) {
-      return Constants.PRIMARY;
-    } else {
-      return Constants.PRIMARY_DARKER;
-    }
-  };
-  return (
-    <div
-      className="flex"
-      style={{
-        backgroundColor: BackgroundColor(),
-        padding: "1px",
-        height: Constants.INTENTORY_ENTRY_HEIGHT,
-        minHeight: Constants.INTENTORY_ENTRY_HEIGHT,
-        borderTop: `1px solid ${Constants.BORDER}`,
-      }}
-    ></div>
-  );
+  const Container = styled.div`
+    display: flex;
+    min-height: 50px;
+    max-height: 50px;
+    background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+    color: ${Constants.WIDGET_BACKGROUND};
+    border: 1px solid ${Constants.WIDGET_BORDER};
+    border-radius: ${Constants.BORDER_RADIUS};
+  `;
+  return <Container></Container>;
 }
 export default InventoryEntryEmpty;

@@ -4,12 +4,12 @@ import { useContext } from "react";
 import { CharacterContext } from "../../contexts/CharacterContext";
 
 import styled from "styled-components";
+import * as Constants from "../../Constants";
 
 const Container = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  background-color: coral;
   gap: 10px;
 `;
 
@@ -18,29 +18,29 @@ function StatsControls() {
   return (
     <Container>
       <StatBox
-        type_name={"cunning"}
+        type_name={"Cunning"}
         type_value={character.stats.cunning.value}
       />
       <StatBox
-        type_name={"discreet"}
+        type_name={"Discreet"}
         type_value={character.stats.discreet.value}
       />
       <StatBox
-        type_name={"persuasive"}
+        type_name={"Persuasive"}
         type_value={character.stats.persuasive.value}
       />
-      <StatBox type_name={"quick"} type_value={character.stats.quick.value} />
+      <StatBox type_name={"Quick"} type_value={character.stats.quick.value} />
       <StatBox
-        type_name={"resolute"}
+        type_name={"Resolute"}
         type_value={character.stats.resolute.value}
       />
-      <StatBox type_name={"strong"} type_value={character.stats.strong.value} />
+      <StatBox type_name={"Strong"} type_value={character.stats.strong.value} />
       <StatBox
-        type_name={"vigilant"}
+        type_name={"Vigilant"}
         type_value={character.stats.vigilant.value}
       />
       <StatBox
-        type_name={"accurate"}
+        type_name={"Accurate"}
         type_value={character.stats.accurate.value}
       />
     </Container>

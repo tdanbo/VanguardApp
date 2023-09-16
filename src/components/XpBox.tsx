@@ -3,6 +3,7 @@ import { CharacterEntry } from "../Types";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { getCharacterXp } from "../functions/CharacterFunctions";
 import { useContext } from "react";
+import styled from "styled-components";
 
 type Props = {
   onAddFunction: (character: CharacterEntry) => CharacterEntry;
@@ -22,69 +23,32 @@ function XpBox({ onAddFunction, onSubFunction }: Props) {
     setCharacter(updated_character);
   };
 
+  const Container = styled.div`
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
+    font-weight: bold;
+    h1 {
+      font-size: 1.5em;
+      color: ${Constants.WIDGET_PRIMARY_FONT};
+    }
+    h2 {
+      font-size: 0.75em;
+      margin-right: 10px;
+      margin-top: 10px;
+      color: ${Constants.WIDGET_SECONDARY_FONT};
+    }
+  `;
+
   return (
-    <div className="flex w-full flex-col">
-      <div
-        className="flex grow items-center justify-center  rounded-t"
-        style={{
-          color: Constants.RED,
-          backgroundColor: Constants.PRIMARY_MEDIUM,
-          border: `1px solid ${Constants.BORDER_LIGHT}`,
-          margin: "2px 2px 2px 2px",
-          fontSize: "1.1rem",
-          fontWeight: "bold",
-        }}
-      >
+    <Container onClick={handleAdd}>
+      <h2>XP</h2>
+      <h1>
         {getCharacterXp(character)} / {character.details.xp_earned}
-      </div>
-      <div className="flex">
-        <button
-          className="h-7 w-7 items-center justify-center rounded-bl "
-          // src={`src/assets/icons/${active}.png`}
-          style={{
-            color: Constants.BORDER,
-            backgroundColor: Constants.PRIMARY_LIGHTER,
-            borderLeft: `1px solid ${Constants.BORDER_LIGHT}`,
-            borderBottom: `1px solid ${Constants.BORDER_LIGHT}`,
-            borderTop: `1px solid ${Constants.BORDER_LIGHT}`,
-            margin: "2px 0px 2px 2px",
-            fontSize: "1.0rem",
-            fontWeight: "bold",
-          }}
-          onClick={handleSub}
-        >
-          -
-        </button>
-        <div
-          className="flex h-7 grow items-center justify-center"
-          style={{
-            backgroundColor: Constants.PRIMARY_LIGHTER,
-            border: `1px solid ${Constants.BORDER_LIGHT}`,
-            margin: "2px 0px 2px 0px",
-            fontSize: "0.8rem",
-            fontWeight: "bold",
-          }}
-        >
-          XP
-        </div>
-        <button
-          className="h-7 w-7 items-center justify-center rounded-br "
-          style={{
-            color: Constants.BORDER,
-            backgroundColor: Constants.PRIMARY_LIGHTER,
-            borderRight: `1px solid ${Constants.BORDER_LIGHT}`,
-            borderBottom: `1px solid ${Constants.BORDER_LIGHT}`,
-            borderTop: `1px solid ${Constants.BORDER_LIGHT}`,
-            margin: "2px 2px 2px 0px",
-            fontSize: "1.0rem",
-            fontWeight: "bold",
-          }}
-          onClick={handleAdd}
-        >
-          +
-        </button>
-      </div>
-    </div>
+      </h1>
+    </Container>
   );
 }
 

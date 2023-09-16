@@ -1,37 +1,42 @@
 import * as Constants from "../Constants";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSkull } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-interface CorruptionProps {
-  state: number;
+
+interface cssProps {
+  backgroundColor: string;
 }
 
-const Container = styled.div`
+const Container = styled.div<cssProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${Constants.PRIMARY_MEDIUM};
-  border: 1px solid ${Constants.BORDER_DARK};
+  background-color: ${(props) => props.backgroundColor};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: ${Constants.BORDER_RADIUS};
   flex-grow: 1;
+  background-image: url("/dist/assets/skull-solid.png");
+  background-size: 80% auto; /* This enlarges the image */
+  background-position: center; /* This centers the enlarged image */
+  background-repeat: no-repeat;
 `;
 
-function CorruptionToken({ state }: CorruptionProps) {
-  const BackgroundColor = () => {
-    if (state === 1) {
-      return Constants.BORDER_DARK;
-    } else if (state === 2) {
-      return Constants.DARK;
-    } else {
-      return Constants.PRIMARY_MEDIUM; // This is the base color for the corruption box
-    }
-  };
+interface CorruptionTokenProps {
+  state: string;
+}
 
-  return (
-    <Container>
-      <FontAwesomeIcon icon={faSkull} />
-    </Container>
-  );
+function CorruptionToken({ state }: CorruptionTokenProps) {
+  if (state === "empty") {
+    return (
+      <Container
+        backgroundColor={Constants.WIDGET_BACKGROUND_EMPTY}
+      ></Container>
+    );
+  } else {
+    return (
+      <Container backgroundColor={Constants.TYPE_COLORS["casting"]}></Container>
+    );
+  }
 }
 
 export default CorruptionToken;

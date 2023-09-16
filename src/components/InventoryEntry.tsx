@@ -31,31 +31,6 @@ function InventoryEntry({
   id,
 }: InventoryEntryProps) {
   const { character, setCharacter } = useContext(CharacterContext);
-  const DARKER_PRIMARY = chroma(Constants.PRIMARY).darken(1).hex();
-  const DARKER_PRIMARY_DARKER = chroma(Constants.PRIMARY_DARKER)
-    .darken(1)
-    .hex();
-  const BackgroundColor = () => {
-    if (index % 2 === 0) {
-      if (browser) {
-        return Constants.PRIMARY_DARKER;
-      }
-      if (index >= character.stats.strong.value) {
-        return DARKER_PRIMARY_DARKER;
-      } else {
-        return Constants.PRIMARY_DARKER;
-      }
-    } else {
-      if (browser) {
-        return Constants.PRIMARY;
-      }
-      if (index >= character.stats.strong.value) {
-        return DARKER_PRIMARY;
-      } else {
-        return Constants.PRIMARY;
-      }
-    }
-  };
 
   const COLOR = TYPE_COLORS[item.category] || "defaultColor";
 
@@ -121,11 +96,12 @@ function InventoryEntry({
     <div
       className="flex"
       style={{
-        backgroundColor: BackgroundColor(),
+        backgroundColor: Constants.WIDGET_BACKGROUND,
         padding: "1px",
-        height: Constants.INTENTORY_ENTRY_HEIGHT,
-        minHeight: Constants.INTENTORY_ENTRY_HEIGHT,
-        borderTop: `1px solid ${Constants.BORDER}`,
+        height: "50px",
+        minHeight: "50px",
+        borderTop: `1px solid ${Constants.WIDGET_BORDER}`,
+        borderRadius: Constants.BORDER_RADIUS,
       }}
     >
       {
@@ -168,7 +144,7 @@ function InventoryEntry({
       <div
         className="flex flex-col"
         style={{
-          backgroundColor: BackgroundColor(),
+          backgroundColor: Constants.WIDGET_BACKGROUND,
           marginLeft: "1px",
         }}
       >
@@ -181,7 +157,7 @@ function InventoryEntry({
                     key={index}
                     className="flex grow"
                     style={{
-                      backgroundColor: Constants.BORDER,
+                      backgroundColor: Constants.WIDGET_BORDER,
                       width: "8px",
                       marginBottom: "1px",
                     }}
@@ -196,7 +172,7 @@ function InventoryEntry({
                   key={index} // Note: You might get an error here if index is not defined in this scope
                   className="flex grow"
                   style={{
-                    backgroundColor: Constants.BORDER,
+                    backgroundColor: Constants.WIDGET_BORDER,
                     width: "8px",
                     marginBottom: "1px",
                   }}
@@ -211,7 +187,7 @@ function InventoryEntry({
         <div
           className="grid grid-cols-2 gap-0"
           style={{
-            backgroundColor: BackgroundColor(),
+            backgroundColor: Constants.WIDGET_BACKGROUND,
           }}
         >
           {item.quality.map((item, index) => (
@@ -219,7 +195,7 @@ function InventoryEntry({
               key={index}
               className="flex grow items-center justify-center rounded"
               style={{
-                backgroundColor: Constants.BORDER,
+                backgroundColor: Constants.WIDGET_BORDER,
                 width: "22px",
                 height: "22px",
                 margin: "1px",
@@ -240,7 +216,7 @@ function InventoryEntry({
             style={{
               fontSize: "15px",
               fontWeight: "bold",
-              color: Constants.DARK,
+              color: Constants.WIDGET_SECONDARY_FONT,
             }}
           >
             {item.name}
@@ -261,7 +237,7 @@ function InventoryEntry({
         <div
           className="m-1 flex items-center justify-start rounded p-2 text-xs font-bold"
           style={{
-            backgroundColor: Constants.PRIMARY_HOVER,
+            backgroundColor: Constants.WIDGET_BACKGROUND,
             border: `1px solid ${COLOR}`,
             color: COLOR,
             height: "22px",

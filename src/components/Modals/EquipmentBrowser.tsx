@@ -10,7 +10,7 @@ import { ItemEntry } from "../../Types";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-
+import styled from "styled-components";
 function EquipmentBrowser() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemList, setItemList] = useState([] as ItemEntry[]);
@@ -75,83 +75,58 @@ function EquipmentBrowser() {
     }
   };
 
-  const modalStyles: CSSProperties = {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    backgroundColor: Constants.DARK,
-    padding: "20px",
-    zIndex: 1000,
-    border: `1px solid ${Constants.BORDER}`,
-  };
+  const SearchContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    gap: 10px;
+  `;
 
-  const overlayStyles: CSSProperties = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
-    zIndex: 999,
-  };
+  const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 10px;
+  `;
 
-  const stopPropagation = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
+  const ItemContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 10px;
+  `;
+
+  const Input = styled.input`
+    flex-grow: 1;
+    background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+    border: 1px solid ${Constants.WIDGET_BORDER};
+    border-radius: ${Constants.BORDER_RADIUS};
+  `;
 
   return (
-    <div>
-      <div
-        className="flex h-full flex-col items-center justify-center"
-        style={{
-          backgroundColor: Constants.DARK,
-          minWidth: Constants.SECTION_TITLE_HEIGHT,
-          borderRight: `1px solid ${Constants.BORDER_DARK}`,
-          borderLeft: `1px solid ${Constants.BORDER_DARK}`,
-        }}
-        onClick={handleOpen}
-      >
-        <FontAwesomeIcon
-          icon={faPlus}
-          style={{ color: Constants.PRIMARY_DARKER }}
-        />
-      </div>
-      {isModalOpen && (
-        <div style={overlayStyles} onClick={handleClose}>
-          <div style={modalStyles} onClick={stopPropagation}>
-            <div className="mb-2 flex flex-grow flex-row">
-              <input
-                className="flex-grow"
-                onChange={(e) => setSearch(e.target.value)}
-              ></input>
-              <button
-                className="flex-none"
-                style={{ backgroundColor: Constants.BORDER }}
-                onClick={AddInventorySlot}
-              >
-                {filteredItems.length > 0 ? <SearchIcon /> : <AddIcon />}
-              </button>
-            </div>
-            <div
-              className="flex flex-grow flex-col overflow-auto"
-              style={{ height: "500px" }}
-            >
-              {filteredItems.map((item, index) => (
-                <InventoryEntry
-                  key={index}
-                  browser={true}
-                  index={index}
-                  item={item}
-                  equipped={""}
-                  id={""}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+    <Container>
+      <SearchContainer>
+        <Input
+          className="flex-grow"
+          onChange={(e) => setSearch(e.target.value)}
+        ></Input>
+        <button className="flex-none" onClick={AddInventorySlot}>
+          {filteredItems.length > 0 ? <SearchIcon /> : <AddIcon />}
+        </button>
+      </SearchContainer>
+      <ItemContainer>
+        {filteredItems.map((item, index) => (
+          <InventoryEntry
+            key={index}
+            browser={true}
+            index={index}
+            item={item}
+            equipped={""}
+            id={""}
+          />
+        ))}
+      </ItemContainer>
+    </Container>
   );
 }
 
