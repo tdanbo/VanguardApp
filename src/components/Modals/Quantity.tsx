@@ -3,15 +3,36 @@ import { useState, CSSProperties, useContext } from "react";
 import { ItemEntry } from "../../Types";
 import { onChangeQuantity } from "../../functions/CharacterFunctions";
 import { CharacterContext } from "../../contexts/CharacterContext";
+import styled from "styled-components";
 
 interface QuantityProps {
   item: ItemEntry;
 }
 
+interface RollBoxProps {
+  color: string;
+}
+
+const QuantityBox = styled.div<RollBoxProps>`
+  display: flex;
+  flex-grow: 1;
+  color: ${(props) => props.color};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  margin-left: 2px;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  width: 40px;
+`;
+
 function Quantity({ item }: QuantityProps) {
   const { character } = useContext(CharacterContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputValue, setInputValue] = useState<number>(0);
+
+  const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
 
   const handleOpen = () => {
     console.log("Opening Modal");
@@ -31,7 +52,7 @@ function Quantity({ item }: QuantityProps) {
     backgroundColor: Constants.DARK,
     padding: "20px",
     zIndex: 1000,
-    border: `1px solid ${Constants.BORDER}`,
+    border: `1px solid ${Constants.WIDGET_BORDER}`,
   };
 
   const overlayStyles: CSSProperties = {
@@ -79,18 +100,9 @@ function Quantity({ item }: QuantityProps) {
 
   return (
     <div>
-      <div
-        className="m-1 flex items-center justify-start rounded p-2 text-xs font-bold"
-        style={{
-          backgroundColor: Constants.PRIMARY_HOVER,
-          border: `1px solid ${Constants.RED}`,
-          color: Constants.RED,
-          height: "22px",
-        }}
-        onClick={handleOpen}
-      >
+      <QuantityBox color={COLOR} onClick={handleOpen}>
         {item.quantity.count}x
-      </div>
+      </QuantityBox>
       {isModalOpen && (
         <div style={overlayStyles} onClick={handleClose}>
           <div style={modalStyles} onClick={stopPropagation}>
@@ -99,8 +111,8 @@ function Quantity({ item }: QuantityProps) {
                 type="text"
                 className="flex-grow rounded p-1 text-center text-xl font-bold"
                 style={{
-                  backgroundColor: Constants.PRIMARY,
-                  border: `1px solid ${Constants.BORDER}`,
+                  backgroundColor: Constants.WIDGET_BACKGROUND,
+                  border: `1px solid ${Constants.WIDGET_BORDER}`,
                 }}
                 value={inputValue}
                 onChange={handleInputChange}
@@ -111,8 +123,8 @@ function Quantity({ item }: QuantityProps) {
               <button
                 className="flex-grow rounded p-1 text-center text-xl font-bold"
                 style={{
-                  backgroundColor: Constants.PRIMARY_LIGHTER,
-                  border: `1px solid ${Constants.BORDER}`,
+                  backgroundColor: Constants.WIDGET_BACKGROUND,
+                  border: `1px solid ${Constants.WIDGET_BORDER}`,
                 }}
                 onClick={handleMinusClick}
               >
@@ -121,8 +133,8 @@ function Quantity({ item }: QuantityProps) {
               <button
                 className="flex-grow rounded p-1 text-center text-xl font-bold"
                 style={{
-                  backgroundColor: Constants.PRIMARY_LIGHTER,
-                  border: `1px solid ${Constants.BORDER}`,
+                  backgroundColor: Constants.WIDGET_BACKGROUND,
+                  border: `1px solid ${Constants.WIDGET_BORDER}`,
                 }}
                 onClick={handlePlusClick}
               >

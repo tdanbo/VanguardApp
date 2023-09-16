@@ -14,54 +14,7 @@
 
 // export const DARK = "#262223";
 
-// export const PURPLE = "#60495c";
-// export const RED = "#925833";
-// export const BLUE = "#495C60";
-// export const GREEN = "#5c6049";
-// export const YELLOW = "#926f2b";
-// export const WHITE = "#bfb6ac";
-// export const BRIGHT_RED = "#923333";
-// export const GREY = "#8f8e89";
-
 // export const FONT_LIGHT = "#dedede";
-
-// export type ColorType = string;
-
-// export const TYPE_COLORS: Record<ColorType, string> = {
-//   attack: RED,
-//   damage: RED,
-//   ability: RED,
-//   defense: BLUE,
-//   armor: BLUE,
-//   casting: PURPLE,
-//   mystical_power: PURPLE,
-//   ritual: PURPLE,
-//   elixirs: PURPLE,
-//   sneaking: GREEN,
-//   ammunition: RED,
-//   monsterous_trait: GREEN,
-//   test: YELLOW,
-//   skill_test: YELLOW,
-//   provision: GREEN,
-//   treasure: YELLOW,
-//   ordinary_weapon: RED,
-//   ordinary_ranged: RED,
-//   ordinary_armor: BLUE,
-//   quality_weapon: RED,
-//   quality_ranged: RED,
-//   quality_armor: BLUE,
-//   general_good: GREY,
-//   lesser_artifact: BRIGHT_RED,
-//   corruption: DARK,
-//   vigilant: YELLOW,
-//   strong: YELLOW,
-//   resolute: YELLOW,
-//   quick: YELLOW,
-//   persuasive: YELLOW,
-//   discreet: YELLOW,
-//   cunning: YELLOW,
-//   accurate: YELLOW,
-// };
 
 // export const NEW_BORDER = "#242c31";
 // export const BUTTON = "#1d2427";
@@ -80,12 +33,61 @@ export const WIDGET_BORDER = "rgba(255, 255, 255, 0.05)";
 export const BORDER_RADIUS = "3px";
 export const WIDGET_GAB = "2px";
 
+// export type ColorType = string;
+
+// export const TYPE_COLORS: Record<ColorType, string> = {
+//   casting: "rgba(96, 73, 92, 1)",
+//   attack: "rgba(146, 88, 51, 1)",
+//   defense: "rgba(73, 92, 96, 1)",
+//   sneaking: "rgba(92, 96, 73, 1)",
+//   health: "rgba(146, 88, 51, 1)",
+// };
+
 export type ColorType = string;
 
+export const PURPLE = "#60495c";
+export const RED = "#925833";
+export const BLUE = "#495C60";
+export const GREEN = "#5c6049";
+export const YELLOW = "#926f2b";
+export const WHITE = "#bfb6ac";
+export const BRIGHT_RED = "#923333";
+export const GREY = "#8f8e89";
+export const DARK = "#262223";
+
 export const TYPE_COLORS: Record<ColorType, string> = {
-  casting: "rgba(96, 73, 92, 1)",
-  attack: "rgba(146, 88, 51, 1)",
-  defense: "rgba(73, 92, 96, 1)",
-  sneaking: "rgba(92, 96, 73, 1)",
-  health: "rgba(146, 88, 51, 1)",
+  health: BRIGHT_RED,
+  attack: BRIGHT_RED,
+  damage: BRIGHT_RED,
+  ability: RED,
+  defense: BLUE,
+  armor: BLUE,
+  casting: PURPLE,
+  mystical_power: PURPLE,
+  ritual: PURPLE,
+  elixirs: PURPLE,
+  sneaking: GREEN,
+  ammunition: RED,
+  monsterous_trait: GREEN,
+  test: YELLOW,
+  skill_test: YELLOW,
+  provision: GREEN,
+  treasure: YELLOW,
+  ordinary_weapon: BRIGHT_RED,
+  ordinary_ranged: BRIGHT_RED,
+  ordinary_armor: BLUE,
+  quality_weapon: BRIGHT_RED,
+  quality_ranged: BRIGHT_RED,
+  quality_armor: BLUE,
+  general_good: GREY,
+  lesser_artifact: BRIGHT_RED,
+  corruption: DARK,
+  vigilant: YELLOW,
+  strong: YELLOW,
+  resolute: YELLOW,
+  quick: YELLOW,
+  persuasive: YELLOW,
+  discreet: YELLOW,
+  cunning: YELLOW,
+  accurate: YELLOW,
 };

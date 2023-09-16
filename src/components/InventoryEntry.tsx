@@ -13,7 +13,8 @@ import {
   onAddInventoryItem,
   onUseAmmunition,
 } from "../functions/CharacterFunctions";
-import chroma from "chroma-js";
+
+import styled from "styled-components";
 
 interface InventoryEntryProps {
   index: number;
@@ -22,6 +23,108 @@ interface InventoryEntryProps {
   item: ItemEntry;
   id: string;
 }
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  height: 50px;
+  min-height: 50px;
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  gap: 5px;
+  padding-right: 5px;
+`;
+
+const AddButton = styled.button`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  width: 20px;
+  max-width: 20px;
+  border-left-top-radius: ${Constants.BORDER_RADIUS};
+  border-left-bottom-radius: ${Constants.BORDER_RADIUS};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+`;
+
+const EquipContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const NameContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  justify-content: left;
+`;
+
+const QualityContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  justify-content: right;
+`;
+
+const RollContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  margin-bottom: 5px;
+`;
+
+const QualityBox = styled.div`
+  display: flex;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  margin-left: 2px;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 20px;
+  font-size: 12px;
+`;
+
+interface RollBoxProps {
+  color: string;
+}
+
+const RollBox = styled.div<RollBoxProps>`
+  display: flex;
+  flex-grow: 1;
+  color: ${(props) => props.color};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  margin-left: 2px;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  width: 40px;
+  height: 20px;
+  font-size: 14px;
+`;
+
+const Divider = styled.div`
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.25);
+  width: 2px;
+  height: 20px;
+  margin-left: 2px;
+  margin-right: 2px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+`;
 
 function InventoryEntry({
   index,
@@ -32,7 +135,7 @@ function InventoryEntry({
 }: InventoryEntryProps) {
   const { character, setCharacter } = useContext(CharacterContext);
 
-  const COLOR = TYPE_COLORS[item.category] || "defaultColor";
+  const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
 
   const EquipInventorySlot = (id: string, hand: string) => {
     const updatedCharacter = onEquipItem({ id, character, item, hand });
@@ -93,61 +196,17 @@ function InventoryEntry({
   };
 
   return (
-    <div
-      className="flex"
-      style={{
-        backgroundColor: Constants.WIDGET_BACKGROUND,
-        padding: "1px",
-        height: "50px",
-        minHeight: "50px",
-        borderTop: `1px solid ${Constants.WIDGET_BORDER}`,
-        borderRadius: Constants.BORDER_RADIUS,
-      }}
-    >
+    <Container>
       {
         browser ? (
-          <button
-            className="flex items-center justify-center"
-            style={{
-              backgroundColor: COLOR,
-              width: "16px",
-              fontSize: "14px",
-              fontWeight: "bold",
-            }}
-            onClick={() => AddInventorySlot()}
-          >
-            +
-          </button>
+          <AddButton onClick={() => AddInventorySlot()}>+</AddButton>
         ) : equipped === "" ? (
-          <button
-            className="flex items-center justify-center"
-            style={{
-              backgroundColor: COLOR,
-              width: "8px",
-              fontSize: "10px",
-            }}
-            onClick={() => DeleteInventorySlot(id)}
-          >
-            x
-          </button> // else part for equipped
+          <AddButton onClick={() => DeleteInventorySlot(id)}>x</AddButton> // else part for equipped
         ) : (
-          <button
-            className="flex items-center justify-center"
-            style={{
-              backgroundColor: COLOR,
-              width: "8px",
-              fontSize: "10px",
-            }}
-          ></button>
+          <AddButton></AddButton>
         ) // else part for equipped
       }
-      <div
-        className="flex flex-col"
-        style={{
-          backgroundColor: Constants.WIDGET_BACKGROUND,
-          marginLeft: "1px",
-        }}
-      >
+      <EquipContainer>
         {
           !browser ? ( // if browser is false
             equipped === "" ? ( // if equipped is an empty string
@@ -182,34 +241,8 @@ function InventoryEntry({
             )
           ) : null // if browser is true, render nothing
         }
-      </div>
-      <div className="flex px-2 py-1">
-        <div
-          className="grid grid-cols-2 gap-0"
-          style={{
-            backgroundColor: Constants.WIDGET_BACKGROUND,
-          }}
-        >
-          {item.quality.map((item, index) => (
-            <div
-              key={index}
-              className="flex grow items-center justify-center rounded"
-              style={{
-                backgroundColor: Constants.WIDGET_BORDER,
-                width: "22px",
-                height: "22px",
-                margin: "1px",
-                color: COLOR,
-                fontSize: "10px",
-                fontWeight: "bold",
-              }}
-            >
-              {item.slice(0, 2)}
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="flex grow flex-row">
+      </EquipContainer>
+      <NameContainer>
         <div className="m-0 flex flex-col justify-center">
           <p
             className="mb-3"
@@ -232,23 +265,27 @@ function InventoryEntry({
             {item.type}
           </p>
         </div>
-      </div>
-      {item.roll.roll === true && (
-        <div
-          className="m-1 flex items-center justify-start rounded p-2 text-xs font-bold"
-          style={{
-            backgroundColor: Constants.WIDGET_BACKGROUND,
-            border: `1px solid ${COLOR}`,
-            color: COLOR,
-            height: "22px",
-          }}
-          onClick={item.type === "Ranged Weapon" ? handleRangeRoll : handleRoll}
-        >
-          {item.roll.dice}
-        </div>
-      )}
-      {item.quantity.bulk === true && <Quantity item={item} />}
-    </div>
+      </NameContainer>
+      <QualityContainer>
+        {item.quality.map((item, index) => (
+          <QualityBox key={index}>{item.slice(0, 2)}</QualityBox>
+        ))}
+      </QualityContainer>
+      <Divider />
+      <RollContainer>
+        {item.roll.roll === true && (
+          <RollBox
+            color={COLOR}
+            onClick={
+              item.type === "Ranged Weapon" ? handleRangeRoll : handleRoll
+            }
+          >
+            {item.roll.dice}
+          </RollBox>
+        )}
+        {item.quantity.bulk === true && <Quantity item={item} />}
+      </RollContainer>
+    </Container>
   );
 }
 export default InventoryEntry;

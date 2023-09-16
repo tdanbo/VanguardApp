@@ -55,9 +55,9 @@ function StatDropdown({ active }: StatDropdownProps) {
       <div
         className="bold items-right flex w-40 grow justify-center rounded-l font-bold"
         style={{
-          backgroundColor: Constants.PRIMARY,
+          backgroundColor: Constants.WIDGET_BACKGROUND_EMPTY,
           color: Constants.RED,
-          border: `1px solid ${Constants.BORDER}`,
+          border: `1px solid ${Constants.WIDGET_BORDER}`,
         }}
       >
         {toTitleCase(active)}
@@ -65,9 +65,9 @@ function StatDropdown({ active }: StatDropdownProps) {
       <select
         className="bold flex w-40 grow rounded-r text-center font-bold"
         style={{
-          backgroundColor: Constants.PRIMARY_LIGHTER,
+          backgroundColor: Constants.WIDGET_BACKGROUND_EMPTY,
           color: Constants.RED,
-          border: `1px solid ${Constants.BORDER}`,
+          border: `1px solid ${Constants.WIDGET_BORDER}`,
         }}
         value={selectedValue || ""}
         onChange={handleSelect}
