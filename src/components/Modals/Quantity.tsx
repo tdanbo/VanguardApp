@@ -25,6 +25,7 @@ const QuantityBox = styled.div<RollBoxProps>`
   align-items: center;
   font-weight: bold;
   width: 40px;
+  height: 20px;
 `;
 
 function Quantity({ item }: QuantityProps) {

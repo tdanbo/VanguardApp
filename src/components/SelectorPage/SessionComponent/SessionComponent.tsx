@@ -1,11 +1,19 @@
 import * as Constants from "../../../Constants";
-import * as Styles from "../SelectorStyles";
+import styled from "styled-components";
 import SessionButtons from "./SessionButtons";
 import SessionBox from "./SessionBox";
 import { useState, useEffect, useContext } from "react";
 import { SessionEntry } from "../../../Types";
 import { getSessions } from "../../../functions/SessionsFunctions";
 import { UserContext } from "../../../contexts/UserContext";
+
+import {
+  MainContainer,
+  ModalContainer,
+  Title,
+  CenterContainer,
+  Divider,
+} from "../SelectorStyles";
 
 interface LoginProps {
   setSelector: (selector: string) => void;
@@ -27,30 +35,20 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
   console.log(sessions);
 
   return (
-    <div
-      className="flex w-1/5 flex-col justify-center"
-      style={{ margin: "100px" }}
-    >
-      <div style={Styles.modalStyles}>
-        <div
-          className="flex justify-center p-10 text-4xl font-bold"
-          style={{ color: Constants.FONT_LIGHT }}
-        >
-          Sessions
-        </div>
-        <div className="my-5 h-0.5 w-full bg-zinc-800"></div>
-        <div
-          className="my-5 flex flex-col justify-center space-y-2 overflow-auto"
-          style={{ height: "400px" }}
-        >
+    <MainContainer>
+      <Title>Sessions</Title>
+      <ModalContainer>
+        <Divider />
+        <CenterContainer>
           {[...sessions].reverse().map((item, index) => (
             <SessionBox setSelector={setSelector} sessionprop={item} />
           ))}
-        </div>
-        <div className="my-5 h-0.5 w-full bg-zinc-800"></div>
-      </div>
+        </CenterContainer>
+        <Divider />
+      </ModalContainer>
+
       <SessionButtons setSelector={setSelector} setSessions={setSessions} />
-    </div>
+    </MainContainer>
   );
 }
 

@@ -8,6 +8,14 @@ import { getCharacters } from "../../../functions/SessionsFunctions";
 import { UserContext } from "../../../contexts/UserContext";
 import { SessionContext } from "../../../contexts/SessionContext";
 import { useWebSocket } from "../../../contexts/WebSocketContext";
+import styled from "styled-components";
+import {
+  MainContainer,
+  ModalContainer,
+  Title,
+  CenterContainer,
+  Divider,
+} from "../SelectorStyles";
 
 import UserSimpleBox from "./UserSimpleBox";
 
@@ -17,6 +25,12 @@ interface LoginProps {
   closeModal: () => void;
 }
 
+const CatergoryTitle = styled.div`
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+`;
 function GamemasterComponent({ setSelector, closeModal }: LoginProps) {
   const { user } = useContext(UserContext);
   const { session } = useContext(SessionContext);
@@ -43,48 +57,27 @@ function GamemasterComponent({ setSelector, closeModal }: LoginProps) {
   }, [charactersResponse]);
 
   return (
-    <div
-      className="flex w-1/5 flex-col justify-center"
-      style={{ margin: "100px" }}
-    >
-      <div style={Styles.modalStyles}>
-        <div
-          className="flex justify-center p-10 text-4xl font-bold"
-          style={{ color: Constants.FONT_LIGHT }}
-        >
-          {session.name}
-        </div>
-        <div className="h-0.5 w-full bg-zinc-800"></div>
-        <div
-          className="my-5 flex flex-col space-y-2 overflow-auto"
-          style={{ height: "400px" }}
-        >
-          <div
-            className="items-center text-center"
-            style={{ color: Constants.FONT_LIGHT }}
-          >
-            Characters
-          </div>
+    <MainContainer>
+      <ModalContainer>
+        <Title>{session.name}</Title>
+        <Divider />
+        <CenterContainer>
+          <CatergoryTitle>Characters</CatergoryTitle>
           {[...characterLog].reverse().map((character, index) => (
             <CharacterSimpleBox
               character={character}
               setCharacterLog={setCharacterLog}
             />
           ))}
-          <div
-            className="items-center text-center"
-            style={{ color: Constants.FONT_LIGHT }}
-          >
-            Users
-          </div>
+          <CatergoryTitle>Users</CatergoryTitle>
           {[...userLog].map((username, index) => (
             <UserSimpleBox username={username} setUserLog={setUserLog} />
           ))}
-        </div>
-        <div className="my-5 h-0.5 w-full bg-zinc-800"></div>
-      </div>
+        </CenterContainer>
+        <Divider />
+      </ModalContainer>
       <SelectCharacterButtons setSelector={setSelector} />
-    </div>
+    </MainContainer>
   );
 }
 

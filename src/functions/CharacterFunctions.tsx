@@ -169,13 +169,14 @@ export const onAddCorruption = (character: CharacterEntry, value: number) => {
   return updatedCharacter;
 };
 
-export const onRemoveCorruption = (
-  character: CharacterEntry,
-  value: number,
-) => {
+export const onSubCorruption = (character: CharacterEntry, value: number) => {
   let character_corruption = character.corruption;
 
   character_corruption.temporary -= value;
+
+  if (character_corruption.temporary < 0) {
+    character_corruption.temporary = 0;
+  }
 
   const updatedCharacter = {
     ...character,

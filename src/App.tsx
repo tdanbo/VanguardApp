@@ -45,112 +45,115 @@ import CharacterNameBox from "./components/CharacterNameBox";
 import { useContext } from "react";
 
 import { CharacterContext } from "./contexts/CharacterContext";
+import SelectorComponent from "./components/SelectorPage/Selector";
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  min-height: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 5px;
+  gap: 20px;
+`;
+
+const FooterContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  min-height: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 5px;
+  gap: 20px;
+`;
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: ${Constants.BACKGROUND};
+  height: 100%;
+`;
+
+const ColumnNarrow = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: ${Constants.BACKGROUND};
+  height: 100%;
+  width: 50px;
+`;
+
+const StatsContainer = styled.div`
+  display: flex;
+  margin: 20px;
+  gap: 20px;
+  height: 40%;
+`;
+
+const HealthContainer = styled.div`
+  display: flex;
+  margin: 20px;
+  gap: 20px;
+  height: 10%;
+`;
+
+const InventoryContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
+  gap: 20px;
+  height: 50%;
+  overflow: scroll;
+`;
+
+const NavigationTop = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 75px;
+  margin-bottom: 20px;
+  height: 40%;
+`;
+
+const NavigationMid = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  height: 10%;
+`;
+
+const NavigationBot = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 75px;
+  height: 50%;
+`;
+
+const BrowserContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
+  margin-bottom: 75px;
+  gap: 20px;
+  height: 100%;
+  overflow: scroll;
+`;
+
 function App() {
-  const Row = styled.div`
-    display: flex;
-    flex-direction: row;
-    height: 100%;
-  `;
-
-  const HeaderContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    min-height: 50px;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 5px;
-    gap: 20px;
-  `;
-
-  const FooterContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-
-    min-height: 50px;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-bottom: 5px;
-    gap: 20px;
-  `;
-
-  const Column = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    background-color: ${Constants.BACKGROUND};
-    height: 100%;
-  `;
-
-  const ColumnNarrow = styled.div`
-    display: flex;
-    flex-direction: column;
-    background-color: ${Constants.BACKGROUND};
-    height: 100%;
-    width: 50px;
-  `;
-
-  const StatsContainer = styled.div`
-    display: flex;
-    margin: 20px;
-    gap: 20px;
-    height: 40%;
-  `;
-
-  const HealthContainer = styled.div`
-    display: flex;
-    margin: 20px;
-    gap: 20px;
-    height: 10%;
-  `;
-
-  const InventoryContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    margin: 20px;
-    gap: 20px;
-    height: 50%;
-    overflow: scroll;
-  `;
-
-  const NavigationTop = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-top: 75px;
-    margin-bottom: 20px;
-    height: 40%;
-  `;
-
-  const NavigationMid = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    height: 10%;
-  `;
-
-  const NavigationBot = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    margin-bottom: 75px;
-    height: 50%;
-  `;
-
-  const BrowserContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    margin: 20px;
-    margin-bottom: 75px;
-    gap: 20px;
-    height: 100%;
-    overflow: scroll;
-  `;
-
   return (
     <UserProvider>
       <SessionProvider>
         <CharacterProvider>
           <WebSocketProvider>
+            <SelectorComponent />
             <Row>
               <Column>
                 <BrowserContainer>
@@ -177,10 +180,7 @@ function App() {
                   />
                 </HeaderContainer>
                 <StatsContainer>
-                  <HealthBox
-                    onAddFunction={onAddToughness}
-                    onSubFunction={onSubToughness}
-                  />
+                  <HealthBox />
                   <StatsControls />
                 </StatsContainer>
                 <HealthContainer>

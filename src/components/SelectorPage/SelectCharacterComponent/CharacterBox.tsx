@@ -1,4 +1,5 @@
 import * as Constants from "../../../Constants";
+import styled from "styled-components";
 import { CharacterEntry } from "../../../Types";
 import { CharacterContext } from "../../../contexts/CharacterContext";
 import { useContext } from "react";
@@ -9,24 +10,38 @@ interface SessionBoxProps {
   closeModal: () => void;
 }
 
+const CharacterContainer = styled.div`
+  display: flex;
+  height: 50px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  cursor: pointer;
+`;
+
+const CharacterName = styled.h1`
+  font-size: 1rem;
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+`;
+
 function CharacterBox({
   setSelector,
   selectedCharacter,
   closeModal,
 }: SessionBoxProps) {
   const { character, setCharacter } = useContext(CharacterContext);
+
   const handleOnClick = () => {
     setCharacter(selectedCharacter);
     closeModal();
   };
+
   return (
-    <div
-      className="flex h-10 w-full items-center justify-center rounded-lg"
-      style={{ backgroundColor: Constants.BUTTON }}
-      onClick={handleOnClick}
-    >
-      <h1>{selectedCharacter.details.name}</h1>
-    </div>
+    <CharacterContainer onClick={handleOnClick}>
+      <CharacterName>{selectedCharacter.details.name}</CharacterName>
+    </CharacterContainer>
   );
 }
 

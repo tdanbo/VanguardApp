@@ -13,12 +13,26 @@ import {
   faLink,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import * as Styles from "./../SelectorStyles";
+import styled from "styled-components";
+
+import { ButtonContainer, LargeCircleButton } from "../SelectorStyles";
 
 interface LoginProps {
   setSelector: (selector: string) => void;
   setSessions: (sessions: SessionEntry[]) => void;
 }
+
+const InputBox = styled.input`
+  border-radius: 4px;
+  padding: 2px;
+  margin: 5px;
+  max-height: 50px;
+  text-align: center;
+`;
+
+const StyledIcon = styled(FontAwesomeIcon)`
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+`;
 
 function SessionButtons({ setSelector, setSessions }: LoginProps) {
   const [isVisible, setIsVisible] = useState(true);
@@ -36,7 +50,6 @@ function SessionButtons({ setSelector, setSessions }: LoginProps) {
   };
 
   const handleJoinSession = async () => {
-    // 6uB9wlMhDs
     console.log("Joining Session");
     const sessions = await joinSession(sessionID, user);
     setSessionID("");
@@ -45,42 +58,27 @@ function SessionButtons({ setSelector, setSessions }: LoginProps) {
   };
 
   return (
-    <div className="mb-5 mt-3 flex justify-center">
+    <ButtonContainer>
       <div className="my-1 flex flex-col">
-        <input
+        <InputBox
           placeholder="Join Session by ID"
-          className="rounded-md p-2"
-          style={{ margin: "5px", maxHeight: "50px", textAlign: "center" }}
           hidden={isVisible}
           onChange={onSessionIDChange}
         />
       </div>
       {sessionID === "" ? (
-        <div style={Styles.largeCircleButtonStyles} onClick={toggleVisibility}>
-          <FontAwesomeIcon
-            icon={faLink}
-            style={{ color: Constants.FONT_LIGHT }}
-          />
-        </div>
+        <LargeCircleButton onClick={toggleVisibility}>
+          <StyledIcon icon={faLink} />
+        </LargeCircleButton>
       ) : (
-        <div style={Styles.largeCircleButtonStyles} onClick={handleJoinSession}>
-          <FontAwesomeIcon
-            icon={faCheck}
-            style={{ color: Constants.FONT_LIGHT }}
-          />
-        </div>
+        <LargeCircleButton onClick={handleJoinSession}>
+          <StyledIcon icon={faCheck} />
+        </LargeCircleButton>
       )}
-      <div
-        style={Styles.largeCircleButtonStyles}
-        onClick={() => setSelector("createSession")}
-      >
-        {" "}
-        <FontAwesomeIcon
-          icon={faPlus}
-          style={{ color: Constants.FONT_LIGHT }}
-        />
-      </div>
-    </div>
+      <LargeCircleButton onClick={() => setSelector("createSession")}>
+        <StyledIcon icon={faPlus} />
+      </LargeCircleButton>
+    </ButtonContainer>
   );
 }
 export default SessionButtons;

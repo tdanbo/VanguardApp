@@ -8,7 +8,6 @@ import {
   faCrosshairs,
   faVolumeXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { Container } from "@mui/material";
 import styled from "styled-components";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useContext } from "react";
@@ -18,6 +17,64 @@ type Props = {
   active: Active;
   active_name: string;
 };
+
+const Container = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  gap: 2px;
+`;
+
+const Value = styled.div`
+  display: flex;
+  flex: 2;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${Constants.BORDER_RADIUS};
+  font-size: 2rem;
+  font-weight: bold;
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+`;
+
+const Modifier = styled.div`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${Constants.BORDER_RADIUS};
+
+  font-size: 1rem;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+`;
+
+type DiceProps = {
+  color: string;
+};
+
+const Dice = styled.div<DiceProps>`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${Constants.BORDER_RADIUS};
+  font-size: 1rem;
+  font-weight: bold;
+  color: ${(props) => props.color};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+`;
 
 function ActiveBox({ active_name, active }: Props) {
   const { character } = useContext(CharacterContext);
@@ -37,64 +94,6 @@ function ActiveBox({ active_name, active }: Props) {
       return <FontAwesomeIcon icon={faCrosshairs} />;
     }
   };
-
-  const Container = styled.div`
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: 2px;
-  `;
-
-  const Row = styled.div`
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    gap: 2px;
-  `;
-
-  const Value = styled.div`
-    display: flex;
-    flex: 2;
-    align-items: center;
-    justify-content: center;
-    border-radius: ${Constants.BORDER_RADIUS};
-    font-size: 2rem;
-    font-weight: bold;
-    color: ${Constants.WIDGET_PRIMARY_FONT};
-    border: 1px solid ${Constants.WIDGET_BORDER};
-    background-color: ${Constants.WIDGET_BACKGROUND};
-  `;
-
-  const Modifier = styled.div`
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: center;
-    border-radius: ${Constants.BORDER_RADIUS};
-
-    font-size: 1rem;
-    font-weight: bold;
-    color: ${Constants.WIDGET_SECONDARY_FONT};
-    border: 1px solid ${Constants.WIDGET_BORDER};
-    background-color: ${Constants.WIDGET_BACKGROUND};
-  `;
-
-  type DiceProps = {
-    color: string;
-  };
-
-  const Dice = styled.div<DiceProps>`
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: center;
-    border-radius: ${Constants.BORDER_RADIUS};
-    font-size: 1rem;
-    font-weight: bold;
-    color: ${(props) => props.color};
-    border: 1px solid ${Constants.WIDGET_BORDER};
-    background-color: ${Constants.WIDGET_BACKGROUND};
-  `;
 
   // border: 1px solid ${Constants.BORDER_LIGHT};
   // background-color: ${Constants.PRIMARY_MEDIUM};

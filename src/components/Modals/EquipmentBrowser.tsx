@@ -11,6 +11,35 @@ import { ItemEntry } from "../../Types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
+
+const SearchContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  gap: 10px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 10px;
+`;
+
+const ItemContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 10px;
+`;
+
+const Input = styled.input`
+  flex-grow: 1;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: ${Constants.BORDER_RADIUS};
+`;
+
 function EquipmentBrowser() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemList, setItemList] = useState([] as ItemEntry[]);
@@ -74,34 +103,6 @@ function EquipmentBrowser() {
       setCharacter(updatedCharacter);
     }
   };
-
-  const SearchContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    gap: 10px;
-  `;
-
-  const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    gap: 10px;
-  `;
-
-  const ItemContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    gap: 10px;
-  `;
-
-  const Input = styled.input`
-    flex-grow: 1;
-    background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-    border: 1px solid ${Constants.WIDGET_BORDER};
-    border-radius: ${Constants.BORDER_RADIUS};
-  `;
 
   return (
     <Container>

@@ -8,11 +8,40 @@ import {
 } from "../../../functions/SessionsFunctions";
 import { useContext } from "react";
 import { SessionContext } from "../../../contexts/SessionContext";
+import styled from "styled-components";
 
 interface UserSimpleBoxProps {
   username: string;
   setUserLog: React.Dispatch<React.SetStateAction<string[]>>;
 }
+
+const BoxContainer = styled.div`
+  display: flex;
+  padding: 0.25rem;
+  border-radius: 0.375rem;
+  background-color: ${Constants.WIDGET_BACKGROUND};
+`;
+
+const FlexCenter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+`;
+
+const FlexGrowSection = styled.div`
+  display: flex;
+  flex-grow: 1;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+`;
+
+const RedFlexCenter = styled(FlexCenter)`
+  color: ${Constants.BRIGHT_RED};
+`;
 
 function UserSimpleBox({ username, setUserLog }: UserSimpleBoxProps) {
   const { session, setSession } = useContext(SessionContext);
@@ -24,26 +53,15 @@ function UserSimpleBox({ username, setUserLog }: UserSimpleBoxProps) {
   };
 
   return (
-    <div
-      className="flex rounded-lg p-1"
-      style={{ backgroundColor: Constants.BUTTON }}
-    >
-      <div
-        className="flex items-center justify-center px-2"
-        style={{ color: Constants.FONT_LIGHT }}
-      >
+    <BoxContainer>
+      <FlexCenter>
         <FontAwesomeIcon icon={faDiscord} onClick={onHandleKickUser} />
-      </div>
-      <div className="flex grow px-2" style={{ color: Constants.FONT_LIGHT }}>
-        {username}
-      </div>
-      <div
-        className="flex items-center justify-center px-2"
-        style={{ color: Constants.BRIGHT_RED }}
-      >
+      </FlexCenter>
+      <FlexGrowSection>{username}</FlexGrowSection>
+      <RedFlexCenter>
         <FontAwesomeIcon icon={faXmark} onClick={onHandleKickUser} />
-      </div>
-    </div>
+      </RedFlexCenter>
+    </BoxContainer>
   );
 }
 

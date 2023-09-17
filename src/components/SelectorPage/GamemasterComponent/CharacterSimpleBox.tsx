@@ -1,58 +1,68 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faUser } from "@fortawesome/free-solid-svg-icons";
-
+import styled from "styled-components";
 import * as Constants from "../../../Constants";
-
 import { CharacterEntry } from "../../../Types";
-
-import {
-  deleteSessionCharacter,
-  getCharacters,
-} from "../../../functions/SessionsFunctions";
+import { deleteSessionCharacter } from "../../../functions/SessionsFunctions";
 import { useContext } from "react";
 import { SessionContext } from "../../../contexts/SessionContext";
 import { useWebSocket } from "../../../contexts/WebSocketContext";
+
 interface CharacterSimpleBoxProps {
   character: CharacterEntry;
   setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
 }
 
+const BoxContainer = styled.div`
+  display: flex;
+  padding: 0.25rem;
+  border-radius: 0.375rem;
+  background-color: ${Constants.WIDGET_BACKGROUND};
+`;
+
+const FlexCenter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+`;
+
+const FlexGrowSection = styled.div`
+  display: flex;
+  flex-grow: 1;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+`;
+
+const RedFlexCenter = styled(FlexCenter)`
+  color: ${Constants.BRIGHT_RED};
+`;
+
 function CharacterSimpleBox({
   character,
   setCharacterLog,
 }: CharacterSimpleBoxProps) {
-  const { session, setSession } = useContext(SessionContext);
+  const { session } = useContext(SessionContext);
   const { sendRequest } = useWebSocket();
 
   const onHandleDeleteCharacter = async () => {
-    const delete_characters = await deleteSessionCharacter(
-      character.details.name,
-      session.id,
-    );
+    await deleteSessionCharacter(character.details.name, session.id);
     sendRequest("characters");
   };
 
   return (
-    <div
-      className="flex rounded-lg p-1"
-      style={{ backgroundColor: Constants.BUTTON }}
-    >
-      <div
-        className="flex items-center justify-center px-2"
-        style={{ color: Constants.FONT_LIGHT }}
-      >
+    <BoxContainer>
+      <FlexCenter>
         <FontAwesomeIcon icon={faUser} />
-      </div>
-      <div className="flex grow px-2" style={{ color: Constants.FONT_LIGHT }}>
-        {character.details.name}
-      </div>
-      <div
-        className="flex items-center justify-center px-2"
-        style={{ color: Constants.BRIGHT_RED }}
-      >
+      </FlexCenter>
+      <FlexGrowSection>{character.details.name}</FlexGrowSection>
+      <RedFlexCenter>
         <FontAwesomeIcon icon={faXmark} onClick={onHandleDeleteCharacter} />
-      </div>
-    </div>
+      </RedFlexCenter>
+    </BoxContainer>
   );
 }
 

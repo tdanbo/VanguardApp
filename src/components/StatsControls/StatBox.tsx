@@ -18,6 +18,55 @@ type Props = {
   type_value: number;
 };
 
+const Container = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  gap: ${Constants.WIDGET_GAB};
+`;
+
+const ActiveButton = styled.button`
+  display: flex;
+  background-color: rgb(0, 255, 0);
+  align-items: center;
+  justify-content: center;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  width: 50px;
+
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: ${Constants.BORDER_RADIUS};
+`;
+
+const ValueName = styled.button`
+  display: flex;
+  flex-grow: 1;
+  background-color: rgb(0, 255, 0);
+  align-items: center;
+  justify-content: center;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  width: 20px;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  font-size: 14px;
+  font-weight: bold;
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: ${Constants.BORDER_RADIUS};
+`;
+
+const ValueButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+  font-size: 1.25rem;
+  font-weight: bold;
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: ${Constants.BORDER_RADIUS};
+`;
+
 function StatBox({ type_name, type_value }: Props) {
   const { character } = useContext(CharacterContext);
   const [value, setValue] = useState<number>(type_value);
@@ -81,55 +130,6 @@ function StatBox({ type_name, type_value }: Props) {
       return <FontAwesomeIcon icon={faCrosshairs} />;
     }
   };
-
-  const Container = styled.div`
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    gap: ${Constants.WIDGET_GAB};
-  `;
-
-  const ActiveButton = styled.button`
-    display: flex;
-    background-color: rgb(0, 255, 0);
-    align-items: center;
-    justify-content: center;
-    color: ${Constants.WIDGET_SECONDARY_FONT};
-    width: 50px;
-
-    background-color: ${Constants.WIDGET_BACKGROUND};
-    border: 1px solid ${Constants.WIDGET_BORDER};
-    border-radius: ${Constants.BORDER_RADIUS};
-  `;
-
-  const ValueName = styled.button`
-    display: flex;
-    flex-grow: 1;
-    background-color: rgb(0, 255, 0);
-    align-items: center;
-    justify-content: center;
-    color: ${Constants.WIDGET_SECONDARY_FONT};
-    width: 20px;
-    color: ${Constants.WIDGET_SECONDARY_FONT};
-    font-size: 14px;
-    font-weight: bold;
-    background-color: ${Constants.WIDGET_BACKGROUND};
-    border: 1px solid ${Constants.WIDGET_BORDER};
-    border-radius: ${Constants.BORDER_RADIUS};
-  `;
-
-  const ValueButton = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    color: ${Constants.WIDGET_PRIMARY_FONT};
-    font-size: 1.25rem;
-    font-weight: bold;
-    background-color: ${Constants.WIDGET_BACKGROUND};
-    border: 1px solid ${Constants.WIDGET_BORDER};
-    border-radius: ${Constants.BORDER_RADIUS};
-  `;
 
   return (
     <Container>

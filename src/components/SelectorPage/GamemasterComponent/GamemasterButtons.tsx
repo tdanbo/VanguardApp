@@ -18,6 +18,12 @@ import {
   faLink,
 } from "@fortawesome/free-solid-svg-icons";
 
+import {
+  ButtonContainer,
+  LargeCircleButton,
+  SmallCircleButton,
+} from "../SelectorStyles";
+
 interface LoginProps {
   setSelector: (selector: string) => void;
 }
@@ -32,8 +38,7 @@ async function copyTextToClipboard(text: string) {
 }
 
 function GamemasterButtons({ setSelector }: LoginProps) {
-  const { user } = useContext(UserContext);
-  const { session, setSession } = useContext(SessionContext);
+  const { session } = useContext(SessionContext);
 
   const handleLinkCopy = () => {
     copyTextToClipboard(session.id); // Use any of the methods above
@@ -41,47 +46,23 @@ function GamemasterButtons({ setSelector }: LoginProps) {
 
   const handleDeleteSession = async () => {
     console.log("Deleting Session");
-    const sessions = await deleteSession(session.id, user);
-    const delete_characters = await deleteAllSessionCharacters(session.id);
     setSelector("session");
   };
   return (
-    <div className="mb-5 mt-3 flex justify-center">
-      {" "}
-      {/* Adjust the margin-bottom if necessary */}{" "}
-      <div
-        style={Styles.smallCircleButtonStyles}
-        onClick={() => setSelector("session")}
-      >
-        {" "}
-        <FontAwesomeIcon
-          icon={faAngleLeft}
-          style={{ color: Constants.FONT_LIGHT }}
-        />
-      </div>
-      <div
-        style={Styles.largeCircleButtonStyles}
-        onClick={() => setSelector("sessions")}
-      >
-        <FontAwesomeIcon
-          icon={faHatWizard}
-          style={{ color: Constants.FONT_LIGHT }}
-        />
-      </div>
-      <div style={Styles.largeCircleButtonStyles} onClick={handleLinkCopy}>
-        <FontAwesomeIcon
-          icon={faLink}
-          style={{ color: Constants.FONT_LIGHT }}
-        />
-      </div>
-      <div style={Styles.smallCircleButtonStyles} onClick={handleDeleteSession}>
-        {" "}
-        <FontAwesomeIcon
-          icon={faXmark}
-          style={{ color: Constants.FONT_LIGHT }}
-        />
-      </div>
-    </div>
+    <ButtonContainer>
+      <SmallCircleButton onClick={() => setSelector("session")}>
+        <FontAwesomeIcon icon={faAngleLeft} />
+      </SmallCircleButton>
+      <LargeCircleButton onClick={() => setSelector("sessions")}>
+        <FontAwesomeIcon icon={faHatWizard} />
+      </LargeCircleButton>
+      <LargeCircleButton onClick={handleLinkCopy}>
+        <FontAwesomeIcon icon={faLink} />
+      </LargeCircleButton>
+      <SmallCircleButton onClick={handleDeleteSession}>
+        <FontAwesomeIcon icon={faXmark} />
+      </SmallCircleButton>
+    </ButtonContainer>
   );
 }
 export default GamemasterButtons;

@@ -6,10 +6,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faSkull } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
-type Props = {
-  onAddFunction: (character: CharacterEntry) => CharacterEntry;
-  onSubFunction: (character: CharacterEntry) => CharacterEntry;
-};
+import {
+  onAddPermCorruption,
+  onSubPermCorruption,
+  onAddToughness,
+  onSubToughness,
+} from "../functions/CharacterFunctions";
 
 const Container = styled.div`
   display: flex;
@@ -84,22 +86,32 @@ const TickBar = styled.div<cssProps>`
   border-top: 1px solid ${Constants.WIDGET_BORDER};
 `;
 
-function HealthBox({ onAddFunction, onSubFunction }: Props) {
+function HealthBox() {
   const { character, setCharacter } = useContext(CharacterContext);
 
-  const handleAdd = () => {
-    const updated_character = onAddFunction(character);
+  const handleAddToughness = () => {
+    const updated_character = onAddToughness(character);
     setCharacter(updated_character);
   };
 
-  const handleSub = () => {
-    const updated_character = onSubFunction(character);
+  const handleSubToughness = () => {
+    const updated_character = onSubToughness(character);
+    setCharacter(updated_character);
+  };
+
+  const handleAddCorruption = () => {
+    const updated_character = onAddPermCorruption(character);
+    setCharacter(updated_character);
+  };
+
+  const handleSubCorruption = () => {
+    const updated_character = onSubPermCorruption(character);
     setCharacter(updated_character);
   };
 
   const permanent_corruption = character.corruption.permanent;
   const remaining_corruption =
-    character.corruption.threshold * 2 - character.corruption.permanent;
+    character.corruption.threshold * 3 - character.corruption.permanent;
 
   const damage_toughness = character.toughness.damage.value;
   const remaining_toughness =
@@ -108,7 +120,13 @@ function HealthBox({ onAddFunction, onSubFunction }: Props) {
   return (
     <Container>
       <InnerContainer>
-        <Row>
+        <Row
+          onClick={handleSubCorruption}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            handleAddCorruption();
+          }}
+        >
           {Array.from({ length: permanent_corruption }).map((_, index) => {
             return (
               <TickBar
@@ -127,7 +145,13 @@ function HealthBox({ onAddFunction, onSubFunction }: Props) {
           })}
           <LeftValue>{remaining_corruption}</LeftValue>
         </Row>
-        <Row>
+        <Row
+          onClick={handleSubToughness}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            handleAddToughness();
+          }}
+        >
           <RightValue>{remaining_toughness}</RightValue>
           {Array.from({ length: remaining_toughness }).map((_, index) => {
             return (

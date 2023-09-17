@@ -7,10 +7,12 @@ import styled from "styled-components";
 
 import * as Constants from "../../Constants";
 
-import {
-  onAddPermCorruption,
-  onSubPermCorruption,
-} from "../../functions/CharacterFunctions";
+const Container = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  gap: ${Constants.WIDGET_GAB};
+`;
 
 function CorruptionControls() {
   const { character } = useContext(CharacterContext);
@@ -21,13 +23,6 @@ function CorruptionControls() {
 
   console.log("Temporary corruption: ", temporary_corruption);
   console.log("Clean corruption: ", clean_corruption);
-
-  const Container = styled.div`
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    gap: ${Constants.WIDGET_GAB};
-  `;
 
   return (
     <Container>

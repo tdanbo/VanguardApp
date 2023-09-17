@@ -5,7 +5,6 @@ import { CharacterContext } from "../../contexts/CharacterContext";
 import LoginComponent from "./LoginComponent/LoginComponent";
 import { CharacterEntry } from "../../Types";
 import SessionComponent from "./SessionComponent/SessionComponent";
-import SessionButtons from "./SessionComponent/SessionButtons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -14,6 +13,36 @@ import SelectCharacterComponent from "./SelectCharacterComponent/SelectCharacter
 import CreateCharacterComponent from "./CreateCharacterComponent/CreateCharacterComponent";
 import GamemasterComponent from "./GamemasterComponent/GamemasterComponent";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
+
+const OverlayStyles = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(rgba(7, 9, 11, 0.95), rgba(7, 9, 11, 0.95)),
+    url("https://www.belloflostsouls.net/wp-content/uploads/2020/06/symbaroum-horz.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  min-width: 500px;
+  background-color: ${Constants.WIDGET_BACKGROUND};
+`;
 
 function SelectorComponent() {
   const { character } = useContext(CharacterContext);
@@ -71,47 +100,13 @@ function SelectorComponent() {
     setIsModalOpen(false);
   };
 
-  const overlayStyles: CSSProperties = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundImage: `linear-gradient(rgba(7, 9, 11, 0.95), rgba(7, 9, 11, 0.95)), url('https://www.belloflostsouls.net/wp-content/uploads/2020/06/symbaroum-horz.jpg')`,
-    backgroundSize: "cover", // This will stretch and scale the image
-    backgroundPosition: "center", // This will center the image
-    backgroundRepeat: "no-repeat", // This will prevent repeating the image
-    zIndex: 999,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  };
-
   const stopPropagation = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
 
-  return (
-    <div>
-      {isModalOpen ? (
-        <div style={overlayStyles}>{renderContent(selector)}</div>
-      ) : (
-        <div
-          className="flex h-full items-center justify-center"
-          style={{
-            backgroundColor: Constants.PRIMARY_LIGHTER,
-            width: Constants.SECTION_TITLE_HEIGHT,
-            minWidth: Constants.SECTION_TITLE_HEIGHT,
-            border: `1px solid ${Constants.BORDER}`,
-          }}
-          onClick={() => handleOpen()}
-        >
-          <FontAwesomeIcon icon={faUser} />
-        </div>
-      )}
-    </div>
-  );
+  return isModalOpen ? (
+    <OverlayStyles>{renderContent(selector)}</OverlayStyles>
+  ) : null;
 }
 
 export default SelectorComponent;

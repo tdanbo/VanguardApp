@@ -1,7 +1,11 @@
 import * as Constants from "../Constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSkull } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
+import { useContext } from "react";
+import {
+  onAddCorruption,
+  onSubCorruption,
+} from "../functions/CharacterFunctions";
+import { CharacterContext } from "../contexts/CharacterContext";
 
 interface cssProps {
   backgroundColor: string;
@@ -26,15 +30,39 @@ interface CorruptionTokenProps {
 }
 
 function CorruptionToken({ state }: CorruptionTokenProps) {
+  const { character, setCharacter } = useContext(CharacterContext);
+
+  const handleAddCorruption = () => {
+    const updated_character = onAddCorruption(character, 1);
+    setCharacter(updated_character);
+  };
+
+  const handleSubCorruption = () => {
+    const updated_character = onSubCorruption(character, 1);
+    setCharacter(updated_character);
+  };
+
   if (state === "empty") {
     return (
       <Container
+        onClick={handleSubCorruption}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          handleAddCorruption();
+        }}
         backgroundColor={Constants.WIDGET_BACKGROUND_EMPTY}
       ></Container>
     );
   } else {
     return (
-      <Container backgroundColor={Constants.TYPE_COLORS["casting"]}></Container>
+      <Container
+        onClick={handleSubCorruption}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          handleAddCorruption();
+        }}
+        backgroundColor={Constants.TYPE_COLORS["casting"]}
+      ></Container>
     );
   }
 }
