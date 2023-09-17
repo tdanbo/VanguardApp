@@ -46,6 +46,7 @@ import { useContext } from "react";
 
 import { CharacterContext } from "./contexts/CharacterContext";
 import SelectorComponent from "./components/SelectorPage/Selector";
+import RationsBox from "./components/RationsBox";
 
 const Row = styled.div`
   display: flex;
@@ -174,10 +175,7 @@ function App() {
               <Column>
                 <HeaderContainer>
                   <CharacterNameBox />
-                  <XpBox
-                    onAddFunction={onAddUnspentXp}
-                    onSubFunction={onSubUnspentXp}
-                  />
+                  <XpBox />
                 </HeaderContainer>
                 <StatsContainer>
                   <HealthBox />
@@ -191,7 +189,7 @@ function App() {
                   <InventorySection />
                 </InventoryContainer>
                 <FooterContainer>
-                  <OverburdenBox />
+                  <RationsBox />
                   <CurrencyBox />
                 </FooterContainer>
               </Column>

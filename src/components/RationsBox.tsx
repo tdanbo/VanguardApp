@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import { faDroplet, faCarrot } from "@fortawesome/free-solid-svg-icons";
 import { Icon } from "@mui/material";
 
 const Container = styled.div`
@@ -13,7 +13,7 @@ const Container = styled.div`
   border-radius: 100px;
   height: 35px;
   gap: 20px;
-  justify-content: right;
+  justify-content: left;
 `;
 
 const RationContainer = styled.div`
@@ -31,42 +31,24 @@ const RationContainer = styled.div`
   max-width: 100px;
 `;
 
-const IconTContainer = styled.div`
+const IconContainer = styled.div`
   display: flex;
   flex: 1;
   flex-grow: 1;
   margin-left: 12px;
   font-size: 20px;
-  color: rgba(180, 156, 40, 1);
-`;
-
-const IconSContainer = styled.div`
-  display: flex;
-  flex: 1;
-  flex-grow: 1;
-  margin-left: 12px;
-  font-size: 20px;
-  color: rgba(140, 140, 140, 1);
-`;
-
-const IconOContainer = styled.div`
-  display: flex;
-  flex: 1;
-  flex-grow: 1;
-  margin-left: 12px;
-  font-size: 20px;
-  color: rgba(90, 46, 0, 1);
 `;
 
 const TextContainer = styled.div`
   display: flex;
   flex: 1;
   flex-grow: 1;
-
+  justify-content: left;
+  align-items: center;
   font-size: 20px;
 `;
 
-function CurrencyBox() {
+function RationsBox() {
   const { character } = useContext(CharacterContext);
 
   const used_slots = character.inventory.length;
@@ -75,24 +57,18 @@ function CurrencyBox() {
   return (
     <Container>
       <RationContainer>
-        <IconTContainer>
-          <FontAwesomeIcon icon={faCircle} />
-        </IconTContainer>
-        <TextContainer>100</TextContainer>
+        <IconContainer>
+          <FontAwesomeIcon icon={faCarrot} />
+        </IconContainer>
+        <TextContainer>7</TextContainer>
       </RationContainer>
       <RationContainer>
-        <IconSContainer>
-          <FontAwesomeIcon icon={faCircle} />
-        </IconSContainer>
-        <TextContainer>50</TextContainer>
-      </RationContainer>
-      <RationContainer>
-        <IconOContainer>
-          <FontAwesomeIcon icon={faCircle} />
-        </IconOContainer>
-        <TextContainer>35</TextContainer>
+        <IconContainer>
+          <FontAwesomeIcon icon={faDroplet} />
+        </IconContainer>
+        <TextContainer>7</TextContainer>
       </RationContainer>
     </Container>
   );
 }
-export default CurrencyBox;
+export default RationsBox;
