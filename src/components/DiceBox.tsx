@@ -1,9 +1,26 @@
 import * as Constants from "../Constants";
 import { useRoll } from "../functions/CombatFunctions";
+import styled from "styled-components";
+
 type Props = {
   type_name: string;
   type_value: number;
 };
+
+const DiceContainer = styled.div`
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  border-radius: ${Constants.BORDER_RADIUS};
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  font-weight: bold;
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+  max-width: 100px;
+`;
 
 function DiceBox({ type_name }: Props) {
   const onRollDice = useRoll();
@@ -19,19 +36,7 @@ function DiceBox({ type_name }: Props) {
   };
 
   return (
-    <div
-      className="flex w-full flex-col items-center justify-center rounded"
-      style={{
-        backgroundColor: Constants.PRIMARY_LIGHTER,
-        border: `1px solid ${Constants.BORDER_LIGHT}`,
-        margin: "2px 2px 2px 2px",
-        fontSize: "0.8rem",
-        fontWeight: "bold",
-      }}
-      onClick={RollDice}
-    >
-      {type_name.toUpperCase()}
-    </div>
+    <DiceContainer onClick={RollDice}>{type_name.toUpperCase()}</DiceContainer>
   );
 }
 

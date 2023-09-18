@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFlask, faCoins, faShield } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faBriefcase, faBolt } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
 
-const Navigator = styled.div`
+const Navigator = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -25,17 +26,42 @@ const Navigator = styled.div`
   height: 50px;
 `;
 
-function InventoryNavigation() {
+interface NavigationProps {
+  inventoryState: number;
+  setInventoryState: (browserState: number) => void;
+}
+
+function InventoryNavigation({
+  inventoryState,
+  setInventoryState,
+}: NavigationProps) {
+  const onHandleItems = () => {
+    if (inventoryState === 0) {
+      setInventoryState(1);
+    } else if (inventoryState === 2) {
+      setInventoryState(1);
+    } else {
+      setInventoryState(0);
+    }
+  };
+
+  const onHandleAbilities = () => {
+    if (inventoryState === 0) {
+      setInventoryState(2);
+    } else if (inventoryState === 1) {
+      setInventoryState(2);
+    } else {
+      setInventoryState(0);
+    }
+  };
+
   return (
     <Container>
-      <Navigator>
-        <FontAwesomeIcon icon={faShield} />
+      <Navigator onClick={onHandleItems}>
+        <FontAwesomeIcon icon={faBriefcase} />
       </Navigator>
-      <Navigator>
-        <FontAwesomeIcon icon={faCoins} />
-      </Navigator>
-      <Navigator>
-        <FontAwesomeIcon icon={faFlask} />
+      <Navigator onClick={onHandleAbilities}>
+        <FontAwesomeIcon icon={faBolt} />
       </Navigator>
     </Container>
   );

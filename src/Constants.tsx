@@ -59,7 +59,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   health: BRIGHT_RED,
   attack: BRIGHT_RED,
   damage: BRIGHT_RED,
-  ability: RED,
+  ability: BRIGHT_RED,
   defense: BLUE,
   armor: BLUE,
   casting: PURPLE,

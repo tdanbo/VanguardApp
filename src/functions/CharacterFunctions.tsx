@@ -9,6 +9,7 @@ import {
   StatName,
   EquipEntry,
 } from "../Types";
+import { forEach } from "lodash";
 interface onDeleteProps {
   id: string;
   character: CharacterEntry;
@@ -706,4 +707,41 @@ export async function addNewCharacter(NewCharacterEntry: CharacterEntry) {
       console.log(res);
       return res;
     });
+}
+
+export function swapActives(
+  character: CharacterEntry,
+  source: string,
+  target: string,
+) {
+  console.log("Swapping Actives");
+  const characterActives = cloneDeep(character.actives);
+
+  forEach(characterActives, (active, key) => {
+    if (active.stat === source.toLowerCase()) {
+      active.stat = target.toLowerCase() as StatName;
+    } else if (active.stat === target.toLowerCase()) {
+      active.stat = source.toLowerCase() as StatName;
+    }
+  });
+
+  const updatedCharacter = {
+    ...character,
+    actives: characterActives,
+  };
+
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
+
+  // const sourceActive = updatedCharacter.actives[source];
+  // const targetActive = updatedCharacter.actives[target];
+
+  // const sourceStat = sourceActive.stat;
+  // const targetStat = targetActive.stat;
+
+  // sourceActive.stat = targetStat;
+  // targetActive.stat = sourceStat;
+
+  // postSelectedCharacter(updatedCharacter);
+  // return updatedCharacter;
 }

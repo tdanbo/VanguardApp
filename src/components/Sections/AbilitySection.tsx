@@ -1,31 +1,35 @@
-import TitleBox from "../TitleBox";
-import * as Constants from "../../Constants";
-import AbilityBrowser from "../Modals/AbilityBrowser";
-import { CharacterContext } from "../../contexts/CharacterContext";
+import InventoryEntryEmpty from "../InventoryEntryEmpty";
 import { useContext } from "react";
+
+import { CharacterContext } from "../../contexts/CharacterContext";
+import styled from "styled-components";
 import AbilityEntryItem from "../AbilityEntryItem";
 
-function AbilitySection() {
+const Container = styled.div<{ hidden: boolean }>`
+  display: ${(props) => (props.hidden ? "none" : "flex")};
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 10px;
+`;
+
+interface NavigationProps {
+  inventoryState: number;
+}
+
+function AbilitySection({ inventoryState }: NavigationProps) {
   const { character } = useContext(CharacterContext);
+
   return (
-    <>
-      <div className="flex">
-        <AbilityBrowser />
-        <TitleBox title={"Abilities"} />
-      </div>
-      <div
-        className="grow flex-col-reverse overflow-auto p-2"
-        style={{
-          backgroundColor: Constants.PRIMARY,
-        }}
-      >
-        {character.abilities.map((ability, index) => {
-          return (
-            <AbilityEntryItem key={index} ability={ability} browser={false} />
-          );
-        })}
-      </div>
-    </>
+    <Container hidden={inventoryState === 0 || inventoryState === 1}>
+      {character.abilities.map((ability, index) => {
+        return (
+          <AbilityEntryItem key={index} ability={ability} browser={false} />
+        );
+      })}
+      {Array.from({ length: 10 }).map((_, index) => {
+        return <InventoryEntryEmpty key={index} index={index + 1} />;
+      })}
+    </Container>
   );
 }
 

@@ -5,6 +5,9 @@ import { useState, useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useRoll } from "../functions/CombatFunctions";
 import { Ability } from "../Types";
+import styled from "styled-components";
+
+import { TYPE_COLORS } from "../Constants";
 
 import {
   onDeleteAbility,
@@ -17,72 +20,221 @@ interface LevelComponentProps {
   ability: AbilityEntry;
   ability_level: Ability;
   type: string;
+  radius?: string;
 }
 
 const EntryColor = (type: string) => {
-  return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.BORDER_DARK;
+  return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.WIDGET_BORDER;
 };
+
+const BaseContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+interface ContainerProps {
+  type: string;
+}
+
+const LevelBaseContainer = styled.div<ContainerProps>`
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid ${Constants.WIDGET_BORDER};
+  border-right: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom-left-radius: ${(props) => props.type};
+  border-bottom-right-radius: ${(props) => props.type};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  height: 50px;
+  min-height: 50px;
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  gap: 5px;
+`;
+
+const NameContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  justify-content: left;
+  margin-left: 5px;
+`;
+
+const LevelSelectionContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  justify-content: right;
+`;
+
+const RollContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  justify-content: right;
+  gap: 2px;
+`;
+
+const AddButton = styled.button`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  width: 20px;
+  max-width: 20px;
+  border-right-top-radius: ${Constants.BORDER_RADIUS};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+`;
+
+const ExpandButten = styled.button`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  width: 20px;
+  max-width: 20px;
+  border-right-top-radius: ${Constants.BORDER_RADIUS};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  padding-bottom: 5px;
+`;
+
+const LevelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const AbilityName = styled.h5`
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+  font-size: 15px;
+  font-weight: bold;
+`;
+
+const AbilityDetail = styled.div<LevelProps>`
+  font-size: 11px;
+  font-weight: bold;
+  color: ${(props) =>
+    props.active ? EntryColor(props.type) : Constants.WIDGET_SECONDARY_FONT};
+`;
+
+interface LevelProps {
+  active?: boolean;
+  type: string;
+}
+
+const Divider = styled.div`
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.25);
+  width: 2px;
+  height: 20px;
+  margin-left: 2px;
+  margin-right: 2px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+`;
+
+const LevelSelection = styled.div<LevelProps>`
+  margin: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background-color: ${(props) =>
+    props.active ? EntryColor(props.type) : Constants.WIDGET_BACKGROUND_EMPTY};
+  border: 1px solid #3d3d3c;
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+  font-size: 12px;
+  width: 40px;
+  height: 20px;
+  cursor: pointer;
+`;
+
+const AbilityDescription = styled.div`
+  align-items: center;
+  padding: 10px;
+  flex-grow: 1;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  font-size: 14px;
+`;
+
+const RollButton = styled.div<LevelProps>`
+  display: flex;
+  flex-grow: 1;
+  color: ${(props) =>
+    props.active ? EntryColor(props.type) : Constants.WIDGET_SECONDARY_FONT};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  justify-content: center;
+  align-items: center;
+  align-items: right;
+  font-weight: bold;
+  width: 40px;
+  height: 20px;
+  font-size: 14px;
+`;
+
+function parseBoldKeywords(input: string): JSX.Element[] {
+  const keywords = [
+    "Passive",
+    "Free",
+    "Attacks",
+    "Reaction",
+    "Special",
+    "Active",
+  ];
+  const regex = new RegExp(`\\b(${keywords.join("|")})\\b`, "gi");
+  const parts = input.split(regex);
+  return parts.map((part, index) => {
+    if (keywords.includes(part)) {
+      return <strong key={index}>{part}</strong>;
+    } else {
+      return <span key={index}>{part}</span>;
+    }
+  });
+}
+
+// function Dice({ type, dice }: { type: string; dice: string }) {
+//   const onRollDice = useRoll();
+//   return (
+//     <RollButton
+//   )
+// }
 
 function LevelComponent({
   level,
   ability,
   ability_level,
   type,
+  radius,
 }: LevelComponentProps) {
-  const onRollDice = useRoll();
   return (
-    <div
-      className="flex items-center p-2"
-      style={{ borderBottom: `1px solid ${Constants.BORDER}` }}
-    >
-      <div
-        className="flex items-center p-2"
-        style={{
-          backgroundColor: Constants.PRIMARY_DARKER,
-          color: EntryColor(type),
-          fontSize: "11px",
-          fontWeight: "bold",
-        }}
-      >
-        {level}
-      </div>
-      <div
-        className="flex-grow-1 flex items-center p-2"
-        style={{
-          backgroundColor: Constants.PRIMARY_DARKER,
-          color: Constants.DARK,
-          fontSize: "14px",
-        }}
-      >
-        {ability_level.description}
-      </div>
-      {Array.from(ability_level.roll).map((roll) => {
-        return (
-          <div
-            className="rounded-1 m-1 flex items-center justify-start p-2"
-            style={{
-              backgroundColor: Constants.PRIMARY_HOVER,
-              border: `1px solid ${Constants.BORDER}`,
-              color: EntryColor(type),
-              fontSize: "11px",
-              fontWeight: "bold",
-              height: "22px",
-            }}
-            onClick={() =>
-              onRollDice({
-                dice: roll.dice,
-                count: 1,
-                target: 0,
-                type: ability.name,
-                add_mod: true,
-              })
-            }
-          >
-            {roll.dice}
-          </div>
-        );
-      })}
-    </div>
+    <LevelBaseContainer type={radius}>
+      <AbilityDescription>
+        {/* {level} */}
+        {parseBoldKeywords(ability_level.description)}
+      </AbilityDescription>
+    </LevelBaseContainer>
   );
 }
 
@@ -119,182 +271,175 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
     }
   }
 
+  const COLOR = Constants.TYPE_COLORS[ability.type] || "defaultColor";
+
+  interface DiceProps {
+    ability: AbilityEntry;
+  }
+
+  function DiceComponent({ ability }: DiceProps) {
+    const onRollDice = useRoll();
+    return (
+      <>
+        {ability.level === "Novice"
+          ? Array.from(ability.novice.roll).map((roll, index) => (
+              <RollButton
+                active={true}
+                key={index}
+                type={ability.type}
+                onClick={() =>
+                  onRollDice({
+                    dice: roll.dice,
+                    count: 1,
+                    target: 0,
+                    type: ability.name,
+                    add_mod: true,
+                  })
+                }
+              >
+                {roll.dice}
+              </RollButton>
+            ))
+          : ability.level === "Adept"
+          ? Array.from(ability.adept.roll).map((roll, index) => (
+              <RollButton
+                active={true}
+                key={index}
+                type={ability.type}
+                onClick={() =>
+                  onRollDice({
+                    dice: roll.dice,
+                    count: 1,
+                    target: 0,
+                    type: ability.name,
+                    add_mod: true,
+                  })
+                }
+              >
+                {roll.dice}
+              </RollButton>
+            ))
+          : ability.level === "Master"
+          ? Array.from(ability.master.roll).map((roll, index) => (
+              <RollButton
+                active={true}
+                key={index}
+                type={ability.type}
+                onClick={() =>
+                  onRollDice({
+                    dice: roll.dice,
+                    count: 1,
+                    target: 0,
+                    type: ability.name,
+                    add_mod: true,
+                  })
+                }
+              >
+                {roll.dice}
+              </RollButton>
+            ))
+          : null}
+      </>
+    );
+  }
+
   return (
-    <div
-      className="m-1 flex"
-      style={{
-        backgroundColor: Constants.PRIMARY_DARKER,
-      }}
-    >
-      {browser ? (
-        <div
-          className="flex items-center justify-center"
-          style={{
-            backgroundColor: EntryColor(ability.type),
-            width: "15px",
-            minWidth: "15px",
-            fontSize: "10px",
-            borderBottom: `1px solid ${Constants.BORDER}`,
-          }}
-          onClick={() => AddAbilitySlot()}
-        >
-          +
-        </div>
-      ) : (
-        <div
-          className="flex items-center justify-center"
-          style={{
-            backgroundColor: EntryColor(ability.type),
-            width: "15px",
-            minWidth: "15px",
-            fontSize: "10px",
-            borderBottom: `1px solid ${Constants.BORDER}`,
-          }}
-          onClick={() => DeleteAbilitySlot(ability.id)}
-        >
-          x
-        </div>
-      )}
-      <div className="grow flex-col">
-        <div
-          className="flex grow"
-          style={{
-            backgroundColor: Constants.DARK,
-            borderBottom: `1px solid ${Constants.BORDER}`,
-          }}
-        >
-          <div className="m-3 flex grow flex-row">
-            <h5
-              className="items-center justify-start"
-              style={{
-                color: Constants.FONT_LIGHT,
-              }}
-            >
-              {ability.name}
-            </h5>
-          </div>
-          <div
-            className="m-1 flex items-center justify-center rounded"
-            style={{
-              backgroundColor:
-                ability.level === "Novice" ||
-                ability.level === "Adept" ||
-                ability.level === "Master"
-                  ? EntryColor(ability.type)
-                  : Constants.DARK,
-              border: `1px solid #3d3d3c`,
-              color: Constants.FONT_LIGHT,
-              fontSize: "11px",
-              fontWeight: "bold",
-              width: "30px",
-            }}
+    <BaseContainer>
+      <Container>
+        <ExpandButten>.</ExpandButten>
+        <NameContainer>
+          <AbilityName>{ability.name}</AbilityName>
+          <AbilityDetail type={ability.type} active={true}>
+            {ability.type}, {ability.tradition}
+          </AbilityDetail>
+        </NameContainer>
+        <LevelSelectionContainer>
+          <LevelSelection
+            type={ability.type}
+            active={["Novice", "Adept", "Master"].includes(ability.level)}
             onClick={() => handleLevelChange(ability.id, "Novice")}
           >
             N
-          </div>
-          <div
-            className="m-1 flex items-center justify-center rounded"
-            style={{
-              backgroundColor:
-                ability.level === "Adept" || ability.level === "Master"
-                  ? EntryColor(ability.type)
-                  : Constants.DARK,
-              border: `1px solid #3d3d3c`,
-              color: Constants.FONT_LIGHT,
-              fontSize: "11px",
-              fontWeight: "bold",
-              width: "30px",
-            }}
+          </LevelSelection>
+          <LevelSelection
+            type={ability.type}
+            active={["Adept", "Master"].includes(ability.level)}
             onClick={() => handleLevelChange(ability.id, "Adept")}
           >
             A
-          </div>
-          <div
-            className="m-1 flex items-center justify-center rounded"
-            style={{
-              backgroundColor:
-                ability.level === "Master"
-                  ? EntryColor(ability.type)
-                  : Constants.DARK,
-              border: `1px solid #3d3d3c`,
-              color: Constants.FONT_LIGHT,
-              fontSize: "11px",
-              fontWeight: "bold",
-              width: "30px",
-            }}
+          </LevelSelection>
+          <LevelSelection
+            type={ability.type}
+            active={ability.level === "Master"}
             onClick={() => handleLevelChange(ability.id, "Master")}
           >
             M
-          </div>
-        </div>
-        <div
-          className="h-50 h-10 grow flex-col md:p-4"
-          style={{
-            color: Constants.BORDER_DARK,
-            backgroundColor: Constants.PRIMARY_DARKER,
-            borderBottom: `1px solid ${Constants.BORDER}`,
-            fontSize: "12px",
-            fontWeight: "bold",
-          }}
-        >
-          {ability.tradition}, {ability.type}
-        </div>
-        <div
-          className="flex-row"
-          style={{
-            backgroundColor: Constants.PRIMARY_DARKER,
-            borderBottom: `1px solid ${Constants.BORDER}`,
-          }}
-        >
-          {abilityLevel === "Novice" && (
+          </LevelSelection>
+        </LevelSelectionContainer>
+        <Divider />
+        <RollContainer>
+          <DiceComponent ability={ability} />
+        </RollContainer>
+
+        {browser ? (
+          <AddButton onClick={AddAbilitySlot}>+</AddButton>
+        ) : (
+          <AddButton onClick={() => DeleteAbilitySlot(ability.id)}>x</AddButton>
+        )}
+      </Container>
+      <LevelContainer>
+        {abilityLevel === "Novice" && (
+          <LevelComponent
+            level="Novice"
+            ability={ability}
+            ability_level={ability.novice}
+            type={ability.type}
+            radius={Constants.BORDER_RADIUS}
+          />
+        )}
+        {abilityLevel === "Adept" && (
+          <>
             <LevelComponent
               level="Novice"
               ability={ability}
               ability_level={ability.novice}
               type={ability.type}
             />
-          )}
-          {abilityLevel === "Adept" && (
-            <>
-              <LevelComponent
-                level="Novice"
-                ability={ability}
-                ability_level={ability.novice}
-                type={ability.type}
-              />
-              <LevelComponent
-                level="Adept"
-                ability={ability}
-                ability_level={ability.adept}
-                type={ability.type}
-              />
-            </>
-          )}
-          {abilityLevel === "Master" && (
-            <>
-              <LevelComponent
-                level="Novice"
-                ability={ability}
-                ability_level={ability.novice}
-                type={ability.type}
-              />
-              <LevelComponent
-                level="Adept"
-                ability={ability}
-                ability_level={ability.adept}
-                type={ability.type}
-              />
-              <LevelComponent
-                level="Master"
-                ability={ability}
-                ability_level={ability.master}
-                type={ability.type}
-              />
-            </>
-          )}
-        </div>
-      </div>
-    </div>
+            <LevelComponent
+              level="Adept"
+              ability={ability}
+              ability_level={ability.adept}
+              type={ability.type}
+              radius={Constants.BORDER_RADIUS}
+            />
+          </>
+        )}
+        {abilityLevel === "Master" && (
+          <>
+            <LevelComponent
+              level="Novice"
+              ability={ability}
+              ability_level={ability.novice}
+              type={ability.type}
+            />
+            <LevelComponent
+              level="Adept"
+              ability={ability}
+              ability_level={ability.adept}
+              type={ability.type}
+            />
+            <LevelComponent
+              level="Master"
+              ability={ability}
+              ability_level={ability.master}
+              type={ability.type}
+              radius={Constants.BORDER_RADIUS}
+            />
+          </>
+        )}
+      </LevelContainer>
+    </BaseContainer>
   );
 }
+
 export default AbilityEntryItem;

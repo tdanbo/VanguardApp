@@ -2,7 +2,7 @@ import * as Constants from "../../Constants";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import { useContext, useState, useEffect } from "react";
 import { useRoll } from "../../functions/CombatFunctions";
-
+import { swapActives } from "../../functions/CharacterFunctions";
 import styled from "styled-components";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,6 +16,8 @@ import {
 type Props = {
   type_name: string;
   type_value: number;
+  swapSource: null | string;
+  setSwapSource: (swapSource: null | string) => void;
 };
 
 const Container = styled.div`
@@ -67,8 +69,8 @@ const ValueButton = styled.button`
   border-radius: ${Constants.BORDER_RADIUS};
 `;
 
-function StatBox({ type_name, type_value }: Props) {
-  const { character } = useContext(CharacterContext);
+function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
+  const { character, setCharacter } = useContext(CharacterContext);
   const [value, setValue] = useState<number>(type_value);
 
   useEffect(() => {
@@ -84,18 +86,6 @@ function StatBox({ type_name, type_value }: Props) {
       active_mod = dict.mod;
     }
   });
-
-  const handleSkillMouseEnter = () => {
-    setValue(type_value + character.details.modifier);
-  };
-
-  const handleActiveMouseEnter = () => {
-    setValue(type_value + active_mod + character.details.modifier);
-  };
-
-  const handleMouseLeave = () => {
-    setValue(type_value);
-  };
 
   const onRollDice = useRoll();
 
@@ -119,6 +109,20 @@ function StatBox({ type_name, type_value }: Props) {
     });
   };
 
+  const handleActiveClick = () => {
+    console.log("-----");
+    if (swapSource) {
+      console.log("source: " + swapSource);
+      console.log("target: " + type_name);
+      const updatedCharacter = swapActives(character, swapSource, type_name);
+      setCharacter(updatedCharacter);
+      setSwapSource(null);
+    } else {
+      setSwapSource(type_name);
+    }
+    console.log("clicky");
+  };
+
   const icon = (active: string) => {
     if (active === "sneaking") {
       return <FontAwesomeIcon icon={faVolumeXmark} />;
@@ -133,21 +137,10 @@ function StatBox({ type_name, type_value }: Props) {
 
   return (
     <Container>
-      <ActiveButton
-        className="active_button"
-        onMouseEnter={handleActiveMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={handleActiveRoll}
-      >
+      <ActiveButton className="active_button" onClick={handleActiveClick}>
         {icon(active)}
       </ActiveButton>
-      <ValueName
-        onMouseEnter={handleSkillMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={handleSkillRoll}
-      >
-        {type_name}
-      </ValueName>
+      <ValueName onClick={handleSkillRoll}>{type_name}</ValueName>
       <ValueButton>{value}</ValueButton>
     </Container>
   );

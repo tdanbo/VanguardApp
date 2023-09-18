@@ -8,14 +8,18 @@ import EquipmentBrowser from "../Modals/EquipmentBrowser";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import styled from "styled-components";
 
-const Container = styled.div`
-  display: flex;
+const Container = styled.div<{ hidden: boolean }>`
+  display: ${(props) => (props.hidden ? "none" : "flex")};
   flex-direction: column;
   flex-grow: 1;
   gap: 10px;
 `;
 
-function InventorySection() {
+interface NavigationProps {
+  inventoryState: number;
+}
+
+function InventorySection({ inventoryState }: NavigationProps) {
   const { character } = useContext(CharacterContext);
 
   // const [update, setUpdater] = useState(0);
@@ -24,7 +28,7 @@ function InventorySection() {
   // console.log(empty_slots);
 
   return (
-    <Container>
+    <Container hidden={inventoryState === 0 || inventoryState === 2}>
       {Array.from({ length: totalSlots }).map((_, index) => {
         const item = character.inventory[index];
         if (item) {

@@ -45,7 +45,7 @@ const TextContainer = styled.div`
   flex-grow: 1;
   justify-content: left;
   align-items: center;
-  font-size: 20px;
+  font-size: 15px;
 `;
 
 function RationsBox() {

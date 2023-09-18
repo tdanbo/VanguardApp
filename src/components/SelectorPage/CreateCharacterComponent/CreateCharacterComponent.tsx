@@ -6,6 +6,14 @@ import { useState } from "react";
 import StatInputBox from "./StatInputBox";
 import { CharacterEntry } from "../../../Types";
 
+import {
+  MainContainer,
+  ModalContainer,
+  Title,
+  CenterContainer,
+  Divider,
+} from "../SelectorStyles";
+
 interface LoginProps {
   setSelector: (selector: string) => void;
   setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;

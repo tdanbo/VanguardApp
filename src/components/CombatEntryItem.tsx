@@ -1,33 +1,32 @@
 import * as Constants from "../Constants";
 import { CombatEntry } from "../Types";
+import styled from "styled-components";
 
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
   index: number;
 }
 
-function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
-  const BackgroundColor = () => {
-    if (index % 2 === 0) {
-      return Constants.PRIMARY;
-    } else {
-      return Constants.PRIMARY_DARKER;
-    }
-  };
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content:;
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  width: 50%;
+  max-height: 100px;
+  height: 100px;
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+`;
 
+function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   const EntryColor = () => {
     return Constants.TYPE_COLORS[combatEntry.type] || Constants.BORDER_DARK;
   };
 
   return (
-    <div
-      className="flex justify-between p-1"
-      style={{
-        backgroundColor: BackgroundColor(),
-        height: "60px",
-        borderTop: `1px solid ${Constants.BORDER}`,
-      }}
-    >
+    <Container>
       <div
         className="flex items-center justify-center rounded text-lg font-bold"
         style={{
@@ -80,7 +79,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
           border: `1px solid ${Constants.BORDER}`,
         }}
       />
-    </div>
+    </Container>
   );
 }
 

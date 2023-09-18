@@ -32,6 +32,9 @@ import { CharacterContext } from "./contexts/CharacterContext";
 import SelectorComponent from "./components/SelectorPage/Selector";
 import RationsBox from "./components/RationsBox";
 import AbilityBrowser from "./components/Modals/AbilityBrowser";
+import AbilitySection from "./components/Sections/AbilitySection";
+import CombatSection from "./components/Sections/CombatSection";
+import DiceSection from "./components/Sections/DiceSection";
 
 const Row = styled.div`
   display: flex;
@@ -52,7 +55,7 @@ const HeaderContainer = styled.div`
 const FooterContainer = styled.div`
   display: flex;
   flex-direction: row;
-
+  justify-content: flex-end; // Align children to the right
   min-height: 50px;
   margin-left: 20px;
   margin-right: 20px;
@@ -99,6 +102,15 @@ const InventoryContainer = styled.div`
   overflow: scroll;
 `;
 
+const CombatContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
+  gap: 20px;
+  height: 100%;
+  overflow: scroll;
+`;
+
 const NavigationTop = styled.div`
   display: flex;
   flex-direction: column;
@@ -135,6 +147,7 @@ const BrowserContainer = styled.div`
 
 function App() {
   const [browserState, setBrowserState] = useState(0);
+  const [inventoryState, setInventoryState] = useState(0);
   return (
     <UserProvider>
       <SessionProvider>
@@ -153,13 +166,14 @@ function App() {
                   <CharacterNavigation
                     browserState={browserState}
                     setBrowserState={setBrowserState}
-                  ></CharacterNavigation>
+                  />
                 </NavigationTop>
-                <NavigationMid>
-                  <HealthNavigation />
-                </NavigationMid>
+                <NavigationMid></NavigationMid>
                 <NavigationBot>
-                  <InventoryNavigation />
+                  <InventoryNavigation
+                    inventoryState={inventoryState}
+                    setInventoryState={setInventoryState}
+                  />
                 </NavigationBot>
               </ColumnNarrow>
               <Column>
@@ -176,14 +190,22 @@ function App() {
                   <CorruptionControls />
                 </HealthContainer>
                 <InventoryContainer>
-                  <InventorySection />
+                  <InventorySection inventoryState={inventoryState} />
+                  <AbilitySection inventoryState={inventoryState} />
                 </InventoryContainer>
                 <FooterContainer>
                   <RationsBox />
                   <CurrencyBox />
                 </FooterContainer>
               </Column>
-              <Column></Column>
+              <Column>
+                <CombatContainer>
+                  <CombatSection />
+                </CombatContainer>
+                <FooterContainer>
+                  <DiceSection />
+                </FooterContainer>
+              </Column>
             </Row>
           </WebSocketProvider>
         </CharacterProvider>

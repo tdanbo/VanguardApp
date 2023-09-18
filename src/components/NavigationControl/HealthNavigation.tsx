@@ -1,17 +1,11 @@
 import styled from "styled-components";
-import EquipmentNavigator from "../NavigationControl/Equipment";
-import AbilitiesNavigator from "../NavigationControl/Abilities";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
-import { faBolt } from "@fortawesome/free-solid-svg-icons";
+import { faFlask, faCoins, faShield } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  flex-grow: 1;
 `;
 
 const Navigator = styled.div`
@@ -35,10 +29,13 @@ function HealthNavigation() {
   return (
     <Container>
       <Navigator>
-        <FontAwesomeIcon icon={faBriefcase} />{" "}
+        <FontAwesomeIcon icon={faShield} />
       </Navigator>
       <Navigator>
-        <FontAwesomeIcon icon={faBolt} />{" "}
+        <FontAwesomeIcon icon={faCoins} />
+      </Navigator>
+      <Navigator>
+        <FontAwesomeIcon icon={faFlask} />
       </Navigator>
     </Container>
   );
