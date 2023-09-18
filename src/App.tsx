@@ -1,16 +1,7 @@
 import "./App.css";
 import "./index.css";
 
-import AbilitySection from "./components/Sections/AbilitySection";
-
-import DetailsSection from "./components/Sections/DetailsSection";
 import InventorySection from "./components/Sections/InventorySection";
-import EquipmentSection from "./components/Sections/EquipmentSection";
-import ActiveSection from "./components/Sections/ActiveSection";
-import ModifierSection from "./components/Sections/ModifierSection";
-
-import CombatSection from "./components/Sections/CombatSection";
-import DiceSection from "./components/Sections/DiceSection";
 
 import * as Constants from "./Constants";
 import styled from "styled-components";
@@ -22,13 +13,6 @@ import HealthBox from "./components/HealthBox";
 import StatsControls from "./components/StatsControls/StatsControls";
 import EquipmentBrowser from "./components/Modals/EquipmentBrowser";
 import CorruptionControls from "./components/CorruptionControls/CorruptionControls";
-
-import {
-  onAddToughness,
-  onSubToughness,
-  onAddPermCorruption,
-  onSubPermCorruption,
-} from "./functions/CharacterFunctions";
 
 import CharacterNavigation from "./components/NavigationControl/CharacterNavigation";
 import HealthNavigation from "./components/NavigationControl/HealthNavigation";
@@ -42,11 +26,12 @@ import XpBox from "./components/XpBox";
 import { onAddUnspentXp } from "./functions/CharacterFunctions";
 import { onSubUnspentXp } from "./functions/CharacterFunctions";
 import CharacterNameBox from "./components/CharacterNameBox";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { CharacterContext } from "./contexts/CharacterContext";
 import SelectorComponent from "./components/SelectorPage/Selector";
 import RationsBox from "./components/RationsBox";
+import AbilityBrowser from "./components/Modals/AbilityBrowser";
 
 const Row = styled.div`
   display: flex;
@@ -149,6 +134,7 @@ const BrowserContainer = styled.div`
 `;
 
 function App() {
+  const [browserState, setBrowserState] = useState(0);
   return (
     <UserProvider>
       <SessionProvider>
@@ -158,12 +144,16 @@ function App() {
             <Row>
               <Column>
                 <BrowserContainer>
-                  <EquipmentBrowser />
+                  <EquipmentBrowser browserState={browserState} />
+                  <AbilityBrowser browserState={browserState} />
                 </BrowserContainer>
               </Column>
               <ColumnNarrow>
                 <NavigationTop>
-                  <CharacterNavigation />
+                  <CharacterNavigation
+                    browserState={browserState}
+                    setBrowserState={setBrowserState}
+                  ></CharacterNavigation>
                 </NavigationTop>
                 <NavigationMid>
                   <HealthNavigation />

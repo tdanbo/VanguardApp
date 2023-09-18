@@ -36,5 +36,6 @@ export const TempChar: CharacterEntry = {
   },
   abilities: [],
   inventory: [],
-  equipment: [],
+  rations: { food: 0, water: 0 },
+  money: 0,
 };

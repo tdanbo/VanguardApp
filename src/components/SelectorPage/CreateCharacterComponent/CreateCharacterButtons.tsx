@@ -71,7 +71,8 @@ function CreateCharacterButtons({
     },
     abilities: [],
     inventory: [],
-    equipment: [],
+    rations: { food: 0, water: 0 },
+    money: 0,
   };
 
   function sleep(ms: number) {

@@ -1,6 +1,14 @@
 import axios from "axios";
+import cloneDeep from "lodash/cloneDeep";
+
 import { CharacterEntry } from "../Types";
-import { ItemEntry, AbilityEntry, ActiveKey } from "../Types";
+import {
+  ItemEntry,
+  AbilityEntry,
+  ActiveKey,
+  StatName,
+  EquipEntry,
+} from "../Types";
 interface onDeleteProps {
   id: string;
   character: CharacterEntry;
@@ -23,10 +31,10 @@ interface OnEquipProps {
   hand: string;
 }
 
-interface OnUnequipProps {
+interface EquipProps {
   item: ItemEntry;
   character: CharacterEntry;
-  equipped: string;
+  equipItem: EquipEntry;
 }
 
 interface onAddCharacterProps {
@@ -60,7 +68,7 @@ export function onUpdateActive({
     ...character,
   };
 
-  updatedCharacter.actives[active].stat = stat;
+  updatedCharacter.actives[active].stat = stat as StatName;
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -229,6 +237,7 @@ export const setBaseModifier = (character: CharacterEntry, value: number) => {
 
 export const getActiveModifiers = (character: CharacterEntry) => {
   const character_actives = character.actives;
+  const equippedItems = getEquippedItems(character);
 
   character_actives["attack"].mod = 0;
   character_actives["defense"].mod = 0;
@@ -244,7 +253,7 @@ export const getActiveModifiers = (character: CharacterEntry) => {
     console.log("Not Overburdened");
   }
 
-  character.equipment.forEach((item) => {
+  equippedItems.forEach((item) => {
     if (!item.quality || item.quality.length === 0) {
       return;
     }
@@ -305,9 +314,10 @@ export const onAddInventoryItem = ({
   item,
 }: onAddCharacterProps) => {
   console.log("Adding Item");
-  if (
-    character.inventory.length === Math.ceil(character.stats.strong.value * 2)
-  ) {
+
+  const newInventory = cloneDeep(character.inventory);
+
+  if (newInventory.length === Math.ceil(character.stats.strong.value * 2)) {
     console.log("Inventory is full");
     return;
   } else {
@@ -317,11 +327,11 @@ export const onAddInventoryItem = ({
       id: generateRandomId(),
     };
 
-    const newInventory: ItemEntry[] = [...character.inventory, itemWithId];
+    const newUpdatedInventory: ItemEntry[] = [...newInventory, itemWithId];
 
     const updatedCharacter = {
       ...character,
-      inventory: newInventory,
+      inventory: newUpdatedInventory,
     };
 
     const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
@@ -331,50 +341,82 @@ export const onAddInventoryItem = ({
   }
 };
 
-export function onUnequipItem({ item, equipped, character }: OnUnequipProps) {
-  if (equipped === "AR") {
-    character.equipment[0] = {} as ItemEntry;
-  } else if (equipped === "MH") {
-    character.equipment[1] = {} as ItemEntry;
-  } else if (equipped === "OH") {
-    character.equipment[2] = {} as ItemEntry;
-  } else if (equipped === "2H") {
-    character.equipment[1] = {} as ItemEntry;
-  }
-  const updatedCharacter = onAddInventoryItem({ item, character });
-  if (!updatedCharacter) return;
+export function getEquippedItems(character: CharacterEntry) {
+  const equippedItems = character.inventory.filter((item) =>
+    item.equip.some((e) => e.equipped === true),
+  );
+
+  return equippedItems;
+}
+
+export function onUnequipItem({ character, item, equipItem }: EquipProps) {
+  console.log("Unequipping Item");
+  const newInventory = cloneDeep(character.inventory);
+
+  newInventory.forEach((inventory_item) => {
+    console.log(inventory_item.id);
+    if (inventory_item.id === item.id) {
+      inventory_item.equip.forEach((invItem) => {
+        if (invItem.type === equipItem.type) {
+          invItem.equipped = false;
+        }
+      });
+    }
+  });
+
+  const updatedCharacter = {
+    ...character,
+    inventory: newInventory,
+  };
+
+  console.log(updatedCharacter.inventory);
+
   const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
   postSelectedCharacter(updatedModifiersCharacter);
   return updatedModifiersCharacter;
 }
 
-export function onEquipItem({ id, item, hand, character }: OnEquipProps) {
-  const currentlyEquipped = (slot: ItemEntry) => {
-    if (Object.keys(slot).length === 0) {
-      return false;
-    } else {
-      character.inventory.push(slot);
-      return true;
-    }
+export function onEquipItem({ character, item, equipItem }: EquipProps) {
+  console.log("Equipping Item");
+  const newInventory = cloneDeep(character.inventory);
+
+  // Each item can only be used for one equip, so we start by making sure it is fully unqeuipped before doing anything
+
+  const typesToUnequip: { [key: string]: string[] } = {
+    "2H": ["2H", "MH", "OH"],
+    MH: ["2H", "MH"],
+    OH: ["2H", "OH"],
+    AR: ["AR"],
   };
 
-  if (hand === "AR") {
-    currentlyEquipped(character.equipment[0]);
-    character.equipment[0] = item;
-  } else if (hand === "MH") {
-    currentlyEquipped(character.equipment[1]);
-    character.equipment[1] = item;
-  } else if (hand === "OH") {
-    currentlyEquipped(character.equipment[2]);
-    character.equipment[2] = item;
-  } else if (hand === "2H") {
-    currentlyEquipped(character.equipment[1]);
-    currentlyEquipped(character.equipment[2]);
-    character.equipment[1] = item;
-    character.equipment[2] = {} as ItemEntry;
+  const unequipTypes = typesToUnequip[equipItem.type];
+
+  if (unequipTypes) {
+    newInventory.forEach((inventoryItem) => {
+      inventoryItem.equip.forEach((invItem) => {
+        if (unequipTypes.includes(invItem.type)) {
+          invItem.equipped = false;
+        }
+      });
+    });
   }
-  const updatedCharacter = onDeleteItem({ id, character });
-  if (!updatedCharacter) return;
+
+  newInventory.forEach((inventory_item) => {
+    if (inventory_item.id === item.id) {
+      inventory_item.equip.forEach((item) => {
+        if (item.type === equipItem.type) {
+          item.equipped = true;
+        } else {
+          item.equipped = false;
+        }
+      });
+    }
+  });
+
+  const updatedCharacter = {
+    ...character,
+    inventory: newInventory,
+  };
 
   const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
   postSelectedCharacter(updatedModifiersCharacter);
@@ -408,7 +450,6 @@ export function onChangeQuantity({
   character,
 }: onChangeQuantityProps) {
   const inventory = character.inventory;
-  const equipment = character.equipment;
 
   console.log(count);
 
@@ -418,16 +459,9 @@ export function onChangeQuantity({
     }
   });
 
-  equipment.forEach((item) => {
-    if (item.id === id) {
-      item.quantity.count = count;
-    }
-  });
-
   const updatedCharacter = {
     ...character,
     inventory: inventory,
-    equipment: equipment,
   };
 
   postSelectedCharacter(updatedCharacter);
@@ -438,23 +472,29 @@ export function onUseAmmunition(character: CharacterEntry): {
   updatedCharacter: CharacterEntry;
   hasAmmunition: boolean;
 } {
-  const equipment = character.equipment;
+  const inventory = character.inventory;
 
-  const hasAmmunition = equipment.some(
-    (item) => item.category === "ammunition" && item.quantity.count > 0,
+  const hasAmmunition = inventory.some(
+    (item) =>
+      item.equip.some((e) => e.equipped === true) &&
+      item.category === "ammunition" &&
+      item.quantity.count > 0,
   );
 
-  const updatedEquipment = equipment.map((item) => {
-    if (item.category === "ammunition" && item.quantity.count > 0) {
+  const updatedInventory = inventory.map((item) => {
+    if (
+      item.equip.some((e) => e.equipped === true) &&
+      item.category === "ammunition" &&
+      item.quantity.count > 0
+    ) {
       item.quantity.count -= 1;
-      return item;
     }
     return item;
   });
 
   const updatedCharacter = {
     ...character,
-    equipment: updatedEquipment,
+    inventory: updatedInventory,
   };
 
   postSelectedCharacter(updatedCharacter);

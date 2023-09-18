@@ -21,9 +21,6 @@ function CorruptionControls() {
   const clean_corruption =
     character.corruption.threshold - temporary_corruption;
 
-  console.log("Temporary corruption: ", temporary_corruption);
-  console.log("Clean corruption: ", clean_corruption);
-
   return (
     <Container>
       {[...Array(temporary_corruption)].map((_, index) => (

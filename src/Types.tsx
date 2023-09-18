@@ -21,7 +21,7 @@ interface Stat {
   mod: number;
 }
 
-type StatName =
+export type StatName =
   | "cunning"
   | "discreet"
   | "persuasive"
@@ -55,6 +55,11 @@ type Corruption = {
   threshold: number;
 };
 
+interface Rations {
+  food: number;
+  water: number;
+}
+
 export interface CharacterEntry {
   id: string;
   details: CharacterDetails;
@@ -64,7 +69,8 @@ export interface CharacterEntry {
   actives: Actives;
   abilities: AbilityEntry[];
   inventory: ItemEntry[];
-  equipment: ItemEntry[];
+  rations: Rations;
+  money: number;
 }
 
 interface Roll {
@@ -78,10 +84,15 @@ interface Quantity {
   bulk: boolean;
 }
 
+export interface EquipEntry {
+  type: string;
+  equipped: boolean;
+}
+
 export interface ItemEntry {
   roll: Roll;
   quality: string[];
-  equip: string[];
+  equip: EquipEntry[];
   quantity: Quantity;
   type: string;
   cost: string;

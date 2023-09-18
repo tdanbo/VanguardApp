@@ -19,11 +19,12 @@ const Container = styled.div<cssProps>`
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-radius: ${Constants.BORDER_RADIUS};
   flex-grow: 1;
-  background-image: url("/dist/assets/skull-solid.png");
-  background-size: 80% auto; /* This enlarges the image */
-  background-position: center; /* This centers the enlarged image */
-  background-repeat: no-repeat;
 `;
+
+// background-image: url("/dist/assets/skull-solid.png");
+// background-size: 80% auto; /* This enlarges the image */
+// background-position: center; /* This centers the enlarged image */
+// background-repeat: no-repeat;
 
 interface CorruptionTokenProps {
   state: string;

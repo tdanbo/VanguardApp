@@ -1,6 +1,6 @@
 import * as Constants from "../Constants";
 
-import { ItemEntry } from "../Types";
+import { ItemEntry, EquipEntry } from "../Types";
 import Quantity from "./Modals/Quantity";
 import { TYPE_COLORS } from "../Constants";
 import { useContext } from "react";
@@ -138,16 +138,13 @@ function InventoryEntry({
 
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
 
-  const EquipInventorySlot = (id: string, hand: string) => {
-    const updatedCharacter = onEquipItem({ id, character, item, hand });
-    if (updatedCharacter) {
+  const HandleEquip = (item: ItemEntry, equipItem: EquipEntry) => {
+    console.log("Handling Equip");
+    if (equipItem.equipped === true) {
+      const updatedCharacter = onUnequipItem({ character, item, equipItem });
       setCharacter(updatedCharacter);
-    }
-  };
-
-  const UnequipInventorySlot = (equipped: string) => {
-    const updatedCharacter = onUnequipItem({ character, item, equipped });
-    if (updatedCharacter) {
+    } else {
+      const updatedCharacter = onEquipItem({ character, item, equipItem });
       setCharacter(updatedCharacter);
     }
   };
@@ -201,12 +198,15 @@ function InventoryEntry({
       <EquipContainer>
         {equipped === "" ? ( // if equipped is an empty string
           <>
-            {item.equip.map((hand, index) => (
+            {item.equip.map((equip_item, index) => (
               <div
                 key={index}
                 className="flex grow"
                 style={{
-                  backgroundColor: Constants.WIDGET_BORDER,
+                  backgroundColor:
+                    equip_item.equipped === true
+                      ? COLOR
+                      : Constants.WIDGET_BACKGROUND,
                   margin: "1px 0px 1px 1px",
                   width: "20px",
                   border: `1px solid ${Constants.WIDGET_BORDER}`,
@@ -215,7 +215,7 @@ function InventoryEntry({
                   borderBottomLeftRadius:
                     index === 1 ? Constants.BORDER_RADIUS : undefined,
                 }}
-                onClick={() => EquipInventorySlot(id, hand)}
+                onClick={() => HandleEquip(item, equip_item)}
               ></div>
             ))}
             {item.equip.length === 0 && (
@@ -228,7 +228,6 @@ function InventoryEntry({
                   width: "20px",
                   height: "100%",
                 }}
-                onClick={() => UnequipInventorySlot(equipped)}
               ></div>
             )}
           </>
@@ -244,7 +243,6 @@ function InventoryEntry({
               width: "20px",
               height: "100%",
             }}
-            onClick={() => UnequipInventorySlot(equipped)}
           ></div>
         )}
       </EquipContainer>

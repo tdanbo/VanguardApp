@@ -1,27 +1,53 @@
-import * as Constants from "../../Constants";
-import { useState, useEffect, CSSProperties } from "react";
-import AbilityEntryItem from "../AbilityEntryItem";
-import { AbilityEntry } from "../../Types";
+import React, { useState, useEffect, CSSProperties, useContext } from "react";
 import axios from "axios";
+import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
+import * as Constants from "../../Constants";
+import { CharacterContext } from "../../contexts/CharacterContext";
+import { onAddInventoryItem } from "../../functions/CharacterFunctions";
+import { AbilityEntry } from "../../Types";
+
+import AbilityEntryItem from "../AbilityEntryItem";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
 
-function AbilityBrowser() {
-  // Declare a state variable to hold the modal open/close status
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const SearchContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  gap: 10px;
+`;
 
-  // Function to handle the modal open
-  const handleOpen = () => {
-    console.log("Opening Modal");
-    setIsModalOpen(true);
-  };
+const Container = styled.div<{ hidden: boolean }>`
+  display: ${(props) => (props.hidden ? "none" : "flex")};
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 10px;
+`;
 
-  // Function to handle the modal close
-  const handleClose = () => {
-    console.log("Closing Modal");
-    setIsModalOpen(false);
-  };
+const ItemContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 10px;
+`;
+
+const Input = styled.input`
+  flex-grow: 1;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: ${Constants.BORDER_RADIUS};
+`;
+
+interface EquipmentBrowserProps {
+  browserState: number;
+}
+
+function AbilityBrowser({ browserState }: EquipmentBrowserProps) {
+  const [filteredItems, setFilteredItems] = useState([] as AbilityEntry[]);
+  const [search, setSearch] = useState("");
 
   const [abilityList, setAbilityList] = useState([] as AbilityEntry[]);
 
@@ -31,67 +57,38 @@ function AbilityBrowser() {
     });
   }, []); // add an empty array here);
 
-  const modalStyles: CSSProperties = {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    backgroundColor: Constants.DARK,
-    padding: "20px",
-    zIndex: 1000,
-    border: `1px solid ${Constants.BORDER}`,
-  };
+  // useEffect(() => {
+  //   setFilteredItems(
+  //     setAbilityList.filter((ability) => {
+  //       return ability.name.toLowerCase().includes(search.toLowerCase());
+  //     }),
+  //   );
+  // }, [search, setAbilityList]);
 
-  const overlayStyles: CSSProperties = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
-    zIndex: 999,
-  };
-
-  const stopPropagation = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const toTitleCase = (str: string) => {
+    return str.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
+    });
   };
 
   return (
-    <div>
-      <div
-        className="flex h-full flex-col items-center justify-center"
-        style={{
-          backgroundColor: Constants.DARK,
-          minWidth: Constants.SECTION_TITLE_HEIGHT,
-          borderRight: `1px solid ${Constants.BORDER_DARK}`,
-          borderLeft: `1px solid ${Constants.BORDER_DARK}`,
-        }}
-        onClick={handleOpen}
-      >
-        <FontAwesomeIcon
-          icon={faPlus}
-          style={{ color: Constants.PRIMARY_DARKER }}
-        />
-      </div>
-      {isModalOpen && (
-        <div style={overlayStyles} onClick={handleClose}>
-          <div style={modalStyles} onClick={stopPropagation}>
-            <div
-              className="flex flex-grow flex-col-reverse overflow-auto"
-              style={{ height: "500px" }}
-            >
-              {abilityList.map((ability, index) => (
-                <AbilityEntryItem
-                  key={index}
-                  browser={true}
-                  ability={ability}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+    <Container hidden={browserState === 0 || browserState === 1}>
+      <SearchContainer>
+        <Input
+          className="flex-grow"
+          onChange={(e) => setSearch(e.target.value)}
+        ></Input>
+        {/* <button className="flex-none" onClick={AddInventorySlot}>
+          {filteredItems.length > 0 ? <SearchIcon /> : <AddIcon />}
+        </button> */}
+      </SearchContainer>
+      <ItemContainer>
+        {abilityList.map((ability, index) => (
+          <AbilityEntryItem key={index} browser={true} ability={ability} />
+        ))}
+      </ItemContainer>
+    </Container>
   );
 }
+
 export default AbilityBrowser;

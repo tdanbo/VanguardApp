@@ -19,8 +19,8 @@ const SearchContainer = styled.div`
   gap: 10px;
 `;
 
-const Container = styled.div`
-  display: flex;
+const Container = styled.div<{ hidden: boolean }>`
+  display: ${(props) => (props.hidden ? "none" : "flex")};
   flex-direction: column;
   flex-grow: 1;
   gap: 10px;
@@ -40,7 +40,11 @@ const Input = styled.input`
   border-radius: ${Constants.BORDER_RADIUS};
 `;
 
-function EquipmentBrowser() {
+interface EquipmentBrowserProps {
+  browserState: number;
+}
+
+function EquipmentBrowser({ browserState }: EquipmentBrowserProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemList, setItemList] = useState([] as ItemEntry[]);
   const [filteredItems, setFilteredItems] = useState([] as ItemEntry[]);
@@ -60,14 +64,6 @@ function EquipmentBrowser() {
       }),
     );
   }, [search, itemList]);
-
-  const handleOpen = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsModalOpen(false);
-  };
 
   const toTitleCase = (str: string) => {
     return str.replace(/\w\S*/g, function (txt) {
@@ -104,8 +100,10 @@ function EquipmentBrowser() {
     }
   };
 
+  console.log(browserState);
+
   return (
-    <Container>
+    <Container hidden={browserState === 0 || browserState === 2}>
       <SearchContainer>
         <Input
           className="flex-grow"
