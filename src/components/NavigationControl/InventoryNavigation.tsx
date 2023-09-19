@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faBriefcase, faBolt } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
 import RestBox from "../RestBox";
+import OverburdenBox from "../OverburdenBox";
 
 const Container = styled.div`
   display: flex;
@@ -66,6 +67,7 @@ function InventoryNavigation({
 
   return (
     <Container>
+      <OverburdenBox />
       <Navigator onClick={onHandleItems}>
         <FontAwesomeIcon icon={faBriefcase} />
       </Navigator>

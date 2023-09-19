@@ -6,21 +6,19 @@ import { CharacterContext } from "../contexts/CharacterContext";
 
 const Container = styled.div`
   display: flex;
-  flex: 1;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: left;
+  justify-content: center;
   font-weight: bold;
-  h1 {
-    font-size: 1.5em;
+  width: 50px;
+  height: 50px;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  color: ${Constants.WIDGET_BACKGROUND};
+  border-radius: ${Constants.BORDER_RADIUS};
+  &:hover {
+    background-color: ${Constants.WIDGET_BACKGROUND};
     color: ${Constants.WIDGET_PRIMARY_FONT};
-  }
-  h2 {
-    font-size: 0.75em;
-    margin-left: 10px;
-    margin-top: 10px;
-
-    color: ${Constants.WIDGET_SECONDARY_FONT};
+    border: 1px solid ${Constants.WIDGET_BORDER};
   }
 `;
 
@@ -32,10 +30,7 @@ function OverburdenBox() {
 
   return (
     <Container>
-      <h1>
-        {used_slots} / {max_slots}
-      </h1>
-      <h2>BAGS</h2>
+      {used_slots} / {max_slots}
     </Container>
   );
 }

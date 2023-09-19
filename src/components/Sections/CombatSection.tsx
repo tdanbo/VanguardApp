@@ -1,12 +1,10 @@
-import TitleBox from "../TitleBox";
-import * as Constants from "../../Constants";
-
 import CombatEntryItem from "../CombatEntryItem";
 import { CombatEntry } from "../../Types";
 
 import { getCombatLog } from "../../functions/CombatFunctions";
+import { SessionContext } from "../../contexts/SessionContext";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 const Container = styled.div`
   display: flex;
@@ -19,15 +17,16 @@ const Container = styled.div`
 
 function CombatSection() {
   const [combatLog, setCombatLog] = useState<CombatEntry[]>([]);
+  const { session } = useContext(SessionContext);
 
   useEffect(() => {
     const intervalId = setInterval(async () => {
-      const data = await getCombatLog();
+      const data = await getCombatLog(session.id);
       setCombatLog(data);
     }, 1000); // Polls every second
 
     return () => clearInterval(intervalId); // Clear the interval when the component is unmounted
-  }, []);
+  }, [session.id]);
 
   return (
     <Container>

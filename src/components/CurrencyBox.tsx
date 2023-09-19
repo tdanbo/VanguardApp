@@ -33,28 +33,22 @@ const RationContainer = styled.div`
 
 const IconTContainer = styled.div`
   display: flex;
-  flex: 1;
-  flex-grow: 1;
-  margin-left: 12px;
-  font-size: 20px;
+  margin-left: 5px;
+  font-size: 25px;
   color: rgba(180, 156, 40, 1);
 `;
 
 const IconSContainer = styled.div`
   display: flex;
-  flex: 1;
-  flex-grow: 1;
-  margin-left: 12px;
-  font-size: 20px;
+  margin-left: 5px;
+  font-size: 25px;
   color: rgba(140, 140, 140, 1);
 `;
 
 const IconOContainer = styled.div`
   display: flex;
-  flex: 1;
-  flex-grow: 1;
-  margin-left: 12px;
-  font-size: 20px;
+  margin-left: 5px;
+  font-size: 25px;
   color: rgba(90, 46, 0, 1);
 `;
 
@@ -62,9 +56,51 @@ const TextContainer = styled.div`
   display: flex;
   flex: 1;
   flex-grow: 1;
-
-  font-size: 20px;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
 `;
+
+// const Container = styled.div`
+//   display: flex;
+//   flex-grow: 1;
+//   border-radius: 100px;
+//   height: 35px;
+//   gap: 20px;
+//   justify-content: left;
+// `;
+
+// const RationContainer = styled.div`
+//   display: flex;
+//   flex: 1;
+//   flex-grow: 1;
+//   border-radius: 100px;
+//   justify-content: center;
+//   align-items: center;
+//   font-size: 1.25em;
+//   font-weight: bold;
+//   background-color: ${Constants.WIDGET_BACKGROUND};
+//   border: 1px solid ${Constants.WIDGET_BORDER};
+//   color: ${Constants.WIDGET_PRIMARY_FONT};
+//   max-width: 100px;
+// `;
+
+// const IconContainer = styled.div`
+// display: flex;
+// flex: 1;
+// flex-grow: 1;
+// margin-left: 12px;
+// font-size: 20px;
+// `;
+
+// const TextContainer = styled.div`
+// display: flex;
+// flex: 1;
+// flex-grow: 1;
+// justify-content: left;
+// align-items: center;
+// font-size: 15px;
+// `;
 
 function CurrencyBox() {
   const { character } = useContext(CharacterContext);

@@ -35,7 +35,7 @@ const IconContainer = styled.div`
   display: flex;
   flex: 1;
   flex-grow: 1;
-  margin-left: 12px;
+  margin-left: 10px;
   font-size: 20px;
 `;
 
@@ -45,7 +45,7 @@ const TextContainer = styled.div`
   flex-grow: 1;
   justify-content: left;
   align-items: center;
-  font-size: 15px;
+  font-size: 16px;
 `;
 
 function RationsBox() {

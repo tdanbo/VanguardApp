@@ -1,9 +1,13 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faBriefcase, faBolt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faBook,
+  faBookMedical,
+} from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
 import RestBox from "../RestBox";
-
+import SelectorComponent from "../SelectorPage/Selector";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -59,14 +63,13 @@ function CharacterNavigation({
 
   return (
     <Container>
-      <Navigator>
-        <FontAwesomeIcon icon={faUser} />
-      </Navigator>
+      <SelectorComponent />
+
       <Navigator onClick={onHandleItems}>
-        <FontAwesomeIcon icon={faBriefcase} />
+        <FontAwesomeIcon icon={faBook} />
       </Navigator>
       <Navigator onClick={onHandleAbilities}>
-        <FontAwesomeIcon icon={faBolt} />
+        <FontAwesomeIcon icon={faBookMedical} />
       </Navigator>
     </Container>
   );

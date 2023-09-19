@@ -7,9 +7,9 @@ import styled from "styled-components";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faVolumeXmark,
+  faEye,
   faBolt,
-  faShieldHalved,
+  faShield,
   faCrosshairs,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -99,6 +99,16 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
     });
   };
 
+  const handleActiveRoll = () => {
+    onRollDice({
+      dice: "d20",
+      count: 1,
+      target: value,
+      type: active,
+      add_mod: false,
+    });
+  };
+
   const handleActiveClick = () => {
     console.log("-----");
     if (swapSource) {
@@ -115,11 +125,11 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
 
   const icon = (active: string) => {
     if (active === "sneaking") {
-      return <FontAwesomeIcon icon={faVolumeXmark} />;
+      return <FontAwesomeIcon icon={faEye} />;
     } else if (active === "casting") {
       return <FontAwesomeIcon icon={faBolt} />;
     } else if (active === "defense") {
-      return <FontAwesomeIcon icon={faShieldHalved} />;
+      return <FontAwesomeIcon icon={faShield} />;
     } else if (active === "attack") {
       return <FontAwesomeIcon icon={faCrosshairs} />;
     }

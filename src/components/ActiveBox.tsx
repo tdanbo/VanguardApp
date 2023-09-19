@@ -27,18 +27,28 @@ const Row = styled.div`
   gap: 2px;
 `;
 
-const Value = styled.button`
+interface ValueProps {
+  active_name: string;
+}
+
+const Value = styled.button<ValueProps>`
   display: flex;
   flex: 2;
   align-items: center;
   justify-content: center;
   border-radius: ${Constants.BORDER_RADIUS};
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
   color: ${Constants.WIDGET_PRIMARY_FONT};
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
 `;
+
+// background-color: ${Constants.WIDGET_BACKGROUND};
+// background-image: url("src/assets/icons/${(props) => props.active_name}.png");
+// background-size: 70%;
+// background-repeat: no-repeat;
+// background-position: center;
 
 const Modifier = styled.button`
   display: flex;
@@ -181,7 +191,9 @@ function ActiveBox({ active_name, active }: Props) {
 
   return (
     <Container>
-      <Value onClick={handleActiveRoll}>{value}</Value>
+      <Value active_name={active_name} onClick={handleActiveRoll}>
+        {value}
+      </Value>
       <Row>
         <Modifier
           onClick={handleSubValue}

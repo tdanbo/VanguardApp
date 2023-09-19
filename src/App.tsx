@@ -36,6 +36,10 @@ import AbilitySection from "./components/Sections/AbilitySection";
 import CombatSection from "./components/Sections/CombatSection";
 import DiceSection from "./components/Sections/DiceSection";
 import RestBox from "./components/RestBox";
+import SearchAbilityBox from "./components/SearchAbilityBox";
+import SearchItemBox from "./components/SearchItemBox";
+
+import { AbilityEntry, ItemEntry } from "./Types";
 
 const Row = styled.div`
   display: flex;
@@ -149,7 +153,7 @@ const BrowserContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin: 20px;
-  margin-bottom: 75px;
+  margin-bottom: 20px;
   gap: 20px;
   height: 100%;
   overflow: scroll;
@@ -158,19 +162,42 @@ const BrowserContainer = styled.div`
 
 function App() {
   const [browserState, setBrowserState] = useState(0);
-  const [inventoryState, setInventoryState] = useState(0);
+  const [inventoryState, setInventoryState] = useState(1);
+  const [abilityList, setAbilityList] = useState<AbilityEntry[]>([]);
+  const [itemList, setItemList] = useState<ItemEntry[]>([]);
+
   return (
     <UserProvider>
       <SessionProvider>
         <CharacterProvider>
           <WebSocketProvider>
-            <SelectorComponent />
             <Row>
               <Column>
+                <HeaderContainer>
+                  <SearchItemBox
+                    itemList={itemList}
+                    setList={setItemList}
+                    browserState={browserState}
+                  />
+                  <SearchAbilityBox
+                    itemList={abilityList}
+                    setList={setAbilityList}
+                    browserState={browserState}
+                  />
+                </HeaderContainer>
                 <BrowserContainer>
-                  <EquipmentBrowser browserState={browserState} />
-                  <AbilityBrowser browserState={browserState} />
+                  <EquipmentBrowser
+                    browserState={browserState}
+                    itemList={itemList}
+                    setItemList={setItemList}
+                  />
+                  <AbilityBrowser
+                    browserState={browserState}
+                    abilityList={abilityList}
+                    setAbilityList={setAbilityList}
+                  />
                 </BrowserContainer>
+                <FooterContainer></FooterContainer>
               </Column>
               <ColumnNarrow>
                 <NavigationTop>

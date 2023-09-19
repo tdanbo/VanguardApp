@@ -28,8 +28,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  height: 50px;
   min-height: 50px;
+  max-height: 50px;
   border-radius: ${Constants.BORDER_RADIUS};
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};

@@ -5,9 +5,9 @@ import { CharacterContext } from "../contexts/CharacterContext";
 import { setBaseModifier } from "./CharacterFunctions";
 import { SessionContext } from "../contexts/SessionContext";
 
-export async function getCombatLog(): Promise<CombatEntry[]> {
+export async function getCombatLog(id: string): Promise<CombatEntry[]> {
   const response = await axios.get<CombatEntry[]>(
-    "http://localhost:8000/api/combatlog",
+    `http://localhost:8000/api/combatlog/${id}`,
   );
   return response.data;
 }
