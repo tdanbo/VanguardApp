@@ -22,6 +22,8 @@
 // export const BG = "#07090b";
 // export const BUTTON_LIGHT = "#ffffff";
 
+export const COMBAT_BACKGROUND = "19, 23, 22";
+
 export const BACKGROUND = "rgba(19, 23, 22, 1.0)";
 export const WIDGET_PRIMARY_FONT = "rgba(255, 255, 255, 0.85)";
 export const WIDGET_SECONDARY_FONT = "rgba(255, 255, 255, 0.60)";

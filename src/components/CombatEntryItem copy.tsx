@@ -2,8 +2,6 @@ import * as Constants from "../Constants";
 import { CombatEntry } from "../Types";
 import styled from "styled-components";
 
-import { UpperFirstLetter } from "../functions/UtilityFunctions";
-
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
   index: number;
@@ -12,91 +10,37 @@ interface CombatEntryItemProps {
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: flex-end;
+  justify-content:;
+  background-color: ${Constants.WIDGET_BACKGROUND};
   border-radius: ${Constants.BORDER_RADIUS};
   border: 1px solid ${Constants.WIDGET_BORDER};
   width: 50%;
-  height: 150px;
-  padding: 20px;
-  gap: 20px;
+  max-height: 100px;
+  height: 100px;
   color: ${Constants.WIDGET_PRIMARY_FONT};
 
-  background: linear-gradient(
-      rgba(${Constants.COMBAT_BACKGROUND}, 0.9),
-      rgba(${Constants.COMBAT_BACKGROUND}, 0.9)
-    ),
-    url("src/assets/characters/portrait2.jpeg");
+  background-image: url("src/assets/characters/portrait2.jpeg");
   background-size: cover;
   background-position: center;
+  border-radius: ${Constants.BORDER_RADIUS};
 `;
-
-const Result = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  font-size: 1.75rem;
-  font-weight: bold;
-  border: 1px solid ${Constants.WIDGET_BORDER};
-`;
-
-const Active = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: right;
-  align-items: flex-end;
-  font-size: 1.25rem;
-  font-weight: bold;
-  height: 50px;
-
-  h2 {
-    color: ${Constants.WIDGET_SECONDARY_FONT};
-    font-size: 12px;
-  }
-`;
-
-const Outcome = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: left;
-  align-items: flex-start;
-  font-size: 1.25rem;
-  font-weight: bold;
-  height: 50px;
-  h2 {
-    color: ${Constants.WIDGET_SECONDARY_FONT};
-    font-size: 12px;
-  }
-`;
-
-//
 
 function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   const EntryColor = () => {
     return Constants.TYPE_COLORS[combatEntry.type] || Constants.BORDER_DARK;
   };
 
-  let modifierText = "";
-  if (combatEntry.modifier > 0) {
-    modifierText = `+${combatEntry.modifier}`;
-  } else if (combatEntry.modifier < 0) {
-    modifierText = `${combatEntry.modifier}`;
-  }
-
   return (
     <Container>
-      <Active>
-        <h1>{UpperFirstLetter(combatEntry.type)}</h1>
-        <h2>{modifierText}</h2>
-      </Active>
-      <Result
+      <div
+        className="flex items-center justify-center rounded text-lg font-bold"
+        style={{
+          backgroundColor: EntryColor(),
+          color: Constants.FONT_LIGHT,
+          aspectRatio: "1/1",
+          borderColor: "#000000",
+          border: `1px solid ${Constants.BORDER}`,
+        }}
         title={
           combatEntry.add
             ? `Dice: 1${combatEntry.dice}\nRoll: ${
@@ -108,12 +52,8 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
         }
       >
         {combatEntry.result}
-      </Result>
-      <Outcome>
-        <h1>{(combatEntry.success && "Success") || "Failure"}</h1>
-        <h2> Below 25</h2>
-      </Outcome>
-      {/* <div className="flex flex-grow flex-col justify-center">
+      </div>
+      <div className="flex flex-grow flex-col justify-center">
         <div className="text-m flex items-center justify-center font-bold uppercase ">
           {combatEntry.modifier > 0
             ? `+${combatEntry.modifier}`
@@ -131,7 +71,19 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
             {combatEntry.character}
           </div>
         )}
-      </div> */}
+      </div>
+
+      <img
+        className="rounded-2 flex items-center justify-center rounded"
+        src="src\assets\characters\Alahara.png"
+        alt={combatEntry.character}
+        style={{
+          width: "90px",
+          height: "100%",
+          objectFit: "cover",
+          border: `1px solid ${Constants.BORDER}`,
+        }}
+      />
     </Container>
   );
 }

@@ -16,11 +16,14 @@ import {
 const Container = styled.div`
   display: flex;
   flex: 2;
-  background-image: url("/dist/assets/portrait1.jpeg");
+
+  background-image: url("src/assets/characters/portrait2.jpeg");
   background-size: cover;
   background-position: center;
   border-radius: ${Constants.BORDER_RADIUS};
 `;
+
+// background-image: url("/dist/assets/portrait1.jpeg");
 
 const InnerContainer = styled.div`
   display: flex;

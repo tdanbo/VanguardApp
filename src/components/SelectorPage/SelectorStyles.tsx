@@ -37,8 +37,11 @@ export const ModalContainer = styled.div`
   margin-bottom: 10px;
   height: 500px;
   overflow: auto;
+
   border-bottom-left-radius: ${Constants.BORDER_RADIUS};
   border-bottom-right-radius: ${Constants.BORDER_RADIUS};
+
+  scrollbar-width: none !important;
 `;
 
 export const CenterContainer = styled.div`
@@ -49,6 +52,8 @@ export const CenterContainer = styled.div`
   gap: 0.5rem;
   overflow: auto;
   height: 400px;
+
+  scrollbar-width: none !important;
 `;
 
 export const Divider = styled.div`

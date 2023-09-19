@@ -100,6 +100,7 @@ const InventoryContainer = styled.div`
   gap: 20px;
   height: 50%;
   overflow: scroll;
+  scrollbar-width: none !important;
 `;
 
 const CombatContainer = styled.div`
@@ -109,6 +110,7 @@ const CombatContainer = styled.div`
   gap: 20px;
   height: 100%;
   overflow: scroll;
+  scrollbar-width: none !important;
 `;
 
 const NavigationTop = styled.div`
@@ -143,6 +145,7 @@ const BrowserContainer = styled.div`
   gap: 20px;
   height: 100%;
   overflow: scroll;
+  scrollbar-width: none !important;
 `;
 
 function App() {
