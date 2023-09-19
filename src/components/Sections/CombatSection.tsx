@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   flex-grow: 1;
   align-items: flex-end;
   justify-content: flex-end;

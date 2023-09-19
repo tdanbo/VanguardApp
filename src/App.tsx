@@ -35,6 +35,7 @@ import AbilityBrowser from "./components/Modals/AbilityBrowser";
 import AbilitySection from "./components/Sections/AbilitySection";
 import CombatSection from "./components/Sections/CombatSection";
 import DiceSection from "./components/Sections/DiceSection";
+import RestBox from "./components/RestBox";
 
 const Row = styled.div`
   display: flex;
@@ -105,7 +106,7 @@ const InventoryContainer = styled.div`
 
 const CombatContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin: 20px;
   gap: 20px;
   height: 100%;
@@ -135,6 +136,13 @@ const NavigationBot = styled.div`
   margin-top: 20px;
   margin-bottom: 75px;
   height: 50%;
+`;
+
+const NavigationFooter = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  margin-top: 20px;
 `;
 
 const BrowserContainer = styled.div`

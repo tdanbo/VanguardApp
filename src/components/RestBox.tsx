@@ -5,7 +5,7 @@ import { RestCharacter } from "../functions/CharacterFunctions";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
-
+import styled from "styled-components";
 function RestBox() {
   const { character, setCharacter } = useContext(CharacterContext);
 
@@ -15,20 +15,28 @@ function RestBox() {
       setCharacter(updatedCharacter);
     }
   };
+
+  const Navigator = styled.button`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+    color: ${Constants.WIDGET_BACKGROUND};
+    border-radius: ${Constants.BORDER_RADIUS};
+    &:hover {
+      background-color: ${Constants.WIDGET_BACKGROUND};
+      color: ${Constants.WIDGET_PRIMARY_FONT};
+      border: 1px solid ${Constants.WIDGET_BORDER};
+    }
+    width: 50px;
+    height: 50px;
+  `;
+
   return (
-    <div
-      className="flex flex-col items-center justify-center"
-      style={{
-        backgroundColor: Constants.DARK,
-        minWidth: Constants.SECTION_TITLE_HEIGHT,
-        borderRight: `1px solid ${Constants.BORDER_DARK}`,
-        borderLeft: `1px solid ${Constants.BORDER_DARK}`,
-        color: Constants.PRIMARY_DARKER,
-      }}
-      onClick={HandleRest}
-    >
+    <Navigator onClick={HandleRest}>
       <FontAwesomeIcon icon={faMoon} />
-    </div>
+    </Navigator>
   );
 }
 

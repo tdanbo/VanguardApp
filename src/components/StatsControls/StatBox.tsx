@@ -99,16 +99,6 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
     });
   };
 
-  const handleActiveRoll = () => {
-    onRollDice({
-      dice: "d20",
-      count: 1,
-      target: value,
-      type: active,
-      add_mod: false,
-    });
-  };
-
   const handleActiveClick = () => {
     console.log("-----");
     if (swapSource) {

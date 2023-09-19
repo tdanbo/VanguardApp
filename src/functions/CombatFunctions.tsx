@@ -3,6 +3,7 @@ import { CombatEntry } from "../Types";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { setBaseModifier } from "./CharacterFunctions";
+import { SessionContext } from "../contexts/SessionContext";
 
 export async function getCombatLog(): Promise<CombatEntry[]> {
   const response = await axios.get<CombatEntry[]>(
@@ -33,6 +34,7 @@ function extractDiceValue(
 
 export function useRoll() {
   const { character, setCharacter } = useContext(CharacterContext);
+  const { session } = useContext(SessionContext);
 
   return ({ dice, count, target, type, add_mod }: RollDiceProps) => {
     let total = 0;
@@ -69,10 +71,12 @@ export function useRoll() {
     console.log(roll_result);
 
     const NewCombatEntry: CombatEntry = {
+      id: session.id,
       character: character.details.name,
       type: type,
       dice: dice,
       result: roll_result,
+      target: target,
       success: success,
       modifier: character.details.modifier,
       add: add_mod,

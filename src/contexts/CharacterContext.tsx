@@ -37,7 +37,7 @@ const defaultCharacter: CharacterEntry = {
   },
   abilities: [],
   inventory: [],
-  equipment: [{} as ItemEntry, {} as ItemEntry, {} as ItemEntry],
+  rations: { food: 0, water: 0 },
 };
 
 interface CharacterContextType {

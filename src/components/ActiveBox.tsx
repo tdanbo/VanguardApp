@@ -1,18 +1,12 @@
 import * as Constants from "../Constants";
 import { useState } from "react";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faShieldHalved,
-  faBolt,
-  faCrosshairs,
-  faVolumeXmark,
-} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useContext, useEffect } from "react";
 import { Active } from "../Types";
-import { forEach } from "lodash";
+import { useRoll } from "../functions/CombatFunctions";
+import { onAddCorruption } from "../functions/CharacterFunctions";
 
 type Props = {
   active: Active;
@@ -33,7 +27,7 @@ const Row = styled.div`
   gap: 2px;
 `;
 
-const Value = styled.div`
+const Value = styled.button`
   display: flex;
   flex: 2;
   align-items: center;
@@ -64,7 +58,7 @@ type DiceProps = {
   color: string;
 };
 
-const Dice = styled.div<DiceProps>`
+const Dice = styled.button<DiceProps>`
   display: flex;
   flex-grow: 1;
   align-items: center;
@@ -78,8 +72,7 @@ const Dice = styled.div<DiceProps>`
 `;
 
 function ActiveBox({ active_name, active }: Props) {
-  console.log("RENDERING ActiveBox");
-  const { character } = useContext(CharacterContext);
+  const { character, setCharacter } = useContext(CharacterContext);
 
   const [modValue, setModvalue] = useState<number>(0);
 
@@ -148,21 +141,47 @@ function ActiveBox({ active_name, active }: Props) {
     setValue(computeActiveValue());
   }, [modValue]);
 
-  // const icon = (active_name: string) => {
-  //   if (active_name === "sneaking") {
-  //     return <FontAwesomeIcon icon={faVolumeXmark} />;
-  //   } else if (active_name === "casting") {
-  //     return <FontAwesomeIcon icon={faBolt} />;
-  //   } else if (active_name === "defense") {
-  //     return <FontAwesomeIcon icon={faShieldHalved} />;
-  //   } else if (active_name === "attack") {
-  //     return <FontAwesomeIcon icon={faCrosshairs} />;
-  //   }
-  // };
+  const onRollDice = useRoll();
+
+  const handleActiveRoll = () => {
+    onRollDice({
+      dice: "d20",
+      count: 1,
+      target: value,
+      type: active_name,
+      add_mod: false,
+    });
+  };
+
+  const handleDiceRoll = () => {
+    onRollDice({
+      dice: dice || "d4",
+      count: 1,
+      target: 0,
+      type: active_name,
+      add_mod: false,
+    });
+  };
+
+  const RollCorruptionDice = () => {
+    const dice_result = onRollDice({
+      dice: "d4",
+      count: 1,
+      target: 0,
+      type: "corruption",
+      add_mod: true,
+    });
+
+    const updated_character = onAddCorruption(character, dice_result);
+
+    if (updated_character) {
+      setCharacter(updated_character);
+    }
+  };
 
   return (
     <Container>
-      <Value>{value}</Value>
+      <Value onClick={handleActiveRoll}>{value}</Value>
       <Row>
         <Modifier
           onClick={handleSubValue}
@@ -173,7 +192,18 @@ function ActiveBox({ active_name, active }: Props) {
         >
           {modValue}
         </Modifier>
-        <Dice color={Constants.TYPE_COLORS[active_name]}>{dice}</Dice>
+        <Dice
+          onClick={() => {
+            if (active_name === "casting") {
+              RollCorruptionDice();
+            } else {
+              handleDiceRoll();
+            }
+          }}
+          color={Constants.TYPE_COLORS[active_name]}
+        >
+          {dice}
+        </Dice>
       </Row>
     </Container>
   );

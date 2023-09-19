@@ -60,13 +60,13 @@ function RationsBox() {
         <IconContainer>
           <FontAwesomeIcon icon={faCarrot} />
         </IconContainer>
-        <TextContainer>7</TextContainer>
+        <TextContainer>{character.rations.food}</TextContainer>
       </RationContainer>
       <RationContainer>
         <IconContainer>
           <FontAwesomeIcon icon={faDroplet} />
         </IconContainer>
-        <TextContainer>7</TextContainer>
+        <TextContainer>{character.rations.water}</TextContainer>
       </RationContainer>
     </Container>
   );

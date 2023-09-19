@@ -2,11 +2,13 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faBriefcase, faBolt } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
+import RestBox from "../RestBox";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  flex-grow: 1;
 `;
 
 const Navigator = styled.button`
@@ -24,6 +26,13 @@ const Navigator = styled.button`
   }
   width: 50px;
   height: 50px;
+`;
+
+const Spacer = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  flex: 1;
 `;
 
 interface NavigationProps {
@@ -63,6 +72,8 @@ function InventoryNavigation({
       <Navigator onClick={onHandleAbilities}>
         <FontAwesomeIcon icon={faBolt} />
       </Navigator>
+      <Spacer />
+      <RestBox />
     </Container>
   );
 }

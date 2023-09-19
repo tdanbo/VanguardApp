@@ -634,24 +634,16 @@ export function onSubUnspentXp(character: CharacterEntry) {
 }
 
 function RestFood(character: CharacterEntry) {
-  const inventory = character.inventory;
+  const newRations = cloneDeep(character.rations);
 
-  const hasFood = inventory.some(
-    (item) => item.name === "Ration Food" && item.quantity.count > 0,
-  );
-
-  const updatedInventory = inventory.map((item) => {
-    if (item.name === "Ration Food" && item.quantity.count > 0) {
-      item.quantity.count -= 1;
-      return item;
-    }
-    return item;
-  });
+  const hasFood = newRations.food > 0;
 
   if (hasFood === true) {
+    newRations.food -= 1;
+
     const updatedCharacter = {
       ...character,
-      inventory: updatedInventory,
+      rations: newRations,
     };
     onAddToughness(updatedCharacter);
     return updatedCharacter;
@@ -660,23 +652,15 @@ function RestFood(character: CharacterEntry) {
 }
 
 function RestWater(character: CharacterEntry) {
-  const inventory = character.inventory;
-  const hasWater = inventory.some(
-    (item) => item.name === "Ration Water" && item.quantity.count > 0,
-  );
+  const newRations = cloneDeep(character.rations);
 
-  const updatedInventory = inventory.map((item) => {
-    if (item.name === "Ration Water" && item.quantity.count > 0) {
-      item.quantity.count -= 1;
-      return item;
-    }
-    return item;
-  });
+  const hasWater = newRations.water > 0;
 
   if (hasWater === true) {
+    newRations.water -= 1;
     const updatedCharacter = {
       ...character,
-      inventory: updatedInventory,
+      rations: newRations,
     };
     onResetCorruption(updatedCharacter);
     return updatedCharacter;

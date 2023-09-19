@@ -18,11 +18,6 @@ const Container = styled.div`
   max-height: 100px;
   height: 100px;
   color: ${Constants.WIDGET_PRIMARY_FONT};
-
-  background-image: url("src/assets/characters/portrait2.jpeg");
-  background-size: cover;
-  background-position: center;
-  border-radius: ${Constants.BORDER_RADIUS};
 `;
 
 function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {

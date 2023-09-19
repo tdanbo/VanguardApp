@@ -111,7 +111,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
       </Result>
       <Outcome>
         <h1>{(combatEntry.success && "Success") || "Failure"}</h1>
-        <h2> Below 25</h2>
+        <h2>Target {combatEntry.target}</h2>
       </Outcome>
       {/* <div className="flex flex-grow flex-col justify-center">
         <div className="text-m flex items-center justify-center font-bold uppercase ">

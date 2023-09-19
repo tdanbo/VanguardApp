@@ -177,7 +177,7 @@ const AbilityDescription = styled.div`
   font-size: 14px;
 `;
 
-const RollButton = styled.div<LevelProps>`
+const RollButton = styled.button<LevelProps>`
   display: flex;
   flex-grow: 1;
   color: ${(props) =>

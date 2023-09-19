@@ -2,10 +2,12 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faBriefcase, faBolt } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
+import RestBox from "../RestBox";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   gap: 10px;
 `;
 
