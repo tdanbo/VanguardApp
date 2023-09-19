@@ -159,6 +159,7 @@ function ActiveBox({ active_name, active }: Props) {
       count: 1,
       target: value,
       type: active_name,
+      modifier: active.mod,
       add_mod: false,
     });
   };
