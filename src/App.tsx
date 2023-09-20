@@ -37,7 +37,6 @@ import DiceSection from "./components/Sections/DiceSection";
 import RestBox from "./components/RestBox";
 import SearchAbilityBox from "./components/SearchAbilityBox";
 import SearchItemBox from "./components/SearchItemBox";
-
 import { AbilityEntry, ItemEntry } from "./Types";
 
 const Row = styled.div`

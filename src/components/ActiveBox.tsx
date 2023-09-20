@@ -154,9 +154,11 @@ function ActiveBox({ active_name, active }: Props) {
   const onRollDice = useRoll();
 
   const handleActiveRoll = () => {
+    console.log("modValue:", modValue);
     onRollDice({
       dice: "d20",
       count: 1,
+      modifier: modValue,
       target: value,
       type: active_name,
       add_mod: false,
@@ -168,6 +170,7 @@ function ActiveBox({ active_name, active }: Props) {
       dice: dice || "d4",
       count: 1,
       target: 0,
+      modifier: 0,
       type: active_name,
       add_mod: false,
     });
@@ -178,6 +181,7 @@ function ActiveBox({ active_name, active }: Props) {
       dice: "d4",
       count: 1,
       target: 0,
+      modifier: 0,
       type: "corruption",
       add_mod: true,
     });

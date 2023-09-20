@@ -18,6 +18,7 @@ function CorruptionRoll() {
     const dice_result = onRollDice({
       dice: "d4",
       count: 1,
+      modifier: 0,
       target: 0,
       type: "corruption",
       add_mod: true,

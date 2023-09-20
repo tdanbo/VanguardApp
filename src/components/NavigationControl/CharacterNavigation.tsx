@@ -15,13 +15,23 @@ const Container = styled.div`
   gap: 10px;
 `;
 
-const Navigator = styled.button`
+interface NavigatorProps {
+  active?: boolean;
+}
+
+const Navigator = styled.button<NavigatorProps>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  color: ${Constants.WIDGET_BACKGROUND};
+  border: ${(props) =>
+    props.active ? `1px solid ${Constants.WIDGET_BORDER}` : `0px solid white`};
+  color: ${(props) =>
+    props.active ? Constants.WIDGET_PRIMARY_FONT : Constants.WIDGET_BACKGROUND};
+  background-color: ${(props) =>
+    props.active
+      ? Constants.WIDGET_BACKGROUND
+      : Constants.WIDGET_BACKGROUND_EMPTY};
   border-radius: ${Constants.BORDER_RADIUS};
   &:hover {
     background-color: ${Constants.WIDGET_BACKGROUND};
@@ -65,10 +75,10 @@ function CharacterNavigation({
     <Container>
       <SelectorComponent />
 
-      <Navigator onClick={onHandleItems}>
+      <Navigator active={browserState === 1} onClick={onHandleItems}>
         <FontAwesomeIcon icon={faBook} />
       </Navigator>
-      <Navigator onClick={onHandleAbilities}>
+      <Navigator active={browserState === 2} onClick={onHandleAbilities}>
         <FontAwesomeIcon icon={faBookMedical} />
       </Navigator>
     </Container>

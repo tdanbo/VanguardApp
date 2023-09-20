@@ -4,10 +4,14 @@ import styled from "styled-components";
 import { useContext, useState, useEffect } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { UpdateResources } from "../functions/CharacterFunctions";
 import {
   faCircle,
   faDroplet,
   faCarrot,
+  faCheck,
+  faAngleLeft,
+  faArrowRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -16,6 +20,9 @@ import {
   Title,
   CenterContainer,
   Divider,
+  LargeCircleButton,
+  SmallCircleButton,
+  LargeCircleButtonDisabled,
 } from "./SelectorPage/SelectorStyles";
 import { set } from "lodash";
 
@@ -265,23 +272,27 @@ function ResourceChanger({
 
   const [inputValue, setInputValue] = useState<number>(0);
 
+  const [previousValue, setPreviousValue] = useState<number>(0);
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const rawInputValue = event.target.value;
     if (/^\d*$/.test(rawInputValue)) {
       const newInputValue = parseInt(rawInputValue, 10) || 0; // Default to 0 if NaN
       setInputValue(newInputValue);
-      calcValue(clickState, mode, newInputValue);
+      if (clickState === "add") {
+        calcValue(clickState, mode, newInputValue);
+      } else if (clickState === "sub") {
+        calcValue(clickState, mode, -newInputValue);
+      }
     }
   };
 
-  const [lastAppliedValue, setLastAppliedValue] = useState<number>(0);
-  const [lastOperation, setLastOperation] = useState<string | null>(null);
-
   const calcValue = (operation: string, mode: string, input: number) => {
-    let currentValue = value;
+    console.log("Current Value:", value);
+
+    let newValue = value;
 
     let multiplier = 1;
-
     if (mode === "thaler") {
       multiplier = 100;
     } else if (mode === "shillings") {
@@ -290,30 +301,34 @@ function ResourceChanger({
 
     let changeAmount = input * multiplier;
 
-    if (operation === "add") {
-      currentValue += changeAmount - lastAppliedValue;
-    } else if (operation === "sub") {
-      currentValue -= changeAmount + lastAppliedValue;
-    }
+    newValue -= previousValue;
+    newValue += changeAmount;
 
-    setLastAppliedValue(changeAmount);
-    setValue(currentValue);
+    setValue(newValue);
+    console.log("change value:", changeAmount);
+    setPreviousValue(changeAmount);
   };
 
   const changeClickState = (newClickState: string) => {
     if (clickState === newClickState) return;
 
     if (newClickState === "add" && clickState !== "add") {
+      setValue(value + previousValue);
+
       setClickState("add");
       setPlusState(true);
       setMinusState(false);
+
+      calcValue(newClickState, mode, inputValue);
     } else if (newClickState === "sub" && clickState !== "sub") {
+      console.log("Value after subtraction:", value - previousValue);
+      setValue(value - previousValue);
       setClickState("sub");
       setPlusState(false);
       setMinusState(true);
-    }
 
-    calcValue(newClickState, mode, inputValue);
+      calcValue(newClickState, mode, -inputValue);
+    }
   };
 
   return (
@@ -337,18 +352,8 @@ function ResourceChanger({
 }
 
 function ResourcesBox() {
-  const { character } = useContext(CharacterContext);
+  const { character, setCharacter } = useContext(CharacterContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleOpen = () => {
-    console.log("Opening Modal");
-    setIsModalOpen(true);
-  };
-
-  const handleClose = () => {
-    console.log("Closing Modal");
-    setIsModalOpen(false);
-  };
 
   const stopPropagation = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -364,13 +369,33 @@ function ResourcesBox() {
       setWater(character.rations.water);
       setMoney(character.money);
     }
-  }, [character]);
+  }, [isModalOpen]);
 
   console.log(money);
 
   const thaler = ConvertCurrency(character.money, "thaler");
   const shillings = ConvertCurrency(character.money, "shillings");
   const orthegs = ConvertCurrency(character.money, "orthegs");
+
+  const handleOpen = () => {
+    console.log("Opening Modal");
+    setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    console.log("Closing Modal");
+    setIsModalOpen(false);
+  };
+
+  const handleSubmit = () => {
+    const UpdatedCharacter = UpdateResources(character, food, water, money);
+    setCharacter(UpdatedCharacter);
+    setIsModalOpen(false);
+  };
+
+  const handleReset = () => {
+    console.log("Resetting Modal");
+  };
 
   return (
     <>
@@ -455,6 +480,25 @@ function ResourcesBox() {
               </CenterContainer>
               <Divider />
             </ModalContainer>
+            <div className="mb-5 mt-3 flex justify-center">
+              {" "}
+              {/* Adjust the margin-bottom if necessary */}
+              <LargeCircleButton onClick={handleClose}>
+                <FontAwesomeIcon icon={faAngleLeft} />
+              </LargeCircleButton>
+              {money >= 0 ? (
+                <LargeCircleButton onClick={handleSubmit}>
+                  <FontAwesomeIcon icon={faCheck} />
+                </LargeCircleButton>
+              ) : (
+                <LargeCircleButtonDisabled>
+                  <FontAwesomeIcon icon={faCheck} />
+                </LargeCircleButtonDisabled>
+              )}
+              {/* <SmallCircleButton onClick={handleReset}>
+                <FontAwesomeIcon icon={faArrowRotateLeft} />
+              </SmallCircleButton> */}
+            </div>
           </MainContainer>
         </Overlay>
       )}

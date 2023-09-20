@@ -716,16 +716,20 @@ export function swapActives(
 
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
+}
 
-  // const sourceActive = updatedCharacter.actives[source];
-  // const targetActive = updatedCharacter.actives[target];
+export function UpdateResources(
+  character: CharacterEntry,
+  food: number,
+  water: number,
+  money: number,
+) {
+  const newCharacter = cloneDeep(character);
 
-  // const sourceStat = sourceActive.stat;
-  // const targetStat = targetActive.stat;
+  newCharacter.rations.food = food;
+  newCharacter.rations.water = water;
+  newCharacter.money = money;
 
-  // sourceActive.stat = targetStat;
-  // targetActive.stat = sourceStat;
-
-  // postSelectedCharacter(updatedCharacter);
-  // return updatedCharacter;
+  postSelectedCharacter(newCharacter);
+  return newCharacter;
 }

@@ -15,6 +15,7 @@ export async function getCombatLog(id: string): Promise<CombatEntry[]> {
 interface RollDiceProps {
   dice: string;
   type: string;
+  modifier: number;
   count: number;
   target: number;
   add_mod: boolean;
@@ -36,8 +37,9 @@ export function useRoll() {
   const { character, setCharacter } = useContext(CharacterContext);
   const { session } = useContext(SessionContext);
 
-  return ({ dice, count, target, type, add_mod }: RollDiceProps) => {
+  return ({ dice, count, target, type, modifier, add_mod }: RollDiceProps) => {
     let total = 0;
+    let newModifier = modifier;
 
     const diceValues = extractDiceValue(dice);
     if (!diceValues) {
@@ -46,7 +48,7 @@ export function useRoll() {
 
     const { dice: dice_number, modifier: dice_modifier } = diceValues;
 
-    character.details.modifier += dice_modifier;
+    newModifier += dice_modifier;
 
     for (let i = 0; i < count; i++) {
       total += Math.floor(Math.random() * dice_number) + 1;
@@ -78,7 +80,7 @@ export function useRoll() {
       result: roll_result,
       target: target,
       success: success,
-      modifier: character.details.modifier,
+      modifier: newModifier,
       add: add_mod,
     };
 

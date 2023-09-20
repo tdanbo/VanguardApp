@@ -12,13 +12,23 @@ const Container = styled.div`
   flex-grow: 1;
 `;
 
-const Navigator = styled.button`
+interface NavigatorProps {
+  active?: boolean;
+}
+
+const Navigator = styled.button<NavigatorProps>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  color: ${Constants.WIDGET_BACKGROUND};
+  border: ${(props) =>
+    props.active ? `1px solid ${Constants.WIDGET_BORDER}` : `0px solid white`};
+  color: ${(props) =>
+    props.active ? Constants.WIDGET_PRIMARY_FONT : Constants.WIDGET_BACKGROUND};
+  background-color: ${(props) =>
+    props.active
+      ? Constants.WIDGET_BACKGROUND
+      : Constants.WIDGET_BACKGROUND_EMPTY};
   border-radius: ${Constants.BORDER_RADIUS};
   &:hover {
     background-color: ${Constants.WIDGET_BACKGROUND};
@@ -67,13 +77,13 @@ function InventoryNavigation({
 
   return (
     <Container>
-      <OverburdenBox />
-      <Navigator onClick={onHandleItems}>
+      <Navigator active={inventoryState === 1} onClick={onHandleItems}>
         <FontAwesomeIcon icon={faBriefcase} />
       </Navigator>
-      <Navigator onClick={onHandleAbilities}>
+      <Navigator active={inventoryState === 2} onClick={onHandleAbilities}>
         <FontAwesomeIcon icon={faBolt} />
       </Navigator>
+      <OverburdenBox />
       <Spacer />
       <RestBox />
     </Container>

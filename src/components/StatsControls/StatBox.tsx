@@ -25,6 +25,7 @@ const Container = styled.div`
   flex: 1;
   flex-direction: row;
   gap: ${Constants.WIDGET_GAB};
+  min-height: 40px;
 `;
 
 const ActiveButton = styled.button`
@@ -35,6 +36,19 @@ const ActiveButton = styled.button`
   color: ${Constants.WIDGET_SECONDARY_FONT};
   width: 50px;
 
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: ${Constants.BORDER_RADIUS};
+`;
+
+const ModifierButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+  font-size: 1.25rem;
+  font-weight: bold;
   background-color: ${Constants.WIDGET_BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-radius: ${Constants.BORDER_RADIUS};
@@ -72,6 +86,7 @@ const ValueButton = styled.button`
 function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
   const { character, setCharacter } = useContext(CharacterContext);
   const [value, setValue] = useState<number>(type_value);
+  const [modifier, setModifier] = useState<number>(0);
 
   useEffect(() => {
     setValue(type_value);
@@ -93,20 +108,12 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
     onRollDice({
       dice: "d20",
       count: 1,
+      modifier: modifier,
       target: value,
       type: type_name,
       add_mod: false,
     });
-  };
-
-  const handleActiveRoll = () => {
-    onRollDice({
-      dice: "d20",
-      count: 1,
-      target: value,
-      type: active,
-      add_mod: false,
-    });
+    setModifier(0);
   };
 
   const handleActiveClick = () => {
@@ -135,13 +142,35 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
     }
   };
 
+  const addModifier = () => {
+    setModifier(modifier + 1);
+  };
+
+  const subModifier = () => {
+    setModifier(modifier - 1);
+  };
+
   return (
     <Container>
-      <ActiveButton className="active_button" onClick={handleActiveClick}>
-        {icon(active)}
-      </ActiveButton>
+      {modifier !== 0 ? (
+        <ModifierButton>
+          {modifier > 0 ? `+${modifier}` : modifier}
+        </ModifierButton>
+      ) : (
+        <ActiveButton className="active_button" onClick={handleActiveClick}>
+          {icon(active)}
+        </ActiveButton>
+      )}
       <ValueName onClick={handleSkillRoll}>{type_name}</ValueName>
-      <ValueButton>{value}</ValueButton>
+      <ValueButton
+        onClick={subModifier}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          addModifier();
+        }}
+      >
+        {value - modifier}
+      </ValueButton>
     </Container>
   );
 }

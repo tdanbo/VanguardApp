@@ -91,6 +91,20 @@ export const LargeCircleButton = styled.div`
   color: ${Constants.WIDGET_PRIMARY_FONT};
 `;
 
+export const LargeCircleButtonDisabled = styled.div`
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  cursor: pointer;
+  margin: 5px;
+  color: ${Constants.WIDGET_BORDER};
+`;
+
 export const SmallCircleButton = styled.div`
   width: 35px;
   height: 35px;
