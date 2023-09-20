@@ -45,14 +45,13 @@ export const ModalContainer = styled.div`
 `;
 
 export const CenterContainer = styled.div`
-  margin-top: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 0.5rem;
   overflow: auto;
   height: 400px;
-
+  margin: 20px;
   scrollbar-width: none !important;
 `;
 

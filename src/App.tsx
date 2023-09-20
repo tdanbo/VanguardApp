@@ -20,7 +20,7 @@ import InventoryNavigation from "./components/NavigationControl/InventoryNavigat
 import ActiveControls from "./components/ActiveControls";
 
 import OverburdenBox from "./components/OverburdenBox";
-import CurrencyBox from "./components/CurrencyBox";
+import ResourcesBox from "./components/ResourcesBox";
 import XpBox from "./components/XpBox";
 
 import { onAddUnspentXp } from "./functions/CharacterFunctions";
@@ -30,7 +30,6 @@ import { useContext, useState } from "react";
 
 import { CharacterContext } from "./contexts/CharacterContext";
 import SelectorComponent from "./components/SelectorPage/Selector";
-import RationsBox from "./components/RationsBox";
 import AbilityBrowser from "./components/Modals/AbilityBrowser";
 import AbilitySection from "./components/Sections/AbilitySection";
 import CombatSection from "./components/Sections/CombatSection";
@@ -232,8 +231,7 @@ function App() {
                   <AbilitySection inventoryState={inventoryState} />
                 </InventoryContainer>
                 <FooterContainer>
-                  <RationsBox />
-                  <CurrencyBox />
+                  <ResourcesBox />
                 </FooterContainer>
               </Column>
               <Column>
