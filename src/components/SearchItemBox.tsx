@@ -61,6 +61,32 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const generalItem: ItemEntry[] = [
+    {
+      roll: {
+        roll: false,
+        dice: "",
+        type: "",
+      },
+      quality: [],
+      equip: [
+        {
+          type: "",
+          equipped: false,
+        },
+      ],
+      quantity: {
+        count: 0,
+        bulk: false,
+      },
+      type: "General Good",
+      cost: "",
+      name: search,
+      category: "general_good",
+      id: "",
+    },
+  ];
+
   const filterItems = (query: string) => {
     if (query === "") {
       return fullList;
@@ -85,7 +111,11 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
   }, []);
 
   useEffect(() => {
-    setList(filterItems(search));
+    if (filterItems(search).length === 0) {
+      setList(generalItem as ItemEntry[]);
+    } else {
+      setList(filterItems(search));
+    }
   }, [search, fullList]);
 
   if (loading) {
