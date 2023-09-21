@@ -74,7 +74,6 @@ function CharacterNavigation({
   return (
     <Container>
       <SelectorComponent />
-
       <Navigator active={browserState === 1} onClick={onHandleItems}>
         <FontAwesomeIcon icon={faBook} />
       </Navigator>

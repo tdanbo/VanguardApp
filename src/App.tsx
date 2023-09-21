@@ -12,7 +12,6 @@ import { WebSocketProvider } from "./contexts/WebSocketContext";
 import HealthBox from "./components/HealthBox";
 import StatsControls from "./components/StatsControls/StatsControls";
 import EquipmentBrowser from "./components/Modals/EquipmentBrowser";
-import CorruptionControls from "./components/CorruptionControls/CorruptionControls";
 
 import CharacterNavigation from "./components/NavigationControl/CharacterNavigation";
 import HealthNavigation from "./components/NavigationControl/HealthNavigation";
@@ -38,6 +37,7 @@ import RestBox from "./components/RestBox";
 import SearchAbilityBox from "./components/SearchAbilityBox";
 import SearchItemBox from "./components/SearchItemBox";
 import { AbilityEntry, ItemEntry } from "./Types";
+import SecondaryStatsControls from "./components/StatsControls/SecondaryStatsControls";
 
 const Row = styled.div`
   display: flex;
@@ -59,6 +59,16 @@ const FooterContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end; // Align children to the right
+  min-height: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 5px;
+  gap: 20px;
+`;
+
+const FooterCenterContainer = styled.div`
+  display: flex;
+  flex-direction: row;
   min-height: 50px;
   margin-left: 20px;
   margin-right: 20px;
@@ -223,15 +233,15 @@ function App() {
                 </StatsContainer>
                 <HealthContainer>
                   <ActiveControls />
-                  <CorruptionControls />
+                  <SecondaryStatsControls />
                 </HealthContainer>
                 <InventoryContainer>
                   <InventorySection inventoryState={inventoryState} />
                   <AbilitySection inventoryState={inventoryState} />
                 </InventoryContainer>
-                <FooterContainer>
+                <FooterCenterContainer>
                   <ResourcesBox />
-                </FooterContainer>
+                </FooterCenterContainer>
               </Column>
               <Column>
                 <CombatContainer>

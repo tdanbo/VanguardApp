@@ -33,6 +33,7 @@ interface ValueProps {
 
 const Value = styled.button<ValueProps>`
   display: flex;
+  flex-direction: column;
   flex: 2;
   align-items: center;
   justify-content: center;
@@ -42,6 +43,13 @@ const Value = styled.button<ValueProps>`
   color: ${Constants.WIDGET_PRIMARY_FONT};
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
+  p {
+    font-size: 10px;
+    font-weight: bold;
+    margin-top: -10px;
+    color: ${Constants.WIDGET_BACKGROUND};
+    letter-spacing: 1px;
+  }
 `;
 
 // background-color: ${Constants.WIDGET_BACKGROUND};
@@ -52,6 +60,7 @@ const Value = styled.button<ValueProps>`
 
 const Modifier = styled.button`
   display: flex;
+  flex: 1;
   flex-grow: 1;
   align-items: center;
   justify-content: center;
@@ -71,6 +80,7 @@ type DiceProps = {
 const Dice = styled.button<DiceProps>`
   display: flex;
   flex-grow: 1;
+  flex: 1;
   align-items: center;
   justify-content: center;
   border-radius: ${Constants.BORDER_RADIUS};
@@ -90,15 +100,19 @@ function ActiveBox({ active_name, active }: Props) {
     character.stats[active.stat].value + active.mod + modValue;
   const [value, setValue] = useState(computeActiveValue());
 
-  const [dice, setDice] = useState<string>();
+  const [dice, setDice] = useState<string[]>([]);
 
-  const updateDiceForActiveName = (activeName: string) => {
+  const updateDiceForActiveName = (activeName: string): string[] => {
     console.log("GETTING NEW DICE");
+    const diceList: string[] = []; // Initialize empty array to hold dice
+
     switch (activeName) {
       case "sneaking":
-        return "d20";
+        diceList.push("d20");
+        break;
       case "casting":
-        return "d4";
+        diceList.push("d4");
+        break;
       case "defense":
         for (const invItem of character.inventory) {
           console.log("Checking inventory item:", invItem); // See each inventory item
@@ -106,7 +120,7 @@ function ActiveBox({ active_name, active }: Props) {
             console.log("Checking equipment item:", equipItem); // See each equipment item
             if (equipItem.type === "AR" && equipItem.equipped) {
               console.log("Defense dice found:", invItem.roll.dice);
-              return invItem.roll.dice;
+              diceList.push(invItem.roll.dice);
             }
           }
         }
@@ -119,14 +133,19 @@ function ActiveBox({ active_name, active }: Props) {
               equipItem.equipped
             ) {
               console.log("Attack dice found:", invItem.roll.dice); // Debug log
-              return invItem.roll.dice;
+              diceList.push(invItem.roll.dice);
             }
           }
         }
         break;
     }
-    console.log("No dice found for:", activeName); // Log if no dice value is found
-    return "d4"; // Default return value when no dice is found
+
+    if (diceList.length === 0) {
+      console.log("No dice found for:", activeName); // Log if no dice value is found
+      diceList.push("d4"); // Default value when no dice is found
+    }
+
+    return diceList;
   };
 
   const handleAddValue = () => {
@@ -167,7 +186,18 @@ function ActiveBox({ active_name, active }: Props) {
 
   const handleDiceRoll = () => {
     onRollDice({
-      dice: dice || "d4",
+      dice: dice[0] || "d4",
+      count: 1,
+      target: 0,
+      modifier: 0,
+      type: active_name,
+      add_mod: false,
+    });
+  };
+
+  const handleOffDiceRoll = () => {
+    onRollDice({
+      dice: dice[1] || "d4",
       count: 1,
       target: 0,
       modifier: 0,
@@ -193,10 +223,13 @@ function ActiveBox({ active_name, active }: Props) {
     }
   };
 
+  console.log("dice:", dice);
+
   return (
     <Container>
       <Value active_name={active_name} onClick={handleActiveRoll}>
         {value}
+        <p>{active_name.toUpperCase()}</p>
       </Value>
       <Row>
         <Modifier
@@ -218,8 +251,22 @@ function ActiveBox({ active_name, active }: Props) {
           }}
           color={Constants.TYPE_COLORS[active_name]}
         >
-          {dice}
+          {dice[0]}
         </Dice>
+        {dice[1] && ( // Checks if dice[1] exists
+          <Dice
+            onClick={() => {
+              if (active_name === "casting") {
+                RollCorruptionDice();
+              } else {
+                handleOffDiceRoll();
+              }
+            }}
+            color={Constants.TYPE_COLORS[active_name]}
+          >
+            {dice[1]}
+          </Dice>
+        )}
       </Row>
     </Container>
   );

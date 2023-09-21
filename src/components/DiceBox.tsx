@@ -28,6 +28,7 @@ function DiceBox({ type_name }: Props) {
   const RollDice = () => {
     onRollDice({
       dice: type_name,
+      modifier: 0,
       count: 1,
       target: 0,
       type: "Dice",

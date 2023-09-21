@@ -11,6 +11,8 @@ import {
   onSubPermCorruption,
   onAddToughness,
   onSubToughness,
+  onAddCorruption,
+  onSubCorruption,
 } from "../functions/CharacterFunctions";
 
 const Container = styled.div`
@@ -45,9 +47,10 @@ const Row = styled.div`
   border-radius: ${Constants.BORDER_RADIUS};
 `;
 
-const LeftValue = styled.div`
+const LeftValue = styled.button`
   display: flex;
   align-items: center;
+  flex-direction: column;
   flex-grow: 1;
   justify-content: center;
   background-color: ${Constants.WIDGET_BACKGROUND};
@@ -59,11 +62,24 @@ const LeftValue = styled.div`
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-top-right-radius: ${Constants.BORDER_RADIUS};
   border-bottom-right-radius: ${Constants.BORDER_RADIUS};
+  p {
+    display: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-top: -10px;
+    color: ${Constants.WIDGET_BACKGROUND};
+    letter-spacing: 1px;
+  }
+  &:hover p {
+      display: block;
+    }
+  }
 `;
 
 const RightValue = styled.div`
   display: flex;
   align-items: center;
+  flex-direction: column;
   flex-grow: 1;
   justify-content: center;
   background-color: ${Constants.WIDGET_BACKGROUND};
@@ -75,18 +91,40 @@ const RightValue = styled.div`
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-top-left-radius: ${Constants.BORDER_RADIUS};
   border-bottom-left-radius: ${Constants.BORDER_RADIUS};
+  p {
+    display: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-top: -10px;
+    color: ${Constants.WIDGET_BACKGROUND};
+    letter-spacing: 1px;
+  }
+  &:hover p {
+      display: block;
+    }
+  }
 `;
 
 interface cssProps {
   backgroundColor: string;
 }
 
-const TickBar = styled.div<cssProps>`
+const LeftTickBar = styled.div<cssProps>`
+  display: flex;
+  flex-grow: 1;
+  background-color: ${(props) => props.backgroundColor};
+  border-left: 1px solid ${Constants.WIDGET_BORDER};
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+`;
+
+const RightTickBar = styled.div<cssProps>`
   display: flex;
   flex-grow: 1;
   background-color: ${(props) => props.backgroundColor};
   border-right: 1px solid ${Constants.WIDGET_BORDER};
   border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
 `;
 
 function HealthBox() {
@@ -112,6 +150,16 @@ function HealthBox() {
     setCharacter(updated_character);
   };
 
+  const handleTempAddCorruption = () => {
+    const updated_character = onAddCorruption(character, 1);
+    setCharacter(updated_character);
+  };
+
+  const handleTempSubCorruption = () => {
+    const updated_character = onSubCorruption(character, 1);
+    setCharacter(updated_character);
+  };
+
   const permanent_corruption = character.corruption.permanent;
   const remaining_corruption =
     character.corruption.threshold * 3 - character.corruption.permanent;
@@ -120,34 +168,44 @@ function HealthBox() {
   const remaining_toughness =
     character.stats.strong.value - character.toughness.damage.value;
 
+  const temporary_corruption = character.corruption.temporary;
+  const clean_corruption =
+    character.corruption.threshold - temporary_corruption;
+
   return (
     <Container>
       <InnerContainer>
         <Row
-          onClick={handleSubCorruption}
+          onClick={handleTempSubCorruption}
           onContextMenu={(e) => {
             e.preventDefault();
-            handleAddCorruption();
+            handleTempAddCorruption();
           }}
         >
-          {Array.from({ length: permanent_corruption }).map((_, index) => {
-            return (
-              <TickBar
-                key={index}
-                backgroundColor={Constants.WIDGET_BACKGROUND_EMPTY}
-              />
-            );
-          })}
-          {Array.from({ length: remaining_corruption }).map((_, index) => {
-            return (
-              <TickBar
-                key={index}
-                backgroundColor={Constants.TYPE_COLORS["casting"]}
-              />
-            );
-          })}
-          <LeftValue>{remaining_corruption}</LeftValue>
+          {[...Array(temporary_corruption)].map((_, index) => (
+            <LeftTickBar
+              key={index}
+              backgroundColor={Constants.WIDGET_BACKGROUND_EMPTY}
+            />
+          ))}
+          {[...Array(clean_corruption)].map((_, index) => (
+            <LeftTickBar
+              key={index}
+              backgroundColor={Constants.TYPE_COLORS["casting"]}
+            />
+          ))}
+          <LeftValue
+            onClick={handleSubCorruption}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              handleAddCorruption();
+            }}
+          >
+            {remaining_corruption}
+            <p>{character.corruption.threshold * 3}</p>
+          </LeftValue>
         </Row>
+
         <Row
           onClick={handleSubToughness}
           onContextMenu={(e) => {
@@ -155,10 +213,12 @@ function HealthBox() {
             handleAddToughness();
           }}
         >
-          <RightValue>{remaining_toughness}</RightValue>
+          <RightValue>
+            {remaining_toughness} <p>{character.stats.strong.value}</p>
+          </RightValue>
           {Array.from({ length: remaining_toughness }).map((_, index) => {
             return (
-              <TickBar
+              <RightTickBar
                 key={index}
                 backgroundColor={Constants.TYPE_COLORS["health"]}
               />
@@ -166,7 +226,7 @@ function HealthBox() {
           })}
           {Array.from({ length: damage_toughness }).map((_, index) => {
             return (
-              <TickBar
+              <RightTickBar
                 key={index}
                 backgroundColor={Constants.WIDGET_BACKGROUND_EMPTY}
               />

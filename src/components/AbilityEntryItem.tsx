@@ -72,7 +72,6 @@ const NameContainer = styled.div`
 const LevelSelectionContainer = styled.div`
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
   margin-top: 5px;
   margin-bottom: 5px;
   justify-content: right;
@@ -290,6 +289,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
                 onClick={() =>
                   onRollDice({
                     dice: roll.dice,
+                    modifier: 0,
                     count: 1,
                     target: 0,
                     type: ability.name,
@@ -309,6 +309,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
                 onClick={() =>
                   onRollDice({
                     dice: roll.dice,
+                    modifier: 0,
                     count: 1,
                     target: 0,
                     type: ability.name,
@@ -328,6 +329,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
                 onClick={() =>
                   onRollDice({
                     dice: roll.dice,
+                    modifier: 0,
                     count: 1,
                     target: 0,
                     type: ability.name,
@@ -353,6 +355,11 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
             {ability.type}, {ability.tradition}
           </AbilityDetail>
         </NameContainer>
+
+        <RollContainer>
+          <DiceComponent ability={ability} />
+        </RollContainer>
+        <Divider />
         <LevelSelectionContainer>
           <LevelSelection
             type={ability.type}
@@ -376,10 +383,6 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
             M
           </LevelSelection>
         </LevelSelectionContainer>
-        <Divider />
-        <RollContainer>
-          <DiceComponent ability={ability} />
-        </RollContainer>
 
         {browser ? (
           <AddButton onClick={AddAbilitySlot}>+</AddButton>

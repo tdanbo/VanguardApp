@@ -56,33 +56,22 @@ function InventoryNavigation({
   setInventoryState,
 }: NavigationProps) {
   const onHandleItems = () => {
-    if (inventoryState === 0) {
-      setInventoryState(1);
-    } else if (inventoryState === 2) {
-      setInventoryState(1);
-    } else {
-      setInventoryState(0);
-    }
-  };
-
-  const onHandleAbilities = () => {
-    if (inventoryState === 0) {
+    if (inventoryState === 1) {
       setInventoryState(2);
-    } else if (inventoryState === 1) {
-      setInventoryState(2);
-    } else {
-      setInventoryState(0);
-    }
+    } else setInventoryState(1);
   };
 
   return (
     <Container>
-      <Navigator active={inventoryState === 1} onClick={onHandleItems}>
-        <FontAwesomeIcon icon={faBriefcase} />
-      </Navigator>
-      <Navigator active={inventoryState === 2} onClick={onHandleAbilities}>
-        <FontAwesomeIcon icon={faBolt} />
-      </Navigator>
+      {inventoryState === 1 ? (
+        <Navigator active={inventoryState === 1} onClick={onHandleItems}>
+          <FontAwesomeIcon icon={faBriefcase} />
+        </Navigator>
+      ) : (
+        <Navigator active={inventoryState === 2} onClick={onHandleItems}>
+          <FontAwesomeIcon icon={faBolt} />
+        </Navigator>
+      )}
       <OverburdenBox />
       <Spacer />
       <RestBox />

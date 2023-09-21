@@ -169,7 +169,7 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
           addModifier();
         }}
       >
-        {value - modifier}
+        {value + modifier}
       </ValueButton>
     </Container>
   );
