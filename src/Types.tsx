@@ -104,13 +104,12 @@ export interface ItemEntry {
 export type CombatEntry = {
   id: string;
   character: string;
-  type: string;
+  source: string;
+  active: string;
   dice: string;
   result: number;
-  target: number;
   success: boolean;
   modifier: number;
-  add: boolean;
 };
 
 export type SessionEntry = {

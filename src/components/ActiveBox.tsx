@@ -7,6 +7,7 @@ import { useContext, useEffect } from "react";
 import { Active } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
 import { onAddCorruption } from "../functions/CharacterFunctions";
+import { UpperFirstLetter } from "../functions/UtilityFunctions";
 
 type Props = {
   active: Active;
@@ -93,25 +94,31 @@ const Dice = styled.button<DiceProps>`
 
 function ActiveBox({ active_name, active }: Props) {
   const { character, setCharacter } = useContext(CharacterContext);
-
   const [modValue, setModvalue] = useState<number>(0);
 
   const computeActiveValue = () =>
     character.stats[active.stat].value + active.mod + modValue;
   const [value, setValue] = useState(computeActiveValue());
 
-  const [dice, setDice] = useState<string[]>([]);
+  const [itemDice, setItemDice] = useState<ItemType[]>([]);
 
-  const updateDiceForActiveName = (activeName: string): string[] => {
+  type ItemType = {
+    name: string;
+    roll: string;
+  };
+
+  const updateDiceForActiveName = (activeName: string): ItemType[] => {
     console.log("GETTING NEW DICE");
-    const diceList: string[] = []; // Initialize empty array to hold dice
+
+    // Initialize your array with that type
+    const itemDict: ItemType[] = [];
 
     switch (activeName) {
       case "sneaking":
-        diceList.push("d20");
+        itemDict.push({ name: "Sneaky", roll: "d4" });
         break;
       case "casting":
-        diceList.push("d4");
+        itemDict.push({ name: "Corruption", roll: "d4" });
         break;
       case "defense":
         for (const invItem of character.inventory) {
@@ -120,7 +127,7 @@ function ActiveBox({ active_name, active }: Props) {
             console.log("Checking equipment item:", equipItem); // See each equipment item
             if (equipItem.type === "AR" && equipItem.equipped) {
               console.log("Defense dice found:", invItem.roll.dice);
-              diceList.push(invItem.roll.dice);
+              itemDict.push({ name: invItem.name, roll: invItem.roll.dice });
             }
           }
         }
@@ -133,19 +140,19 @@ function ActiveBox({ active_name, active }: Props) {
               equipItem.equipped
             ) {
               console.log("Attack dice found:", invItem.roll.dice); // Debug log
-              diceList.push(invItem.roll.dice);
+              itemDict.push({ name: invItem.name, roll: invItem.roll.dice });
             }
           }
         }
         break;
     }
 
-    if (diceList.length === 0) {
+    if (itemDict.length === 0) {
       console.log("No dice found for:", activeName); // Log if no dice value is found
-      diceList.push("d4"); // Default value when no dice is found
+      itemDict.push({ name: "un-equipped", roll: "d4" }); // Default value when no dice is found
     }
 
-    return diceList;
+    return itemDict;
   };
 
   const handleAddValue = () => {
@@ -159,7 +166,7 @@ function ActiveBox({ active_name, active }: Props) {
   };
 
   useEffect(() => {
-    setDice(updateDiceForActiveName(active_name));
+    setItemDice(updateDiceForActiveName(active_name));
   }, [active_name, character]);
 
   useEffect(() => {
@@ -179,29 +186,33 @@ function ActiveBox({ active_name, active }: Props) {
       count: 1,
       modifier: modValue,
       target: value,
-      type: active_name,
+      source: "Skill Test",
+      active: active.stat,
       add_mod: false,
     });
   };
 
-  const handleDiceRoll = () => {
+  const handleDiceRoll = (active: string) => {
     onRollDice({
-      dice: dice[0] || "d4",
+      dice: itemDice[0].roll || "d4",
       count: 1,
       target: 0,
       modifier: 0,
-      type: active_name,
+      source: itemDice[0].name,
+      active: active_name,
       add_mod: false,
     });
   };
 
   const handleOffDiceRoll = () => {
     onRollDice({
-      dice: dice[1] || "d4",
+      dice: itemDice[1].roll || "d4",
       count: 1,
       target: 0,
       modifier: 0,
-      type: active_name,
+      source: itemDice[1].name,
+      active: "Damage",
+
       add_mod: false,
     });
   };
@@ -212,7 +223,8 @@ function ActiveBox({ active_name, active }: Props) {
       count: 1,
       target: 0,
       modifier: 0,
-      type: "corruption",
+      source: "Casting",
+      active: "Corruption",
       add_mod: true,
     });
 
@@ -222,8 +234,6 @@ function ActiveBox({ active_name, active }: Props) {
       setCharacter(updated_character);
     }
   };
-
-  console.log("dice:", dice);
 
   return (
     <Container>
@@ -241,30 +251,32 @@ function ActiveBox({ active_name, active }: Props) {
         >
           {modValue}
         </Modifier>
-        <Dice
-          onClick={() => {
-            if (active_name === "casting") {
-              RollCorruptionDice();
-            } else {
-              handleDiceRoll();
-            }
-          }}
-          color={Constants.TYPE_COLORS[active_name]}
-        >
-          {dice[0]}
-        </Dice>
-        {dice[1] && ( // Checks if dice[1] exists
+        {itemDice[0] && (
           <Dice
             onClick={() => {
               if (active_name === "casting") {
                 RollCorruptionDice();
-              } else {
-                handleOffDiceRoll();
+              } else if (active_name === "defense") {
+                handleDiceRoll("armor");
+              } else if (active_name === "attack") {
+                handleDiceRoll("damage");
+              } else if (active_name === "sneaking") {
+                handleDiceRoll("skill test");
               }
             }}
             color={Constants.TYPE_COLORS[active_name]}
           >
-            {dice[1]}
+            {itemDice[0].roll}
+          </Dice>
+        )}
+        {itemDice[1] && ( // Checks if dice[1] exists
+          <Dice
+            onClick={() => {
+              handleOffDiceRoll();
+            }}
+            color={Constants.TYPE_COLORS[active_name]}
+          >
+            {itemDice[1].roll}
           </Dice>
         )}
       </Row>

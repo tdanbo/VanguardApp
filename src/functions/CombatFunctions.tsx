@@ -14,7 +14,8 @@ export async function getCombatLog(id: string): Promise<CombatEntry[]> {
 
 interface RollDiceProps {
   dice: string;
-  type: string;
+  active: string;
+  source: string;
   modifier: number;
   count: number;
   target: number;
@@ -37,7 +38,15 @@ export function useRoll() {
   const { character, setCharacter } = useContext(CharacterContext);
   const { session } = useContext(SessionContext);
 
-  return ({ dice, count, target, type, modifier, add_mod }: RollDiceProps) => {
+  return ({
+    dice,
+    count,
+    target,
+    active,
+    source,
+    modifier,
+    add_mod,
+  }: RollDiceProps) => {
     let total = 0;
     let newModifier = modifier;
 
@@ -75,13 +84,12 @@ export function useRoll() {
     const NewCombatEntry: CombatEntry = {
       id: session.id,
       character: character.details.name,
-      type: type,
+      source: source,
+      active: active,
       dice: dice,
       result: roll_result,
-      target: target,
       success: success,
       modifier: newModifier,
-      add: add_mod,
     };
 
     const updated_character = setBaseModifier(character, 0);

@@ -3,10 +3,15 @@ import { CombatEntry } from "../Types";
 import styled from "styled-components";
 
 import { UpperFirstLetter } from "../functions/UtilityFunctions";
+import { Color } from "chroma-js";
 
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
   index: number;
+}
+
+interface ColorTypeProps {
+  rgb: string;
 }
 
 const Container = styled.div`
@@ -45,7 +50,7 @@ const Result = styled.div`
   border: 1px solid ${Constants.WIDGET_BORDER};
 `;
 
-const Active = styled.div`
+const Active = styled.div<ColorTypeProps>`
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -54,11 +59,7 @@ const Active = styled.div`
   font-size: 1.25rem;
   font-weight: bold;
   height: 50px;
-
-  h2 {
-    color: ${Constants.WIDGET_SECONDARY_FONT};
-    font-size: 12px;
-  }
+  color: ${Constants.WIDGET_PRIMARY_FONT};
 `;
 
 const Outcome = styled.div`
@@ -70,17 +71,35 @@ const Outcome = styled.div`
   font-size: 1.25rem;
   font-weight: bold;
   height: 50px;
-  h2 {
-    color: ${Constants.WIDGET_SECONDARY_FONT};
-    font-size: 12px;
-  }
+`;
+
+const Dice = styled.h2`
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  font-size: 12px;
+`;
+const Source = styled.h2<ColorTypeProps>`
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  font-size: 12px;
+`;
+
+const TestResult = styled.h2<{ isSuccess?: boolean }>`
+  color: ${(props) =>
+    props.isSuccess === true
+      ? "rgb(64, 191, 96)"
+      : props.isSuccess === false
+      ? "rgb(191, 64, 64)"
+      : Constants.WIDGET_SECONDARY_FONT};
+  font-size: 12px;
 `;
 
 //
 
 function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   const EntryColor = () => {
-    return Constants.TYPE_COLORS[combatEntry.type] || Constants.BORDER_DARK;
+    return (
+      Constants.TYPE_COLORS[combatEntry.active.toLowerCase()] ||
+      Constants.WIDGET_SECONDARY_FONT
+    );
   };
 
   let modifierText = "";
@@ -92,46 +111,41 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
 
   return (
     <Container>
-      <Active>
-        <h1>{UpperFirstLetter(combatEntry.type)}</h1>
-        <h2>{modifierText}</h2>
+      <Active rgb={EntryColor()}>
+        <h1>{UpperFirstLetter(combatEntry.character)}</h1>
+        {combatEntry.source === "Skill Test" ? (
+          <TestResult isSuccess={combatEntry.success}>
+            {combatEntry.source}
+          </TestResult>
+        ) : (
+          <Source rgb={EntryColor()}>{combatEntry.source}</Source>
+        )}
       </Active>
       <Result
-        title={
-          combatEntry.add
-            ? `Dice: 1${combatEntry.dice}\nRoll: ${
-                combatEntry.result - combatEntry.modifier
-              }\nRoll Modified: ${combatEntry.modifier}\nResult: ${
-                combatEntry.result
-              }`
-            : `Dice: 1${combatEntry.dice}\nRoll: ${combatEntry.result}\nRoll Modified: 0\nResult: ${combatEntry.result}`
-        }
+      // title={
+      //   combatEntry.add
+      //     ? `Dice: 1${combatEntry.dice}\nRoll: ${
+      //         combatEntry.result - combatEntry.modifier
+      //       }\nRoll Modified: ${combatEntry.modifier}\nResult: ${
+      //         combatEntry.result
+      //       }`
+      //     : `Dice: 1${combatEntry.dice}\nRoll: ${combatEntry.result}\nRoll Modified: 0\nResult: ${combatEntry.result}`
+      // }
       >
         {combatEntry.result}
       </Result>
       <Outcome>
-        <h1>{(combatEntry.success && "Success") || "Failure"}</h1>
-        <h2>Target {combatEntry.target}</h2>
-      </Outcome>
-      {/* <div className="flex flex-grow flex-col justify-center">
-        <div className="text-m flex items-center justify-center font-bold uppercase ">
-          {combatEntry.modifier > 0
-            ? `+${combatEntry.modifier}`
-            : combatEntry.modifier === 0
-            ? ""
-            : `${combatEntry.modifier}`}{" "}
-          {combatEntry.type}
-        </div>
-        {combatEntry.success === true ? (
-          <div className="flex items-center justify-center text-sm">
-            {combatEntry.character}
-          </div>
+        <h1>
+          {UpperFirstLetter(combatEntry.active)} {modifierText}
+        </h1>
+        {combatEntry.source === "Skill Test" ? (
+          <TestResult isSuccess={combatEntry.success}>
+            {combatEntry.success ? "Success" : "Failure"}
+          </TestResult>
         ) : (
-          <div className="flex items-center justify-center text-sm">
-            {combatEntry.character}
-          </div>
+          <Dice>{combatEntry.dice}</Dice>
         )}
-      </div> */}
+      </Outcome>
     </Container>
   );
 }

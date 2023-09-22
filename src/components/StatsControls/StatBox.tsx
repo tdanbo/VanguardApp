@@ -110,7 +110,8 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
       count: 1,
       modifier: modifier,
       target: value,
-      type: type_name,
+      active: type_name,
+      source: "Skill Test",
       add_mod: false,
     });
     setModifier(0);
