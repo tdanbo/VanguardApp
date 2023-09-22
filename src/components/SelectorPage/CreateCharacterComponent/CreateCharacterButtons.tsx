@@ -11,7 +11,7 @@ import { addNewCharacter } from "../../../functions/CharacterFunctions";
 import { CharacterContext } from "../../../contexts/CharacterContext";
 import { getCharacters } from "../../../functions/SessionsFunctions";
 import { useWebSocket } from "../../../contexts/WebSocketContext";
-
+import { ButtonContainer, LargeCircleButton } from "../SelectorStyles";
 interface Stats {
   id: number;
   value: number;
@@ -23,12 +23,14 @@ interface CreateSessionsProps {
   character_name: string;
   stats: Stats[];
   setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
+  portrait: string;
 }
 
 function CreateCharacterButtons({
   setSelector,
   character_name,
   stats,
+  portrait,
   setCharacterLog,
 }: CreateSessionsProps) {
   const { session } = useContext(SessionContext);
@@ -37,6 +39,7 @@ function CreateCharacterButtons({
 
   const NewCharacterEntry: CharacterEntry = {
     id: session.id,
+    portrait: portrait,
     details: {
       movement: 0,
       name: character_name,
@@ -80,37 +83,28 @@ function CreateCharacterButtons({
   }
 
   const handlePostCharacter = async () => {
+    console.log(NewCharacterEntry);
     setSelector("characterSelect");
     await addNewCharacter(NewCharacterEntry);
     sendRequest("characters"); // asking websocket to update session characters for all clients
   };
 
   return (
-    <div className="mb-5 mt-3 flex justify-center">
-      {" "}
-      {/* Adjust the margin-bottom if necessary */}
-      <div style={Styles.largeCircleButtonStyles}>
+    <ButtonContainer>
+      <LargeCircleButton>
         <FontAwesomeIcon
           icon={faAngleLeft}
-          style={{ color: Constants.FONT_LIGHT }}
           onClick={() => setSelector("session")}
         />
-      </div>
-      <div style={Styles.largeCircleButtonStyles}>
+      </LargeCircleButton>
+      <LargeCircleButton>
         {character_name === "" ? (
-          <FontAwesomeIcon
-            icon={faCheck}
-            style={{ color: Constants.NEW_BORDER }}
-          />
+          <FontAwesomeIcon icon={faCheck} />
         ) : (
-          <FontAwesomeIcon
-            icon={faCheck}
-            style={{ color: Constants.FONT_LIGHT }}
-            onClick={handlePostCharacter}
-          />
+          <FontAwesomeIcon icon={faCheck} onClick={handlePostCharacter} />
         )}
-      </div>
-    </div>
+      </LargeCircleButton>
+    </ButtonContainer>
   );
 }
 export default CreateCharacterButtons;

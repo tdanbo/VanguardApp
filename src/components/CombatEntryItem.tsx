@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 import { UpperFirstLetter } from "../functions/UtilityFunctions";
 import { Color } from "chroma-js";
+import { CharacterContext } from "../contexts/CharacterContext";
+import { useContext } from "react";
 
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
@@ -14,7 +16,11 @@ interface ColorTypeProps {
   rgb: string;
 }
 
-const Container = styled.div`
+interface PortraitProps {
+  src: string;
+}
+
+const Container = styled.div<PortraitProps>`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -31,7 +37,7 @@ const Container = styled.div`
       rgba(${Constants.COMBAT_BACKGROUND}, 0.9),
       rgba(${Constants.COMBAT_BACKGROUND}, 0.9)
     ),
-    url("src/assets/characters/portrait2.jpeg");
+    url(${(props) => props.src});
   background-size: cover;
   background-position: center;
 `;
@@ -110,7 +116,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   }
 
   return (
-    <Container>
+    <Container src={combatEntry.portrait}>
       <Active rgb={EntryColor()}>
         <h1>{UpperFirstLetter(combatEntry.character)}</h1>
         {combatEntry.source === "Skill Test" ? (

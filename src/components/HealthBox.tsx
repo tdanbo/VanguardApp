@@ -15,11 +15,15 @@ import {
   onSubCorruption,
 } from "../functions/CharacterFunctions";
 
-const Container = styled.div`
+interface PortraitProps {
+  src: string;
+}
+
+const Container = styled.div<PortraitProps>`
   display: flex;
   flex: 2;
 
-  background-image: url("src/assets/characters/portrait2.jpeg");
+  background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
   border-radius: ${Constants.BORDER_RADIUS};
@@ -173,7 +177,7 @@ function HealthBox() {
     character.corruption.threshold - temporary_corruption;
 
   return (
-    <Container>
+    <Container src={character.portrait}>
       <InnerContainer>
         <Row
           onClick={handleTempSubCorruption}

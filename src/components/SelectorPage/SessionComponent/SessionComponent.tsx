@@ -46,7 +46,6 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
         </CenterContainer>
         <Divider />
       </ModalContainer>
-
       <SessionButtons setSelector={setSelector} setSessions={setSessions} />
     </MainContainer>
   );

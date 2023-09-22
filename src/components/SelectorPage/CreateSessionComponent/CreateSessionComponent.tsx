@@ -5,6 +5,14 @@ import CreateSessionButtons from "./CreateSessionButtons";
 import { useState } from "react";
 import { CharacterEntry } from "../../../Types";
 
+import {
+  MainContainer,
+  ModalContainer,
+  Title,
+  CenterContainer,
+  Divider,
+} from "../SelectorStyles";
+
 interface LoginProps {
   setSelector: (selector: string) => void;
 }
@@ -23,22 +31,11 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
   };
 
   return (
-    <div
-      className="flex w-1/5 flex-col justify-center"
-      style={{ margin: "100px" }}
-    >
-      <div style={Styles.modalStyles}>
-        <div
-          className="flex justify-center p-10 text-4xl font-bold"
-          style={{ color: Constants.FONT_LIGHT }}
-        >
-          Create Session
-        </div>
-        <div className="my-5 h-0.5 w-full bg-zinc-800"></div>
-        <div
-          className="my-5 flex flex-col justify-center space-y-2 overflow-auto"
-          style={{ height: "400px" }}
-        >
+    <MainContainer>
+      <Title>Create Session</Title>
+      <ModalContainer>
+        <Divider />
+        <CenterContainer>
           <input
             placeholder="Session Name"
             className="rounded-md p-2"
@@ -50,15 +47,15 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
             className="rounded-md p-2"
             onChange={handleDescriptionChange}
           />
-        </div>
-        <div className="my-5 h-0.5 w-full bg-zinc-800"></div>
-      </div>
+        </CenterContainer>
+        <Divider />
+      </ModalContainer>
       <CreateSessionButtons
         setSelector={setSelector}
         sessionName={sessionName}
         sessionDescription={sessionDescription}
       />
-    </div>
+    </MainContainer>
   );
 }
 

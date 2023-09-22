@@ -9,6 +9,12 @@ import { useContext } from "react";
 import { SessionEntry } from "../../../Types";
 import { postSession } from "../../../functions/SessionsFunctions";
 
+import {
+  ButtonContainer,
+  LargeCircleButton,
+  LargeCircleButtonDisabled,
+} from "../SelectorStyles";
+
 interface CreateSessionsProps {
   setSelector: (selector: string) => void;
   sessionName: string;
@@ -62,29 +68,17 @@ function CreateSessionButtons({
     <div className="mb-5 mt-3 flex justify-center">
       {" "}
       {/* Adjust the margin-bottom if necessary */}
-      <div
-        style={Styles.largeCircleButtonStyles}
-        onClick={() => setSelector("session")}
-      >
-        <FontAwesomeIcon
-          icon={faAngleLeft}
-          style={{ color: Constants.FONT_LIGHT }}
-        />
-      </div>
+      <LargeCircleButton onClick={() => setSelector("session")}>
+        <FontAwesomeIcon icon={faAngleLeft} />
+      </LargeCircleButton>
       {sessionName === "" ? (
-        <div style={Styles.largeCircleButtonStyles}>
-          <FontAwesomeIcon
-            icon={faCheck}
-            style={{ color: Constants.NEW_BORDER }}
-          />
-        </div>
+        <LargeCircleButtonDisabled>
+          <FontAwesomeIcon icon={faCheck} />
+        </LargeCircleButtonDisabled>
       ) : (
-        <div style={Styles.largeCircleButtonStyles} onClick={handlePostSession}>
-          <FontAwesomeIcon
-            icon={faCheck}
-            style={{ color: Constants.FONT_LIGHT }}
-          />
-        </div>
+        <LargeCircleButton>
+          <FontAwesomeIcon icon={faCheck} />
+        </LargeCircleButton>
       )}
     </div>
   );

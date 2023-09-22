@@ -14,6 +14,7 @@ import CreateCharacterComponent from "./CreateCharacterComponent/CreateCharacter
 import GamemasterComponent from "./GamemasterComponent/GamemasterComponent";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
+import SelectPortraitComponent from "./SelectPortraitComponent/SelectPortraitComponent";
 
 const OverlayStyles = styled.div`
   position: fixed;
@@ -66,6 +67,7 @@ function SelectorComponent() {
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
+  const [characterPortrait, setCharacterPortrait] = useState<string>("");
 
   const renderContent = (selectorValue: string) => {
     switch (selectorValue) {
@@ -89,6 +91,14 @@ function SelectorComponent() {
           <CreateCharacterComponent
             setSelector={setSelector}
             setCharacterLog={setCharacterLog}
+            characterPortrait={characterPortrait}
+          />
+        );
+      case "selectPortrait":
+        return (
+          <SelectPortraitComponent
+            setSelector={setSelector}
+            setCharacterPortrait={setCharacterPortrait}
           />
         );
       case "gamemaster":

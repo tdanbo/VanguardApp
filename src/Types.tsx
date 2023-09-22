@@ -62,6 +62,7 @@ interface Rations {
 
 export interface CharacterEntry {
   id: string;
+  portrait: string;
   details: CharacterDetails;
   toughness: Toughness;
   stats: Stats;
@@ -104,6 +105,7 @@ export interface ItemEntry {
 export type CombatEntry = {
   id: string;
   character: string;
+  portrait: string;
   source: string;
   active: string;
   dice: string;

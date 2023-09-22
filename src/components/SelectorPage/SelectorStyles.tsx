@@ -47,7 +47,7 @@ export const ModalContainer = styled.div`
 export const CenterContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+
   gap: 0.5rem;
   overflow: auto;
   height: 400px;
