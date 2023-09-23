@@ -1,6 +1,5 @@
 import * as Constants from "../../Constants";
-import { useState, CSSProperties, useContext, useEffect } from "react";
-import { CharacterContext } from "../../contexts/CharacterContext";
+import { useState } from "react";
 
 import LoginComponent from "./LoginComponent/LoginComponent";
 import { CharacterEntry } from "../../Types";
@@ -23,7 +22,7 @@ const OverlayStyles = styled.div`
   right: 0;
   bottom: 0;
   background-image: linear-gradient(rgba(7, 9, 11, 0.95), rgba(7, 9, 11, 0.95)),
-    url("https://www.belloflostsouls.net/wp-content/uploads/2020/06/symbaroum-horz.jpg");
+    url("src/assets/icons/background.jpeg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -32,17 +31,6 @@ const OverlayStyles = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
-  width: 500px;
-  min-width: 500px;
-  background-color: ${Constants.WIDGET_BACKGROUND};
 `;
 
 const Navigator = styled.button`
@@ -63,7 +51,6 @@ const Navigator = styled.button`
 `;
 
 function SelectorComponent() {
-  const { character } = useContext(CharacterContext);
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
@@ -125,10 +112,6 @@ function SelectorComponent() {
   const handleClose = () => {
     console.log("Closing Modal");
     setIsModalOpen(false);
-  };
-
-  const stopPropagation = (e: React.MouseEvent) => {
-    e.stopPropagation();
   };
 
   return isModalOpen ? (

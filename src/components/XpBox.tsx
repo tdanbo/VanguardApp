@@ -1,15 +1,15 @@
 import * as Constants from "../Constants";
-import { CharacterEntry } from "../Types";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { getCharacterXp } from "../functions/CharacterFunctions";
 import { useContext } from "react";
 import styled from "styled-components";
+import "../App.css";
 
 import {
   onAddUnspentXp,
   onSubUnspentXp,
 } from "../functions/CharacterFunctions";
-const Container = styled.div`
+const Container = styled.button`
   display: flex;
   flex: 1;
   flex-direction: row;
@@ -43,6 +43,7 @@ function XpBox() {
 
   return (
     <Container
+      className="mouse-icon-hover"
       onClick={handleSubXp}
       onContextMenu={(e) => {
         e.preventDefault();

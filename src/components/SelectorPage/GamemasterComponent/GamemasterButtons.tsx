@@ -1,17 +1,11 @@
 import { useContext } from "react";
-import { UserContext } from "../../../contexts/UserContext";
 import { SessionContext } from "../../../contexts/SessionContext";
 import {
-  leaveSession,
-  getSessions,
   deleteSession,
   deleteAllSessionCharacters,
 } from "../../../functions/SessionsFunctions";
-import * as Styles from "../SelectorStyles";
-import * as Constants from "../../../Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faPlus,
   faAngleLeft,
   faXmark,
   faHatWizard,
@@ -46,8 +40,11 @@ function GamemasterButtons({ setSelector }: LoginProps) {
 
   const handleDeleteSession = async () => {
     console.log("Deleting Session");
+    deleteSession(session.id);
+    deleteAllSessionCharacters(session.id);
     setSelector("session");
   };
+
   return (
     <ButtonContainer>
       <SmallCircleButton onClick={() => setSelector("session")}>

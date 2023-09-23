@@ -1,11 +1,8 @@
 import * as Constants from "../../../Constants";
-import * as Styles from "../SelectorStyles";
 import SelectCharacterButtons from "./GamemasterButtons";
-import CharacterBox from "../SelectCharacterComponent/CharacterBox";
 import { useState, useEffect, useContext } from "react";
-import { CharacterEntry, SessionEntry } from "../../../Types";
+import { CharacterEntry } from "../../../Types";
 import { getCharacters } from "../../../functions/SessionsFunctions";
-import { UserContext } from "../../../contexts/UserContext";
 import { SessionContext } from "../../../contexts/SessionContext";
 import { useWebSocket } from "../../../contexts/WebSocketContext";
 import styled from "styled-components";
@@ -31,8 +28,7 @@ const CatergoryTitle = styled.div`
   text-align: center;
   color: ${Constants.WIDGET_SECONDARY_FONT};
 `;
-function GamemasterComponent({ setSelector, closeModal }: LoginProps) {
-  const { user } = useContext(UserContext);
+function GamemasterComponent({ setSelector }: LoginProps) {
   const { session } = useContext(SessionContext);
 
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
@@ -63,14 +59,14 @@ function GamemasterComponent({ setSelector, closeModal }: LoginProps) {
         <Divider />
         <CenterContainer>
           <CatergoryTitle>Characters</CatergoryTitle>
-          {[...characterLog].reverse().map((character, index) => (
+          {[...characterLog].reverse().map((character) => (
             <CharacterSimpleBox
               character={character}
               setCharacterLog={setCharacterLog}
             />
           ))}
           <CatergoryTitle>Users</CatergoryTitle>
-          {[...userLog].map((username, index) => (
+          {[...userLog].map((username) => (
             <UserSimpleBox username={username} setUserLog={setUserLog} />
           ))}
         </CenterContainer>

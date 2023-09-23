@@ -1,15 +1,9 @@
-import UserBox from "../UserBox";
-
-import * as Styles from "../SelectorStyles";
-import * as Constants from "../../../Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { SessionContext } from "../../../contexts/SessionContext";
-import { useContext, useState } from "react";
-import { CharacterEntry, SessionEntry } from "../../../Types";
+import { useContext } from "react";
+import { CharacterEntry } from "../../../Types";
 import { addNewCharacter } from "../../../functions/CharacterFunctions";
-import { CharacterContext } from "../../../contexts/CharacterContext";
-import { getCharacters } from "../../../functions/SessionsFunctions";
 import { useWebSocket } from "../../../contexts/WebSocketContext";
 import { ButtonContainer, LargeCircleButton } from "../SelectorStyles";
 interface Stats {
@@ -22,7 +16,6 @@ interface CreateSessionsProps {
   setSelector: (selector: string) => void;
   character_name: string;
   stats: Stats[];
-  setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   portrait: string;
 }
 
@@ -31,10 +24,8 @@ function CreateCharacterButtons({
   character_name,
   stats,
   portrait,
-  setCharacterLog,
 }: CreateSessionsProps) {
   const { session } = useContext(SessionContext);
-  const { setCharacter } = useContext(CharacterContext);
   const { sendRequest } = useWebSocket();
 
   const NewCharacterEntry: CharacterEntry = {
@@ -77,10 +68,6 @@ function CreateCharacterButtons({
     rations: { food: 0, water: 0 },
     money: 0,
   };
-
-  function sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
   const handlePostCharacter = async () => {
     console.log(NewCharacterEntry);

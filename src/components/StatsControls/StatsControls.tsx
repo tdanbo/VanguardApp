@@ -4,7 +4,6 @@ import { useContext, useState } from "react";
 import { CharacterContext } from "../../contexts/CharacterContext";
 
 import styled from "styled-components";
-import * as Constants from "../../Constants";
 
 const Container = styled.div`
   display: flex;

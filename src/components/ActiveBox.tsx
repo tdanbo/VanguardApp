@@ -7,8 +7,9 @@ import { useContext, useEffect } from "react";
 import { Active } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
 import { onAddCorruption } from "../functions/CharacterFunctions";
-import { UpperFirstLetter } from "../functions/UtilityFunctions";
+import { onUseAmmunition } from "../functions/CharacterFunctions";
 
+import "../App.css";
 type Props = {
   active: Active;
   active_name: string;
@@ -44,6 +45,7 @@ const Value = styled.button<ValueProps>`
   color: ${Constants.WIDGET_PRIMARY_FONT};
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
+  background-color: ${Constants.WIDGET_BACKGROUND};
   p {
     font-size: 10px;
     font-weight: bold;
@@ -52,12 +54,6 @@ const Value = styled.button<ValueProps>`
     letter-spacing: 1px;
   }
 `;
-
-// background-color: ${Constants.WIDGET_BACKGROUND};
-// background-image: url("src/assets/icons/${(props) => props.active_name}.png");
-// background-size: 70%;
-// background-repeat: no-repeat;
-// background-position: center;
 
 const Modifier = styled.button`
   display: flex;
@@ -105,6 +101,7 @@ function ActiveBox({ active_name, active }: Props) {
   type ItemType = {
     name: string;
     roll: string;
+    type: string;
   };
 
   const updateDiceForActiveName = (activeName: string): ItemType[] => {
@@ -115,10 +112,10 @@ function ActiveBox({ active_name, active }: Props) {
 
     switch (activeName) {
       case "sneaking":
-        itemDict.push({ name: "Sneaky", roll: "d4" });
+        itemDict.push({ name: "Sneaky", roll: "d4", type: "skill" });
         break;
       case "casting":
-        itemDict.push({ name: "Corruption", roll: "d4" });
+        itemDict.push({ name: "Corruption", roll: "d4", type: "skill" });
         break;
       case "defense":
         for (const invItem of character.inventory) {
@@ -127,7 +124,11 @@ function ActiveBox({ active_name, active }: Props) {
             console.log("Checking equipment item:", equipItem); // See each equipment item
             if (equipItem.type === "AR" && equipItem.equipped) {
               console.log("Defense dice found:", invItem.roll.dice);
-              itemDict.push({ name: invItem.name, roll: invItem.roll.dice });
+              itemDict.push({
+                name: invItem.name,
+                roll: invItem.roll.dice,
+                type: invItem.type,
+              });
             }
           }
         }
@@ -140,7 +141,11 @@ function ActiveBox({ active_name, active }: Props) {
               equipItem.equipped
             ) {
               console.log("Attack dice found:", invItem.roll.dice); // Debug log
-              itemDict.push({ name: invItem.name, roll: invItem.roll.dice });
+              itemDict.push({
+                name: invItem.name,
+                roll: invItem.roll.dice,
+                type: invItem.type,
+              });
             }
           }
         }
@@ -149,8 +154,10 @@ function ActiveBox({ active_name, active }: Props) {
 
     if (itemDict.length === 0) {
       console.log("No dice found for:", activeName); // Log if no dice value is found
-      itemDict.push({ name: "un-equipped", roll: "d4" }); // Default value when no dice is found
+      itemDict.push({ name: "unequipped", roll: "d4", type: "unequipped" }); // Default value when no dice is found
     }
+
+    console.log("New dice:", itemDict);
 
     return itemDict;
   };
@@ -192,27 +199,34 @@ function ActiveBox({ active_name, active }: Props) {
     });
   };
 
-  const handleDiceRoll = (active: string) => {
+  const handleDiceRoll = (itemDice: ItemType, active: string) => {
     onRollDice({
-      dice: itemDice[0].roll || "d4",
+      dice: itemDice.roll || "d4",
       count: 1,
       target: 0,
       modifier: 0,
-      source: itemDice[0].name,
-      active: active_name,
+      source: itemDice.name,
+      active: active,
       add_mod: false,
     });
   };
 
-  const handleOffDiceRoll = () => {
+  const handleRangeRoll = (itemDice: ItemType) => {
+    const { updatedCharacter, hasAmmunition } = onUseAmmunition(character);
+    setCharacter(updatedCharacter);
+    if (!hasAmmunition) {
+      console.log("no ammo");
+      // handle case when onUseAmmunition is false
+      return;
+    }
+
     onRollDice({
-      dice: itemDice[1].roll || "d4",
+      dice: itemDice.roll,
       count: 1,
       target: 0,
       modifier: 0,
-      source: itemDice[1].name,
+      source: itemDice.name,
       active: "Damage",
-
       add_mod: false,
     });
   };
@@ -237,7 +251,11 @@ function ActiveBox({ active_name, active }: Props) {
 
   return (
     <Container>
-      <Value active_name={active_name} onClick={handleActiveRoll}>
+      <Value
+        active_name={active_name}
+        onClick={handleActiveRoll}
+        className="dice-icon-hover"
+      >
         {value}
         <p>{active_name.toUpperCase()}</p>
       </Value>
@@ -248,20 +266,26 @@ function ActiveBox({ active_name, active }: Props) {
             e.preventDefault();
             handleAddValue();
           }}
+          className="mouse-icon-hover"
         >
           {modValue}
         </Modifier>
-        {itemDice[0] && (
+        {itemDice[0] && itemDice[0].roll !== "" && (
           <Dice
+            className="dice-icon-hover"
             onClick={() => {
               if (active_name === "casting") {
                 RollCorruptionDice();
               } else if (active_name === "defense") {
-                handleDiceRoll("armor");
+                handleDiceRoll(itemDice[0], "armor");
               } else if (active_name === "attack") {
-                handleDiceRoll("damage");
+                {
+                  itemDice[0].type === "Ranged Weapon"
+                    ? handleRangeRoll(itemDice[0])
+                    : handleDiceRoll(itemDice[0], "damage");
+                }
               } else if (active_name === "sneaking") {
-                handleDiceRoll("skill test");
+                handleDiceRoll(itemDice[0], "skill test");
               }
             }}
             color={Constants.TYPE_COLORS[active_name]}
@@ -269,10 +293,15 @@ function ActiveBox({ active_name, active }: Props) {
             {itemDice[0].roll}
           </Dice>
         )}
-        {itemDice[1] && ( // Checks if dice[1] exists
+        {itemDice[1] && itemDice[1].roll !== "" && (
           <Dice
+            className="dice-icon-hover"
             onClick={() => {
-              handleOffDiceRoll();
+              {
+                itemDice[0].type === "Ranged Weapon"
+                  ? handleRangeRoll(itemDice[1])
+                  : handleDiceRoll(itemDice[1], "damage");
+              }
             }}
             color={Constants.TYPE_COLORS[active_name]}
           >

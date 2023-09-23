@@ -2,7 +2,6 @@ import * as Constants from "../Constants";
 
 import { ItemEntry, EquipEntry } from "../Types";
 import Quantity from "./Modals/Quantity";
-import { TYPE_COLORS } from "../Constants";
 import { useContext } from "react";
 import { useRoll } from "../functions/CombatFunctions";
 import { CharacterContext } from "../contexts/CharacterContext";
@@ -11,7 +10,6 @@ import {
   onEquipItem,
   onUnequipItem,
   onAddInventoryItem,
-  onUseAmmunition,
 } from "../functions/CharacterFunctions";
 
 import styled from "styled-components";
@@ -127,13 +125,7 @@ const Divider = styled.div`
   margin-bottom: 5px;
 `;
 
-function InventoryEntry({
-  index,
-  item,
-  browser,
-  equipped,
-  id,
-}: InventoryEntryProps) {
+function InventoryEntry({ item, browser, equipped, id }: InventoryEntryProps) {
   const { character, setCharacter } = useContext(CharacterContext);
 
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
@@ -168,27 +160,11 @@ function InventoryEntry({
   const handleRoll = () => {
     onRollDice({
       dice: item.roll.dice,
+      modifier: 0,
       count: 1,
       target: 0,
-      type: item.roll.type,
-      add_mod: true,
-    });
-  };
-
-  const handleRangeRoll = () => {
-    const { updatedCharacter, hasAmmunition } = onUseAmmunition(character);
-    setCharacter(updatedCharacter);
-    if (!hasAmmunition) {
-      console.log("no ammo");
-      // handle case when onUseAmmunition is false
-      return;
-    }
-
-    onRollDice({
-      dice: item.roll.dice,
-      count: 1,
-      target: 0,
-      type: item.roll.type,
+      source: item.name,
+      active: "Inventory Item",
       add_mod: true,
     });
   };
@@ -220,7 +196,6 @@ function InventoryEntry({
             ))}
             {item.equip.length === 0 && (
               <div
-                // If 'index' isn't available in this scope, use another unique value
                 key={"unequip"}
                 className="flex grow"
                 style={{
@@ -232,10 +207,7 @@ function InventoryEntry({
             )}
           </>
         ) : (
-          // else part for equipped
           <div
-            // Remove the 'key' prop or replace it with a meaningful value,
-            // since 'index' isn't defined in this scope
             key={"unequip-else"}
             className="flex grow"
             style={{
@@ -278,12 +250,7 @@ function InventoryEntry({
       <Divider />
       <RollContainer>
         {item.roll.roll === true && (
-          <RollBox
-            color={COLOR}
-            onClick={
-              item.type === "Ranged Weapon" ? handleRangeRoll : handleRoll
-            }
-          >
+          <RollBox color={COLOR} onClick={handleRoll}>
             {item.roll.dice}
           </RollBox>
         )}

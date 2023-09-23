@@ -1,11 +1,8 @@
-import styled from "styled-components";
-import * as Constants from "../../../Constants";
 import SelectCharacterButtons from "./SelectCharacterButtons";
 import CharacterBox from "./CharacterBox";
 import { useEffect, useContext } from "react";
 import { CharacterEntry } from "../../../Types";
 import { getCharacters } from "../../../functions/SessionsFunctions";
-import { UserContext } from "../../../contexts/UserContext";
 import { SessionContext } from "../../../contexts/SessionContext";
 import { useWebSocket } from "../../../contexts/WebSocketContext";
 
@@ -14,7 +11,6 @@ import {
   ModalContainer,
   Title,
   CenterContainer,
-  Divider,
 } from "../SelectorStyles";
 
 interface LoginProps {
@@ -30,9 +26,8 @@ function SelectCharacterComponent({
   characterLog,
   setCharacterLog,
 }: LoginProps) {
-  const { user } = useContext(UserContext);
   const { session } = useContext(SessionContext);
-  const { charactersResponse, sendRequest } = useWebSocket();
+  const { charactersResponse } = useWebSocket();
 
   useEffect(() => {
     getCharacters(session.id).then((response) => {

@@ -1,6 +1,4 @@
-import StatBox from "./StatBox";
-
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import { getCharacterMovement } from "../../functions/CharacterFunctions";
 
@@ -62,7 +60,6 @@ const ValueButton = styled.button`
 
 function SecondaryStatsControls() {
   const { character } = useContext(CharacterContext);
-  const [swapSource, setSwapSource] = useState<null | string>(null);
   const movement = getCharacterMovement(character);
   return (
     <Container>

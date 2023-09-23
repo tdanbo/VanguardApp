@@ -3,9 +3,6 @@ import { CombatEntry } from "../Types";
 import styled from "styled-components";
 
 import { UpperFirstLetter } from "../functions/UtilityFunctions";
-import { Color } from "chroma-js";
-import { CharacterContext } from "../contexts/CharacterContext";
-import { useContext } from "react";
 
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
@@ -98,9 +95,7 @@ const TestResult = styled.h2<{ isSuccess?: boolean }>`
   font-size: 12px;
 `;
 
-//
-
-function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
+function CombatEntryItem({ combatEntry }: CombatEntryItemProps) {
   const EntryColor = () => {
     return (
       Constants.TYPE_COLORS[combatEntry.active.toLowerCase()] ||
@@ -127,19 +122,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
           <Source rgb={EntryColor()}>{combatEntry.source}</Source>
         )}
       </Active>
-      <Result
-      // title={
-      //   combatEntry.add
-      //     ? `Dice: 1${combatEntry.dice}\nRoll: ${
-      //         combatEntry.result - combatEntry.modifier
-      //       }\nRoll Modified: ${combatEntry.modifier}\nResult: ${
-      //         combatEntry.result
-      //       }`
-      //     : `Dice: 1${combatEntry.dice}\nRoll: ${combatEntry.result}\nRoll Modified: 0\nResult: ${combatEntry.result}`
-      // }
-      >
-        {combatEntry.result}
-      </Result>
+      <Result>{combatEntry.result}</Result>
       <Outcome>
         <h1>
           {UpperFirstLetter(combatEntry.active)} {modifierText}

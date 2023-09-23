@@ -42,9 +42,9 @@ export async function leaveSession(id: string, user: string) {
   return response.data;
 }
 
-export async function deleteSession(id: string, user: string) {
+export async function deleteSession(id: string) {
   const response = await axios.delete(
-    `http://localhost:8000/api/sessions/delete/${id}/${user}`,
+    `http://localhost:8000/api/sessions/delete/${id}`,
   );
 
   return response.data;

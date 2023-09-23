@@ -1,7 +1,3 @@
-import UserBox from "../UserBox";
-
-import * as Styles from "../SelectorStyles";
-import * as Constants from "../../../Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { UserContext } from "../../../contexts/UserContext";
@@ -65,9 +61,7 @@ function CreateSessionButtons({
   };
 
   return (
-    <div className="mb-5 mt-3 flex justify-center">
-      {" "}
-      {/* Adjust the margin-bottom if necessary */}
+    <ButtonContainer>
       <LargeCircleButton onClick={() => setSelector("session")}>
         <FontAwesomeIcon icon={faAngleLeft} />
       </LargeCircleButton>
@@ -76,11 +70,11 @@ function CreateSessionButtons({
           <FontAwesomeIcon icon={faCheck} />
         </LargeCircleButtonDisabled>
       ) : (
-        <LargeCircleButton>
+        <LargeCircleButton onClick={handlePostSession}>
           <FontAwesomeIcon icon={faCheck} />
         </LargeCircleButton>
       )}
-    </div>
+    </ButtonContainer>
   );
 }
 export default CreateSessionButtons;

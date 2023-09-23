@@ -7,7 +7,7 @@ type Props = {
   type_value: number;
 };
 
-const DiceContainer = styled.div`
+const DiceContainer = styled.button`
   display: flex;
   flex: 1;
   flex-grow: 1;
@@ -31,7 +31,8 @@ function DiceBox({ type_name }: Props) {
       modifier: 0,
       count: 1,
       target: 0,
-      type: "Dice",
+      source: "Dice",
+      active: "Custom",
       add_mod: true,
     });
   };

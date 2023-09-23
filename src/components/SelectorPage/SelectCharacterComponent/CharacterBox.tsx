@@ -26,12 +26,8 @@ const CharacterName = styled.h1`
   color: ${Constants.WIDGET_PRIMARY_FONT};
 `;
 
-function CharacterBox({
-  setSelector,
-  selectedCharacter,
-  closeModal,
-}: SessionBoxProps) {
-  const { character, setCharacter } = useContext(CharacterContext);
+function CharacterBox({ selectedCharacter, closeModal }: SessionBoxProps) {
+  const { setCharacter } = useContext(CharacterContext);
 
   const handleOnClick = () => {
     setCharacter(selectedCharacter);

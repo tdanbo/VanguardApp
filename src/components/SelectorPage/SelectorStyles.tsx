@@ -1,4 +1,3 @@
-import { CSSProperties } from "react";
 import * as Constants from "../../Constants";
 import styled from "styled-components";
 

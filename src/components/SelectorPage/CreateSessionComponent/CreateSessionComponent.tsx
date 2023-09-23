@@ -1,9 +1,5 @@
-import UserBox from "../UserBox";
-import * as Constants from "../../../Constants";
-import * as Styles from "../SelectorStyles";
 import CreateSessionButtons from "./CreateSessionButtons";
 import { useState } from "react";
-import { CharacterEntry } from "../../../Types";
 
 import {
   MainContainer,

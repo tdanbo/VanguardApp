@@ -1,18 +1,10 @@
-import UserBox from "../UserBox";
 import { useState, useContext } from "react";
-import { getSessions, joinSession } from "../../../functions/SessionsFunctions";
+import { joinSession } from "../../../functions/SessionsFunctions";
 import { UserContext } from "../../../contexts/UserContext";
 import { SessionEntry } from "../../../Types";
 import * as Constants from "../../../Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useWebSocket } from "../../../contexts/WebSocketContext";
-import {
-  faPlus,
-  faMinus,
-  faCheck,
-  faLink,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faCheck, faLink } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
 import { ButtonContainer, LargeCircleButton } from "../SelectorStyles";
@@ -38,7 +30,6 @@ function SessionButtons({ setSelector, setSessions }: LoginProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [sessionID, setSessionID] = useState<string>("");
   const { user } = useContext(UserContext);
-  const { sendRequest } = useWebSocket();
 
   // Function to toggle the visibility
   const toggleVisibility = () => {

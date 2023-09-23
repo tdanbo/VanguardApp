@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import * as Constants from "../../../Constants";
 import { UserContext } from "../../../contexts/UserContext";
@@ -12,7 +11,6 @@ import {
   ModalContainer,
   Title,
   CenterContainer,
-  Divider,
 } from "../SelectorStyles";
 
 const IconButton = styled.button`
@@ -51,8 +49,8 @@ interface LoginProps {
 }
 
 function LoginComponent({ setSelector }: LoginProps) {
-  const { user, setUser } = useContext(UserContext);
-  const [username, setUsername] = useState<string | null>(null);
+  const { setUser } = useContext(UserContext);
+  const [username] = useState<string | null>(null);
 
   const fetchUsername = async () => {
     try {

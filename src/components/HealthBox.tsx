@@ -1,9 +1,6 @@
 import * as Constants from "../Constants";
-import { CharacterEntry } from "../Types";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useContext } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faSkull } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
 import {
@@ -164,7 +161,6 @@ function HealthBox() {
     setCharacter(updated_character);
   };
 
-  const permanent_corruption = character.corruption.permanent;
   const remaining_corruption =
     character.corruption.threshold * 3 - character.corruption.permanent;
 

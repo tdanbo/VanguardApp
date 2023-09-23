@@ -7,8 +7,6 @@ import { useRoll } from "../functions/CombatFunctions";
 import { Ability } from "../Types";
 import styled from "styled-components";
 
-import { TYPE_COLORS } from "../Constants";
-
 import {
   onDeleteAbility,
   onAddAbilityItem,
@@ -20,7 +18,7 @@ interface LevelComponentProps {
   ability: AbilityEntry;
   ability_level: Ability;
   type: string;
-  radius?: string;
+  radius: string;
 }
 
 const EntryColor = (type: string) => {
@@ -33,7 +31,7 @@ const BaseContainer = styled.div`
 `;
 
 interface ContainerProps {
-  type: string;
+  radius: string;
 }
 
 const LevelBaseContainer = styled.div<ContainerProps>`
@@ -42,8 +40,8 @@ const LevelBaseContainer = styled.div<ContainerProps>`
   border-left: 1px solid ${Constants.WIDGET_BORDER};
   border-right: 1px solid ${Constants.WIDGET_BORDER};
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom-left-radius: ${(props) => props.type};
-  border-bottom-right-radius: ${(props) => props.type};
+  border-bottom-left-radius: ${(props) => props.radius};
+  border-bottom-right-radius: ${(props) => props.radius};
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
 `;
 
@@ -213,24 +211,10 @@ function parseBoldKeywords(input: string): JSX.Element[] {
   });
 }
 
-// function Dice({ type, dice }: { type: string; dice: string }) {
-//   const onRollDice = useRoll();
-//   return (
-//     <RollButton
-//   )
-// }
-
-function LevelComponent({
-  level,
-  ability,
-  ability_level,
-  type,
-  radius,
-}: LevelComponentProps) {
+function LevelComponent({ ability_level, radius }: LevelComponentProps) {
   return (
-    <LevelBaseContainer type={radius}>
+    <LevelBaseContainer radius={radius}>
       <AbilityDescription>
-        {/* {level} */}
         {parseBoldKeywords(ability_level.description)}
       </AbilityDescription>
     </LevelBaseContainer>
@@ -270,8 +254,6 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
     }
   }
 
-  const COLOR = Constants.TYPE_COLORS[ability.type] || "defaultColor";
-
   interface DiceProps {
     ability: AbilityEntry;
   }
@@ -292,7 +274,8 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
                     modifier: 0,
                     count: 1,
                     target: 0,
-                    type: ability.name,
+                    source: ability.name,
+                    active: "Ability",
                     add_mod: true,
                   })
                 }
@@ -312,7 +295,8 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
                     modifier: 0,
                     count: 1,
                     target: 0,
-                    type: ability.name,
+                    source: ability.name,
+                    active: "Ability",
                     add_mod: true,
                   })
                 }
@@ -332,7 +316,8 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
                     modifier: 0,
                     count: 1,
                     target: 0,
-                    type: ability.name,
+                    source: ability.name,
+                    active: "Ability",
                     add_mod: true,
                   })
                 }
@@ -407,6 +392,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
               ability={ability}
               ability_level={ability.novice}
               type={ability.type}
+              radius={"0px"}
             />
             <LevelComponent
               level="Adept"
@@ -424,12 +410,14 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
               ability={ability}
               ability_level={ability.novice}
               type={ability.type}
+              radius={"0px"}
             />
             <LevelComponent
               level="Adept"
               ability={ability}
               ability_level={ability.adept}
               type={ability.type}
+              radius={"0px"}
             />
             <LevelComponent
               level="Master"

@@ -11,8 +11,6 @@ import {
   CenterContainer,
   Divider,
 } from "../SelectorStyles";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faImagePortrait } from "@fortawesome/free-solid-svg-icons";
 
 interface LoginProps {
   setSelector: (selector: string) => void;
@@ -62,13 +60,6 @@ const NameInput = styled.input`
   outline: none;
 `;
 
-const PortraitContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  flex: 1;
-`;
-
 const InputtContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -114,23 +105,9 @@ const ValueBox = styled.div`
 
 function CreateCharacterComponent({
   setSelector,
-  setCharacterLog,
   characterPortrait,
 }: LoginProps) {
   const [characterName, setCharacterName] = useState("");
-
-  const [selectedValue, setSelectedValue] = useState(0);
-
-  const [name, setName] = useState("");
-
-  const [accurate, setAccurate] = useState(0);
-  const [cunning, setCunning] = useState(0);
-  const [discreet, setDiscreet] = useState(0);
-  const [persuasive, setPersuasive] = useState(0);
-  const [quick, setQuick] = useState(0);
-  const [resolute, setResolute] = useState(0);
-  const [strong, setStrong] = useState(0);
-  const [vigilant, setVigilant] = useState(0);
 
   const handleNameChange = (e: any) => {
     setCharacterName(e.target.value);
@@ -247,7 +224,6 @@ function CreateCharacterComponent({
         character_name={characterName}
         portrait={characterPortrait}
         stats={stats}
-        setCharacterLog={setCharacterLog}
       />
     </MainContainer>
   );

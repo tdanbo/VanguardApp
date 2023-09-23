@@ -41,10 +41,7 @@ const RedFlexCenter = styled(FlexCenter)`
   color: ${Constants.BRIGHT_RED};
 `;
 
-function CharacterSimpleBox({
-  character,
-  setCharacterLog,
-}: CharacterSimpleBoxProps) {
+function CharacterSimpleBox({ character }: CharacterSimpleBoxProps) {
   const { session } = useContext(SessionContext);
   const { sendRequest } = useWebSocket();
 

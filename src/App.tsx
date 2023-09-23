@@ -14,26 +14,19 @@ import StatsControls from "./components/StatsControls/StatsControls";
 import EquipmentBrowser from "./components/Modals/EquipmentBrowser";
 
 import CharacterNavigation from "./components/NavigationControl/CharacterNavigation";
-import HealthNavigation from "./components/NavigationControl/HealthNavigation";
 import InventoryNavigation from "./components/NavigationControl/InventoryNavigation";
 import ActiveControls from "./components/ActiveControls";
 
-import OverburdenBox from "./components/OverburdenBox";
 import ResourcesBox from "./components/ResourcesBox";
 import XpBox from "./components/XpBox";
 
-import { onAddUnspentXp } from "./functions/CharacterFunctions";
-import { onSubUnspentXp } from "./functions/CharacterFunctions";
 import CharacterNameBox from "./components/CharacterNameBox";
-import { useContext, useState } from "react";
+import { useState } from "react";
 
-import { CharacterContext } from "./contexts/CharacterContext";
-import SelectorComponent from "./components/SelectorPage/Selector";
 import AbilityBrowser from "./components/Modals/AbilityBrowser";
 import AbilitySection from "./components/Sections/AbilitySection";
 import CombatSection from "./components/Sections/CombatSection";
 import DiceSection from "./components/Sections/DiceSection";
-import RestBox from "./components/RestBox";
 import SearchAbilityBox from "./components/SearchAbilityBox";
 import SearchItemBox from "./components/SearchItemBox";
 import { AbilityEntry, ItemEntry } from "./Types";
@@ -148,13 +141,6 @@ const NavigationBot = styled.div`
   margin-top: 20px;
   margin-bottom: 75px;
   height: 50%;
-`;
-
-const NavigationFooter = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 50px;
-  margin-top: 20px;
 `;
 
 const BrowserContainer = styled.div`

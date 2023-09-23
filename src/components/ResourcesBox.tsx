@@ -11,7 +11,6 @@ import {
   faCarrot,
   faCheck,
   faAngleLeft,
-  faArrowRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -21,10 +20,8 @@ import {
   CenterContainer,
   Divider,
   LargeCircleButton,
-  SmallCircleButton,
   LargeCircleButtonDisabled,
 } from "./SelectorPage/SelectorStyles";
-import { set } from "lodash";
 
 // const GreenColor = "rgba(128, 163, 128, 0.7)";
 // const BlueColor = "rgba(128, 152, 163, 0.7)";
@@ -47,7 +44,7 @@ const Container = styled.div`
   justify-content: right;
 `;
 
-const CurrencyContainer = styled.div`
+const CurrencyContainer = styled.button`
   display: flex;
   flex: 1;
   flex-grow: 1;
@@ -117,17 +114,6 @@ const Overlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const StyledInput = styled.input`
-  flex-grow: 1;
-  border-radius: ${Constants.BORDER_RADIUS};
-  padding: 10px;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  border: 1px solid ${Constants.WIDGET_BORDER};
 `;
 
 const InputContainer = styled.div`
@@ -267,8 +253,6 @@ function ResourceChanger({
   const [plusState, setPlusState] = useState<boolean>(true);
   const [minusState, setMinusState] = useState<boolean>(false);
 
-  const BaseValue = value;
-
   const [inputValue, setInputValue] = useState<number>(0);
 
   const [previousValue, setPreviousValue] = useState<number>(0);
@@ -288,6 +272,7 @@ function ResourceChanger({
 
   const calcValue = (operation: string, mode: string, input: number) => {
     console.log("Current Value:", value);
+    console.log(operation);
 
     let newValue = value;
 
@@ -390,10 +375,6 @@ function ResourcesBox() {
     const UpdatedCharacter = UpdateResources(character, food, water, money);
     setCharacter(UpdatedCharacter);
     setIsModalOpen(false);
-  };
-
-  const handleReset = () => {
-    console.log("Resetting Modal");
   };
 
   return (

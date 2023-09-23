@@ -2,7 +2,6 @@ import {
   MainContainer,
   ModalContainer,
   Title,
-  CenterContainer,
   Divider,
 } from "../SelectorStyles";
 
@@ -38,10 +37,6 @@ const GridContainer = styled.div`
   padding: 20px;
 `;
 
-type ImageModule = {
-  default: string;
-};
-
 function SelectPortraitComponent({
   setSelector,
   setCharacterPortrait,
@@ -76,7 +71,7 @@ function SelectPortraitComponent({
         <Divider />
         <GridContainer>
           {loadedImages.map(
-            (src, index) => (
+            (src) => (
               console.log(src),
               (
                 <ImageContainer

@@ -37,7 +37,7 @@ const UserRole = styled.h2`
 `;
 
 function SessionBox({ setSelector, sessionprop }: SessionBoxProps) {
-  const { session, setSession } = useContext(SessionContext);
+  const { setSession } = useContext(SessionContext);
   const { user } = useContext(UserContext);
 
   const handleOnClick = () => {

@@ -1,7 +1,3 @@
-import { useEffect } from "react";
-import axios from "axios";
-import * as Constants from "../../Constants";
-
 import { AbilityEntry } from "../../Types";
 
 import AbilityEntryItem from "../AbilityEntryItem";
@@ -20,13 +16,6 @@ const ItemContainer = styled.div`
   flex-direction: column;
   flex-grow: 1;
   gap: 10px;
-`;
-
-const Input = styled.input`
-  flex-grow: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: ${Constants.BORDER_RADIUS};
 `;
 
 interface AbilityBrowserProps {

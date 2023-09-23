@@ -49,3 +49,11 @@ body {
 ::-webkit-scrollbar {
   display: none !important;
 }
+/* 
+.mouse-icon-hover:hover {
+  cursor: url("/src/assets/icons/mouse.png"), auto;
+}
+
+.dice-icon-hover:hover {
+  cursor: url("/src/assets/icons/dice6.png"), auto;
+} */

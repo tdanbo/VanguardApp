@@ -1,9 +1,9 @@
-import React, { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../Constants";
 import styled from "styled-components";
-import { AbilityEntry, ItemEntry } from "../Types";
+import { ItemEntry } from "../Types";
 import axios from "axios";
 
 const {

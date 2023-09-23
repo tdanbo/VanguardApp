@@ -1,11 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import * as Constants from "../../../Constants";
-import {
-  getSessionUsers,
-  leaveSession,
-} from "../../../functions/SessionsFunctions";
+import { getSessionUsers } from "../../../functions/SessionsFunctions";
 import { useContext } from "react";
 import { SessionContext } from "../../../contexts/SessionContext";
 import styled from "styled-components";
@@ -44,10 +41,9 @@ const RedFlexCenter = styled(FlexCenter)`
 `;
 
 function UserSimpleBox({ username, setUserLog }: UserSimpleBoxProps) {
-  const { session, setSession } = useContext(SessionContext);
+  const { session } = useContext(SessionContext);
 
   const onHandleKickUser = async () => {
-    const leave = await leaveSession(session.id, username);
     const users = await getSessionUsers(session.id);
     setUserLog(users);
   };

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faBriefcase, faBolt } from "@fortawesome/free-solid-svg-icons";
+import { faBriefcase, faBolt } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
 import RestBox from "../RestBox";
 import OverburdenBox from "../OverburdenBox";

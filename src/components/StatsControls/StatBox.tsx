@@ -4,7 +4,7 @@ import { useContext, useState, useEffect } from "react";
 import { useRoll } from "../../functions/CombatFunctions";
 import { swapActives } from "../../functions/CharacterFunctions";
 import styled from "styled-components";
-
+import "../../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEye,
@@ -162,8 +162,11 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
           {icon(active)}
         </ActiveButton>
       )}
-      <ValueName onClick={handleSkillRoll}>{type_name}</ValueName>
+      <ValueName className="dice-icon-hover" onClick={handleSkillRoll}>
+        {type_name}
+      </ValueName>
       <ValueButton
+        className="mouse-icon-hover"
         onClick={subModifier}
         onContextMenu={(e) => {
           e.preventDefault();

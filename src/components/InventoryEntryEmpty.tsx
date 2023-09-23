@@ -1,8 +1,5 @@
 import * as Constants from "../Constants";
 import styled from "styled-components";
-interface InventoryEntryEmptyProps {
-  index: number;
-}
 
 const Container = styled.div`
   display: flex;
@@ -14,7 +11,7 @@ const Container = styled.div`
   border-radius: ${Constants.BORDER_RADIUS};
 `;
 
-function InventoryEntryEmpty({ index }: InventoryEntryEmptyProps) {
+function InventoryEntryEmpty() {
   return <Container></Container>;
 }
 export default InventoryEntryEmpty;

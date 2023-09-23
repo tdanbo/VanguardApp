@@ -1,15 +1,6 @@
-import React, { useState, useEffect, CSSProperties, useContext } from "react";
-import axios from "axios";
 import InventoryEntry from "../InventoryEntry";
-import AddIcon from "@mui/icons-material/Add";
-import SearchIcon from "@mui/icons-material/Search";
-import * as Constants from "../../Constants";
-import { CharacterContext } from "../../contexts/CharacterContext";
-import { onAddInventoryItem } from "../../functions/CharacterFunctions";
 import { ItemEntry } from "../../Types";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
 const Container = styled.div<{ hidden: boolean }>`
@@ -33,12 +24,6 @@ interface EquipmentBrowserProps {
 }
 
 function EquipmentBrowser({ browserState, itemList }: EquipmentBrowserProps) {
-  const toTitleCase = (str: string) => {
-    return str.replace(/\w\S*/g, function (txt) {
-      return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
-    });
-  };
-
   console.log(itemList);
 
   return (

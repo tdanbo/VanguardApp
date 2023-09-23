@@ -1,5 +1,3 @@
-import * as Constants from "../../../Constants";
-import styled from "styled-components";
 import SessionButtons from "./SessionButtons";
 import SessionBox from "./SessionBox";
 import { useState, useEffect, useContext } from "react";
@@ -40,7 +38,7 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
       <ModalContainer>
         <Divider />
         <CenterContainer>
-          {[...sessions].reverse().map((item, index) => (
+          {[...sessions].reverse().map((item) => (
             <SessionBox setSelector={setSelector} sessionprop={item} />
           ))}
         </CenterContainer>

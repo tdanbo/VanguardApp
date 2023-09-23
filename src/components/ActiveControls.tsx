@@ -14,12 +14,6 @@ const Container = styled.div`
 function CorruptionControls() {
   const { character } = useContext(CharacterContext);
 
-  const temporary_corruption = character.corruption.temporary;
-  const clean_corruption =
-    character.corruption.threshold - temporary_corruption;
-
-  character.actives.attack;
-
   return (
     <Container>
       <ActiveBox active_name={"attack"} active={character.actives.attack} />
