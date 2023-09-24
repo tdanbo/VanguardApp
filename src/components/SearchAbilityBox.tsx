@@ -78,9 +78,7 @@ const SearchAbilityBox: FC<SearchBarProps> = ({
       try {
         const response = await axios.get("http://localhost:8000/api/abilities");
         setFullList(response.data);
-      } catch (error) {
-        console.error("Error fetching abilities:", error);
-      }
+      } catch (error) {}
     };
     fetchAbilities();
   }, []);

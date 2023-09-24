@@ -30,16 +30,18 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
     fetchData();
   }, []);
 
-  console.log(sessions);
-
   return (
     <MainContainer>
       <Title>Sessions</Title>
       <ModalContainer>
         <Divider />
         <CenterContainer>
-          {[...sessions].reverse().map((item) => (
-            <SessionBox setSelector={setSelector} sessionprop={item} />
+          {[...sessions].reverse().map((item, index) => (
+            <SessionBox
+              key={index}
+              setSelector={setSelector}
+              sessionprop={item}
+            />
           ))}
         </CenterContainer>
         <Divider />

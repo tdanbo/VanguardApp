@@ -127,17 +127,17 @@ const AbilityName = styled.h5`
   font-weight: bold;
 `;
 
+interface LevelProps {
+  $active: boolean;
+  type: string;
+}
+
 const AbilityDetail = styled.div<LevelProps>`
   font-size: 11px;
   font-weight: bold;
   color: ${(props) =>
-    props.active ? EntryColor(props.type) : Constants.WIDGET_SECONDARY_FONT};
+    props.$active ? EntryColor(props.type) : Constants.WIDGET_SECONDARY_FONT};
 `;
-
-interface LevelProps {
-  active?: boolean;
-  type: string;
-}
 
 const Divider = styled.div`
   display: flex;
@@ -157,7 +157,7 @@ const LevelSelection = styled.div<LevelProps>`
   justify-content: center;
   border-radius: 3px;
   background-color: ${(props) =>
-    props.active ? EntryColor(props.type) : Constants.WIDGET_BACKGROUND_EMPTY};
+    props.$active ? EntryColor(props.type) : Constants.WIDGET_BACKGROUND_EMPTY};
   border: 1px solid #3d3d3c;
   color: ${Constants.WIDGET_PRIMARY_FONT};
   font-size: 12px;
@@ -178,7 +178,7 @@ const RollButton = styled.button<LevelProps>`
   display: flex;
   flex-grow: 1;
   color: ${(props) =>
-    props.active ? EntryColor(props.type) : Constants.WIDGET_SECONDARY_FONT};
+    props.$active ? EntryColor(props.type) : Constants.WIDGET_SECONDARY_FONT};
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   border-radius: ${Constants.BORDER_RADIUS};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -265,7 +265,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
         {ability.level === "Novice"
           ? Array.from(ability.novice.roll).map((roll, index) => (
               <RollButton
-                active={true}
+                $active={true}
                 key={index}
                 type={ability.type}
                 onClick={() =>
@@ -286,7 +286,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
           : ability.level === "Adept"
           ? Array.from(ability.adept.roll).map((roll, index) => (
               <RollButton
-                active={true}
+                $active={true}
                 key={index}
                 type={ability.type}
                 onClick={() =>
@@ -307,7 +307,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
           : ability.level === "Master"
           ? Array.from(ability.master.roll).map((roll, index) => (
               <RollButton
-                active={true}
+                $active={true}
                 key={index}
                 type={ability.type}
                 onClick={() =>
@@ -336,7 +336,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
         <ExpandButten>.</ExpandButten>
         <NameContainer>
           <AbilityName>{ability.name}</AbilityName>
-          <AbilityDetail type={ability.type} active={true}>
+          <AbilityDetail type={ability.type} $active={true}>
             {ability.type}, {ability.tradition}
           </AbilityDetail>
         </NameContainer>
@@ -348,21 +348,21 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
         <LevelSelectionContainer>
           <LevelSelection
             type={ability.type}
-            active={["Novice", "Adept", "Master"].includes(ability.level)}
+            $active={["Novice", "Adept", "Master"].includes(ability.level)}
             onClick={() => handleLevelChange(ability.id, "Novice")}
           >
             N
           </LevelSelection>
           <LevelSelection
             type={ability.type}
-            active={["Adept", "Master"].includes(ability.level)}
+            $active={["Adept", "Master"].includes(ability.level)}
             onClick={() => handleLevelChange(ability.id, "Adept")}
           >
             A
           </LevelSelection>
           <LevelSelection
             type={ability.type}
-            active={ability.level === "Master"}
+            $active={ability.level === "Master"}
             onClick={() => handleLevelChange(ability.id, "Master")}
           >
             M

@@ -105,12 +105,10 @@ function SelectorComponent() {
   const [selector, setSelector] = useState<string>("login");
 
   const handleOpen = () => {
-    console.log("Opening Modal");
     setIsModalOpen(true);
   };
 
   const handleClose = () => {
-    console.log("Closing Modal");
     setIsModalOpen(false);
   };
 

@@ -11,7 +11,7 @@ const Container = styled.div`
 `;
 
 interface NavigatorProps {
-  active?: boolean;
+  $active: boolean;
 }
 
 const Navigator = styled.button<NavigatorProps>`
@@ -20,11 +20,13 @@ const Navigator = styled.button<NavigatorProps>`
   align-items: center;
   justify-content: center;
   border: ${(props) =>
-    props.active ? `1px solid ${Constants.WIDGET_BORDER}` : `0px solid white`};
+    props.$active ? `1px solid ${Constants.WIDGET_BORDER}` : `0px solid white`};
   color: ${(props) =>
-    props.active ? Constants.WIDGET_PRIMARY_FONT : Constants.WIDGET_BACKGROUND};
+    props.$active
+      ? Constants.WIDGET_PRIMARY_FONT
+      : Constants.WIDGET_BACKGROUND};
   background-color: ${(props) =>
-    props.active
+    props.$active
       ? Constants.WIDGET_BACKGROUND
       : Constants.WIDGET_BACKGROUND_EMPTY};
   border-radius: ${Constants.BORDER_RADIUS};
@@ -69,10 +71,10 @@ function CharacterNavigation({
   return (
     <Container>
       <SelectorComponent />
-      <Navigator active={browserState === 1} onClick={onHandleItems}>
+      <Navigator $active={browserState === 1} onClick={onHandleItems}>
         <FontAwesomeIcon icon={faBook} />
       </Navigator>
-      <Navigator active={browserState === 2} onClick={onHandleAbilities}>
+      <Navigator $active={browserState === 2} onClick={onHandleAbilities}>
         <FontAwesomeIcon icon={faBookMedical} />
       </Navigator>
     </Container>

@@ -59,7 +59,6 @@ function SelectPortraitComponent({
   }, []);
 
   const handleImageSelect = (src: string) => () => {
-    console.log(src);
     setCharacterPortrait(src);
     setSelector("createCharacter");
   };
@@ -70,17 +69,13 @@ function SelectPortraitComponent({
       <ModalContainer>
         <Divider />
         <GridContainer>
-          {loadedImages.map(
-            (src) => (
-              console.log(src),
-              (
-                <ImageContainer
-                  onClick={handleImageSelect(src)}
-                  src={src}
-                ></ImageContainer>
-              )
-            ),
-          )}
+          {loadedImages.map((src, index) => (
+            <ImageContainer
+              key={index}
+              onClick={handleImageSelect(src)}
+              src={src}
+            ></ImageContainer>
+          ))}
         </GridContainer>
         <Divider />
       </ModalContainer>

@@ -21,13 +21,8 @@ import {
   Divider,
   LargeCircleButton,
   LargeCircleButtonDisabled,
+  ButtonContainer,
 } from "./SelectorPage/SelectorStyles";
-
-// const GreenColor = "rgba(128, 163, 128, 0.7)";
-// const BlueColor = "rgba(128, 152, 163, 0.7)";
-// const GoldColor = "rgba(163, 152, 128, 0.7)";
-// const SilverColor = "rgba(163, 163, 163, 0.7)";
-// const CopperColor = "rgba(163, 135, 122, 0.7)";
 
 const OrangeColor = "rgba(205, 112, 57, 0.7)";
 const BlueColor = "rgba(96, 128, 148, 0.7)";
@@ -124,7 +119,7 @@ const InputContainer = styled.div`
 `;
 
 interface ButtonProps {
-  activated?: boolean;
+  $activated: boolean;
 }
 
 const PlusButton = styled.button<ButtonProps>`
@@ -138,11 +133,11 @@ const PlusButton = styled.button<ButtonProps>`
   justify-content: center;
   font-size: 1.5rem;
   background-color: ${(props) =>
-    props.activated
+    props.$activated
       ? Constants.WIDGET_BACKGROUND
       : Constants.WIDGET_BACKGROUND_EMPTY};
   color: ${(props) =>
-    props.activated
+    props.$activated
       ? Constants.WIDGET_PRIMARY_FONT
       : Constants.WIDGET_SECONDARY_FONT};
 `;
@@ -198,11 +193,11 @@ const MinusButton = styled.button<ButtonProps>`
   justify-content: center;
   font-size: 1.5rem;
   background-color: ${(props) =>
-    props.activated
+    props.$activated
       ? Constants.WIDGET_BACKGROUND
       : Constants.WIDGET_BACKGROUND_EMPTY};
   color: ${(props) =>
-    props.activated
+    props.$activated
       ? Constants.WIDGET_PRIMARY_FONT
       : Constants.WIDGET_SECONDARY_FONT};
 `;
@@ -252,9 +247,7 @@ function ResourceChanger({
   const [clickState, setClickState] = useState<string>("add");
   const [plusState, setPlusState] = useState<boolean>(true);
   const [minusState, setMinusState] = useState<boolean>(false);
-
   const [inputValue, setInputValue] = useState<number>(0);
-
   const [previousValue, setPreviousValue] = useState<number>(0);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -271,9 +264,6 @@ function ResourceChanger({
   };
 
   const calcValue = (operation: string, mode: string, input: number) => {
-    console.log("Current Value:", value);
-    console.log(operation);
-
     let newValue = value;
 
     let multiplier = 1;
@@ -289,7 +279,6 @@ function ResourceChanger({
     newValue += changeAmount;
 
     setValue(newValue);
-    console.log("change value:", changeAmount);
     setPreviousValue(changeAmount);
   };
 
@@ -305,7 +294,6 @@ function ResourceChanger({
 
       calcValue(newClickState, mode, inputValue);
     } else if (newClickState === "sub" && clickState !== "sub") {
-      console.log("Value after subtraction:", value - previousValue);
       setValue(value - previousValue);
       setClickState("sub");
       setPlusState(false);
@@ -322,13 +310,16 @@ function ResourceChanger({
       </IconButton>
       <ResultBox>{ConvertCurrency(value, mode)}</ResultBox>
       <MinusButton
-        activated={minusState}
+        $activated={minusState}
         onClick={() => changeClickState("sub")}
       >
         -
       </MinusButton>
       <ValueInput value={inputValue} onChange={handleInputChange}></ValueInput>
-      <PlusButton activated={plusState} onClick={() => changeClickState("add")}>
+      <PlusButton
+        $activated={plusState}
+        onClick={() => changeClickState("add")}
+      >
         +
       </PlusButton>
     </InputContainer>
@@ -355,19 +346,15 @@ function ResourcesBox() {
     }
   }, [isModalOpen]);
 
-  console.log(money);
-
   const thaler = ConvertCurrency(character.money, "thaler");
   const shillings = ConvertCurrency(character.money, "shillings");
   const orthegs = ConvertCurrency(character.money, "orthegs");
 
   const handleOpen = () => {
-    console.log("Opening Modal");
     setIsModalOpen(true);
   };
 
   const handleClose = () => {
-    console.log("Closing Modal");
     setIsModalOpen(false);
   };
 
@@ -376,7 +363,6 @@ function ResourcesBox() {
     setCharacter(UpdatedCharacter);
     setIsModalOpen(false);
   };
-
   return (
     <>
       <Container onClick={handleOpen}>
@@ -460,25 +446,23 @@ function ResourcesBox() {
               </CenterContainer>
               <Divider />
             </ModalContainer>
-            <div className="mb-5 mt-3 flex justify-center">
-              {" "}
-              {/* Adjust the margin-bottom if necessary */}
+            <ButtonContainer>
               <LargeCircleButton onClick={handleClose}>
                 <FontAwesomeIcon icon={faAngleLeft} />
               </LargeCircleButton>
-              {money >= 0 ? (
-                <LargeCircleButton onClick={handleSubmit}>
-                  <FontAwesomeIcon icon={faCheck} />
-                </LargeCircleButton>
-              ) : (
+              {money < 0 || water < 0 || food < 0 ? (
                 <LargeCircleButtonDisabled>
                   <FontAwesomeIcon icon={faCheck} />
                 </LargeCircleButtonDisabled>
+              ) : (
+                <LargeCircleButton onClick={handleSubmit}>
+                  <FontAwesomeIcon icon={faCheck} />
+                </LargeCircleButton>
               )}
               {/* <SmallCircleButton onClick={handleReset}>
                 <FontAwesomeIcon icon={faArrowRotateLeft} />
               </SmallCircleButton> */}
-            </div>
+            </ButtonContainer>
           </MainContainer>
         </Overlay>
       )}

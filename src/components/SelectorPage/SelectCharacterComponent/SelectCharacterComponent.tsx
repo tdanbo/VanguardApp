@@ -37,7 +37,6 @@ function SelectCharacterComponent({
 
   useEffect(() => {
     if (charactersResponse) {
-      console.log("Server sending stuff");
       setCharacterLog(charactersResponse);
     }
   }, [charactersResponse]);
@@ -47,9 +46,9 @@ function SelectCharacterComponent({
       <Title>{session.name}</Title>
       <ModalContainer>
         <CenterContainer>
-          {[...characterLog].reverse().map((character) => (
+          {[...characterLog].reverse().map((character, index) => (
             <CharacterBox
-              key={character.id}
+              key={index}
               setSelector={setSelector}
               selectedCharacter={character}
               closeModal={closeModal}

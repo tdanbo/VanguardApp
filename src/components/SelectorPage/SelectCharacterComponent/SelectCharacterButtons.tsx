@@ -26,7 +26,6 @@ function SelectCharacterButtons({ setSelector }: LoginProps) {
   const { session } = useContext(SessionContext);
 
   const handleLeaveSession = async () => {
-    console.log("Leaving Session");
     leaveSession(session.id, user);
     setSelector("session");
   };

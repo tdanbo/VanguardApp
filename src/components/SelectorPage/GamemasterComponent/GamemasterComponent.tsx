@@ -59,15 +59,20 @@ function GamemasterComponent({ setSelector }: LoginProps) {
         <Divider />
         <CenterContainer>
           <CatergoryTitle>Characters</CatergoryTitle>
-          {[...characterLog].reverse().map((character) => (
+          {[...characterLog].reverse().map((character, index) => (
             <CharacterSimpleBox
+              key={index}
               character={character}
               setCharacterLog={setCharacterLog}
             />
           ))}
           <CatergoryTitle>Users</CatergoryTitle>
-          {[...userLog].map((username) => (
-            <UserSimpleBox username={username} setUserLog={setUserLog} />
+          {[...userLog].map((username, index) => (
+            <UserSimpleBox
+              key={index}
+              username={username}
+              setUserLog={setUserLog}
+            />
           ))}
         </CenterContainer>
         <Divider />

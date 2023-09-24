@@ -25,10 +25,7 @@ interface LoginProps {
 async function copyTextToClipboard(text: string) {
   try {
     await navigator.clipboard.writeText(text);
-    console.log("Text successfully copied to clipboard");
-  } catch (err) {
-    console.error("Failed to copy text: ", err);
-  }
+  } catch (err) {}
 }
 
 function GamemasterButtons({ setSelector }: LoginProps) {
@@ -39,7 +36,6 @@ function GamemasterButtons({ setSelector }: LoginProps) {
   };
 
   const handleDeleteSession = async () => {
-    console.log("Deleting Session");
     deleteSession(session.id);
     deleteAllSessionCharacters(session.id);
     setSelector("session");

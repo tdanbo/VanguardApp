@@ -163,12 +163,9 @@ function CreateCharacterComponent({
     "Undead",
   ];
 
-  const handleDropdownChange = (selectedOption: string) => {
-    console.log("Selected option:", selectedOption);
-  };
+  const handleDropdownChange = (selectedOption: string) => {};
 
   const handlePortraitSelect = () => {
-    console.log("Portrait selected");
     setSelector("selectPortrait");
   };
 
@@ -195,10 +192,9 @@ function CreateCharacterComponent({
             </InputtContainer>
           </Container>
           {stats.map((button) => (
-            <StatBox>
+            <StatBox key={button.id}>
               <NameBox>{button.label}</NameBox>
               <ValueBox
-                key={button.id}
                 onClick={() => handleButtonClick(button.id)}
                 style={
                   selectedButton === button.id

@@ -103,7 +103,6 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
         setFullList(response.data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching equipment:", error);
         setLoading(false);
       }
     };
@@ -128,7 +127,7 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
         className="flex-grow"
         onChange={(e) => setSearch(e.target.value)}
       />
-      <Button onClick={() => console.log("Add Inventory")}>
+      <Button>
         {itemList.length > 0 ? (
           <FontAwesomeIcon icon={faSearch} />
         ) : (

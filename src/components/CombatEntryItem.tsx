@@ -10,7 +10,7 @@ interface CombatEntryItemProps {
 }
 
 interface ColorTypeProps {
-  rgb: string;
+  $rgb: string;
 }
 
 interface PortraitProps {
@@ -85,11 +85,11 @@ const Source = styled.h2<ColorTypeProps>`
   font-size: 12px;
 `;
 
-const TestResult = styled.h2<{ isSuccess?: boolean }>`
+const TestResult = styled.h2<{ $issuccess: boolean }>`
   color: ${(props) =>
-    props.isSuccess === true
+    props.$issuccess === true
       ? "rgb(64, 191, 96)"
-      : props.isSuccess === false
+      : props.$issuccess === false
       ? "rgb(191, 64, 64)"
       : Constants.WIDGET_SECONDARY_FONT};
   font-size: 12px;
@@ -112,14 +112,14 @@ function CombatEntryItem({ combatEntry }: CombatEntryItemProps) {
 
   return (
     <Container src={combatEntry.portrait}>
-      <Active rgb={EntryColor()}>
+      <Active $rgb={EntryColor()}>
         <h1>{UpperFirstLetter(combatEntry.character)}</h1>
         {combatEntry.source === "Skill Test" ? (
-          <TestResult isSuccess={combatEntry.success}>
+          <TestResult $issuccess={combatEntry.success}>
             {combatEntry.source}
           </TestResult>
         ) : (
-          <Source rgb={EntryColor()}>{combatEntry.source}</Source>
+          <Source $rgb={EntryColor()}>{combatEntry.source}</Source>
         )}
       </Active>
       <Result>{combatEntry.result}</Result>
@@ -128,7 +128,7 @@ function CombatEntryItem({ combatEntry }: CombatEntryItemProps) {
           {UpperFirstLetter(combatEntry.active)} {modifierText}
         </h1>
         {combatEntry.source === "Skill Test" ? (
-          <TestResult isSuccess={combatEntry.success}>
+          <TestResult $issuccess={combatEntry.success}>
             {combatEntry.success ? "Success" : "Failure"}
           </TestResult>
         ) : (

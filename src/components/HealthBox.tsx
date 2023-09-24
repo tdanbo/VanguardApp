@@ -106,23 +106,23 @@ const RightValue = styled.div`
   }
 `;
 
-interface cssProps {
-  backgroundColor: string;
+interface BgColor {
+  $bgcolor: string;
 }
 
-const LeftTickBar = styled.div<cssProps>`
+const LeftTickBar = styled.div<BgColor>`
   display: flex;
   flex-grow: 1;
-  background-color: ${(props) => props.backgroundColor};
   border-left: 1px solid ${Constants.WIDGET_BORDER};
   border-top: 1px solid ${Constants.WIDGET_BORDER};
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${(props) => props.$bgcolor};
 `;
 
-const RightTickBar = styled.div<cssProps>`
+const RightTickBar = styled.div<BgColor>`
   display: flex;
   flex-grow: 1;
-  background-color: ${(props) => props.backgroundColor};
+  background-color: ${(props) => props.$bgcolor};
   border-right: 1px solid ${Constants.WIDGET_BORDER};
   border-top: 1px solid ${Constants.WIDGET_BORDER};
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
@@ -161,12 +161,15 @@ function HealthBox() {
     setCharacter(updated_character);
   };
 
+  const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
+  const maxCorruptionPermanent = corruptionThreshold * 3;
+
   const remaining_corruption =
-    character.corruption.threshold * 3 - character.corruption.permanent;
+    maxCorruptionPermanent - character.corruption.permanent;
 
   const damage_toughness = character.toughness.damage.value;
   const remaining_toughness =
-    character.stats.strong.value - character.toughness.damage.value;
+    character.toughness.max.value - character.toughness.damage.value;
 
   const temporary_corruption = character.corruption.temporary;
   const clean_corruption =
@@ -175,23 +178,27 @@ function HealthBox() {
   return (
     <Container src={character.portrait}>
       <InnerContainer>
-        <Row
-          onClick={handleTempSubCorruption}
-          onContextMenu={(e) => {
-            e.preventDefault();
-            handleTempAddCorruption();
-          }}
-        >
+        <Row>
           {[...Array(temporary_corruption)].map((_, index) => (
             <LeftTickBar
+              onClick={handleTempSubCorruption}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                handleTempAddCorruption();
+              }}
               key={index}
-              backgroundColor={Constants.WIDGET_BACKGROUND_EMPTY}
+              $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
             />
           ))}
           {[...Array(clean_corruption)].map((_, index) => (
             <LeftTickBar
+              onClick={handleTempSubCorruption}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                handleTempAddCorruption();
+              }}
               key={index}
-              backgroundColor={Constants.TYPE_COLORS["casting"]}
+              $bgcolor={Constants.TYPE_COLORS["casting"]}
             />
           ))}
           <LeftValue
@@ -202,7 +209,7 @@ function HealthBox() {
             }}
           >
             {remaining_corruption}
-            <p>{character.corruption.threshold * 3}</p>
+            <p>{maxCorruptionPermanent}</p>
           </LeftValue>
         </Row>
 
@@ -214,13 +221,13 @@ function HealthBox() {
           }}
         >
           <RightValue>
-            {remaining_toughness} <p>{character.stats.strong.value}</p>
+            {remaining_toughness} <p>{character.toughness.max.value}</p>
           </RightValue>
           {Array.from({ length: remaining_toughness }).map((_, index) => {
             return (
               <RightTickBar
                 key={index}
-                backgroundColor={Constants.TYPE_COLORS["health"]}
+                $bgcolor={Constants.TYPE_COLORS["health"]}
               />
             );
           })}
@@ -228,7 +235,7 @@ function HealthBox() {
             return (
               <RightTickBar
                 key={index}
-                backgroundColor={Constants.WIDGET_BACKGROUND_EMPTY}
+                $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
               />
             );
           })}

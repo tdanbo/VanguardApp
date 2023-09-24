@@ -24,8 +24,6 @@ interface EquipmentBrowserProps {
 }
 
 function EquipmentBrowser({ browserState, itemList }: EquipmentBrowserProps) {
-  console.log(itemList);
-
   return (
     <Container hidden={browserState === 0 || browserState === 2}>
       <ItemContainer>

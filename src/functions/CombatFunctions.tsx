@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { setBaseModifier } from "./CharacterFunctions";
 import { SessionContext } from "../contexts/SessionContext";
+import { useWebSocket } from "../contexts/WebSocketContext";
 
 export async function getCombatLog(id: string): Promise<CombatEntry[]> {
   const response = await axios.get<CombatEntry[]>(
@@ -37,8 +38,9 @@ function extractDiceValue(
 export function useRoll() {
   const { character, setCharacter } = useContext(CharacterContext);
   const { session } = useContext(SessionContext);
+  const { sendRequest } = useWebSocket();
 
-  return ({
+  return async ({
     dice,
     count,
     target,
@@ -63,14 +65,9 @@ export function useRoll() {
       total += Math.floor(Math.random() * dice_number) + 1;
     }
 
-    console.log(total);
-
     if (add_mod == true) {
       total += character.details.modifier;
     }
-
-    console.log("add mod:", add_mod);
-    console.log(total);
 
     const roll_result = total;
 
@@ -78,8 +75,6 @@ export function useRoll() {
     if (roll_result > target) {
       success = false;
     }
-
-    console.log(roll_result);
 
     const NewCombatEntry: CombatEntry = {
       id: session.id,
@@ -95,17 +90,22 @@ export function useRoll() {
 
     const updated_character = setBaseModifier(character, 0);
     setCharacter(updated_character);
-
-    postCombatLog(NewCombatEntry);
-
+    await postCombatLog(NewCombatEntry);
+    sendRequest("combatlog"); // asking websocket to update session combatlog for all clients
     return roll_result;
   };
 }
 
-export function postCombatLog(NewCombatEntry: CombatEntry) {
-  console.log("Updating Combat Log");
-  // selectedCharacter.inventory = inventory; THIS WILL UPDATE THE INVENTORY< BUT NOT PROC THE RE-RENDER
-  axios
-    .post("http://localhost:8000/api/combatlog/", NewCombatEntry)
-    .then((res) => console.log(res));
+export async function postCombatLog(NewCombatEntry: CombatEntry) {
+  try {
+    const response = await axios.post(
+      "http://localhost:8000/api/combatlog/",
+      NewCombatEntry,
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Error posting combat log:", error);
+    throw error; // or handle the error as you see fit
+  }
 }

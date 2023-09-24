@@ -41,7 +41,6 @@ function SessionButtons({ setSelector, setSessions }: LoginProps) {
   };
 
   const handleJoinSession = async () => {
-    console.log("Joining Session");
     const sessions = await joinSession(sessionID, user);
     setSessionID("");
     toggleVisibility();

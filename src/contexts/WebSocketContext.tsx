@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { SessionContext } from "./SessionContext";
 import { UserContext } from "./UserContext";
-import { CharacterEntry, SessionEntry } from "../Types";
+import { CharacterEntry, SessionEntry, CombatEntry } from "../Types";
 interface WebSocketContextValue {
   charactersResponse: CharacterEntry[] | null;
   sessionsResponse: SessionEntry[] | null;
+  combatlogResponse: CombatEntry[] | null;
   sendRequest: (req: string) => void;
 }
 
@@ -22,8 +23,13 @@ export const WebSocketProvider: React.FC<WebsocketProps> = ({
   const [charactersResponse, setCharacterResponse] = useState<
     CharacterEntry[] | null
   >(null);
+
   const [sessionsResponse, setSessionResponse] = useState<
     SessionEntry[] | null
+  >(null);
+
+  const [combatlogResponse, setCombatlogResponse] = useState<
+    CombatEntry[] | null
   >(null);
 
   const [response, setResponse] = useState<any>(null);
@@ -59,6 +65,10 @@ export const WebSocketProvider: React.FC<WebsocketProps> = ({
           setSessionResponse(data.session);
           break;
 
+        case "combatlog":
+          setCombatlogResponse(data.combatlog);
+          break;
+
         default:
           console.warn("Unhandled WebSocket message type:", data.type);
       }
@@ -83,7 +93,12 @@ export const WebSocketProvider: React.FC<WebsocketProps> = ({
 
   return (
     <WebSocketContext.Provider
-      value={{ charactersResponse, sessionsResponse, sendRequest }}
+      value={{
+        charactersResponse,
+        sessionsResponse,
+        combatlogResponse,
+        sendRequest,
+      }}
     >
       {children}
     </WebSocketContext.Provider>
@@ -97,15 +112,3 @@ export const useWebSocket = (): WebSocketContextValue => {
   }
   return context;
 };
-
-// Dummy code to implement
-
-// const handleButtonClick = () => {
-//   sendRequest("characters"); // asking websocket to update session characters for all clients
-// };
-
-// useEffect(() => {
-//   if (charactersResponse) {
-//     setCharacterLog(charactersResponse);
-//   }
-// }, [charactersResponse]);

@@ -118,17 +118,13 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
   };
 
   const handleActiveClick = () => {
-    console.log("-----");
     if (swapSource) {
-      console.log("source: " + swapSource);
-      console.log("target: " + type_name);
       const updatedCharacter = swapActives(character, swapSource, type_name);
       setCharacter(updatedCharacter);
       setSwapSource(null);
     } else {
       setSwapSource(type_name);
     }
-    console.log("clicky");
   };
 
   const icon = (active: string) => {

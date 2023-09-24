@@ -63,18 +63,13 @@ function LoginComponent({ setSelector }: LoginProps) {
         setUser(fetchedUsername);
         setSelector("session");
       } else {
-        console.log("Username is not present in the response.");
       }
-    } catch (error) {
-      console.error("Error fetching username from cookie:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
     fetchUsername();
   }, []);
-
-  console.log("Username:", username);
 
   const handleLogin = () => {
     axios.get("http://localhost:8000/login").then((res) => {

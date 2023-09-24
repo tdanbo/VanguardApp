@@ -131,7 +131,6 @@ function InventoryEntry({ item, browser, equipped, id }: InventoryEntryProps) {
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
 
   const HandleEquip = (item: ItemEntry, equipItem: EquipEntry) => {
-    console.log("Handling Equip");
     if (equipItem.equipped === true) {
       const updatedCharacter = onUnequipItem({ character, item, equipItem });
       setCharacter(updatedCharacter);

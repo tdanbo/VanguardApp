@@ -3,6 +3,7 @@ import { CharacterEntry, ItemEntry } from "../Types";
 
 const defaultCharacter: CharacterEntry = {
   id: "",
+  portrait: "",
   details: {
     name: "",
     xp_earned: 0,
@@ -35,6 +36,7 @@ const defaultCharacter: CharacterEntry = {
     temporary: 0,
     threshold: 10,
   },
+  money: 0,
   abilities: [],
   inventory: [],
   rations: { food: 0, water: 0 },

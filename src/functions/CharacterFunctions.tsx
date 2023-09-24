@@ -85,7 +85,6 @@ export function onChangeAbilityLevel({
   level,
   character,
 }: onChangeAbilityLevelProps) {
-  console.log(id);
   if (!character) return;
 
   const updatedAbilities = character.abilities.map((ability) => {
@@ -149,12 +148,6 @@ export const getCharacterMovement = (character: CharacterEntry) => {
   const base_speed = 40 + speed_modifier;
   const calculated_speed = base_speed + base_speed_sneaking;
 
-  console.log("Speed Calculation");
-  console.log(base_speed_sneaking);
-  console.log(base_speed);
-
-  console.log(calculated_speed);
-
   return calculated_speed;
 };
 
@@ -163,6 +156,12 @@ export const onAddCorruption = (character: CharacterEntry, value: number) => {
 
   for (let i = 0; i < value; i++) {
     if (character_corruption.temporary === character_corruption.threshold) {
+      if (
+        character_corruption.permanent ===
+        character_corruption.threshold * 3
+      ) {
+        return character;
+      }
       character_corruption.permanent += 1;
     } else {
       character_corruption.temporary += 1;
@@ -248,10 +247,8 @@ export const getActiveModifiers = (character: CharacterEntry) => {
   const overburden = character.stats.strong.value - character.inventory.length;
 
   if (overburden < 0) {
-    console.log("Overburdened");
     character_actives["defense"].mod += overburden;
   } else {
-    console.log("Not Overburdened");
   }
 
   equippedItems.forEach((item) => {
@@ -293,7 +290,6 @@ export const getActiveModifiers = (character: CharacterEntry) => {
 };
 
 export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
-  console.log("Adding Ability");
   const abilityWithId = {
     ...ability,
     id: generateRandomId(),
@@ -314,15 +310,11 @@ export const onAddInventoryItem = ({
   character,
   item,
 }: onAddCharacterProps) => {
-  console.log("Adding Item");
-
   const newInventory = cloneDeep(character.inventory);
 
   if (newInventory.length === Math.ceil(character.stats.strong.value * 2)) {
-    console.log("Inventory is full");
     return;
   } else {
-    console.log("Adding Item");
     const itemWithId = {
       ...item,
       id: generateRandomId(),
@@ -351,11 +343,9 @@ export function getEquippedItems(character: CharacterEntry) {
 }
 
 export function onUnequipItem({ character, item, equipItem }: EquipProps) {
-  console.log("Unequipping Item");
   const newInventory = cloneDeep(character.inventory);
 
   newInventory.forEach((inventory_item) => {
-    console.log(inventory_item.id);
     if (inventory_item.id === item.id) {
       inventory_item.equip.forEach((invItem) => {
         if (invItem.type === equipItem.type) {
@@ -370,15 +360,12 @@ export function onUnequipItem({ character, item, equipItem }: EquipProps) {
     inventory: newInventory,
   };
 
-  console.log(updatedCharacter.inventory);
-
   const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
   postSelectedCharacter(updatedModifiersCharacter);
   return updatedModifiersCharacter;
 }
 
 export function onEquipItem({ character, item, equipItem }: EquipProps) {
-  console.log("Equipping Item");
   const newInventory = cloneDeep(character.inventory);
 
   // Each item can only be used for one equip, so we start by making sure it is fully unqeuipped before doing anything
@@ -452,8 +439,6 @@ export function onChangeQuantity({
 }: onChangeQuantityProps) {
   const inventory = character.inventory;
 
-  console.log(count);
-
   inventory.forEach((item) => {
     if (item.id === id) {
       item.quantity.count = count;
@@ -504,7 +489,6 @@ export function onUseAmmunition(character: CharacterEntry): {
 }
 
 export function onAddToughness(character: CharacterEntry) {
-  console.log("Adding Toughness");
   const character_toughness = character.toughness;
 
   const value_step = 1;
@@ -525,7 +509,7 @@ export function onAddToughness(character: CharacterEntry) {
 }
 
 export function onSubToughness(character: CharacterEntry) {
-  console.log("Subtracting Toughness");
+  console.log("Subtracting toughness");
   const character_toughness = character.toughness;
 
   const value_step = 1;
@@ -546,7 +530,6 @@ export function onSubToughness(character: CharacterEntry) {
 }
 
 export function onAddPermCorruption(character: CharacterEntry) {
-  console.log("Adding Corruption");
   const character_corruption = character.corruption;
 
   const value_step = 1;
@@ -567,7 +550,6 @@ export function onAddPermCorruption(character: CharacterEntry) {
 }
 
 export function onSubPermCorruption(character: CharacterEntry) {
-  console.log("Removing Corruption");
   const character_corruption = character.corruption;
 
   const value_step = 1;
@@ -588,7 +570,6 @@ export function onSubPermCorruption(character: CharacterEntry) {
 }
 
 export function onAddUnspentXp(character: CharacterEntry) {
-  console.log("Adding XP");
   let character_xp_earned = character.details.xp_earned;
 
   const value_step = 1;
@@ -607,12 +588,8 @@ export function onAddUnspentXp(character: CharacterEntry) {
 }
 
 export function onSubUnspentXp(character: CharacterEntry) {
-  console.log("Adding XP");
   let character_combined_xp =
     character.details.xp_earned - getCharacterXp(character);
-
-  console.log(character_combined_xp);
-
   const value_step = 1;
 
   if (character_combined_xp <= 0) {
@@ -674,7 +651,7 @@ export function RestCharacter(character: CharacterEntry) {
   return water_character;
 }
 
-export function postSelectedCharacter(updatedCharacter: CharacterEntry) {
+export async function postSelectedCharacter(updatedCharacter: CharacterEntry) {
   // selectedCharacter.inventory = inventory; THIS WILL UPDATE THE INVENTORY< BUT NOT PROC THE RE-RENDER
   axios
     .put(
@@ -688,7 +665,6 @@ export async function addNewCharacter(NewCharacterEntry: CharacterEntry) {
   return axios
     .post("http://localhost:8000/api/characterlog/", NewCharacterEntry)
     .then((res) => {
-      console.log(res);
       return res;
     });
 }
@@ -698,7 +674,6 @@ export function swapActives(
   source: string,
   target: string,
 ) {
-  console.log("Swapping Actives");
   const characterActives = cloneDeep(character.actives);
 
   forEach(characterActives, (active, key) => {

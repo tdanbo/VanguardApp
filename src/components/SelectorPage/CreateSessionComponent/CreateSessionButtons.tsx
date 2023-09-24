@@ -55,7 +55,6 @@ function CreateSessionButtons({
   };
 
   const handlePostSession = async () => {
-    console.log(NewSessionEntry);
     await postSession(NewSessionEntry);
     setSelector("session");
   };

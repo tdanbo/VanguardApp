@@ -5,7 +5,11 @@ import { useContext } from "react";
 import { CharacterEntry } from "../../../Types";
 import { addNewCharacter } from "../../../functions/CharacterFunctions";
 import { useWebSocket } from "../../../contexts/WebSocketContext";
-import { ButtonContainer, LargeCircleButton } from "../SelectorStyles";
+import {
+  ButtonContainer,
+  LargeCircleButton,
+  LargeCircleButtonDisabled,
+} from "../SelectorStyles";
 interface Stats {
   id: number;
   value: number;
@@ -70,7 +74,6 @@ function CreateCharacterButtons({
   };
 
   const handlePostCharacter = async () => {
-    console.log(NewCharacterEntry);
     setSelector("characterSelect");
     await addNewCharacter(NewCharacterEntry);
     sendRequest("characters"); // asking websocket to update session characters for all clients
@@ -78,19 +81,19 @@ function CreateCharacterButtons({
 
   return (
     <ButtonContainer>
-      <LargeCircleButton>
-        <FontAwesomeIcon
-          icon={faAngleLeft}
-          onClick={() => setSelector("session")}
-        />
+      <LargeCircleButton onClick={() => setSelector("session")}>
+        <FontAwesomeIcon icon={faAngleLeft} />
       </LargeCircleButton>
-      <LargeCircleButton>
-        {character_name === "" ? (
+
+      {character_name === "" ? (
+        <LargeCircleButtonDisabled>
           <FontAwesomeIcon icon={faCheck} />
-        ) : (
-          <FontAwesomeIcon icon={faCheck} onClick={handlePostCharacter} />
-        )}
-      </LargeCircleButton>
+        </LargeCircleButtonDisabled>
+      ) : (
+        <LargeCircleButton onClick={handlePostCharacter}>
+          <FontAwesomeIcon icon={faCheck} />
+        </LargeCircleButton>
+      )}
     </ButtonContainer>
   );
 }

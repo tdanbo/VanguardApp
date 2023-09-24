@@ -2,7 +2,6 @@ import axios from "axios";
 import { CharacterEntry, SessionEntry } from "../Types";
 
 export async function postSession(NewSessionEntry: SessionEntry) {
-  console.log("Updating Sessions");
   const response = await axios
     .post("http://localhost:8000/api/sessions/", NewSessionEntry)
     .then((res) => console.log(res));

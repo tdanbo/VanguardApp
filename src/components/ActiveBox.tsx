@@ -29,11 +29,7 @@ const Row = styled.div`
   gap: 2px;
 `;
 
-interface ValueProps {
-  active_name: string;
-}
-
-const Value = styled.button<ValueProps>`
+const Value = styled.button`
   display: flex;
   flex-direction: column;
   flex: 2;
@@ -105,8 +101,6 @@ function ActiveBox({ active_name, active }: Props) {
   };
 
   const updateDiceForActiveName = (activeName: string): ItemType[] => {
-    console.log("GETTING NEW DICE");
-
     // Initialize your array with that type
     const itemDict: ItemType[] = [];
 
@@ -119,11 +113,8 @@ function ActiveBox({ active_name, active }: Props) {
         break;
       case "defense":
         for (const invItem of character.inventory) {
-          console.log("Checking inventory item:", invItem); // See each inventory item
           for (const equipItem of invItem.equip) {
-            console.log("Checking equipment item:", equipItem); // See each equipment item
             if (equipItem.type === "AR" && equipItem.equipped) {
-              console.log("Defense dice found:", invItem.roll.dice);
               itemDict.push({
                 name: invItem.name,
                 roll: invItem.roll.dice,
@@ -140,7 +131,6 @@ function ActiveBox({ active_name, active }: Props) {
               ["2H", "MH", "OH"].includes(equipItem.type) &&
               equipItem.equipped
             ) {
-              console.log("Attack dice found:", invItem.roll.dice); // Debug log
               itemDict.push({
                 name: invItem.name,
                 roll: invItem.roll.dice,
@@ -153,11 +143,8 @@ function ActiveBox({ active_name, active }: Props) {
     }
 
     if (itemDict.length === 0) {
-      console.log("No dice found for:", activeName); // Log if no dice value is found
       itemDict.push({ name: "unequipped", roll: "d4", type: "unequipped" }); // Default value when no dice is found
     }
-
-    console.log("New dice:", itemDict);
 
     return itemDict;
   };
@@ -187,7 +174,6 @@ function ActiveBox({ active_name, active }: Props) {
   const onRollDice = useRoll();
 
   const handleActiveRoll = () => {
-    console.log("modValue:", modValue);
     onRollDice({
       dice: "d20",
       count: 1,
@@ -215,7 +201,6 @@ function ActiveBox({ active_name, active }: Props) {
     const { updatedCharacter, hasAmmunition } = onUseAmmunition(character);
     setCharacter(updatedCharacter);
     if (!hasAmmunition) {
-      console.log("no ammo");
       // handle case when onUseAmmunition is false
       return;
     }
@@ -251,11 +236,7 @@ function ActiveBox({ active_name, active }: Props) {
 
   return (
     <Container>
-      <Value
-        active_name={active_name}
-        onClick={handleActiveRoll}
-        className="dice-icon-hover"
-      >
+      <Value onClick={handleActiveRoll} className="dice-icon-hover">
         {value}
         <p>{active_name.toUpperCase()}</p>
       </Value>
