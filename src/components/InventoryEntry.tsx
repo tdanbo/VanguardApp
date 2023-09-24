@@ -13,6 +13,8 @@ import {
 } from "../functions/CharacterFunctions";
 
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faX, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 interface InventoryEntryProps {
   index: number;
@@ -34,19 +36,20 @@ const Container = styled.div`
   gap: 5px;
 `;
 
-const AddButton = styled.button`
+const AddButton = styled.div`
+  pointer: cursor;
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   width: 20px;
   max-width: 20px;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
   border-right-top-radius: ${Constants.BORDER_RADIUS};
   border-right-bottom-radius: ${Constants.BORDER_RADIUS};
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
+  font-size: 14px;
 `;
 
 const EquipContainer = styled.div`
@@ -56,11 +59,32 @@ const EquipContainer = styled.div`
 
 const NameContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  justify-content: left;
+  flex-direction: column;
+  flex-grow: 1;
   margin-left: 5px;
+`;
+
+interface NameBoxProps {
+  color: string;
+}
+
+const NameBox = styled.div`
+  align-items: flex-end;
+  display: flex;
+  flex-grow: 1;
+  flex: 1;
+  color: ${(props) => props.color};
+  font-size: 15px;
+  font-weight: bold;
+`;
+
+const TypeBox = styled.div`
+  align-items: flex-start;
+  display: flex;
+  flex-grow: 1;
+  flex: 1;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  font-size: 11px;
 `;
 
 const QualityContainer = styled.div`
@@ -125,6 +149,37 @@ const Divider = styled.div`
   margin-bottom: 5px;
 `;
 
+type StyledButtonProps = {
+  isequipped: boolean;
+  color: string;
+  index: number;
+};
+
+const EquipButton = styled.button<StyledButtonProps>`
+  display: flex;
+  flex-grow: 1;
+  background-color: ${(props) =>
+    props.isequipped ? props.color : Constants.WIDGET_BACKGROUND};
+  margin: 1px 0px 1px 1px;
+  width: 20px;
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-top-left-radius: ${(props) =>
+    props.index === 0 ? Constants.BORDER_RADIUS : "unset"};
+  border-bottom-left-radius: ${(props) =>
+    props.index === 1 ? Constants.BORDER_RADIUS : "unset"};
+  width: 20px;
+  height: 100%;
+`;
+const NoEquipBox = styled.div`
+  display: flex;
+  flex-grow: 1;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border-radius: ${Constants.BORDER_RADIUS} 0px 0px ${Constants.BORDER_RADIUS};
+  width: 20px;
+  max-width: 20px;
+  height: 100%;
+`;
+
 function InventoryEntry({ item, browser, equipped, id }: InventoryEntryProps) {
   const { character, setCharacter } = useContext(CharacterContext);
 
@@ -171,75 +226,20 @@ function InventoryEntry({ item, browser, equipped, id }: InventoryEntryProps) {
   return (
     <Container>
       <EquipContainer>
-        {equipped === "" ? ( // if equipped is an empty string
-          <>
-            {item.equip.map((equip_item, index) => (
-              <div
-                key={index}
-                className="flex grow"
-                style={{
-                  backgroundColor:
-                    equip_item.equipped === true
-                      ? COLOR
-                      : Constants.WIDGET_BACKGROUND,
-                  margin: "1px 0px 1px 1px",
-                  width: "20px",
-                  border: `1px solid ${Constants.WIDGET_BORDER}`,
-                  borderTopLeftRadius:
-                    index === 0 ? Constants.BORDER_RADIUS : undefined,
-                  borderBottomLeftRadius:
-                    index === 1 ? Constants.BORDER_RADIUS : undefined,
-                }}
-                onClick={() => HandleEquip(item, equip_item)}
-              ></div>
-            ))}
-            {item.equip.length === 0 && (
-              <div
-                key={"unequip"}
-                className="flex grow"
-                style={{
-                  backgroundColor: Constants.WIDGET_BACKGROUND_EMPTY,
-                  width: "20px",
-                  height: "100%",
-                }}
-              ></div>
-            )}
-          </>
-        ) : (
-          <div
-            key={"unequip-else"}
-            className="flex grow"
-            style={{
-              backgroundColor: Constants.WIDGET_BACKGROUND_EMPTY,
-              width: "20px",
-              height: "100%",
-            }}
-          ></div>
-        )}
+        {item.equip.map((equip_item, index) => (
+          <EquipButton
+            isequipped={equip_item.equipped}
+            color={COLOR}
+            index={index}
+            key={index}
+            onClick={() => HandleEquip(item, equip_item)}
+          ></EquipButton>
+        ))}
+        {item.equip.length === 0 && <NoEquipBox key={"unequip"}></NoEquipBox>}
       </EquipContainer>
       <NameContainer>
-        <div className="m-0 flex flex-col justify-center">
-          <p
-            className="mb-3"
-            style={{
-              fontSize: "15px",
-              fontWeight: "bold",
-              color: Constants.WIDGET_SECONDARY_FONT,
-            }}
-          >
-            {item.name}
-          </p>
-          <p
-            className="-mt-2 mb-0"
-            style={{
-              fontSize: "11px",
-              fontWeight: "bold",
-              color: COLOR,
-            }}
-          >
-            {item.type}
-          </p>
-        </div>
+        <NameBox color={COLOR}>{item.name}</NameBox>
+        <TypeBox>{item.type}</TypeBox>
       </NameContainer>
       <QualityContainer>
         {item.quality.map((item, index) => (
@@ -257,9 +257,13 @@ function InventoryEntry({ item, browser, equipped, id }: InventoryEntryProps) {
       </RollContainer>
       {
         browser ? (
-          <AddButton onClick={() => AddInventorySlot()}>+</AddButton>
+          <AddButton onClick={() => AddInventorySlot()}>
+            <FontAwesomeIcon icon={faPlus} />
+          </AddButton>
         ) : equipped === "" ? (
-          <AddButton onClick={() => DeleteInventorySlot(id)}>x</AddButton> // else part for equipped
+          <AddButton onClick={() => DeleteInventorySlot(id)}>
+            <FontAwesomeIcon icon={faXmark} />
+          </AddButton> // else part for equipped
         ) : (
           <AddButton></AddButton>
         ) // else part for equipped

@@ -202,10 +202,10 @@ function HealthBox() {
             />
           ))}
           <LeftValue
-            onClick={handleSubCorruption}
+            onClick={handleAddCorruption}
             onContextMenu={(e) => {
               e.preventDefault();
-              handleAddCorruption();
+              handleSubCorruption();
             }}
           >
             {remaining_corruption}

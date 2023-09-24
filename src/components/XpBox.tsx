@@ -9,7 +9,8 @@ import {
   onAddUnspentXp,
   onSubUnspentXp,
 } from "../functions/CharacterFunctions";
-const Container = styled.button`
+const Container = styled.div`
+  cursor: pointer;
   display: flex;
   flex: 1;
   flex-direction: row;
@@ -23,7 +24,7 @@ const Container = styled.button`
   h2 {
     font-size: 0.75em;
     margin-right: 10px;
-    margin-top: 10px;
+    margin-top: 18px;
     color: ${Constants.WIDGET_SECONDARY_FONT};
   }
 `;

@@ -15,12 +15,12 @@ interface NavigatorProps {
 }
 
 const Navigator = styled.button<NavigatorProps>`
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border: ${(props) =>
-    props.$active ? `1px solid ${Constants.WIDGET_BORDER}` : `0px solid white`};
+  border: 1px solid ${Constants.WIDGET_BACKGROUND_EMPTY};
   color: ${(props) =>
     props.$active
       ? Constants.WIDGET_PRIMARY_FONT

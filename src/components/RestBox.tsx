@@ -7,7 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
-const Navigator = styled.button`
+const Navigator = styled.div`
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -15,12 +16,12 @@ const Navigator = styled.button`
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   color: ${Constants.WIDGET_BACKGROUND};
   border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BACKGROUND_EMPTY};
   &:hover {
     background-color: ${Constants.WIDGET_BACKGROUND};
     color: ${Constants.WIDGET_PRIMARY_FONT};
     border: 1px solid ${Constants.WIDGET_BORDER};
   }
-  width: 50px;
   height: 50px;
 `;
 

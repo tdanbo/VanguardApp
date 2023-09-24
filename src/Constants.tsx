@@ -3,6 +3,8 @@ export const COMBAT_BACKGROUND = "19, 23, 22";
 export const BACKGROUND = "rgba(19, 23, 22, 1.0)";
 export const WIDGET_PRIMARY_FONT = "rgba(255, 255, 255, 0.85)";
 export const WIDGET_SECONDARY_FONT = "rgba(255, 255, 255, 0.60)";
+// export const WIDGET_SECONDARY_FONT = "rgba(180, 140, 90, 0.75)";
+// export const WIDGET_SECONDARY_FONT = "rgb(173, 162, 132)";
 
 export const WIDGET_BACKGROUND = "rgba(255, 255, 255, 0.075)";
 export const WIDGET_BACKGROUND_EMPTY = "rgba(255, 255, 255, 0.025)";
@@ -31,7 +33,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   defense: BLUE,
   armor: BLUE,
   casting: PURPLE,
-  mystical_power: PURPLE,
+  "mystical power": PURPLE,
   ritual: PURPLE,
   elixirs: PURPLE,
   sneaking: GREEN,
@@ -49,7 +51,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   quality_armor: BLUE,
   general_good: GREY,
   lesser_artifact: BRIGHT_RED,
-  corruption: DARK,
+  corruption: PURPLE,
   vigilant: YELLOW,
   strong: YELLOW,
   resolute: YELLOW,

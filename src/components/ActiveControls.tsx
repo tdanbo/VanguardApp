@@ -18,8 +18,8 @@ function CorruptionControls() {
     <Container>
       <ActiveBox active_name={"attack"} active={character.actives.attack} />
       <ActiveBox active_name={"defense"} active={character.actives.defense} />
-      <ActiveBox active_name={"sneaking"} active={character.actives.sneaking} />
       <ActiveBox active_name={"casting"} active={character.actives.casting} />
+      <ActiveBox active_name={"sneaking"} active={character.actives.sneaking} />
     </Container>
   );
 }

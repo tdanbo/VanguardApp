@@ -4,6 +4,7 @@ import { useState, useContext } from "react";
 
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useRoll } from "../functions/CombatFunctions";
+import { onAddCorruption } from "../functions/CharacterFunctions";
 import { Ability } from "../Types";
 import styled from "styled-components";
 
@@ -12,6 +13,8 @@ import {
   onAddAbilityItem,
   onChangeAbilityLevel,
 } from "../functions/CharacterFunctions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSkull } from "@fortawesome/free-solid-svg-icons";
 
 interface LevelComponentProps {
   level: string;
@@ -84,7 +87,8 @@ const RollContainer = styled.div`
   gap: 2px;
 `;
 
-const AddButton = styled.button`
+const AddButton = styled.div`
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   flex-grow: 1;
@@ -98,7 +102,8 @@ const AddButton = styled.button`
   color: ${Constants.WIDGET_SECONDARY_FONT};
 `;
 
-const ExpandButten = styled.button`
+const ExpandButten = styled.div`
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   flex-grow: 1;
@@ -113,18 +118,25 @@ const ExpandButten = styled.button`
   padding-bottom: 5px;
 `;
 
+const CorruptionButten = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  width: 20px;
+  max-width: 20px;
+  border-right-top-radius: ${Constants.BORDER_RADIUS};
+  background-color: rgba(0, 0, 0, 0.25);
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  padding-bottom: 5px;
+`;
+
 const LevelContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const AbilityName = styled.h5`
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  color: ${Constants.WIDGET_PRIMARY_FONT};
-  font-size: 15px;
-  font-weight: bold;
 `;
 
 interface LevelProps {
@@ -132,11 +144,24 @@ interface LevelProps {
   type: string;
 }
 
-const AbilityDetail = styled.div<LevelProps>`
-  font-size: 11px;
-  font-weight: bold;
+const AbilityName = styled.div<LevelProps>`
+  align-items: flex-end;
+  display: flex;
+  flex-grow: 1;
+  flex: 1;
   color: ${(props) =>
     props.$active ? EntryColor(props.type) : Constants.WIDGET_SECONDARY_FONT};
+  font-size: 15px;
+  font-weight: bold;
+`;
+
+const AbilityDetail = styled.div`
+  align-items: flex-start;
+  display: flex;
+  flex-grow: 1;
+  flex: 1;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  font-size: 11px;
 `;
 
 const Divider = styled.div`
@@ -174,7 +199,8 @@ const AbilityDescription = styled.div`
   font-size: 14px;
 `;
 
-const RollButton = styled.button<LevelProps>`
+const RollButton = styled.div<LevelProps>`
+  cursor: pointer;
   display: flex;
   flex-grow: 1;
   color: ${(props) =>
@@ -254,6 +280,26 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
     }
   }
 
+  const onRollDice = useRoll();
+
+  const RollCorruptionDice = async () => {
+    const dice_result = await onRollDice({
+      dice: "d4",
+      count: 1,
+      target: 0,
+      modifier: 0,
+      source: ability.name,
+      active: "Corruption",
+      add_mod: true,
+    });
+
+    const updated_character = onAddCorruption(character, dice_result);
+
+    if (updated_character) {
+      setCharacter(updated_character);
+    }
+  };
+
   interface DiceProps {
     ability: AbilityEntry;
   }
@@ -275,7 +321,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
                     count: 1,
                     target: 0,
                     source: ability.name,
-                    active: "Ability",
+                    active: ability.type,
                     add_mod: true,
                   })
                 }
@@ -296,7 +342,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
                     count: 1,
                     target: 0,
                     source: ability.name,
-                    active: "Ability",
+                    active: ability.type,
                     add_mod: true,
                   })
                 }
@@ -317,7 +363,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
                     count: 1,
                     target: 0,
                     source: ability.name,
-                    active: "Ability",
+                    active: ability.type,
                     add_mod: true,
                   })
                 }
@@ -333,10 +379,19 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
   return (
     <BaseContainer>
       <Container>
-        <ExpandButten>.</ExpandButten>
+        {ability.type === "Mystical Power" ? (
+          <CorruptionButten onClick={RollCorruptionDice}>
+            <FontAwesomeIcon icon={faSkull} />
+          </CorruptionButten>
+        ) : (
+          <ExpandButten>.</ExpandButten>
+        )}
+
         <NameContainer>
-          <AbilityName>{ability.name}</AbilityName>
-          <AbilityDetail type={ability.type} $active={true}>
+          <AbilityName type={ability.type} $active={true}>
+            {ability.name}
+          </AbilityName>
+          <AbilityDetail>
             {ability.type}, {ability.tradition}
           </AbilityDetail>
         </NameContainer>

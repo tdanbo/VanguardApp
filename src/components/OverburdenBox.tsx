@@ -10,16 +10,11 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  width: 50px;
   height: 50px;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  color: ${Constants.WIDGET_BACKGROUND};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  color: ${Constants.WIDGET_PRIMARY_FONT};
   border-radius: ${Constants.BORDER_RADIUS};
-  &:hover {
-    background-color: ${Constants.WIDGET_BACKGROUND};
-    color: ${Constants.WIDGET_PRIMARY_FONT};
-    border: 1px solid ${Constants.WIDGET_BORDER};
-  }
 `;
 
 function OverburdenBox() {

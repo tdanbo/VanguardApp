@@ -72,7 +72,9 @@ export function useRoll() {
     const roll_result = total;
 
     let success = true;
-    if (roll_result > target) {
+    if (target === 0) {
+      success = true;
+    } else if (roll_result > target) {
       success = false;
     }
 

@@ -45,10 +45,20 @@ const Value = styled.button`
   p {
     font-size: 10px;
     font-weight: bold;
-    margin-top: -10px;
     color: ${Constants.WIDGET_BACKGROUND};
     letter-spacing: 1px;
   }
+`;
+
+const ActiveValue = styled.div`
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  color: ${Constants.WIDGET_BACKGROUND};
+  letter-spacing: 1px;
 `;
 
 const Modifier = styled.button`
@@ -180,7 +190,7 @@ function ActiveBox({ active_name, active }: Props) {
       modifier: modValue,
       target: value,
       source: "Skill Test",
-      active: active.stat,
+      active: active_name,
       add_mod: false,
     });
   };
@@ -216,8 +226,8 @@ function ActiveBox({ active_name, active }: Props) {
     });
   };
 
-  const RollCorruptionDice = () => {
-    const dice_result = onRollDice({
+  const RollCorruptionDice = async () => {
+    const dice_result = await onRollDice({
       dice: "d4",
       count: 1,
       target: 0,
@@ -238,7 +248,7 @@ function ActiveBox({ active_name, active }: Props) {
     <Container>
       <Value onClick={handleActiveRoll} className="dice-icon-hover">
         {value}
-        <p>{active_name.toUpperCase()}</p>
+        <ActiveValue> {active_name.toUpperCase()}</ActiveValue>
       </Value>
       <Row>
         <Modifier
@@ -251,43 +261,39 @@ function ActiveBox({ active_name, active }: Props) {
         >
           {modValue}
         </Modifier>
-        {itemDice[0] && itemDice[0].roll !== "" && (
-          <Dice
-            className="dice-icon-hover"
-            onClick={() => {
-              if (active_name === "casting") {
-                RollCorruptionDice();
-              } else if (active_name === "defense") {
-                handleDiceRoll(itemDice[0], "armor");
-              } else if (active_name === "attack") {
-                {
+        {active_name !== "casting" && active_name !== "sneaking" && (
+          <>
+            {itemDice[0] && itemDice[0].roll !== "" && (
+              <Dice
+                className="dice-icon-hover"
+                onClick={() => {
+                  if (active_name === "defense") {
+                    handleDiceRoll(itemDice[0], "armor");
+                  } else if (active_name === "attack") {
+                    itemDice[0].type === "Ranged Weapon"
+                      ? handleRangeRoll(itemDice[0])
+                      : handleDiceRoll(itemDice[0], "damage");
+                  }
+                }}
+                color={Constants.TYPE_COLORS[active_name]}
+              >
+                {itemDice[0].roll}
+              </Dice>
+            )}
+            {itemDice[1] && itemDice[1].roll !== "" && (
+              <Dice
+                className="dice-icon-hover"
+                onClick={() => {
                   itemDice[0].type === "Ranged Weapon"
-                    ? handleRangeRoll(itemDice[0])
-                    : handleDiceRoll(itemDice[0], "damage");
-                }
-              } else if (active_name === "sneaking") {
-                handleDiceRoll(itemDice[0], "skill test");
-              }
-            }}
-            color={Constants.TYPE_COLORS[active_name]}
-          >
-            {itemDice[0].roll}
-          </Dice>
-        )}
-        {itemDice[1] && itemDice[1].roll !== "" && (
-          <Dice
-            className="dice-icon-hover"
-            onClick={() => {
-              {
-                itemDice[0].type === "Ranged Weapon"
-                  ? handleRangeRoll(itemDice[1])
-                  : handleDiceRoll(itemDice[1], "damage");
-              }
-            }}
-            color={Constants.TYPE_COLORS[active_name]}
-          >
-            {itemDice[1].roll}
-          </Dice>
+                    ? handleRangeRoll(itemDice[1])
+                    : handleDiceRoll(itemDice[1], "damage");
+                }}
+                color={Constants.TYPE_COLORS[active_name]}
+              >
+                {itemDice[1].roll}
+              </Dice>
+            )}
+          </>
         )}
       </Row>
     </Container>

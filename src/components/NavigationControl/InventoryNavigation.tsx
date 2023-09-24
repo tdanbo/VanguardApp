@@ -65,6 +65,7 @@ function InventoryNavigation({
 
   return (
     <Container>
+      <OverburdenBox />
       {inventoryState === 1 ? (
         <Navigator $active={inventoryState === 1} onClick={onHandleItems}>
           <FontAwesomeIcon icon={faBriefcase} />
@@ -74,7 +75,7 @@ function InventoryNavigation({
           <FontAwesomeIcon icon={faBolt} />
         </Navigator>
       )}
-      <OverburdenBox />
+
       <Spacer />
       <RestBox />
     </Container>
