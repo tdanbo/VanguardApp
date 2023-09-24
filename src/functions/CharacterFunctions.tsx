@@ -25,13 +25,6 @@ export async function getCharacterEntry(
   return response.data;
 }
 
-interface OnEquipProps {
-  id: string;
-  item: ItemEntry;
-  character: CharacterEntry;
-  hand: string;
-}
-
 interface EquipProps {
   item: ItemEntry;
   character: CharacterEntry;
@@ -676,7 +669,7 @@ export function swapActives(
 ) {
   const characterActives = cloneDeep(character.actives);
 
-  forEach(characterActives, (active, key) => {
+  forEach(characterActives, (active) => {
     if (active.stat === source.toLowerCase()) {
       active.stat = target.toLowerCase() as StatName;
     } else if (active.stat === target.toLowerCase()) {

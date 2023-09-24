@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { CharacterEntry, ItemEntry } from "../Types";
+import { CharacterEntry } from "../Types";
 
 const defaultCharacter: CharacterEntry = {
   id: "",

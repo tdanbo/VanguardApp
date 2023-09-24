@@ -3,13 +3,7 @@ import { CombatEntry } from "../Types";
 import styled from "styled-components";
 
 import { UpperFirstLetter } from "../functions/UtilityFunctions";
-import {
-  faCheck,
-  faDirections,
-  faThumbsDown,
-  faThumbsUp,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface CombatEntryItemProps {
@@ -104,16 +98,6 @@ const Source = styled.div<ColorTypeProps>`
   font-weight: bold;
   height: 50px;
   color: ${Constants.WIDGET_SECONDARY_FONT};
-`;
-
-const TestResult = styled.h2<{ $issuccess: boolean }>`
-  color: ${(props) =>
-    props.$issuccess === true
-      ? "rgb(64, 191, 96)"
-      : props.$issuccess === false
-      ? "rgb(191, 64, 64)"
-      : Constants.WIDGET_SECONDARY_FONT};
-  font-size: 12px;
 `;
 
 function CombatEntryItem({ combatEntry }: CombatEntryItemProps) {

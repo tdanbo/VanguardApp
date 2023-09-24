@@ -27,7 +27,7 @@ function AbilitySection({ inventoryState }: NavigationProps) {
         );
       })}
       {Array.from({ length: 10 }).map((_, index) => {
-        return <InventoryEntryEmpty key={index} index={index + 1} />;
+        return <InventoryEntryEmpty key={index} />;
       })}
     </Container>
   );

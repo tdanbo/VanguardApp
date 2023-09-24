@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
@@ -50,7 +50,6 @@ interface LoginProps {
 
 function LoginComponent({ setSelector }: LoginProps) {
   const { setUser } = useContext(UserContext);
-  const [username] = useState<string | null>(null);
 
   const fetchUsername = async () => {
     try {

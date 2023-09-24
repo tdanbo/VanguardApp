@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { SessionContext } from "./SessionContext";
-import { UserContext } from "./UserContext";
 import { CharacterEntry, SessionEntry, CombatEntry } from "../Types";
 interface WebSocketContextValue {
   charactersResponse: CharacterEntry[] | null;
@@ -32,10 +31,8 @@ export const WebSocketProvider: React.FC<WebsocketProps> = ({
     CombatEntry[] | null
   >(null);
 
-  const [response, setResponse] = useState<any>(null);
-  const [request, setRequest] = useState<string | null>(null);
+  const [_request, setRequest] = useState<string | null>(null);
   const { session } = useContext(SessionContext);
-  const { user } = useContext(UserContext);
   const [ws, setWs] = useState<WebSocket | null>(null); // <-- State for the WebSocket
 
   // Set up the WebSocket here and its event listeners
@@ -45,7 +42,7 @@ export const WebSocketProvider: React.FC<WebsocketProps> = ({
     console.log("connecting to websocket server: " + session.id);
     const websocket = new WebSocket(`ws://localhost:8000/ws/${session.id}`);
 
-    websocket.onopen = (event) => {
+    websocket.onopen = () => {
       console.log("Successfully connected to the WebSocket.");
     };
 

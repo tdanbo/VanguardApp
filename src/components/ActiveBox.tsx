@@ -6,7 +6,6 @@ import { CharacterContext } from "../contexts/CharacterContext";
 import { useContext, useEffect } from "react";
 import { Active } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
-import { onAddCorruption } from "../functions/CharacterFunctions";
 import { onUseAmmunition } from "../functions/CharacterFunctions";
 
 import "../App.css";
@@ -224,24 +223,6 @@ function ActiveBox({ active_name, active }: Props) {
       active: "Damage",
       add_mod: false,
     });
-  };
-
-  const RollCorruptionDice = async () => {
-    const dice_result = await onRollDice({
-      dice: "d4",
-      count: 1,
-      target: 0,
-      modifier: 0,
-      source: "Casting",
-      active: "Corruption",
-      add_mod: true,
-    });
-
-    const updated_character = onAddCorruption(character, dice_result);
-
-    if (updated_character) {
-      setCharacter(updated_character);
-    }
   };
 
   return (

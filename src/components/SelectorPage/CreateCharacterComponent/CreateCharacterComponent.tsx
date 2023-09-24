@@ -163,7 +163,9 @@ function CreateCharacterComponent({
     "Undead",
   ];
 
-  const handleDropdownChange = (selectedOption: string) => {};
+  const handleDropdownChange = (selectedOption: string) => {
+    console.log(selectedOption);
+  };
 
   const handlePortraitSelect = () => {
     setSelector("selectPortrait");

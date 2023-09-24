@@ -384,7 +384,7 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
             <FontAwesomeIcon icon={faSkull} />
           </CorruptionButten>
         ) : (
-          <ExpandButten>.</ExpandButten>
+          <ExpandButten></ExpandButten>
         )}
 
         <NameContainer>

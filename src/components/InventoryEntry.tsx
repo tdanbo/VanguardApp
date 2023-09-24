@@ -14,7 +14,7 @@ import {
 
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faX, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 interface InventoryEntryProps {
   index: number;
@@ -63,10 +63,6 @@ const NameContainer = styled.div`
   flex-grow: 1;
   margin-left: 5px;
 `;
-
-interface NameBoxProps {
-  color: string;
-}
 
 const NameBox = styled.div`
   align-items: flex-end;
