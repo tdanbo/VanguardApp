@@ -1,6 +1,6 @@
 import axios from "axios";
 import { CharacterEntry, SessionEntry } from "../Types";
-import { API } from "../constants";
+import { API } from "../Constants";
 export async function postSession(NewSessionEntry: SessionEntry) {
   const response = await axios
     .post(`${API}/api/sessions/`, NewSessionEntry)
