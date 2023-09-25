@@ -9,8 +9,8 @@ import SelectCharacterComponent from "./SelectCharacterComponent";
 import CreateCharacterComponent from "./CreateCharacterComponent";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import SelectPortraitComponent from "./SelectPortraitComponent/SelectPortraitComponent";
-
+import SelectPortraitComponent from "./SelectPortraitComponent";
+import BackgroundImage from "../../assets/icons/background.jpeg";
 const OverlayStyles = styled.div`
   position: fixed;
   top: 0;
@@ -18,7 +18,7 @@ const OverlayStyles = styled.div`
   right: 0;
   bottom: 0;
   background-image: linear-gradient(rgba(7, 9, 11, 0.95), rgba(7, 9, 11, 0.95)),
-    url("src/assets/icons/background.jpeg");
+    url(${BackgroundImage});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

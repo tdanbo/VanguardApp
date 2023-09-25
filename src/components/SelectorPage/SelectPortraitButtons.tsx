@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
-import { LargeCircleButton } from "../SelectorStyles";
+import { LargeCircleButton } from "./SelectorStyles";
 
 interface CreateSessionsProps {
   setSelector: (selector: string) => void;

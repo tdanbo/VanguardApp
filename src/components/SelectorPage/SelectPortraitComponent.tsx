@@ -3,12 +3,12 @@ import {
   ModalContainer,
   Title,
   Divider,
-} from "../SelectorStyles";
+} from "./SelectorStyles";
 
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import SelectPortraitButtons from "./SelectPortraitButtons";
-import * as Constants from "../../../Constants";
+import * as Constants from "../../Constants";
 interface LoginProps {
   setSelector: (selector: string) => void;
   setCharacterPortrait: (portrait: string) => void;
