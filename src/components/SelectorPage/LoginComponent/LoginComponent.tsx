@@ -64,7 +64,9 @@ function LoginComponent({ setSelector }: LoginProps) {
         setSelector("session");
       } else {
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error fetching username:", error);
+    }
   };
 
   useEffect(() => {
