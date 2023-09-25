@@ -93,12 +93,12 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
   }, [type_value]);
 
   let active = "";
-  let active_mod = 0;
+  // let active_mod = 0;
 
   Object.entries(character.actives).forEach(([key, dict]) => {
     if (dict.stat === type_name.toLowerCase()) {
       active = key;
-      active_mod = dict.mod;
+      // active_mod = dict.mod;
     }
   });
 
