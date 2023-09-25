@@ -1,3 +1,6 @@
+// export const API = "http://localhost:8000";
+export const API = "https://vanguard-api.onrender.com";
+
 export const COMBAT_BACKGROUND = "19, 23, 22";
 
 export const BACKGROUND = "rgba(19, 23, 22, 1.0)";

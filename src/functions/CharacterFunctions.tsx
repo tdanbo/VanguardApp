@@ -1,6 +1,6 @@
 import axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
-
+import { API } from "../Constants";
 import { CharacterEntry } from "../Types";
 import {
   ItemEntry,
@@ -20,7 +20,7 @@ export async function getCharacterEntry(
 ): Promise<CharacterEntry> {
   // Fetch the character using axios or any other method
   const response = await axios.get<CharacterEntry>(
-    `http://localhost:8000/api/characterlog/${selectedName}`,
+    `${API}/api/characterlog/${selectedName}`,
   );
   return response.data;
 }
@@ -648,7 +648,7 @@ export async function postSelectedCharacter(updatedCharacter: CharacterEntry) {
   // selectedCharacter.inventory = inventory; THIS WILL UPDATE THE INVENTORY< BUT NOT PROC THE RE-RENDER
   axios
     .put(
-      `http://localhost:8000/api/characterlog/${updatedCharacter.details.name}`,
+      `${API}/api/characterlog/${updatedCharacter.details.name}`,
       updatedCharacter,
     )
     .then((res) => console.log(res));
@@ -656,7 +656,7 @@ export async function postSelectedCharacter(updatedCharacter: CharacterEntry) {
 
 export async function addNewCharacter(NewCharacterEntry: CharacterEntry) {
   return axios
-    .post("http://localhost:8000/api/characterlog/", NewCharacterEntry)
+    .post(`${API}/api/characterlog/`, NewCharacterEntry)
     .then((res) => {
       return res;
     });

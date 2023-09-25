@@ -5,11 +5,9 @@ import { CharacterContext } from "../contexts/CharacterContext";
 import { setBaseModifier } from "./CharacterFunctions";
 import { SessionContext } from "../contexts/SessionContext";
 import { useWebSocket } from "../contexts/WebSocketContext";
-
+import { API } from "../Constants";
 export async function getCombatLog(id: string): Promise<CombatEntry[]> {
-  const response = await axios.get<CombatEntry[]>(
-    `http://localhost:8000/api/combatlog/${id}`,
-  );
+  const response = await axios.get<CombatEntry[]>(`${API}/api/combatlog/${id}`);
   return response.data;
 }
 
@@ -100,10 +98,7 @@ export function useRoll() {
 
 export async function postCombatLog(NewCombatEntry: CombatEntry) {
   try {
-    const response = await axios.post(
-      "http://localhost:8000/api/combatlog/",
-      NewCombatEntry,
-    );
+    const response = await axios.post(`${API}/api/combatlog/`, NewCombatEntry);
     console.log(response);
     return response.data;
   } catch (error) {

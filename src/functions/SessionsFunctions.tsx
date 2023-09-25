@@ -1,9 +1,9 @@
 import axios from "axios";
 import { CharacterEntry, SessionEntry } from "../Types";
-
+import { API } from "../constants";
 export async function postSession(NewSessionEntry: SessionEntry) {
   const response = await axios
-    .post("http://localhost:8000/api/sessions/", NewSessionEntry)
+    .post(`${API}/api/sessions/`, NewSessionEntry)
     .then((res) => console.log(res));
 
   return response;
@@ -11,61 +11,49 @@ export async function postSession(NewSessionEntry: SessionEntry) {
 
 export async function getCharacters(id: string): Promise<CharacterEntry[]> {
   const response = await axios.get<CharacterEntry[]>(
-    `http://localhost:8000/api/session-characters/${id}`,
+    `${API}/api/session-characters/${id}`,
   );
 
   return response.data;
 }
 
 export async function getSession(id: string): Promise<SessionEntry> {
-  const response = await axios.get<SessionEntry>(
-    `http://localhost:8000/api/sessions/${id}`,
-  );
+  const response = await axios.get<SessionEntry>(`${API}/api/sessions/${id}`);
 
   return response.data;
 }
 
 export async function joinSession(id: string, user: string) {
-  const response = await axios.put(
-    `http://localhost:8000/api/sessions/join/${id}/${user}`,
-  );
+  const response = await axios.put(`${API}/api/sessions/join/${id}/${user}`);
 
   return response.data;
 }
 
 export async function leaveSession(id: string, user: string) {
-  const response = await axios.put(
-    `http://localhost:8000/api/sessions/leave/${id}/${user}`,
-  );
+  const response = await axios.put(`${API}/api/sessions/leave/${id}/${user}`);
 
   return response.data;
 }
 
 export async function deleteSession(id: string) {
-  const response = await axios.delete(
-    `http://localhost:8000/api/sessions/delete/${id}`,
-  );
+  const response = await axios.delete(`${API}/api/sessions/delete/${id}`);
 
   return response.data;
 }
 
 export async function deleteSessionCharacter(name: string, id: string) {
-  const response = await axios.delete(
-    `http://localhost:8000/api/characterlog/${id}/${name}`,
-  );
+  const response = await axios.delete(`${API}/api/characterlog/${id}/${name}`);
   return response.data;
 }
 
 export async function deleteAllSessionCharacters(id: string) {
   const response = await axios.delete(
-    `http://localhost:8000/api/sessions/delete_characters/${id}`,
+    `${API}/api/sessions/delete_characters/${id}`,
   );
   return response.data;
 }
 
 export async function getSessionUsers(id: string) {
-  const response = await axios.get(
-    `http://localhost:8000/api/sessions/users/${id}`,
-  );
+  const response = await axios.get(`${API}/api/sessions/users/${id}`);
   return response.data;
 }

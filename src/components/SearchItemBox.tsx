@@ -5,6 +5,7 @@ import * as Constants from "../Constants";
 import styled from "styled-components";
 import { ItemEntry } from "../Types";
 import axios from "axios";
+import { API } from "../Constants";
 
 const {
   WIDGET_BACKGROUND_EMPTY,
@@ -99,7 +100,7 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/equipment");
+        const response = await axios.get(`${API}/api/equipment`);
         setFullList(response.data);
         setLoading(false);
       } catch (error) {

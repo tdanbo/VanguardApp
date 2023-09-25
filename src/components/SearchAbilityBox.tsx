@@ -5,6 +5,7 @@ import * as Constants from "../Constants";
 import styled from "styled-components";
 import { AbilityEntry } from "../Types";
 import axios from "axios";
+import { API } from "../Constants";
 
 const {
   WIDGET_BACKGROUND_EMPTY,
@@ -76,7 +77,7 @@ const SearchAbilityBox: FC<SearchBarProps> = ({
   useEffect(() => {
     const fetchAbilities = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/abilities");
+        const response = await axios.get(`${API}/api/abilities`);
         setFullList(response.data);
       } catch (error) {}
     };
