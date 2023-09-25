@@ -3,7 +3,7 @@ import { useState, useContext } from "react";
 import { useWebSocket } from "../../contexts/WebSocketContext";
 import { CharacterEntry } from "../../Types";
 import { SessionContext } from "../../contexts/SessionContext";
-
+import { UpperFirstLetter } from "../../functions/UtilityFunctions";
 import styled from "styled-components";
 import { CharacterPortraits } from "../../Images";
 import RaceDropdownBox from "./RaceDropdownBox";
@@ -13,8 +13,8 @@ import {
   ModalContainer,
   Title,
   CenterContainer,
-  Divider,
   ControlButton,
+  ButtonContainer,
 } from "./SelectorStyles";
 
 interface LoginProps {
@@ -52,6 +52,7 @@ const PortraitSelect = styled.button<PortraitProps>`
   background-image: ${(props) => `url(${props.src})`};
   background-size: cover;
   background-position: center 40%;
+  border: 1px solid ${Constants.WIDGET_BORDER};
 `;
 
 const NameInput = styled.input`
@@ -63,6 +64,7 @@ const NameInput = styled.input`
   text-align: center;
   color: ${Constants.WIDGET_PRIMARY_FONT};
   outline: none;
+  border: 1px solid ${Constants.WIDGET_BORDER};
 `;
 
 const InputtContainer = styled.div`
@@ -113,9 +115,15 @@ function CreateCharacterComponent({
   characterPortrait,
 }: LoginProps) {
   const [characterName, setCharacterName] = useState("");
+  const [isValidName, setIsValitName] = useState(false);
 
   const handleNameChange = (e: any) => {
-    setCharacterName(e.target.value);
+    setCharacterName(UpperFirstLetter(e.target.value));
+    if (e.target.value !== "") {
+      setIsValitName(true);
+    } else {
+      setIsValitName(false);
+    }
   };
 
   const [stats, setStats] = useState<Stats[]>([
@@ -229,7 +237,6 @@ function CreateCharacterComponent({
     <MainContainer>
       <Title>Create Character</Title>
       <ModalContainer>
-        <Divider />
         <CenterContainer>
           <Container>
             <PortraitSelect
@@ -269,10 +276,13 @@ function CreateCharacterComponent({
             </StatBox>
           ))}
         </CenterContainer>
-        <Divider />
       </ModalContainer>
-      <ControlButton onClick={handlePostCharacter}>Back</ControlButton>
-      <ControlButton onClick={handlePostCharacter}>Accept</ControlButton>
+      <ButtonContainer>
+        <ControlButton onClick={handlePostCharacter}>Back</ControlButton>
+        <ControlButton disabled={!isValidName} onClick={handlePostCharacter}>
+          Accept
+        </ControlButton>
+      </ButtonContainer>
     </MainContainer>
   );
 }

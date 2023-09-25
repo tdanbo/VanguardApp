@@ -20,6 +20,7 @@ interface DropdownProps {
 }
 
 const SelectStyled = styled.select`
+  border: 0px solid ${Constants.WIDGET_BORDER};
   width: 100%; // Makes select element occupy full width of its parent container
   height: 100%; // Makes select element occupy full height of its parent container
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
