@@ -146,7 +146,7 @@ const Divider = styled.div`
 `;
 
 type StyledButtonProps = {
-  isequipped: boolean;
+  $isequipped: boolean;
   color: string;
   index: number;
 };
@@ -155,7 +155,7 @@ const EquipButton = styled.button<StyledButtonProps>`
   display: flex;
   flex-grow: 1;
   background-color: ${(props) =>
-    props.isequipped ? props.color : Constants.WIDGET_BACKGROUND};
+    props.$isequipped ? props.color : Constants.WIDGET_BACKGROUND};
   margin: 1px 0px 1px 1px;
   width: 20px;
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -224,7 +224,7 @@ function InventoryEntry({ item, browser, equipped, id }: InventoryEntryProps) {
       <EquipContainer>
         {item.equip.map((equip_item, index) => (
           <EquipButton
-            isequipped={equip_item.equipped}
+            $isequipped={equip_item.equipped}
             color={COLOR}
             index={index}
             key={index}

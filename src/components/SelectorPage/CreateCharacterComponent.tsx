@@ -278,7 +278,9 @@ function CreateCharacterComponent({
         </CenterContainer>
       </ModalContainer>
       <ButtonContainer>
-        <ControlButton onClick={handlePostCharacter}>Back</ControlButton>
+        <ControlButton onClick={() => setSelector("characterSelect")}>
+          Back
+        </ControlButton>
         <ControlButton disabled={!isValidName} onClick={handlePostCharacter}>
           Accept
         </ControlButton>
