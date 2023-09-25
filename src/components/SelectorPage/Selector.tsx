@@ -1,16 +1,12 @@
 import * as Constants from "../../Constants";
 import { useState } from "react";
 
-import LoginComponent from "./LoginComponent/LoginComponent";
 import { CharacterEntry } from "../../Types";
-import SessionComponent from "./SessionComponent/SessionComponent";
-
+import JoinComponent from "./JoinComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import CreateSessionComponent from "./CreateSessionComponent/CreateSessionComponent";
-import SelectCharacterComponent from "./SelectCharacterComponent/SelectCharacterComponent";
-import CreateCharacterComponent from "./CreateCharacterComponent/CreateCharacterComponent";
-import GamemasterComponent from "./GamemasterComponent/GamemasterComponent";
+import CreateSessionComponent from "./CreateSessionComponent";
+import SelectCharacterComponent from "./SelectCharacterComponent";
+import CreateCharacterComponent from "./CreateCharacterComponent";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import SelectPortraitComponent from "./SelectPortraitComponent/SelectPortraitComponent";
@@ -60,10 +56,8 @@ function SelectorComponent() {
 
   const renderContent = (selectorValue: string) => {
     switch (selectorValue) {
-      case "login":
-        return <LoginComponent setSelector={setSelector} />;
-      case "session":
-        return <SessionComponent setSelector={setSelector} />;
+      case "joinSession":
+        return <JoinComponent setSelector={setSelector} />;
       case "createSession":
         return <CreateSessionComponent setSelector={setSelector} />;
       case "characterSelect":
@@ -90,13 +84,6 @@ function SelectorComponent() {
             setCharacterPortrait={setCharacterPortrait}
           />
         );
-      case "gamemaster":
-        return (
-          <GamemasterComponent
-            setSelector={setSelector}
-            closeModal={handleClose}
-          />
-        );
       case "close":
         return <div>Add User Content</div>;
       default:
@@ -104,7 +91,7 @@ function SelectorComponent() {
     }
   };
 
-  const [selector, setSelector] = useState<string>("login");
+  const [selector, setSelector] = useState<string>("joinSession");
 
   const handleOpen = () => {
     setIsModalOpen(true);

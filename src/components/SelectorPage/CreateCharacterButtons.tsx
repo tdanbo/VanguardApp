@@ -1,15 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
-import { SessionContext } from "../../../contexts/SessionContext";
+import { SessionContext } from "../../contexts/SessionContext";
 import { useContext } from "react";
-import { CharacterEntry } from "../../../Types";
-import { addNewCharacter } from "../../../functions/CharacterFunctions";
-import { useWebSocket } from "../../../contexts/WebSocketContext";
+import { CharacterEntry } from "../../Types";
+import { addNewCharacter } from "../../functions/CharacterFunctions";
+import { useWebSocket } from "../../contexts/WebSocketContext";
 import {
   ButtonContainer,
   LargeCircleButton,
   LargeCircleButtonDisabled,
-} from "../SelectorStyles";
+} from "./SelectorStyles";
 interface Stats {
   id: number;
   value: number;

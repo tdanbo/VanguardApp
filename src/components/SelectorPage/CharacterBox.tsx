@@ -1,7 +1,7 @@
-import * as Constants from "../../../Constants";
+import * as Constants from "../../Constants";
 import styled from "styled-components";
-import { CharacterEntry } from "../../../Types";
-import { CharacterContext } from "../../../contexts/CharacterContext";
+import { CharacterEntry } from "../../Types";
+import { CharacterContext } from "../../contexts/CharacterContext";
 import { useContext } from "react";
 
 interface SessionBoxProps {

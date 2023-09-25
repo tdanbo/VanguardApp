@@ -17,9 +17,9 @@ export async function getCharacters(id: string): Promise<CharacterEntry[]> {
   return response.data;
 }
 
-export async function getSessions(user: string): Promise<SessionEntry[]> {
-  const response = await axios.get<SessionEntry[]>(
-    `http://localhost:8000/api/sessions/${user}`,
+export async function getSession(id: string): Promise<SessionEntry> {
+  const response = await axios.get<SessionEntry>(
+    `http://localhost:8000/api/sessions/${id}`,
   );
 
   return response.data;

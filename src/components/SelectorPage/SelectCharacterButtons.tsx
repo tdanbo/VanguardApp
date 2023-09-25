@@ -1,20 +1,20 @@
 import { useContext } from "react";
-import { UserContext } from "../../../contexts/UserContext";
-import { SessionContext } from "../../../contexts/SessionContext";
-import { leaveSession } from "../../../functions/SessionsFunctions";
+import { UserContext } from "../../contexts/UserContext";
+import { SessionContext } from "../../contexts/SessionContext";
+import { leaveSession } from "../../functions/SessionsFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
   faAngleLeft,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { CharacterEntry } from "../../../Types";
+import { CharacterEntry } from "../../Types";
 
 import {
   ButtonContainer,
   LargeCircleButton,
   SmallCircleButton,
-} from "../SelectorStyles";
+} from "./SelectorStyles";
 
 interface LoginProps {
   setSelector: (selector: string) => void;

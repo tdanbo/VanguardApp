@@ -1,5 +1,5 @@
 import React, { useState, FC } from "react";
-import * as Constants from "../../../Constants";
+import * as Constants from "../../Constants";
 import styled from "styled-components";
 
 const Container = styled.div`

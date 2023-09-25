@@ -10,8 +10,10 @@ export const MainContainer = styled.div`
 `;
 
 export const Title = styled.div`
+  cursor: pointer;
   display: flex;
   flex-grow: 1;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 10px;
@@ -25,6 +27,10 @@ export const Title = styled.div`
   height: 100px;
   border-top-left-radius: ${Constants.BORDER_RADIUS};
   border-top-right-radius: ${Constants.BORDER_RADIUS};
+  h1 {
+    font-size: 1rem;
+    color: ${Constants.WIDGET_SECONDARY_FONT};
+  }
 `;
 
 export const ModalContainer = styled.div`
@@ -34,9 +40,7 @@ export const ModalContainer = styled.div`
   width: 100%;
   max-height: 500px;
   margin-bottom: 10px;
-  height: 500px;
   overflow: auto;
-
   border-bottom-left-radius: ${Constants.BORDER_RADIUS};
   border-bottom-right-radius: ${Constants.BORDER_RADIUS};
 
@@ -46,10 +50,8 @@ export const ModalContainer = styled.div`
 export const CenterContainer = styled.div`
   display: flex;
   flex-direction: column;
-
   gap: 0.5rem;
   overflow: auto;
-  height: 400px;
   margin: 20px;
   scrollbar-width: none !important;
 `;
@@ -66,6 +68,7 @@ export const ButtonContainer = styled.div`
   margin-top: 3px;
   display: flex;
   justify-content: center;
+  gap: 20px;
 `;
 
 export const InputBox = styled.input`
@@ -116,4 +119,29 @@ export const SmallCircleButton = styled.div`
   cursor: pointer;
   margin: 5px;
   color: ${Constants.WIDGET_PRIMARY_FONT};
+`;
+
+interface ControlButtonProps {
+  disabled?: boolean;
+}
+
+export const ControlButton = styled.div<ControlButtonProps>`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  height: 25px;
+  min-height: 50px;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: ${Constants.BORDER_RADIUS};
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+
+  ${({ disabled }) =>
+    disabled &&
+    `
+      opacity: 0.5;
+      cursor: not-allowed;
+  `}
 `;

@@ -120,7 +120,6 @@ export type SessionEntry = {
   id: string;
   date: string;
   owner: string;
-  users: string[];
 };
 
 export interface AbilityRoll {

@@ -1,16 +1,20 @@
-import * as Constants from "../../../Constants";
-import CreateCharacterButtons from "./CreateCharacterButtons";
-import { useState } from "react";
-import { CharacterEntry } from "../../../Types";
+import * as Constants from "../../Constants";
+import { useState, useContext } from "react";
+import { useWebSocket } from "../../contexts/WebSocketContext";
+import { CharacterEntry } from "../../Types";
+import { SessionContext } from "../../contexts/SessionContext";
+
 import styled from "styled-components";
 import RaceDropdownBox from "./RaceDropdownBox";
+import { addNewCharacter } from "../../functions/CharacterFunctions";
 import {
   MainContainer,
   ModalContainer,
   Title,
   CenterContainer,
   Divider,
-} from "../SelectorStyles";
+  ControlButton,
+} from "./SelectorStyles";
 
 interface LoginProps {
   setSelector: (selector: string) => void;
@@ -170,6 +174,55 @@ function CreateCharacterComponent({
   const handlePortraitSelect = () => {
     setSelector("selectPortrait");
   };
+  const { session } = useContext(SessionContext);
+  const { sendRequest } = useWebSocket();
+
+  const NewCharacterEntry: CharacterEntry = {
+    id: session.id,
+    portrait: characterPortrait,
+    details: {
+      movement: 0,
+      name: characterName,
+      xp_earned: 50,
+      modifier: 0,
+    },
+    toughness: {
+      max: { value: 0, mod: 0 },
+      pain: { value: 0, mod: 0 },
+      damage: { value: 0, mod: 0 },
+    },
+    stats: {
+      accurate: { value: stats[0].value, mod: 0 },
+      cunning: { value: stats[1].value, mod: 0 },
+      discreet: { value: stats[2].value, mod: 0 },
+      persuasive: { value: stats[3].value, mod: 0 },
+      quick: { value: stats[4].value, mod: 0 },
+      resolute: { value: stats[5].value, mod: 0 },
+      strong: { value: stats[6].value, mod: 0 },
+      vigilant: { value: stats[7].value, mod: 0 },
+    },
+    actives: {
+      attack: { stat: "accurate", mod: 0 },
+      defense: { stat: "quick", mod: 0 },
+      casting: { stat: "resolute", mod: 0 },
+      sneaking: { stat: "discreet", mod: 0 },
+    },
+    corruption: {
+      permanent: 0,
+      temporary: 0,
+      threshold: 0,
+    },
+    abilities: [],
+    inventory: [],
+    rations: { food: 0, water: 0 },
+    money: 0,
+  };
+
+  const handlePostCharacter = async () => {
+    setSelector("characterSelect");
+    await addNewCharacter(NewCharacterEntry);
+    sendRequest("characters"); // asking websocket to update session characters for all clients
+  };
 
   return (
     <MainContainer>
@@ -217,12 +270,8 @@ function CreateCharacterComponent({
         </CenterContainer>
         <Divider />
       </ModalContainer>
-      <CreateCharacterButtons
-        setSelector={setSelector}
-        character_name={characterName}
-        portrait={characterPortrait}
-        stats={stats}
-      />
+      <ControlButton onClick={handlePostCharacter}>Back</ControlButton>
+      <ControlButton onClick={handlePostCharacter}>Accept</ControlButton>
     </MainContainer>
   );
 }
