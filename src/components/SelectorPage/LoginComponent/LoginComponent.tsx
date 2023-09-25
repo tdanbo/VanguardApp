@@ -58,7 +58,7 @@ function LoginComponent({ setSelector }: LoginProps) {
         withCredentials: true,
       });
       const fetchedUsername = res.data.user;
-      console.log(fetchedUsername);
+      console.log("fetched username: ", fetchedUsername);
       if (fetchedUsername) {
         setUser(fetchedUsername);
         setSelector("session");
