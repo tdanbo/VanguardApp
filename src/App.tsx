@@ -31,7 +31,7 @@ import SearchItemBox from "./components/SearchItemBox";
 import { AbilityEntry, ItemEntry } from "./Types";
 import SecondaryStatsControls from "./components/StatsControls/SecondaryStatsControls";
 
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const Row = styled.div`
   display: flex;
