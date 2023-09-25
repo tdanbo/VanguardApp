@@ -52,12 +52,13 @@ function LoginComponent({ setSelector }: LoginProps) {
   const { setUser } = useContext(UserContext);
 
   const fetchUsername = async () => {
+    console.log("fetching username");
     try {
       const res = await axios.get("http://localhost:8000/username", {
         withCredentials: true,
       });
       const fetchedUsername = res.data.user;
-
+      console.log(fetchedUsername);
       if (fetchedUsername) {
         setUser(fetchedUsername);
         setSelector("session");
