@@ -11,7 +11,7 @@ const Container = styled.div`
   flex-direction: column-reverse;
   flex-grow: 1;
   align-items: flex-end;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 10px;
 `;
 
@@ -33,15 +33,6 @@ function CombatSection() {
       setCombatLog(response);
     });
   }, [session]);
-
-  // useEffect(() => {
-  //   const intervalId = setInterval(async () => {
-  //     const data = await getCombatLog(session.id);
-  //     setCombatLog(data);
-  //   }, 1000); // Polls every second
-
-  //   return () => clearInterval(intervalId); // Clear the interval when the component is unmounted
-  // }, [session.id]);
 
   return (
     <Container>

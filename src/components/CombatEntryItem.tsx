@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { UpperFirstLetter } from "../functions/UtilityFunctions";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { CharacterPortraits } from "../Images";
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
   index: number;
@@ -28,6 +28,7 @@ const Container = styled.div<PortraitProps>`
   border-radius: ${Constants.BORDER_RADIUS};
 
   width: 50%;
+  max-height: 200px;
   min-height: 200px;
   color: ${Constants.WIDGET_PRIMARY_FONT};
   background: linear-gradient(
@@ -116,7 +117,7 @@ function CombatEntryItem({ combatEntry }: CombatEntryItemProps) {
   }
 
   return (
-    <Container src={combatEntry.portrait}>
+    <Container src={CharacterPortraits[combatEntry.portrait]}>
       <ColorBlock $rgb={EntryColor()} $issuccess={combatEntry.success} />
       <ResultContainer>
         <Result $rgb={EntryColor()} $issuccess={combatEntry.success}>

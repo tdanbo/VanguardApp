@@ -51,11 +51,11 @@ function SelectPortraitComponent({
       <Title>Select Portrait</Title>
       <ModalContainer>
         <GridContainer>
-          {Object.values(CharacterPortraits).map(
-            (src: string, index: number) => (
+          {Object.entries(CharacterPortraits).map(
+            ([key, src]: [string, string], index: number) => (
               <ImageContainer
                 key={index}
-                onClick={handleImageSelect(src)}
+                onClick={handleImageSelect(key)}
                 src={src}
               ></ImageContainer>
             ),

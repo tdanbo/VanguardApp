@@ -111,6 +111,7 @@ const InventoryContainer = styled.div`
 const CombatContainer = styled.div`
   display: flex;
   flex-direction: column;
+
   margin: 20px;
   gap: 20px;
   height: 100%;

@@ -2,7 +2,7 @@ import * as Constants from "../Constants";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useContext } from "react";
 import styled from "styled-components";
-
+import { CharacterPortraits } from "../Images";
 import {
   onAddPermCorruption,
   onSubPermCorruption,
@@ -176,7 +176,7 @@ function HealthBox() {
     character.corruption.threshold - temporary_corruption;
 
   return (
-    <Container src={character.portrait}>
+    <Container src={CharacterPortraits[character.portrait]}>
       <InnerContainer>
         <Row>
           {[...Array(temporary_corruption)].map((_, index) => (

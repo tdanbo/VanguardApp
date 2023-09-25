@@ -5,6 +5,7 @@ import { CharacterEntry } from "../../Types";
 import { SessionContext } from "../../contexts/SessionContext";
 
 import styled from "styled-components";
+import { CharacterPortraits } from "../../Images";
 import RaceDropdownBox from "./RaceDropdownBox";
 import { addNewCharacter } from "../../functions/CharacterFunctions";
 import {
@@ -233,7 +234,7 @@ function CreateCharacterComponent({
           <Container>
             <PortraitSelect
               onClick={handlePortraitSelect}
-              src={characterPortrait}
+              src={CharacterPortraits[characterPortrait]}
             />
             <InputtContainer>
               <NameInput
