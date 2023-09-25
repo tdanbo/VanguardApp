@@ -5,10 +5,10 @@ import {
   Divider,
 } from "./SelectorStyles";
 
-import { useState, useEffect } from "react";
 import styled from "styled-components";
 import SelectPortraitButtons from "./SelectPortraitButtons";
 import * as Constants from "../../Constants";
+import { CharacterPortraits } from "../../Images";
 interface LoginProps {
   setSelector: (selector: string) => void;
   setCharacterPortrait: (portrait: string) => void;
@@ -41,23 +41,6 @@ function SelectPortraitComponent({
   setSelector,
   setCharacterPortrait,
 }: LoginProps) {
-  const [loadedImages, setLoadedImages] = useState<string[]>([]);
-  const imageModules = import.meta.glob("../../../assets/characters/*");
-
-  useEffect(() => {
-    // Load all images
-    const loadAllImages = async () => {
-      const allImages: string[] = [];
-      for (const path in imageModules) {
-        const imageModule = await imageModules[path]();
-        // Use a type assertion here
-        allImages.push((imageModule as { default: string }).default);
-      }
-      setLoadedImages(allImages);
-    };
-    loadAllImages();
-  }, []);
-
   const handleImageSelect = (src: string) => () => {
     setCharacterPortrait(src);
     setSelector("createCharacter");
@@ -67,15 +50,16 @@ function SelectPortraitComponent({
     <MainContainer>
       <Title>Select Portrait</Title>
       <ModalContainer>
-        <Divider />
         <GridContainer>
-          {loadedImages.map((src, index) => (
-            <ImageContainer
-              key={index}
-              onClick={handleImageSelect(src)}
-              src={src}
-            ></ImageContainer>
-          ))}
+          {Object.values(CharacterPortraits).map(
+            (src: string, index: number) => (
+              <ImageContainer
+                key={index}
+                onClick={handleImageSelect(src)}
+                src={src}
+              ></ImageContainer>
+            ),
+          )}
         </GridContainer>
         <Divider />
       </ModalContainer>

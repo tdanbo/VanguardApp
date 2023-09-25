@@ -1,13 +1,12 @@
 import * as Constants from "../../Constants";
 import { useState } from "react";
-
 import { CharacterEntry } from "../../Types";
-import JoinComponent from "./JoinComponent";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CreateSessionComponent from "./CreateSessionComponent";
 import SelectCharacterComponent from "./SelectCharacterComponent";
 import CreateCharacterComponent from "./CreateCharacterComponent";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import JoinComponent from "./JoinComponent";
 import styled from "styled-components";
 import SelectPortraitComponent from "./SelectPortraitComponent";
 import BackgroundImage from "../../assets/icons/background.jpeg";
