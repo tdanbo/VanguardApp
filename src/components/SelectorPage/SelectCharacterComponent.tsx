@@ -1,4 +1,3 @@
-import SelectCharacterButtons from "./SelectCharacterButtons";
 import CharacterBox from "./CharacterBox";
 import { useEffect, useContext } from "react";
 import { CharacterEntry } from "../../Types";

@@ -40,18 +40,15 @@ function generateID(): string {
 function CreateSessionButtons({
   setSelector,
   sessionName,
-  sessionDescription,
 }: CreateSessionsProps) {
   const { user } = useContext(UserContext);
   const currentDate = new Date();
 
   const NewSessionEntry: SessionEntry = {
     name: sessionName,
-    description: sessionDescription,
     id: generateID(),
     date: formatDate(currentDate),
     owner: user,
-    users: [],
   };
 
   const handlePostSession = async () => {

@@ -1,9 +1,5 @@
-import { useEffect, useContext, useState } from "react";
-import axios from "axios";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDiscord } from "@fortawesome/free-brands-svg-icons";
+import { useContext, useState } from "react";
 import * as Constants from "../../Constants";
-import { UserContext } from "../../contexts/UserContext";
 import { SessionContext } from "../../contexts/SessionContext";
 import styled from "styled-components";
 import { getSession } from "../../functions/SessionsFunctions";

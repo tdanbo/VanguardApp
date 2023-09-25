@@ -116,7 +116,6 @@ export type CombatEntry = {
 
 export type SessionEntry = {
   name: string;
-  description: string;
   id: string;
   date: string;
   owner: string;

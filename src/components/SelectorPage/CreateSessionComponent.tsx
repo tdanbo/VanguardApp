@@ -1,4 +1,3 @@
-import CreateSessionButtons from "./CreateSessionComponent/CreateSessionButtons";
 import { useState, useContext } from "react";
 import { SessionContext } from "../../contexts/SessionContext";
 import { SessionEntry } from "../../Types";
@@ -67,18 +66,13 @@ const EmailButton = styled.input`
 `;
 
 function CreateSessionComponent({ setSelector }: LoginProps) {
-  const { session, setSession } = useContext(SessionContext);
+  const { setSession } = useContext(SessionContext);
   const [sessionName, setSessionName] = useState("");
-  const [sessionDescription, setSessionDescription] = useState("");
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
 
   const handleNameChange = (e: any) => {
     setSessionName(e.target.value);
-  };
-
-  const handleDescriptionChange = (e: any) => {
-    setSessionDescription(e.target.value);
   };
 
   const handleEmailChange = (e: any) => {
@@ -106,7 +100,6 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
 
   const NewSessionEntry: SessionEntry = {
     name: sessionName,
-    description: sessionDescription,
     id: generateID(),
     date: formatDate(currentDate),
     owner: email,

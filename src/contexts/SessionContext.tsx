@@ -3,11 +3,9 @@ import { SessionEntry } from "../Types";
 
 const defaultSession: SessionEntry = {
   name: "",
-  description: "",
   id: "",
   date: "",
   owner: "",
-  users: [],
 };
 
 interface SessionContextType {
