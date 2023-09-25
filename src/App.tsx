@@ -22,7 +22,6 @@ import XpBox from "./components/XpBox";
 
 import CharacterNameBox from "./components/CharacterNameBox";
 import { useState } from "react";
-
 import AbilityBrowser from "./components/Modals/AbilityBrowser";
 import AbilitySection from "./components/Sections/AbilitySection";
 import CombatSection from "./components/Sections/CombatSection";
@@ -31,6 +30,8 @@ import SearchAbilityBox from "./components/SearchAbilityBox";
 import SearchItemBox from "./components/SearchItemBox";
 import { AbilityEntry, ItemEntry } from "./Types";
 import SecondaryStatsControls from "./components/StatsControls/SecondaryStatsControls";
+
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 const Row = styled.div`
   display: flex;
@@ -161,99 +162,90 @@ function App() {
   const [itemList, setItemList] = useState<ItemEntry[]>([]);
 
   return (
-    <UserProvider>
-      <SessionProvider>
-        <CharacterProvider>
-          <WebSocketProvider>
-            <Row>
-              <Column>
-                <HeaderContainer>
-                  <SearchItemBox
-                    itemList={itemList}
-                    setList={setItemList}
-                    browserState={browserState}
-                  />
-                  <SearchAbilityBox
-                    itemList={abilityList}
-                    setList={setAbilityList}
-                    browserState={browserState}
-                  />
-                </HeaderContainer>
-                <BrowserContainer>
-                  <EquipmentBrowser
-                    browserState={browserState}
-                    itemList={itemList}
-                    setItemList={setItemList}
-                  />
-                  <AbilityBrowser
-                    browserState={browserState}
-                    abilityList={abilityList}
-                    setAbilityList={setAbilityList}
-                  />
-                </BrowserContainer>
-                <FooterContainer></FooterContainer>
-              </Column>
-              <ColumnNarrow>
-                <NavigationTop>
-                  <CharacterNavigation
-                    browserState={browserState}
-                    setBrowserState={setBrowserState}
-                  />
-                </NavigationTop>
-                <NavigationMid></NavigationMid>
-                <NavigationBot>
-                  <InventoryNavigation
-                    inventoryState={inventoryState}
-                    setInventoryState={setInventoryState}
-                  />
-                </NavigationBot>
-              </ColumnNarrow>
-              <Column>
-                <HeaderContainer>
-                  <CharacterNameBox />
-                  <XpBox />
-                </HeaderContainer>
-                <StatsContainer>
-                  <HealthBox />
-                  <StatsControls />
-                </StatsContainer>
-                <HealthContainer>
-                  <ActiveControls />
-                  <SecondaryStatsControls />
-                </HealthContainer>
-                <InventoryContainer>
-                  <InventorySection inventoryState={inventoryState} />
-                  <AbilitySection inventoryState={inventoryState} />
-                </InventoryContainer>
-                <FooterCenterContainer>
-                  <ResourcesBox />
-                </FooterCenterContainer>
-              </Column>
-              <Column>
-                <CombatContainer>
-                  <CombatSection />
-                </CombatContainer>
-                <FooterContainer>
-                  <DiceSection />
-                </FooterContainer>
-              </Column>
-            </Row>
-          </WebSocketProvider>
-        </CharacterProvider>
-      </SessionProvider>
-    </UserProvider>
+    <Router basename="/VanguardApp">
+      <UserProvider>
+        <SessionProvider>
+          <CharacterProvider>
+            <WebSocketProvider>
+              <Row>
+                <Column>
+                  <HeaderContainer>
+                    <SearchItemBox
+                      itemList={itemList}
+                      setList={setItemList}
+                      browserState={browserState}
+                    />
+                    <SearchAbilityBox
+                      itemList={abilityList}
+                      setList={setAbilityList}
+                      browserState={browserState}
+                    />
+                  </HeaderContainer>
+                  <BrowserContainer>
+                    <EquipmentBrowser
+                      browserState={browserState}
+                      itemList={itemList}
+                      setItemList={setItemList}
+                    />
+                    <AbilityBrowser
+                      browserState={browserState}
+                      abilityList={abilityList}
+                      setAbilityList={setAbilityList}
+                    />
+                  </BrowserContainer>
+                  <FooterContainer></FooterContainer>
+                </Column>
+                <ColumnNarrow>
+                  <NavigationTop>
+                    <CharacterNavigation
+                      browserState={browserState}
+                      setBrowserState={setBrowserState}
+                    />
+                  </NavigationTop>
+                  <NavigationMid></NavigationMid>
+                  <NavigationBot>
+                    <InventoryNavigation
+                      inventoryState={inventoryState}
+                      setInventoryState={setInventoryState}
+                    />
+                  </NavigationBot>
+                </ColumnNarrow>
+                <Column>
+                  <HeaderContainer>
+                    <CharacterNameBox />
+                    <XpBox />
+                  </HeaderContainer>
+                  <StatsContainer>
+                    <HealthBox />
+                    <StatsControls />
+                  </StatsContainer>
+                  <HealthContainer>
+                    <ActiveControls />
+                    <SecondaryStatsControls />
+                  </HealthContainer>
+                  <InventoryContainer>
+                    <InventorySection inventoryState={inventoryState} />
+                    <AbilitySection inventoryState={inventoryState} />
+                  </InventoryContainer>
+                  <FooterCenterContainer>
+                    <ResourcesBox />
+                  </FooterCenterContainer>
+                </Column>
+                <Column>
+                  <CombatContainer>
+                    <CombatSection />
+                  </CombatContainer>
+                  <FooterContainer>
+                    <DiceSection />
+                  </FooterContainer>
+                </Column>
+              </Row>
+            </WebSocketProvider>
+          </CharacterProvider>
+        </SessionProvider>
+      </UserProvider>
+    </Router>
   );
-}
-
-{
-  /* <EquipmentSection />
-<AbilitySection /> 
-<ActiveSection />
-<ModifierSection />
-<DetailsSection 
-<RestBox />
-        <StatSettings />
-/>*/
 }
 
 export default App;
