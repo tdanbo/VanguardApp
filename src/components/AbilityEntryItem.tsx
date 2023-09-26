@@ -253,7 +253,7 @@ function LevelComponent({ ability_level, radius }: LevelComponentProps) {
 interface AbilityEntryItemProps {
   ability: AbilityEntry;
   browser: boolean;
-  setInventoryState: (inventoryState: number) => void;
+  setInventoryState?: (inventoryState: number) => void;
 }
 
 function AbilityEntryItem({
@@ -285,7 +285,9 @@ function AbilityEntryItem({
     if (updatedCharacter) {
       setCharacter(updatedCharacter);
     }
-    setInventoryState(2);
+    if (setInventoryState) {
+      setInventoryState(2);
+    }
   };
 
   const DeleteAbilitySlot = (id: string) => {

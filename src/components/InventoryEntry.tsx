@@ -22,7 +22,7 @@ interface InventoryEntryProps {
   equipped: string;
   item: ItemEntry;
   id: string;
-  setInventoryState: (inventoryState: number) => void;
+  setInventoryState?: (inventoryState: number) => void;
 }
 
 const Container = styled.div`
@@ -208,7 +208,9 @@ function InventoryEntry({
     if (updatedCharacter) {
       setCharacter(updatedCharacter);
     }
-    setInventoryState(1);
+    if (setInventoryState) {
+      setInventoryState(1);
+    }
   };
 
   const DeleteInventorySlot = (id: string) => {
