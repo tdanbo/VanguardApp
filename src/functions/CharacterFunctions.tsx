@@ -237,7 +237,9 @@ export const getActiveModifiers = (character: CharacterEntry) => {
   character_actives["casting"].mod = 0;
   character_actives["sneaking"].mod = 0;
 
-  const overburden = character.stats.strong.value - character.inventory.length;
+  // Minus two because food and water has been taken out of the inventory
+  const overburden =
+    character.stats.strong.value - 2 - character.inventory.length;
 
   if (overburden < 0) {
     character_actives["defense"].mod += overburden;

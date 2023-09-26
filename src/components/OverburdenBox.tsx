@@ -21,7 +21,8 @@ function OverburdenBox() {
   const { character } = useContext(CharacterContext);
 
   const used_slots = character.inventory.length;
-  const max_slots = character.stats.strong.value;
+  // Minus two because of food and water going to its own section
+  const max_slots = character.stats.strong.value - 2;
 
   return (
     <Container>

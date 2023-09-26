@@ -25,6 +25,7 @@ export const RED = "#925833";
 export const BLUE = "#495C60";
 export const GREEN = "#5c6049";
 export const YELLOW = "#926f2b";
+export const BRIGHT_YELLOW = "#BF8C2F";
 export const WHITE = "#bfb6ac";
 export const BRIGHT_RED = "#923333";
 export const GREY = "#8f8e89";
@@ -39,6 +40,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   armor: BLUE,
   casting: PURPLE,
   "mystical power": PURPLE,
+
   ritual: PURPLE,
   elixirs: PURPLE,
   sneaking: GREEN,
@@ -55,7 +57,6 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   quality_ranged: BRIGHT_RED,
   quality_armor: BLUE,
   general_good: GREY,
-  lesser_artifact: BRIGHT_RED,
   corruption: PURPLE,
   vigilant: YELLOW,
   strong: YELLOW,
@@ -65,4 +66,9 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   discreet: YELLOW,
   cunning: YELLOW,
   accurate: YELLOW,
+  mystical_treasure: BRIGHT_YELLOW,
+  artifact: BRIGHT_YELLOW,
+  curiosities: BRIGHT_YELLOW,
+  lesser_artifact: BRIGHT_YELLOW,
+  tool: GREEN,
 };

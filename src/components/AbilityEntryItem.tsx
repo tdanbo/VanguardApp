@@ -40,6 +40,7 @@ interface ContainerProps {
 const LevelBaseContainer = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
+
   border-left: 1px solid ${Constants.WIDGET_BORDER};
   border-right: 1px solid ${Constants.WIDGET_BORDER};
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
@@ -58,15 +59,15 @@ const Container = styled.div`
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
   gap: 5px;
+  min-height: 35px;
+  max-height: 35px;
 `;
 
 const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  justify-content: left;
+  flex: 1;
   margin-left: 5px;
 `;
 
@@ -156,12 +157,11 @@ const AbilityName = styled.div<LevelProps>`
 `;
 
 const AbilityDetail = styled.div`
-  align-items: flex-start;
   display: flex;
   flex-grow: 1;
   flex: 1;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  font-size: 11px;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 10px;
 `;
 
 const Divider = styled.div`

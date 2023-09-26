@@ -25,7 +25,8 @@ const Container = styled.div`
   flex: 1;
   flex-direction: row;
   gap: ${Constants.WIDGET_GAB};
-  min-height: 40px;
+  height: 35px;
+  max-height: 35px;
 `;
 
 const ActiveButton = styled.button`

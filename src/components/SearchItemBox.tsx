@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { ItemEntry } from "../Types";
 import axios from "axios";
 import { API } from "../Constants";
+import { UpperFirstLetter } from "../functions/UtilityFunctions";
 
 const {
   WIDGET_BACKGROUND_EMPTY,
@@ -70,19 +71,14 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
         type: "",
       },
       quality: [],
-      equip: [
-        {
-          type: "",
-          equipped: false,
-        },
-      ],
+      equip: [],
       quantity: {
         count: 0,
         bulk: false,
       },
       type: "General Good",
       cost: "",
-      name: search,
+      name: UpperFirstLetter(search),
       category: "general_good",
       id: "",
     },

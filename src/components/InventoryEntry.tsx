@@ -28,8 +28,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  min-height: 50px;
-  max-height: 50px;
+  min-height: 35px;
+  max-height: 35px;
   border-radius: ${Constants.BORDER_RADIUS};
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
@@ -61,26 +61,25 @@ const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  flex: 1;
   margin-left: 5px;
 `;
 
 const NameBox = styled.div`
-  align-items: flex-end;
-  display: flex;
   flex-grow: 1;
+  display: flex;
   flex: 1;
   color: ${(props) => props.color};
-  font-size: 15px;
+  font-size: 16px;
   font-weight: bold;
 `;
 
 const TypeBox = styled.div`
-  align-items: flex-start;
   display: flex;
   flex-grow: 1;
   flex: 1;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  font-size: 11px;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 10px;
 `;
 
 const QualityContainer = styled.div`
@@ -110,7 +109,7 @@ const QualityBox = styled.div`
   justify-content: center;
   align-items: center;
   width: 40px;
-  height: 20px;
+
   font-size: 12px;
 `;
 
@@ -130,7 +129,6 @@ const RollBox = styled.div<RollBoxProps>`
   align-items: center;
   font-weight: bold;
   width: 40px;
-  height: 20px;
   font-size: 14px;
 `;
 
@@ -166,7 +164,12 @@ const EquipButton = styled.button<StyledButtonProps>`
   width: 20px;
   height: 100%;
 `;
-const NoEquipBox = styled.div`
+
+type NoEquipButtonProps = {
+  color: string;
+};
+
+const NoEquipBox = styled.div<NoEquipButtonProps>`
   display: flex;
   flex-grow: 1;
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
@@ -174,6 +177,8 @@ const NoEquipBox = styled.div`
   width: 20px;
   max-width: 20px;
   height: 100%;
+  align-items: center;
+  justify-content: center;
 `;
 
 function InventoryEntry({ item, browser, equipped, id }: InventoryEntryProps) {
@@ -231,12 +236,15 @@ function InventoryEntry({ item, browser, equipped, id }: InventoryEntryProps) {
             onClick={() => HandleEquip(item, equip_item)}
           ></EquipButton>
         ))}
-        {item.equip.length === 0 && <NoEquipBox key={"unequip"}></NoEquipBox>}
+        {item.equip.length === 0 && (
+          <NoEquipBox key={"unequip"} color={COLOR}></NoEquipBox>
+        )}
       </EquipContainer>
       <NameContainer>
         <NameBox color={COLOR}>{item.name}</NameBox>
         <TypeBox>{item.type}</TypeBox>
       </NameContainer>
+
       <QualityContainer>
         {item.quality.map((item, index) => (
           <QualityBox key={index}>{item.slice(0, 2)}</QualityBox>

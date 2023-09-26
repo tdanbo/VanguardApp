@@ -62,10 +62,10 @@ function JoinComponent({ setSelector }: LoginProps) {
         </CenterContainer>
       </ModalContainer>
       <ButtonContainer>
-        <ControlButton onClick={handleJoinSession}>Join Session</ControlButton>
         <ControlButton onClick={() => setSelector("createSession")}>
           Create Session
         </ControlButton>
+        <ControlButton onClick={handleJoinSession}>Join Session</ControlButton>
       </ButtonContainer>
     </MainContainer>
   );

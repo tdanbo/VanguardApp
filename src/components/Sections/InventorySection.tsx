@@ -24,9 +24,13 @@ const priorityList = [
   "ammunition",
   "quality_armor",
   "ordinary_armor",
-  "lesser_artifact",
   "elixirs",
+  "mystical_treasure",
+  "artifact",
+  "lesser_artifact",
+  "curiosities",
   "tools",
+  "general_good",
 ];
 
 function sortInventory(a: ItemEntry, b: ItemEntry): number {
@@ -58,7 +62,7 @@ function InventorySection({ inventoryState }: NavigationProps) {
           );
         }
       })}
-      {Array.from({ length: 10 }).map((_, index) => {
+      {Array.from({ length: 15 }).map((_, index) => {
         return <InventoryEntryEmpty key={index} />;
       })}
     </Container>

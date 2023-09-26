@@ -88,7 +88,7 @@ const StatsContainer = styled.div`
   display: flex;
   margin: 20px;
   gap: 20px;
-  height: 40%;
+  height: 30%;
 `;
 
 const HealthContainer = styled.div`
@@ -103,7 +103,7 @@ const InventoryContainer = styled.div`
   flex-direction: row;
   margin: 20px;
   gap: 20px;
-  height: 50%;
+  height: 60%;
   overflow: scroll;
   scrollbar-width: none !important;
 `;
@@ -124,7 +124,7 @@ const NavigationTop = styled.div`
   flex-direction: column;
   margin-top: 75px;
   margin-bottom: 20px;
-  height: 40%;
+  height: 30%;
 `;
 
 const NavigationMid = styled.div`
@@ -140,7 +140,7 @@ const NavigationBot = styled.div`
   flex-direction: column;
   margin-top: 20px;
   margin-bottom: 75px;
-  height: 50%;
+  height: 60%;
 `;
 
 const BrowserContainer = styled.div`
