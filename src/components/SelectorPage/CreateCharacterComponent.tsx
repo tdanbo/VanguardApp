@@ -166,6 +166,7 @@ function CreateCharacterComponent({
   const options = [
     "Select Race",
     "Ambrian",
+    "Barbarian",
     "Changeling",
     "Ogre",
     "Goblin",
@@ -201,14 +202,14 @@ function CreateCharacterComponent({
       damage: { value: 0, mod: 0 },
     },
     stats: {
-      accurate: { value: stats[0].value, mod: 0 },
-      cunning: { value: stats[1].value, mod: 0 },
-      discreet: { value: stats[2].value, mod: 0 },
-      persuasive: { value: stats[3].value, mod: 0 },
-      quick: { value: stats[4].value, mod: 0 },
-      resolute: { value: stats[5].value, mod: 0 },
-      strong: { value: stats[6].value, mod: 0 },
-      vigilant: { value: stats[7].value, mod: 0 },
+      cunning: { value: stats[0].value, mod: 0 },
+      discreet: { value: stats[1].value, mod: 0 },
+      persuasive: { value: stats[2].value, mod: 0 },
+      quick: { value: stats[3].value, mod: 0 },
+      resolute: { value: stats[4].value, mod: 0 },
+      strong: { value: stats[5].value, mod: 0 },
+      vigilant: { value: stats[6].value, mod: 0 },
+      accurate: { value: stats[7].value, mod: 0 },
     },
     actives: {
       attack: { stat: "accurate", mod: 0 },
@@ -226,6 +227,8 @@ function CreateCharacterComponent({
     rations: { food: 0, water: 0 },
     money: 0,
   };
+
+  console.log(NewCharacterEntry);
 
   const handlePostCharacter = async () => {
     setSelector("characterSelect");
