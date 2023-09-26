@@ -22,15 +22,25 @@ interface AbilityBrowserProps {
   browserState: number;
   abilityList: AbilityEntry[];
   setAbilityList: (abilityList: AbilityEntry[]) => void;
+  setInventoryState: (inventoryState: number) => void;
 }
 
-function AbilityBrowser({ browserState, abilityList }: AbilityBrowserProps) {
+function AbilityBrowser({
+  browserState,
+  abilityList,
+  setInventoryState,
+}: AbilityBrowserProps) {
   return (
     <Container hidden={browserState === 0 || browserState === 1}>
       <ItemContainer>
         {abilityList &&
           abilityList.map((ability, index) => (
-            <AbilityEntryItem key={index} browser={true} ability={ability} />
+            <AbilityEntryItem
+              key={index}
+              browser={true}
+              ability={ability}
+              setInventoryState={setInventoryState}
+            />
           ))}
       </ItemContainer>
     </Container>

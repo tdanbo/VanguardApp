@@ -18,7 +18,7 @@ interface NavigatorProps {
 
 const Navigator = styled.button<NavigatorProps>`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   border: ${(props) =>
@@ -65,10 +65,10 @@ function InventoryNavigation({
 
   return (
     <Container>
-      <OverburdenBox />
       {inventoryState === 1 ? (
         <Navigator $active={inventoryState === 1} onClick={onHandleItems}>
           <FontAwesomeIcon icon={faBriefcase} />
+          <OverburdenBox />
         </Navigator>
       ) : (
         <Navigator $active={inventoryState === 2} onClick={onHandleItems}>

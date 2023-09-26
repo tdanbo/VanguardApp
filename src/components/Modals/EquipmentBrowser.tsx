@@ -21,9 +21,14 @@ interface EquipmentBrowserProps {
   browserState: number;
   itemList: ItemEntry[];
   setItemList: (itemList: ItemEntry[]) => void;
+  setInventoryState: (inventoryState: number) => void;
 }
 
-function EquipmentBrowser({ browserState, itemList }: EquipmentBrowserProps) {
+function EquipmentBrowser({
+  browserState,
+  itemList,
+  setInventoryState,
+}: EquipmentBrowserProps) {
   return (
     <Container hidden={browserState === 0 || browserState === 2}>
       <ItemContainer>
@@ -36,6 +41,7 @@ function EquipmentBrowser({ browserState, itemList }: EquipmentBrowserProps) {
               item={item}
               equipped={""}
               id={""}
+              setInventoryState={setInventoryState}
             />
           ))}
       </ItemContainer>

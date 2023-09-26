@@ -1,6 +1,6 @@
 import * as Constants from "../Constants";
 import { AbilityEntry } from "../Types";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useRoll } from "../functions/CombatFunctions";
@@ -122,21 +122,25 @@ const ExpandButten = styled.div`
 const CorruptionButten = styled.div`
   cursor: pointer;
   display: flex;
-  flex-direction: row;
   flex-grow: 1;
-  width: 20px;
-  max-width: 20px;
-  border-right-top-radius: ${Constants.BORDER_RADIUS};
-  background-color: rgba(0, 0, 0, 0.25);
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
   color: ${Constants.WIDGET_SECONDARY_FONT};
-  padding-bottom: 5px;
+  background-color: rgba(25, 25, 25, 1);
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  justify-content: center;
+  align-items: center;
+  align-items: right;
+  font-weight: bold;
+  width: 40px;
+  font-size: 14px;
 `;
 
-const LevelContainer = styled.div`
-  display: flex;
+interface LevelContainerProps {
+  $expanded: boolean;
+}
+
+const LevelContainer = styled.div<LevelContainerProps>`
+  display: ${(props) => (props.$expanded ? "flex" : "none")};
   flex-direction: column;
 `;
 
@@ -213,7 +217,6 @@ const RollButton = styled.div<LevelProps>`
   align-items: right;
   font-weight: bold;
   width: 40px;
-  height: 20px;
   font-size: 14px;
 `;
 
@@ -250,19 +253,39 @@ function LevelComponent({ ability_level, radius }: LevelComponentProps) {
 interface AbilityEntryItemProps {
   ability: AbilityEntry;
   browser: boolean;
+  setInventoryState: (inventoryState: number) => void;
 }
 
-function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
+function AbilityEntryItem({
+  ability,
+  browser,
+  setInventoryState,
+}: AbilityEntryItemProps) {
   const { character, setCharacter } = useContext(CharacterContext);
-  const [abilityLevel, setAbilityLevel] = useState<string>(
-    browser ? "Master" : ability.level,
-  );
+  const [abilityLevel, setAbilityLevel] = useState<string>(ability.level);
+
+  useEffect(() => {
+    if (browser) {
+      if (ability.master.description !== "") {
+        setAbilityLevel("Master");
+      } else if (ability.adept.description !== "") {
+        setAbilityLevel("Adept");
+      } else if (ability.novice.description !== "") {
+        setAbilityLevel("Novice");
+      } else {
+        setAbilityLevel("Novice");
+      }
+    }
+  });
+
+  const [expanded, setExpanded] = useState<boolean>(false);
 
   const AddAbilitySlot = () => {
     const updatedCharacter = onAddAbilityItem({ character, ability });
     if (updatedCharacter) {
       setCharacter(updatedCharacter);
     }
+    setInventoryState(2);
   };
 
   const DeleteAbilitySlot = (id: string) => {
@@ -379,14 +402,11 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
   return (
     <BaseContainer>
       <Container>
-        {ability.type === "Mystical Power" ? (
-          <CorruptionButten onClick={RollCorruptionDice}>
-            <FontAwesomeIcon icon={faSkull} />
-          </CorruptionButten>
-        ) : (
-          <ExpandButten></ExpandButten>
-        )}
-
+        <ExpandButten
+          onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
+        >
+          {expanded ? "-" : "+"}
+        </ExpandButten>
         <NameContainer>
           <AbilityName type={ability.type} $active={true}>
             {ability.name}
@@ -398,30 +418,41 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
 
         <RollContainer>
           <DiceComponent ability={ability} />
+          {ability.type === "Mystical Power" ? (
+            <CorruptionButten onClick={RollCorruptionDice}>
+              <FontAwesomeIcon icon={faSkull} />
+            </CorruptionButten>
+          ) : null}
         </RollContainer>
         <Divider />
         <LevelSelectionContainer>
-          <LevelSelection
-            type={ability.type}
-            $active={["Novice", "Adept", "Master"].includes(ability.level)}
-            onClick={() => handleLevelChange(ability.id, "Novice")}
-          >
-            N
-          </LevelSelection>
-          <LevelSelection
-            type={ability.type}
-            $active={["Adept", "Master"].includes(ability.level)}
-            onClick={() => handleLevelChange(ability.id, "Adept")}
-          >
-            A
-          </LevelSelection>
-          <LevelSelection
-            type={ability.type}
-            $active={ability.level === "Master"}
-            onClick={() => handleLevelChange(ability.id, "Master")}
-          >
-            M
-          </LevelSelection>
+          {ability.novice.description !== "" && (
+            <LevelSelection
+              type={ability.type}
+              $active={["Novice", "Adept", "Master"].includes(ability.level)}
+              onClick={() => handleLevelChange(ability.id, "Novice")}
+            >
+              N
+            </LevelSelection>
+          )}
+          {ability.adept.description !== "" && (
+            <LevelSelection
+              type={ability.type}
+              $active={["Adept", "Master"].includes(ability.level)}
+              onClick={() => handleLevelChange(ability.id, "Adept")}
+            >
+              A
+            </LevelSelection>
+          )}
+          {ability.master.description !== "" && (
+            <LevelSelection
+              type={ability.type}
+              $active={ability.level === "Master"}
+              onClick={() => handleLevelChange(ability.id, "Master")}
+            >
+              M
+            </LevelSelection>
+          )}
         </LevelSelectionContainer>
 
         {browser ? (
@@ -430,8 +461,8 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
           <AddButton onClick={() => DeleteAbilitySlot(ability.id)}>x</AddButton>
         )}
       </Container>
-      <LevelContainer>
-        {abilityLevel === "Novice" && (
+      <LevelContainer $expanded={expanded}>
+        {ability.novice.description !== "" && abilityLevel === "Novice" && (
           <LevelComponent
             level="Novice"
             ability={ability}
@@ -440,7 +471,8 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
             radius={Constants.BORDER_RADIUS}
           />
         )}
-        {abilityLevel === "Adept" && (
+
+        {ability.adept.description !== "" && abilityLevel === "Adept" && (
           <>
             <LevelComponent
               level="Novice"
@@ -458,7 +490,8 @@ function AbilityEntryItem({ ability, browser }: AbilityEntryItemProps) {
             />
           </>
         )}
-        {abilityLevel === "Master" && (
+
+        {ability.master.description !== "" && abilityLevel === "Master" && (
           <>
             <LevelComponent
               level="Novice"

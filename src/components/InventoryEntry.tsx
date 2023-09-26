@@ -22,6 +22,7 @@ interface InventoryEntryProps {
   equipped: string;
   item: ItemEntry;
   id: string;
+  setInventoryState: (inventoryState: number) => void;
 }
 
 const Container = styled.div`
@@ -181,7 +182,13 @@ const NoEquipBox = styled.div<NoEquipButtonProps>`
   justify-content: center;
 `;
 
-function InventoryEntry({ item, browser, equipped, id }: InventoryEntryProps) {
+function InventoryEntry({
+  item,
+  browser,
+  equipped,
+  id,
+  setInventoryState,
+}: InventoryEntryProps) {
   const { character, setCharacter } = useContext(CharacterContext);
 
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
@@ -201,6 +208,7 @@ function InventoryEntry({ item, browser, equipped, id }: InventoryEntryProps) {
     if (updatedCharacter) {
       setCharacter(updatedCharacter);
     }
+    setInventoryState(1);
   };
 
   const DeleteInventorySlot = (id: string) => {

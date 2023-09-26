@@ -40,7 +40,9 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   armor: BLUE,
   casting: PURPLE,
   "mystical power": PURPLE,
-
+  "monsterous trait": GREEN,
+  boon: BRIGHT_YELLOW,
+  burden: BRIGHT_RED,
   ritual: PURPLE,
   elixirs: PURPLE,
   sneaking: GREEN,
@@ -71,4 +73,5 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   curiosities: BRIGHT_YELLOW,
   lesser_artifact: BRIGHT_YELLOW,
   tool: GREEN,
+  trait: GREEN,
 };

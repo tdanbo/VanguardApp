@@ -204,6 +204,10 @@ export const getCharacterXp = (character: CharacterEntry) => {
   let xp_spent = 0;
 
   character.abilities.forEach((ability) => {
+    if (ability.type.toLocaleLowerCase() === "trait") {
+      return;
+    }
+
     if (ability.level === "Novice") {
       xp_spent += 10;
     } else if (ability.level === "Adept") {

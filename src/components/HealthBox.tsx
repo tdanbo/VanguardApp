@@ -22,7 +22,7 @@ const Container = styled.div<PortraitProps>`
 
   background-image: url(${(props) => props.src});
   background-size: cover;
-  background-position: center;
+  background-position: center 40%;
   border-radius: ${Constants.BORDER_RADIUS};
 `;
 

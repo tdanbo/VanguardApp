@@ -184,11 +184,13 @@ function App() {
                     browserState={browserState}
                     itemList={itemList}
                     setItemList={setItemList}
+                    setInventoryState={setInventoryState}
                   />
                   <AbilityBrowser
                     browserState={browserState}
                     abilityList={abilityList}
                     setAbilityList={setAbilityList}
+                    setInventoryState={setInventoryState}
                   />
                 </BrowserContainer>
                 <FooterContainer></FooterContainer>
