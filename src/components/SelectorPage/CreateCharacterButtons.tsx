@@ -69,6 +69,11 @@ function CreateCharacterButtons({
     },
     abilities: [],
     inventory: [],
+    equipment: {
+      main: {},
+      off: {},
+      armor: {},
+    },
     rations: { food: 0, water: 0 },
     money: 0,
   };

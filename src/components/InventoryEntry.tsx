@@ -264,7 +264,7 @@ function InventoryEntry({
       <RollContainer>
         {item.roll.roll === true && (
           <RollBox color={COLOR} onClick={handleRoll}>
-            {item.roll.dice}
+            d{item.roll.dice}
           </RollBox>
         )}
         {item.quantity.bulk === true && <Quantity item={item} />}

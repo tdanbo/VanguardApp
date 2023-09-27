@@ -309,7 +309,7 @@ function AbilityEntryItem({
 
   const RollCorruptionDice = async () => {
     const dice_result = await onRollDice({
-      dice: "d4",
+      dice: 4,
       count: 1,
       target: 0,
       modifier: 0,
@@ -351,7 +351,7 @@ function AbilityEntryItem({
                   })
                 }
               >
-                {roll.dice}
+                d{roll.dice}
               </RollButton>
             ))
           : ability.level === "Adept"
@@ -372,7 +372,7 @@ function AbilityEntryItem({
                   })
                 }
               >
-                {roll.dice}
+                d{roll.dice}
               </RollButton>
             ))
           : ability.level === "Master"

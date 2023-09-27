@@ -3,8 +3,7 @@ import { useRoll } from "../functions/CombatFunctions";
 import styled from "styled-components";
 
 type Props = {
-  type_name: string;
-  type_value: number;
+  type_name: number;
 };
 
 const DiceContainer = styled.button`
@@ -37,9 +36,7 @@ function DiceBox({ type_name }: Props) {
     });
   };
 
-  return (
-    <DiceContainer onClick={RollDice}>{type_name.toUpperCase()}</DiceContainer>
-  );
+  return <DiceContainer onClick={RollDice}>d{type_name}</DiceContainer>;
 }
 
 export default DiceBox;

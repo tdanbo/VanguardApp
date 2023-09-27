@@ -107,7 +107,7 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
 
   const handleSkillRoll = () => {
     onRollDice({
-      dice: "d20",
+      dice: 20,
       count: 1,
       modifier: modifier,
       target: value,

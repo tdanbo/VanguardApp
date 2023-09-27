@@ -212,7 +212,10 @@ function CreateCharacterComponent({
       accurate: { value: stats[7].value, mod: 0 },
     },
     actives: {
-      attack: { stat: "accurate", mod: 0 },
+      attack: {
+        stat: "accurate",
+        mod: 0,
+      },
       defense: { stat: "quick", mod: 0 },
       casting: { stat: "resolute", mod: 0 },
       sneaking: { stat: "discreet", mod: 0 },
@@ -224,6 +227,11 @@ function CreateCharacterComponent({
     },
     abilities: [],
     inventory: [],
+    equipment: {
+      main: {},
+      off: {},
+      armor: {},
+    },
     rations: { food: 0, water: 0 },
     money: 0,
   };

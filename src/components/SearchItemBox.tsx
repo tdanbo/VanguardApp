@@ -67,7 +67,7 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
     {
       roll: {
         roll: false,
-        dice: "",
+        dice: 0,
         type: "",
       },
       quality: [],

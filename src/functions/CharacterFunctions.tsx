@@ -2,6 +2,7 @@ import axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
 import { API } from "../Constants";
 import { CharacterEntry } from "../Types";
+import { updateAbilityModifiers } from "./AbilityFunctions";
 import {
   ItemEntry,
   AbilityEntry,
@@ -96,8 +97,10 @@ export function onChangeAbilityLevel({
     abilities: updatedAbilities,
   };
 
-  postSelectedCharacter(updatedCharacter);
-  return updatedCharacter;
+  const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
+
+  postSelectedCharacter(updatedModifiersCharacter);
+  return updatedModifiersCharacter;
 }
 export function onDeleteAbility({ id, character }: onDeleteProps) {
   if (!character) return;
@@ -108,8 +111,10 @@ export function onDeleteAbility({ id, character }: onDeleteProps) {
     ...character,
     abilities: updatedInventory,
   };
-  postSelectedCharacter(updatedCharacter);
-  return updatedCharacter;
+  const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
+
+  postSelectedCharacter(updatedModifiersCharacter);
+  return updatedModifiersCharacter;
 }
 
 export const getCharacterMovement = (character: CharacterEntry) => {
@@ -255,37 +260,42 @@ export const getActiveModifiers = (character: CharacterEntry) => {
       return;
     }
 
+    const qualityModifiers = {
+      "Defense -1": { sneaking: -1, defense: -1 },
+      "Defense -2": { sneaking: -2, defense: -2 },
+      "Defense -3": { sneaking: -3, defense: -3 },
+      "Defense -4": { sneaking: -4, defense: -4 },
+      "Casting -1": { casting: -1 },
+      "Casting -2": { casting: -2 },
+      "Casting -3": { casting: -3 },
+      "Casting -4": { casting: -4 },
+      "Balanced 1": { defense: 1 },
+      "Balanced 2": { defense: 2 },
+      Precise: { attack: 1 },
+    };
+
+    // Impeding
     item.quality.forEach((quality) => {
-      if (quality.includes("Impeding -1")) {
-        character_actives["casting"].mod -= 1;
-        character_actives["sneaking"].mod -= 1;
-        character_actives["defense"].mod -= 1;
-      } else if (quality.includes("Impeding -2")) {
-        character_actives["casting"].mod -= 2;
-        character_actives["sneaking"].mod -= 2;
-        character_actives["defense"].mod -= 2;
-      } else if (quality.includes("Impeding -3")) {
-        character_actives["casting"].mod -= 3;
-        character_actives["sneaking"].mod -= 3;
-        character_actives["defense"].mod -= 3;
-      } else if (quality.includes("Impeding -4")) {
-        character_actives["casting"].mod -= 4;
-        character_actives["sneaking"].mod -= 4;
-        character_actives["defense"].mod -= 4;
-      } else if (quality.includes("Balanced 1")) {
-        character_actives["defense"].mod += 1;
-      } else if (quality.includes("Balanced 2")) {
-        character_actives["defense"].mod += 2;
-      } else if (quality.includes("Precise")) {
-        character_actives["attack"].mod += 1;
-      }
+      Object.entries(qualityModifiers).forEach(([key, modifiers]) => {
+        if (quality.includes(key)) {
+          Object.entries(modifiers).forEach(([action, value]) => {
+            character_actives[action as keyof typeof character_actives].mod +=
+              value;
+          });
+        }
+      });
     });
   });
+
   const updatedCharacter = {
     ...character,
     actives: character_actives,
   };
-  return updatedCharacter;
+
+  // Adjust actives based on abilities
+  const updatedAbilityModifiers = updateAbilityModifiers(updatedCharacter);
+
+  return updatedAbilityModifiers;
 };
 
 export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
@@ -301,8 +311,10 @@ export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
     abilities: newAbilities,
   };
 
-  postSelectedCharacter(updatedCharacter);
-  return updatedCharacter;
+  const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
+
+  postSelectedCharacter(updatedModifiersCharacter);
+  return updatedModifiersCharacter;
 };
 
 export const onAddInventoryItem = ({
@@ -404,7 +416,6 @@ export function onEquipItem({ character, item, equipItem }: EquipProps) {
     ...character,
     inventory: newInventory,
   };
-
   const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
   postSelectedCharacter(updatedModifiersCharacter);
   return updatedModifiersCharacter;
@@ -706,22 +717,4 @@ export function UpdateResources(
 
   postSelectedCharacter(newCharacter);
   return newCharacter;
-}
-
-export function CheckAbility(
-  character: CharacterEntry,
-  name: string,
-  level: string,
-) {
-  const abilities = character.abilities;
-
-  if (
-    abilities.some(
-      (ability) => ability.name === name && ability.level === level,
-    )
-  ) {
-    return true;
-  } else {
-    return false;
-  }
 }

@@ -60,6 +60,12 @@ interface Rations {
   water: number;
 }
 
+interface EquipmentEntry {
+  main: ItemEntry | {};
+  off: ItemEntry | {};
+  armor: ItemEntry | {};
+}
+
 export interface CharacterEntry {
   id: string;
   portrait: string;
@@ -70,6 +76,7 @@ export interface CharacterEntry {
   actives: Actives;
   abilities: AbilityEntry[];
   inventory: ItemEntry[];
+  equipment: EquipmentEntry;
   rations: Rations;
   money: number;
 }
@@ -108,7 +115,7 @@ export type CombatEntry = {
   portrait: string;
   source: string;
   active: string;
-  dice: string;
+  dice: number;
   result: number;
   success: boolean;
   modifier: number;

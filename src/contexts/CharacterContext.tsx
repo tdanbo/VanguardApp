@@ -39,6 +39,11 @@ const defaultCharacter: CharacterEntry = {
   money: 0,
   abilities: [],
   inventory: [],
+  equipment: {
+    main: {},
+    off: {},
+    armor: {},
+  },
   rations: { food: 0, water: 0 },
 };
 

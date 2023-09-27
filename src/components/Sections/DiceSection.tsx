@@ -14,13 +14,13 @@ const Container = styled.div`
 function DiceSection() {
   return (
     <Container>
-      <DiceBox type_name={"d4"} type_value={2} />
-      <DiceBox type_name={"d6"} type_value={2} />
-      <DiceBox type_name={"d8"} type_value={1} />
-      <DiceBox type_name={"d10"} type_value={2} />
-      <DiceBox type_name={"d12"} type_value={1} />
-      <DiceBox type_name={"d20"} type_value={3} />
-      <DiceBox type_name={"d100"} type_value={3} />
+      <DiceBox type_name={4} />
+      <DiceBox type_name={6} />
+      <DiceBox type_name={8} />
+      <DiceBox type_name={10} />
+      <DiceBox type_name={12} />
+      <DiceBox type_name={20} />
+      <DiceBox type_name={100} />
     </Container>
   );
 }

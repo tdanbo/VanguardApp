@@ -12,25 +12,13 @@ export async function getCombatLog(id: string): Promise<CombatEntry[]> {
 }
 
 interface RollDiceProps {
-  dice: string;
+  dice: number;
   active: string;
   source: string;
   modifier: number;
   count: number;
   target: number;
   add_mod: boolean;
-}
-
-function extractDiceValue(
-  str: string,
-): { dice: number; modifier: number } | null {
-  const match = str.match(/d(\d+)([+-]\d+)?/);
-  if (!match) return null;
-
-  const dice = parseInt(match[1], 10);
-  const modifier = match[2] ? parseInt(match[2], 10) : 0;
-
-  return { dice, modifier };
 }
 
 export function useRoll() {
@@ -48,20 +36,12 @@ export function useRoll() {
     add_mod,
   }: RollDiceProps) => {
     let total = 0;
-    let newModifier = modifier;
-
-    const diceValues = extractDiceValue(dice);
-    if (!diceValues) {
-      throw new Error("Invalid dice string format");
-    }
-
-    const { dice: dice_number, modifier: dice_modifier } = diceValues;
-
-    newModifier += dice_modifier;
 
     for (let i = 0; i < count; i++) {
-      total += Math.floor(Math.random() * dice_number) + 1;
+      total += Math.floor(Math.random() * dice) + 1;
     }
+
+    total += modifier;
 
     if (add_mod == true) {
       total += character.details.modifier;
@@ -85,8 +65,11 @@ export function useRoll() {
       dice: dice,
       result: roll_result,
       success: success,
-      modifier: newModifier,
+      modifier: 0,
     };
+
+    console.log("NewCombatEntry");
+    console.log(NewCombatEntry);
 
     const updated_character = setBaseModifier(character, 0);
     setCharacter(updated_character);
