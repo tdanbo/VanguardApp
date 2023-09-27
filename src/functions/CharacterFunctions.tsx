@@ -707,3 +707,21 @@ export function UpdateResources(
   postSelectedCharacter(newCharacter);
   return newCharacter;
 }
+
+export function CheckAbility(
+  character: CharacterEntry,
+  name: string,
+  level: string,
+) {
+  const abilities = character.abilities;
+
+  if (
+    abilities.some(
+      (ability) => ability.name === name && ability.level === level,
+    )
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}

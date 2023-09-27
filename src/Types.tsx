@@ -76,7 +76,7 @@ export interface CharacterEntry {
 
 interface Roll {
   roll: boolean;
-  dice: string;
+  dice: number;
   type: string;
 }
 
@@ -122,7 +122,7 @@ export type SessionEntry = {
 };
 
 export interface AbilityRoll {
-  dice: string;
+  dice: number;
   type: string;
 }
 
