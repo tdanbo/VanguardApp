@@ -28,6 +28,16 @@ export function ManAtArms(character: CharacterEntry): CharacterEntry {
         armor.roll.dice = 10;
       }
     }
+  } else {
+    if (isItemEntry(armor)) {
+      if (armor.type.toLowerCase() === "light armor") {
+        armor.roll.dice = 4;
+      } else if (armor.type.toLowerCase() === "medium armor") {
+        armor.roll.dice = 6;
+      } else if (armor.type.toLowerCase() === "heavy armor") {
+        armor.roll.dice = 8;
+      }
+    }
   }
 
   if (CheckAbility(updatedCharacter, "man-at-arms", "adept")) {
