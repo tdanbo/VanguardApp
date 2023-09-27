@@ -92,15 +92,10 @@ interface Quantity {
   bulk: boolean;
 }
 
-export interface EquipEntry {
-  type: string;
-  equipped: boolean;
-}
-
 export interface ItemEntry {
   roll: Roll;
   quality: string[];
-  equip: EquipEntry[];
+  equip: string;
   quantity: Quantity;
   type: string;
   cost: string;

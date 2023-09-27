@@ -9,23 +9,27 @@ export function updateAbilityModifiers(
   return modifiers.reduce((char, modifierFn) => modifierFn(char), character);
 }
 
+function isItemEntry(equipment: ItemEntry | {}): equipment is ItemEntry {
+  return "quality" in equipment;
+}
+
 export function ManAtArms(character: CharacterEntry): CharacterEntry {
   // Clone the character using lodash's cloneDeep to avoid direct mutation
   const updatedCharacter = cloneDeep(character);
-  const armor = getArmor(updatedCharacter);
-  //   if (CheckAbility(updatedCharacter, "man-at-arms", "novice")) {
-  //     updatedCharacter.inventory.forEach((item: ItemEntry) => {
-  //       const itemType = item.type.toLowerCase();
+  const armor = updatedCharacter.equipment.armor;
 
-  //       if (itemType === "light armor") {
-  //         item.roll.dice = 6;
-  //       } else if (itemType === "medium armor") {
-  //         item.roll.dice = 8;
-  //       } else if (itemType === "heavy armor") {
-  //         item.roll.dice = 10;
-  //       }
-  //     });
-  //   }
+  if (CheckAbility(updatedCharacter, "man-at-arms", "novice")) {
+    if (isItemEntry(armor)) {
+      if (armor.type.toLowerCase() === "light armor") {
+        armor.roll.dice = 6;
+      } else if (armor.type.toLowerCase() === "medium armor") {
+        armor.roll.dice = 8;
+      } else if (armor.type.toLowerCase() === "heavy armor") {
+        armor.roll.dice = 10;
+      }
+    }
+  }
+
   if (CheckAbility(updatedCharacter, "man-at-arms", "adept")) {
     const negativeQualities: { [key: string]: number } = {
       "defense -1": 1,
@@ -34,7 +38,7 @@ export function ManAtArms(character: CharacterEntry): CharacterEntry {
       "defense -4": 4,
     };
 
-    if (armor) {
+    if (isItemEntry(armor)) {
       armor.quality.forEach((quality: string) => {
         const lowercasedQuality = quality.toLowerCase();
         if (lowercasedQuality in negativeQualities) {
@@ -81,11 +85,4 @@ function CheckAbility(
       ability.name.toLowerCase() === name.toLowerCase() &&
       approved_levels.includes(ability.level.toLowerCase()),
   );
-}
-
-export function getArmor(character: CharacterEntry): ItemEntry | undefined {
-  const equippedArmor = character.inventory.find((item) =>
-    item.equip.some((e) => e.equipped === true && e.type === "AR"),
-  );
-  return equippedArmor;
 }

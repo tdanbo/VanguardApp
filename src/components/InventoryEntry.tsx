@@ -1,6 +1,6 @@
 import * as Constants from "../Constants";
 
-import { ItemEntry, EquipEntry } from "../Types";
+import { ItemEntry } from "../Types";
 import Quantity from "./Modals/Quantity";
 import { useContext } from "react";
 import { useRoll } from "../functions/CombatFunctions";
@@ -159,9 +159,9 @@ const EquipButton = styled.button<StyledButtonProps>`
   width: 20px;
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-top-left-radius: ${(props) =>
-    props.index === 0 ? Constants.BORDER_RADIUS : "unset"};
+    props.index === 0 || props.index === 2 ? Constants.BORDER_RADIUS : "unset"};
   border-bottom-left-radius: ${(props) =>
-    props.index === 1 ? Constants.BORDER_RADIUS : "unset"};
+    props.index === 1 || props.index === 2 ? Constants.BORDER_RADIUS : "unset"};
   width: 20px;
   height: 100%;
 `;
@@ -193,14 +193,16 @@ function InventoryEntry({
 
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
 
-  const HandleEquip = (item: ItemEntry, equipItem: EquipEntry) => {
-    if (equipItem.equipped === true) {
-      const updatedCharacter = onUnequipItem({ character, item, equipItem });
-      setCharacter(updatedCharacter);
-    } else {
-      const updatedCharacter = onEquipItem({ character, item, equipItem });
-      setCharacter(updatedCharacter);
-    }
+  const HandleEquip = (item: ItemEntry, position: string) => {
+    console.log("Equipping : ", item, position);
+    const updatedCharacter = onEquipItem({ character, item, position });
+    setCharacter(updatedCharacter);
+  };
+
+  const HandleUnequip = (position: string) => {
+    console.log("Unequipping : ", position);
+    const updatedCharacter = onUnequipItem({ character, position });
+    setCharacter(updatedCharacter);
   };
 
   const AddInventorySlot = () => {
@@ -234,20 +236,92 @@ function InventoryEntry({
     });
   };
 
+  const isItemEquipped = (item: ItemEntry, position: string) => {
+    switch (position) {
+      case "MH":
+        return (
+          "id" in character.equipment.main &&
+          item.id === character.equipment.main.id
+        );
+      case "OH":
+        return (
+          "id" in character.equipment.off &&
+          item.id === character.equipment.off.id
+        );
+      case "2H":
+        return (
+          "id" in character.equipment.main &&
+          item.id === character.equipment.main.id
+        );
+      case "AR":
+        return (
+          "id" in character.equipment.armor &&
+          item.id === character.equipment.armor.id
+        );
+      default:
+        return false;
+    }
+  };
+
+  const equipHandler = (item: ItemEntry, position: string) => {
+    if (isItemEquipped(item, position)) {
+      console.log("Unequipping : ", position);
+      HandleUnequip(position);
+    } else {
+      console.log("Equipping : ", position);
+      HandleEquip(item, position);
+    }
+  };
+
   return (
     <Container>
       <EquipContainer>
-        {item.equip.map((equip_item, index) => (
+        {item.equip === "1H" && (
+          <>
+            <EquipButton
+              color={COLOR}
+              index={0}
+              key={"MH"}
+              onClick={() => {
+                equipHandler(item, "MH");
+              }}
+              $isequipped={isItemEquipped(item, "MH")}
+            />
+            <EquipButton
+              color={COLOR}
+              index={1}
+              key={"OH"}
+              onClick={() => {
+                equipHandler(item, "OH");
+              }}
+              $isequipped={isItemEquipped(item, "OH")}
+            />
+          </>
+        )}
+        {item.equip === "2H" && (
           <EquipButton
-            $isequipped={equip_item.equipped}
             color={COLOR}
-            index={index}
-            key={index}
-            onClick={() => HandleEquip(item, equip_item)}
-          ></EquipButton>
-        ))}
-        {item.equip.length === 0 && (
-          <NoEquipBox key={"unequip"} color={COLOR}></NoEquipBox>
+            index={2}
+            key={"2H"}
+            onClick={() => {
+              equipHandler(item, "2H");
+            }}
+            $isequipped={isItemEquipped(item, "2H")}
+          />
+        )}
+        {item.equip === "AR" && (
+          <EquipButton
+            color={COLOR}
+            index={2}
+            key={"AR"}
+            onClick={() => {
+              equipHandler(item, "AR");
+            }}
+            $isequipped={isItemEquipped(item, "AR")}
+          />
+        )}
+        {!["1H", "2H", "AR"].includes(item.equip) && (
+          <NoEquipBox key={"unequip"} color={COLOR} />
         )}
       </EquipContainer>
       <NameContainer>

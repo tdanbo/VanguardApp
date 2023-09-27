@@ -3,13 +3,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { API } from "../Constants";
 import { CharacterEntry } from "../Types";
 import { updateAbilityModifiers } from "./AbilityFunctions";
-import {
-  ItemEntry,
-  AbilityEntry,
-  ActiveKey,
-  StatName,
-  EquipEntry,
-} from "../Types";
+import { ItemEntry, AbilityEntry, ActiveKey, StatName } from "../Types";
 import { forEach } from "lodash";
 interface onDeleteProps {
   id: string;
@@ -24,12 +18,6 @@ export async function getCharacterEntry(
     `${API}/api/characterlog/${selectedName}`,
   );
   return response.data;
-}
-
-interface EquipProps {
-  item: ItemEntry;
-  character: CharacterEntry;
-  equipItem: EquipEntry;
 }
 
 interface onAddCharacterProps {
@@ -237,9 +225,18 @@ export const setBaseModifier = (character: CharacterEntry, value: number) => {
   return updatedCharacter;
 };
 
+function isItemEntry(equipment: ItemEntry | {}): equipment is ItemEntry {
+  return "quality" in equipment;
+}
+
 export const getActiveModifiers = (character: CharacterEntry) => {
   const character_actives = character.actives;
-  const equippedItems = getEquippedItems(character);
+
+  const equippedItems = [
+    character.equipment.main,
+    character.equipment.off,
+    character.equipment.armor,
+  ].filter((item) => Object.keys(item).length !== 0);
 
   character_actives["attack"].mod = 0;
   character_actives["defense"].mod = 0;
@@ -256,35 +253,37 @@ export const getActiveModifiers = (character: CharacterEntry) => {
   }
 
   equippedItems.forEach((item) => {
-    if (!item.quality || item.quality.length === 0) {
-      return;
-    }
+    if (isItemEntry(item)) {
+      if (!item.quality || item.quality.length === 0) {
+        return;
+      }
 
-    const qualityModifiers = {
-      "Defense -1": { sneaking: -1, defense: -1 },
-      "Defense -2": { sneaking: -2, defense: -2 },
-      "Defense -3": { sneaking: -3, defense: -3 },
-      "Defense -4": { sneaking: -4, defense: -4 },
-      "Casting -1": { casting: -1 },
-      "Casting -2": { casting: -2 },
-      "Casting -3": { casting: -3 },
-      "Casting -4": { casting: -4 },
-      "Balanced 1": { defense: 1 },
-      "Balanced 2": { defense: 2 },
-      Precise: { attack: 1 },
-    };
+      const qualityModifiers = {
+        "Defense -1": { sneaking: -1, defense: -1 },
+        "Defense -2": { sneaking: -2, defense: -2 },
+        "Defense -3": { sneaking: -3, defense: -3 },
+        "Defense -4": { sneaking: -4, defense: -4 },
+        "Casting -1": { casting: -1 },
+        "Casting -2": { casting: -2 },
+        "Casting -3": { casting: -3 },
+        "Casting -4": { casting: -4 },
+        "Balanced 1": { defense: 1 },
+        "Balanced 2": { defense: 2 },
+        Precise: { attack: 1 },
+      };
 
-    // Impeding
-    item.quality.forEach((quality) => {
-      Object.entries(qualityModifiers).forEach(([key, modifiers]) => {
-        if (quality.includes(key)) {
-          Object.entries(modifiers).forEach(([action, value]) => {
-            character_actives[action as keyof typeof character_actives].mod +=
-              value;
-          });
-        }
+      // Impeding
+      item.quality.forEach((quality) => {
+        Object.entries(qualityModifiers).forEach(([key, modifiers]) => {
+          if (quality.includes(key)) {
+            Object.entries(modifiers).forEach(([action, value]) => {
+              character_actives[action as keyof typeof character_actives].mod +=
+                value;
+            });
+          }
+        });
       });
-    });
+    }
   });
 
   const updatedCharacter = {
@@ -292,7 +291,6 @@ export const getActiveModifiers = (character: CharacterEntry) => {
     actives: character_actives,
   };
 
-  // Adjust actives based on abilities
   const updatedAbilityModifiers = updateAbilityModifiers(updatedCharacter);
 
   return updatedAbilityModifiers;
@@ -345,30 +343,34 @@ export const onAddInventoryItem = ({
   }
 };
 
-export function getEquippedItems(character: CharacterEntry) {
-  const equippedItems = character.inventory.filter((item) =>
-    item.equip.some((e) => e.equipped === true),
-  );
-
-  return equippedItems;
+interface UnEquipProps {
+  character: CharacterEntry;
+  position: string;
 }
 
-export function onUnequipItem({ character, item, equipItem }: EquipProps) {
-  const newInventory = cloneDeep(character.inventory);
+interface EquipProps {
+  character: CharacterEntry;
+  item: ItemEntry;
+  position: string;
+}
 
-  newInventory.forEach((inventory_item) => {
-    if (inventory_item.id === item.id) {
-      inventory_item.equip.forEach((invItem) => {
-        if (invItem.type === equipItem.type) {
-          invItem.equipped = false;
-        }
-      });
-    }
-  });
+export function onUnequipItem({ character, position }: UnEquipProps) {
+  const newEquipment = cloneDeep(character.equipment);
+
+  if (position === "MH") {
+    newEquipment.main = {};
+  } else if (position === "OH") {
+    newEquipment.off = {};
+  } else if (position === "2H") {
+    newEquipment.main = {};
+    newEquipment.off = {};
+  } else if (position === "AR") {
+    newEquipment.armor = {};
+  }
 
   const updatedCharacter = {
     ...character,
-    inventory: newInventory,
+    equipment: newEquipment,
   };
 
   const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
@@ -376,46 +378,38 @@ export function onUnequipItem({ character, item, equipItem }: EquipProps) {
   return updatedModifiersCharacter;
 }
 
-export function onEquipItem({ character, item, equipItem }: EquipProps) {
-  const newInventory = cloneDeep(character.inventory);
+export function onEquipItem({ character, item, position }: EquipProps) {
+  const equipment = cloneDeep(character.equipment);
 
-  // Each item can only be used for one equip, so we start by making sure it is fully unqeuipped before doing anything
+  const isItemInMainHand =
+    "id" in equipment.main && equipment.main.id === item.id;
+  const isItemInOffHand = "id" in equipment.off && equipment.off.id === item.id;
+  const isMainHand2H = "id" in equipment.main && equipment.main.equip === "2H";
 
-  const typesToUnequip: { [key: string]: string[] } = {
-    "2H": ["2H", "MH", "OH"],
-    MH: ["2H", "MH"],
-    OH: ["2H", "OH"],
-    AR: ["AR"],
-  };
-
-  const unequipTypes = typesToUnequip[equipItem.type];
-
-  if (unequipTypes) {
-    newInventory.forEach((inventoryItem) => {
-      inventoryItem.equip.forEach((invItem) => {
-        if (unequipTypes.includes(invItem.type)) {
-          invItem.equipped = false;
-        }
-      });
-    });
+  // Check if the same item is already equipped in the Main Hand (MH)
+  if (position === "OH" && (isItemInMainHand || isMainHand2H)) {
+    equipment.main = {};
   }
 
-  newInventory.forEach((inventory_item) => {
-    if (inventory_item.id === item.id) {
-      inventory_item.equip.forEach((item) => {
-        if (item.type === equipItem.type) {
-          item.equipped = true;
-        } else {
-          item.equipped = false;
-        }
-      });
+  if (position === "MH") {
+    equipment.main = item;
+    if (isItemInOffHand) {
+      equipment.off = {};
     }
-  });
+  } else if (position === "OH") {
+    equipment.off = item;
+  } else if (position === "2H") {
+    equipment.main = item;
+    equipment.off = {};
+  } else if (position === "AR") {
+    equipment.armor = item;
+  }
 
   const updatedCharacter = {
     ...character,
-    inventory: newInventory,
+    equipment: equipment,
   };
+
   const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
   postSelectedCharacter(updatedModifiersCharacter);
   return updatedModifiersCharacter;
@@ -426,10 +420,32 @@ export function onDeleteItem({ id, character }: onDeleteProps) {
 
   const updatedInventory = character.inventory.filter((item) => item.id !== id);
 
+  // Clone the character's equipment
+  const updatedEquipment = { ...character.equipment };
+
+  // Check main equipment
+  if ("id" in updatedEquipment.main && updatedEquipment.main.id === id) {
+    updatedEquipment.main = {};
+  }
+
+  // Check off equipment
+  if ("id" in updatedEquipment.off && updatedEquipment.off.id === id) {
+    updatedEquipment.off = {};
+  }
+
+  // Check armor equipment
+  if ("id" in updatedEquipment.armor && updatedEquipment.armor.id === id) {
+    updatedEquipment.armor = {};
+  }
+
+  // ... You can add more checks here if there are more equipment types ...
+
   const updatedCharacter = {
     ...character,
     inventory: updatedInventory,
+    equipment: updatedEquipment, // update the equipment of the character
   };
+
   const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
 
   postSelectedCharacter(updatedModifiersCharacter);

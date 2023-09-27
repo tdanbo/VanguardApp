@@ -4,7 +4,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useContext, useEffect } from "react";
-import { Active } from "../Types";
+import { Active, ItemEntry } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
 import { onUseAmmunition } from "../functions/CharacterFunctions";
 import "../App.css";
@@ -108,9 +108,16 @@ function ActiveBox({ active_name, active }: Props) {
     type: string;
   };
 
+  function isItemEntry(equipment: {} | ItemEntry): equipment is ItemEntry {
+    return (equipment as ItemEntry).name !== undefined;
+  }
+
   const updateDiceForActiveName = (activeName: string): ItemType[] => {
     // Initialize your array with that type
     const itemDict: ItemType[] = [];
+    const main = character.equipment.main;
+    const off = character.equipment.off;
+    const armor = character.equipment.armor;
 
     switch (activeName) {
       case "sneaking":
@@ -120,33 +127,32 @@ function ActiveBox({ active_name, active }: Props) {
         itemDict.push({ name: "Corruption", roll: 4, type: "skill" });
         break;
       case "defense":
-        for (const invItem of character.inventory) {
-          for (const equipItem of invItem.equip) {
-            if (equipItem.type === "AR" && equipItem.equipped) {
-              let dice_roll = +invItem.roll.dice;
-              itemDict.push({
-                name: invItem.name,
-                roll: dice_roll,
-                type: invItem.type,
-              });
-            }
-          }
+        if (isItemEntry(armor)) {
+          itemDict.push({
+            name: armor.name,
+            roll: armor.roll.dice,
+            type: armor.type,
+          });
+        } else {
+          itemDict.push({ name: "unequipped", roll: 4, type: "unequipped" });
         }
         break;
       case "attack":
-        for (const invItem of character.inventory) {
-          for (const equipItem of invItem.equip) {
-            if (
-              ["2H", "MH", "OH"].includes(equipItem.type) &&
-              equipItem.equipped
-            ) {
-              itemDict.push({
-                name: invItem.name,
-                roll: invItem.roll.dice,
-                type: invItem.type,
-              });
-            }
-          }
+        if (isItemEntry(main)) {
+          itemDict.push({
+            name: main.name,
+            roll: main.roll.dice,
+            type: main.type,
+          });
+        } else {
+          itemDict.push({ name: "unequipped", roll: 4, type: "unequipped" });
+        }
+        if (isItemEntry(off)) {
+          itemDict.push({
+            name: off.name,
+            roll: off.roll.dice,
+            type: off.type,
+          });
         }
         break;
     }
