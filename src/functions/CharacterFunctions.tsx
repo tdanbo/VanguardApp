@@ -230,12 +230,14 @@ function isItemEntry(equipment: ItemEntry | {}): equipment is ItemEntry {
 }
 
 export const getActiveModifiers = (character: CharacterEntry) => {
-  const character_actives = character.actives;
+  const updatedAbilities = updateAbilityModifiers(character);
+
+  const character_actives = updatedAbilities.actives;
 
   const equippedItems = [
-    character.equipment.main,
-    character.equipment.off,
-    character.equipment.armor,
+    updatedAbilities.equipment.main,
+    updatedAbilities.equipment.off,
+    updatedAbilities.equipment.armor,
   ].filter((item) => Object.keys(item).length !== 0);
 
   character_actives["attack"].mod = 0;
@@ -269,6 +271,7 @@ export const getActiveModifiers = (character: CharacterEntry) => {
         "Casting -4": { casting: -4 },
         "Balanced 1": { defense: 1 },
         "Balanced 2": { defense: 2 },
+        "Balanced 3": { defense: 3 },
         Precise: { attack: 1 },
       };
 
@@ -291,9 +294,7 @@ export const getActiveModifiers = (character: CharacterEntry) => {
     actives: character_actives,
   };
 
-  const updatedAbilityModifiers = updateAbilityModifiers(updatedCharacter);
-
-  return updatedAbilityModifiers;
+  return updatedCharacter;
 };
 
 export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
@@ -379,7 +380,8 @@ export function onUnequipItem({ character, position }: UnEquipProps) {
 }
 
 export function onEquipItem({ character, item, position }: EquipProps) {
-  const equipment = cloneDeep(character.equipment);
+  const characterClone = cloneDeep(character);
+  const equipment = cloneDeep(characterClone.equipment);
 
   const isItemInMainHand =
     "id" in equipment.main && equipment.main.id === item.id;
@@ -392,17 +394,17 @@ export function onEquipItem({ character, item, position }: EquipProps) {
   }
 
   if (position === "MH") {
-    equipment.main = item;
+    equipment.main = cloneDeep(item);
     if (isItemInOffHand) {
       equipment.off = {};
     }
   } else if (position === "OH") {
-    equipment.off = item;
+    equipment.off = cloneDeep(item);
   } else if (position === "2H") {
-    equipment.main = item;
+    equipment.main = cloneDeep(item);
     equipment.off = {};
   } else if (position === "AR") {
-    equipment.armor = item;
+    equipment.armor = cloneDeep(item);
   }
 
   const updatedCharacter = {

@@ -5,7 +5,13 @@ export function updateAbilityModifiers(
   character: CharacterEntry,
 ): CharacterEntry {
   console.log("Updating Ability Modifiers");
-  const modifiers = [ManAtArms];
+  const modifiers = [
+    ManAtArms,
+    Marksman,
+    PolearmMastery,
+    ShieldFighter1,
+    ShieldFighter2,
+  ];
   return modifiers.reduce((char, modifierFn) => modifierFn(char), character);
 }
 
@@ -65,14 +71,177 @@ export function ManAtArms(character: CharacterEntry): CharacterEntry {
   return updatedCharacter;
 }
 
-export function ShieldFighter(character: CharacterEntry): CharacterEntry {
-  // Modify character based on ShieldFighter rules and return modified character
-  return character;
+export function Marksman(character: CharacterEntry): CharacterEntry {
+  console.log("Updating Polearm Mastery");
+  const updatedCharacter = cloneDeep(character);
+  const ability = CheckAbility(updatedCharacter, "marksman", "novice");
+  const equipmentKeys: Array<keyof typeof updatedCharacter.equipment> = [
+    "main",
+    "off",
+  ];
+
+  for (let key of equipmentKeys) {
+    const item = updatedCharacter.equipment[key];
+
+    if (isItemEntry(item)) {
+      if (item.type.toLowerCase() === "ranged weapon") {
+        const originalInventoryItem = InventoryItem(
+          updatedCharacter,
+          item.id,
+        ) as ItemEntry;
+
+        if (ability) {
+          originalInventoryItem.roll.dice += 2; // modify the inventory clone
+          updatedCharacter.equipment[key] = originalInventoryItem; // set it to equipment
+        } else {
+          updatedCharacter.equipment[key] = originalInventoryItem; // just set the original to equipment without any modification
+        }
+      }
+    }
+  }
+
+  return updatedCharacter;
+}
+
+export function PolearmMastery(character: CharacterEntry): CharacterEntry {
+  console.log("Updating Polearm Mastery");
+  const updatedCharacter = cloneDeep(character);
+  const ability = CheckAbility(updatedCharacter, "polearm mastery", "novice");
+  const equipmentKeys: Array<keyof typeof updatedCharacter.equipment> = [
+    "main",
+    "off",
+  ];
+
+  for (let key of equipmentKeys) {
+    const item = updatedCharacter.equipment[key];
+
+    if (isItemEntry(item)) {
+      if (item.type.toLowerCase() === "long weapon") {
+        const originalInventoryItem = InventoryItem(
+          updatedCharacter,
+          item.id,
+        ) as ItemEntry;
+
+        if (ability) {
+          originalInventoryItem.roll.dice += 2; // modify the inventory clone
+          updatedCharacter.equipment[key] = originalInventoryItem; // set it to equipment
+        } else {
+          updatedCharacter.equipment[key] = originalInventoryItem; // just set the original to equipment without any modification
+        }
+      }
+    }
+  }
+
+  return updatedCharacter;
+}
+
+export function ShieldFighter1(character: CharacterEntry): CharacterEntry {
+  console.log("Updating Shield Fighter");
+  const updatedCharacter = cloneDeep(character);
+  const ability = CheckAbility(updatedCharacter, "shield fighter", "novice");
+
+  const equipmentKeys: Array<keyof typeof updatedCharacter.equipment> = [
+    "main",
+    "off",
+  ];
+
+  for (let key of equipmentKeys) {
+    const item = updatedCharacter.equipment[key];
+
+    if (isItemEntry(item)) {
+      if (
+        ["steel shield", "buckler", "shield"].includes(item.name.toLowerCase())
+      ) {
+        const originalInventoryItem = InventoryItem(
+          updatedCharacter,
+          item.id,
+        ) as ItemEntry;
+
+        if (ability) {
+          const upgradeDict: { [key: string]: string } = {
+            "Balanced 1": "Balanced 2",
+            "Balanced 2": "Balanced 3",
+          };
+
+          originalInventoryItem.quality = originalInventoryItem.quality.map(
+            (quality) => {
+              const lowercasedQuality = quality;
+              return lowercasedQuality in upgradeDict
+                ? upgradeDict[lowercasedQuality]
+                : quality;
+            },
+          );
+
+          console.log("Updated Shield: ", originalInventoryItem);
+
+          updatedCharacter.equipment[key] = originalInventoryItem;
+        } else {
+          updatedCharacter.equipment[key] = originalInventoryItem;
+        }
+      }
+    }
+  }
+
+  return updatedCharacter;
+}
+
+export function ShieldFighter2(character: CharacterEntry): CharacterEntry {
+  const updatedCharacter = cloneDeep(character);
+  const ability = CheckAbility(updatedCharacter, "shield fighter", "novice");
+
+  const equipmentKeys: Array<keyof typeof updatedCharacter.equipment> = [
+    "main",
+    "off",
+  ];
+
+  for (let key of equipmentKeys) {
+    const item = updatedCharacter.equipment[key];
+
+    if (isItemEntry(item)) {
+      if (
+        ["short weapon", "one-hand weapon"].includes(item.type.toLowerCase())
+      ) {
+        // Determine the opposite key and retrieve the opposite item
+        const oppositeKey = key === "main" ? "off" : "main";
+        const oppositeItem = updatedCharacter.equipment[oppositeKey];
+        // Check if the opposite item has a name in the specified list
+        if (
+          isItemEntry(oppositeItem) &&
+          ["steel shield", "buckler", "shield"].includes(
+            oppositeItem.name.toLowerCase(),
+          )
+        ) {
+          const originalInventoryItem = InventoryItem(
+            updatedCharacter,
+            item.id,
+          ) as ItemEntry;
+
+          if (ability) {
+            // ... any other operations you want when ability is present ...
+            originalInventoryItem.roll.dice += 2;
+            console.log("Updated Shield2: ", originalInventoryItem);
+            updatedCharacter.equipment[key] = originalInventoryItem;
+          } else {
+            // ... any other operations you want when ability is absent ...
+            updatedCharacter.equipment[key] = originalInventoryItem;
+          }
+        }
+      }
+    }
+  }
+
+  return updatedCharacter;
 }
 
 export function KnifePlay(character: CharacterEntry): CharacterEntry {
   // Modify character based on KnifePlay rules and return modified character
   return character;
+}
+
+function InventoryItem(updatedCharacter: CharacterEntry, id: string) {
+  const inventory = updatedCharacter.inventory;
+  const item = inventory.find((item) => item.id === id);
+  return cloneDeep(item);
 }
 
 function CheckAbility(
