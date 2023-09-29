@@ -1,6 +1,5 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import { Actives } from "../Types";
-import { CharacterEntry } from "../Types";
 import { CharacterContext } from "./CharacterContext";
 import { useContext } from "react";
 

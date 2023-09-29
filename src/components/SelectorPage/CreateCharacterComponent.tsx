@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { CharacterPortraits } from "../../Images";
 import RaceDropdownBox from "./RaceDropdownBox";
 import { addNewCharacter } from "../../functions/CharacterFunctions";
-import { EmptyWeapon } from "../../Types";
+import { EmptyWeapon, EmptyArmor } from "../../Types";
 import {
   MainContainer,
   ModalContainer,

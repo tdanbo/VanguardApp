@@ -1,5 +1,5 @@
 import { CharacterEntry, Actives } from "../../Types";
-import { CheckAbility } from "../AbilityFunctions";
+import { CheckAbility } from "../ActivesFunction";
 
 export function PolearmMastery(character: CharacterEntry, actives: Actives) {
   const ability = CheckAbility(character, "polearm mastery", "novice");

@@ -1,10 +1,8 @@
-import { useContext } from "react";
-import { ActivesContext } from "../contexts/ActivesContext";
-import { CharacterContext } from "../contexts/CharacterContext";
-import { ActiveKey, Actives, CharacterEntry } from "../Types";
+import { Actives, CharacterEntry } from "../Types";
 import { ManAtArms } from "./rules/ManAtArms";
 import { PolearmMastery } from "./rules/PolearmMastery";
-
+import { ShieldFighter } from "./rules/ShieldFighter";
+import { ArmoredMystic } from "./rules/ArmoredMystic";
 const actives: Actives = {
   attack: {
     value: 0,
@@ -48,6 +46,8 @@ export const UpdateActives = (character: CharacterEntry) => {
 
   ManAtArms(character, actives);
   PolearmMastery(character, actives);
+  ShieldFighter(character, actives);
+  ArmoredMystic(character, actives);
 
   console.log(actives);
 

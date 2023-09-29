@@ -2,7 +2,6 @@ import axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
 import { API } from "../Constants";
 import { CharacterEntry } from "../Types";
-import { updateAbilityModifiers } from "./AbilityFunctions";
 import {
   ItemEntry,
   AbilityEntry,
@@ -134,10 +133,10 @@ export const getCharacterMovement = (character: CharacterEntry) => {
     speed_modifier = movement[character.stats.quick.value];
   }
 
-  const base_speed_sneaking = character.actives.sneaking.mod * 5;
+  // const base_speed_sneaking = character.actives.sneaking.mod * 5;
   const base_speed = 40 + speed_modifier;
-  const calculated_speed = base_speed + base_speed_sneaking;
-
+  // const calculated_speed = base_speed + base_speed_sneaking;
+  const calculated_speed = base_speed;
   return calculated_speed;
 };
 
@@ -228,10 +227,6 @@ export const setBaseModifier = (character: CharacterEntry, value: number) => {
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 };
-
-function isItemEntry(equipment: ItemEntry | {}): equipment is ItemEntry {
-  return "quality" in equipment;
-}
 
 export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
   const abilityWithId = {
@@ -414,21 +409,17 @@ export function onUseAmmunition(character: CharacterEntry): {
   updatedCharacter: CharacterEntry;
   hasAmmunition: boolean;
 } {
-  const inventory = character.inventory;
+  const main = character.equipment.main;
+  const off = character.equipment.off;
 
-  const hasAmmunition = inventory.some(
-    (item) =>
-      item.equip.some((e) => e.equipped === true) &&
-      item.category === "ammunition" &&
-      item.quantity.count > 0,
+  const equipment = [main, off];
+
+  const hasAmmunition = equipment.some(
+    (item) => item.category === "ammunition" && item.quantity.count > 0,
   );
 
-  const updatedInventory = inventory.map((item) => {
-    if (
-      item.equip.some((e) => e.equipped === true) &&
-      item.category === "ammunition" &&
-      item.quantity.count > 0
-    ) {
+  const updatedInventory = equipment.map((item) => {
+    if (item.category === "ammunition" && item.quantity.count > 0) {
       item.quantity.count -= 1;
     }
     return item;
@@ -630,13 +621,15 @@ export function swapActives(
   source: string,
   target: string,
 ) {
+  console.log("Swapping actives");
   const characterActives = cloneDeep(character.actives);
 
-  forEach(characterActives, (active) => {
-    if (active === source.toLowerCase()) {
-      active = target.toLowerCase() as StatName;
-    } else if (active === target.toLowerCase()) {
-      active = source.toLowerCase() as StatName;
+  // Iterate over the keys (e.g., 'attack', 'defense', etc.)
+  (Object.keys(characterActives) as ActiveKey[]).forEach((key) => {
+    if (characterActives[key] === source.toLowerCase()) {
+      characterActives[key] = target.toLowerCase() as StatName;
+    } else if (characterActives[key] === target.toLowerCase()) {
+      characterActives[key] = source.toLowerCase() as StatName;
     }
   });
 
