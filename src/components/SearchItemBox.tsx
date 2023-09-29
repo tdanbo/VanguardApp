@@ -71,7 +71,7 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
         type: "",
       },
       quality: [],
-      equip: [],
+      equip: "",
       quantity: {
         count: 0,
         bulk: false,

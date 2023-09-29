@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { CharacterEntry } from "../Types";
+import { CharacterEntry, EmptyArmor, EmptyWeapon } from "../Types";
 
 const defaultCharacter: CharacterEntry = {
   id: "",
@@ -26,10 +26,10 @@ const defaultCharacter: CharacterEntry = {
     accurate: { value: 0, mod: 0 },
   },
   actives: {
-    attack: { stat: "accurate", mod: 0 },
-    defense: { stat: "quick", mod: 0 },
-    casting: { stat: "resolute", mod: 0 },
-    sneaking: { stat: "discreet", mod: 0 },
+    attack: "accurate",
+    defense: "quick",
+    casting: "resolute",
+    sneaking: "discreet",
   },
   corruption: {
     permanent: 0,
@@ -40,9 +40,9 @@ const defaultCharacter: CharacterEntry = {
   abilities: [],
   inventory: [],
   equipment: {
-    main: {},
-    off: {},
-    armor: {},
+    main: EmptyWeapon,
+    off: EmptyWeapon,
+    armor: EmptyArmor,
   },
   rations: { food: 0, water: 0 },
 };

@@ -35,18 +35,41 @@ type Stats = {
   [key in StatName]: Stat;
 };
 
-export interface Active {
-  stat: StatName;
-  mod: number;
-}
-
 export type ActiveKey = "attack" | "defense" | "casting" | "sneaking";
 
+export type AttackActive = {
+  value: number;
+  dice1: number;
+  dice1_mod: number;
+  dice1_name: string;
+  dice2: number;
+  dice2_mod: number;
+  dice2_name: string;
+};
+
+export type DefenseActive = {
+  value: number;
+  dice: number;
+  dice_mod: number;
+  dice_name: string;
+};
+
+export type SimpleActive = {
+  value: number;
+};
+
 export interface Actives {
-  attack: Active;
-  defense: Active;
-  casting: Active;
-  sneaking: Active;
+  attack: AttackActive;
+  defense: DefenseActive;
+  casting: SimpleActive;
+  sneaking: SimpleActive;
+}
+
+export interface ActiveStats {
+  attack: StatName;
+  defense: StatName;
+  casting: StatName;
+  sneaking: StatName;
 }
 
 type Corruption = {
@@ -61,9 +84,9 @@ interface Rations {
 }
 
 interface EquipmentEntry {
-  main: ItemEntry | {};
-  off: ItemEntry | {};
-  armor: ItemEntry | {};
+  main: ItemEntry;
+  off: ItemEntry;
+  armor: ItemEntry;
 }
 
 export interface CharacterEntry {
@@ -73,7 +96,7 @@ export interface CharacterEntry {
   toughness: Toughness;
   stats: Stats;
   corruption: Corruption;
-  actives: Actives;
+  actives: ActiveStats;
   abilities: AbilityEntry[];
   inventory: ItemEntry[];
   equipment: EquipmentEntry;
@@ -145,4 +168,28 @@ export type AbilityEntry = {
   tag: string;
   id: string;
   level: string;
+};
+
+export const EmptyWeapon: ItemEntry = {
+  roll: { roll: true, dice: 4, type: "damage" },
+  quality: [],
+  equip: "1H",
+  quantity: { count: 0, bulk: false },
+  type: "Hand Weapon",
+  cost: "",
+  name: "Knuckles",
+  category: "ordinary_weapon",
+  id: "aaaaaaaaaa",
+};
+
+export const EmptyArmor: ItemEntry = {
+  roll: { roll: true, dice: 4, type: "armor" },
+  quality: [],
+  equip: "AR",
+  quantity: { count: 0, bulk: false },
+  type: "Light Armor",
+  cost: "",
+  name: "Simple Clothes",
+  category: "ordinary_armor",
+  id: "bbbbbbbbbb",
 };

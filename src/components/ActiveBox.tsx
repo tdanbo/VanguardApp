@@ -4,14 +4,23 @@ import { useState } from "react";
 import styled from "styled-components";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useContext, useEffect } from "react";
-import { Active, ItemEntry } from "../Types";
+import {
+  ActiveKey,
+  ItemEntry,
+  StatName,
+  AttackActive,
+  DefenseActive,
+  SimpleActive,
+} from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
 import { onUseAmmunition } from "../functions/CharacterFunctions";
+import { ActivesContext } from "../contexts/ActivesContext";
+import { UpdateActives } from "../functions/ActivesFunction";
 import "../App.css";
-type Props = {
-  active: Active;
-  active_name: string;
-};
+import { set } from "lodash";
+interface Props {
+  active_name: ActiveKey;
+}
 
 const Container = styled.div`
   display: flex;
@@ -92,77 +101,25 @@ const Dice = styled.button<DiceProps>`
   background-color: ${Constants.WIDGET_BACKGROUND};
 `;
 
-function ActiveBox({ active_name, active }: Props) {
+function isAttackActive(obj: any): obj is AttackActive {
+  return typeof obj.value === "number" && typeof obj.dice2 === "number";
+  // you can add more checks for other properties if needed
+}
+
+function isDefenseActive(obj: any): obj is DefenseActive {
+  return typeof obj.value === "number" && typeof obj.dice === "number";
+  // you can add more checks for other properties if needed
+}
+
+function ActiveBox({ active_name }: Props) {
   const { character, setCharacter } = useContext(CharacterContext);
   const [modValue, setModvalue] = useState<number>(0);
 
-  const computeActiveValue = () =>
-    character.stats[active.stat].value + active.mod + modValue;
-  const [value, setValue] = useState(computeActiveValue());
+  const actives = UpdateActives(character);
 
-  const [itemDice, setItemDice] = useState<ItemType[]>([]);
+  const currentActive = actives[active_name];
 
-  type ItemType = {
-    name: string;
-    roll: number;
-    type: string;
-  };
-
-  function isItemEntry(equipment: {} | ItemEntry): equipment is ItemEntry {
-    return (equipment as ItemEntry).name !== undefined;
-  }
-
-  const updateDiceForActiveName = (activeName: string): ItemType[] => {
-    // Initialize your array with that type
-    const itemDict: ItemType[] = [];
-    const main = character.equipment.main;
-    const off = character.equipment.off;
-    const armor = character.equipment.armor;
-
-    switch (activeName) {
-      case "sneaking":
-        itemDict.push({ name: "Sneaky", roll: 4, type: "skill" });
-        break;
-      case "casting":
-        itemDict.push({ name: "Corruption", roll: 4, type: "skill" });
-        break;
-      case "defense":
-        if (isItemEntry(armor)) {
-          itemDict.push({
-            name: armor.name,
-            roll: armor.roll.dice,
-            type: armor.type,
-          });
-        } else {
-          itemDict.push({ name: "unequipped", roll: 4, type: "unequipped" });
-        }
-        break;
-      case "attack":
-        if (isItemEntry(main)) {
-          itemDict.push({
-            name: main.name,
-            roll: main.roll.dice,
-            type: main.type,
-          });
-        } else {
-          itemDict.push({ name: "unequipped", roll: 4, type: "unequipped" });
-        }
-        if (isItemEntry(off)) {
-          itemDict.push({
-            name: off.name,
-            roll: off.roll.dice,
-            type: off.type,
-          });
-        }
-        break;
-    }
-
-    if (itemDict.length === 0) {
-      itemDict.push({ name: "unequipped", roll: 4, type: "unequipped" }); // Default value when no dice is found
-    }
-
-    return itemDict;
-  };
+  console.log(currentActive);
 
   const handleAddValue = () => {
     const newValue = modValue + 1;
@@ -174,18 +131,6 @@ function ActiveBox({ active_name, active }: Props) {
     setModvalue(newValue);
   };
 
-  useEffect(() => {
-    setItemDice(updateDiceForActiveName(active_name));
-  }, [active_name, character]);
-
-  useEffect(() => {
-    setValue(computeActiveValue());
-  }, [character, active]);
-
-  useEffect(() => {
-    setValue(computeActiveValue());
-  }, [modValue]);
-
   const onRollDice = useRoll();
 
   const handleActiveRoll = () => {
@@ -193,26 +138,34 @@ function ActiveBox({ active_name, active }: Props) {
       dice: 20,
       count: 1,
       modifier: modValue,
-      target: value,
+      target: currentActive.value,
       source: "Skill Test",
       active: active_name,
       add_mod: false,
     });
   };
 
-  const handleDiceRoll = (itemDice: ItemType, active: string) => {
+  const handleDiceRoll = (
+    dice: number,
+    dice_name: string,
+    damage_armor: string,
+  ) => {
     onRollDice({
-      dice: itemDice.roll || 4,
+      dice: dice,
       count: 1,
       target: 0,
       modifier: 0,
-      source: itemDice.name,
-      active: active,
+      source: dice_name,
+      active: damage_armor,
       add_mod: false,
     });
   };
 
-  const handleRangeRoll = (itemDice: ItemType) => {
+  const handleRangeRoll = (
+    dice: number,
+    dice_name: string,
+    damage_armor: string,
+  ) => {
     const { updatedCharacter, hasAmmunition } = onUseAmmunition(character);
     setCharacter(updatedCharacter);
     if (!hasAmmunition) {
@@ -221,12 +174,12 @@ function ActiveBox({ active_name, active }: Props) {
     }
 
     onRollDice({
-      dice: itemDice.roll,
+      dice: dice,
       count: 1,
       target: 0,
       modifier: 0,
-      source: itemDice.name,
-      active: "Damage",
+      source: dice_name,
+      active: damage_armor,
       add_mod: false,
     });
   };
@@ -234,7 +187,7 @@ function ActiveBox({ active_name, active }: Props) {
   return (
     <Container>
       <Value onClick={handleActiveRoll} className="dice-icon-hover">
-        {value}
+        {currentActive.value}
         <ActiveValue> {active_name.toUpperCase()}</ActiveValue>
       </Value>
       <Row>
@@ -248,40 +201,62 @@ function ActiveBox({ active_name, active }: Props) {
         >
           {modValue}
         </Modifier>
-        {active_name !== "casting" && active_name !== "sneaking" && (
+        {isAttackActive(currentActive) ? (
           <>
-            {itemDice[0] && itemDice[0].roll !== 0 && (
+            <Dice
+              onClick={() => {
+                currentActive.dice1_name === "Ranged Weapon"
+                  ? handleRangeRoll(
+                      currentActive.dice1,
+                      currentActive.dice1_name,
+                      "Damage",
+                    )
+                  : handleDiceRoll(
+                      currentActive.dice1,
+                      currentActive.dice1_name,
+                      "Damage",
+                    );
+              }}
+              color={Constants.TYPE_COLORS[active_name]}
+            >
+              d{currentActive.dice1}
+            </Dice>
+
+            {currentActive.dice2_name !== "Knuckles" && (
               <Dice
-                className="dice-icon-hover"
                 onClick={() => {
-                  if (active_name === "defense") {
-                    handleDiceRoll(itemDice[0], "armor");
-                  } else if (active_name === "attack") {
-                    itemDice[0].type === "Ranged Weapon"
-                      ? handleRangeRoll(itemDice[0])
-                      : handleDiceRoll(itemDice[0], "damage");
-                  }
+                  currentActive.dice2_name === "Ranged Weapon"
+                    ? handleRangeRoll(
+                        currentActive.dice2,
+                        currentActive.dice2_name,
+                        "Damage",
+                      )
+                    : handleDiceRoll(
+                        currentActive.dice2,
+                        currentActive.dice2_name,
+                        "Damage",
+                      );
                 }}
                 color={Constants.TYPE_COLORS[active_name]}
               >
-                d{itemDice[0].roll}
-              </Dice>
-            )}
-            {itemDice[1] && itemDice[1].roll !== 0 && (
-              <Dice
-                className="dice-icon-hover"
-                onClick={() => {
-                  itemDice[0].type === "Ranged Weapon"
-                    ? handleRangeRoll(itemDice[1])
-                    : handleDiceRoll(itemDice[1], "damage");
-                }}
-                color={Constants.TYPE_COLORS[active_name]}
-              >
-                d{itemDice[1].roll}
+                d{currentActive.dice2}
               </Dice>
             )}
           </>
-        )}
+        ) : isDefenseActive(currentActive) ? (
+          <Dice
+            onClick={() => {
+              handleDiceRoll(
+                currentActive.dice,
+                currentActive.dice_name,
+                "Armor",
+              );
+            }}
+            color={Constants.TYPE_COLORS[active_name]}
+          >
+            d{currentActive.dice}
+          </Dice>
+        ) : null}
       </Row>
     </Container>
   );

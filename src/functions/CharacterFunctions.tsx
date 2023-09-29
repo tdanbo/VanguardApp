@@ -3,7 +3,14 @@ import cloneDeep from "lodash/cloneDeep";
 import { API } from "../Constants";
 import { CharacterEntry } from "../Types";
 import { updateAbilityModifiers } from "./AbilityFunctions";
-import { ItemEntry, AbilityEntry, ActiveKey, StatName } from "../Types";
+import {
+  ItemEntry,
+  AbilityEntry,
+  ActiveKey,
+  StatName,
+  EmptyWeapon,
+  EmptyArmor,
+} from "../Types";
 import { forEach } from "lodash";
 interface onDeleteProps {
   id: string;
@@ -51,7 +58,7 @@ export function onUpdateActive({
     ...character,
   };
 
-  updatedCharacter.actives[active].stat = stat as StatName;
+  updatedCharacter.actives[active] = stat as StatName;
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -85,10 +92,8 @@ export function onChangeAbilityLevel({
     abilities: updatedAbilities,
   };
 
-  const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
-
-  postSelectedCharacter(updatedModifiersCharacter);
-  return updatedModifiersCharacter;
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
 }
 export function onDeleteAbility({ id, character }: onDeleteProps) {
   if (!character) return;
@@ -99,10 +104,9 @@ export function onDeleteAbility({ id, character }: onDeleteProps) {
     ...character,
     abilities: updatedInventory,
   };
-  const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
 
-  postSelectedCharacter(updatedModifiersCharacter);
-  return updatedModifiersCharacter;
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
 }
 
 export const getCharacterMovement = (character: CharacterEntry) => {
@@ -229,74 +233,6 @@ function isItemEntry(equipment: ItemEntry | {}): equipment is ItemEntry {
   return "quality" in equipment;
 }
 
-export const getActiveModifiers = (character: CharacterEntry) => {
-  const updatedAbilities = updateAbilityModifiers(character);
-
-  const character_actives = updatedAbilities.actives;
-
-  const equippedItems = [
-    updatedAbilities.equipment.main,
-    updatedAbilities.equipment.off,
-    updatedAbilities.equipment.armor,
-  ].filter((item) => Object.keys(item).length !== 0);
-
-  character_actives["attack"].mod = 0;
-  character_actives["defense"].mod = 0;
-  character_actives["casting"].mod = 0;
-  character_actives["sneaking"].mod = 0;
-
-  // Minus two because food and water has been taken out of the inventory
-  const overburden =
-    character.stats.strong.value - 2 - character.inventory.length;
-
-  if (overburden < 0) {
-    character_actives["defense"].mod += overburden;
-  } else {
-  }
-
-  equippedItems.forEach((item) => {
-    if (isItemEntry(item)) {
-      if (!item.quality || item.quality.length === 0) {
-        return;
-      }
-
-      const qualityModifiers = {
-        "Defense -1": { sneaking: -1, defense: -1 },
-        "Defense -2": { sneaking: -2, defense: -2 },
-        "Defense -3": { sneaking: -3, defense: -3 },
-        "Defense -4": { sneaking: -4, defense: -4 },
-        "Casting -1": { casting: -1 },
-        "Casting -2": { casting: -2 },
-        "Casting -3": { casting: -3 },
-        "Casting -4": { casting: -4 },
-        "Balanced 1": { defense: 1 },
-        "Balanced 2": { defense: 2 },
-        "Balanced 3": { defense: 3 },
-        Precise: { attack: 1 },
-      };
-
-      // Impeding
-      item.quality.forEach((quality) => {
-        Object.entries(qualityModifiers).forEach(([key, modifiers]) => {
-          if (quality.includes(key)) {
-            Object.entries(modifiers).forEach(([action, value]) => {
-              character_actives[action as keyof typeof character_actives].mod +=
-                value;
-            });
-          }
-        });
-      });
-    }
-  });
-
-  const updatedCharacter = {
-    ...character,
-    actives: character_actives,
-  };
-
-  return updatedCharacter;
-};
-
 export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
   const abilityWithId = {
     ...ability,
@@ -310,10 +246,8 @@ export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
     abilities: newAbilities,
   };
 
-  const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
-
-  postSelectedCharacter(updatedModifiersCharacter);
-  return updatedModifiersCharacter;
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
 };
 
 export const onAddInventoryItem = ({
@@ -337,10 +271,8 @@ export const onAddInventoryItem = ({
       inventory: newUpdatedInventory,
     };
 
-    const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
-
-    postSelectedCharacter(updatedModifiersCharacter);
-    return updatedModifiersCharacter;
+    postSelectedCharacter(updatedCharacter);
+    return updatedCharacter;
   }
 };
 
@@ -359,14 +291,14 @@ export function onUnequipItem({ character, position }: UnEquipProps) {
   const newEquipment = cloneDeep(character.equipment);
 
   if (position === "MH") {
-    newEquipment.main = {};
+    newEquipment.main = EmptyWeapon;
   } else if (position === "OH") {
-    newEquipment.off = {};
+    newEquipment.off = EmptyWeapon;
   } else if (position === "2H") {
-    newEquipment.main = {};
-    newEquipment.off = {};
+    newEquipment.main = EmptyWeapon;
+    newEquipment.off = EmptyWeapon;
   } else if (position === "AR") {
-    newEquipment.armor = {};
+    newEquipment.armor = EmptyArmor;
   }
 
   const updatedCharacter = {
@@ -374,9 +306,8 @@ export function onUnequipItem({ character, position }: UnEquipProps) {
     equipment: newEquipment,
   };
 
-  const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
-  postSelectedCharacter(updatedModifiersCharacter);
-  return updatedModifiersCharacter;
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
 }
 
 export function onEquipItem({ character, item, position }: EquipProps) {
@@ -390,19 +321,19 @@ export function onEquipItem({ character, item, position }: EquipProps) {
 
   // Check if the same item is already equipped in the Main Hand (MH)
   if (position === "OH" && (isItemInMainHand || isMainHand2H)) {
-    equipment.main = {};
+    equipment.main = EmptyWeapon;
   }
 
   if (position === "MH") {
     equipment.main = cloneDeep(item);
     if (isItemInOffHand) {
-      equipment.off = {};
+      equipment.off = EmptyWeapon;
     }
   } else if (position === "OH") {
     equipment.off = cloneDeep(item);
   } else if (position === "2H") {
     equipment.main = cloneDeep(item);
-    equipment.off = {};
+    equipment.off = EmptyWeapon;
   } else if (position === "AR") {
     equipment.armor = cloneDeep(item);
   }
@@ -412,9 +343,8 @@ export function onEquipItem({ character, item, position }: EquipProps) {
     equipment: equipment,
   };
 
-  const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
-  postSelectedCharacter(updatedModifiersCharacter);
-  return updatedModifiersCharacter;
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
 }
 
 export function onDeleteItem({ id, character }: onDeleteProps) {
@@ -426,18 +356,18 @@ export function onDeleteItem({ id, character }: onDeleteProps) {
   const updatedEquipment = { ...character.equipment };
 
   // Check main equipment
-  if ("id" in updatedEquipment.main && updatedEquipment.main.id === id) {
-    updatedEquipment.main = {};
+  if (updatedEquipment.main.id === id) {
+    updatedEquipment.main = EmptyWeapon;
   }
 
   // Check off equipment
-  if ("id" in updatedEquipment.off && updatedEquipment.off.id === id) {
-    updatedEquipment.off = {};
+  if (updatedEquipment.off.id === id) {
+    updatedEquipment.off = EmptyWeapon;
   }
 
   // Check armor equipment
-  if ("id" in updatedEquipment.armor && updatedEquipment.armor.id === id) {
-    updatedEquipment.armor = {};
+  if (updatedEquipment.armor.id === id) {
+    updatedEquipment.armor = EmptyArmor;
   }
 
   // ... You can add more checks here if there are more equipment types ...
@@ -448,10 +378,8 @@ export function onDeleteItem({ id, character }: onDeleteProps) {
     equipment: updatedEquipment, // update the equipment of the character
   };
 
-  const updatedModifiersCharacter = getActiveModifiers(updatedCharacter);
-
-  postSelectedCharacter(updatedModifiersCharacter);
-  return updatedModifiersCharacter;
+  postSelectedCharacter(updatedCharacter);
+  return updatedCharacter;
 }
 
 interface onChangeQuantityProps {
@@ -705,10 +633,10 @@ export function swapActives(
   const characterActives = cloneDeep(character.actives);
 
   forEach(characterActives, (active) => {
-    if (active.stat === source.toLowerCase()) {
-      active.stat = target.toLowerCase() as StatName;
-    } else if (active.stat === target.toLowerCase()) {
-      active.stat = source.toLowerCase() as StatName;
+    if (active === source.toLowerCase()) {
+      active = target.toLowerCase() as StatName;
+    } else if (active === target.toLowerCase()) {
+      active = source.toLowerCase() as StatName;
     }
   });
 

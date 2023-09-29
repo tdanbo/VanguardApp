@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { CharacterPortraits } from "../../Images";
 import RaceDropdownBox from "./RaceDropdownBox";
 import { addNewCharacter } from "../../functions/CharacterFunctions";
+import { EmptyWeapon } from "../../Types";
 import {
   MainContainer,
   ModalContainer,
@@ -212,13 +213,10 @@ function CreateCharacterComponent({
       accurate: { value: stats[7].value, mod: 0 },
     },
     actives: {
-      attack: {
-        stat: "accurate",
-        mod: 0,
-      },
-      defense: { stat: "quick", mod: 0 },
-      casting: { stat: "resolute", mod: 0 },
-      sneaking: { stat: "discreet", mod: 0 },
+      attack: "accurate",
+      defense: "quick",
+      casting: "resolute",
+      sneaking: "discreet",
     },
     corruption: {
       permanent: 0,
@@ -228,9 +226,9 @@ function CreateCharacterComponent({
     abilities: [],
     inventory: [],
     equipment: {
-      main: {},
-      off: {},
-      armor: {},
+      main: EmptyWeapon,
+      off: EmptyWeapon,
+      armor: EmptyArmor,
     },
     rations: { food: 0, water: 0 },
     money: 0,

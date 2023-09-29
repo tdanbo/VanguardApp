@@ -244,7 +244,7 @@ function InventoryItem(updatedCharacter: CharacterEntry, id: string) {
   return cloneDeep(item);
 }
 
-function CheckAbility(
+export function CheckAbility(
   character: CharacterEntry,
   name: string,
   level: string,

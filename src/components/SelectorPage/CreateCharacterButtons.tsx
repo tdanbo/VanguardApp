@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { SessionContext } from "../../contexts/SessionContext";
 import { useContext } from "react";
-import { CharacterEntry } from "../../Types";
+import { CharacterEntry, EmptyArmor, EmptyWeapon } from "../../Types";
 import { addNewCharacter } from "../../functions/CharacterFunctions";
 import { useWebSocket } from "../../contexts/WebSocketContext";
 import {
@@ -57,10 +57,10 @@ function CreateCharacterButtons({
       vigilant: { value: stats[7].value, mod: 0 },
     },
     actives: {
-      attack: { stat: "accurate", mod: 0 },
-      defense: { stat: "quick", mod: 0 },
-      casting: { stat: "resolute", mod: 0 },
-      sneaking: { stat: "discreet", mod: 0 },
+      attack: "accurate",
+      defense: "quick",
+      casting: "resolute",
+      sneaking: "discreet",
     },
     corruption: {
       permanent: 0,
@@ -70,9 +70,9 @@ function CreateCharacterButtons({
     abilities: [],
     inventory: [],
     equipment: {
-      main: {},
-      off: {},
-      armor: {},
+      main: EmptyWeapon,
+      off: EmptyWeapon,
+      armor: EmptyArmor,
     },
     rations: { food: 0, water: 0 },
     money: 0,

@@ -13,7 +13,7 @@ interface StatDropdownProps {
 function StatDropdown({ active }: StatDropdownProps) {
   const { character, setCharacter } = useContext(CharacterContext);
   const [selectedValue, setSelectedValue] = useState<string | null>(
-    character.actives[active].stat,
+    character.actives[active],
   );
 
   // Get all the current active values from the character
@@ -34,8 +34,7 @@ function StatDropdown({ active }: StatDropdownProps) {
   // Filter out the options that are already in character.actives values
   const availableOptions = allOptions.filter(
     (option) =>
-      option ===
-        character.actives[active as keyof typeof character.actives].stat ||
+      option === character.actives[active as keyof typeof character.actives] ||
       !activeValues.some((active) => active.stat === option),
   );
 

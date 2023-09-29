@@ -8,6 +8,7 @@ import styled from "styled-components";
 import CharacterProvider from "./contexts/CharacterContext";
 import UserProvider from "./contexts/UserContext";
 import SessionProvider from "./contexts/SessionContext";
+import ActivesProvider from "./contexts/ActivesContext";
 import { WebSocketProvider } from "./contexts/WebSocketContext";
 import HealthBox from "./components/HealthBox";
 import StatsControls from "./components/StatsControls/StatsControls";
