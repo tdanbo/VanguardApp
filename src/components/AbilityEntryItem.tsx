@@ -342,7 +342,7 @@ function AbilityEntryItem({
                 onClick={() =>
                   onRollDice({
                     dice: roll.dice,
-                    modifier: 0,
+                    modifier: roll.mod,
                     count: 1,
                     target: 0,
                     source: ability.name,
@@ -352,6 +352,7 @@ function AbilityEntryItem({
                 }
               >
                 d{roll.dice}
+                {roll.mod > 0 ? `+${roll.mod}` : null}
               </RollButton>
             ))
           : ability.level === "Adept"
@@ -363,7 +364,7 @@ function AbilityEntryItem({
                 onClick={() =>
                   onRollDice({
                     dice: roll.dice,
-                    modifier: 0,
+                    modifier: roll.mod,
                     count: 1,
                     target: 0,
                     source: ability.name,
@@ -373,6 +374,7 @@ function AbilityEntryItem({
                 }
               >
                 d{roll.dice}
+                {roll.mod > 0 ? `+${roll.mod}` : null}
               </RollButton>
             ))
           : ability.level === "Master"
@@ -384,7 +386,7 @@ function AbilityEntryItem({
                 onClick={() =>
                   onRollDice({
                     dice: roll.dice,
-                    modifier: 0,
+                    modifier: roll.mod,
                     count: 1,
                     target: 0,
                     source: ability.name,
@@ -393,7 +395,8 @@ function AbilityEntryItem({
                   })
                 }
               >
-                {roll.dice}
+                d{roll.dice}
+                {roll.mod > 0 ? `+${roll.mod}` : null}
               </RollButton>
             ))
           : null}

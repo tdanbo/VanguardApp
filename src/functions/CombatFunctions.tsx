@@ -33,21 +33,25 @@ export function useRoll() {
     active,
     source,
     modifier,
-    add_mod,
   }: RollDiceProps) => {
+    let roll = 0;
     let total = 0;
 
     for (let i = 0; i < count; i++) {
-      total += Math.floor(Math.random() * dice) + 1;
+      roll += Math.floor(Math.random() * dice) + 1;
     }
 
-    total += modifier;
-
-    if (add_mod == true) {
-      total += character.details.modifier;
+    if (source === "Skill Test") {
+      total += roll;
+    } else {
+      total += modifier + roll;
     }
 
     const roll_result = total;
+
+    console.log("Roll Result: " + roll_result);
+    console.log("Modifier: " + modifier);
+    console.log("Target: " + target);
 
     let success = true;
     if (target === 0) {
@@ -65,7 +69,9 @@ export function useRoll() {
       dice: dice,
       result: roll_result,
       success: success,
-      modifier: 0,
+      roll: roll,
+      modifier: modifier,
+      target: target,
     };
 
     console.log("NewCombatEntry");

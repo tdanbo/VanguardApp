@@ -3,21 +3,12 @@ import { useState } from "react";
 
 import styled from "styled-components";
 import { CharacterContext } from "../contexts/CharacterContext";
-import { useContext, useEffect } from "react";
-import {
-  ActiveKey,
-  ItemEntry,
-  StatName,
-  AttackActive,
-  DefenseActive,
-  SimpleActive,
-} from "../Types";
+import { useContext } from "react";
+import { ActiveKey, AttackActive, DefenseActive } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
 import { onUseAmmunition } from "../functions/CharacterFunctions";
-import { ActivesContext } from "../contexts/ActivesContext";
 import { UpdateActives } from "../functions/ActivesFunction";
 import "../App.css";
-import { set } from "lodash";
 interface Props {
   active_name: ActiveKey;
 }
@@ -119,8 +110,6 @@ function ActiveBox({ active_name }: Props) {
 
   const currentActive = actives[active_name];
 
-  console.log(currentActive);
-
   const handleAddValue = () => {
     const newValue = modValue + 1;
     setModvalue(newValue);
@@ -148,13 +137,14 @@ function ActiveBox({ active_name }: Props) {
   const handleDiceRoll = (
     dice: number,
     dice_name: string,
+    dice_mod: number,
     damage_armor: string,
   ) => {
     onRollDice({
       dice: dice,
       count: 1,
       target: 0,
-      modifier: 0,
+      modifier: dice_mod,
       source: dice_name,
       active: damage_armor,
       add_mod: false,
@@ -163,7 +153,9 @@ function ActiveBox({ active_name }: Props) {
 
   const handleRangeRoll = (
     dice: number,
+
     dice_name: string,
+    dice_mod: number,
     damage_armor: string,
   ) => {
     const { updatedCharacter, hasAmmunition } = onUseAmmunition(character);
@@ -177,7 +169,7 @@ function ActiveBox({ active_name }: Props) {
       dice: dice,
       count: 1,
       target: 0,
-      modifier: 0,
+      modifier: dice_mod,
       source: dice_name,
       active: damage_armor,
       add_mod: false,
@@ -209,17 +201,22 @@ function ActiveBox({ active_name }: Props) {
                   ? handleRangeRoll(
                       currentActive.dice1,
                       currentActive.dice1_name,
+                      currentActive.dice1_mod,
                       "Damage",
                     )
                   : handleDiceRoll(
                       currentActive.dice1,
                       currentActive.dice1_name,
+                      currentActive.dice1_mod,
                       "Damage",
                     );
               }}
               color={Constants.TYPE_COLORS[active_name]}
             >
               d{currentActive.dice1}
+              {currentActive.dice1_mod > 0
+                ? `+${currentActive.dice1_mod}`
+                : null}
             </Dice>
 
             {currentActive.dice2_name !== "Knuckles" && (
@@ -229,17 +226,22 @@ function ActiveBox({ active_name }: Props) {
                     ? handleRangeRoll(
                         currentActive.dice2,
                         currentActive.dice2_name,
+                        currentActive.dice2_mod,
                         "Damage",
                       )
                     : handleDiceRoll(
                         currentActive.dice2,
                         currentActive.dice2_name,
+                        currentActive.dice2_mod,
                         "Damage",
                       );
                 }}
                 color={Constants.TYPE_COLORS[active_name]}
               >
                 d{currentActive.dice2}
+                {currentActive.dice2_mod > 0
+                  ? `+${currentActive.dice2_mod}`
+                  : null}
               </Dice>
             )}
           </>
@@ -249,12 +251,14 @@ function ActiveBox({ active_name }: Props) {
               handleDiceRoll(
                 currentActive.dice,
                 currentActive.dice_name,
+                currentActive.dice_mod,
                 "Armor",
               );
             }}
             color={Constants.TYPE_COLORS[active_name]}
           >
             d{currentActive.dice}
+            {currentActive.dice_mod > 0 ? `+${currentActive.dice_mod}` : null}
           </Dice>
         ) : null}
       </Row>

@@ -5,7 +5,6 @@ export function PolearmMastery(character: CharacterEntry, actives: Actives) {
   const ability = CheckAbility(character, "polearm mastery", "novice");
 
   if (ability) {
-    console.log("Updating Polearm Mastery");
     character.equipment.main.type === "Long Weapon" &&
       (actives.attack.dice1 += 2);
 

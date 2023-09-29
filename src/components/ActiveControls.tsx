@@ -1,6 +1,3 @@
-import { useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
-
 import styled from "styled-components";
 import ActiveBox from "./ActiveBox";
 
@@ -14,8 +11,6 @@ const Container = styled.div`
 `;
 
 function CorruptionControls() {
-  const { character } = useContext(CharacterContext);
-
   return (
     <Container>
       <ActiveBox active_name={"attack" as ActiveKey} />

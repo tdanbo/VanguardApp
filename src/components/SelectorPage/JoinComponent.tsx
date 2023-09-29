@@ -40,10 +40,8 @@ function JoinComponent({ setSelector }: LoginProps) {
   };
 
   const handleJoinSession = () => {
-    console.log(sessionName);
     getSession(sessionName).then((res) => {
       if (res) {
-        console.log(res);
         setSession(res);
         setSelector("characterSelect");
       } else {

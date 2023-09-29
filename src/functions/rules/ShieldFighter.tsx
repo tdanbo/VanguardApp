@@ -6,8 +6,6 @@ export function ShieldFighter(character: CharacterEntry, actives: Actives) {
 
   if (!ability) return actives; // Return early if the ability is not present
 
-  console.log("Updating Shield Fighter");
-
   const shieldTypes = ["Steel Shield", "Buckler", "Shield"];
   const weaponTypes = ["Short Weapon", "One-hand Weapon"];
 

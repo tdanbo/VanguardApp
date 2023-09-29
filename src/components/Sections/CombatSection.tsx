@@ -21,7 +21,6 @@ function CombatSection() {
   const { combatlogResponse } = useWebSocket();
 
   useEffect(() => {
-    console.log("Combat Section: ", combatlogResponse);
     if (combatlogResponse) {
       setCombatLog(combatlogResponse);
     }

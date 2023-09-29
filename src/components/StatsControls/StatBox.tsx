@@ -110,7 +110,7 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
       dice: 20,
       count: 1,
       modifier: modifier,
-      target: value,
+      target: value + modifier,
       active: type_name,
       source: "Skill Test",
       add_mod: false,
@@ -142,10 +142,12 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
 
   const addModifier = () => {
     setModifier(modifier + 1);
+    console.log(value);
   };
 
   const subModifier = () => {
     setModifier(modifier - 1);
+    console.log(value);
   };
 
   return (

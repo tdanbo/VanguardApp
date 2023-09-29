@@ -264,8 +264,8 @@ function ResourceChanger({
   };
 
   const calcValue = (operation: string, mode: string, input: number) => {
-    console.log(operation);
     let newValue = value;
+    console.log(operation);
 
     let multiplier = 1;
     if (mode === "thaler") {

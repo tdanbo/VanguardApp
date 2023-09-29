@@ -69,6 +69,7 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
         roll: false,
         dice: 0,
         type: "",
+        mod: 0,
       },
       quality: [],
       equip: "",
@@ -81,6 +82,7 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
       name: UpperFirstLetter(search),
       category: "general_good",
       id: "",
+      description: "",
     },
   ];
 

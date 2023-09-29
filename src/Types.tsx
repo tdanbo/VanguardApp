@@ -106,6 +106,7 @@ export interface CharacterEntry {
 
 interface Roll {
   roll: boolean;
+  mod: number;
   dice: number;
   type: string;
 }
@@ -125,6 +126,7 @@ export interface ItemEntry {
   name: string;
   category: string;
   id: string;
+  description: string;
 }
 
 export type CombatEntry = {
@@ -136,7 +138,9 @@ export type CombatEntry = {
   dice: number;
   result: number;
   success: boolean;
+  roll: number;
   modifier: number;
+  target: number;
 };
 
 export type SessionEntry = {
@@ -149,6 +153,7 @@ export type SessionEntry = {
 export interface AbilityRoll {
   dice: number;
   type: string;
+  mod: number;
 }
 
 export interface Ability {
@@ -171,7 +176,7 @@ export type AbilityEntry = {
 };
 
 export const EmptyWeapon: ItemEntry = {
-  roll: { roll: true, dice: 4, type: "damage" },
+  roll: { roll: true, dice: 4, mod: 0, type: "damage" },
   quality: [],
   equip: "1H",
   quantity: { count: 0, bulk: false },
@@ -180,10 +185,11 @@ export const EmptyWeapon: ItemEntry = {
   name: "Knuckles",
   category: "ordinary_weapon",
   id: "aaaaaaaaaa",
+  description: "Fight with your bare hands.",
 };
 
 export const EmptyArmor: ItemEntry = {
-  roll: { roll: true, dice: 4, type: "armor" },
+  roll: { roll: true, dice: 4, mod: 0, type: "armor" },
   quality: [],
   equip: "AR",
   quantity: { count: 0, bulk: false },
@@ -192,4 +198,5 @@ export const EmptyArmor: ItemEntry = {
   name: "Simple Clothes",
   category: "ordinary_armor",
   id: "bbbbbbbbbb",
+  description: "You feel robbed of your dignity.",
 };

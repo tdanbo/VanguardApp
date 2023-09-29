@@ -1,5 +1,5 @@
 import * as Constants from "../Constants";
-
+import { Qualities } from "../functions/rules/Qualities";
 import { ItemEntry } from "../Types";
 import Quantity from "./Modals/Quantity";
 import { useContext } from "react";
@@ -194,13 +194,11 @@ function InventoryEntry({
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
 
   const HandleEquip = (item: ItemEntry, position: string) => {
-    console.log("Equipping : ", item, position);
     const updatedCharacter = onEquipItem({ character, item, position });
     setCharacter(updatedCharacter);
   };
 
   const HandleUnequip = (position: string) => {
-    console.log("Unequipping : ", position);
     const updatedCharacter = onUnequipItem({ character, position });
     setCharacter(updatedCharacter);
   };
@@ -227,7 +225,7 @@ function InventoryEntry({
   const handleRoll = () => {
     onRollDice({
       dice: item.roll.dice,
-      modifier: 0,
+      modifier: item.roll.mod,
       count: 1,
       target: 0,
       source: item.name,
@@ -265,10 +263,8 @@ function InventoryEntry({
 
   const equipHandler = (item: ItemEntry, position: string) => {
     if (isItemEquipped(item, position)) {
-      console.log("Unequipping : ", position);
       HandleUnequip(position);
     } else {
-      console.log("Equipping : ", position);
       HandleEquip(item, position);
     }
   };
@@ -329,16 +325,36 @@ function InventoryEntry({
         <TypeBox>{item.type}</TypeBox>
       </NameContainer>
 
+      {item.description}
       <QualityContainer>
-        {item.quality.map((item, index) => (
-          <QualityBox key={index}>{item.slice(0, 2)}</QualityBox>
-        ))}
+        {item.quality.map((quality, index) => {
+          let description;
+
+          if (quality === "Effect") {
+            description = item.description;
+          } else if (Qualities[quality]) {
+            description = Qualities[quality].description;
+          } else {
+            console.warn("Missing quality:", quality);
+            return null; // Skip rendering this item if the quality is missing
+          }
+
+          return (
+            <QualityBox key={index} title={description}>
+              {quality.slice(0, 2)}
+            </QualityBox>
+          );
+        })}
       </QualityContainer>
-      <Divider />
+      {item.quality.length > 0 && (item.roll.roll || item.quantity.bulk) && (
+        <Divider />
+      )}
+
       <RollContainer>
         {item.roll.roll === true && (
           <RollBox color={COLOR} onClick={handleRoll}>
             d{item.roll.dice}
+            {item.roll.mod > 0 ? `+${item.roll.mod}` : null}
           </RollBox>
         )}
         {item.quantity.bulk === true && <Quantity item={item} />}

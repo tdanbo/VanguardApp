@@ -10,7 +10,6 @@ import {
   EmptyWeapon,
   EmptyArmor,
 } from "../Types";
-import { forEach } from "lodash";
 interface onDeleteProps {
   id: string;
   character: CharacterEntry;
@@ -456,7 +455,6 @@ export function onAddToughness(character: CharacterEntry) {
 }
 
 export function onSubToughness(character: CharacterEntry) {
-  console.log("Subtracting toughness");
   const character_toughness = character.toughness;
 
   const value_step = 1;
@@ -621,7 +619,6 @@ export function swapActives(
   source: string,
   target: string,
 ) {
-  console.log("Swapping actives");
   const characterActives = cloneDeep(character.actives);
 
   // Iterate over the keys (e.g., 'attack', 'defense', etc.)

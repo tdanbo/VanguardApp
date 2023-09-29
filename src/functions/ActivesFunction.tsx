@@ -3,6 +3,8 @@ import { ManAtArms } from "./rules/ManAtArms";
 import { PolearmMastery } from "./rules/PolearmMastery";
 import { ShieldFighter } from "./rules/ShieldFighter";
 import { ArmoredMystic } from "./rules/ArmoredMystic";
+import { TwohandedForce } from "./rules/TwohandedForce";
+
 const actives: Actives = {
   attack: {
     value: 0,
@@ -28,7 +30,6 @@ const actives: Actives = {
 };
 
 export const UpdateActives = (character: CharacterEntry) => {
-  console.log("Updating Actives");
   actives.attack.value = character.stats[character.actives["attack"]].value;
   actives.defense.value = character.stats[character.actives["defense"]].value;
   actives.casting.value = character.stats[character.actives["casting"]].value;
@@ -42,15 +43,17 @@ export const UpdateActives = (character: CharacterEntry) => {
   actives.attack.dice2_name = character.equipment.off.name;
   actives.defense.dice_name = character.equipment.armor.name;
 
+  actives.attack.dice1_mod = character.equipment.main.roll.mod;
+  actives.attack.dice2_mod = character.equipment.off.roll.mod;
+  actives.defense.dice_mod = character.equipment.armor.roll.mod;
+
   UpdateQualities(character);
 
   ManAtArms(character, actives);
   PolearmMastery(character, actives);
   ShieldFighter(character, actives);
   ArmoredMystic(character, actives);
-
-  console.log(actives);
-
+  TwohandedForce(character, actives);
   return actives;
 };
 

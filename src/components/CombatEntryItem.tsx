@@ -116,11 +116,25 @@ function CombatEntryItem({ combatEntry }: CombatEntryItemProps) {
     modifierText = `${combatEntry.modifier}`;
   }
 
+  let title = `Roll: ${combatEntry.roll}\n`;
+
+  if (combatEntry.source !== "Skill Test") {
+    title += `Modifier: ${combatEntry.modifier}\n`;
+  }
+
+  if (combatEntry.target > 0) {
+    title += `Target: ${combatEntry.target}`;
+  }
+
   return (
     <Container src={CharacterPortraits[combatEntry.portrait]}>
       <ColorBlock $rgb={EntryColor()} $issuccess={combatEntry.success} />
       <ResultContainer>
-        <Result $rgb={EntryColor()} $issuccess={combatEntry.success}>
+        <Result
+          title={title}
+          $rgb={EntryColor()}
+          $issuccess={combatEntry.success}
+        >
           {combatEntry.result}
         </Result>
 

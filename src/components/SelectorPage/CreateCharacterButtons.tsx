@@ -79,7 +79,6 @@ function CreateCharacterButtons({
   };
 
   const handlePostCharacter = async () => {
-    console.log(NewCharacterEntry.details);
     setSelector("characterSelect");
     await addNewCharacter(NewCharacterEntry);
     sendRequest("characters"); // asking websocket to update session characters for all clients

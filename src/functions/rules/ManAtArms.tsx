@@ -6,7 +6,6 @@ export function ManAtArms(character: CharacterEntry, actives: Actives) {
   const abilityAdept = CheckAbility(character, "man-at-arms", "adept");
 
   if (abilityNovice) {
-    console.log("Updating Man-At-Arms");
     actives.defense.dice += 2;
   }
 

@@ -234,8 +234,6 @@ function CreateCharacterComponent({
     money: 0,
   };
 
-  console.log(NewCharacterEntry);
-
   const handlePostCharacter = async () => {
     setSelector("characterSelect");
     await addNewCharacter(NewCharacterEntry);
