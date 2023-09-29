@@ -325,7 +325,6 @@ function InventoryEntry({
         <TypeBox>{item.type}</TypeBox>
       </NameContainer>
 
-      {item.description}
       <QualityContainer>
         {item.quality.map((quality, index) => {
           let description;
