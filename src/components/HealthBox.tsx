@@ -130,7 +130,6 @@ const RightTickBar = styled.div<BgColor>`
 
 function HealthBox() {
   const { character, setCharacter } = useContext(CharacterContext);
-
   const handleAddToughness = () => {
     const updated_character = onAddToughness(character);
     setCharacter(updated_character);
@@ -172,8 +171,7 @@ function HealthBox() {
     character.toughness.max.value - character.toughness.damage.value;
 
   const temporary_corruption = character.corruption.temporary;
-  const clean_corruption =
-    character.corruption.threshold - temporary_corruption;
+  const clean_corruption = corruptionThreshold - temporary_corruption;
 
   return (
     <Container src={CharacterPortraits[character.portrait]}>

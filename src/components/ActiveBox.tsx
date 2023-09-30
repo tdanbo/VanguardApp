@@ -4,14 +4,10 @@ import { useState } from "react";
 import styled from "styled-components";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { useContext } from "react";
-import { ActiveKey, AttackActive, DefenseActive } from "../Types";
+import { ActiveKey, AttackActive, DefenseActive, SimpleActive } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
 import { onUseAmmunition } from "../functions/CharacterFunctions";
-import { UpdateActives } from "../functions/ActivesFunction";
 import "../App.css";
-interface Props {
-  active_name: ActiveKey;
-}
 
 const Container = styled.div`
   display: flex;
@@ -92,6 +88,11 @@ const Dice = styled.button<DiceProps>`
   background-color: ${Constants.WIDGET_BACKGROUND};
 `;
 
+interface Props {
+  active_name: ActiveKey;
+  active: AttackActive | DefenseActive | SimpleActive;
+}
+
 function isAttackActive(obj: any): obj is AttackActive {
   return typeof obj.value === "number" && typeof obj.dice2 === "number";
   // you can add more checks for other properties if needed
@@ -102,13 +103,9 @@ function isDefenseActive(obj: any): obj is DefenseActive {
   // you can add more checks for other properties if needed
 }
 
-function ActiveBox({ active_name }: Props) {
+function ActiveBox({ active_name, active }: Props) {
   const { character, setCharacter } = useContext(CharacterContext);
   const [modValue, setModvalue] = useState<number>(0);
-
-  const actives = UpdateActives(character);
-
-  const currentActive = actives[active_name];
 
   const handleAddValue = () => {
     const newValue = modValue + 1;
@@ -127,7 +124,7 @@ function ActiveBox({ active_name }: Props) {
       dice: 20,
       count: 1,
       modifier: modValue,
-      target: currentActive.value,
+      target: active.value,
       source: "Skill Test",
       active: active_name,
       add_mod: false,
@@ -179,7 +176,7 @@ function ActiveBox({ active_name }: Props) {
   return (
     <Container>
       <Value onClick={handleActiveRoll} className="dice-icon-hover">
-        {currentActive.value}
+        {active.value}
         <ActiveValue> {active_name.toUpperCase()}</ActiveValue>
       </Value>
       <Row>
@@ -193,72 +190,68 @@ function ActiveBox({ active_name }: Props) {
         >
           {modValue}
         </Modifier>
-        {isAttackActive(currentActive) ? (
+        {isAttackActive(active) ? (
           <>
             <Dice
               onClick={() => {
-                currentActive.dice1_name === "Ranged Weapon"
+                active.dice1_name === "Ranged Weapon"
                   ? handleRangeRoll(
-                      currentActive.dice1,
-                      currentActive.dice1_name,
-                      currentActive.dice1_mod,
+                      active.dice1,
+                      active.dice1_name,
+                      active.dice1_mod,
                       "Damage",
                     )
                   : handleDiceRoll(
-                      currentActive.dice1,
-                      currentActive.dice1_name,
-                      currentActive.dice1_mod,
+                      active.dice1,
+                      active.dice1_name,
+                      active.dice1_mod,
                       "Damage",
                     );
               }}
               color={Constants.TYPE_COLORS[active_name]}
             >
-              d{currentActive.dice1}
-              {currentActive.dice1_mod > 0
-                ? `+${currentActive.dice1_mod}`
-                : null}
+              d{active.dice1}
+              {active.dice1_mod > 0 ? `+${active.dice1_mod}` : null}
             </Dice>
 
-            {currentActive.dice2_name !== "Knuckles" && (
+            {active.dice2_name !== "Knuckles" && (
               <Dice
                 onClick={() => {
-                  currentActive.dice2_name === "Ranged Weapon"
+                  active.dice2_name === "Ranged Weapon"
                     ? handleRangeRoll(
-                        currentActive.dice2,
-                        currentActive.dice2_name,
-                        currentActive.dice2_mod,
+                        active.dice2,
+                        active.dice2_name,
+                        active.dice2_mod,
                         "Damage",
                       )
                     : handleDiceRoll(
-                        currentActive.dice2,
-                        currentActive.dice2_name,
-                        currentActive.dice2_mod,
+                        active.dice2,
+                        active.dice2_name,
+                        active.dice2_mod,
                         "Damage",
                       );
                 }}
                 color={Constants.TYPE_COLORS[active_name]}
               >
-                d{currentActive.dice2}
-                {currentActive.dice2_mod > 0
-                  ? `+${currentActive.dice2_mod}`
-                  : null}
+                d{active.dice2}
+                {active.dice2_mod > 0 ? `+${active.dice2_mod}` : null}
               </Dice>
             )}
           </>
-        ) : isDefenseActive(currentActive) ? (
+        ) : isDefenseActive(active) ? (
           <Dice
             onClick={() => {
               handleDiceRoll(
-                currentActive.dice,
-                currentActive.dice_name,
-                currentActive.dice_mod,
+                active.dice,
+                active.dice_name,
+                active.dice_mod,
                 "Armor",
               );
             }}
             color={Constants.TYPE_COLORS[active_name]}
           >
-            d{currentActive.dice}
-            {currentActive.dice_mod > 0 ? `+${currentActive.dice_mod}` : null}
+            d{active.dice}
+            {active.dice_mod > 0 ? `+${active.dice_mod}` : null}
           </Dice>
         ) : null}
       </Row>

@@ -2,6 +2,7 @@ import axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
 import { API } from "../Constants";
 import { CharacterEntry } from "../Types";
+import { ExceptionalStats } from "./rules/ExceptionalStats";
 import {
   ItemEntry,
   AbilityEntry,
@@ -96,16 +97,47 @@ export function onChangeAbilityLevel({
 export function onDeleteAbility({ id, character }: onDeleteProps) {
   if (!character) return;
 
-  const updatedInventory = character.abilities.filter((item) => item.id !== id);
+  const characterClone = cloneDeep(character);
+
+  const updatedCharacterStats = ExceptionalStats({
+    character: characterClone,
+    state: false,
+  });
+
+  const updatedAbilities = updatedCharacterStats.abilities.filter(
+    (item) => item.id !== id,
+  );
 
   const updatedCharacter = {
-    ...character,
-    abilities: updatedInventory,
+    ...updatedCharacterStats,
+    abilities: updatedAbilities,
   };
 
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
+
+export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
+  const abilityWithId = {
+    ...ability,
+    id: generateRandomId(),
+  };
+
+  const newAbilities: AbilityEntry[] = [...character.abilities, abilityWithId];
+
+  const updatedCharacter = {
+    ...character,
+    abilities: newAbilities,
+  };
+
+  const updatedCharacterStats = ExceptionalStats({
+    character: updatedCharacter,
+    state: true,
+  });
+
+  postSelectedCharacter(updatedCharacterStats);
+  return updatedCharacterStats;
+};
 
 export const getCharacterMovement = (character: CharacterEntry) => {
   const movement: { [key: number]: number } = {
@@ -221,23 +253,6 @@ export const setBaseModifier = (character: CharacterEntry, value: number) => {
   const updatedCharacter = {
     ...character,
     details: character_details,
-  };
-
-  postSelectedCharacter(updatedCharacter);
-  return updatedCharacter;
-};
-
-export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
-  const abilityWithId = {
-    ...ability,
-    id: generateRandomId(),
-  };
-
-  const newAbilities: AbilityEntry[] = [...character.abilities, abilityWithId];
-
-  const updatedCharacter = {
-    ...character,
-    abilities: newAbilities,
   };
 
   postSelectedCharacter(updatedCharacter);

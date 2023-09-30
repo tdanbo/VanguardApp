@@ -1,14 +1,7 @@
 interface CharacterDetails {
-  name: string;
   xp_earned: number;
   movement: number;
   modifier: number;
-}
-
-interface Toughness {
-  damage: Stat;
-  max: Stat;
-  pain: Stat;
 }
 
 interface Stat {
@@ -75,7 +68,6 @@ export interface ActiveStats {
 type Corruption = {
   permanent: number;
   temporary: number;
-  threshold: number;
 };
 
 interface Rations {
@@ -90,10 +82,11 @@ interface EquipmentEntry {
 }
 
 export interface CharacterEntry {
+  name: string;
   id: string;
   portrait: string;
   details: CharacterDetails;
-  toughness: Toughness;
+  damage: number;
   stats: Stats;
   corruption: Corruption;
   actives: ActiveStats;

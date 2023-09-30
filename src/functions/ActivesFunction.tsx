@@ -4,9 +4,6 @@ import { PolearmMastery } from "./rules/PolearmMastery";
 import { ShieldFighter } from "./rules/ShieldFighter";
 import { ArmoredMystic } from "./rules/ArmoredMystic";
 import { TwohandedForce } from "./rules/TwohandedForce";
-import { ExceptionalStrength } from "./rules/ExceptionalStrength";
-import { useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
 
 const actives: Actives = {
   attack: {
@@ -33,7 +30,6 @@ const actives: Actives = {
 };
 
 export const UpdateActives = (character: CharacterEntry) => {
-  const { setCharacter } = useContext(CharacterContext);
   actives.attack.value = character.stats[character.actives["attack"]].value;
   actives.defense.value = character.stats[character.actives["defense"]].value;
   actives.casting.value = character.stats[character.actives["casting"]].value;
