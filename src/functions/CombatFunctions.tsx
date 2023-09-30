@@ -63,7 +63,7 @@ export function useRoll() {
     const NewCombatEntry: CombatEntry = {
       id: session.id,
       portrait: character.portrait,
-      character: character.details.name,
+      character: character.name,
       source: source,
       active: active,
       dice: dice,

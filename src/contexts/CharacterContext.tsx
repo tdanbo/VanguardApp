@@ -2,19 +2,15 @@ import { createContext, useState } from "react";
 import { CharacterEntry, EmptyArmor, EmptyWeapon } from "../Types";
 
 const defaultCharacter: CharacterEntry = {
+  name: "",
   id: "",
   portrait: "",
   details: {
-    name: "",
     xp_earned: 0,
     movement: 0,
     modifier: 0,
   },
-  toughness: {
-    damage: { value: 0, mod: 0 },
-    max: { value: 0, mod: 0 },
-    pain: { value: 0, mod: 0 },
-  },
+  damage: 0,
   stats: {
     cunning: { value: 0, mod: 0 },
     discreet: { value: 0, mod: 0 },
@@ -34,7 +30,6 @@ const defaultCharacter: CharacterEntry = {
   corruption: {
     permanent: 0,
     temporary: 0,
-    threshold: 10,
   },
   money: 0,
   abilities: [],

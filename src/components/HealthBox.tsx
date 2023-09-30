@@ -165,13 +165,13 @@ function HealthBox() {
 
   const remaining_corruption =
     maxCorruptionPermanent - character.corruption.permanent;
-
-  const damage_toughness = character.toughness.damage.value;
-  const remaining_toughness =
-    character.toughness.max.value - character.toughness.damage.value;
-
   const temporary_corruption = character.corruption.temporary;
   const clean_corruption = corruptionThreshold - temporary_corruption;
+
+  const maxToughness =
+    character.stats.strong.value < 10 ? 10 : character.stats.strong.value;
+  const damage_toughness = character.damage;
+  const remaining_toughness = maxToughness - character.damage;
 
   return (
     <Container src={CharacterPortraits[character.portrait]}>
@@ -219,7 +219,7 @@ function HealthBox() {
           }}
         >
           <RightValue>
-            {remaining_toughness} <p>{character.toughness.max.value}</p>
+            {remaining_toughness} <p>{maxToughness}</p>
           </RightValue>
           {Array.from({ length: remaining_toughness }).map((_, index) => {
             return (

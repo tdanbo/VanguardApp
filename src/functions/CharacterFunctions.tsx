@@ -173,13 +173,11 @@ export const getCharacterMovement = (character: CharacterEntry) => {
 
 export const onAddCorruption = (character: CharacterEntry, value: number) => {
   let character_corruption = { ...character.corruption };
+  const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
 
   for (let i = 0; i < value; i++) {
-    if (character_corruption.temporary === character_corruption.threshold) {
-      if (
-        character_corruption.permanent ===
-        character_corruption.threshold * 3
-      ) {
+    if (character_corruption.temporary === corruptionThreshold) {
+      if (character_corruption.permanent === corruptionThreshold * 3) {
         return character;
       }
       character_corruption.permanent += 1;
@@ -450,51 +448,47 @@ export function onUseAmmunition(character: CharacterEntry): {
 }
 
 export function onAddToughness(character: CharacterEntry) {
-  const character_toughness = character.toughness;
+  const characterClone = cloneDeep(character);
 
   const value_step = 1;
 
-  if (character_toughness.damage.value === 0) {
+  if (characterClone.damage === 0) {
     return character;
   } else {
-    character_toughness.damage.value -= value_step;
+    characterClone.damage -= value_step;
   }
 
-  const updatedCharacter = {
-    ...character,
-    toughness: character_toughness,
-  };
-
-  postSelectedCharacter(updatedCharacter);
-  return updatedCharacter;
+  postSelectedCharacter(characterClone);
+  return characterClone;
 }
 
 export function onSubToughness(character: CharacterEntry) {
-  const character_toughness = character.toughness;
+  const characterClone = cloneDeep(character);
+
+  const maxToughness =
+    characterClone.stats.strong.value < 10
+      ? 10
+      : characterClone.stats.strong.value;
 
   const value_step = 1;
 
-  if (character_toughness.damage.value === character_toughness.max.value) {
+  if (characterClone.damage === maxToughness) {
     return character;
   } else {
-    character_toughness.damage.value += value_step;
+    characterClone.damage += value_step;
   }
 
-  const updatedCharacter = {
-    ...character,
-    toughness: character_toughness,
-  };
-
-  postSelectedCharacter(updatedCharacter);
-  return updatedCharacter;
+  postSelectedCharacter(characterClone);
+  return characterClone;
 }
 
 export function onAddPermCorruption(character: CharacterEntry) {
   const character_corruption = character.corruption;
+  const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
 
   const value_step = 1;
 
-  if (character_corruption.permanent === character_corruption.threshold * 3) {
+  if (character_corruption.permanent === corruptionThreshold * 3) {
     return character;
   } else {
     character_corruption.permanent += value_step;
@@ -614,10 +608,7 @@ export function RestCharacter(character: CharacterEntry) {
 export async function postSelectedCharacter(updatedCharacter: CharacterEntry) {
   // selectedCharacter.inventory = inventory; THIS WILL UPDATE THE INVENTORY< BUT NOT PROC THE RE-RENDER
   axios
-    .put(
-      `${API}/api/characterlog/${updatedCharacter.details.name}`,
-      updatedCharacter,
-    )
+    .put(`${API}/api/characterlog/${updatedCharacter.name}`, updatedCharacter)
     .then((res) => console.log(res));
 }
 

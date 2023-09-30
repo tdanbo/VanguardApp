@@ -189,19 +189,15 @@ function CreateCharacterComponent({
   const { sendRequest } = useWebSocket();
 
   const NewCharacterEntry: CharacterEntry = {
+    name: characterName,
     id: session.id,
     portrait: characterPortrait,
     details: {
       movement: 0,
-      name: characterName,
       xp_earned: 50,
       modifier: 0,
     },
-    toughness: {
-      max: { value: 0, mod: 0 },
-      pain: { value: 0, mod: 0 },
-      damage: { value: 0, mod: 0 },
-    },
+    damage: 0,
     stats: {
       cunning: { value: stats[0].value, mod: 0 },
       discreet: { value: stats[1].value, mod: 0 },
@@ -221,7 +217,6 @@ function CreateCharacterComponent({
     corruption: {
       permanent: 0,
       temporary: 0,
-      threshold: 0,
     },
     abilities: [],
     inventory: [],

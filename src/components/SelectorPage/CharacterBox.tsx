@@ -75,10 +75,7 @@ function CharacterBox({ selectedCharacter, closeModal }: SessionBoxProps) {
   };
 
   const handleDeleteCharacter = async () => {
-    await deleteSessionCharacter(
-      selectedCharacter.details.name,
-      selectedCharacter.id,
-    );
+    await deleteSessionCharacter(selectedCharacter.name, selectedCharacter.id);
     sendRequest("characters");
   };
 
@@ -88,7 +85,7 @@ function CharacterBox({ selectedCharacter, closeModal }: SessionBoxProps) {
         onClick={handleOnClick}
         src={CharacterPortraits[selectedCharacter.portrait]}
       >
-        {selectedCharacter.details.name}
+        {selectedCharacter.name}
       </PortraitCenter>
       <RightControl onClick={handleDeleteCharacter}>
         <FontAwesomeIcon icon={faTrash} />

@@ -33,19 +33,15 @@ function CreateCharacterButtons({
   const { sendRequest } = useWebSocket();
 
   const NewCharacterEntry: CharacterEntry = {
+    name: character_name,
     id: session.id,
     portrait: portrait,
     details: {
       movement: 0,
-      name: character_name,
       xp_earned: 50,
       modifier: 0,
     },
-    toughness: {
-      max: { value: 0, mod: 0 },
-      pain: { value: 0, mod: 0 },
-      damage: { value: 0, mod: 0 },
-    },
+    damage: 0,
     stats: {
       accurate: { value: stats[0].value, mod: 0 },
       cunning: { value: stats[1].value, mod: 0 },
@@ -65,7 +61,6 @@ function CreateCharacterButtons({
     corruption: {
       permanent: 0,
       temporary: 0,
-      threshold: 0,
     },
     abilities: [],
     inventory: [],

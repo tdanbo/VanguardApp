@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import ActiveBox from "./ActiveBox";
 
-import { ActiveKey, AttackActive, DefenseActive, SimpleActive } from "../Types";
+import { AttackActive, DefenseActive, SimpleActive } from "../Types";
 import { UpdateActives } from "../functions/ActivesFunction";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";

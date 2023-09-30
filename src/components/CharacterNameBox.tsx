@@ -16,7 +16,7 @@ const Container = styled.div`
 
 function CharacterNameBox() {
   const { character } = useContext(CharacterContext);
-  return <Container>{character.details.name}</Container>;
+  return <Container>{character.name}</Container>;
 }
 
 export default CharacterNameBox;
