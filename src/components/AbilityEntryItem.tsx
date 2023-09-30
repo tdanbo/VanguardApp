@@ -290,16 +290,20 @@ function AbilityEntryItem({
     }
   };
 
-  const DeleteAbilitySlot = (id: string) => {
-    const updatedCharacter = onDeleteAbility({ id, character });
+  const DeleteAbilitySlot = (ability: AbilityEntry) => {
+    const updatedCharacter = onDeleteAbility({ ability, character });
     if (updatedCharacter) {
       setCharacter(updatedCharacter);
     }
   };
 
-  function handleLevelChange(id: string, level: string) {
+  function handleLevelChange(ability: AbilityEntry, level: string) {
     setAbilityLevel(level);
-    const updatedCharacter = onChangeAbilityLevel({ id, level, character });
+    const updatedCharacter = onChangeAbilityLevel({
+      ability,
+      level,
+      character,
+    });
     if (updatedCharacter) {
       setCharacter(updatedCharacter);
     }
@@ -435,7 +439,7 @@ function AbilityEntryItem({
             <LevelSelection
               type={ability.type}
               $active={["Novice", "Adept", "Master"].includes(ability.level)}
-              onClick={() => handleLevelChange(ability.id, "Novice")}
+              onClick={() => handleLevelChange(ability, "Novice")}
             >
               N
             </LevelSelection>
@@ -444,7 +448,7 @@ function AbilityEntryItem({
             <LevelSelection
               type={ability.type}
               $active={["Adept", "Master"].includes(ability.level)}
-              onClick={() => handleLevelChange(ability.id, "Adept")}
+              onClick={() => handleLevelChange(ability, "Adept")}
             >
               A
             </LevelSelection>
@@ -453,7 +457,7 @@ function AbilityEntryItem({
             <LevelSelection
               type={ability.type}
               $active={ability.level === "Master"}
-              onClick={() => handleLevelChange(ability.id, "Master")}
+              onClick={() => handleLevelChange(ability, "Master")}
             >
               M
             </LevelSelection>
@@ -463,7 +467,7 @@ function AbilityEntryItem({
         {browser ? (
           <AddButton onClick={AddAbilitySlot}>+</AddButton>
         ) : (
-          <AddButton onClick={() => DeleteAbilitySlot(ability.id)}>x</AddButton>
+          <AddButton onClick={() => DeleteAbilitySlot(ability)}>x</AddButton>
         )}
       </Container>
       <LevelContainer $expanded={expanded}>

@@ -12,7 +12,7 @@ import {
   EmptyArmor,
 } from "../Types";
 interface onDeleteProps {
-  id: string;
+  ability: AbilityEntry;
   character: CharacterEntry;
 }
 
@@ -63,17 +63,19 @@ export function onUpdateActive({
 }
 
 interface onChangeAbilityLevelProps {
-  id: string;
+  ability: AbilityEntry;
   level: string;
   character: CharacterEntry;
 }
 
 export function onChangeAbilityLevel({
-  id,
+  ability,
   level,
   character,
 }: onChangeAbilityLevelProps) {
   if (!character) return;
+
+  const id = ability.id;
 
   const updatedAbilities = character.abilities.map((ability) => {
     if (ability.id === id) {
@@ -86,26 +88,41 @@ export function onChangeAbilityLevel({
     }
   });
 
+  console.log(ability);
+
   const updatedCharacter = {
     ...character,
     abilities: updatedAbilities,
   };
 
-  postSelectedCharacter(updatedCharacter);
-  return updatedCharacter;
+  const updatedCharacterStats = ExceptionalStats({
+    character: updatedCharacter,
+    state: "change",
+    ability: ability,
+    level: level,
+    originalLevel: ability.level,
+  });
+
+  postSelectedCharacter(updatedCharacterStats);
+  return updatedCharacterStats;
 }
-export function onDeleteAbility({ id, character }: onDeleteProps) {
+export function onDeleteAbility({ ability, character }: onDeleteProps) {
   if (!character) return;
+
+  const ability_id = ability.id;
 
   const characterClone = cloneDeep(character);
 
   const updatedCharacterStats = ExceptionalStats({
     character: characterClone,
-    state: false,
+    state: "sub",
+    ability: ability,
+    level: ability.level,
+    originalLevel: ability.level,
   });
 
   const updatedAbilities = updatedCharacterStats.abilities.filter(
-    (item) => item.id !== id,
+    (item) => item.id !== ability_id,
   );
 
   const updatedCharacter = {
@@ -132,7 +149,10 @@ export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
 
   const updatedCharacterStats = ExceptionalStats({
     character: updatedCharacter,
-    state: true,
+    state: "add",
+    ability: abilityWithId,
+    level: abilityWithId.level,
+    originalLevel: ability.level,
   });
 
   postSelectedCharacter(updatedCharacterStats);
@@ -354,7 +374,12 @@ export function onEquipItem({ character, item, position }: EquipProps) {
   return updatedCharacter;
 }
 
-export function onDeleteItem({ id, character }: onDeleteProps) {
+interface onDeleteItemProps {
+  id: string;
+  character: CharacterEntry;
+}
+
+export function onDeleteItem({ id, character }: onDeleteItemProps) {
   if (!character) return;
 
   const updatedInventory = character.inventory.filter((item) => item.id !== id);

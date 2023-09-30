@@ -1,43 +1,69 @@
 import { cloneDeep } from "lodash";
-import { CharacterEntry, StatName } from "../../Types";
+import { CharacterEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 import { postSelectedCharacter } from "../CharacterFunctions";
 
+interface Ability {
+  name: string;
+  level: string; // Assuming level is a string like "master", "adept", etc.
+  // Add any other properties related to Ability if needed
+}
+
 interface ExceptionalStatsProps {
   character: CharacterEntry;
-  state: boolean;
+  state: string;
+  ability: Ability;
+  level: string;
+  originalLevel: string;
+}
+
+interface Ability {
+  name: string;
 }
 
 export function ExceptionalStats({
   character,
   state,
+  ability,
+  level,
+  originalLevel,
 }: ExceptionalStatsProps): CharacterEntry {
   const clonedStats = cloneDeep(character.stats);
 
-  const abilities = {
-    "exceptionally strong": "strong",
-    "exceptionally resolute": "resolute",
-    "exceptionally quick": "quick",
-    "exceptionally discreet": "discreet",
-    "exceptionally vigilant": "vigilant",
-    "exceptionally persuasive": "persuasive",
-    "exceptionally accurate": "accurate",
-    "exceptionally cunning": "cunning",
-  };
-  const levels = { master: 3, adept: 2, novice: 1 };
+  const levels = { Master: 3, Adept: 2, Novice: 1 };
+  let abilityValue = 0;
 
-  for (const [ability_name, attribute] of Object.entries(abilities)) {
-    for (const [level, value] of Object.entries(levels)) {
-      const haveAbility = CheckAbility(character, ability_name, level);
-      if (haveAbility) {
-        if (state) {
-          clonedStats[attribute as StatName].value += value;
-        } else {
-          clonedStats[attribute as StatName].value -= value;
-        }
-        break;
-      }
-    }
+  if (state === "add") {
+    abilityValue = levels[level as keyof typeof levels];
+  } else if (state === "sub") {
+    abilityValue = -levels[level as keyof typeof levels];
+  } else if (state === "change") {
+    abilityValue =
+      levels[level as keyof typeof levels] -
+      levels[originalLevel as keyof typeof levels];
+  } else {
+    throw new Error("Invalid state");
+  }
+
+  const applyValue = (statKey: keyof typeof clonedStats) => {
+    clonedStats[statKey].value += abilityValue;
+  };
+
+  const abilityMapping: Record<string, keyof typeof clonedStats> = {
+    "Exceptionally Strong": "strong",
+    "Exceptionally Resolute": "resolute",
+    "Exceptionally Quick": "quick",
+    "Exceptionally Discreet": "discreet",
+    "Exceptionally Vigilant": "vigilant",
+    "Exceptionally Persuasive": "persuasive",
+    "Exceptionally Accurate": "accurate",
+    "Exceptionally Cunning": "cunning",
+  };
+
+  if (abilityMapping[ability.name]) {
+    applyValue(abilityMapping[ability.name]);
+  } else {
+    console.warn(`Ability ${ability.name} not recognized.`);
   }
 
   const updatedCharacter: CharacterEntry = {
