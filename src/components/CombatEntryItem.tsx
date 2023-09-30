@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { UpperFirstLetter } from "../functions/UtilityFunctions";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { CharacterPortraits } from "../Images";
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
@@ -130,13 +131,23 @@ function CombatEntryItem({ combatEntry }: CombatEntryItemProps) {
     <Container src={CharacterPortraits[combatEntry.portrait]}>
       <ColorBlock $rgb={EntryColor()} $issuccess={combatEntry.success} />
       <ResultContainer>
-        <Result
-          title={title}
-          $rgb={EntryColor()}
-          $issuccess={combatEntry.success}
-        >
-          {combatEntry.result}
-        </Result>
+        {combatEntry.active === "Resting" ? (
+          <Result
+            title={title}
+            $rgb={EntryColor()}
+            $issuccess={combatEntry.success}
+          >
+            <FontAwesomeIcon icon={faMoon} />
+          </Result>
+        ) : (
+          <Result
+            title={title}
+            $rgb={EntryColor()}
+            $issuccess={combatEntry.success}
+          >
+            {combatEntry.result}
+          </Result>
+        )}
 
         {combatEntry.source === "Skill Test" ? (
           <Active $rgb={EntryColor()} $issuccess={combatEntry.success}>

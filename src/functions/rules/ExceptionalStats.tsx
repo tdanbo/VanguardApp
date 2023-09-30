@@ -1,6 +1,5 @@
 import { cloneDeep } from "lodash";
 import { CharacterEntry } from "../../Types";
-import { CheckAbility } from "../ActivesFunction";
 import { postSelectedCharacter } from "../CharacterFunctions";
 
 interface Ability {

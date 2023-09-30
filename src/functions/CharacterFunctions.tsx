@@ -4,8 +4,6 @@ import { API } from "../Constants";
 import { CharacterEntry } from "../Types";
 import { ExceptionalStats } from "./rules/ExceptionalStats";
 import { CheckAbility } from "./ActivesFunction";
-import { useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
 import {
   ItemEntry,
   AbilityEntry,
@@ -551,17 +549,14 @@ export function onUseAmmunition(character: CharacterEntry): {
 
 export function onAddToughness(character: CharacterEntry) {
   const characterClone = cloneDeep(character);
-
   const value_step = 1;
 
-  if (characterClone.damage === 0) {
-    return character;
-  } else {
+  if (characterClone.damage > 0) {
     characterClone.damage -= value_step;
+    console.log("onAddToughness POST");
+    postSelectedCharacter(characterClone);
   }
 
-  console.log("onAddToughness POST");
-  postSelectedCharacter(characterClone);
   return characterClone;
 }
 
@@ -669,19 +664,20 @@ export function onSubUnspentXp(character: CharacterEntry) {
 
 function RestFood(character: CharacterEntry) {
   const newRations = cloneDeep(character.rations);
-
   const hasFood = newRations.food > 0;
 
-  if (hasFood === true) {
+  if (hasFood) {
     newRations.food -= 1;
 
     const updatedCharacter = {
       ...character,
       rations: newRations,
     };
-    onAddToughness(updatedCharacter);
-    return updatedCharacter;
+
+    // Use the returned character from onAddToughness
+    return onAddToughness(updatedCharacter);
   }
+
   return character;
 }
 
@@ -705,6 +701,7 @@ function RestWater(character: CharacterEntry) {
 export function RestCharacter(character: CharacterEntry) {
   const food_character = RestFood(character);
   const water_character = RestWater(food_character);
+
   return water_character;
 }
 

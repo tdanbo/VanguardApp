@@ -21,7 +21,7 @@ interface RollDiceProps {
 }
 
 export function useRoll() {
-  const { character, setCharacter } = useContext(CharacterContext);
+  const { character } = useContext(CharacterContext);
   const { session } = useContext(SessionContext);
   const { sendRequest } = useWebSocket();
 

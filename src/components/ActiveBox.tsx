@@ -124,7 +124,7 @@ function ActiveBox({ active_name, active }: Props) {
       dice: 20,
       count: 1,
       modifier: modValue,
-      target: active.value,
+      target: Math.max(active.value + modValue, 1),
       source: "Skill Test",
       active: active_name,
       add_mod: false,
@@ -183,7 +183,7 @@ function ActiveBox({ active_name, active }: Props) {
   return (
     <Container>
       <Value onClick={handleActiveRoll} className="dice-icon-hover">
-        {active.value}
+        {Math.max(active.value + modValue, 1)}
         <ActiveValue> {active_name.toUpperCase()}</ActiveValue>
       </Value>
       <Row>

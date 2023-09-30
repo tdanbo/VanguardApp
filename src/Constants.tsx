@@ -30,7 +30,7 @@ export const WHITE = "#bfb6ac";
 export const BRIGHT_RED = "#923333";
 export const GREY = "#8f8e89";
 export const DARK = "#262223";
-
+export const NIGHT = "#336980";
 export const TYPE_COLORS: Record<ColorType, string> = {
   health: BRIGHT_RED,
   attack: BRIGHT_RED,
@@ -74,4 +74,5 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   lesser_artifact: BRIGHT_YELLOW,
   tool: GREEN,
   trait: GREEN,
+  resting: NIGHT,
 };
