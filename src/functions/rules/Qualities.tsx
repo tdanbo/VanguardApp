@@ -1,53 +1,28 @@
 export const Qualities: {
   [key: string]: { name: string; description: string };
 } = {
-  "Defense 0": {
-    name: "Defense 0",
+  "Impeding 0": {
+    name: "Impeding 0",
     description:
       "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
   },
-  "Defense -1": {
-    name: "Defense -1",
+  "Impeding 1": {
+    name: "Impeding 1",
     description:
       "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
   },
-  "Defense -2": {
-    name: "Defense -2",
+  "Impeding 2": {
+    name: "Impeding 2",
     description:
       "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
   },
-  "Defense -3": {
-    name: "Defense -3",
+  "Impeding 3": {
+    name: "Impeding 3",
     description:
       "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
   },
-  "Defense -4": {
-    name: "Defense -4",
-    description:
-      "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
-  },
-  "Casting 0": {
-    name: "Casting 0",
-    description:
-      "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
-  },
-  "Casting -1": {
-    name: "Casting -1",
-    description:
-      "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
-  },
-  "Casting -2": {
-    name: "Casting -2",
-    description:
-      "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
-  },
-  "Casting -3": {
-    name: "Casting -3",
-    description:
-      "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
-  },
-  "Casting -4": {
-    name: "Casting -4",
+  "Impeding 4": {
+    name: "Impeding 4",
     description:
       "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
   },

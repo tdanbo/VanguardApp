@@ -2,7 +2,6 @@ import axios from "axios";
 import { CombatEntry } from "../Types";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
-import { setBaseModifier } from "./CharacterFunctions";
 import { SessionContext } from "../contexts/SessionContext";
 import { useWebSocket } from "../contexts/WebSocketContext";
 import { API } from "../Constants";
@@ -49,9 +48,9 @@ export function useRoll() {
 
     const roll_result = total;
 
-    console.log("Roll Result: " + roll_result);
-    console.log("Modifier: " + modifier);
-    console.log("Target: " + target);
+    // console.log("Roll Result: " + roll_result);
+    // console.log("Modifier: " + modifier);
+    // console.log("Target: " + target);
 
     let success = true;
     if (target === 0) {
@@ -74,11 +73,8 @@ export function useRoll() {
       target: target,
     };
 
-    console.log("NewCombatEntry");
-    console.log(NewCombatEntry);
-
-    const updated_character = setBaseModifier(character, 0);
-    setCharacter(updated_character);
+    // const updated_character = setBaseModifier(character, 0);
+    // setCharacter(updated_character);
     await postCombatLog(NewCombatEntry);
     sendRequest("combatlog"); // asking websocket to update session combatlog for all clients
     return roll_result;
@@ -88,7 +84,6 @@ export function useRoll() {
 export async function postCombatLog(NewCombatEntry: CombatEntry) {
   try {
     const response = await axios.post(`${API}/api/combatlog/`, NewCombatEntry);
-    console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error posting combat log:", error);

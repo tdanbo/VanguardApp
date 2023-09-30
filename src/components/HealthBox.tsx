@@ -48,61 +48,57 @@ const Row = styled.div`
   border-radius: ${Constants.BORDER_RADIUS};
 `;
 
-const LeftValue = styled.button`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  flex-grow: 1;
-  justify-content: center;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  max-width: 50px;
-  min-width: 50px;
-  color: ${Constants.WIDGET_PRIMARY_FONT};
-  font-size: 1.25rem;
-  font-weight: bold;
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-top-right-radius: ${Constants.BORDER_RADIUS};
-  border-bottom-right-radius: ${Constants.BORDER_RADIUS};
-  p {
-    display: none;
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-top: -10px;
-    color: ${Constants.WIDGET_BACKGROUND};
-    letter-spacing: 1px;
-  }
-  &:hover p {
-      display: block;
-    }
-  }
-`;
+interface ValueBoxProps {
+  index: number;
+}
 
-const RightValue = styled.div`
+const ValueBox = styled.div<ValueBoxProps>`
   display: flex;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   flex-grow: 1;
   justify-content: center;
   background-color: ${Constants.WIDGET_BACKGROUND};
-  max-width: 50px;
-  min-width: 50px;
+  max-width: 60px;
+  min-width: 60px;
   color: ${Constants.WIDGET_PRIMARY_FONT};
-  font-size: 1.25rem;
-  font-weight: bold;
   border: 1px solid ${Constants.WIDGET_BORDER};
-  border-top-left-radius: ${Constants.BORDER_RADIUS};
-  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
-  p {
-    display: none;
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-top: -10px;
-    color: ${Constants.WIDGET_BACKGROUND};
-    letter-spacing: 1px;
+
+  border-top-right-radius: ${(props) =>
+    props.index === 1 ? Constants.BORDER_RADIUS : 0};
+  border-bottom-right-radius: ${(props) =>
+    props.index === 1 ? Constants.BORDER_RADIUS : 0};
+  border-top-left-radius: ${(props) =>
+    props.index === 0 ? Constants.BORDER_RADIUS : 0};
+  border-bottom-left-radius: ${(props) =>
+    props.index === 0 ? Constants.BORDER_RADIUS : 0};
+
+  h1,
+  h2 {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
-  &:hover p {
-      display: block;
-    }
+
+  h1 {
+    font-weight: bold;
+    font-size: 25px;
+  }
+
+  h2 {
+    display: none;
+    font-size: 18px;
+  }
+
+  &:hover h1 {
+    display: none;
+  }
+
+  &:hover h2 {
+    display: flex;
   }
 `;
 
@@ -128,6 +124,13 @@ const RightTickBar = styled.div<BgColor>`
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
 `;
 
+const Divider = styled.div`
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 2px;
+  height: 16px;
+  margin: 4px;
+`;
 function HealthBox() {
   const { character, setCharacter } = useContext(CharacterContext);
   const handleAddToughness = () => {
@@ -199,18 +202,22 @@ function HealthBox() {
               $bgcolor={Constants.TYPE_COLORS["casting"]}
             />
           ))}
-          <LeftValue
+          <ValueBox
+            index={1}
             onClick={handleAddCorruption}
             onContextMenu={(e) => {
               e.preventDefault();
               handleSubCorruption();
             }}
           >
-            {remaining_corruption}
-            <p>{maxCorruptionPermanent}</p>
-          </LeftValue>
+            <h1>{remaining_corruption}</h1>
+            <h2>
+              {remaining_corruption}
+              <Divider></Divider>
+              {maxCorruptionPermanent}
+            </h2>
+          </ValueBox>
         </Row>
-
         <Row
           onClick={handleSubToughness}
           onContextMenu={(e) => {
@@ -218,9 +225,14 @@ function HealthBox() {
             handleAddToughness();
           }}
         >
-          <RightValue>
-            {remaining_toughness} <p>{maxToughness}</p>
-          </RightValue>
+          <ValueBox index={0}>
+            <h1>{remaining_toughness}</h1>
+            <h2>
+              {remaining_toughness}
+              <Divider></Divider>
+              {maxToughness}
+            </h2>
+          </ValueBox>
           {Array.from({ length: remaining_toughness }).map((_, index) => {
             return (
               <RightTickBar

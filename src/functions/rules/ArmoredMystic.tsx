@@ -7,15 +7,17 @@ export function ArmoredMystic(character: CharacterEntry, actives: Actives) {
 
   if (abilityNovice) {
     const negativeQualities: { [key: string]: number } = {
-      "casting -1": 1,
-      "casting -2": 2,
-      "casting -3": 3,
-      "casting -4": 4,
+      "Impeding 1": 1,
+      "Impeding 2": 2,
+      "Impeding 3": 3,
+      "Impeding 4": 4,
     };
 
-    if (character.equipment.armor.type === "Medium Armor") {
+    if (
+      ["Medium Armor", "Light Armor"].includes(character.equipment.armor.type)
+    ) {
       character.equipment.armor.quality.forEach((quality: string) => {
-        const lowercasedQuality = quality.toLowerCase();
+        const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
           actives.casting.value += negativeQualities[lowercasedQuality];
         }
@@ -25,15 +27,15 @@ export function ArmoredMystic(character: CharacterEntry, actives: Actives) {
 
   if (abilityAdept) {
     const negativeQualities: { [key: string]: number } = {
-      "casting -1": 1,
-      "casting -2": 2,
-      "casting -3": 3,
-      "casting -4": 4,
+      "Impeding 1": 1,
+      "Impeding 2": 2,
+      "Impeding 3": 3,
+      "Impeding 4": 4,
     };
 
     if (character.equipment.armor.type === "Heavy Armor") {
       character.equipment.armor.quality.forEach((quality: string) => {
-        const lowercasedQuality = quality.toLowerCase();
+        const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
           actives.casting.value += negativeQualities[lowercasedQuality];
         }

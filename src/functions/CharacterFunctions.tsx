@@ -3,6 +3,9 @@ import cloneDeep from "lodash/cloneDeep";
 import { API } from "../Constants";
 import { CharacterEntry } from "../Types";
 import { ExceptionalStats } from "./rules/ExceptionalStats";
+import { CheckAbility } from "./ActivesFunction";
+import { useContext } from "react";
+import { CharacterContext } from "../contexts/CharacterContext";
 import {
   ItemEntry,
   AbilityEntry,
@@ -58,6 +61,7 @@ export function onUpdateActive({
   };
 
   updatedCharacter.actives[active] = stat as StatName;
+  console.log("Update Active Post");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -103,6 +107,7 @@ export function onChangeAbilityLevel({
     originalLevel: ability.level,
   });
 
+  console.log("On Change Ability Post");
   postSelectedCharacter(updatedCharacterStats);
   return updatedCharacterStats;
 }
@@ -130,6 +135,7 @@ export function onDeleteAbility({ ability, character }: onDeleteProps) {
     abilities: updatedAbilities,
   };
 
+  console.log("onDeleteAbility POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -154,7 +160,7 @@ export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
     level: abilityWithId.level,
     originalLevel: ability.level,
   });
-
+  console.log("onAddAbilityItem POST");
   postSelectedCharacter(updatedCharacterStats);
   return updatedCharacterStats;
 };
@@ -184,10 +190,27 @@ export const getCharacterMovement = (character: CharacterEntry) => {
     speed_modifier = movement[character.stats.quick.value];
   }
 
-  // const base_speed_sneaking = character.actives.sneaking.mod * 5;
+  let sneaking_mod = 0;
+  if (!CheckAbility(character, "Man-at-Arms", "adept")) {
+    const negativeQualities: { [key: string]: number } = {
+      "Impeding 1": -1,
+      "Impeding 2": -2,
+      "Impeding 3": -3,
+      "Impeding 4": -4,
+    };
+
+    character.equipment.armor.quality.forEach((quality: string) => {
+      const lowercasedQuality = quality;
+      console.log(quality);
+      if (lowercasedQuality in negativeQualities) {
+        sneaking_mod += negativeQualities[lowercasedQuality];
+      }
+    });
+  }
+
+  const base_speed_sneaking = sneaking_mod * 5;
   const base_speed = 40 + speed_modifier;
-  // const calculated_speed = base_speed + base_speed_sneaking;
-  const calculated_speed = base_speed;
+  const calculated_speed = base_speed + base_speed_sneaking;
   return calculated_speed;
 };
 
@@ -210,7 +233,7 @@ export const onAddCorruption = (character: CharacterEntry, value: number) => {
     ...character,
     corruption: character_corruption,
   };
-
+  console.log("onAddCorruption POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 };
@@ -228,6 +251,7 @@ export const onSubCorruption = (character: CharacterEntry, value: number) => {
     ...character,
     corruption: character_corruption,
   };
+  console.log("onSubCorruption POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 };
@@ -241,6 +265,7 @@ export const onResetCorruption = (character: CharacterEntry) => {
     ...character,
     corruption: character_corruption,
   };
+  console.log("onResetCorruption POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 };
@@ -272,7 +297,7 @@ export const setBaseModifier = (character: CharacterEntry, value: number) => {
     ...character,
     details: character_details,
   };
-
+  console.log("setBaseModifier POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 };
@@ -297,7 +322,7 @@ export const onAddInventoryItem = ({
       ...character,
       inventory: newUpdatedInventory,
     };
-
+    console.log("onAddInventoryItem POST");
     postSelectedCharacter(updatedCharacter);
     return updatedCharacter;
   }
@@ -332,7 +357,7 @@ export function onUnequipItem({ character, position }: UnEquipProps) {
     ...character,
     equipment: newEquipment,
   };
-
+  console.log("onUnequipItem POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -369,7 +394,7 @@ export function onEquipItem({ character, item, position }: EquipProps) {
     ...character,
     equipment: equipment,
   };
-
+  console.log("onEquipItem POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -409,7 +434,7 @@ export function onDeleteItem({ id, character }: onDeleteItemProps) {
     inventory: updatedInventory,
     equipment: updatedEquipment, // update the equipment of the character
   };
-
+  console.log("onDeleteItem POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -425,7 +450,9 @@ export function onChangeQuantity({
   count,
   character,
 }: onChangeQuantityProps) {
-  const inventory = character.inventory;
+  const characterClone = cloneDeep(character);
+  const inventory = characterClone.inventory;
+  const equipment = characterClone.equipment;
 
   inventory.forEach((item) => {
     if (item.id === id) {
@@ -433,42 +460,92 @@ export function onChangeQuantity({
     }
   });
 
+  if (equipment.main.id === id) {
+    equipment.main.quantity.count = count;
+  } else if (equipment.off.id === id) {
+    equipment.off.quantity.count = count;
+  } else if (equipment.armor.id === id) {
+    equipment.armor.quantity.count = count;
+  }
+
   const updatedCharacter = {
-    ...character,
+    ...characterClone,
     inventory: inventory,
   };
-
+  console.log("onChangeQuantity POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
+
+type Quantity = {
+  count: number;
+};
+
+type EquipmentItem = {
+  id: string;
+  category: string;
+  quantity: Quantity;
+};
 
 export function onUseAmmunition(character: CharacterEntry): {
   updatedCharacter: CharacterEntry;
   hasAmmunition: boolean;
 } {
-  const main = character.equipment.main;
-  const off = character.equipment.off;
+  console.log("onUseAmmunition");
 
-  const equipment = [main, off];
+  let usedAmmunitionId = "";
 
-  const hasAmmunition = equipment.some(
+  const { main, off, armor } = character.equipment;
+
+  const slots: EquipmentItem[] = [main, off];
+
+  const hasAmmunition = slots.some(
     (item) => item.category === "ammunition" && item.quantity.count > 0,
   );
 
-  const updatedInventory = equipment.map((item) => {
+  console.log("Has Ammunition: ", hasAmmunition); // Log whether ammunition exists
+
+  const updatedEquipmentSlots = slots.map((item) => {
     if (item.category === "ammunition" && item.quantity.count > 0) {
-      item.quantity.count -= 1;
+      console.log("Identified Ammunition:", item); // Log identified ammunition item
+      usedAmmunitionId = item.id;
+      const updatedItem = {
+        ...item,
+        quantity: {
+          ...item.quantity,
+          count: item.quantity.count - 1,
+        },
+      };
+      console.log("Updated Ammunition:", updatedItem); // Log updated ammunition item
+      return updatedItem;
     }
     return item;
   });
 
-  const updatedCharacter = {
+  const updatedInventory = character.inventory.map((item) =>
+    item.id === usedAmmunitionId
+      ? {
+          ...item,
+          quantity: {
+            ...item.quantity,
+            count: item.quantity.count - 1,
+          },
+        }
+      : item,
+  );
+
+  const updatedCharacter: CharacterEntry = {
     ...character,
+    equipment: {
+      main: updatedEquipmentSlots[0] as ItemEntry,
+      off: updatedEquipmentSlots[1] as ItemEntry,
+      armor: armor,
+    },
     inventory: updatedInventory,
   };
 
+  console.log("onUseAmmunition POST");
   postSelectedCharacter(updatedCharacter);
-
   return { updatedCharacter, hasAmmunition };
 }
 
@@ -483,6 +560,7 @@ export function onAddToughness(character: CharacterEntry) {
     characterClone.damage -= value_step;
   }
 
+  console.log("onAddToughness POST");
   postSelectedCharacter(characterClone);
   return characterClone;
 }
@@ -502,7 +580,7 @@ export function onSubToughness(character: CharacterEntry) {
   } else {
     characterClone.damage += value_step;
   }
-
+  console.log("onSubToughness POST");
   postSelectedCharacter(characterClone);
   return characterClone;
 }
@@ -523,7 +601,7 @@ export function onAddPermCorruption(character: CharacterEntry) {
     ...character,
     corruption: character_corruption,
   };
-
+  console.log("onAddPermCorruption POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -543,7 +621,7 @@ export function onSubPermCorruption(character: CharacterEntry) {
     ...character,
     corruption: character_corruption,
   };
-
+  console.log("onSubPermCorruption POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -561,7 +639,7 @@ export function onAddUnspentXp(character: CharacterEntry) {
       xp_earned: character_xp_earned,
     },
   };
-
+  console.log("onAddUnspentXp POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -584,7 +662,7 @@ export function onSubUnspentXp(character: CharacterEntry) {
       xp_earned: character.details.xp_earned,
     },
   };
-
+  console.log("onSubUnspentXp POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -631,15 +709,21 @@ export function RestCharacter(character: CharacterEntry) {
 }
 
 export async function postSelectedCharacter(updatedCharacter: CharacterEntry) {
-  // selectedCharacter.inventory = inventory; THIS WILL UPDATE THE INVENTORY< BUT NOT PROC THE RE-RENDER
-  axios
-    .put(`${API}/api/characterlog/${updatedCharacter.name}`, updatedCharacter)
-    .then((res) => console.log(res));
+  try {
+    const res = await axios.put(
+      `${API}/api/characterlog/${updatedCharacter.name}`,
+      updatedCharacter,
+    );
+    console.log(res);
+    // Assuming res.data contains the updated character
+  } catch (error) {
+    console.error("Error updating character:", error);
+  }
 }
 
 export async function addNewCharacter(NewCharacterEntry: CharacterEntry) {
   return axios
-    .post(`${API}/api/characterlog/`, NewCharacterEntry)
+    .post(`${API}/api/characterlog`, NewCharacterEntry)
     .then((res) => {
       return res;
     });
@@ -665,7 +749,7 @@ export function swapActives(
     ...character,
     actives: characterActives,
   };
-
+  console.log("swapActives POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -681,7 +765,7 @@ export function UpdateResources(
   newCharacter.rations.food = food;
   newCharacter.rations.water = water;
   newCharacter.money = money;
-
+  console.log("UpdateResources POST");
   postSelectedCharacter(newCharacter);
   return newCharacter;
 }

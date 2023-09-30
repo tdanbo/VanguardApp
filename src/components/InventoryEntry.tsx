@@ -1,10 +1,10 @@
 import * as Constants from "../Constants";
 import { Qualities } from "../functions/rules/Qualities";
 import { ItemEntry } from "../Types";
-import Quantity from "./Modals/Quantity";
 import { useContext } from "react";
 import { useRoll } from "../functions/CombatFunctions";
 import { CharacterContext } from "../contexts/CharacterContext";
+import { onChangeQuantity } from "../functions/CharacterFunctions";
 import {
   onDeleteItem,
   onEquipItem,
@@ -182,6 +182,20 @@ const NoEquipBox = styled.div<NoEquipButtonProps>`
   justify-content: center;
 `;
 
+const QuantityBox = styled.button<RollBoxProps>`
+  display: flex;
+  flex-grow: 1;
+  color: ${(props) => props.color};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  margin-left: 2px;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  width: 40px;
+`;
+
 function InventoryEntry({
   item,
   browser,
@@ -269,6 +283,26 @@ function InventoryEntry({
     }
   };
 
+  const handlePlusClick = () => {
+    const newQuantity = item.quantity.count + 1;
+    const updatedCharacter = onChangeQuantity({
+      id: item.id,
+      count: newQuantity,
+      character,
+    });
+    setCharacter(updatedCharacter);
+  };
+
+  const handleMinusClick = () => {
+    const newQuantity = item.quantity.count - 1;
+    const updatedCharacter = onChangeQuantity({
+      id: item.id,
+      count: newQuantity,
+      character,
+    });
+    setCharacter(updatedCharacter);
+  };
+
   return (
     <Container>
       <EquipContainer>
@@ -327,7 +361,7 @@ function InventoryEntry({
 
       <QualityContainer>
         {item.quality.map((quality, index) => {
-          let description;
+          let description = "";
 
           if (quality === "Effect") {
             description = item.description;
@@ -338,8 +372,10 @@ function InventoryEntry({
             return null; // Skip rendering this item if the quality is missing
           }
 
+          const titleContent = `${quality}\n\n${description}`;
+
           return (
-            <QualityBox key={index} title={description}>
+            <QualityBox key={index} title={titleContent}>
               {quality.slice(0, 2)}
             </QualityBox>
           );
@@ -356,7 +392,19 @@ function InventoryEntry({
             {item.roll.mod > 0 ? `+${item.roll.mod}` : null}
           </RollBox>
         )}
-        {item.quantity.bulk === true && <Quantity item={item} />}
+        {item.quantity.bulk === true && (
+          <QuantityBox
+            color={COLOR}
+            onClick={handleMinusClick}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              handlePlusClick();
+            }}
+            className="mouse-icon-hover"
+          >
+            {item.quantity.count}x
+          </QuantityBox>
+        )}
       </RollContainer>
       {
         browser ? (

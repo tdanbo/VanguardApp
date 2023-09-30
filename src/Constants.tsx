@@ -46,7 +46,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   ritual: PURPLE,
   elixirs: PURPLE,
   sneaking: GREEN,
-  ammunition: RED,
+  ammunition: BRIGHT_RED,
   monsterous_trait: GREEN,
   test: YELLOW,
   skill_test: YELLOW,

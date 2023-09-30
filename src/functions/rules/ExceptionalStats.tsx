@@ -70,7 +70,7 @@ export function ExceptionalStats({
     ...character,
     stats: clonedStats,
   };
-
+  console.log("ExceptionalStats POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }

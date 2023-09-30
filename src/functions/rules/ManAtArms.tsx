@@ -11,14 +11,15 @@ export function ManAtArms(character: CharacterEntry, actives: Actives) {
 
   if (abilityAdept) {
     const negativeQualities: { [key: string]: number } = {
-      "defense -1": 1,
-      "defense -2": 2,
-      "defense -3": 3,
-      "defense -4": 4,
+      "Impeding 1": 1,
+      "Impeding 2": 2,
+      "Impeding 3": 3,
+      "Impeding 4": 4,
     };
 
     character.equipment.armor.quality.forEach((quality: string) => {
-      const lowercasedQuality = quality.toLowerCase();
+      const lowercasedQuality = quality;
+      console.log(quality);
       if (lowercasedQuality in negativeQualities) {
         actives.defense.value += negativeQualities[lowercasedQuality];
         actives.sneaking.value += negativeQualities[lowercasedQuality];

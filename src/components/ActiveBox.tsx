@@ -150,13 +150,20 @@ function ActiveBox({ active_name, active }: Props) {
 
   const handleRangeRoll = (
     dice: number,
-
     dice_name: string,
     dice_mod: number,
     damage_armor: string,
   ) => {
     const { updatedCharacter, hasAmmunition } = onUseAmmunition(character);
+    console.log("Ranged Attack Updated Character");
+    console.log(updatedCharacter);
+
     setCharacter(updatedCharacter);
+
+    console.log("Ranged Attack");
+    console.log(hasAmmunition);
+    console.log(updatedCharacter);
+
     if (!hasAmmunition) {
       // handle case when onUseAmmunition is false
       return;
@@ -194,7 +201,16 @@ function ActiveBox({ active_name, active }: Props) {
           <>
             <Dice
               onClick={() => {
-                active.dice1_name === "Ranged Weapon"
+                [
+                  "Bow",
+                  "Crossbow",
+                  "Small Crossbow",
+                  "Repeating Crossbow",
+                  "Longbow",
+                  "Horsema's Longbow",
+                  "Composite Bow",
+                  "Arbalest",
+                ].includes(active.dice1_name)
                   ? handleRangeRoll(
                       active.dice1,
                       active.dice1_name,
@@ -217,7 +233,16 @@ function ActiveBox({ active_name, active }: Props) {
             {active.dice2_name !== "Knuckles" && (
               <Dice
                 onClick={() => {
-                  active.dice2_name === "Ranged Weapon"
+                  [
+                    "Bow",
+                    "Crossbow",
+                    "Small Crossbow",
+                    "Repeating Crossbow",
+                    "Longbow",
+                    "Horsema's Longbow",
+                    "Composite Bow",
+                    "Arbalest",
+                  ].includes(active.dice2_name)
                     ? handleRangeRoll(
                         active.dice2,
                         active.dice2_name,

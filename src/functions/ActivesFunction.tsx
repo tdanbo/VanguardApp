@@ -65,14 +65,10 @@ const UpdateQualities = (character: CharacterEntry) => {
   ];
 
   const qualityModifiers = {
-    "Defense -1": { sneaking: -1, defense: -1 },
-    "Defense -2": { sneaking: -2, defense: -2 },
-    "Defense -3": { sneaking: -3, defense: -3 },
-    "Defense -4": { sneaking: -4, defense: -4 },
-    "Casting -1": { casting: -1 },
-    "Casting -2": { casting: -2 },
-    "Casting -3": { casting: -3 },
-    "Casting -4": { casting: -4 },
+    "Impeding 1": { sneaking: -1, defense: -1, casting: -1 },
+    "Impeding 2": { sneaking: -2, defense: -2, casting: -2 },
+    "Impeding 3": { sneaking: -3, defense: -3, casting: -3 },
+    "Impeding 4": { sneaking: -4, defense: -4, casting: -4 },
     "Balanced 1": { defense: 1 },
     "Balanced 2": { defense: 2 },
     "Balanced 3": { defense: 3 },
