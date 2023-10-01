@@ -57,3 +57,8 @@ body {
 .dice-icon-hover:hover {
   cursor: url("/src/assets/icons/dice6.png"), auto;
 } */
+
+.button-hover:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.15);
+}

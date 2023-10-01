@@ -43,8 +43,8 @@ const Navigator = styled.div`
     color: ${Constants.WIDGET_PRIMARY_FONT};
     border: 1px solid ${Constants.WIDGET_BORDER};
   }
-  height: 50px;
-  max-height: 50px;
+  height: 35px;
+  width: 50px;
 `;
 
 function SelectorComponent() {

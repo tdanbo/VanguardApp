@@ -33,7 +33,7 @@ const BronzeColor = "rgba(140, 110, 90, 0.7)";
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
-  border-radius: 100px;
+
   height: 35px;
   gap: 20px;
   justify-content: right;
@@ -43,7 +43,7 @@ const CurrencyContainer = styled.button`
   display: flex;
   flex: 1;
   flex-grow: 1;
-  border-radius: 100px;
+  border-radius: ${Constants.BORDER_RADIUS};
   justify-content: center;
   align-items: center;
   font-size: 1.25em;
@@ -55,35 +55,34 @@ const CurrencyContainer = styled.button`
 
 const IconFContainer = styled.div`
   display: flex;
-  margin-left: 5px;
   font-size: 25px;
   color: ${OrangeColor};
 `;
 
 const IconWContainer = styled.div`
   display: flex;
-  margin-left: 5px;
+
   font-size: 25px;
   color: ${BlueColor};
 `;
 
 const IconTContainer = styled.div`
   display: flex;
-  margin-left: 5px;
+
   font-size: 25px;
   color: ${GoldColor};
 `;
 
 const IconSContainer = styled.div`
   display: flex;
-  margin-left: 5px;
+
   font-size: 25px;
   color: ${SilverColor};
 `;
 
 const IconOContainer = styled.div`
   display: flex;
-  margin-left: 5px;
+
   font-size: 25px;
   color: ${BronzeColor};
 `;
@@ -311,6 +310,7 @@ function ResourceChanger({
       </IconButton>
       <ResultBox>{ConvertCurrency(value, mode)}</ResultBox>
       <MinusButton
+        className="button-hover"
         $activated={minusState}
         onClick={() => changeClickState("sub")}
       >
@@ -318,6 +318,7 @@ function ResourceChanger({
       </MinusButton>
       <ValueInput value={inputValue} onChange={handleInputChange}></ValueInput>
       <PlusButton
+        className="button-hover"
         $activated={plusState}
         onClick={() => changeClickState("add")}
       >
@@ -367,31 +368,31 @@ function ResourcesBox() {
   return (
     <>
       <Container onClick={handleOpen}>
-        <CurrencyContainer>
+        <CurrencyContainer className="button-hover">
           <IconFContainer>
             <FontAwesomeIcon icon={faCarrot} />
           </IconFContainer>
           <TextContainer>{character.rations.food}</TextContainer>
         </CurrencyContainer>
-        <CurrencyContainer>
+        <CurrencyContainer className="button-hover">
           <IconWContainer>
             <FontAwesomeIcon icon={faDroplet} />
           </IconWContainer>
           <TextContainer>{character.rations.water}</TextContainer>
         </CurrencyContainer>
-        <CurrencyContainer>
+        <CurrencyContainer className="button-hover">
           <IconTContainer>
             <FontAwesomeIcon icon={faCircle} />
           </IconTContainer>
           <TextContainer>{thaler}</TextContainer>
         </CurrencyContainer>
-        <CurrencyContainer>
+        <CurrencyContainer className="button-hover">
           <IconSContainer>
             <FontAwesomeIcon icon={faCircle} />
           </IconSContainer>
           <TextContainer>{shillings}</TextContainer>
         </CurrencyContainer>
-        <CurrencyContainer>
+        <CurrencyContainer className="button-hover">
           <IconOContainer>
             <FontAwesomeIcon icon={faCircle} />
           </IconOContainer>

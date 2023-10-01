@@ -5,10 +5,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-
   justify-content: flex-end;
-  max-width: 50%;
   gap: 10px;
+  width: 100%;
 `;
 
 function DiceSection() {

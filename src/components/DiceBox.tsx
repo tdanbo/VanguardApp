@@ -18,7 +18,8 @@ const DiceContainer = styled.button`
   background-color: ${Constants.WIDGET_BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
   color: ${Constants.WIDGET_PRIMARY_FONT};
-  max-width: 100px;
+  height: 35px;
+  max-width: 49px;
 `;
 
 function DiceBox({ type_name }: Props) {
@@ -36,7 +37,11 @@ function DiceBox({ type_name }: Props) {
     });
   };
 
-  return <DiceContainer onClick={RollDice}>d{type_name}</DiceContainer>;
+  return (
+    <DiceContainer className="button-hover" onClick={RollDice}>
+      d{type_name}
+    </DiceContainer>
+  );
 }
 
 export default DiceBox;

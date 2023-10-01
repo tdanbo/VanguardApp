@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const MainContainer = styled.div`
   display: flex;
-  width: 20%;
+  min-width: 20%;
   flex-direction: column;
   justify-content: center;
   margin: 100px;
@@ -17,7 +17,7 @@ export const Title = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  font-size: 2.25rem;
+  font-size: 2rem;
   font-weight: bold;
   color: ${Constants.WIDGET_PRIMARY_FONT};
   border-top: 1px solid ${Constants.WIDGET_BORDER};
@@ -37,7 +37,7 @@ export const ModalContainer = styled.div`
   background-color: ${Constants.BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-  width: 100%;
+
   max-height: 500px;
   margin-bottom: 10px;
   overflow: auto;

@@ -412,6 +412,7 @@ function AbilityEntryItem({
     <BaseContainer>
       <Container>
         <ExpandButten
+          className={"button-hover"}
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >
           {expanded ? "-" : "+"}
@@ -437,6 +438,7 @@ function AbilityEntryItem({
         <LevelSelectionContainer>
           {ability.novice.description !== "" && (
             <LevelSelection
+              className={"button-hover"}
               type={ability.type}
               $active={["Novice", "Adept", "Master"].includes(ability.level)}
               onClick={() => handleLevelChange(ability, "Novice")}
@@ -446,6 +448,7 @@ function AbilityEntryItem({
           )}
           {ability.adept.description !== "" && (
             <LevelSelection
+              className={"button-hover"}
               type={ability.type}
               $active={["Adept", "Master"].includes(ability.level)}
               onClick={() => handleLevelChange(ability, "Adept")}
@@ -455,6 +458,7 @@ function AbilityEntryItem({
           )}
           {ability.master.description !== "" && (
             <LevelSelection
+              className={"button-hover"}
               type={ability.type}
               $active={ability.level === "Master"}
               onClick={() => handleLevelChange(ability, "Master")}
@@ -465,9 +469,16 @@ function AbilityEntryItem({
         </LevelSelectionContainer>
 
         {browser ? (
-          <AddButton onClick={AddAbilitySlot}>+</AddButton>
+          <AddButton className={"button-hover"} onClick={AddAbilitySlot}>
+            +
+          </AddButton>
         ) : (
-          <AddButton onClick={() => DeleteAbilitySlot(ability)}>x</AddButton>
+          <AddButton
+            className={"button-hover"}
+            onClick={() => DeleteAbilitySlot(ability)}
+          >
+            x
+          </AddButton>
         )}
       </Container>
       <LevelContainer $expanded={expanded}>

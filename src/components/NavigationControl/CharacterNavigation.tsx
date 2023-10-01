@@ -6,7 +6,7 @@ import SelectorComponent from "../SelectorPage/Selector";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+
   gap: 10px;
 `;
 
@@ -37,7 +37,7 @@ const Navigator = styled.button<NavigatorProps>`
     border: 1px solid ${Constants.WIDGET_BORDER};
   }
   width: 50px;
-  height: 50px;
+  height: 35px;
 `;
 
 interface NavigationProps {

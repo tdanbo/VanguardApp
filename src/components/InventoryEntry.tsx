@@ -309,6 +309,7 @@ function InventoryEntry({
         {item.equip === "1H" && (
           <>
             <EquipButton
+              className={"button-hover"}
               color={COLOR}
               index={0}
               key={"MH"}
@@ -318,6 +319,7 @@ function InventoryEntry({
               $isequipped={isItemEquipped(item, "MH")}
             />
             <EquipButton
+              className={"button-hover"}
               color={COLOR}
               index={1}
               key={"OH"}
@@ -330,6 +332,7 @@ function InventoryEntry({
         )}
         {item.equip === "2H" && (
           <EquipButton
+            className={"button-hover"}
             color={COLOR}
             index={2}
             key={"2H"}
@@ -341,6 +344,7 @@ function InventoryEntry({
         )}
         {item.equip === "AR" && (
           <EquipButton
+            className={"button-hover"}
             color={COLOR}
             index={2}
             key={"AR"}
@@ -408,11 +412,17 @@ function InventoryEntry({
       </RollContainer>
       {
         browser ? (
-          <AddButton onClick={() => AddInventorySlot()}>
+          <AddButton
+            className={"button-hover"}
+            onClick={() => AddInventorySlot()}
+          >
             <FontAwesomeIcon icon={faPlus} />
           </AddButton>
         ) : equipped === "" ? (
-          <AddButton onClick={() => DeleteInventorySlot(id)}>
+          <AddButton
+            className={"button-hover"}
+            onClick={() => DeleteInventorySlot(id)}
+          >
             <FontAwesomeIcon icon={faXmark} />
           </AddButton> // else part for equipped
         ) : (

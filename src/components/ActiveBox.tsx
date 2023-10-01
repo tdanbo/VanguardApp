@@ -182,7 +182,10 @@ function ActiveBox({ active_name, active }: Props) {
 
   return (
     <Container>
-      <Value onClick={handleActiveRoll} className="dice-icon-hover">
+      <Value
+        onClick={handleActiveRoll}
+        className="dice-icon-hover button-hover"
+      >
         {Math.max(active.value + modValue, 1)}
         <ActiveValue> {active_name.toUpperCase()}</ActiveValue>
       </Value>
@@ -193,13 +196,14 @@ function ActiveBox({ active_name, active }: Props) {
             e.preventDefault();
             handleAddValue();
           }}
-          className="mouse-icon-hover"
+          className="mouse-icon-hover button-hover"
         >
           {modValue}
         </Modifier>
         {isAttackActive(active) ? (
           <>
             <Dice
+              className="button-hover"
               onClick={() => {
                 [
                   "Bow",
@@ -232,6 +236,7 @@ function ActiveBox({ active_name, active }: Props) {
 
             {active.dice2_name !== "Knuckles" && (
               <Dice
+                className="button-hover"
                 onClick={() => {
                   [
                     "Bow",
@@ -265,6 +270,7 @@ function ActiveBox({ active_name, active }: Props) {
           </>
         ) : isDefenseActive(active) ? (
           <Dice
+            className="button-hover"
             onClick={() => {
               handleDiceRoll(
                 active.dice,

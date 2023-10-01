@@ -25,8 +25,7 @@ const Container = styled.div`
   flex: 1;
   flex-direction: row;
   gap: ${Constants.WIDGET_GAB};
-  height: 35px;
-  max-height: 35px;
+  min-height: 35px;
 `;
 
 const ActiveButton = styled.button`
@@ -153,19 +152,25 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
   return (
     <Container>
       {modifier !== 0 ? (
-        <ModifierButton>
+        <ModifierButton className="button-hover">
           {modifier > 0 ? `+${modifier}` : modifier}
         </ModifierButton>
       ) : (
-        <ActiveButton className="active_button" onClick={handleActiveClick}>
+        <ActiveButton
+          className="active_button button-hover"
+          onClick={handleActiveClick}
+        >
           {icon(active)}
         </ActiveButton>
       )}
-      <ValueName className="dice-icon-hover" onClick={handleSkillRoll}>
+      <ValueName
+        className="dice-icon-hover button-hover"
+        onClick={handleSkillRoll}
+      >
         {type_name}
       </ValueName>
       <ValueButton
-        className="mouse-icon-hover"
+        className="mouse-icon-hover button-hover"
         onClick={subModifier}
         onContextMenu={(e) => {
           e.preventDefault();

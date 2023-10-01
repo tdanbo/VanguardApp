@@ -8,11 +8,15 @@ import { useState, useEffect, useContext, RefObject } from "react";
 import styled from "styled-components";
 const Container = styled.div`
   display: flex;
-  flex-direction: column-reverse;
+
   flex-grow: 1;
+
+  flex-direction: column-reverse;
   align-items: flex-end;
-  justify-content: flex-start;
+  justify-content: flex-end;
+
   gap: 10px;
+  width: 100%;
 `;
 
 interface CombatSectionProps {

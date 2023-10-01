@@ -10,6 +10,7 @@ import {
   onSubUnspentXp,
 } from "../functions/CharacterFunctions";
 const Container = styled.div`
+  margin-right: 20px;
   cursor: pointer;
   display: flex;
   flex: 1;

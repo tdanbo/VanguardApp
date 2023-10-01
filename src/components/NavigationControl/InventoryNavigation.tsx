@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBriefcase, faBolt } from "@fortawesome/free-solid-svg-icons";
+import { faBolt } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
 import RestBox from "../RestBox";
 import OverburdenBox from "../OverburdenBox";
@@ -9,7 +9,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  flex-grow: 1;
 `;
 
 interface NavigatorProps {
@@ -17,6 +16,7 @@ interface NavigatorProps {
 }
 
 const Navigator = styled.button<NavigatorProps>`
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,7 +39,7 @@ const Navigator = styled.button<NavigatorProps>`
     border: 1px solid ${Constants.WIDGET_BORDER};
   }
   width: 50px;
-  height: 50px;
+  height: 35px;
 `;
 
 const Spacer = styled.div`
@@ -68,7 +68,6 @@ function InventoryNavigation({
     <Container>
       {inventoryState === 1 ? (
         <Navigator $active={inventoryState === 1} onClick={onHandleItems}>
-          <FontAwesomeIcon icon={faBriefcase} />
           <OverburdenBox />
         </Navigator>
       ) : (

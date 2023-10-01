@@ -16,7 +16,7 @@ import EquipmentBrowser from "./components/Modals/EquipmentBrowser";
 import CharacterNavigation from "./components/NavigationControl/CharacterNavigation";
 import InventoryNavigation from "./components/NavigationControl/InventoryNavigation";
 import ActiveControls from "./components/ActiveControls";
-
+import EmptyNavigation from "./components/NavigationControl/EmptyNavigation";
 import ResourcesBox from "./components/ResourcesBox";
 import XpBox from "./components/XpBox";
 
@@ -42,7 +42,7 @@ const HeaderContainer = styled.div`
   flex-direction: row;
   min-height: 50px;
   margin-left: 20px;
-  margin-right: 20px;
+
   margin-top: 5px;
   gap: 20px;
 `;
@@ -76,34 +76,33 @@ const Column = styled.div`
   height: 100%;
 `;
 
-const ColumnNarrow = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: ${Constants.BACKGROUND};
-  height: 100%;
-  width: 50px;
-`;
-
 const StatsContainer = styled.div`
   display: flex;
   margin: 20px;
   gap: 20px;
-  height: 30%;
 `;
 
 const HealthContainer = styled.div`
   display: flex;
   margin: 20px;
   gap: 20px;
-  height: 10%;
 `;
 
 const InventoryContainer = styled.div`
   display: flex;
   flex-direction: row;
+
   margin: 20px;
   gap: 20px;
-  height: 60%;
+
+  overflow: scroll;
+  scrollbar-width: none !important;
+`;
+
+const ScrollContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
   overflow: scroll;
   scrollbar-width: none !important;
 `;
@@ -119,35 +118,12 @@ const CombatContainer = styled.div`
   scrollbar-width: none !important;
 `;
 
-const NavigationTop = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 75px;
-  margin-bottom: 20px;
-  height: 30%;
-`;
-
-const NavigationMid = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  height: 10%;
-`;
-
-const NavigationBot = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-  margin-bottom: 75px;
-  height: 60%;
-`;
-
 const BrowserContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 20px;
+  margin-top: 20px;
   margin-bottom: 20px;
+  margin-left: 20px;
   gap: 20px;
   height: 100%;
   overflow: scroll;
@@ -195,39 +171,37 @@ function App() {
                 </BrowserContainer>
                 <FooterContainer></FooterContainer>
               </Column>
-              <ColumnNarrow>
-                <NavigationTop>
-                  <CharacterNavigation
-                    browserState={browserState}
-                    setBrowserState={setBrowserState}
-                  />
-                </NavigationTop>
-                <NavigationMid></NavigationMid>
-                <NavigationBot>
-                  <InventoryNavigation
-                    inventoryState={inventoryState}
-                    setInventoryState={setInventoryState}
-                  />
-                </NavigationBot>
-              </ColumnNarrow>
               <Column>
                 <HeaderContainer>
+                  <EmptyNavigation />
                   <CharacterNameBox />
                   <XpBox />
                 </HeaderContainer>
                 <StatsContainer>
+                  <CharacterNavigation
+                    browserState={browserState}
+                    setBrowserState={setBrowserState}
+                  />
                   <HealthBox />
                   <StatsControls />
                 </StatsContainer>
                 <HealthContainer>
+                  <EmptyNavigation />
                   <ActiveControls />
                   <SecondaryStatsControls />
                 </HealthContainer>
                 <InventoryContainer>
-                  <InventorySection inventoryState={inventoryState} />
-                  <AbilitySection inventoryState={inventoryState} />
+                  <InventoryNavigation
+                    inventoryState={inventoryState}
+                    setInventoryState={setInventoryState}
+                  />
+                  <ScrollContainer>
+                    <InventorySection inventoryState={inventoryState} />
+                    <AbilitySection inventoryState={inventoryState} />
+                  </ScrollContainer>
                 </InventoryContainer>
                 <FooterCenterContainer>
+                  <EmptyNavigation />
                   <ResourcesBox />
                 </FooterCenterContainer>
               </Column>

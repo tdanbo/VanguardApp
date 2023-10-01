@@ -3,10 +3,11 @@ import {
   ModalContainer,
   Title,
   Divider,
+  ControlButton,
+  ButtonContainer,
 } from "./SelectorStyles";
 
 import styled from "styled-components";
-import SelectPortraitButtons from "./SelectPortraitButtons";
 import * as Constants from "../../Constants";
 import { CharacterPortraits } from "../../Images";
 interface LoginProps {
@@ -63,7 +64,11 @@ function SelectPortraitComponent({
         </GridContainer>
         <Divider />
       </ModalContainer>
-      <SelectPortraitButtons setSelector={setSelector} />
+      <ButtonContainer>
+        <ControlButton onClick={() => setSelector("createCharacter")}>
+          Back
+        </ControlButton>
+      </ButtonContainer>
     </MainContainer>
   );
 }
