@@ -42,7 +42,6 @@ const HeaderContainer = styled.div`
   flex-direction: row;
   min-height: 50px;
   margin-left: 20px;
-
   margin-top: 5px;
   gap: 20px;
 `;

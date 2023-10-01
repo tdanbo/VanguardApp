@@ -46,7 +46,6 @@ const Value = styled.button`
 
 const ActiveValue = styled.div`
   display: flex;
-
   align-items: center;
   justify-content: center;
   font-size: 10px;
