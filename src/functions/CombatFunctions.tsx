@@ -5,6 +5,8 @@ import { CharacterContext } from "../contexts/CharacterContext";
 import { SessionContext } from "../contexts/SessionContext";
 import { useWebSocket } from "../contexts/WebSocketContext";
 import { API } from "../Constants";
+import { useEffect, useRef } from "react";
+import { RollSounds } from "../Images";
 export async function getCombatLog(id: string): Promise<CombatEntry[]> {
   const response = await axios.get<CombatEntry[]>(`${API}/api/combatlog/${id}`);
   return response.data;
@@ -24,6 +26,28 @@ export function useRoll() {
   const { character } = useContext(CharacterContext);
   const { session } = useContext(SessionContext);
   const { sendRequest } = useWebSocket();
+
+  const audioRef = useRef(new Audio()); // <-- Initialize a ref for the audio element
+
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
+
+  const playRandomSound = () => {
+    const randomIndex = Math.floor(Math.random() * RollSounds.length);
+    const randomSound = RollSounds[randomIndex];
+
+    if (audioRef.current) {
+      audioRef.current.src = randomSound;
+      audioRef.current.play().catch((error) => {
+        console.error("Audio play failed:", error);
+      });
+    }
+  };
 
   return async ({
     dice,
@@ -58,6 +82,8 @@ export function useRoll() {
     } else if (roll_result > target) {
       success = false;
     }
+
+    playRandomSound();
 
     const NewCombatEntry: CombatEntry = {
       id: session.id,

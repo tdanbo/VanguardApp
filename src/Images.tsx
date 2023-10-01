@@ -78,6 +78,16 @@ import Character76 from "./assets/characters/Character76.jpeg";
 import Character77 from "./assets/characters/Character77.jpeg";
 import Character78 from "./assets/characters/Character78.jpeg";
 
+import RollA from "./assets/sounds/RollA.wav";
+import RollB from "./assets/sounds/RollB.wav";
+import RollC from "./assets/sounds/RollC.wav";
+import RollD from "./assets/sounds/RollD.wav";
+import RollE from "./assets/sounds/RollE.wav";
+import RollF from "./assets/sounds/RollF.wav";
+import RollG from "./assets/sounds/RollG.wav";
+
+export const RollSounds = [RollA, RollB, RollC, RollD, RollE, RollF, RollG];
+
 export const CharacterPortraits: { [key: string]: string } = {
   Character0: Character0,
   Character1: Character1,
