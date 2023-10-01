@@ -50,8 +50,12 @@ const Navigator = styled.div`
 function SelectorComponent() {
   const [isModalOpen, setIsModalOpen] = useState(true);
 
-  const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
+  const [characterRace, setCharacterRace] = useState<string>("");
+  const [characterName, setCharacterName] = useState<string>("");
   const [characterPortrait, setCharacterPortrait] = useState<string>("");
+  const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
+
+  console.log(characterName, characterRace, characterPortrait);
 
   const renderContent = (selectorValue: string) => {
     switch (selectorValue) {
@@ -74,6 +78,10 @@ function SelectorComponent() {
             setSelector={setSelector}
             setCharacterLog={setCharacterLog}
             characterPortrait={characterPortrait}
+            setCharacterName={setCharacterName}
+            setCharacterRace={setCharacterRace}
+            characterName={characterName}
+            characterRace={characterRace}
           />
         );
       case "selectPortrait":

@@ -1,5 +1,5 @@
 import * as Constants from "../../Constants";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useWebSocket } from "../../contexts/WebSocketContext";
 import { CharacterEntry } from "../../Types";
 import { SessionContext } from "../../contexts/SessionContext";
@@ -9,6 +9,7 @@ import { CharacterPortraits } from "../../Images";
 import RaceDropdownBox from "./RaceDropdownBox";
 import { addNewCharacter } from "../../functions/CharacterFunctions";
 import { EmptyWeapon, EmptyArmor } from "../../Types";
+import { toTitleCase } from "../../functions/UtilityFunctions";
 import {
   MainContainer,
   ModalContainer,
@@ -22,6 +23,10 @@ interface LoginProps {
   setSelector: (selector: string) => void;
   setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   characterPortrait: string;
+  characterName: string;
+  characterRace: string;
+  setCharacterRace: React.Dispatch<React.SetStateAction<string>>;
+  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface Stats {
@@ -111,21 +116,52 @@ const ValueBox = styled.div`
   font-size: 16px;
 `;
 
+interface LoginProps {
+  setSelector: (selector: string) => void;
+  setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
+  characterPortrait: string;
+  characterName: string;
+  characterRace: string;
+  setCharacterRace: React.Dispatch<React.SetStateAction<string>>;
+  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
+}
+
 function CreateCharacterComponent({
   setSelector,
   characterPortrait,
+  characterName,
+  characterRace,
+  setCharacterRace,
+  setCharacterName,
 }: LoginProps) {
-  const [characterName, setCharacterName] = useState("");
+  useEffect(() => {
+    console.log("CreateCharacterComponent rendered");
+
+    return () => {
+      console.log("CreateCharacterComponent will unmount");
+    };
+  }, []);
   const [isValidName, setIsValitName] = useState(false);
 
   const handleNameChange = (e: any) => {
-    setCharacterName(UpperFirstLetter(e.target.value));
+    setCharacterName(toTitleCase(e.target.value));
     if (e.target.value !== "") {
       setIsValitName(true);
     } else {
       setIsValitName(false);
     }
   };
+
+  useEffect(() => {
+    if (characterName !== "") {
+      setIsValitName(true);
+    } else {
+      setIsValitName(false);
+    }
+  }, [characterName]);
+
+  console.log(characterName);
+  console.log(characterRace);
 
   const [stats, setStats] = useState<Stats[]>([
     { id: 1, label: "Cunning", value: 15 },
@@ -165,7 +201,6 @@ function CreateCharacterComponent({
   };
 
   const options = [
-    "Select Race",
     "Ambrian",
     "Barbarian",
     "Changeling",
@@ -179,12 +214,13 @@ function CreateCharacterComponent({
   ];
 
   const handleDropdownChange = (selectedOption: string) => {
-    console.log(selectedOption);
+    setCharacterRace(UpperFirstLetter(selectedOption));
   };
 
   const handlePortraitSelect = () => {
     setSelector("selectPortrait");
   };
+
   const { session } = useContext(SessionContext);
   const { sendRequest } = useWebSocket();
 
@@ -193,7 +229,7 @@ function CreateCharacterComponent({
     id: session.id,
     portrait: characterPortrait,
     details: {
-      race: "",
+      race: characterRace,
       movement: 0,
       xp_earned: 50,
       modifier: 0,
@@ -250,10 +286,12 @@ function CreateCharacterComponent({
               <NameInput
                 placeholder={"Character Name"}
                 onChange={handleNameChange}
+                value={characterName}
               />
               <RaceDropdownBox
                 onChange={handleDropdownChange}
                 options={options}
+                value={characterRace}
               />
             </InputtContainer>
           </Container>

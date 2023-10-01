@@ -31,7 +31,7 @@ function OverburdenBox() {
   const { character } = useContext(CharacterContext);
 
   const used_slots = character.inventory.length;
-  const max_slots = character.stats.strong.value - 2;
+  const max_slots = Math.max(character.stats.strong.value - 2, 10);
 
   // Decide on the color based on the comparison
   const numberColor =

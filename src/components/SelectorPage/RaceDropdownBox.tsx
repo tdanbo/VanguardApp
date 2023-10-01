@@ -1,4 +1,4 @@
-import React, { useState, FC } from "react";
+import React, { FC } from "react";
 import * as Constants from "../../Constants";
 import styled from "styled-components";
 
@@ -14,6 +14,7 @@ const Container = styled.div`
 `;
 
 interface DropdownProps {
+  value: string;
   options: string[];
   label?: string;
   onChange: (selectedOption: string) => void;
@@ -33,21 +34,23 @@ const SelectStyled = styled.select`
   }
 `;
 
-const RaceDropdownBox: FC<DropdownProps> = ({ options, label, onChange }) => {
-  const [selectedOption, setSelectedOption] = useState(options[0]);
-
+const RaceDropdownBox: FC<DropdownProps> = ({
+  options,
+  label,
+  value,
+  onChange,
+}) => {
   const handleDropdownChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     const newValue = event.target.value;
-    setSelectedOption(newValue);
     onChange(newValue);
   };
 
   return (
     <Container>
       {label && <label>{label}</label>}
-      <SelectStyled value={selectedOption} onChange={handleDropdownChange}>
+      <SelectStyled value={value} onChange={handleDropdownChange}>
         {options.map((option, index) => (
           <option
             style={{

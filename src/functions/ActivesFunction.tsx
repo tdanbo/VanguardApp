@@ -47,6 +47,7 @@ export const UpdateActives = (character: CharacterEntry) => {
   actives.attack.dice2_mod = character.equipment.off.roll.mod;
   actives.defense.dice_mod = character.equipment.armor.roll.mod;
 
+  Overburden(character);
   UpdateQualities(character);
   ManAtArms(character, actives);
   PolearmMastery(character, actives);
@@ -55,6 +56,16 @@ export const UpdateActives = (character: CharacterEntry) => {
   TwohandedForce(character, actives);
 
   return actives;
+};
+
+const Overburden = (character: CharacterEntry) => {
+  console.log("Checking Overburden");
+  const used_slots = character.inventory.length;
+  const max_slots = Math.max(character.stats.strong.value - 2, 10);
+
+  if (used_slots > max_slots) {
+    actives.defense.value -= used_slots - max_slots;
+  }
 };
 
 const UpdateQualities = (character: CharacterEntry) => {

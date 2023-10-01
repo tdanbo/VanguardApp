@@ -403,7 +403,6 @@ function ResourcesBox() {
           <MainContainer onClick={stopPropagation}>
             <Title>Resources</Title>
             <ModalContainer>
-              <Divider />
               <CenterContainer>
                 <ResourceChangeContainer>
                   <ResourceChanger
