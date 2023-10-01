@@ -193,6 +193,7 @@ function CreateCharacterComponent({
     id: session.id,
     portrait: characterPortrait,
     details: {
+      race: "",
       movement: 0,
       xp_earned: 50,
       modifier: 0,

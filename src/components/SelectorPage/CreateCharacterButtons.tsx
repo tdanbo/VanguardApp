@@ -37,6 +37,7 @@ function CreateCharacterButtons({
     id: session.id,
     portrait: portrait,
     details: {
+      race: "",
       movement: 0,
       xp_earned: 50,
       modifier: 0,

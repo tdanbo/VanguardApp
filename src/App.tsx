@@ -21,7 +21,7 @@ import ResourcesBox from "./components/ResourcesBox";
 import XpBox from "./components/XpBox";
 
 import CharacterNameBox from "./components/CharacterNameBox";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import AbilityBrowser from "./components/Modals/AbilityBrowser";
 import AbilitySection from "./components/Sections/AbilitySection";
 import CombatSection from "./components/Sections/CombatSection";
@@ -159,7 +159,7 @@ function App() {
   const [inventoryState, setInventoryState] = useState(1);
   const [abilityList, setAbilityList] = useState<AbilityEntry[]>([]);
   const [itemList, setItemList] = useState<ItemEntry[]>([]);
-
+  const scrollableRef = useRef(null);
   return (
     <UserProvider>
       <SessionProvider>
@@ -232,8 +232,8 @@ function App() {
                 </FooterCenterContainer>
               </Column>
               <Column>
-                <CombatContainer>
-                  <CombatSection />
+                <CombatContainer ref={scrollableRef}>
+                  <CombatSection scrollRef={scrollableRef} />
                 </CombatContainer>
                 <FooterContainer>
                   <DiceSection />

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBook, faBookMedical } from "@fortawesome/free-solid-svg-icons";
+import { faShield, faBolt } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
 import SelectorComponent from "../SelectorPage/Selector";
 const Container = styled.div`
@@ -21,6 +21,7 @@ const Navigator = styled.button<NavigatorProps>`
   align-items: center;
   justify-content: center;
   border: 1px solid ${Constants.WIDGET_BACKGROUND_EMPTY};
+  font-size: 18px;
   color: ${(props) =>
     props.$active
       ? Constants.WIDGET_PRIMARY_FONT
@@ -72,10 +73,10 @@ function CharacterNavigation({
     <Container>
       <SelectorComponent />
       <Navigator $active={browserState === 1} onClick={onHandleItems}>
-        <FontAwesomeIcon icon={faBook} />
+        <FontAwesomeIcon icon={faShield} />
       </Navigator>
       <Navigator $active={browserState === 2} onClick={onHandleAbilities}>
-        <FontAwesomeIcon icon={faBookMedical} />
+        <FontAwesomeIcon icon={faBolt} />
       </Navigator>
     </Container>
   );

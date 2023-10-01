@@ -16,6 +16,7 @@ const Navigator = styled.div`
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   color: ${Constants.WIDGET_BACKGROUND};
   border-radius: ${Constants.BORDER_RADIUS};
+  font-size: 18px;
   &:hover {
     background-color: ${Constants.WIDGET_BACKGROUND};
     color: ${Constants.WIDGET_PRIMARY_FONT};

@@ -1,4 +1,5 @@
 interface CharacterDetails {
+  race: string;
   xp_earned: number;
   movement: number;
   modifier: number;

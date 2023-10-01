@@ -6,6 +6,7 @@ const defaultCharacter: CharacterEntry = {
   id: "",
   portrait: "",
   details: {
+    race: "",
     xp_earned: 0,
     movement: 0,
     modifier: 0,

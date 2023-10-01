@@ -117,7 +117,7 @@ function CombatEntryItem({ combatEntry }: CombatEntryItemProps) {
     modifierText = `${combatEntry.modifier}`;
   }
 
-  let title = `Roll: ${combatEntry.roll}\n`;
+  let title = `Dice: d${combatEntry.dice}${modifierText}\nRoll: ${combatEntry.roll}\n`;
 
   if (combatEntry.source !== "Skill Test") {
     title += `Modifier: ${combatEntry.modifier}\n`;

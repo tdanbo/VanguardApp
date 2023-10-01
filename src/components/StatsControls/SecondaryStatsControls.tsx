@@ -53,8 +53,9 @@ const ValueButton = styled.button`
     font-size: 1rem;
     font-weight: bold;
     font-style: italic;
-    margin-top: 20px;
     color: ${Constants.WIDGET_SECONDARY_FONT};
+    align-self: flex-end;
+    margin-left: 3px;
   }
 `;
 

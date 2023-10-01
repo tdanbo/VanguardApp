@@ -13,6 +13,7 @@ const Navigator = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  font-size: 18px;
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   color: ${Constants.WIDGET_BACKGROUND};
   border-radius: ${Constants.BORDER_RADIUS};

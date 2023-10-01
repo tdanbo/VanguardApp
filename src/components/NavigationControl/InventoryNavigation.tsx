@@ -21,6 +21,7 @@ const Navigator = styled.button<NavigatorProps>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-size: 18px;
   border: ${(props) =>
     props.$active ? `1px solid ${Constants.WIDGET_BORDER}` : `0px solid white`};
   color: ${(props) =>
