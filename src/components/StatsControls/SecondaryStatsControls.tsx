@@ -14,11 +14,9 @@ const Container = styled.div`
 
 const BoxContainer = styled.div`
   display: flex;
-  flex-grow: 1;
   flex: 1;
   flex-direction: column;
-  gap: ${Constants.WIDGET_GAB};
-  min-height: 40px;
+  gap: 2px;
 `;
 
 const ValueName = styled.button`
@@ -35,28 +33,39 @@ const ValueName = styled.button`
   background-color: ${Constants.WIDGET_BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-radius: ${Constants.BORDER_RADIUS};
+  min-height: 30px;
+  max-height: 30px;
 `;
 
-const ValueButton = styled.button`
+const Value = styled.button`
   display: flex;
-  flex-gorw: 1;
+  flex-direction: column;
   flex: 2;
   align-items: center;
   justify-content: center;
-  color: ${Constants.WIDGET_PRIMARY_FONT};
+  border-radius: ${Constants.BORDER_RADIUS};
   font-size: 2.5rem;
   font-weight: bold;
-  background-color: ${Constants.WIDGET_BACKGROUND};
+  color: ${Constants.WIDGET_PRIMARY_FONT};
   border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: ${Constants.BORDER_RADIUS};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  background-color: ${Constants.WIDGET_BACKGROUND};
   p {
-    font-size: 1rem;
+    font-size: 10px;
     font-weight: bold;
-    font-style: italic;
-    color: ${Constants.WIDGET_SECONDARY_FONT};
-    align-self: flex-end;
-    margin-left: 3px;
+    color: ${Constants.WIDGET_BACKGROUND};
+    letter-spacing: 1px;
   }
+`;
+
+const ActiveValue = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  color: ${Constants.WIDGET_BACKGROUND};
+  letter-spacing: 1px;
 `;
 
 function SecondaryStatsControls() {
@@ -65,14 +74,17 @@ function SecondaryStatsControls() {
   return (
     <Container>
       <BoxContainer>
-        <ValueButton>{Math.ceil(character.stats.strong.value / 2)}</ValueButton>
-        <ValueName>Pain Threshold</ValueName>
+        <Value>
+          {Math.ceil(character.stats.strong.value / 2)}{" "}
+          <ActiveValue>PAIN</ActiveValue>
+        </Value>
+        <ValueName>Threshold</ValueName>
       </BoxContainer>
       <BoxContainer>
-        <ValueButton>
+        <Value>
           {movement / 5}
-          <p>sq</p>
-        </ValueButton>
+          <ActiveValue>SQUARES</ActiveValue>
+        </Value>
         <ValueName>Movement</ValueName>
       </BoxContainer>
     </Container>

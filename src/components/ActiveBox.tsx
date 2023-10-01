@@ -80,6 +80,7 @@ const Dice = styled.button<DiceProps>`
   flex: 1;
   align-items: center;
   justify-content: center;
+  min-height: 30px;
   border-radius: ${Constants.BORDER_RADIUS};
   font-size: 1rem;
   font-weight: bold;
