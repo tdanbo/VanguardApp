@@ -13,7 +13,7 @@ const Container = styled.div`
 
   flex-direction: column-reverse;
   align-items: flex-end;
-  justify-content: flex-end;
+  justify-content: flex-start;
 
   gap: 10px;
   width: 100%;
