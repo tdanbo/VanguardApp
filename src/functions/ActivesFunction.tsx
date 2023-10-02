@@ -4,6 +4,7 @@ import { PolearmMastery } from "./rules/PolearmMastery";
 import { ShieldFighter } from "./rules/ShieldFighter";
 import { ArmoredMystic } from "./rules/ArmoredMystic";
 import { TwohandedForce } from "./rules/TwohandedForce";
+import { Marksman } from "./rules/Marksman";
 
 const actives: Actives = {
   attack: {
@@ -54,6 +55,7 @@ export const UpdateActives = (character: CharacterEntry) => {
   ShieldFighter(character, actives);
   ArmoredMystic(character, actives);
   TwohandedForce(character, actives);
+  Marksman(character, actives);
 
   return actives;
 };
