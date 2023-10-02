@@ -202,39 +202,40 @@ function ActiveBox({ active_name, active }: Props) {
         </Modifier>
         {isAttackActive(active) ? (
           <>
-            <Dice
-              className="button-hover"
-              onClick={() => {
-                [
-                  "Bow",
-                  "Crossbow",
-                  "Small Crossbow",
-                  "Repeating Crossbow",
-                  "Longbow",
-                  "Horsema's Longbow",
-                  "Composite Bow",
-                  "Arbalest",
-                ].includes(active.dice1_name)
-                  ? handleRangeRoll(
-                      active.dice1,
-                      active.dice1_name,
-                      active.dice1_mod,
-                      "Damage",
-                    )
-                  : handleDiceRoll(
-                      active.dice1,
-                      active.dice1_name,
-                      active.dice1_mod,
-                      "Damage",
-                    );
-              }}
-              color={Constants.TYPE_COLORS[active_name]}
-            >
-              d{active.dice1}
-              {active.dice1_mod > 0 ? `+${active.dice1_mod}` : null}
-            </Dice>
-
-            {active.dice2_name !== "Knuckles" && (
+            {active.dice1 !== 0 && (
+              <Dice
+                className="button-hover"
+                onClick={() => {
+                  [
+                    "Bow",
+                    "Crossbow",
+                    "Small Crossbow",
+                    "Repeating Crossbow",
+                    "Longbow",
+                    "Horsema's Longbow",
+                    "Composite Bow",
+                    "Arbalest",
+                  ].includes(active.dice1_name)
+                    ? handleRangeRoll(
+                        active.dice1,
+                        active.dice1_name,
+                        active.dice1_mod,
+                        "Damage",
+                      )
+                    : handleDiceRoll(
+                        active.dice1,
+                        active.dice1_name,
+                        active.dice1_mod,
+                        "Damage",
+                      );
+                }}
+                color={Constants.TYPE_COLORS[active_name]}
+              >
+                d{active.dice1}
+                {active.dice1_mod > 0 ? `+${active.dice1_mod}` : null}
+              </Dice>
+            )}
+            {active.dice2_name !== "Knuckles" && active.dice2 !== 0 && (
               <Dice
                 className="button-hover"
                 onClick={() => {
