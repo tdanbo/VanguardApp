@@ -19,6 +19,9 @@ const Container = styled.div`
   width: 100%;
 `;
 
+import { useRef } from "react";
+import { RollSounds } from "../../Images";
+
 interface CombatSectionProps {
   scrollRef: RefObject<HTMLElement>;
 }
@@ -35,7 +38,30 @@ function CombatSection({ scrollRef }: CombatSectionProps) {
     }
   };
 
+  const audioRef = useRef(new Audio()); // <-- Initialize a ref for the audio element
+
   useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
+
+  const playRandomSound = () => {
+    const randomIndex = Math.floor(Math.random() * RollSounds.length);
+    const randomSound = RollSounds[randomIndex];
+
+    if (audioRef.current) {
+      audioRef.current.src = randomSound;
+      audioRef.current.play().catch((error) => {
+        console.error("Audio play failed:", error);
+      });
+    }
+  };
+
+  useEffect(() => {
+    playRandomSound();
     if (combatlogResponse) {
       setCombatLog(combatlogResponse);
     }

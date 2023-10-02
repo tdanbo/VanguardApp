@@ -42,7 +42,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   "mystical power": PURPLE,
   "monsterous trait": GREEN,
   boon: BRIGHT_YELLOW,
-  burden: BRIGHT_RED,
+  burden: GREEN,
   ritual: PURPLE,
   elixirs: PURPLE,
   sneaking: GREEN,

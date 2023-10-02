@@ -422,7 +422,9 @@ function AbilityEntryItem({
             {ability.name}
           </AbilityName>
           <AbilityDetail>
-            {ability.type}, {ability.tradition}
+            {ability.tradition === ""
+              ? ability.type
+              : `${ability.type}, ${ability.tradition}`}
           </AbilityDetail>
         </NameContainer>
 

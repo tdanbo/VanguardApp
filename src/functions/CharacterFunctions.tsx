@@ -274,6 +274,8 @@ export const getCharacterXp = (character: CharacterEntry) => {
   character.abilities.forEach((ability) => {
     if (ability.type.toLocaleLowerCase() === "trait") {
       return;
+    } else if (ability.type.toLocaleLowerCase() === "burden") {
+      return;
     }
 
     if (ability.level === "Novice") {
