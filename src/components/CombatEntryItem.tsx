@@ -1,5 +1,6 @@
 import * as Constants from "../Constants";
 import { CombatEntry } from "../Types";
+import "../App.css";
 import styled from "styled-components";
 
 import { UpperFirstLetter } from "../functions/UtilityFunctions";
@@ -7,6 +8,7 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { CharacterPortraits } from "../Images";
+import { useState, useEffect } from "react";
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
   index: number;
@@ -100,7 +102,7 @@ const Source = styled.div<ColorTypeProps>`
   color: ${Constants.WIDGET_SECONDARY_FONT};
 `;
 
-function CombatEntryItem({ combatEntry }: CombatEntryItemProps) {
+function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   const EntryColor = () => {
     return (
       Constants.TYPE_COLORS[combatEntry.active.toLowerCase()] ||
@@ -125,6 +127,38 @@ function CombatEntryItem({ combatEntry }: CombatEntryItemProps) {
     title += `Target: ${combatEntry.target}`;
   }
 
+  const [isRolling, setIsRolling] = useState(false);
+  const [currentDisplay, setCurrentDisplay] = useState<number>(0);
+  const [_rollCycles, setRollCycles] = useState<number>(0);
+
+  useEffect(() => {
+    if (index !== 0) {
+      // Only allow the animation effect on the first item
+      setCurrentDisplay(combatEntry.result);
+      return;
+    }
+    setIsRolling(true);
+
+    // Rapidly change the displayed roll result
+    const rollInterval = setInterval(() => {
+      setCurrentDisplay(Math.floor(Math.random() * combatEntry.dice) + 1); // assuming dice values start from 1
+      setRollCycles((prev) => prev + 1);
+    }, 75); // This determines how fast the numbers change
+
+    // After certain cycles or time, finalize the result and clear the timer
+    const timer = setTimeout(() => {
+      setIsRolling(false);
+      clearInterval(rollInterval);
+      setCurrentDisplay(combatEntry.result);
+      setRollCycles(0);
+    }, 300); // Total duration of the roll animation
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(rollInterval);
+    };
+  }, [combatEntry.result]);
+
   return (
     <Container src={CharacterPortraits[combatEntry.portrait]}>
       <ColorBlock $rgb={EntryColor()} $issuccess={combatEntry.success} />
@@ -142,8 +176,10 @@ function CombatEntryItem({ combatEntry }: CombatEntryItemProps) {
             title={title}
             $rgb={EntryColor()}
             $issuccess={combatEntry.success}
+            className={isRolling ? "rolling" : ""}
           >
-            {combatEntry.result}
+            {currentDisplay}
+            {/* {combatEntry.result} */}
           </Result>
         )}
 
