@@ -62,6 +62,7 @@ function CombatSection({ scrollRef }: CombatSectionProps) {
 
   useEffect(() => {
     playRandomSound();
+    console.log("Combat Log Response: ", combatlogResponse);
     if (combatlogResponse) {
       setCombatLog(combatlogResponse);
     }
