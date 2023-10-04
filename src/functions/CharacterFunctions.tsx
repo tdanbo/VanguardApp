@@ -58,12 +58,7 @@ export function onUpdateActive({
     ...character,
   };
 
-<<<<<<< Updated upstream
-  updatedCharacter.actives[active] = stat as StatName;
-  console.log("Update Active Post");
-=======
   updatedCharacter.actives[active].stat = stat as StatName;
->>>>>>> Stashed changes
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
