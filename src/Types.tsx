@@ -32,6 +32,7 @@ type Stats = {
 export type ActiveKey = "attack" | "defense" | "casting" | "sneaking";
 
 export type AttackActive = {
+  stat: StatName;
   value: number;
   dice1: number;
   dice1_mod: number;
@@ -42,6 +43,7 @@ export type AttackActive = {
 };
 
 export type DefenseActive = {
+  stat: StatName;
   value: number;
   dice: number;
   dice_mod: number;
@@ -49,6 +51,7 @@ export type DefenseActive = {
 };
 
 export type SimpleActive = {
+  stat: StatName;
   value: number;
 };
 
@@ -57,13 +60,6 @@ export interface Actives {
   defense: DefenseActive;
   casting: SimpleActive;
   sneaking: SimpleActive;
-}
-
-export interface ActiveStats {
-  attack: StatName;
-  defense: StatName;
-  casting: StatName;
-  sneaking: StatName;
 }
 
 type Corruption = {
@@ -90,7 +86,7 @@ export interface CharacterEntry {
   damage: number;
   stats: Stats;
   corruption: Corruption;
-  actives: ActiveStats;
+  actives: Actives;
   abilities: AbilityEntry[];
   inventory: ItemEntry[];
   equipment: EquipmentEntry;

@@ -58,8 +58,12 @@ export function onUpdateActive({
     ...character,
   };
 
+<<<<<<< Updated upstream
   updatedCharacter.actives[active] = stat as StatName;
   console.log("Update Active Post");
+=======
+  updatedCharacter.actives[active].stat = stat as StatName;
+>>>>>>> Stashed changes
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -737,10 +741,10 @@ export function swapActives(
 
   // Iterate over the keys (e.g., 'attack', 'defense', etc.)
   (Object.keys(characterActives) as ActiveKey[]).forEach((key) => {
-    if (characterActives[key] === source.toLowerCase()) {
-      characterActives[key] = target.toLowerCase() as StatName;
-    } else if (characterActives[key] === target.toLowerCase()) {
-      characterActives[key] = source.toLowerCase() as StatName;
+    if (characterActives[key].stat === source.toLowerCase()) {
+      characterActives[key].stat = target.toLowerCase() as StatName;
+    } else if (characterActives[key].stat === target.toLowerCase()) {
+      characterActives[key].stat = source.toLowerCase() as StatName;
     }
   });
 
