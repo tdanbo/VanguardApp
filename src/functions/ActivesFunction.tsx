@@ -1,4 +1,4 @@
-import { Actives, CharacterEntry } from "../Types";
+import { CharacterEntry } from "../Types";
 import { ManAtArms } from "./rules/ManAtArms";
 import { PolearmMastery } from "./rules/PolearmMastery";
 import { ShieldFighter } from "./rules/ShieldFighter";
@@ -7,8 +7,13 @@ import { postSelectedCharacter } from "./CharacterFunctions";
 import { cloneDeep } from "lodash";
 
 export const UpdateActives = (character: CharacterEntry) => {
-  console.log("Updating Actives");
   const characterClone = cloneDeep(character);
+
+  if (characterClone.id === "") {
+    return characterClone.actives;
+  }
+
+  console.log("Updating Actives");
 
   characterClone.actives.attack.value =
     characterClone.stats[characterClone.actives.attack.stat].value;
@@ -30,11 +35,13 @@ export const UpdateActives = (character: CharacterEntry) => {
     characterClone.equipment.armor.name;
 
   UpdateQualities(characterClone);
-
+  Overburden(characterClone);
   ManAtArms(characterClone, characterClone.actives);
   PolearmMastery(characterClone, characterClone.actives);
   ShieldFighter(characterClone, characterClone.actives);
   ArmoredMystic(characterClone, characterClone.actives);
+
+  console.log(characterClone);
 
   postSelectedCharacter(characterClone);
 
