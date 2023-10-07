@@ -39,7 +39,6 @@ function RestBox() {
     console.log("Resting");
     console.log("Character: ", character);
     console.log("Expanding");
-    console.log("Character: ", updatedCharacter);
 
     // Using the handleRoll function here doesn't make much sense unless you are planning to call this function somewhere else.
     // Otherwise, you can directly call onRollDice with the required parameters.
