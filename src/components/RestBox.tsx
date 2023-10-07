@@ -36,7 +36,7 @@ function RestBox() {
       setCharacter(updatedCharacter);
     }
 
-    console.log("Testing");
+    console.log("Main Testing Branch");
 
     // Using the handleRoll function here doesn't make much sense unless you are planning to call this function somewhere else.
     // Otherwise, you can directly call onRollDice with the required parameters.
