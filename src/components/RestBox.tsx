@@ -36,7 +36,12 @@ function RestBox() {
       setCharacter(updatedCharacter);
     }
 
+<<<<<<< Updated upstream
     console.log("Making new branch tests");
+=======
+    console.log("Testing Development Branch");
+
+>>>>>>> Stashed changes
     // Using the handleRoll function here doesn't make much sense unless you are planning to call this function somewhere else.
     // Otherwise, you can directly call onRollDice with the required parameters.
     const handleRoll = () => {
