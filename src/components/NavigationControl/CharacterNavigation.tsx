@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShield, faBolt, faGhost } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
-import SelectorComponent from "../SelectorPage/Selector";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -44,14 +43,12 @@ interface NavigationProps {
   browserState: number;
   setBrowserState: (browserState: number) => void;
   gmMode: boolean;
-  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function CharacterNavigation({
   browserState,
   setBrowserState,
   gmMode,
-  setGmMode,
 }: NavigationProps) {
   const onHandleItems = () => {
     if (browserState === 0 || browserState === 2 || browserState === 3) {
@@ -79,7 +76,6 @@ function CharacterNavigation({
 
   return (
     <Container>
-      <SelectorComponent setGmMode={setGmMode} />
       <Navigator $active={browserState === 1} onClick={onHandleItems}>
         <FontAwesomeIcon icon={faShield} />
       </Navigator>

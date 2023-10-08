@@ -20,6 +20,7 @@ import ActiveControls from "./components/ActiveControls";
 import EmptyNavigation from "./components/NavigationControl/EmptyNavigation";
 import ResourcesBox from "./components/ResourcesBox";
 import XpBox from "./components/XpBox";
+import SelectorNavigation from "./components/NavigationControl/SelectorNavigation";
 
 import CharacterNameBox from "./components/CharacterNameBox";
 import { useState, useRef } from "react";
@@ -33,6 +34,7 @@ import SearchCreatureBox from "./components/SearchCreatureBox";
 import { AbilityEntry, ItemEntry, CreatureEntry } from "./Types";
 import SecondaryStatsControls from "./components/StatsControls/SecondaryStatsControls";
 import EncounterSection from "./components/Sections/EncounterSection";
+import ResetEncounter from "./components/ResetEncounter";
 
 const Row = styled.div`
   display: flex;
@@ -96,6 +98,18 @@ const InventoryContainer = styled.div`
 
   margin: 20px;
   gap: 20px;
+
+  overflow: scroll;
+  scrollbar-width: none !important;
+`;
+
+const EncounterContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  margin: 20px;
+  gap: 20px;
+  height: 100%;
 
   overflow: scroll;
   scrollbar-width: none !important;
@@ -189,23 +203,27 @@ function App() {
                 <FooterContainer></FooterContainer>
               </Column>
               <Column>
+                <HeaderContainer>
+                  <SelectorNavigation gmMode={gmMode} setGmMode={setGmMode} />
+                  <CharacterNameBox />
+                  {gmMode ? (
+                    <ResetEncounter setEncounter={setEncounter} />
+                  ) : (
+                    <XpBox />
+                  )}
+                </HeaderContainer>
                 {gmMode ? (
                   <>
-                    <HeaderContainer>
-                      <EmptyNavigation />
-                      <CharacterNameBox />
-                    </HeaderContainer>
-                    <StatsContainer>
+                    <EncounterContainer key="container">
                       <CharacterNavigation
                         browserState={browserState}
                         setBrowserState={setBrowserState}
                         gmMode={gmMode}
-                        setGmMode={setGmMode}
                       />
                       <ScrollContainer>
-                        <EncounterSection />
+                        <EncounterSection encounter={encounter} />
                       </ScrollContainer>
-                    </StatsContainer>
+                    </EncounterContainer>
                     <FooterCenterContainer>
                       <EmptyNavigation />
                       <ResourcesBox />
@@ -213,17 +231,11 @@ function App() {
                   </>
                 ) : (
                   <>
-                    <HeaderContainer>
-                      <EmptyNavigation />
-                      <CharacterNameBox />
-                      <XpBox />
-                    </HeaderContainer>
-                    <StatsContainer>
+                    <StatsContainer key="container">
                       <CharacterNavigation
                         browserState={browserState}
                         setBrowserState={setBrowserState}
                         gmMode={gmMode}
-                        setGmMode={setGmMode}
                       />
                       <HealthBox />
                       <StatsControls />

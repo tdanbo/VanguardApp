@@ -17,7 +17,7 @@ const ItemContainer = styled.div`
   gap: 10px;
 `;
 
-interface EquipmentBrowserProps {
+interface CreatureBrowserProps {
   browserState: number;
   creatureList: CreatureEntry[];
   encounter: CreatureEntry[];
@@ -29,7 +29,7 @@ function CreatureBrowser({
   creatureList,
   encounter,
   setEncounter,
-}: EquipmentBrowserProps) {
+}: CreatureBrowserProps) {
   return (
     <Container hidden={browserState !== 3}>
       <ItemContainer>

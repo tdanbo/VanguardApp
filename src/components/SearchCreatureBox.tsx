@@ -91,7 +91,7 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get(`${API}/api/equipment`);
+        const response = await axios.get(`${API}/api/creatures`);
         setFullList(response.data);
         setLoading(false);
       } catch (error) {

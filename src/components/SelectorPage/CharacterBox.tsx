@@ -93,9 +93,9 @@ function CharacterBox({
       >
         {selectedCharacter.name}
       </PortraitCenter>
-      <RightControl onClick={handleDeleteCharacter}>
+      {/* <RightControl onClick={handleDeleteCharacter}>
         <FontAwesomeIcon icon={faTrash} />
-      </RightControl>
+      </RightControl> */}
     </Container>
   );
 }
