@@ -43,11 +43,13 @@ const Navigator = styled.button<NavigatorProps>`
 interface NavigationProps {
   browserState: number;
   setBrowserState: (browserState: number) => void;
+  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function CharacterNavigation({
   browserState,
   setBrowserState,
+  setGmMode,
 }: NavigationProps) {
   const onHandleItems = () => {
     if (browserState === 0) {
@@ -71,7 +73,7 @@ function CharacterNavigation({
 
   return (
     <Container>
-      <SelectorComponent />
+      <SelectorComponent setGmMode={setGmMode} />
       <Navigator $active={browserState === 1} onClick={onHandleItems}>
         <FontAwesomeIcon icon={faShield} />
       </Navigator>

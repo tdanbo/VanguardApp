@@ -4,6 +4,10 @@ import { CharacterEntry } from "../../Types";
 import { getCharacters } from "../../functions/SessionsFunctions";
 import { SessionContext } from "../../contexts/SessionContext";
 import { useWebSocket } from "../../contexts/WebSocketContext";
+import {
+  CharacterContext,
+  defaultCharacter,
+} from "../../contexts/CharacterContext";
 
 import {
   MainContainer,
@@ -21,6 +25,7 @@ interface LoginProps {
   closeModal: () => void;
   characterLog: CharacterEntry[];
   setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
+  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function SelectCharacterComponent({
@@ -28,9 +33,11 @@ function SelectCharacterComponent({
   closeModal,
   characterLog,
   setCharacterLog,
+  setGmMode,
 }: LoginProps) {
   const { session } = useContext(SessionContext);
   const { charactersResponse } = useWebSocket();
+  const { character, setCharacter } = useContext(CharacterContext);
 
   useEffect(() => {
     getCharacters(session.id).then((response) => {
@@ -46,6 +53,12 @@ function SelectCharacterComponent({
 
   const handleCopyId = () => {
     navigator.clipboard.writeText(session.id);
+  };
+
+  const handleGM = () => {
+    setCharacter(defaultCharacter);
+    setGmMode(true);
+    closeModal();
   };
 
   return (
@@ -64,6 +77,7 @@ function SelectCharacterComponent({
               setSelector={setSelector}
               selectedCharacter={character}
               closeModal={closeModal}
+              setGmMode={setGmMode}
             />
           ))}
         </CenterContainer>
@@ -75,9 +89,7 @@ function SelectCharacterComponent({
         <ControlButton onClick={() => setSelector("createCharacter")}>
           Create Character
         </ControlButton>
-        <ControlButton onClick={() => console.log("Create GM Panel")}>
-          GM
-        </ControlButton>
+        <ControlButton onClick={handleGM}>GM</ControlButton>
       </ButtonContainer>
     </MainContainer>
   );

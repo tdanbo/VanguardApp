@@ -12,6 +12,7 @@ interface SessionBoxProps {
   setSelector: (selector: string) => void;
   selectedCharacter: CharacterEntry;
   closeModal: () => void;
+  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Container = styled.div`
@@ -65,11 +66,16 @@ const PortraitCenter = styled.div<PortraitCenterProps>`
   height: 100%;
 `;
 
-function CharacterBox({ selectedCharacter, closeModal }: SessionBoxProps) {
+function CharacterBox({
+  selectedCharacter,
+  closeModal,
+  setGmMode,
+}: SessionBoxProps) {
   const { sendRequest } = useWebSocket();
   const { setCharacter } = useContext(CharacterContext);
 
   const handleOnClick = () => {
+    setGmMode(false);
     setCharacter(selectedCharacter);
     closeModal();
   };

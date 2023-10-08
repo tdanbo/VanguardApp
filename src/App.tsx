@@ -21,7 +21,7 @@ import ResourcesBox from "./components/ResourcesBox";
 import XpBox from "./components/XpBox";
 
 import CharacterNameBox from "./components/CharacterNameBox";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import AbilityBrowser from "./components/Modals/AbilityBrowser";
 import AbilitySection from "./components/Sections/AbilitySection";
 import CombatSection from "./components/Sections/CombatSection";
@@ -30,6 +30,7 @@ import SearchAbilityBox from "./components/SearchAbilityBox";
 import SearchItemBox from "./components/SearchItemBox";
 import { AbilityEntry, ItemEntry } from "./Types";
 import SecondaryStatsControls from "./components/StatsControls/SecondaryStatsControls";
+import { CharacterContext } from "./contexts/CharacterContext";
 
 const Row = styled.div`
   display: flex;
@@ -134,6 +135,9 @@ function App() {
   const [inventoryState, setInventoryState] = useState(1);
   const [abilityList, setAbilityList] = useState<AbilityEntry[]>([]);
   const [itemList, setItemList] = useState<ItemEntry[]>([]);
+  const { character } = useContext(CharacterContext);
+  const [gmMode, setGmMode] = useState<boolean>(true);
+
   const scrollableRef = useRef(null);
   return (
     <UserProvider>
@@ -171,38 +175,61 @@ function App() {
                 <FooterContainer></FooterContainer>
               </Column>
               <Column>
-                <HeaderContainer>
-                  <EmptyNavigation />
-                  <CharacterNameBox />
-                  <XpBox />
-                </HeaderContainer>
-                <StatsContainer>
-                  <CharacterNavigation
-                    browserState={browserState}
-                    setBrowserState={setBrowserState}
-                  />
-                  <HealthBox />
-                  <StatsControls />
-                </StatsContainer>
-                <HealthContainer>
-                  <EmptyNavigation />
-                  <ActiveControls />
-                  <SecondaryStatsControls />
-                </HealthContainer>
-                <InventoryContainer>
-                  <InventoryNavigation
-                    inventoryState={inventoryState}
-                    setInventoryState={setInventoryState}
-                  />
-                  <ScrollContainer>
-                    <InventorySection inventoryState={inventoryState} />
-                    <AbilitySection inventoryState={inventoryState} />
-                  </ScrollContainer>
-                </InventoryContainer>
-                <FooterCenterContainer>
-                  <EmptyNavigation />
-                  <ResourcesBox />
-                </FooterCenterContainer>
+                {gmMode ? (
+                  <>
+                    <HeaderContainer>
+                      <EmptyNavigation />
+
+                      <CharacterNameBox />
+                    </HeaderContainer>
+                    <StatsContainer>
+                      <CharacterNavigation
+                        browserState={browserState}
+                        setBrowserState={setBrowserState}
+                        setGmMode={setGmMode}
+                      />
+                      <HealthBox />
+                      <StatsControls />
+                    </StatsContainer>
+                    <FooterCenterContainer></FooterCenterContainer>
+                  </>
+                ) : (
+                  <>
+                    <HeaderContainer>
+                      <EmptyNavigation />
+                      <CharacterNameBox />
+                      <XpBox />
+                    </HeaderContainer>
+                    <StatsContainer>
+                      <CharacterNavigation
+                        browserState={browserState}
+                        setBrowserState={setBrowserState}
+                        setGmMode={setGmMode}
+                      />
+                      <HealthBox />
+                      <StatsControls />
+                    </StatsContainer>
+                    <HealthContainer>
+                      <EmptyNavigation />
+                      <ActiveControls />
+                      <SecondaryStatsControls />
+                    </HealthContainer>
+                    <InventoryContainer>
+                      <InventoryNavigation
+                        inventoryState={inventoryState}
+                        setInventoryState={setInventoryState}
+                      />
+                      <ScrollContainer>
+                        <InventorySection inventoryState={inventoryState} />
+                        <AbilitySection inventoryState={inventoryState} />
+                      </ScrollContainer>
+                    </InventoryContainer>
+                    <FooterCenterContainer>
+                      <EmptyNavigation />
+                      <ResourcesBox />
+                    </FooterCenterContainer>
+                  </>
+                )}
               </Column>
               <Column>
                 <CombatContainer ref={scrollableRef}>
