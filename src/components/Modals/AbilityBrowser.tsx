@@ -31,7 +31,7 @@ function AbilityBrowser({
   setInventoryState,
 }: AbilityBrowserProps) {
   return (
-    <Container hidden={browserState === 0 || browserState === 1}>
+    <Container hidden={browserState !== 2}>
       <ItemContainer>
         {abilityList &&
           abilityList.map((ability, index) => (

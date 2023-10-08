@@ -31,7 +31,7 @@ function CreatureBrowser({
   setEncounter,
 }: EquipmentBrowserProps) {
   return (
-    <Container hidden={browserState === 0 || browserState === 2}>
+    <Container hidden={browserState !== 3}>
       <ItemContainer>
         {creatureList &&
           creatureList.map((creature, index) => (

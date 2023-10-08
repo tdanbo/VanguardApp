@@ -29,6 +29,10 @@ type Stats = {
   [key in StatName]: Stat;
 };
 
+type CreatureStats = {
+  [key in StatName]: number;
+};
+
 export type ActiveKey = "attack" | "defense" | "casting" | "sneaking";
 
 export type AttackActive = {
@@ -96,6 +100,7 @@ export interface CharacterEntry {
 
 export interface CreatureEntry {
   name: string;
+  stats: CreatureStats;
 }
 
 interface Roll {

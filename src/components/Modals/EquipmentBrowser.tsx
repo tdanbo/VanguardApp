@@ -30,7 +30,7 @@ function EquipmentBrowser({
   setInventoryState,
 }: EquipmentBrowserProps) {
   return (
-    <Container hidden={browserState === 0 || browserState === 2}>
+    <Container hidden={browserState !== 1}>
       <ItemContainer>
         {itemList &&
           itemList.map((item, index) => (

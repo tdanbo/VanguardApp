@@ -85,7 +85,7 @@ const SearchAbilityBox: FC<SearchBarProps> = ({
   }, []);
 
   return (
-    <Container hidden={browserState === 0 || browserState === 1}>
+    <Container hidden={browserState !== 2}>
       <Input
         className="flex-grow"
         onChange={(e) => setSearch(e.target.value)}

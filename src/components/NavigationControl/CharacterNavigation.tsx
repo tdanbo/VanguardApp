@@ -54,7 +54,7 @@ function CharacterNavigation({
   setGmMode,
 }: NavigationProps) {
   const onHandleItems = () => {
-    if (browserState === 0 || browserState === 2) {
+    if (browserState === 0 || browserState === 2 || browserState === 3) {
       setBrowserState(1);
     } else {
       setBrowserState(0);
@@ -62,7 +62,7 @@ function CharacterNavigation({
   };
 
   const onHandleAbilities = () => {
-    if (browserState === 0 || browserState === 1) {
+    if (browserState === 0 || browserState === 1 || browserState === 3) {
       setBrowserState(2);
     } else {
       setBrowserState(0);

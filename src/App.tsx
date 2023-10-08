@@ -29,6 +29,7 @@ import CombatSection from "./components/Sections/CombatSection";
 import DiceSection from "./components/Sections/DiceSection";
 import SearchAbilityBox from "./components/SearchAbilityBox";
 import SearchItemBox from "./components/SearchItemBox";
+import SearchCreatureBox from "./components/SearchCreatureBox";
 import { AbilityEntry, ItemEntry, CreatureEntry } from "./Types";
 import SecondaryStatsControls from "./components/StatsControls/SecondaryStatsControls";
 import EncounterSection from "./components/Sections/EncounterSection";
@@ -157,6 +158,11 @@ function App() {
                   <SearchAbilityBox
                     itemList={abilityList}
                     setList={setAbilityList}
+                    browserState={browserState}
+                  />
+                  <SearchCreatureBox
+                    creatureList={creatureList}
+                    setList={setCreatureList}
                     browserState={browserState}
                   />
                 </HeaderContainer>
