@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShield, faBolt } from "@fortawesome/free-solid-svg-icons";
+import { faShield, faBolt, faGhost } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
 import SelectorComponent from "../SelectorPage/Selector";
 const Container = styled.div`
@@ -43,18 +43,18 @@ const Navigator = styled.button<NavigatorProps>`
 interface NavigationProps {
   browserState: number;
   setBrowserState: (browserState: number) => void;
+  gmMode: boolean;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function CharacterNavigation({
   browserState,
   setBrowserState,
+  gmMode,
   setGmMode,
 }: NavigationProps) {
   const onHandleItems = () => {
-    if (browserState === 0) {
-      setBrowserState(1);
-    } else if (browserState === 2) {
+    if (browserState === 0 || browserState === 2) {
       setBrowserState(1);
     } else {
       setBrowserState(0);
@@ -62,10 +62,16 @@ function CharacterNavigation({
   };
 
   const onHandleAbilities = () => {
-    if (browserState === 0) {
+    if (browserState === 0 || browserState === 1) {
       setBrowserState(2);
-    } else if (browserState === 1) {
-      setBrowserState(2);
+    } else {
+      setBrowserState(0);
+    }
+  };
+
+  const onHandleCreatures = () => {
+    if (browserState === 0 || browserState === 1 || browserState === 2) {
+      setBrowserState(3);
     } else {
       setBrowserState(0);
     }
@@ -80,6 +86,11 @@ function CharacterNavigation({
       <Navigator $active={browserState === 2} onClick={onHandleAbilities}>
         <FontAwesomeIcon icon={faBolt} />
       </Navigator>
+      {gmMode && (
+        <Navigator $active={browserState === 3} onClick={onHandleCreatures}>
+          <FontAwesomeIcon icon={faGhost} />
+        </Navigator>
+      )}
     </Container>
   );
 }

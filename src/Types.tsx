@@ -94,6 +94,10 @@ export interface CharacterEntry {
   money: number;
 }
 
+export interface CreatureEntry {
+  name: string;
+}
+
 interface Roll {
   roll: boolean;
   mod: number;

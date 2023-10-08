@@ -12,6 +12,7 @@ import { WebSocketProvider } from "./contexts/WebSocketContext";
 import HealthBox from "./components/HealthBox";
 import StatsControls from "./components/StatsControls/StatsControls";
 import EquipmentBrowser from "./components/Modals/EquipmentBrowser";
+import CreatureBrowser from "./components/Modals/CreatureBrowser";
 
 import CharacterNavigation from "./components/NavigationControl/CharacterNavigation";
 import InventoryNavigation from "./components/NavigationControl/InventoryNavigation";
@@ -21,16 +22,16 @@ import ResourcesBox from "./components/ResourcesBox";
 import XpBox from "./components/XpBox";
 
 import CharacterNameBox from "./components/CharacterNameBox";
-import { useState, useRef, useContext } from "react";
+import { useState, useRef } from "react";
 import AbilityBrowser from "./components/Modals/AbilityBrowser";
 import AbilitySection from "./components/Sections/AbilitySection";
 import CombatSection from "./components/Sections/CombatSection";
 import DiceSection from "./components/Sections/DiceSection";
 import SearchAbilityBox from "./components/SearchAbilityBox";
 import SearchItemBox from "./components/SearchItemBox";
-import { AbilityEntry, ItemEntry } from "./Types";
+import { AbilityEntry, ItemEntry, CreatureEntry } from "./Types";
 import SecondaryStatsControls from "./components/StatsControls/SecondaryStatsControls";
-import { CharacterContext } from "./contexts/CharacterContext";
+import EncounterSection from "./components/Sections/EncounterSection";
 
 const Row = styled.div`
   display: flex;
@@ -135,8 +136,9 @@ function App() {
   const [inventoryState, setInventoryState] = useState(1);
   const [abilityList, setAbilityList] = useState<AbilityEntry[]>([]);
   const [itemList, setItemList] = useState<ItemEntry[]>([]);
-  const { character } = useContext(CharacterContext);
+  const [creatureList, setCreatureList] = useState<CreatureEntry[]>([]);
   const [gmMode, setGmMode] = useState<boolean>(true);
+  const [encounter, setEncounter] = useState<CreatureEntry[]>([]);
 
   const scrollableRef = useRef(null);
   return (
@@ -171,6 +173,12 @@ function App() {
                     setAbilityList={setAbilityList}
                     setInventoryState={setInventoryState}
                   />
+                  <CreatureBrowser
+                    browserState={browserState}
+                    creatureList={creatureList}
+                    encounter={encounter}
+                    setEncounter={setEncounter}
+                  />
                 </BrowserContainer>
                 <FooterContainer></FooterContainer>
               </Column>
@@ -179,19 +187,23 @@ function App() {
                   <>
                     <HeaderContainer>
                       <EmptyNavigation />
-
                       <CharacterNameBox />
                     </HeaderContainer>
                     <StatsContainer>
                       <CharacterNavigation
                         browserState={browserState}
                         setBrowserState={setBrowserState}
+                        gmMode={gmMode}
                         setGmMode={setGmMode}
                       />
-                      <HealthBox />
-                      <StatsControls />
+                      <ScrollContainer>
+                        <EncounterSection />
+                      </ScrollContainer>
                     </StatsContainer>
-                    <FooterCenterContainer></FooterCenterContainer>
+                    <FooterCenterContainer>
+                      <EmptyNavigation />
+                      <ResourcesBox />
+                    </FooterCenterContainer>
                   </>
                 ) : (
                   <>
@@ -204,6 +216,7 @@ function App() {
                       <CharacterNavigation
                         browserState={browserState}
                         setBrowserState={setBrowserState}
+                        gmMode={gmMode}
                         setGmMode={setGmMode}
                       />
                       <HealthBox />
