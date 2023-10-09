@@ -1,10 +1,10 @@
 import { createContext, useState } from "react";
 import { CharacterEntry, EmptyArmor, EmptyWeapon } from "../Types";
 
-const defaultCharacter: CharacterEntry = {
-  name: "",
-  id: "",
-  portrait: "",
+export const defaultCharacter: CharacterEntry = {
+  name: "Game Master",
+  id: "1a1a1a1a1a",
+  portrait: "Character7",
   details: {
     race: "",
     xp_earned: 0,

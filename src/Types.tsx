@@ -29,6 +29,10 @@ type Stats = {
   [key in StatName]: Stat;
 };
 
+export type CreatureStats = {
+  [key in StatName]: number;
+};
+
 export type ActiveKey = "attack" | "defense" | "casting" | "sneaking";
 
 export type AttackActive = {
@@ -92,6 +96,31 @@ export interface CharacterEntry {
   equipment: EquipmentEntry;
   rations: Rations;
   money: number;
+}
+
+export interface modifiedCreature {
+  hp: number;
+  pain: number;
+  attack: number;
+  damage: number;
+  damage_feat: string;
+  defense: number;
+  armor: number;
+  armor_feat: string;
+  stats: CreatureStats;
+  damage_type: string;
+  armor_type: string;
+}
+
+export interface CreatureEntry {
+  name: string;
+  race: string;
+  resistance: string;
+  damage: Record<string, string>;
+  armor: Record<string, string>;
+  stats: CreatureStats;
+  abilities: Record<string, number>;
+  loot: string;
 }
 
 interface Roll {

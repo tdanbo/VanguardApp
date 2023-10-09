@@ -47,7 +47,11 @@ const Navigator = styled.div`
   width: 50px;
 `;
 
-function SelectorComponent() {
+interface SelectorProps {
+  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function SelectorComponent({ setGmMode }: SelectorProps) {
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const [characterRace, setCharacterRace] = useState<string>("");
@@ -70,6 +74,7 @@ function SelectorComponent() {
             closeModal={handleClose}
             characterLog={characterLog}
             setCharacterLog={setCharacterLog}
+            setGmMode={setGmMode}
           />
         );
       case "createCharacter":

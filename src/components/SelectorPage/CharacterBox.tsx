@@ -4,14 +4,15 @@ import { CharacterEntry } from "../../Types";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import { useContext } from "react";
 import { CharacterPortraits } from "../../Images";
-import { deleteSessionCharacter } from "../../functions/SessionsFunctions";
-import { useWebSocket } from "../../contexts/WebSocketContext";
+// import { deleteSessionCharacter } from "../../functions/SessionsFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+// import { useWebSocket } from "../../contexts/WebSocketContext";
 interface SessionBoxProps {
   setSelector: (selector: string) => void;
   selectedCharacter: CharacterEntry;
   closeModal: () => void;
+  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Container = styled.div`
@@ -65,18 +66,24 @@ const PortraitCenter = styled.div<PortraitCenterProps>`
   height: 100%;
 `;
 
-function CharacterBox({ selectedCharacter, closeModal }: SessionBoxProps) {
-  const { sendRequest } = useWebSocket();
+function CharacterBox({
+  selectedCharacter,
+  closeModal,
+  setGmMode,
+}: SessionBoxProps) {
+  // const { sendRequest } = useWebSocket();
   const { setCharacter } = useContext(CharacterContext);
 
   const handleOnClick = () => {
+    setGmMode(false);
     setCharacter(selectedCharacter);
     closeModal();
   };
 
   const handleDeleteCharacter = async () => {
-    await deleteSessionCharacter(selectedCharacter.name, selectedCharacter.id);
-    sendRequest("characters");
+    // await deleteSessionCharacter(selectedCharacter.name, selectedCharacter.id);
+    // sendRequest("characters");
+    console.log("delete character");
   };
 
   return (

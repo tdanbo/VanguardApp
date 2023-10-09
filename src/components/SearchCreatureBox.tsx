@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../Constants";
 import styled from "styled-components";
-import { ItemEntry } from "../Types";
+import { CreatureEntry } from "../Types";
 import axios from "axios";
 import { API } from "../Constants";
 import { toTitleCase } from "../functions/UtilityFunctions";
@@ -49,40 +49,39 @@ const Button = styled.button`
 `;
 
 interface SearchItemBoxProps {
-  itemList: ItemEntry[];
-  setList: (list: ItemEntry[]) => void;
+  creatureList: CreatureEntry[];
+  setList: (list: CreatureEntry[]) => void;
   browserState: number;
 }
 
 const SearchItemBox: FC<SearchItemBoxProps> = ({
-  itemList,
+  creatureList,
   setList,
   browserState,
 }) => {
-  const [fullList, setFullList] = useState<ItemEntry[]>(itemList);
+  const [fullList, setFullList] = useState<CreatureEntry[]>(creatureList);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const generalItem: ItemEntry[] = [
+  const generalCreature: CreatureEntry[] = [
     {
-      roll: {
-        roll: false,
-        dice: 0,
-        type: "",
-        mod: 0,
-      },
-      quality: [],
-      equip: "",
-      quantity: {
-        count: 0,
-        bulk: false,
-      },
-      type: "General Good",
-      cost: "",
       name: toTitleCase(search),
-      category: "general_good",
-      id: "",
-      description: "",
+      race: "Human",
+      resistance: "Weak",
+      stats: {
+        cunning: 0,
+        discreet: 0,
+        persuasive: 0,
+        quick: 0,
+        resolute: 0,
+        strong: 0,
+        vigilant: 0,
+        accurate: 0,
+      },
+      armor: {},
+      damage: {},
+      abilities: {},
+      loot: "",
     },
   ];
 
@@ -98,7 +97,7 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get(`${API}/api/equipment`);
+        const response = await axios.get(`${API}/api/creatures`);
         setFullList(response.data);
         setLoading(false);
       } catch (error) {
@@ -110,7 +109,7 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
 
   useEffect(() => {
     if (filterItems(search).length === 0) {
-      setList(generalItem as ItemEntry[]);
+      setList(generalCreature as CreatureEntry[]);
     } else {
       setList(filterItems(search));
     }
@@ -121,13 +120,13 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
   }
 
   return (
-    <Container hidden={browserState !== 1}>
+    <Container hidden={browserState !== 3}>
       <Input
         className="flex-grow"
         onChange={(e) => setSearch(e.target.value)}
       />
       <Button>
-        {itemList.length > 0 ? (
+        {creatureList.length > 0 ? (
           <FontAwesomeIcon icon={faSearch} />
         ) : (
           <FontAwesomeIcon icon={faPlus} />

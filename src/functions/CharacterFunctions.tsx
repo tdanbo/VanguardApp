@@ -1,7 +1,7 @@
 import axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
 import { API } from "../Constants";
-import { CharacterEntry } from "../Types";
+import { CharacterEntry, modifiedCreature } from "../Types";
 import { ExceptionalStats } from "./rules/ExceptionalStats";
 import { CheckAbility } from "./ActivesFunction";
 import {
@@ -160,6 +160,48 @@ export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
   console.log("onAddAbilityItem POST");
   postSelectedCharacter(updatedCharacterStats);
   return updatedCharacterStats;
+};
+
+export const getCreatureMovement = (creature: modifiedCreature) => {
+  const movement: { [key: number]: number } = {
+    5: -10,
+    6: -5,
+    7: -5,
+    8: -5,
+    9: 0,
+    10: 0,
+    11: 0,
+    12: 5,
+    13: 5,
+    14: 5,
+    15: 10,
+  };
+
+  let speed_modifier;
+
+  if (creature.stats.quick <= 5) {
+    speed_modifier = -10;
+  } else if (creature.stats.quick >= 15) {
+    speed_modifier = 10;
+  } else {
+    speed_modifier = movement[creature.stats.quick];
+  }
+
+  let sneaking_mod = 0;
+  const armor_type = creature.armor_type;
+
+  if (armor_type === "light") {
+    sneaking_mod += -2;
+  } else if (armor_type === "medium") {
+    sneaking_mod += -3;
+  } else if (armor_type === "heavy") {
+    sneaking_mod += -4;
+  }
+
+  const base_speed_sneaking = sneaking_mod * 5;
+  const base_speed = 40 + speed_modifier;
+  const calculated_speed = base_speed + base_speed_sneaking;
+  return calculated_speed / 5;
 };
 
 export const getCharacterMovement = (character: CharacterEntry) => {
