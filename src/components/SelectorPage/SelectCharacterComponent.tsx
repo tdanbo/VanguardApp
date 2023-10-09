@@ -37,7 +37,7 @@ function SelectCharacterComponent({
 }: LoginProps) {
   const { session } = useContext(SessionContext);
   const { charactersResponse } = useWebSocket();
-  const { character, setCharacter } = useContext(CharacterContext);
+  const { setCharacter } = useContext(CharacterContext);
 
   useEffect(() => {
     getCharacters(session.id).then((response) => {

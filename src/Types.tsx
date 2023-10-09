@@ -98,6 +98,20 @@ export interface CharacterEntry {
   money: number;
 }
 
+export interface modifiedCreature {
+  hp: number;
+  pain: number;
+  attack: number;
+  damage: number;
+  damage_feat: string;
+  defense: number;
+  armor: number;
+  armor_feat: string;
+  stats: CreatureStats;
+  damage_type: string;
+  armor_type: string;
+}
+
 export interface CreatureEntry {
   name: string;
   race: string;

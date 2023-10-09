@@ -12,7 +12,7 @@ interface NavigationProps {
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function SelectorNavigation({ gmMode, setGmMode }: NavigationProps) {
+function SelectorNavigation({ setGmMode }: NavigationProps) {
   return (
     <Container>
       <SelectorComponent setGmMode={setGmMode} />

@@ -4,10 +4,10 @@ import { CharacterEntry } from "../../Types";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import { useContext } from "react";
 import { CharacterPortraits } from "../../Images";
-import { deleteSessionCharacter } from "../../functions/SessionsFunctions";
-import { useWebSocket } from "../../contexts/WebSocketContext";
+// import { deleteSessionCharacter } from "../../functions/SessionsFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+// import { useWebSocket } from "../../contexts/WebSocketContext";
 interface SessionBoxProps {
   setSelector: (selector: string) => void;
   selectedCharacter: CharacterEntry;
@@ -71,7 +71,7 @@ function CharacterBox({
   closeModal,
   setGmMode,
 }: SessionBoxProps) {
-  const { sendRequest } = useWebSocket();
+  // const { sendRequest } = useWebSocket();
   const { setCharacter } = useContext(CharacterContext);
 
   const handleOnClick = () => {
@@ -81,8 +81,9 @@ function CharacterBox({
   };
 
   const handleDeleteCharacter = async () => {
-    await deleteSessionCharacter(selectedCharacter.name, selectedCharacter.id);
-    sendRequest("characters");
+    // await deleteSessionCharacter(selectedCharacter.name, selectedCharacter.id);
+    // sendRequest("characters");
+    console.log("delete character");
   };
 
   return (
@@ -93,9 +94,9 @@ function CharacterBox({
       >
         {selectedCharacter.name}
       </PortraitCenter>
-      {/* <RightControl onClick={handleDeleteCharacter}>
+      <RightControl onClick={handleDeleteCharacter}>
         <FontAwesomeIcon icon={faTrash} />
-      </RightControl> */}
+      </RightControl>
     </Container>
   );
 }

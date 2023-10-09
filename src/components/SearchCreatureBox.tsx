@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../Constants";
 import styled from "styled-components";
-import { CreatureEntry, ItemEntry } from "../Types";
+import { CreatureEntry } from "../Types";
 import axios from "axios";
 import { API } from "../Constants";
 import { toTitleCase } from "../functions/UtilityFunctions";
@@ -66,6 +66,8 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
   const generalCreature: CreatureEntry[] = [
     {
       name: toTitleCase(search),
+      race: "Human",
+      resistance: "Weak",
       stats: {
         cunning: 0,
         discreet: 0,
@@ -76,6 +78,10 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
         vigilant: 0,
         accurate: 0,
       },
+      armor: {},
+      damage: {},
+      abilities: {},
+      loot: "",
     },
   ];
 

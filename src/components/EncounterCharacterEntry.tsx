@@ -41,14 +41,6 @@ const ColorBlock = styled.div<ColorTypeProps>`
   border-radius: ${Constants.BORDER_RADIUS} 0px 0px ${Constants.BORDER_RADIUS};
 `;
 
-const InnnerContainer = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
 const NameBox = styled.div`
   display: flex;
   flex-grow: 1;

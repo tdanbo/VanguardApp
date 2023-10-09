@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { CharacterEntry, CreatureEntry } from "../Types";
+import { AbilityEntry, CreatureEntry } from "../Types";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,9 +10,16 @@ import { IronFist } from "../functions/CreatureRules/IronFist";
 import { Feats } from "../functions/CreatureRules/Feats";
 import { ExceptionalStats } from "../functions/CreatureRules/ExceptionalStats";
 import { cloneDeep } from "lodash";
+import { getAbility } from "../functions/UtilityFunctions";
+import AbilityEntryItem from "./AbilityEntryItem";
+import { getCreatureMovement } from "../functions/CharacterFunctions";
+import { useEffect, useState } from "react";
 import {
+  faCoins,
   faCrosshairs,
+  faHeart,
   faShield,
+  faSkull,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -24,6 +31,29 @@ interface PortraitProps {
   src: string;
 }
 
+const MainContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+const DeadOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(19, 23, 22, 0.95);
+  pointer-events: none; // This makes it non-blocking for clicks
+  z-index: 10; // To ensure it's above the other content
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 45px;
+  color: rgba(255, 255, 255, 0.1);
+  border-radius: ${Constants.BORDER_RADIUS};
+`;
+
 const Container = styled.div<PortraitProps>`
   display: flex;
   flex-grow: 1;
@@ -31,8 +61,8 @@ const Container = styled.div<PortraitProps>`
   justify-content: center;
   align-items: center;
   border-radius: ${Constants.BORDER_RADIUS};
-  max-height: 100px;
-  min-height: 100px;
+  max-height: 75px;
+  min-height: 75px;
   color: ${Constants.WIDGET_PRIMARY_FONT};
   background: linear-gradient(
       rgba(${Constants.COMBAT_BACKGROUND}, 0.925),
@@ -45,6 +75,15 @@ const Container = styled.div<PortraitProps>`
   gap: 10px;
   padding-top: 2px;
   padding-bottom: 2px;
+`;
+
+const AbilityContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 5px;
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
 `;
 
 const ColorBlock = styled.div<ColorTypeProps>`
@@ -76,14 +115,6 @@ const DeleteBlock = styled.div`
   color: ${Constants.WIDGET_BACKGROUND};
 `;
 
-const InnnerContainer = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
 const NameBox = styled.div`
   display: flex;
   flex-grow: 1;
@@ -94,39 +125,6 @@ const NameBox = styled.div`
   font-weight: bold;
   color: ${Constants.BRIGHT_RED};
   text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
-`;
-
-const HpBox = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  font-size: 20px;
-  font-weight: bold;
-  color: ${Constants.WIDGET_PRIMARY_FONT};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  max-width: 45px;
-  height: 45px;
-`;
-
-const PainBox = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 18px;
-  font-weight: bold;
-  color: ${Constants.WIDGET_PRIMARY_FONT};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  max-width: 45px;
-  height: 45px;
 `;
 
 const ActiveStat = styled.div`
@@ -143,6 +141,7 @@ const ActiveStat = styled.div`
   border: 1px solid ${Constants.WIDGET_BORDER};
   min-width: 45px;
   height: 40px;
+  user-select: none;
 `;
 
 const NameContainer = styled.div`
@@ -170,6 +169,32 @@ const ActiveSub = styled.div`
   gap: 5px;
   margin: 5px;
   color: ${Constants.WIDGET_SECONDARY_FONT};
+`;
+
+const ActiveArmorSub = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  gap: 5px;
+  margin: 5px;
+  color: ${Constants.BLUE};
+  font-weight: bold;
+  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
+`;
+
+const ActiveDamageSub = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  gap: 5px;
+  margin: 5px;
+  color: ${Constants.BRIGHT_RED};
+  font-weight: bold;
+  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
 `;
 
 const ModifierConverter: Record<number, number> = {
@@ -211,6 +236,7 @@ interface EncounterBoxProps {
 
 function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
   console.log(creature.stats.strong);
+  const [abilities, setAbilities] = useState<AbilityEntry[]>([]);
   const creatureClone = cloneDeep(creature);
 
   ExceptionalStats(creatureClone);
@@ -226,6 +252,47 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
   const damage = DamageConverter[damageType];
   const armor = ArmorConverter[armorType];
 
+  const getAbilities = async (creatureClone: CreatureEntry) => {
+    const integrated = [
+      "Robust",
+      "Armored",
+      "Iron Fist",
+      "Natural Weapon",
+      "Exceptionally Strong",
+    ];
+    const abilities = [];
+
+    for (const [abilityName, value] of Object.entries(
+      creatureClone.abilities,
+    )) {
+      if (integrated.includes(abilityName)) {
+        continue;
+      }
+      const ability = await getAbility(abilityName);
+      if (value === 1) {
+        ability.level = "Novice";
+      } else if (value === 2) {
+        ability.level = "Adept";
+      } else if (value === 3) {
+        ability.level = "Master";
+      }
+      abilities.push(ability);
+    }
+
+    const abilityList = await Promise.all(abilities);
+    console.log(abilityList);
+    return abilityList;
+  };
+
+  useEffect(() => {
+    const fetchAbilities = async () => {
+      const fetchedAbilities = await getAbilities(creatureClone);
+      setAbilities(fetchedAbilities);
+    };
+
+    fetchAbilities();
+  }, [creature]);
+
   const modifiedCreature = {
     hp: hp,
     pain: pain,
@@ -238,6 +305,7 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
     armor_type: armorType,
     armor_feat: armorFeat,
     stats: creatureClone.stats,
+    abilities: getAbilities(creatureClone),
   };
 
   // UpdatedAbilities
@@ -248,43 +316,99 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
   NaturalWeapon(modifiedCreature, creature.abilities);
 
   console.log(creature);
+
+  const [currentHp, setCurrentHp] = useState<number>(hp);
+
+  const handleAdjustHp = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault(); // prevent the context menu from appearing on right-click
+
+    if (event.button === 0) {
+      // left-click
+      setCurrentHp((prevHp) => Math.max(prevHp - 1, 0)); // decrease HP, but don't go below 0
+    } else if (event.button === 2) {
+      // right-click
+      setCurrentHp((prevHp) => Math.min(prevHp + 1, hp)); // increase HP, but don't go above initial HP
+    }
+  };
+
+  const formatNumber = (num: number): string => {
+    if (num > 0) return `+${num}`;
+    return `${num}`;
+  };
+
   return (
-    <Container src={CharacterPortraits["Character66"]}>
-      <ColorBlock $rgb={Constants.BRIGHT_RED} />
-      <ActiveBox>
-        <ActiveStat>{modifiedCreature.hp}</ActiveStat>
-        <ActiveSub>HP</ActiveSub>
-      </ActiveBox>
-      <ActiveBox>
-        <ActiveStat>{modifiedCreature.pain}</ActiveStat>
-        <ActiveSub>PAIN</ActiveSub>
-      </ActiveBox>
-      <NameContainer>
-        <NameBox>{creature.name}</NameBox>
-        <ActiveSub>
-          {creature.resistance} {creature.race}
-        </ActiveSub>
-      </NameContainer>
+    <MainContainer>
+      {currentHp === 0 && (
+        <DeadOverlay>
+          <FontAwesomeIcon icon={faSkull} />
+        </DeadOverlay>
+      )}
+      <Container src={CharacterPortraits["Character66"]}>
+        <ColorBlock $rgb={Constants.BRIGHT_RED} />
+        <ActiveBox>
+          <ActiveStat
+            title={`Pain Threshold ${modifiedCreature.pain}`}
+            onClick={handleAdjustHp}
+            onContextMenu={handleAdjustHp}
+          >
+            {currentHp}
+          </ActiveStat>
+          <ActiveSub>
+            <FontAwesomeIcon icon={faHeart} />
+            HP
+          </ActiveSub>
+        </ActiveBox>
+        <ActiveBox>
+          <ActiveStat>{getCreatureMovement(modifiedCreature)}</ActiveStat>
+          <ActiveSub>Move</ActiveSub>
+        </ActiveBox>
+        <NameContainer>
+          <NameBox>{creature.name}</NameBox>
+          <ActiveSub>
+            {creature.resistance} {creature.race}{" "}
+            <FontAwesomeIcon icon={faCoins} title={creature.loot} />
+          </ActiveSub>
+        </NameContainer>
 
-      <ActiveBox>
-        <ActiveStat>{modifiedCreature.attack}</ActiveStat>
-        <ActiveSub>
-          <FontAwesomeIcon icon={faCrosshairs} />
-          {modifiedCreature.damage}
-        </ActiveSub>
-      </ActiveBox>
+        <ActiveBox>
+          <ActiveStat
+            title={`When this creature is attacking ${formatNumber(
+              modifiedCreature.attack,
+            )} to targets defense`}
+          >
+            {formatNumber(modifiedCreature.attack)}
+          </ActiveStat>
+          <ActiveDamageSub>
+            <FontAwesomeIcon icon={faCrosshairs} />
+            {modifiedCreature.damage}
+          </ActiveDamageSub>
+        </ActiveBox>
 
-      <ActiveBox>
-        <ActiveStat>{modifiedCreature.defense}</ActiveStat>
-        <ActiveSub>
-          <FontAwesomeIcon icon={faShield} />
-          {modifiedCreature.armor}
-        </ActiveSub>
-      </ActiveBox>
-      <DeleteBlock>
-        <FontAwesomeIcon icon={faXmark} />
-      </DeleteBlock>
-    </Container>
+        <ActiveBox>
+          <ActiveStat
+            title={`When this creature is being attacked ${formatNumber(
+              modifiedCreature.defense,
+            )} to targets attack`}
+          >
+            {formatNumber(modifiedCreature.defense)}
+          </ActiveStat>
+          <ActiveArmorSub>
+            <FontAwesomeIcon icon={faShield} />
+            {modifiedCreature.armor}
+          </ActiveArmorSub>
+        </ActiveBox>
+        <DeleteBlock>
+          <FontAwesomeIcon icon={faXmark} />
+        </DeleteBlock>
+      </Container>
+      <AbilityContainer>
+        {abilities.map((ability, index) => {
+          return (
+            <AbilityEntryItem key={index} ability={ability} browser={false} />
+          );
+        })}
+      </AbilityContainer>
+    </MainContainer>
   );
 }
 

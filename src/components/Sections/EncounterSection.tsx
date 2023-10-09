@@ -17,9 +17,42 @@ interface EncounterSectionProps {
   encounter: CreatureEntry[];
 }
 
+type ProcessedCreature = CreatureEntry & { name: string };
+
+function processEncounter(encounter: CreatureEntry[]): ProcessedCreature[] {
+  const nameCount: { [key: string]: number } = {};
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+  return encounter.map((creature) => {
+    const { name } = creature;
+
+    if (!nameCount[name]) {
+      nameCount[name] = 1;
+      return creature; // Leave the first creature unchanged
+    } else {
+      // The following logic will append a letter even to the first duplicate creature
+      let suffix = 0;
+      let newName = `${name} ${alphabet[suffix]}`;
+
+      while (nameCount[newName]) {
+        suffix++;
+        newName = `${name} ${alphabet[suffix]}`;
+      }
+
+      nameCount[name]++;
+      nameCount[newName] = 1;
+
+      return {
+        ...creature,
+        name: newName,
+      };
+    }
+  });
+}
 function EncounterSection({ encounter }: EncounterSectionProps) {
   const { session } = useContext(SessionContext);
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
+  const processedEncounter = processEncounter(encounter);
 
   useEffect(() => {
     getCharacters(session.id).then((response) => {
@@ -28,7 +61,7 @@ function EncounterSection({ encounter }: EncounterSectionProps) {
   }, []);
 
   // Combine characterLog and encounter into one list
-  const combinedList = [...characterLog, ...encounter];
+  const combinedList = [...characterLog, ...processedEncounter];
 
   const sortedInventory = combinedList.sort((a, b) => {
     // Determine the type and get the quick values

@@ -1,19 +1,7 @@
-import { CreatureStats } from "../../Types";
-
-interface modifiedCreatureProps {
-  hp: number;
-  pain: number;
-  attack: number;
-  damage: number;
-  damage_feat: string;
-  defense: number;
-  armor: number;
-  armor_feat: string;
-  stats: CreatureStats;
-}
+import { modifiedCreature } from "../../Types";
 
 export const Armored = (
-  modifiedCreature: modifiedCreatureProps,
+  modifiedCreature: modifiedCreature,
   creatureAbilities: Record<string, number>,
 ) => {
   console.log("Armored");

@@ -1,20 +1,6 @@
-import { CreatureStats } from "../../Types";
+import { modifiedCreature } from "../../Types";
 
-interface modifiedCreatureProps {
-  hp: number;
-  pain: number;
-  attack: number;
-  damage: number;
-  damage_type: string;
-  damage_feat: string;
-  defense: number;
-  armor: number;
-  armor_type: string;
-  armor_feat: string;
-  stats: CreatureStats;
-}
-
-export const Feats = (modifiedCreature: modifiedCreatureProps) => {
+export const Feats = (modifiedCreature: modifiedCreature) => {
   console.log(modifiedCreature.armor_feat);
 
   if (modifiedCreature.armor_type === "light") {
