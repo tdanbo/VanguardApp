@@ -52,13 +52,13 @@ const InnnerContainer = styled.div`
 const NameBox = styled.div`
   display: flex;
   flex-grow: 1;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  max-width: 200px;
   font-size: 18px;
   font-weight: bold;
-  color: ${Constants.WIDGET_PRIMARY_FONT};
+  color: ${Constants.BLUE};
+  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
 `;
 
 interface EncounterBoxProps {
@@ -69,7 +69,6 @@ function EncounterCharacterEntry({ character }: EncounterBoxProps) {
   return (
     <Container src={CharacterPortraits[character.portrait]}>
       <ColorBlock $rgb={Constants.BLUE} />
-      <InnnerContainer></InnnerContainer>
       <NameBox>{character.name}</NameBox>
     </Container>
   );

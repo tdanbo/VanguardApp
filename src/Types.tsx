@@ -29,7 +29,7 @@ type Stats = {
   [key in StatName]: Stat;
 };
 
-type CreatureStats = {
+export type CreatureStats = {
   [key in StatName]: number;
 };
 
@@ -100,7 +100,13 @@ export interface CharacterEntry {
 
 export interface CreatureEntry {
   name: string;
+  race: string;
+  resistance: string;
+  damage: Record<string, string>;
+  armor: Record<string, string>;
   stats: CreatureStats;
+  abilities: Record<string, number>;
+  loot: string;
 }
 
 interface Roll {

@@ -258,17 +258,14 @@ function CreatureEntryItem({
           className={"button-hover"}
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >
-          {expanded ? "-" : "+"}
+          {/* {expanded ? "-" : "+"} */}
         </ExpandButten>
         <NameContainer>
           <CreatureName>{creature.name}</CreatureName>
-          {/* <AbilityDetail>
-            {ability.tradition === ""
-              ? ability.type
-              : `${ability.type}, ${ability.tradition}`}
-          </AbilityDetail> */}
+          <AbilityDetail>
+            {creature.resistance} {creature.race}
+          </AbilityDetail>
         </NameContainer>
-        <Divider />
         {browser ? (
           <AddButton className={"button-hover"} onClick={AddEncounterCreature}>
             +
