@@ -1,5 +1,10 @@
 import styled from "styled-components";
-import { AbilityEntry, CreatureEntry } from "../Types";
+import {
+  AbilityEntry,
+  CreatureEntry,
+  CreatureStats,
+  modifiedCreature,
+} from "../Types";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,6 +19,7 @@ import { getAbility } from "../functions/UtilityFunctions";
 import AbilityEntryItem from "./AbilityEntryItem";
 import { getCreatureMovement } from "../functions/CharacterFunctions";
 import { useEffect, useState } from "react";
+import { Berserker } from "../functions/CreatureRules/Berserker";
 import {
   faCoins,
   faCrosshairs,
@@ -234,6 +240,23 @@ interface EncounterBoxProps {
   creature: CreatureEntry;
 }
 
+function createTitleString(creature: modifiedCreature): string {
+  let titleString = "";
+
+  // Loop through each stat and append its name, value, and modifier to the title string
+  for (const statName in creature.stats) {
+    if (creature.stats.hasOwnProperty(statName)) {
+      const value = creature.stats[statName as keyof CreatureStats];
+      const modifier = ModifierConverter[value];
+      titleString += `${statName}: ${value} (${
+        modifier >= 0 ? "+" : ""
+      }${modifier})\n`;
+    }
+  }
+
+  return titleString.trim(); // trim() is used to remove the extra newline at the end
+}
+
 function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
   console.log(creature.stats.strong);
   const [abilities, setAbilities] = useState<AbilityEntry[]>([]);
@@ -259,6 +282,7 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
       "Iron Fist",
       "Natural Weapon",
       "Exceptionally Strong",
+      "Berserker",
     ];
     const abilities = [];
 
@@ -314,7 +338,7 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
   Armored(modifiedCreature, creature.abilities);
   IronFist(modifiedCreature, creature.abilities);
   NaturalWeapon(modifiedCreature, creature.abilities);
-
+  Berserker(modifiedCreature, creature.abilities);
   console.log(creature);
 
   const [currentHp, setCurrentHp] = useState<number>(hp);
@@ -363,7 +387,9 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
           <ActiveSub>Move</ActiveSub>
         </ActiveBox>
         <NameContainer>
-          <NameBox>{creature.name}</NameBox>
+          <NameBox title={createTitleString(modifiedCreature)}>
+            {creature.name}
+          </NameBox>
           <ActiveSub>
             {creature.resistance} {creature.race}{" "}
             <FontAwesomeIcon icon={faCoins} title={creature.loot} />
