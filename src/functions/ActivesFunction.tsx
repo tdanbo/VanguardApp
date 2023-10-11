@@ -22,7 +22,7 @@ export const UpdateActives = (character: CharacterEntry) => {
   characterClone.actives.casting.value =
     characterClone.stats[characterClone.actives.casting.stat].value;
   characterClone.actives.sneaking.value =
-    characterClone.stats[characterClone.actives.casting.stat].value;
+    characterClone.stats[characterClone.actives.sneaking.stat].value;
 
   characterClone.actives.attack.dice1 = characterClone.equipment.main.roll.dice;
   characterClone.actives.attack.dice2 = characterClone.equipment.off.roll.dice;
