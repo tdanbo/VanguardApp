@@ -35,6 +35,7 @@ import { AbilityEntry, ItemEntry, CreatureEntry } from "./Types";
 import SecondaryStatsControls from "./components/StatsControls/SecondaryStatsControls";
 import EncounterSection from "./components/Sections/EncounterSection";
 import ResetEncounter from "./components/ResetEncounter";
+import GenerateEncounter from "./components/Modals/GenerateEncounter";
 
 const Row = styled.div`
   display: flex;
@@ -199,6 +200,7 @@ function App() {
                     encounter={encounter}
                     setEncounter={setEncounter}
                   />
+                  <GenerateEncounter browserState={browserState} />
                 </BrowserContainer>
                 <FooterContainer></FooterContainer>
               </Column>
