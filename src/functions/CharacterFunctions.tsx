@@ -188,14 +188,16 @@ export const getCreatureMovement = (creature: modifiedCreature) => {
   }
 
   let sneaking_mod = 0;
-  const armor_type = creature.armor_type;
-
-  if (armor_type === "light") {
-    sneaking_mod += -2;
-  } else if (armor_type === "medium") {
-    sneaking_mod += -3;
-  } else if (armor_type === "heavy") {
-    sneaking_mod += -4;
+  for (const armor of creature.armor.quality) {
+    if (armor === "Impeding 1") {
+      sneaking_mod += -1;
+    } else if (armor === "Impeding 2") {
+      sneaking_mod += -2;
+    } else if (armor === "Impeding 3") {
+      sneaking_mod += -3;
+    } else if (armor === "Impeding 4") {
+      sneaking_mod += -4;
+    }
   }
 
   const base_speed_sneaking = sneaking_mod * 5;

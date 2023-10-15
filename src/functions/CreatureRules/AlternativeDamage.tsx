@@ -1,16 +1,16 @@
 import { modifiedCreature } from "../../Types";
 import { cloneDeep } from "lodash";
-export const NaturalWeapon = (
+export const AlternativeDamage = (
   modifiedCreature: modifiedCreature,
   creatureAbilities: Record<string, number>,
 ) => {
   const clonedCreature = cloneDeep(modifiedCreature);
   let damage = 0;
-  if (creatureAbilities["Natural Weapon"] === 1) {
+  if (creatureAbilities["Alternative Damage"] === 1) {
     damage += 1;
-  } else if (creatureAbilities["Natural Weapon"] === 2) {
+  } else if (creatureAbilities["Alternative Damage"] === 2) {
     damage += 2;
-  } else if (creatureAbilities["Natural Weapon"] === 3) {
+  } else if (creatureAbilities["Alternative Damage"] === 3) {
     damage += 3;
   }
 

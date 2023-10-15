@@ -1,17 +1,21 @@
 import { modifiedCreature } from "../../Types";
-
+import { cloneDeep } from "lodash";
 export const Armored = (
   modifiedCreature: modifiedCreature,
   creatureAbilities: Record<string, number>,
 ) => {
-  console.log("Armored");
+  const clonedCreature = cloneDeep(modifiedCreature);
+
+  let armor = 0;
   if (creatureAbilities["Armored"] === 1) {
-    modifiedCreature.armor += 2;
+    armor += 2;
   } else if (creatureAbilities["Armored"] === 2) {
-    modifiedCreature.armor += 3;
+    armor += 3;
   } else if (creatureAbilities["Armored"] === 3) {
-    modifiedCreature.armor += 4;
+    armor += 4;
   }
 
-  return modifiedCreature;
+  clonedCreature.armor.roll.mod += armor;
+
+  return clonedCreature;
 };

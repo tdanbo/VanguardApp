@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {
   AbilityEntry,
+  ItemEntry,
   CreatureEntry,
   CreatureStats,
   modifiedCreature,
@@ -15,19 +16,27 @@ import { IronFist } from "../functions/CreatureRules/IronFist";
 import { Feats } from "../functions/CreatureRules/Feats";
 import { ExceptionalStats } from "../functions/CreatureRules/ExceptionalStats";
 import { cloneDeep } from "lodash";
-import { getAbility } from "../functions/UtilityFunctions";
+import { getAbility, getItem } from "../functions/UtilityFunctions";
 import AbilityEntryItem from "./AbilityEntryItem";
 import { getCreatureMovement } from "../functions/CharacterFunctions";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { Berserker } from "../functions/CreatureRules/Berserker";
+import { Marksman } from "../functions/CreatureRules/Marksman";
+import { SixthSense } from "../functions/CreatureRules/SixthSense";
+import { PolearmMastery } from "../functions/CreatureRules/PolearmMastery";
+import { ManAtArms } from "../functions/CreatureRules/ManAtArms";
+import { AlternativeDamage } from "../functions/CreatureRules/AlternativeDamage";
+import { ShieldFighter } from "../functions/CreatureRules/ShieldFighter";
 import {
   faCoins,
-  faCrosshairs,
   faHeart,
   faShield,
   faSkull,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
+
+import Icon from "@mdi/react";
+import { mdiSword, mdiSpear, mdiBowArrow } from "@mdi/js";
 
 interface ColorTypeProps {
   $rgb: string;
@@ -166,6 +175,12 @@ const ActiveBox = styled.div`
   flex-direction: column;
 `;
 
+const ActiveEmptyBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-width: 48px;
+`;
+
 const ActiveSub = styled.div`
   display: flex;
   flex-direction: row;
@@ -221,27 +236,14 @@ const ModifierConverter: Record<number, number> = {
   3: 7,
 };
 
-const DamageConverter: Record<string, number> = {
-  natural: 2,
-  short: 3,
-  onehand: 4,
-  long: 4,
-  heavy: 5,
-};
-
-const ArmorConverter: Record<string, number> = {
-  natural: 0,
-  light: 2,
-  medium: 3,
-  heavy: 4,
-};
-
 interface EncounterBoxProps {
   creature: CreatureEntry;
 }
 
 function createTitleString(creature: modifiedCreature): string {
   let titleString = "";
+
+  titleString += `${getCreatureMovement(creature)} Movement\n\n`;
 
   // Loop through each stat and append its name, value, and modifier to the title string
   for (const statName in creature.stats) {
@@ -258,22 +260,15 @@ function createTitleString(creature: modifiedCreature): string {
 }
 
 function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
-  console.log(creature.stats.strong);
-  const [abilities, setAbilities] = useState<AbilityEntry[]>([]);
+  console.log("Rendering EncounterCreatureEntry");
   const creatureClone = cloneDeep(creature);
-
   ExceptionalStats(creatureClone);
-
   const hp = Math.max(creatureClone.stats.strong, 10);
   const pain = Math.ceil(creatureClone.stats.strong / 2);
   const attack = ModifierConverter[creatureClone.stats.accurate];
   const defense = ModifierConverter[creatureClone.stats.quick];
-
-  const [damageType, damageFeat] = Object.entries(creatureClone.damage)[0];
-  const [armorType, armorFeat] = Object.entries(creatureClone.armor)[0];
-
-  const damage = DamageConverter[damageType];
-  const armor = ArmorConverter[armorType];
+  const [currentHp, setCurrentHp] = useState<number>(hp);
+  const [modifiedCreature, setModifiedCreature] = useState<modifiedCreature>();
 
   const getAbilities = async (creatureClone: CreatureEntry) => {
     const integrated = [
@@ -283,6 +278,7 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
       "Natural Weapon",
       "Exceptionally Strong",
       "Berserker",
+      "Sixth Sense",
     ];
     const abilities = [];
 
@@ -304,44 +300,85 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
     }
 
     const abilityList = await Promise.all(abilities);
-    console.log(abilityList);
     return abilityList;
   };
 
-  useEffect(() => {
-    const fetchAbilities = async () => {
-      const fetchedAbilities = await getAbilities(creatureClone);
-      setAbilities(fetchedAbilities);
-    };
-
-    fetchAbilities();
-  }, [creature]);
-
-  const modifiedCreature = {
-    hp: hp,
-    pain: pain,
-    attack: attack,
-    damage: damage,
-    damage_type: damageType,
-    damage_feat: damageFeat,
-    defense: defense,
-    armor: armor,
-    armor_type: armorType,
-    armor_feat: armorFeat,
-    stats: creatureClone.stats,
-    abilities: getAbilities(creatureClone),
+  const getWeapons = async (creatureClone: CreatureEntry) => {
+    const weapons = [];
+    for (const weapon of creatureClone.weapon) {
+      const fetchedWeapon = await getItem(weapon);
+      weapons.push(fetchedWeapon);
+    }
+    const weaponList = await Promise.all(weapons);
+    return weaponList;
   };
 
-  // UpdatedAbilities
-  Feats(modifiedCreature);
-  Robust(modifiedCreature, creature.abilities);
-  Armored(modifiedCreature, creature.abilities);
-  IronFist(modifiedCreature, creature.abilities);
-  NaturalWeapon(modifiedCreature, creature.abilities);
-  Berserker(modifiedCreature, creature.abilities);
-  console.log(creature);
+  const getArmor = async (creatureClone: CreatureEntry) => {
+    const fetchedArmor = await getItem(creatureClone.armor);
+    return fetchedArmor;
+  };
 
-  const [currentHp, setCurrentHp] = useState<number>(hp);
+  const getModifiedCreature = async (creatureClone: CreatureEntry) => {
+    const fetchedArmor: ItemEntry = await getArmor(creatureClone);
+    const fetchedWeapons: ItemEntry[] = await getWeapons(creatureClone);
+    const fetchedAbilities: AbilityEntry[] = await getAbilities(creatureClone);
+
+    return {
+      hp: hp,
+      pain: pain,
+      attack: attack,
+      alt_attack: attack,
+      weapon: fetchedWeapons,
+      armor: fetchedArmor,
+      defense: defense,
+      stats: creatureClone.stats,
+      abilities: fetchedAbilities,
+    };
+  };
+
+  useEffect(() => {
+    console.log("Fetching modified creature");
+    const fetchModifiedCreature = async () => {
+      const result = await getModifiedCreature(creatureClone);
+      setModifiedCreature(result);
+    };
+
+    fetchModifiedCreature();
+  }, []);
+
+  // UpdatedAbilities
+  if (!modifiedCreature) {
+    return <div>Loading...</div>;
+  }
+
+  if (!modifiedCreature.armor) {
+    return <div>Error: Missing armor!</div>;
+  }
+
+  if (modifiedCreature.weapon.some((weapon) => !weapon)) {
+    return <div>Error: Missing weapon!</div>;
+  }
+
+  const feats = Feats(modifiedCreature);
+  const robust = Robust(feats, creatureClone.abilities);
+  const armored = Armored(robust, creatureClone.abilities);
+  const ironfist = IronFist(armored, creatureClone.abilities);
+  const naturalweapon = NaturalWeapon(ironfist, creatureClone.abilities);
+  const berserker = Berserker(naturalweapon, creatureClone.abilities);
+  const marksman = Marksman(berserker, creatureClone.abilities);
+  const sixthsense = SixthSense(marksman, creatureClone.abilities);
+  const polearmmastery = PolearmMastery(sixthsense, creatureClone.abilities);
+  const manatarms = ManAtArms(polearmmastery, creatureClone.abilities);
+
+  const alternativedamage = AlternativeDamage(
+    manatarms,
+    creatureClone.abilities,
+  );
+  const shieldfighter = ShieldFighter(
+    alternativedamage,
+    creatureClone.abilities,
+  );
+  const finalCreature = shieldfighter;
 
   const handleAdjustHp = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault(); // prevent the context menu from appearing on right-click
@@ -360,6 +397,8 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
     return `${num}`;
   };
 
+  console.log(finalCreature);
+
   return (
     <MainContainer>
       {currentHp === 0 && (
@@ -371,7 +410,7 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
         <ColorBlock $rgb={Constants.BRIGHT_RED} />
         <ActiveBox>
           <ActiveStat
-            title={`Pain Threshold ${modifiedCreature.pain}`}
+            title={`Pain Threshold ${finalCreature.pain}`}
             onClick={handleAdjustHp}
             onContextMenu={handleAdjustHp}
           >
@@ -383,11 +422,21 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
           </ActiveSub>
         </ActiveBox>
         <ActiveBox>
-          <ActiveStat>{getCreatureMovement(modifiedCreature)}</ActiveStat>
-          <ActiveSub>Move</ActiveSub>
+          <ActiveStat
+            title={`When this creature is being attacked ${formatNumber(
+              finalCreature.defense,
+            )} to targets attack`}
+          >
+            {formatNumber(finalCreature.defense)}
+          </ActiveStat>
+          <ActiveArmorSub>
+            <FontAwesomeIcon icon={faShield} />
+            {Math.ceil(finalCreature.armor.roll.dice / 2) +
+              finalCreature.armor.roll.mod}
+          </ActiveArmorSub>
         </ActiveBox>
         <NameContainer>
-          <NameBox title={createTitleString(modifiedCreature)}>
+          <NameBox title={createTitleString(finalCreature)}>
             {creature.name}
           </NameBox>
           <ActiveSub>
@@ -395,40 +444,53 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
             <FontAwesomeIcon icon={faCoins} title={creature.loot} />
           </ActiveSub>
         </NameContainer>
-
-        <ActiveBox>
-          <ActiveStat
-            title={`When this creature is attacking ${formatNumber(
-              modifiedCreature.attack,
-            )} to targets defense`}
-          >
-            {formatNumber(modifiedCreature.attack)}
-          </ActiveStat>
-          <ActiveDamageSub>
-            <FontAwesomeIcon icon={faCrosshairs} />
-            {modifiedCreature.damage}
-          </ActiveDamageSub>
-        </ActiveBox>
-
-        <ActiveBox>
-          <ActiveStat
-            title={`When this creature is being attacked ${formatNumber(
-              modifiedCreature.defense,
-            )} to targets attack`}
-          >
-            {formatNumber(modifiedCreature.defense)}
-          </ActiveStat>
-          <ActiveArmorSub>
-            <FontAwesomeIcon icon={faShield} />
-            {modifiedCreature.armor}
-          </ActiveArmorSub>
-        </ActiveBox>
+        {finalCreature.weapon.length < 2 && <ActiveEmptyBox />}
+        {finalCreature.weapon.map((weapon, index) => {
+          return (
+            <ActiveBox>
+              <ActiveStat
+                title={`When this creature is attacking ${formatNumber(
+                  index === 0 ? finalCreature.attack : finalCreature.alt_attack,
+                )} to targets defense`}
+              >
+                {formatNumber(
+                  index === 0 ? finalCreature.attack : finalCreature.alt_attack,
+                )}
+              </ActiveStat>
+              <ActiveDamageSub key={index}>
+                {weapon.type === "Ranged Weapon" ? (
+                  <Icon
+                    path={mdiBowArrow}
+                    size={0.75}
+                    title={"Ranged Weapon"}
+                    color={Constants.BRIGHT_RED}
+                  />
+                ) : weapon.type === "Long Weapon" ? (
+                  <Icon
+                    path={mdiSpear}
+                    size={0.75}
+                    title={"Long Weapon"}
+                    color={Constants.BRIGHT_RED}
+                  />
+                ) : (
+                  <Icon
+                    path={mdiSword}
+                    size={0.75}
+                    title={"Melee Weapon"}
+                    color={Constants.BRIGHT_RED}
+                  />
+                )}
+                {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
+              </ActiveDamageSub>
+            </ActiveBox>
+          );
+        })}
         <DeleteBlock>
           <FontAwesomeIcon icon={faXmark} />
         </DeleteBlock>
       </Container>
       <AbilityContainer>
-        {abilities.map((ability, index) => {
+        {finalCreature.abilities.map((ability, index) => {
           return (
             <AbilityEntryItem key={index} ability={ability} browser={false} />
           );
@@ -438,4 +500,4 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
   );
 }
 
-export default EncounterCreatureEntry;
+export default memo(EncounterCreatureEntry);

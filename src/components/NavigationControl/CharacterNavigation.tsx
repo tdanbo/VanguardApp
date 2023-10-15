@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShield, faBolt, faGhost } from "@fortawesome/free-solid-svg-icons";
+import {
+  faShield,
+  faBolt,
+  faGhost,
+  faBookDead,
+} from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
 const Container = styled.div`
   display: flex;
@@ -50,41 +55,38 @@ function CharacterNavigation({
   setBrowserState,
   gmMode,
 }: NavigationProps) {
-  const onHandleItems = () => {
-    if (browserState === 0 || browserState === 2 || browserState === 3) {
-      setBrowserState(1);
-    } else {
-      setBrowserState(0);
-    }
-  };
-
-  const onHandleAbilities = () => {
-    if (browserState === 0 || browserState === 1 || browserState === 3) {
-      setBrowserState(2);
-    } else {
-      setBrowserState(0);
-    }
-  };
-
-  const onHandleCreatures = () => {
-    if (browserState === 0 || browserState === 1 || browserState === 2) {
-      setBrowserState(3);
-    } else {
-      setBrowserState(0);
-    }
+  const handleNavigationClick = (targetState: number) => {
+    setBrowserState(browserState === targetState ? 0 : targetState);
   };
 
   return (
     <Container>
-      <Navigator $active={browserState === 1} onClick={onHandleItems}>
+      <Navigator
+        $active={browserState === 1}
+        onClick={() => handleNavigationClick(1)}
+      >
         <FontAwesomeIcon icon={faShield} />
       </Navigator>
-      <Navigator $active={browserState === 2} onClick={onHandleAbilities}>
+      <Navigator
+        $active={browserState === 2}
+        onClick={() => handleNavigationClick(2)}
+      >
         <FontAwesomeIcon icon={faBolt} />
       </Navigator>
       {gmMode && (
-        <Navigator $active={browserState === 3} onClick={onHandleCreatures}>
+        <Navigator
+          $active={browserState === 3}
+          onClick={() => handleNavigationClick(3)}
+        >
           <FontAwesomeIcon icon={faGhost} />
+        </Navigator>
+      )}
+      {gmMode && (
+        <Navigator
+          $active={browserState === 4}
+          onClick={() => handleNavigationClick(4)}
+        >
+          <FontAwesomeIcon icon={faBookDead} />
         </Navigator>
       )}
     </Container>
