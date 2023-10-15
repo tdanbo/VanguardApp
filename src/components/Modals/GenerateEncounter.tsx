@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
 
@@ -32,11 +31,6 @@ interface GenerateEncounterProps {
 }
 
 function GenerateEncounter({ browserState }: GenerateEncounterProps) {
-  const [race, setRace] = useState();
-  const [archtype, setArchtype] = useState();
-  const [difficulty, setDifficulty] = useState();
-  const [modifier, setModifier] = useState();
-
   return (
     <Container hidden={browserState !== 4}>
       <Row>

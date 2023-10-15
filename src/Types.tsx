@@ -102,22 +102,20 @@ export interface modifiedCreature {
   hp: number;
   pain: number;
   attack: number;
-  damage: number;
-  damage_feat: string;
+  alt_attack: number;
   defense: number;
-  armor: number;
-  armor_feat: string;
+  weapon: ItemEntry[];
+  armor: ItemEntry;
   stats: CreatureStats;
-  damage_type: string;
-  armor_type: string;
+  abilities: AbilityEntry[];
 }
 
 export interface CreatureEntry {
   name: string;
   race: string;
   resistance: string;
-  damage: Record<string, string>;
-  armor: Record<string, string>;
+  weapon: string[];
+  armor: string;
   stats: CreatureStats;
   abilities: Record<string, number>;
   loot: string;

@@ -1,5 +1,6 @@
 import { modifiedCreature } from "../../Types";
 import { cloneDeep } from "lodash";
+
 const ModifierConverter: Record<number, number> = {
   17: -7,
   16: -6,
@@ -18,27 +19,23 @@ const ModifierConverter: Record<number, number> = {
   3: 7,
 };
 
-export const IronFist = (
+export const ManAtArms = (
   modifiedCreature: modifiedCreature,
   creatureAbilities: Record<string, number>,
 ) => {
   const clonedCreature = cloneDeep(modifiedCreature);
-  if (creatureAbilities["Iron Fist"] >= 1) {
-    clonedCreature.attack = ModifierConverter[clonedCreature.stats.strong];
-    clonedCreature.alt_attack = ModifierConverter[clonedCreature.stats.strong];
+
+  let armor = 0;
+
+  if (creatureAbilities["Man-at-Arms"] >= 1) {
+    armor += 2;
   }
 
-  let damage = 0;
-
-  if (creatureAbilities["Iron Fist"] === 2) {
-    damage = 2;
-  } else if (creatureAbilities["Iron Fist"] === 3) {
-    damage = 4;
+  if (creatureAbilities["Man-at-Arms"] >= 2) {
+    clonedCreature.defense = ModifierConverter[clonedCreature.stats.quick];
   }
 
-  for (const weapon of clonedCreature.weapon) {
-    weapon.roll.mod += damage;
-  }
+  clonedCreature.armor.roll.dice += armor;
 
   return clonedCreature;
 };

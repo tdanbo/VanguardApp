@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API } from "../Constants";
-import { AbilityEntry } from "../Types";
+import { AbilityEntry, ItemEntry } from "../Types";
 
 export function UpperFirstLetter(input: string): string {
   if (!input || typeof input !== "string") {
@@ -26,6 +26,16 @@ export async function getAbility(name: string) {
     return response.data as AbilityEntry;
   } catch (error) {
     console.error(`Error fetching ability with name "${name}":`, error);
+    throw error;
+  }
+}
+
+export async function getItem(name: string) {
+  try {
+    const response = await axios.get(`${API}/api/equipment/${name}`);
+    return response.data as ItemEntry;
+  } catch (error) {
+    console.error(`Error fetching armor with name "${name}":`, error);
     throw error;
   }
 }

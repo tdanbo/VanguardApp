@@ -54,6 +54,8 @@ function EncounterSection({ encounter }: EncounterSectionProps) {
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
   const processedEncounter = processEncounter(encounter);
 
+  console.log("Session ID: ", session.id);
+
   useEffect(() => {
     getCharacters(session.id).then((response) => {
       setCharacterLog(response);
@@ -63,7 +65,7 @@ function EncounterSection({ encounter }: EncounterSectionProps) {
   // Combine characterLog and encounter into one list
   const combinedList = [...characterLog, ...processedEncounter];
 
-  const sortedInventory = combinedList.sort((a, b) => {
+  const sortedInventory = [...combinedList].sort((a, b) => {
     // Determine the type and get the quick values
     let quickA = "id" in a ? a.stats.quick.value : a.stats.quick;
     let quickB = "id" in b ? b.stats.quick.value : b.stats.quick;
@@ -81,14 +83,17 @@ function EncounterSection({ encounter }: EncounterSectionProps) {
     return quickB - quickA;
   });
 
+  console.log("Render EncounterSection");
+
   return (
     <Container>
-      {Array.from(sortedInventory).map((entry, index) => {
+      {Array.from(sortedInventory).map((entry) => {
         if ("id" in entry) {
-          return <EncounterCharacterEntry key={index} character={entry} />;
+          return <EncounterCharacterEntry key={entry.id} character={entry} />;
         } else {
-          return <EncounterCreatureEntry key={index} creature={entry} />;
+          return <EncounterCreatureEntry key={entry.name} creature={entry} />;
         }
+
         return null; // Return null or some other default JSX if none of the conditions match
       })}
     </Container>
