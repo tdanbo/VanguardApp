@@ -27,6 +27,8 @@ import { PolearmMastery } from "../functions/CreatureRules/PolearmMastery";
 import { ManAtArms } from "../functions/CreatureRules/ManAtArms";
 import { AlternativeDamage } from "../functions/CreatureRules/AlternativeDamage";
 import { ShieldFighter } from "../functions/CreatureRules/ShieldFighter";
+import { TwinAttack } from "../functions/CreatureRules/TwinAttack";
+import { Tactician } from "../functions/CreatureRules/Tactician";
 import {
   faCoins,
   faHeart,
@@ -358,18 +360,16 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
   if (modifiedCreature.weapon.some((weapon) => !weapon)) {
     return <div>Error: Missing weapon!</div>;
   }
-
-  const feats = Feats(modifiedCreature);
-  const robust = Robust(feats, creatureClone.abilities);
-  const armored = Armored(robust, creatureClone.abilities);
+  const berserker = Berserker(modifiedCreature, creatureClone.abilities);
+  const robust = Robust(berserker, creatureClone.abilities);
+  const tactician = Tactician(robust, creatureClone.abilities);
+  const armored = Armored(tactician, creatureClone.abilities);
   const ironfist = IronFist(armored, creatureClone.abilities);
   const naturalweapon = NaturalWeapon(ironfist, creatureClone.abilities);
-  const berserker = Berserker(naturalweapon, creatureClone.abilities);
-  const marksman = Marksman(berserker, creatureClone.abilities);
+  const marksman = Marksman(naturalweapon, creatureClone.abilities);
   const sixthsense = SixthSense(marksman, creatureClone.abilities);
   const polearmmastery = PolearmMastery(sixthsense, creatureClone.abilities);
   const manatarms = ManAtArms(polearmmastery, creatureClone.abilities);
-
   const alternativedamage = AlternativeDamage(
     manatarms,
     creatureClone.abilities,
@@ -378,7 +378,10 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
     alternativedamage,
     creatureClone.abilities,
   );
-  const finalCreature = shieldfighter;
+
+  const twinattack = TwinAttack(shieldfighter, creatureClone.abilities);
+
+  const finalCreature = Feats(twinattack);
 
   const handleAdjustHp = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault(); // prevent the context menu from appearing on right-click
