@@ -7,19 +7,17 @@ export const Berserker = (
   const clonedCreature = cloneDeep(modifiedCreature);
 
   let damage = 0;
-  let defense = 0;
   let armor = 0;
 
   if (creatureAbilities["Berserker"] === 1) {
     damage = 4;
-    defense = 5;
+    clonedCreature.defense = 5;
   } else if (creatureAbilities["Berserker"] === 2) {
     damage = 4;
-    defense = 5;
+    clonedCreature.defense = 5;
     armor = 2;
   } else if (creatureAbilities["Berserker"] === 3) {
     damage = 4;
-    defense = 5;
     armor = 2;
   }
 
@@ -28,7 +26,6 @@ export const Berserker = (
   }
 
   clonedCreature.armor.roll.mod += armor;
-  clonedCreature.defense += defense;
 
   return clonedCreature;
 };
