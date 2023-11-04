@@ -5,12 +5,7 @@ interface CharacterDetails {
   modifier: number;
 }
 
-interface Stat {
-  value: number;
-  mod: number;
-}
-
-interface Stat {
+export interface Stat {
   value: number;
   mod: number;
 }
@@ -119,6 +114,8 @@ export interface CreatureEntry {
   stats: CreatureStats;
   abilities: Record<string, number>;
   loot: string;
+  damage?: number;
+  id?: string;
 }
 
 interface Roll {

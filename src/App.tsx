@@ -156,6 +156,12 @@ function App() {
   const [gmMode, setGmMode] = useState<boolean>(true);
   const [encounter, setEncounter] = useState<CreatureEntry[]>([]);
 
+  const onDeleteCreature = (id: string) => {
+    setEncounter((currentEncounter) =>
+      currentEncounter.filter((creature) => creature.id !== id),
+    );
+  };
+
   const scrollableRef = useRef(null);
   return (
     <UserProvider>
@@ -223,7 +229,11 @@ function App() {
                         gmMode={gmMode}
                       />
                       <ScrollContainer>
-                        <EncounterSection encounter={encounter} />
+                        <EncounterSection
+                          encounter={encounter}
+                          setEncounter={setEncounter}
+                          onDeleteCreature={onDeleteCreature}
+                        />
                       </ScrollContainer>
                     </EncounterContainer>
                     <FooterCenterContainer>
