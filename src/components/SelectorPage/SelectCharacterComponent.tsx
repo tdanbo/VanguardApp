@@ -39,6 +39,8 @@ function SelectCharacterComponent({
   const { charactersResponse } = useWebSocket();
   const { setCharacter } = useContext(CharacterContext);
 
+  console.log("Session ID: ", session.id);
+
   useEffect(() => {
     getCharacters(session.id).then((response) => {
       setCharacterLog(response);

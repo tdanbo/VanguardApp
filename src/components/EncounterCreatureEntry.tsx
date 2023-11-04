@@ -240,6 +240,9 @@ const ModifierConverter: Record<number, number> = {
 
 interface EncounterBoxProps {
   creature: CreatureEntry;
+  onDelete: (creature: CreatureEntry) => void;
+  encounter: CreatureEntry[];
+  setEncounter: React.Dispatch<React.SetStateAction<CreatureEntry[]>>;
 }
 
 function createTitleString(creature: modifiedCreature): string {
@@ -261,16 +264,43 @@ function createTitleString(creature: modifiedCreature): string {
   return titleString.trim(); // trim() is used to remove the extra newline at the end
 }
 
-function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
+function EncounterCreatureEntry({
+  creature,
+  onDelete,
+  encounter,
+  setEncounter,
+}: EncounterBoxProps) {
   console.log("Rendering EncounterCreatureEntry");
   const creatureClone = cloneDeep(creature);
   ExceptionalStats(creatureClone);
-  const hp = Math.max(creatureClone.stats.strong, 10);
+
   const pain = Math.ceil(creatureClone.stats.strong / 2);
   const attack = ModifierConverter[creatureClone.stats.accurate];
   const defense = ModifierConverter[creatureClone.stats.quick];
-  const [currentHp, setCurrentHp] = useState<number>(hp);
+  const hp = Math.max(creatureClone.stats.strong, 10);
+  const [currentDamage, setCurrentDamage] = useState<number>(creature.damage!);
   const [modifiedCreature, setModifiedCreature] = useState<modifiedCreature>();
+
+  const handleAdjustHp = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault(); // Prevent the context menu from appearing on right-click
+
+    // Determine the damage adjustment
+    const damageAdjustment = event.button === 0 ? 1 : -1;
+
+    const encounter_clone = [...encounter];
+
+    const damage_calc = Math.max(0, currentDamage + damageAdjustment);
+
+    encounter_clone.forEach((encounterCreature) => {
+      if (encounterCreature.id === creature.id) {
+        console.log("Adjusting damage");
+        encounterCreature.damage = damage_calc;
+      }
+    });
+
+    setCurrentDamage(damage_calc);
+    setEncounter(encounter_clone);
+  };
 
   const getAbilities = async (creatureClone: CreatureEntry) => {
     const integrated = [
@@ -383,18 +413,6 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
 
   const finalCreature = Feats(twinattack);
 
-  const handleAdjustHp = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault(); // prevent the context menu from appearing on right-click
-
-    if (event.button === 0) {
-      // left-click
-      setCurrentHp((prevHp) => Math.max(prevHp - 1, 0)); // decrease HP, but don't go below 0
-    } else if (event.button === 2) {
-      // right-click
-      setCurrentHp((prevHp) => Math.min(prevHp + 1, hp)); // increase HP, but don't go above initial HP
-    }
-  };
-
   const formatNumber = (num: number): string => {
     if (num > 0) return `+${num}`;
     return `${num}`;
@@ -404,7 +422,7 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
 
   return (
     <MainContainer>
-      {currentHp === 0 && (
+      {hp - currentDamage <= 0 && (
         <DeadOverlay>
           <FontAwesomeIcon icon={faSkull} />
         </DeadOverlay>
@@ -417,7 +435,7 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
             onClick={handleAdjustHp}
             onContextMenu={handleAdjustHp}
           >
-            {currentHp}
+            {hp - currentDamage}
           </ActiveStat>
           <ActiveSub>
             <FontAwesomeIcon icon={faHeart} />
@@ -452,6 +470,7 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
           return (
             <ActiveBox>
               <ActiveStat
+                key={`weapon-${weapon.name}-${index}`}
                 title={`When this creature is attacking ${formatNumber(
                   index === 0 ? finalCreature.attack : finalCreature.alt_attack,
                 )} to targets defense`}
@@ -460,7 +479,7 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
                   index === 0 ? finalCreature.attack : finalCreature.alt_attack,
                 )}
               </ActiveStat>
-              <ActiveDamageSub key={index}>
+              <ActiveDamageSub key={"dmg" + index}>
                 {weapon.type === "Ranged Weapon" ? (
                   <Icon
                     path={mdiBowArrow}
@@ -488,14 +507,18 @@ function EncounterCreatureEntry({ creature }: EncounterBoxProps) {
             </ActiveBox>
           );
         })}
-        <DeleteBlock>
+        <DeleteBlock onClick={() => onDelete(creature)}>
           <FontAwesomeIcon icon={faXmark} />
         </DeleteBlock>
       </Container>
       <AbilityContainer>
         {finalCreature.abilities.map((ability, index) => {
           return (
-            <AbilityEntryItem key={index} ability={ability} browser={false} />
+            <AbilityEntryItem
+              key={`ability-${ability.name}-${index}`}
+              ability={ability}
+              browser={false}
+            />
           );
         })}
       </AbilityContainer>

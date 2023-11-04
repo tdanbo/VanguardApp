@@ -1,7 +1,7 @@
 import * as Constants from "../Constants";
 import { CreatureEntry } from "../Types";
 import { useState } from "react";
-
+import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 
 const BaseContainer = styled.div`
@@ -112,11 +112,29 @@ function CreatureEntryItem({
 }: AbilityEntryItemProps) {
   const [_expanded, setExpanded] = useState<boolean>(false);
 
+  const suffixLetter = () => {
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (let i = 0; i < alphabet.length; i++) {
+      const candidateName = creature.name + " " + alphabet[i];
+      const exists = encounter.some((enc) => enc.name === candidateName);
+      if (!exists) {
+        // If candidateName is unique, return it
+        return candidateName;
+      }
+    }
+
+    return creature.name + "Z"; // Fallback, should ideally handle this better
+  };
+
   const AddEncounterCreature = () => {
     console.log("Add Creature");
-    const newEncounter = [...encounter];
-    newEncounter.push(creature);
-    setEncounter(newEncounter);
+    const newEncounterCreature: CreatureEntry = {
+      ...creature,
+      name: suffixLetter(),
+      damage: 0,
+      id: uuidv4(), // This adds a new 'id' field to the creature object
+    };
+    setEncounter([...encounter, newEncounterCreature]);
   };
 
   const DeleteEncounterCreature = (_creature: CreatureEntry) => {

@@ -5,6 +5,7 @@ import { getCharacters } from "../../functions/SessionsFunctions";
 import { SessionContext } from "../../contexts/SessionContext";
 import EncounterCharacterEntry from "../EncounterCharacterEntry";
 import EncounterCreatureEntry from "../EncounterCreatureEntry";
+import { Stat } from "../../Types";
 
 const Container = styled.div`
   display: flex;
@@ -15,86 +16,97 @@ const Container = styled.div`
 `;
 interface EncounterSectionProps {
   encounter: CreatureEntry[];
+  setEncounter: React.Dispatch<React.SetStateAction<CreatureEntry[]>>;
+  onDeleteCreature: (id: string) => void;
 }
 
-type ProcessedCreature = CreatureEntry & { name: string };
-
-function processEncounter(encounter: CreatureEntry[]): ProcessedCreature[] {
-  const nameCount: { [key: string]: number } = {};
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-  return encounter.map((creature) => {
-    const { name } = creature;
-
-    if (!nameCount[name]) {
-      nameCount[name] = 1;
-      return creature; // Leave the first creature unchanged
-    } else {
-      // The following logic will append a letter even to the first duplicate creature
-      let suffix = 0;
-      let newName = `${name} ${alphabet[suffix]}`;
-
-      while (nameCount[newName]) {
-        suffix++;
-        newName = `${name} ${alphabet[suffix]}`;
-      }
-
-      nameCount[name]++;
-      nameCount[newName] = 1;
-
-      return {
-        ...creature,
-        name: newName,
-      };
-    }
-  });
+function isCharacterEntry(
+  entry: CharacterEntry | CreatureEntry,
+): entry is CharacterEntry {
+  return (entry as CharacterEntry).portrait !== undefined;
 }
-function EncounterSection({ encounter }: EncounterSectionProps) {
+
+function EncounterSection({
+  encounter,
+  setEncounter,
+  onDeleteCreature,
+}: EncounterSectionProps) {
   const { session } = useContext(SessionContext);
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
-  const processedEncounter = processEncounter(encounter);
-
-  console.log("Session ID: ", session.id);
+  // If setSortedEncounter is part of your useState declaration, it should look like this
+  const [sortedEncounter, setSortedEncounter] = useState<
+    (CharacterEntry | CreatureEntry)[]
+  >([]);
 
   useEffect(() => {
     getCharacters(session.id).then((response) => {
       setCharacterLog(response);
     });
-  }, []);
+  }, [session.id]);
 
-  // Combine characterLog and encounter into one list
-  const combinedList = [...characterLog, ...processedEncounter];
+  useEffect(() => {
+    // Assuming combinedList is already declared and available in this scope
+    const combinedList = [...characterLog, ...encounter];
 
-  const sortedInventory = [...combinedList].sort((a, b) => {
-    // Determine the type and get the quick values
-    let quickA = "id" in a ? a.stats.quick.value : a.stats.quick;
-    let quickB = "id" in b ? b.stats.quick.value : b.stats.quick;
+    const sortedEncounter = combinedList.sort((a, b) => {
+      // Define a type guard to check if the stats are in the expected format
+      const isStatObject = (stat: number | Stat): stat is Stat => {
+        return (stat as Stat).value !== undefined;
+      };
 
-    // If quick values are the same, sort by vigilant values
-    if (quickA === quickB) {
-      let vigilantA = "id" in a ? a.stats.vigilant.value : a.stats.vigilant;
-      let vigilantB = "id" in b ? b.stats.vigilant.value : b.stats.vigilant;
+      // Determine the type and get the quick values
+      let quickA = isStatObject(a.stats.quick)
+        ? a.stats.quick.value
+        : a.stats.quick;
+      let quickB = isStatObject(b.stats.quick)
+        ? b.stats.quick.value
+        : b.stats.quick;
 
-      // Sort in descending order
-      return vigilantB - vigilantA;
-    }
+      // If quick values are the same, sort by vigilant values
+      if (quickA === quickB) {
+        let vigilantA = isStatObject(a.stats.vigilant)
+          ? a.stats.vigilant.value
+          : a.stats.vigilant;
+        let vigilantB = isStatObject(b.stats.vigilant)
+          ? b.stats.vigilant.value
+          : b.stats.vigilant;
 
-    // Otherwise, sort in descending order by quick values
-    return quickB - quickA;
-  });
+        // Sort in descending order
+        return vigilantB - vigilantA;
+      }
 
-  console.log("Render EncounterSection");
+      // Otherwise, sort in descending order by quick values
+      return quickB - quickA;
+    });
+
+    setSortedEncounter(sortedEncounter); // Update the state with the sorted list
+  }, [characterLog, encounter]);
 
   return (
     <Container>
-      {Array.from(sortedInventory).map((entry) => {
-        if ("id" in entry) {
-          return <EncounterCharacterEntry key={entry.id} character={entry} />;
+      {Array.from(sortedEncounter).map((entry, index) => {
+        if (isCharacterEntry(entry)) {
+          return (
+            <EncounterCharacterEntry
+              key={entry.id + index} // Assuming 'id' exists on CharacterEntry
+              character={entry}
+            />
+          );
         } else {
-          return <EncounterCreatureEntry key={entry.name} creature={entry} />;
+          return (
+            <EncounterCreatureEntry
+              key={entry.name + index}
+              creature={entry}
+              onDelete={() => {
+                if (entry.id !== undefined) {
+                  onDeleteCreature(entry.id);
+                }
+              }}
+              setEncounter={setEncounter}
+              encounter={encounter}
+            />
+          );
         }
-
-        return null; // Return null or some other default JSX if none of the conditions match
       })}
     </Container>
   );
