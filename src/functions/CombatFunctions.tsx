@@ -3,7 +3,6 @@ import { CombatEntry } from "../Types";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { SessionContext } from "../contexts/SessionContext";
-// import { useWebSocket } from "../contexts/WebSocketContext";
 import { API } from "../Constants";
 import { v4 as uuidv4 } from "uuid";
 export async function getCombatLog(id: string): Promise<CombatEntry[]> {

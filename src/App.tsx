@@ -8,7 +8,6 @@ import styled from "styled-components";
 import CharacterProvider from "./contexts/CharacterContext";
 import UserProvider from "./contexts/UserContext";
 import SessionProvider from "./contexts/SessionContext";
-import { WebSocketProvider } from "./contexts/WebSocketContext";
 import HealthBox from "./components/HealthBox";
 import StatsControls from "./components/StatsControls/StatsControls";
 import EquipmentBrowser from "./components/Modals/EquipmentBrowser";
@@ -167,123 +166,121 @@ function App() {
     <UserProvider>
       <SessionProvider>
         <CharacterProvider>
-          <WebSocketProvider>
-            <Row>
-              <Column>
-                <HeaderContainer>
-                  <SearchItemBox
-                    itemList={itemList}
-                    setList={setItemList}
-                    browserState={browserState}
-                  />
-                  <SearchAbilityBox
-                    itemList={abilityList}
-                    setList={setAbilityList}
-                    browserState={browserState}
-                  />
-                  <SearchCreatureBox
-                    creatureList={creatureList}
-                    setList={setCreatureList}
-                    browserState={browserState}
-                  />
-                </HeaderContainer>
-                <BrowserContainer>
-                  <EquipmentBrowser
-                    browserState={browserState}
-                    itemList={itemList}
-                    setItemList={setItemList}
-                    setInventoryState={setInventoryState}
-                  />
-                  <AbilityBrowser
-                    browserState={browserState}
-                    abilityList={abilityList}
-                    setAbilityList={setAbilityList}
-                    setInventoryState={setInventoryState}
-                  />
-                  <CreatureBrowser
-                    browserState={browserState}
-                    creatureList={creatureList}
-                    encounter={encounter}
-                    setEncounter={setEncounter}
-                  />
-                  <GenerateEncounter browserState={browserState} />
-                </BrowserContainer>
-                <FooterContainer></FooterContainer>
-              </Column>
-              <Column>
-                <HeaderContainer>
-                  <SelectorNavigation gmMode={gmMode} setGmMode={setGmMode} />
-                  <CharacterNameBox />
-                  {gmMode ? (
-                    <ResetEncounter setEncounter={setEncounter} />
-                  ) : (
-                    <XpBox />
-                  )}
-                </HeaderContainer>
+          <Row>
+            <Column>
+              <HeaderContainer>
+                <SearchItemBox
+                  itemList={itemList}
+                  setList={setItemList}
+                  browserState={browserState}
+                />
+                <SearchAbilityBox
+                  itemList={abilityList}
+                  setList={setAbilityList}
+                  browserState={browserState}
+                />
+                <SearchCreatureBox
+                  creatureList={creatureList}
+                  setList={setCreatureList}
+                  browserState={browserState}
+                />
+              </HeaderContainer>
+              <BrowserContainer>
+                <EquipmentBrowser
+                  browserState={browserState}
+                  itemList={itemList}
+                  setItemList={setItemList}
+                  setInventoryState={setInventoryState}
+                />
+                <AbilityBrowser
+                  browserState={browserState}
+                  abilityList={abilityList}
+                  setAbilityList={setAbilityList}
+                  setInventoryState={setInventoryState}
+                />
+                <CreatureBrowser
+                  browserState={browserState}
+                  creatureList={creatureList}
+                  encounter={encounter}
+                  setEncounter={setEncounter}
+                />
+                <GenerateEncounter browserState={browserState} />
+              </BrowserContainer>
+              <FooterContainer></FooterContainer>
+            </Column>
+            <Column>
+              <HeaderContainer>
+                <SelectorNavigation gmMode={gmMode} setGmMode={setGmMode} />
+                <CharacterNameBox />
                 {gmMode ? (
-                  <>
-                    <EncounterContainer key="container">
-                      <CharacterNavigation
-                        browserState={browserState}
-                        setBrowserState={setBrowserState}
-                        gmMode={gmMode}
-                      />
-                      <ScrollContainer>
-                        <EncounterSection
-                          encounter={encounter}
-                          setEncounter={setEncounter}
-                          onDeleteCreature={onDeleteCreature}
-                        />
-                      </ScrollContainer>
-                    </EncounterContainer>
-                    <FooterCenterContainer>
-                      <EmptyNavigation />
-                      <ResourcesBox />
-                    </FooterCenterContainer>
-                  </>
+                  <ResetEncounter setEncounter={setEncounter} />
                 ) : (
-                  <>
-                    <StatsContainer key="container">
-                      <CharacterNavigation
-                        browserState={browserState}
-                        setBrowserState={setBrowserState}
-                        gmMode={gmMode}
-                      />
-                      <HealthBox />
-                      <StatsControls />
-                    </StatsContainer>
-                    <HealthContainer>
-                      <EmptyNavigation />
-                      <ActiveControls />
-                      <SecondaryStatsControls />
-                    </HealthContainer>
-                    <InventoryContainer>
-                      <InventoryNavigation
-                        inventoryState={inventoryState}
-                        setInventoryState={setInventoryState}
-                      />
-                      <ScrollContainer>
-                        <InventorySection inventoryState={inventoryState} />
-                        <AbilitySection inventoryState={inventoryState} />
-                      </ScrollContainer>
-                    </InventoryContainer>
-                    <FooterCenterContainer>
-                      <EmptyNavigation />
-                      <ResourcesBox />
-                    </FooterCenterContainer>
-                  </>
+                  <XpBox />
                 )}
-              </Column>
-              <Column>
-                <CombatContainer ref={scrollableRef}>
-                  <CombatSection scrollRef={scrollableRef} />
-                </CombatContainer>
-                <FooterContainer>
-                  <DiceSection />
-                </FooterContainer>
-              </Column>
-            </Row>
-          </WebSocketProvider>
+              </HeaderContainer>
+              {gmMode ? (
+                <>
+                  <EncounterContainer key="container">
+                    <CharacterNavigation
+                      browserState={browserState}
+                      setBrowserState={setBrowserState}
+                      gmMode={gmMode}
+                    />
+                    <ScrollContainer>
+                      <EncounterSection
+                        encounter={encounter}
+                        setEncounter={setEncounter}
+                        onDeleteCreature={onDeleteCreature}
+                      />
+                    </ScrollContainer>
+                  </EncounterContainer>
+                  <FooterCenterContainer>
+                    <EmptyNavigation />
+                    <ResourcesBox />
+                  </FooterCenterContainer>
+                </>
+              ) : (
+                <>
+                  <StatsContainer key="container">
+                    <CharacterNavigation
+                      browserState={browserState}
+                      setBrowserState={setBrowserState}
+                      gmMode={gmMode}
+                    />
+                    <HealthBox />
+                    <StatsControls />
+                  </StatsContainer>
+                  <HealthContainer>
+                    <EmptyNavigation />
+                    <ActiveControls />
+                    <SecondaryStatsControls />
+                  </HealthContainer>
+                  <InventoryContainer>
+                    <InventoryNavigation
+                      inventoryState={inventoryState}
+                      setInventoryState={setInventoryState}
+                    />
+                    <ScrollContainer>
+                      <InventorySection inventoryState={inventoryState} />
+                      <AbilitySection inventoryState={inventoryState} />
+                    </ScrollContainer>
+                  </InventoryContainer>
+                  <FooterCenterContainer>
+                    <EmptyNavigation />
+                    <ResourcesBox />
+                  </FooterCenterContainer>
+                </>
+              )}
+            </Column>
+            <Column>
+              <CombatContainer ref={scrollableRef}>
+                <CombatSection scrollRef={scrollableRef} />
+              </CombatContainer>
+              <FooterContainer>
+                <DiceSection />
+              </FooterContainer>
+            </Column>
+          </Row>
         </CharacterProvider>
       </SessionProvider>
     </UserProvider>

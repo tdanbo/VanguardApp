@@ -3,7 +3,6 @@ import { useEffect, useContext } from "react";
 import { CharacterEntry } from "../../Types";
 import { getCharacters } from "../../functions/SessionsFunctions";
 import { SessionContext } from "../../contexts/SessionContext";
-import { useWebSocket } from "../../contexts/WebSocketContext";
 import {
   CharacterContext,
   defaultCharacter,
@@ -36,7 +35,6 @@ function SelectCharacterComponent({
   setGmMode,
 }: LoginProps) {
   const { session } = useContext(SessionContext);
-  const { charactersResponse } = useWebSocket();
   const { setCharacter } = useContext(CharacterContext);
 
   console.log("Session ID: ", session.id);
@@ -46,12 +44,6 @@ function SelectCharacterComponent({
       setCharacterLog(response);
     });
   }, []);
-
-  useEffect(() => {
-    if (charactersResponse) {
-      setCharacterLog(charactersResponse);
-    }
-  }, [charactersResponse]);
 
   const handleCopyId = () => {
     navigator.clipboard.writeText(session.id);
@@ -80,6 +72,7 @@ function SelectCharacterComponent({
               selectedCharacter={character}
               closeModal={closeModal}
               setGmMode={setGmMode}
+              setCharacterLog={setCharacterLog}
             />
           ))}
         </CenterContainer>
