@@ -56,7 +56,7 @@ export const WebSocketProvider: React.FC<WebsocketProps> = ({
             character: character?.name, // Assuming 'character' is the character state and has a 'name' property
           });
           websocket.send(heartbeatMessage); // Send JSON stringified heartbeat message
-          console.log("...");
+          console.log("....");
         }
       }, 10000); // Send a heartbeat every 10 seconds
     };
