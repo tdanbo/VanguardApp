@@ -4,7 +4,6 @@ import { SessionContext } from "../../contexts/SessionContext";
 import { useContext } from "react";
 import { CharacterEntry, EmptyArmor, EmptyWeapon } from "../../Types";
 import { addNewCharacter } from "../../functions/CharacterFunctions";
-import { useWebSocket } from "../../contexts/WebSocketContext";
 import {
   ButtonContainer,
   LargeCircleButton,
@@ -30,8 +29,6 @@ function CreateCharacterButtons({
   portrait,
 }: CreateSessionsProps) {
   const { session } = useContext(SessionContext);
-  const { sendRequest } = useWebSocket();
-
   const NewCharacterEntry: CharacterEntry = {
     name: character_name,
     id: session.id,
@@ -92,7 +89,6 @@ function CreateCharacterButtons({
   const handlePostCharacter = async () => {
     setSelector("characterSelect");
     await addNewCharacter(NewCharacterEntry);
-    sendRequest("characters"); // asking websocket to update session characters for all clients
   };
 
   return (

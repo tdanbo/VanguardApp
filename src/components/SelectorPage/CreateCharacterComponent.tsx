@@ -1,6 +1,5 @@
 import * as Constants from "../../Constants";
 import { useState, useContext, useEffect } from "react";
-import { useWebSocket } from "../../contexts/WebSocketContext";
 import { CharacterEntry } from "../../Types";
 import { SessionContext } from "../../contexts/SessionContext";
 import { UpperFirstLetter } from "../../functions/UtilityFunctions";
@@ -222,7 +221,6 @@ function CreateCharacterComponent({
   };
 
   const { session } = useContext(SessionContext);
-  const { sendRequest } = useWebSocket();
 
   const NewCharacterEntry: CharacterEntry = {
     name: characterName,
@@ -284,7 +282,6 @@ function CreateCharacterComponent({
   const handlePostCharacter = async () => {
     setSelector("characterSelect");
     await addNewCharacter(NewCharacterEntry);
-    sendRequest("characters"); // asking websocket to update session characters for all clients
   };
 
   return (

@@ -4,15 +4,18 @@ import { CharacterEntry } from "../../Types";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import { useContext } from "react";
 import { CharacterPortraits } from "../../Images";
-// import { deleteSessionCharacter } from "../../functions/SessionsFunctions";
+import { deleteSessionCharacter } from "../../functions/SessionsFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { getCharacters } from "../../functions/SessionsFunctions";
+import { SessionContext } from "../../contexts/SessionContext";
 // import { useWebSocket } from "../../contexts/WebSocketContext";
 interface SessionBoxProps {
   setSelector: (selector: string) => void;
   selectedCharacter: CharacterEntry;
   closeModal: () => void;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
 }
 
 const Container = styled.div`
@@ -70,10 +73,10 @@ function CharacterBox({
   selectedCharacter,
   closeModal,
   setGmMode,
+  setCharacterLog,
 }: SessionBoxProps) {
-  // const { sendRequest } = useWebSocket();
+  const { session } = useContext(SessionContext);
   const { setCharacter } = useContext(CharacterContext);
-
   const handleOnClick = () => {
     setGmMode(false);
     setCharacter(selectedCharacter);
@@ -81,9 +84,11 @@ function CharacterBox({
   };
 
   const handleDeleteCharacter = async () => {
-    // await deleteSessionCharacter(selectedCharacter.name, selectedCharacter.id);
-    // sendRequest("characters");
+    await deleteSessionCharacter(selectedCharacter.name, selectedCharacter.id);
     console.log("delete character");
+    getCharacters(session.id).then((response) => {
+      setCharacterLog(response);
+    });
   };
 
   return (

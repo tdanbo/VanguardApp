@@ -3,7 +3,6 @@ import { CombatEntry } from "../../Types";
 
 import { getCombatLog } from "../../functions/CombatFunctions";
 import { SessionContext } from "../../contexts/SessionContext";
-// import { useWebSocket } from "../../contexts/WebSocketContext";
 import { useState, useEffect, useContext, RefObject } from "react";
 import styled from "styled-components";
 const Container = styled.div`
@@ -104,8 +103,8 @@ function CombatSection({ scrollRef }: CombatSectionProps) {
       if (session.id === "") return;
       getCombatLog(session.id).then((response) => {
         if (!deepCompareCombatEntries(response, combatLog)) {
-          playRandomSound();
           setCombatLog(response);
+          playRandomSound();
         }
       });
     }, 500);
