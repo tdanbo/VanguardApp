@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { SessionContext } from "./SessionContext";
+import { CharacterContext } from "./CharacterContext";
 import { CharacterEntry, SessionEntry, CombatEntry } from "../Types";
 import { WEBSOCKET } from "../Constants";
 interface WebSocketContextValue {
@@ -34,13 +35,14 @@ export const WebSocketProvider: React.FC<WebsocketProps> = ({
 
   const [_request, setRequest] = useState<string | null>(null);
   const { session } = useContext(SessionContext);
+  const { character } = useContext(CharacterContext);
   const [ws, setWs] = useState<WebSocket | null>(null); // <-- State for the WebSocket
   let heartbeatInterval: NodeJS.Timeout;
   // Set up the WebSocket here and its event listeners
   useEffect(() => {
     if (!session.id) return; // Skip if there's no session ID
 
-    console.log("connecting to websocket server: " + session.id);
+    console.log("Connecting to websocket server: " + session.id);
     const websocket = new WebSocket(`${WEBSOCKET}/ws/${session.id}`);
 
     websocket.onopen = () => {
@@ -49,7 +51,12 @@ export const WebSocketProvider: React.FC<WebsocketProps> = ({
       // Setting up the heartbeat interval after WebSocket is open
       heartbeatInterval = setInterval(() => {
         if (websocket.readyState === WebSocket.OPEN) {
-          websocket.send("heartbeat"); // Just send the string "heartbeat"
+          const heartbeatMessage = JSON.stringify({
+            type: "heartbeat",
+            character: character?.name, // Assuming 'character' is the character state and has a 'name' property
+          });
+          websocket.send(heartbeatMessage); // Send JSON stringified heartbeat message
+          console.log("....");
         }
       }, 10000); // Send a heartbeat every 10 seconds
     };
@@ -73,7 +80,7 @@ export const WebSocketProvider: React.FC<WebsocketProps> = ({
             setCombatlogResponse(data.combatlog);
             break;
           default:
-            console.warn("Unhandled WebSocket message type:", data.type);
+            console.warn("Unhandled WebSocket message type:", data.character);
         }
       } catch (error) {
         if (e.data === "heartbeat-ack") {
@@ -88,7 +95,15 @@ export const WebSocketProvider: React.FC<WebsocketProps> = ({
 
     return () => {
       console.log("Closing WebSocket for session: " + session.id);
-      websocket.close(); // Close the WebSocket when cleaning up
+      if (websocket.readyState === WebSocket.OPEN) {
+        // Send a disconnect message before closing the WebSocket
+        const disconnectMessage = JSON.stringify({
+          type: "disconnect",
+          character: character?.name, // Include character info if available
+        });
+        websocket.send(disconnectMessage);
+      }
+      websocket.close(); // Close the WebSocket
       clearInterval(heartbeatInterval);
     };
   }, [session.id]);

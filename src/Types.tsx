@@ -144,6 +144,7 @@ export interface ItemEntry {
 }
 
 export type CombatEntry = {
+  uuid: string;
   id: string;
   character: string;
   portrait: string;

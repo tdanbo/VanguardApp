@@ -3,7 +3,7 @@ import { CombatEntry } from "../../Types";
 
 import { getCombatLog } from "../../functions/CombatFunctions";
 import { SessionContext } from "../../contexts/SessionContext";
-import { useWebSocket } from "../../contexts/WebSocketContext";
+// import { useWebSocket } from "../../contexts/WebSocketContext";
 import { useState, useEffect, useContext, RefObject } from "react";
 import styled from "styled-components";
 const Container = styled.div`
@@ -21,15 +21,38 @@ const Container = styled.div`
 
 import { useRef } from "react";
 import { RollSounds } from "../../Images";
+// import { set } from "lodash";
 
 interface CombatSectionProps {
   scrollRef: RefObject<HTMLElement>;
 }
 
+function deepCompareCombatEntries(
+  array1: CombatEntry[],
+  array2: CombatEntry[],
+) {
+  if (array1 === array2) return true;
+  if (array1 == null || array2 == null) return false;
+  if (array1.length !== array2.length) return false;
+
+  for (let i = 0; i < array1.length; i++) {
+    const obj1 = array1[i];
+    const obj2 = array2[i];
+
+    // Assuming you know the properties of CombatEntry,
+    // compare them here. For example:
+    if (obj1.uuid !== obj2.uuid) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 function CombatSection({ scrollRef }: CombatSectionProps) {
   const [combatLog, setCombatLog] = useState<CombatEntry[]>([]);
   const { session } = useContext(SessionContext);
-  const { combatlogResponse } = useWebSocket();
+  // const { combatlogResponse } = useWebSocket();
 
   const scrollToBottom = () => {
     if (scrollRef.current) {
@@ -60,21 +83,35 @@ function CombatSection({ scrollRef }: CombatSectionProps) {
     }
   };
 
-  useEffect(() => {
-    playRandomSound();
-    console.log("Combat Log Response: ", combatlogResponse);
-    if (combatlogResponse) {
-      setCombatLog(combatlogResponse);
-    }
-  }, [combatlogResponse]);
+  // useEffect(() => {
+  //   playRandomSound();
+  //   console.log("Combat Log Response: ", combatlogResponse);
+  //   if (combatlogResponse) {
+  //     setCombatLog(combatlogResponse);
+  //   }
+  // }, [combatlogResponse]);
+
+  // useEffect(() => {
+  //   if (session.id === "") return;
+  //   getCombatLog(session.id).then((response) => {
+  //     console.log("Getting Combat Log");
+  //     setCombatLog(response);
+  //   });
+  // }, [session]);
 
   useEffect(() => {
-    if (session.id === "") return;
-    getCombatLog(session.id).then((response) => {
-      console.log("Getting Combat Log");
-      setCombatLog(response);
-    });
-  }, [session]);
+    const interval = setInterval(() => {
+      if (session.id === "") return;
+      getCombatLog(session.id).then((response) => {
+        if (!deepCompareCombatEntries(response, combatLog)) {
+          playRandomSound();
+          setCombatLog(response);
+        }
+      });
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [session, combatLog]); // Add combatLog to dependencies
 
   useEffect(() => {
     scrollToBottom();

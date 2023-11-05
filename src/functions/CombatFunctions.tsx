@@ -3,8 +3,9 @@ import { CombatEntry } from "../Types";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { SessionContext } from "../contexts/SessionContext";
-import { useWebSocket } from "../contexts/WebSocketContext";
+// import { useWebSocket } from "../contexts/WebSocketContext";
 import { API } from "../Constants";
+import { v4 as uuidv4 } from "uuid";
 export async function getCombatLog(id: string): Promise<CombatEntry[]> {
   const response = await axios.get<CombatEntry[]>(`${API}/api/combatlog/${id}`);
   return response.data;
@@ -23,7 +24,7 @@ interface RollDiceProps {
 export function useRoll() {
   const { character } = useContext(CharacterContext);
   const { session } = useContext(SessionContext);
-  const { sendRequest } = useWebSocket();
+  // const { sendRequest } = useWebSocket();
 
   return async ({
     dice,
@@ -71,12 +72,13 @@ export function useRoll() {
       roll: roll,
       modifier: modifier,
       target: target,
+      uuid: uuidv4(),
     };
 
     // const updated_character = setBaseModifier(character, 0);
     // setCharacter(updated_character);
     await postCombatLog(NewCombatEntry);
-    sendRequest("combatlog"); // asking websocket to update session combatlog for all clients
+    // sendRequest("combatlog"); // asking websocket to update session combatlog for all clients
     return roll_result;
   };
 }
