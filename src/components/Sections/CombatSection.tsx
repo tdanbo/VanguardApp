@@ -3,7 +3,7 @@ import { CombatEntry } from "../../Types";
 
 import { getCombatLog } from "../../functions/CombatFunctions";
 import { SessionContext } from "../../contexts/SessionContext";
-import { useWebSocket } from "../../contexts/WebSocketContext";
+// import { useWebSocket } from "../../contexts/WebSocketContext";
 import { useState, useEffect, useContext, RefObject } from "react";
 import styled from "styled-components";
 const Container = styled.div`
@@ -21,7 +21,7 @@ const Container = styled.div`
 
 import { useRef } from "react";
 import { RollSounds } from "../../Images";
-import { set } from "lodash";
+// import { set } from "lodash";
 
 interface CombatSectionProps {
   scrollRef: RefObject<HTMLElement>;
