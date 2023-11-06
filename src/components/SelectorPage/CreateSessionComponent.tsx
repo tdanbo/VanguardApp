@@ -103,6 +103,12 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
     id: generateID(),
     date: formatDate(currentDate),
     owner: email,
+    travel: {
+      day: 0,
+      time: 0,
+      distance: 0,
+      weather: "RAINY",
+    },
   };
 
   const handlePostSession = async () => {

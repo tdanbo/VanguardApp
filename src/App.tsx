@@ -17,6 +17,7 @@ import CharacterNavigation from "./components/NavigationControl/CharacterNavigat
 import InventoryNavigation from "./components/NavigationControl/InventoryNavigation";
 import ActiveControls from "./components/ActiveControls";
 import EmptyNavigation from "./components/NavigationControl/EmptyNavigation";
+import DayNavigator from "./components/TravelBox";
 import ResourcesBox from "./components/ResourcesBox";
 import XpBox from "./components/XpBox";
 import SelectorNavigation from "./components/NavigationControl/SelectorNavigation";
@@ -35,6 +36,11 @@ import SecondaryStatsControls from "./components/StatsControls/SecondaryStatsCon
 import EncounterSection from "./components/Sections/EncounterSection";
 import ResetEncounter from "./components/ResetEncounter";
 import GenerateEncounter from "./components/Modals/GenerateEncounter";
+import EquipmentFooter from "./components/FooterNavigation/EquipmentFooter";
+import AbilityFooter from "./components/FooterNavigation/AbilityFooter";
+import CreatureFooter from "./components/FooterNavigation/CreatureFooter";
+import TradingFooter from "./components/FooterNavigation/TradingFooter";
+import TimeTrackBox from "./components/TimeTrackBox";
 
 const Row = styled.div`
   display: flex;
@@ -51,7 +57,17 @@ const HeaderContainer = styled.div`
   gap: 20px;
 `;
 
-const FooterContainer = styled.div`
+const FooterLeftContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end; // Align children to the right
+  min-height: 50px;
+  margin-left: 20px;
+  margin-bottom: 5px;
+  gap: 20px;
+`;
+
+const FooterRightContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end; // Align children to the right
@@ -191,6 +207,7 @@ function App() {
                   itemList={itemList}
                   setItemList={setItemList}
                   setInventoryState={setInventoryState}
+                  gmMode={gmMode}
                 />
                 <AbilityBrowser
                   browserState={browserState}
@@ -206,16 +223,45 @@ function App() {
                 />
                 <GenerateEncounter browserState={browserState} />
               </BrowserContainer>
-              <FooterContainer></FooterContainer>
+              <FooterLeftContainer>
+                {browserState === 1 ? (
+                  gmMode === true ? (
+                    <TradingFooter
+                      itemList={itemList}
+                      setItemList={setItemList}
+                    />
+                  ) : (
+                    <EquipmentFooter
+                      itemList={itemList}
+                      setItemList={setItemList}
+                    />
+                  )
+                ) : browserState === 2 ? (
+                  <AbilityFooter
+                    abilityList={abilityList}
+                    setAbilityList={setAbilityList}
+                  />
+                ) : browserState === 3 ? (
+                  <CreatureFooter
+                    creatureList={creatureList}
+                    setCreatureList={setCreatureList}
+                  />
+                ) : null}
+              </FooterLeftContainer>
             </Column>
             <Column>
               <HeaderContainer>
                 <SelectorNavigation gmMode={gmMode} setGmMode={setGmMode} />
-                <CharacterNameBox />
                 {gmMode ? (
-                  <ResetEncounter setEncounter={setEncounter} />
+                  <>
+                    <DayNavigator />
+                    <ResetEncounter setEncounter={setEncounter} />
+                  </>
                 ) : (
-                  <XpBox />
+                  <>
+                    <CharacterNameBox />
+                    <XpBox />
+                  </>
                 )}
               </HeaderContainer>
               {gmMode ? (
@@ -236,7 +282,7 @@ function App() {
                   </EncounterContainer>
                   <FooterCenterContainer>
                     <EmptyNavigation />
-                    <ResourcesBox />
+                    <TimeTrackBox />
                   </FooterCenterContainer>
                 </>
               ) : (
@@ -276,9 +322,9 @@ function App() {
               <CombatContainer ref={scrollableRef}>
                 <CombatSection scrollRef={scrollableRef} />
               </CombatContainer>
-              <FooterContainer>
+              <FooterRightContainer>
                 <DiceSection />
-              </FooterContainer>
+              </FooterRightContainer>
             </Column>
           </Row>
         </CharacterProvider>

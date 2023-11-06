@@ -78,7 +78,7 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
         bulk: false,
       },
       type: "General Good",
-      cost: "",
+      cost: 0,
       name: toTitleCase(search),
       category: "general_good",
       id: "",

@@ -23,6 +23,7 @@ interface InventoryEntryProps {
   item: ItemEntry;
   id: string;
   setInventoryState?: (inventoryState: number) => void;
+  gmMode: boolean;
 }
 
 const Container = styled.div`
@@ -81,6 +82,15 @@ const TypeBox = styled.div`
   flex: 1;
   color: rgba(255, 255, 255, 0.2);
   font-size: 10px;
+`;
+
+const CostBox = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex: 1;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
+  margin-left: 5px;
 `;
 
 const QualityContainer = styled.div`
@@ -202,6 +212,7 @@ function InventoryEntry({
   equipped,
   id,
   setInventoryState,
+  gmMode,
 }: InventoryEntryProps) {
   const { character, setCharacter } = useContext(CharacterContext);
 
@@ -303,6 +314,28 @@ function InventoryEntry({
     setCharacter(updatedCharacter);
   };
 
+  function ConvertCurrency(cost: number) {
+    const thaler = Math.floor(cost / 100);
+    const remainingAfterThaler = cost - thaler * 100;
+    const shillings = Math.floor(remainingAfterThaler / 10);
+    const orthegs = remainingAfterThaler - shillings * 10;
+
+    let value = "";
+
+    if (thaler > 0) {
+      value += `${thaler} Thaler `;
+    }
+    if (shillings > 0) {
+      value += `${shillings} Shillings `;
+    }
+    if (orthegs > 0) {
+      value += `${orthegs} Orthegs`;
+    }
+
+    // Trim to remove any trailing whitespace
+    return value.trim();
+  }
+
   return (
     <Container>
       <EquipContainer>
@@ -360,7 +393,10 @@ function InventoryEntry({
       </EquipContainer>
       <NameContainer>
         <NameBox color={COLOR}>{item.name}</NameBox>
-        <TypeBox>{item.type}</TypeBox>
+        <TypeBox>
+          {item.type}
+          {gmMode === true && <CostBox>{ConvertCurrency(item.cost)}</CostBox>}
+        </TypeBox>{" "}
       </NameContainer>
 
       <QualityContainer>

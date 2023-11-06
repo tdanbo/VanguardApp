@@ -1,7 +1,7 @@
 import { AbilityEntry } from "../../Types";
 
 import AbilityEntryItem from "../AbilityEntryItem";
-
+import * as Constants from "../../Constants";
 import styled from "styled-components";
 
 const Container = styled.div<{ hidden: boolean }>`
@@ -25,16 +25,25 @@ interface AbilityBrowserProps {
   setInventoryState: (inventoryState: number) => void;
 }
 
+function sortItems(a: AbilityEntry, b: AbilityEntry): number {
+  const categoryComparison =
+    Constants.TYPE_FILTER.indexOf(a.type) -
+    Constants.TYPE_FILTER.indexOf(b.type);
+
+  return categoryComparison;
+}
+
 function AbilityBrowser({
   browserState,
   abilityList,
   setInventoryState,
 }: AbilityBrowserProps) {
+  const sortedList = [...abilityList].sort(sortItems);
   return (
     <Container hidden={browserState !== 2}>
       <ItemContainer>
-        {abilityList &&
-          abilityList.map((ability, index) => (
+        {sortedList &&
+          sortedList.map((ability, index) => (
             <AbilityEntryItem
               key={index}
               browser={true}
