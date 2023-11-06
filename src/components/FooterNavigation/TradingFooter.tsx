@@ -50,7 +50,7 @@ const Container = styled.div`
   justify-content: right;
 `;
 
-import React, { useState } from "react";
+import { useState } from "react";
 // Import other necessary components and types
 
 const LonelyFarm: TownsEntry = {

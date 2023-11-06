@@ -13,14 +13,26 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {
   MainContainer,
-  ModalContainer,
   Title,
   CenterContainer,
   Divider,
   LargeCircleButton,
   ButtonContainer,
 } from "./SelectorPage/SelectorStyles";
-import { update } from "lodash";
+import { cloneDeep } from "lodash";
+
+export const ModalContainer = styled.div`
+  background-color: ${Constants.BACKGROUND};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+
+  margin-bottom: 10px;
+  overflow: auto;
+  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
+  border-bottom-right-radius: ${Constants.BORDER_RADIUS};
+
+  scrollbar-width: none !important;
+`;
 
 const Container = styled.div`
   cursor: pointer;
@@ -112,6 +124,48 @@ const ResultButton = styled.div`
   color: ${Constants.WIDGET_SECONDARY_FONT};
   padding: 10px;
   cursor: pointer;
+`;
+
+const EtaButton = styled.div`
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: ${Constants.BORDER_RADIUS};
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  padding: 10px;
+  cursor: pointer;
+`;
+
+const EtaInput = styled.input`
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 5px;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: ${Constants.BORDER_RADIUS};
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  padding: 10px;
+  outline: none;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
 `;
 
 const TooltipButton = styled.div`
@@ -235,17 +289,61 @@ function TravelBox() {
     setTimeOfday(determineTimeOfDay());
   }, [session.travel.time]);
 
-  const handleAccept = async () => {
+  const handleAccept = async (forward: boolean) => {
+    const weather = [
+      "RAINY",
+      "CLEAR",
+      "CLOUDY",
+      "STORMY",
+      "WINDY",
+      "SNOWY",
+      "FOGGY",
+    ];
+
+    const randomWeather = (): string => {
+      const randomIndex = Math.floor(Math.random() * weather.length);
+      return weather[randomIndex];
+    };
+
+    let newday = session.travel.day;
+    if (forward) {
+      newday += 1;
+    } else {
+      newday -= 1;
+    }
+
+    let newdistance = session.travel.distance;
+    if (forward) {
+      newdistance -= distanceTraveled;
+    } else {
+      newdistance += distanceTraveled;
+    }
+
     const travelEntry: TravelEntry = {
-      day: session.travel.day + 1,
+      day: newday,
       time: 6,
-      weather: session.travel.weather,
-      distance: session.travel.distance - distanceTraveled,
+      weather: randomWeather(),
+      distance: newdistance,
     };
 
     const updatedSession = { ...session, travel: travelEntry };
 
+    console.log(updatedSession);
+
     const newSession = await updateSession(updatedSession);
+    console.log(newSession);
+    setSession(newSession);
+    handleClose();
+  };
+
+  const [newDestination, setNewDestination] = useState<number>(0);
+
+  const handleChangeDestination = async () => {
+    const updatedSession = cloneDeep(session);
+    updatedSession.travel.distance = newDestination * 20;
+
+    const newSession = await updateSession(updatedSession);
+    console.log(newSession);
     setSession(newSession);
     handleClose();
   };
@@ -259,7 +357,7 @@ function TravelBox() {
         <div>|</div>
         <div>DAY {session.travel.day}</div>
         <div>|</div>
-        <div>TIME {session.travel.time}</div>
+        <div>TIME {session.travel.time}:00</div>
         <div>|</div>
         <div>
           ETA {session.travel.distance} KM / {session.travel.distance / 20} DAYS
@@ -271,6 +369,16 @@ function TravelBox() {
             <Title>Day Change</Title>
             <ModalContainer>
               <CenterContainer>
+                <ResourceChangeContainer>
+                  <EtaInput
+                    type="number"
+                    onChange={(e) => setNewDestination(e.target.valueAsNumber)}
+                    placeholder="Squares to travel"
+                  ></EtaInput>
+                  <EtaButton onClick={() => handleChangeDestination()}>
+                    Change Destination
+                  </EtaButton>
+                </ResourceChangeContainer>
                 <ResourceChangeContainer>
                   <Column>
                     <Button
@@ -374,10 +482,10 @@ function TravelBox() {
               <Divider />
             </ModalContainer>
             <ButtonContainer>
-              <LargeCircleButton onClick={handleClose}>
+              <LargeCircleButton onClick={() => handleAccept(false)}>
                 <FontAwesomeIcon icon={faAngleLeft} />
               </LargeCircleButton>
-              <LargeCircleButton onClick={handleAccept}>
+              <LargeCircleButton onClick={() => handleAccept(true)}>
                 <FontAwesomeIcon icon={faAngleRight} />
               </LargeCircleButton>
             </ButtonContainer>

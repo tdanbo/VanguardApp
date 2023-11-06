@@ -36,7 +36,6 @@ import SecondaryStatsControls from "./components/StatsControls/SecondaryStatsCon
 import EncounterSection from "./components/Sections/EncounterSection";
 import ResetEncounter from "./components/ResetEncounter";
 import GenerateEncounter from "./components/Modals/GenerateEncounter";
-import TravelBox from "./components/TimeTrackBox";
 import EquipmentFooter from "./components/FooterNavigation/EquipmentFooter";
 import AbilityFooter from "./components/FooterNavigation/AbilityFooter";
 import CreatureFooter from "./components/FooterNavigation/CreatureFooter";

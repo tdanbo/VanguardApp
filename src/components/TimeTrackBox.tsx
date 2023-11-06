@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
+import { cloneDeep } from "lodash";
+import { updateSession } from "../functions/SessionsFunctions";
+import { useContext } from "react";
+import { SessionContext } from "../contexts/SessionContext";
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
@@ -31,16 +35,23 @@ const DayContainer = styled.div`
   gap: 2px;
 `;
 
-interface TravelBoxProps {
-  title: string;
-}
-
 function TimeTrackBox() {
+  const { session, setSession } = useContext(SessionContext);
+  const handleTimeChange = async (time: number) => {
+    const updatedSession = cloneDeep(session);
+    updatedSession.travel.time = time;
+
+    const newSession = await updateSession(updatedSession);
+    console.log(newSession);
+    setSession(newSession);
+  };
   return (
     <Container>
       <DayContainer>
-        {Array.from({ length: 26 }).map((_, index) => (
-          <HourContainer key={index}>{index}</HourContainer>
+        {Array.from({ length: 24 }).map((_, index) => (
+          <HourContainer key={index} onClick={() => handleTimeChange(index)}>
+            {index}
+          </HourContainer>
         ))}
       </DayContainer>
     </Container>

@@ -1,7 +1,6 @@
 import { CreatureEntry } from "../../Types";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
-import { TownsEntry } from "../../Types";
 import axios from "axios";
 import { API } from "../../Constants";
 import { useEffect } from "react";
@@ -50,7 +49,7 @@ const Container = styled.div`
   justify-content: right;
 `;
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface CreatureFooterProps {
   creatureList: CreatureEntry[];
