@@ -6,6 +6,12 @@ const defaultSession: SessionEntry = {
   id: "",
   date: "",
   owner: "",
+  travel: {
+    day: 0,
+    time: 0,
+    distance: 0,
+    weather: "",
+  },
 };
 
 interface SessionContextType {

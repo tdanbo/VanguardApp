@@ -67,6 +67,7 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
     {
       name: toTitleCase(search),
       race: "Human",
+      category: "Cultural Being",
       resistance: "Weak",
       stats: {
         cunning: 0,

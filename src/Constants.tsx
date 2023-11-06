@@ -37,7 +37,6 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   damage: BRIGHT_RED,
   ability: BRIGHT_RED,
   defense: BLUE,
-  armor: BLUE,
   casting: PURPLE,
   "mystical power": PURPLE,
   "monsterous trait": GREEN,
@@ -52,12 +51,9 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   skill_test: YELLOW,
   provision: GREEN,
   treasure: YELLOW,
-  ordinary_weapon: BRIGHT_RED,
-  ordinary_ranged: BRIGHT_RED,
-  ordinary_armor: BLUE,
-  quality_weapon: BRIGHT_RED,
-  quality_ranged: BRIGHT_RED,
-  quality_armor: BLUE,
+  weapon: BRIGHT_RED,
+  ranged: BRIGHT_RED,
+  armor: BLUE,
   general_good: GREY,
   corruption: PURPLE,
   vigilant: YELLOW,
@@ -76,3 +72,48 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   trait: GREEN,
   resting: NIGHT,
 };
+
+export const CATEGORY_FILTER = [
+  "weapon",
+  "ranged",
+  "ammunition",
+  "armor",
+  "elixirs",
+  "tool",
+  "curiosities",
+  "lesser_artifact",
+  "artifact",
+  "mystical_treasure",
+  "general_good",
+];
+
+export const TYPE_FILTER = [
+  "Ability",
+  "Ritual",
+  "Mystical Power",
+  "Monsterous Trait",
+  "Trait",
+  "Boon",
+  "Burden",
+];
+
+export const DIFFICULTY_FILTER = [
+  "Weak",
+  "Ordinary",
+  "Challenging",
+  "Strong",
+  "Mighty",
+  "Legendary",
+];
+
+export const RACE_FILTER = [
+  "Elf",
+  "Troll",
+  "Ambrian",
+  "Spider",
+  "Predator",
+  "Reptile",
+  "Winged Creature",
+  "Abomination",
+  "Undead",
+];

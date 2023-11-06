@@ -17,6 +17,14 @@ export async function getCharacters(id: string): Promise<CharacterEntry[]> {
   return response.data;
 }
 
+export async function updateSession(session: SessionEntry) {
+  const response = await axios.put<SessionEntry>(
+    `${API}/api/sessions/${session.id}`,
+    session,
+  );
+  return response.data;
+}
+
 export async function getSession(id: string): Promise<SessionEntry> {
   const response = await axios.get<SessionEntry>(`${API}/api/sessions/${id}`);
 

@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { ItemEntry } from "../../Types";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import styled from "styled-components";
-
+import * as Constants from "../../Constants";
 const Container = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? "none" : "flex")};
   flex-direction: column;
@@ -16,25 +16,11 @@ interface NavigationProps {
   inventoryState: number;
 }
 
-const priorityList = [
-  "quality_weapon",
-  "ordinary_weapon",
-  "quality_ranged",
-  "ordinary_ranged",
-  "ammunition",
-  "quality_armor",
-  "ordinary_armor",
-  "elixirs",
-  "mystical_treasure",
-  "artifact",
-  "lesser_artifact",
-  "curiosities",
-  "tools",
-  "general_good",
-];
-
 function sortInventory(a: ItemEntry, b: ItemEntry): number {
-  return priorityList.indexOf(a.category) - priorityList.indexOf(b.category);
+  return (
+    Constants.CATEGORY_FILTER.indexOf(a.category) -
+    Constants.CATEGORY_FILTER.indexOf(b.category)
+  );
 }
 
 function InventorySection({ inventoryState }: NavigationProps) {
@@ -58,6 +44,7 @@ function InventorySection({ inventoryState }: NavigationProps) {
               item={item}
               id={item.id}
               equipped={""}
+              gmMode={false}
             />
           );
         }

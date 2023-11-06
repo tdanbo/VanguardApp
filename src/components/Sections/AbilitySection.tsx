@@ -4,7 +4,7 @@ import { AbilityEntry } from "../../Types";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import styled from "styled-components";
 import AbilityEntryItem from "../AbilityEntryItem";
-
+import * as Constants from "../../Constants";
 const Container = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? "none" : "flex")};
   flex-direction: column;
@@ -16,20 +16,10 @@ interface NavigationProps {
   inventoryState: number;
 }
 
-const priorityList = [
-  "ritual",
-  "mystical power",
-  "ability",
-  "monsterous trait",
-  "trait",
-  "boon",
-  "burden",
-];
-
 function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
   return (
-    priorityList.indexOf(a.type.toLowerCase()) -
-    priorityList.indexOf(b.type.toLowerCase())
+    Constants.TYPE_FILTER.indexOf(a.type.toLowerCase()) -
+    Constants.TYPE_FILTER.indexOf(b.type.toLowerCase())
   );
 }
 

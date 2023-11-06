@@ -108,6 +108,7 @@ export interface modifiedCreature {
 export interface CreatureEntry {
   name: string;
   race: string;
+  category: string;
   resistance: string;
   weapon: string[];
   armor: string;
@@ -136,7 +137,7 @@ export interface ItemEntry {
   equip: string;
   quantity: Quantity;
   type: string;
-  cost: string;
+  cost: number;
   name: string;
   category: string;
   id: string;
@@ -158,11 +159,19 @@ export type CombatEntry = {
   target: number;
 };
 
+export type TravelEntry = {
+  day: number;
+  time: number;
+  weather: string;
+  distance: number;
+};
+
 export type SessionEntry = {
   name: string;
   id: string;
   date: string;
   owner: string;
+  travel: TravelEntry;
 };
 
 export interface AbilityRoll {
@@ -190,15 +199,21 @@ export type AbilityEntry = {
   level: string;
 };
 
+export type TownsEntry = {
+  name: string;
+  cost: number;
+  total: number;
+};
+
 export const EmptyWeapon: ItemEntry = {
   roll: { roll: true, dice: 4, mod: 0, type: "damage" },
   quality: [],
   equip: "1H",
   quantity: { count: 0, bulk: false },
   type: "Hand Weapon",
-  cost: "",
+  cost: 0,
   name: "Knuckles",
-  category: "ordinary_weapon",
+  category: "weapon",
   id: "aaaaaaaaaa",
   description: "Fight with your bare hands.",
 };
@@ -209,9 +224,9 @@ export const EmptyArmor: ItemEntry = {
   equip: "AR",
   quantity: { count: 0, bulk: false },
   type: "Light Armor",
-  cost: "",
+  cost: 0,
   name: "Simple Clothes",
-  category: "ordinary_armor",
+  category: "armor",
   id: "bbbbbbbbbb",
   description: "You feel robbed of your dignity.",
 };
