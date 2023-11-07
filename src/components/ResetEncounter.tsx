@@ -4,21 +4,32 @@ import styled from "styled-components";
 import "../App.css";
 
 import { CreatureEntry } from "../Types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const Navigator = styled.button`
   cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: right;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
+  justify-content: center;
+  border: 1px solid ${Constants.WIDGET_BACKGROUND_EMPTY};
+  font-size: 18px;
+  color: ${Constants.WIDGET_BACKGROUND};
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   border-radius: ${Constants.BORDER_RADIUS};
-  margin-right: 20px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  padding: 10px;
-  border: 1px solid ${Constants.WIDGET_BORDER};
+  &:hover {
+    background-color: ${Constants.WIDGET_BACKGROUND};
+    color: ${Constants.WIDGET_PRIMARY_FONT};
+    border: 1px solid ${Constants.WIDGET_BORDER};
+  }
+  width: 50px;
+  height: 35px;
 `;
 
 interface ResetEncounterProps {
@@ -31,11 +42,13 @@ function ResetEncounter({ setEncounter }: ResetEncounterProps) {
   };
 
   return (
-    <Container
-      className="mouse-icon-hover button-hover"
-      onClick={handleResetEncounter}
-    >
-      Reset Encounter
+    <Container>
+      <Navigator
+        className="mouse-icon-hover button-hover"
+        onClick={handleResetEncounter}
+      >
+        <FontAwesomeIcon icon={faXmark} />
+      </Navigator>
     </Container>
   );
 }

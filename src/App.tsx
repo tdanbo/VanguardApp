@@ -253,10 +253,7 @@ function App() {
               <HeaderContainer>
                 <SelectorNavigation gmMode={gmMode} setGmMode={setGmMode} />
                 {gmMode ? (
-                  <>
-                    <DayNavigator />
-                    <ResetEncounter setEncounter={setEncounter} />
-                  </>
+                  <DayNavigator />
                 ) : (
                   <>
                     <CharacterNameBox />
@@ -281,7 +278,7 @@ function App() {
                     </ScrollContainer>
                   </EncounterContainer>
                   <FooterCenterContainer>
-                    <EmptyNavigation />
+                    <ResetEncounter setEncounter={setEncounter} />
                     <TimeTrackBox />
                   </FooterCenterContainer>
                 </>
