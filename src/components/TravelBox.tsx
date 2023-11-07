@@ -15,7 +15,6 @@ import {
   MainContainer,
   Title,
   CenterContainer,
-  Divider,
   LargeCircleButton,
   ButtonContainer,
 } from "./SelectorPage/SelectorStyles";
@@ -37,19 +36,11 @@ export const ModalContainer = styled.div`
 const Container = styled.div`
   cursor: pointer;
   display: flex;
+  flex-grow: 1;
   flex-direction: row;
-  align-items: center;
-  justify-content: right;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border-radius: ${Constants.BORDER_RADIUS};
   margin-right: 20px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  padding: 10px;
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  gap: 10px;
+  margin-top: 10px;
+  height: 37px;
 `;
 
 const Overlay = styled.div`
@@ -82,6 +73,71 @@ const Column = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 10px;
+`;
+
+const TravelButton = styled.div`
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+`;
+
+const TravelRightButton = styled.div`
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  border-right: 1px solid ${Constants.WIDGET_BORDER};
+  border-top-right-radius: ${Constants.BORDER_RADIUS};
+  border-bottom-right-radius: ${Constants.BORDER_RADIUS};
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+`;
+
+const TravelLeftButton = styled.div`
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  border-left: 1px solid ${Constants.WIDGET_BORDER};
+  border-top-left-radius: ${Constants.BORDER_RADIUS};
+  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+`;
+
+const Divider = styled.div`
+  width: 1px;
+  background-color: ${Constants.WIDGET_GAB};
 `;
 
 interface StyledButtonProps {
@@ -351,17 +407,16 @@ function TravelBox() {
   return (
     <>
       <Container onClick={handleOpen}>
-        <div>
+        <TravelLeftButton>
           {session.travel.weather.toUpperCase()} {timeOfDay}
-        </div>
-        <div>|</div>
-        <div>DAY {session.travel.day}</div>
-        <div>|</div>
-        <div>TIME {session.travel.time}:00</div>
-        <div>|</div>
-        <div>
-          ETA {session.travel.distance} KM / {session.travel.distance / 20} DAYS
-        </div>
+        </TravelLeftButton>
+        <Divider />
+        <TravelButton>{session.travel.time}:00</TravelButton>
+        <Divider />
+
+        <TravelButton>DAY {session.travel.day}</TravelButton>
+        <Divider />
+        <TravelRightButton>ETA {session.travel.distance} KM</TravelRightButton>
       </Container>
       {isModalOpen && (
         <Overlay onClick={handleClose}>

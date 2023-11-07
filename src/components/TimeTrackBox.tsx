@@ -4,27 +4,13 @@ import { cloneDeep } from "lodash";
 import { updateSession } from "../functions/SessionsFunctions";
 import { useContext } from "react";
 import { SessionContext } from "../contexts/SessionContext";
+import { useState } from "react";
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
   height: 35px;
   gap: 20px;
   justify-content: right;
-`;
-
-const HourContainer = styled.div`
-  display: flex;
-  flex: 1;
-  flex-grow: 1;
-  flex-direction: column;
-  height: 35px;
-  justify-content: center;
-  align-items: center;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: 5px;
-  font-size: 12px;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
 `;
 
 const DayContainer = styled.div`
@@ -35,9 +21,49 @@ const DayContainer = styled.div`
   gap: 2px;
 `;
 
+interface HourContainerProps {
+  isActive: boolean;
+}
+
+const HourContainer = styled.button<HourContainerProps>`
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  flex-direction: column;
+  height: 35px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid ${Constants.WIDGET_BACKGROUND_EMPTY};
+  font-size: 12px;
+  color: ${(props) =>
+    props.isActive
+      ? Constants.WIDGET_PRIMARY_FONT
+      : Constants.WIDGET_BACKGROUND};
+  background-color: ${(props) =>
+    props.isActive
+      ? Constants.WIDGET_BACKGROUND
+      : Constants.WIDGET_BACKGROUND_EMPTY};
+  border-radius: ${Constants.BORDER_RADIUS};
+  &:hover {
+    background-color: ${Constants.WIDGET_BACKGROUND};
+    color: ${Constants.WIDGET_PRIMARY_FONT};
+    border: 1px solid ${Constants.WIDGET_BORDER};
+  }
+`;
+
 function TimeTrackBox() {
   const { session, setSession } = useContext(SessionContext);
+  // Ensure that the initial value is a valid hour (0-23); otherwise, set it to null
+  const [activeHour, setActiveHour] = useState<number | null>(
+    typeof session.travel.time === "number" &&
+      session.travel.time >= 0 &&
+      session.travel.time < 24
+      ? session.travel.time
+      : null,
+  );
+
   const handleTimeChange = async (time: number) => {
+    setActiveHour(time); // Set the active hour
     const updatedSession = cloneDeep(session);
     updatedSession.travel.time = time;
 
@@ -45,11 +71,16 @@ function TimeTrackBox() {
     console.log(newSession);
     setSession(newSession);
   };
+
   return (
     <Container>
       <DayContainer>
         {Array.from({ length: 24 }).map((_, index) => (
-          <HourContainer key={index} onClick={() => handleTimeChange(index)}>
+          <HourContainer
+            key={index}
+            onClick={() => handleTimeChange(index)}
+            isActive={index === activeHour} // Check if this button is the active one
+          >
             {index}
           </HourContainer>
         ))}
@@ -57,4 +88,5 @@ function TimeTrackBox() {
     </Container>
   );
 }
+
 export default TimeTrackBox;
