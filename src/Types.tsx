@@ -98,6 +98,8 @@ export interface modifiedCreature {
   pain: number;
   attack: number;
   alt_attack: number;
+  attacks: number;
+  attacks_mod: number;
   defense: number;
   weapon: ItemEntry[];
   armor: ItemEntry;

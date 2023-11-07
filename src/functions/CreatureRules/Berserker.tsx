@@ -10,14 +10,14 @@ export const Berserker = (
   let armor = 0;
 
   if (creatureAbilities["Berserker"] === 1) {
-    damage = 4;
+    damage = 3;
     clonedCreature.defense = 5;
   } else if (creatureAbilities["Berserker"] === 2) {
-    damage = 4;
+    damage = 3;
     clonedCreature.defense = 5;
     armor = 2;
   } else if (creatureAbilities["Berserker"] === 3) {
-    damage = 4;
+    damage = 3;
     armor = 2;
   }
 

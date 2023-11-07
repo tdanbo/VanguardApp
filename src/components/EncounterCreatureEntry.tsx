@@ -29,6 +29,7 @@ import { AlternativeDamage } from "../functions/CreatureRules/AlternativeDamage"
 import { ShieldFighter } from "../functions/CreatureRules/ShieldFighter";
 import { TwinAttack } from "../functions/CreatureRules/TwinAttack";
 import { Tactician } from "../functions/CreatureRules/Tactician";
+import { NaturalWarrior } from "../functions/CreatureRules/NaturalWarrior";
 import {
   faCoins,
   faHeart,
@@ -132,6 +133,17 @@ const DeleteBlock = styled.div`
   color: ${Constants.WIDGET_BACKGROUND};
 `;
 
+const NameContainer = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
+  font-size: 18px;
+  font-weight: bold;
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+`;
+
 const NameBox = styled.div`
   display: flex;
   flex-grow: 1;
@@ -161,15 +173,16 @@ const ActiveStat = styled.div`
   user-select: none;
 `;
 
-const NameContainer = styled.div`
+const AttacksStat = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: bold;
   color: ${Constants.WIDGET_PRIMARY_FONT};
+  user-select: none;
 `;
 
 const ActiveBox = styled.div`
@@ -221,6 +234,9 @@ const ActiveDamageSub = styled.div`
 `;
 
 const ModifierConverter: Record<number, number> = {
+  20: -10,
+  19: -9,
+  18: -8,
   17: -7,
   16: -6,
   15: -5,
@@ -236,6 +252,8 @@ const ModifierConverter: Record<number, number> = {
   5: 5,
   4: 6,
   3: 7,
+  2: 8,
+  1: 9,
 };
 
 interface EncounterBoxProps {
@@ -308,9 +326,11 @@ function EncounterCreatureEntry({
       "Armored",
       "Iron Fist",
       "Natural Weapon",
+      "Natural Warrior",
       "Exceptionally Strong",
       "Berserker",
       "Sixth Sense",
+      "Twin Attack",
     ];
     const abilities = [];
 
@@ -365,6 +385,8 @@ function EncounterCreatureEntry({
       defense: defense,
       stats: creatureClone.stats,
       abilities: fetchedAbilities,
+      attacks: 1,
+      attacks_mod: 0,
     };
   };
 
@@ -396,7 +418,8 @@ function EncounterCreatureEntry({
   const armored = Armored(tactician, creatureClone.abilities);
   const ironfist = IronFist(armored, creatureClone.abilities);
   const naturalweapon = NaturalWeapon(ironfist, creatureClone.abilities);
-  const marksman = Marksman(naturalweapon, creatureClone.abilities);
+  const naturalwarrior = NaturalWarrior(naturalweapon, creatureClone.abilities);
+  const marksman = Marksman(naturalwarrior, creatureClone.abilities);
   const sixthsense = SixthSense(marksman, creatureClone.abilities);
   const polearmmastery = PolearmMastery(sixthsense, creatureClone.abilities);
   const manatarms = ManAtArms(polearmmastery, creatureClone.abilities);
@@ -481,28 +504,53 @@ function EncounterCreatureEntry({
               </ActiveStat>
               <ActiveDamageSub key={"dmg" + index}>
                 {weapon.type === "Ranged Weapon" ? (
-                  <Icon
-                    path={mdiBowArrow}
-                    size={0.75}
-                    title={"Ranged Weapon"}
-                    color={Constants.BRIGHT_RED}
-                  />
+                  <>
+                    <Icon
+                      path={mdiBowArrow}
+                      size={0.75}
+                      title="Ranged Weapon"
+                      color={Constants.BRIGHT_RED}
+                    />
+                    {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
+                  </>
                 ) : weapon.type === "Long Weapon" ? (
-                  <Icon
-                    path={mdiSpear}
-                    size={0.75}
-                    title={"Long Weapon"}
-                    color={Constants.BRIGHT_RED}
-                  />
+                  <>
+                    <Icon
+                      path={mdiSpear}
+                      size={0.75}
+                      title="Long Weapon"
+                      color={Constants.BRIGHT_RED}
+                    />
+                    {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
+                  </>
                 ) : (
-                  <Icon
-                    path={mdiSword}
-                    size={0.75}
-                    title={"Melee Weapon"}
-                    color={Constants.BRIGHT_RED}
-                  />
+                  <>
+                    {finalCreature.attacks > 1 && (
+                      <AttacksStat>2 x</AttacksStat>
+                    )}
+                    <Icon
+                      path={mdiSword}
+                      size={0.75}
+                      title="Melee Weapon"
+                      color={Constants.BRIGHT_RED}
+                    />
+                    {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
+                    {finalCreature.attacks > 1 &&
+                      ` / ${
+                        Math.ceil(weapon.roll.dice / 2) +
+                        weapon.roll.mod +
+                        finalCreature.attacks_mod
+                      }`}
+                  </>
                 )}
-                {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
+
+                {weapon.type === "Melee Weapon" &&
+                  finalCreature.attacks > 1 &&
+                  ` / ${
+                    Math.ceil(weapon.roll.dice / 2) +
+                    weapon.roll.mod +
+                    finalCreature.attacks_mod
+                  }`}
               </ActiveDamageSub>
             </ActiveBox>
           );
