@@ -15,9 +15,7 @@ export const NaturalWeapon = (
   }
 
   for (const weapon of clonedCreature.weapon) {
-    if (weapon.type === "Natural Weapon") {
-      weapon.roll.mod += damage;
-    }
+    weapon.roll.mod += damage;
   }
 
   return clonedCreature;

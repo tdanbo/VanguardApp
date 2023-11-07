@@ -11,10 +11,13 @@ export const TwinAttack = (
   if (creatureAbilities["Twin Attack"] === 1) {
     console.log("Twin Attack 1");
     defense = 1;
+    clonedCreature.attacks += 1;
   } else if (creatureAbilities["Twin Attack"] === 2) {
     defense = 2;
+    clonedCreature.attacks += 1;
   } else if (creatureAbilities["Twin Attack"] === 3) {
     defense = 3;
+    clonedCreature.attacks += 1;
   }
 
   clonedCreature.defense -= defense;
