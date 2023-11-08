@@ -1,6 +1,9 @@
 import { modifiedCreature } from "../../Types";
 import { cloneDeep } from "lodash";
 const ModifierConverter: Record<number, number> = {
+  20: -10,
+  19: -9,
+  18: -8,
   17: -7,
   16: -6,
   15: -5,
@@ -16,19 +19,19 @@ const ModifierConverter: Record<number, number> = {
   5: 5,
   4: 6,
   3: 7,
+  2: 8,
+  1: 9,
 };
 
-export const Tactician = (
+export const Dominate = (
   modifiedCreature: modifiedCreature,
   creatureAbilities: Record<string, number>,
 ) => {
   const clonedCreature = cloneDeep(modifiedCreature);
-  if (creatureAbilities["Tactician"] >= 2) {
-    clonedCreature.defense = ModifierConverter[clonedCreature.stats.cunning];
-  }
-  if (creatureAbilities["Tactician"] == 3) {
-    clonedCreature.attack = ModifierConverter[clonedCreature.stats.cunning];
-    clonedCreature.alt_attack = ModifierConverter[clonedCreature.stats.cunning];
+  if (creatureAbilities["Dominate"] >= 1) {
+    clonedCreature.attack = ModifierConverter[clonedCreature.stats.persuasive];
+    clonedCreature.alt_attack =
+      ModifierConverter[clonedCreature.stats.persuasive];
   }
   return clonedCreature;
 };

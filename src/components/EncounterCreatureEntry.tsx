@@ -30,6 +30,7 @@ import { ShieldFighter } from "../functions/CreatureRules/ShieldFighter";
 import { TwinAttack } from "../functions/CreatureRules/TwinAttack";
 import { Tactician } from "../functions/CreatureRules/Tactician";
 import { NaturalWarrior } from "../functions/CreatureRules/NaturalWarrior";
+import { Dominate } from "../functions/CreatureRules/Dominate";
 import {
   faCoins,
   faHeart,
@@ -40,6 +41,8 @@ import {
 
 import Icon from "@mdi/react";
 import { mdiSword, mdiSpear, mdiBowArrow } from "@mdi/js";
+import { TwoHandedForce } from "../functions/CreatureRules/TwoHandedForce";
+import { SteelThrow } from "../functions/CreatureRules/SteelThrow";
 
 interface ColorTypeProps {
   $rgb: string;
@@ -423,8 +426,10 @@ function EncounterCreatureEntry({
   const sixthsense = SixthSense(marksman, creatureClone.abilities);
   const polearmmastery = PolearmMastery(sixthsense, creatureClone.abilities);
   const manatarms = ManAtArms(polearmmastery, creatureClone.abilities);
+  const steelthrow = SteelThrow(manatarms, creatureClone.abilities);
+  const dominate = Dominate(steelthrow, creatureClone.abilities);
   const alternativedamage = AlternativeDamage(
-    manatarms,
+    dominate,
     creatureClone.abilities,
   );
   const shieldfighter = ShieldFighter(
@@ -433,8 +438,9 @@ function EncounterCreatureEntry({
   );
 
   const twinattack = TwinAttack(shieldfighter, creatureClone.abilities);
+  const twohandedforce = TwoHandedForce(twinattack, creatureClone.abilities);
 
-  const finalCreature = Feats(twinattack);
+  const finalCreature = Feats(twohandedforce, creatureClone.abilities);
 
   const formatNumber = (num: number): string => {
     if (num > 0) return `+${num}`;
@@ -503,12 +509,13 @@ function EncounterCreatureEntry({
                 )}
               </ActiveStat>
               <ActiveDamageSub key={"dmg" + index}>
-                {weapon.type === "Ranged Weapon" ? (
+                {weapon.type === "Ranged Weapon" ||
+                weapon.type === "Throwing Weapon" ? (
                   <>
                     <Icon
                       path={mdiBowArrow}
                       size={0.75}
-                      title="Ranged Weapon"
+                      title={weapon.type} // Adjusted to display the type of the weapon
                       color={Constants.BRIGHT_RED}
                     />
                     {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}

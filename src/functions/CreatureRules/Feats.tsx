@@ -1,13 +1,16 @@
 import { cloneDeep } from "lodash";
 import { modifiedCreature } from "../../Types";
 
-export const Feats = (modifiedCreature: modifiedCreature) => {
+export const Feats = (
+  modifiedCreature: modifiedCreature,
+  creatureAbilities: Record<string, number>,
+) => {
   const clonedCreature = cloneDeep(modifiedCreature);
 
   let defense = 0;
 
-  for (const weapon in clonedCreature.weapon) {
-    const selectedWeapon = clonedCreature.weapon[weapon];
+  for (const [index, selectedWeapon] of clonedCreature.weapon.entries()) {
+    // Now you can use 'selectedWeapon' as before and 'index' represents its position in the array
 
     if (selectedWeapon.quality.includes("Balanced 1")) {
       defense -= 1;
@@ -15,14 +18,18 @@ export const Feats = (modifiedCreature: modifiedCreature) => {
     if (selectedWeapon.quality.includes("Balanced 2")) {
       defense -= 2;
     }
+    if (selectedWeapon.quality.includes("Precise")) {
+      if (index === 0) {
+        clonedCreature.attack -= 1;
+      } else {
+        clonedCreature.attacks_mod -= 1;
+      }
+    }
   }
 
   for (const feat in clonedCreature.armor.quality) {
     const selectedfeat = clonedCreature.armor.quality[feat];
 
-    if (selectedfeat === "Cumbersome") {
-      defense += 1;
-    }
     if (selectedfeat === "Impeding 1") {
       defense += 1;
     }
@@ -37,6 +44,11 @@ export const Feats = (modifiedCreature: modifiedCreature) => {
       defense += 4;
     }
   }
+
+  if (creatureAbilities["Man-at-Arms"] >= 2) {
+    defense = 0;
+  }
+
   console.log("Balance");
   console.log(defense);
 
