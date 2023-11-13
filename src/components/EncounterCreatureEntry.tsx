@@ -31,6 +31,7 @@ import { TwinAttack } from "../functions/CreatureRules/TwinAttack";
 import { Tactician } from "../functions/CreatureRules/Tactician";
 import { NaturalWarrior } from "../functions/CreatureRules/NaturalWarrior";
 import { Dominate } from "../functions/CreatureRules/Dominate";
+import { SurvivalInstinct } from "../functions/CreatureRules/SurvivalInstinct";
 import {
   faCoins,
   faHeart,
@@ -334,6 +335,14 @@ function EncounterCreatureEntry({
       "Berserker",
       "Sixth Sense",
       "Twin Attack",
+      "Exceptionally Quick",
+      "Exceptionally Accurate",
+      "Exceptionally Resolute",
+      "Exceptionally Vigilant",
+      "Exceptionally Strong",
+      "Exceptionally Persuasive",
+      "Exceptionally Discreet",
+      "Exceptionally Cunning",
     ];
     const abilities = [];
 
@@ -427,7 +436,11 @@ function EncounterCreatureEntry({
   const polearmmastery = PolearmMastery(sixthsense, creatureClone.abilities);
   const manatarms = ManAtArms(polearmmastery, creatureClone.abilities);
   const steelthrow = SteelThrow(manatarms, creatureClone.abilities);
-  const dominate = Dominate(steelthrow, creatureClone.abilities);
+  const survivalinstinct = SurvivalInstinct(
+    steelthrow,
+    creatureClone.abilities,
+  );
+  const dominate = Dominate(survivalinstinct, creatureClone.abilities);
   const alternativedamage = AlternativeDamage(
     dominate,
     creatureClone.abilities,
@@ -522,6 +535,9 @@ function EncounterCreatureEntry({
                   </>
                 ) : weapon.type === "Long Weapon" ? (
                   <>
+                    {finalCreature.attacks > 1 && (
+                      <AttacksStat>2 x</AttacksStat>
+                    )}
                     <Icon
                       path={mdiSpear}
                       size={0.75}
@@ -529,6 +545,12 @@ function EncounterCreatureEntry({
                       color={Constants.BRIGHT_RED}
                     />
                     {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
+                    {finalCreature.attacks > 1 &&
+                      ` / ${
+                        Math.ceil(weapon.roll.dice / 2) +
+                        weapon.roll.mod +
+                        finalCreature.attacks_mod
+                      }`}
                   </>
                 ) : (
                   <>

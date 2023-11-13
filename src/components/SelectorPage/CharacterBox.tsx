@@ -4,11 +4,11 @@ import { CharacterEntry } from "../../Types";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import { useContext } from "react";
 import { CharacterPortraits } from "../../Images";
-import { deleteSessionCharacter } from "../../functions/SessionsFunctions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { getCharacters } from "../../functions/SessionsFunctions";
-import { SessionContext } from "../../contexts/SessionContext";
+// import { deleteSessionCharacter } from "../../functions/SessionsFunctions";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faTrash } from "@fortawesome/free-solid-svg-icons";
+// import { getCharacters } from "../../functions/SessionsFunctions";
+// import { SessionContext } from "../../contexts/SessionContext";
 // import { useWebSocket } from "../../contexts/WebSocketContext";
 interface SessionBoxProps {
   setSelector: (selector: string) => void;
@@ -31,20 +31,20 @@ const Container = styled.div`
   border: 1px solid ${Constants.WIDGET_BORDER};
 `;
 
-const RightControl = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  width: 20px;
-  max-width: 20px;
-  border-left: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: 0px ${Constants.BORDER_RADIUS} ${Constants.BORDER_RADIUS} 0px;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-`;
+// const RightControl = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   flex-grow: 1;
+//   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+//   width: 20px;
+//   max-width: 20px;
+//   border-left: 1px solid ${Constants.WIDGET_BORDER};
+//   border-radius: 0px ${Constants.BORDER_RADIUS} ${Constants.BORDER_RADIUS} 0px;
+//   height: 100%;
+//   align-items: center;
+//   justify-content: center;
+//   color: ${Constants.WIDGET_SECONDARY_FONT};
+// `;
 
 interface PortraitCenterProps {
   src: string;
@@ -73,9 +73,9 @@ function CharacterBox({
   selectedCharacter,
   closeModal,
   setGmMode,
-  setCharacterLog,
-}: SessionBoxProps) {
-  const { session } = useContext(SessionContext);
+} // setCharacterLog,
+: SessionBoxProps) {
+  // const { session } = useContext(SessionContext);
   const { setCharacter } = useContext(CharacterContext);
   const handleOnClick = () => {
     setGmMode(false);
@@ -83,13 +83,13 @@ function CharacterBox({
     closeModal();
   };
 
-  const handleDeleteCharacter = async () => {
-    await deleteSessionCharacter(selectedCharacter.name, selectedCharacter.id);
-    console.log("delete character");
-    getCharacters(session.id).then((response) => {
-      setCharacterLog(response);
-    });
-  };
+  // const handleDeleteCharacter = async () => {
+  //   await deleteSessionCharacter(selectedCharacter.name, selectedCharacter.id);
+  //   console.log("delete character");
+  //   getCharacters(session.id).then((response) => {
+  //     setCharacterLog(response);
+  //   });
+  // };
 
   return (
     <Container>
@@ -99,9 +99,9 @@ function CharacterBox({
       >
         {selectedCharacter.name}
       </PortraitCenter>
-      <RightControl onClick={handleDeleteCharacter}>
+      {/* <RightControl onClick={handleDeleteCharacter}>
         <FontAwesomeIcon icon={faTrash} />
-      </RightControl>
+      </RightControl> */}
     </Container>
   );
 }
