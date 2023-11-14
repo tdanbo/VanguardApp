@@ -22,7 +22,7 @@ const Button = styled.button<ButtonProps>`
       : Constants.WIDGET_PRIMARY_FONT};
   cursor: pointer;
   font-size: 12px;
-  height: 35px;
+  height: 34px;
   justify-content: center;
   align-items: center;
   opacity: ${(props) => (props.isActive ? 1 : 0.5)};
@@ -35,8 +35,8 @@ const AllButton = styled.button`
   color: ${Constants.WIDGET_SECONDARY_FONT};
   cursor: pointer;
   font-size: 12px;
-  height: 35px;
-  width: 35px;
+  height: 34px;
+  width: 34px;
   justify-content: center;
   align-items: center;
 `;
@@ -44,7 +44,7 @@ const AllButton = styled.button`
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
-  height: 35px;
+  height: 34px;
   gap: 20px;
   justify-content: right;
 `;

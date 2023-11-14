@@ -3,7 +3,11 @@ import { ManAtArms } from "./rules/ManAtArms";
 import { PolearmMastery } from "./rules/PolearmMastery";
 import { ShieldFighter } from "./rules/ShieldFighter";
 import { ArmoredMystic } from "./rules/ArmoredMystic";
-import { postSelectedCharacter } from "./CharacterFunctions";
+import {
+  GetUsedSlots,
+  GetMaxSlots,
+  postSelectedCharacter,
+} from "./CharacterFunctions";
 import { cloneDeep } from "lodash";
 
 export const UpdateActives = (character: CharacterEntry) => {
@@ -50,8 +54,8 @@ export const UpdateActives = (character: CharacterEntry) => {
 
 const Overburden = (character: CharacterEntry) => {
   console.log("Checking Overburden");
-  const used_slots = character.inventory.length;
-  const max_slots = Math.max(character.stats.strong.value - 2, 10);
+  const used_slots = GetUsedSlots(character);
+  const max_slots = GetMaxSlots(character);
 
   if (used_slots > max_slots) {
     character.actives.defense.value -= used_slots - max_slots;

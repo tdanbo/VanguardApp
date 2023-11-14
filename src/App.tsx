@@ -41,6 +41,7 @@ import AbilityFooter from "./components/FooterNavigation/AbilityFooter";
 import CreatureFooter from "./components/FooterNavigation/CreatureFooter";
 import TradingFooter from "./components/FooterNavigation/TradingFooter";
 import TimeTrackBox from "./components/TimeTrackBox";
+import RestBox from "./components/RestBox";
 
 const Row = styled.div`
   display: flex;
@@ -309,7 +310,8 @@ function App() {
                     </ScrollContainer>
                   </InventoryContainer>
                   <FooterCenterContainer>
-                    <EmptyNavigation />
+                    <RestBox />
+
                     <ResourcesBox />
                   </FooterCenterContainer>
                 </>

@@ -30,7 +30,7 @@ const Navigator = styled.button<NavigatorProps>`
       : Constants.WIDGET_BACKGROUND};
   background-color: ${(props) =>
     props.$active
-      ? Constants.WIDGET_BACKGROUND
+      ? Constants.WIDGET_BACKGROUND_EMPTY
       : Constants.WIDGET_BACKGROUND_EMPTY};
   border-radius: ${Constants.BORDER_RADIUS};
   &:hover {
@@ -75,9 +75,6 @@ function InventoryNavigation({
           <FontAwesomeIcon icon={faBolt} />
         </Navigator>
       )}
-
-      <Spacer />
-      <RestBox />
     </Container>
   );
 }

@@ -183,4 +183,29 @@ export const Qualities: {
     name: "Special",
     description: "",
   },
+  "Storage 2": {
+    name: "Storage 2",
+    description:
+      "Increases the total number of items your character can carry by 2. Increases your daily food/water requirement by 1.",
+  },
+  "Storage 4": {
+    name: "Storage 4",
+    description:
+      "Increases the total number of items your character can carry by 4. Increases your daily food/water requirement by 2.",
+  },
+  "Storage 6": {
+    name: "Storage 6",
+    description:
+      "Increases the total number of items your character can carry by 6. Increases your daily food/water requirement by 3.",
+  },
+  "Storage 8": {
+    name: "Storage 8",
+    description:
+      "Increases the total number of items your character can carry by 8. Increases your daily food/water requirement by 4.",
+  },
+  "Storage 10": {
+    name: "Storage 10",
+    description:
+      "Increases the total number of items your character can carry by 10. Increases your daily food/water requirement by 5.",
+  },
 };

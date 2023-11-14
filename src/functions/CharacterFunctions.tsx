@@ -709,10 +709,11 @@ export function onSubUnspentXp(character: CharacterEntry) {
 
 function RestFood(character: CharacterEntry) {
   const newRations = cloneDeep(character.rations);
-  const hasFood = newRations.food > 0;
+  const burnRate = GetBurnRate(character);
+  const hasFood = newRations.food >= burnRate;
 
   if (hasFood) {
-    newRations.food -= 1;
+    newRations.food -= burnRate;
 
     const updatedCharacter = {
       ...character,
@@ -728,11 +729,11 @@ function RestFood(character: CharacterEntry) {
 
 function RestWater(character: CharacterEntry) {
   const newRations = cloneDeep(character.rations);
-
-  const hasWater = newRations.water > 0;
+  const burnRate = GetBurnRate(character);
+  const hasWater = newRations.water >= burnRate;
 
   if (hasWater === true) {
-    newRations.water -= 1;
+    newRations.water -= burnRate;
     const updatedCharacter = {
       ...character,
       rations: newRations,
@@ -810,4 +811,94 @@ export function UpdateResources(
   console.log("UpdateResources POST");
   postSelectedCharacter(newCharacter);
   return newCharacter;
+}
+
+export function GetUsedSlots(character: CharacterEntry) {
+  let used_slots = character.inventory.length;
+
+  const storageModifiers = [
+    "Storage 2",
+    "Storage 4",
+    "Storage 6",
+    "Storage 8",
+    "Storage 10",
+  ];
+
+  character.inventory.forEach((item) => {
+    if (!item || !item.quality) return;
+
+    item.quality.forEach((quality) => {
+      if (storageModifiers.includes(quality)) {
+        console.log("Storage Modifier Found");
+        used_slots -= 1;
+      }
+    });
+  });
+
+  return used_slots;
+}
+
+export function GetMaxSlots(character: CharacterEntry) {
+  let max_slots = Math.max(
+    Math.ceil(
+      (character.stats.strong.value + character.stats.resolute.value) / 2,
+    ),
+    10,
+  );
+
+  const storageModifiers = {
+    "Storage 2": 2,
+    "Storage 4": 4,
+    "Storage 6": 6,
+    "Storage 8": 8,
+    "Storage 10": 10,
+  };
+
+  character.inventory.forEach((item) => {
+    if (!item || !item.quality) return;
+
+    item.quality.forEach((quality) => {
+      Object.entries(storageModifiers).forEach(([key, modifiers]) => {
+        console.log(key);
+        console.log(modifiers);
+        console.log(quality);
+        if (quality.includes(key)) {
+          console.log("Storage Modifier Found");
+          max_slots += modifiers;
+        }
+      });
+    });
+  });
+
+  return max_slots;
+}
+
+export function GetBurnRate(character: CharacterEntry) {
+  let burn_rate = 1;
+
+  const storageModifiers = {
+    "Storage 2": 1,
+    "Storage 4": 2,
+    "Storage 6": 3,
+    "Storage 8": 4,
+    "Storage 10": 5,
+  };
+
+  character.inventory.forEach((item) => {
+    if (!item || !item.quality) return;
+
+    item.quality.forEach((quality) => {
+      Object.entries(storageModifiers).forEach(([key, modifiers]) => {
+        console.log(key);
+        console.log(modifiers);
+        console.log(quality);
+        if (quality.includes(key)) {
+          console.log("Storage Modifier Found");
+          burn_rate += modifiers;
+        }
+      });
+    });
+  });
+
+  return burn_rate;
 }

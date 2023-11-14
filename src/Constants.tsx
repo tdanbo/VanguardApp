@@ -23,6 +23,7 @@ export type ColorType = string;
 export const PURPLE = "#60495c";
 export const RED = "#925833";
 export const BLUE = "#495C60";
+export const BLUE_VAR = "#60b4bf";
 export const GREEN = "#5c6049";
 export const YELLOW = "#926f2b";
 export const BRIGHT_YELLOW = "#BF8C2F";
@@ -71,6 +72,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   tool: GREEN,
   trait: GREEN,
   resting: NIGHT,
+  container: BLUE_VAR,
 };
 
 export const CATEGORY_FILTER = [
@@ -85,6 +87,7 @@ export const CATEGORY_FILTER = [
   "artifact",
   "mystical_treasure",
   "general_good",
+  "container",
 ];
 
 export const TYPE_FILTER = [
