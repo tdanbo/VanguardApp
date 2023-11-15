@@ -351,7 +351,7 @@ export const onAddInventoryItem = ({
 }: onAddCharacterProps) => {
   const newInventory = cloneDeep(character.inventory);
 
-  if (newInventory.length === Math.ceil(character.stats.strong.value * 2)) {
+  if (newInventory.length === GetMaxSlots(character) * 2) {
     return;
   } else {
     const itemWithId = {

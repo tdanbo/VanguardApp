@@ -5,6 +5,7 @@ import { ItemEntry } from "../../Types";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
+import { GetMaxSlots } from "../../functions/CharacterFunctions";
 const Container = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? "none" : "flex")};
   flex-direction: column;
@@ -29,7 +30,7 @@ function InventorySection({ inventoryState }: NavigationProps) {
   character.inventory.sort(sortInventory);
   const sortedInventory = [...character.inventory].sort(sortInventory);
 
-  const totalSlots = character.stats.strong.value * 2;
+  const totalSlots = GetMaxSlots(character) * 2;
 
   return (
     <Container hidden={inventoryState === 0 || inventoryState === 2}>
