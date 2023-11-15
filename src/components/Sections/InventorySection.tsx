@@ -35,7 +35,9 @@ function InventorySection({ inventoryState }: NavigationProps) {
     <Container hidden={inventoryState === 0 || inventoryState === 2}>
       {Array.from({ length: totalSlots }).map((_, index) => {
         const item = sortedInventory[index];
-        if (item) {
+        console.log("Item Below");
+        console.log(item);
+        if (item !== undefined && item.category !== "container") {
           return (
             <InventoryEntry
               key={index}

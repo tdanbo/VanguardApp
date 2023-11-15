@@ -2,8 +2,10 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBolt } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
-import RestBox from "../RestBox";
+import StorageBox from "../StorageBox";
 import OverburdenBox from "../OverburdenBox";
+import { CharacterContext } from "../../contexts/CharacterContext";
+import { useContext } from "react";
 
 const Container = styled.div`
   display: flex;
@@ -39,7 +41,7 @@ const Navigator = styled.button<NavigatorProps>`
     border: 1px solid ${Constants.WIDGET_BORDER};
   }
   width: 50px;
-  height: 35px;
+  height: 38px;
 `;
 
 const Spacer = styled.div`
@@ -49,6 +51,13 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
+const storageModifiers = [
+  "Storage 2",
+  "Storage 4",
+  "Storage 6",
+  "Storage 8",
+  "Storage 10",
+];
 interface NavigationProps {
   inventoryState: number;
   setInventoryState: (browserState: number) => void;
@@ -58,6 +67,8 @@ function InventoryNavigation({
   inventoryState,
   setInventoryState,
 }: NavigationProps) {
+  const { character } = useContext(CharacterContext);
+
   const onHandleItems = () => {
     if (inventoryState === 1) {
       setInventoryState(2);
@@ -74,6 +85,14 @@ function InventoryNavigation({
         <Navigator $active={inventoryState === 2} onClick={onHandleItems}>
           <FontAwesomeIcon icon={faBolt} />
         </Navigator>
+      )}
+      {character.inventory.flatMap((item) =>
+        item.quality.map((quality) => {
+          if (storageModifiers.includes(quality)) {
+            return <StorageBox item={item} />;
+          }
+          return null;
+        }),
       )}
     </Container>
   );

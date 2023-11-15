@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
-  min-height: 30px;
-  max-height: 30px;
+  min-height: 35px;
+  max-height: 35px;
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   color: ${Constants.WIDGET_BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
