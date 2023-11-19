@@ -86,7 +86,17 @@ import RollE from "./assets/sounds/RollE.wav";
 import RollF from "./assets/sounds/RollF.wav";
 import RollG from "./assets/sounds/RollG.wav";
 
+import SuccessA from "./assets/sounds/SuccessA.wav";
+import SuccessB from "./assets/sounds/SuccessB.wav";
+import SuccessC from "./assets/sounds/SuccessC.wav";
+
+import FailureA from "./assets/sounds/FailureA.wav";
+import FailureB from "./assets/sounds/FailureB.wav";
+import FailureC from "./assets/sounds/FailureC.wav";
+
 export const RollSounds = [RollA, RollB, RollC, RollD, RollE, RollF, RollG];
+export const CriticalSuccessSounds = [SuccessA, SuccessB, SuccessC];
+export const CriticalFailureSounds = [FailureA, FailureB, FailureC];
 
 export const CharacterPortraits: { [key: string]: string } = {
   Character0: Character0,

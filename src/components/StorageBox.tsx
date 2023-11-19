@@ -2,11 +2,12 @@ import * as Constants from "../Constants";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { RestCharacter, GetBurnRate } from "../functions/CharacterFunctions";
-
+import { onDeleteItem } from "../functions/CharacterFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faHorseHead } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { useRoll } from "../functions/CombatFunctions";
+import { ItemEntry } from "../Types";
 
 const OuterContainer = styled.div`
   display: flex;
@@ -20,7 +21,7 @@ const Navigator = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 14px;
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   color: ${Constants.WIDGET_PRIMARY_FONT};
   border-radius: ${Constants.BORDER_RADIUS};
@@ -30,8 +31,9 @@ const Navigator = styled.div`
     color: ${Constants.WIDGET_PRIMARY_FONT};
     border: 1px solid ${Constants.WIDGET_BORDER};
   }
-  height: 33px;
+  height: 35px;
   width: 48px;
+  letter-spacing: 1px;
 `;
 
 const Container = styled.div`
@@ -59,48 +61,33 @@ const Divider = styled.div`
   background-color: ${Constants.WIDGET_BACKGROUND};
 `;
 
-function RestBox() {
-  const { character, setCharacter } = useContext(CharacterContext);
-  const onRollDice = useRoll(); // Moved this outside the HandleRest function
+interface StorageBoxProps {
+  item: ItemEntry;
+}
 
-  const HandleRest = () => {
-    const updatedCharacter = RestCharacter(character);
+function StorageBox({ item }: StorageBoxProps) {
+  const { character, setCharacter } = useContext(CharacterContext);
+  const HandleDeleteItem = () => {
+    const updatedCharacter = onDeleteItem({
+      id: item.id,
+      character,
+    });
     if (updatedCharacter) {
       setCharacter(updatedCharacter);
     }
-
-    console.log("Resting");
-    console.log("Character: ", character);
-    console.log("Expanding");
-
-    // Using the handleRoll function here doesn't make much sense unless you are planning to call this function somewhere else.
-    // Otherwise, you can directly call onRollDice with the required parameters.
-    const handleRoll = () => {
-      onRollDice({
-        dice: 20,
-        modifier: 20,
-        count: 0,
-        target: 0,
-        source: character.name,
-        active: "Resting",
-        add_mod: false,
-      });
-    };
-
-    handleRoll(); // If you wish to execute the roll immediately after updating the character
   };
 
   return (
     <OuterContainer>
-      <Navigator onClick={HandleRest}>
-        <Container>{GetBurnRate(character)}</Container>
-        <Divider />
+      <Navigator onClick={HandleDeleteItem}>
         <Icon>
-          <FontAwesomeIcon icon={faMoon} />
+          <FontAwesomeIcon icon={faHorseHead} />
         </Icon>
+        {/* <Divider />
+        <Container>8</Container> */}
       </Navigator>
     </OuterContainer>
   );
 }
 
-export default RestBox;
+export default StorageBox;

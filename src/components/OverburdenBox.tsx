@@ -2,6 +2,7 @@ import * as Constants from "../Constants";
 import styled from "styled-components";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
+import { GetUsedSlots, GetMaxSlots } from "../functions/CharacterFunctions";
 
 const Container = styled.div`
   display: flex;
@@ -10,7 +11,6 @@ const Container = styled.div`
   justify-content: center;
   font-weight: bold;
   font-size: 16px;
-  color: ${Constants.WIDGET_PRIMARY_FONT};
 `;
 
 const Divider = styled.div`
@@ -18,7 +18,7 @@ const Divider = styled.div`
   background-color: rgba(0, 0, 0, 0.25);
   width: 2px;
   height: 16px;
-  margin: 3px;
+  margin: 5px;
   background-color: ${Constants.WIDGET_BACKGROUND};
 `;
 
@@ -30,8 +30,8 @@ const ColoredNumber = styled.span`
 function OverburdenBox() {
   const { character } = useContext(CharacterContext);
 
-  const used_slots = character.inventory.length;
-  const max_slots = Math.max(character.stats.strong.value - 2, 10);
+  const used_slots = GetUsedSlots(character);
+  const max_slots = GetMaxSlots(character);
 
   // Decide on the color based on the comparison
   const numberColor =
