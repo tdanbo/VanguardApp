@@ -2,16 +2,11 @@ import * as Constants from "../Constants";
 import { CombatEntry } from "../Types";
 import "../App.css";
 import styled from "styled-components";
-import {
-  UpperFirstLetter,
-  getAdjustedColor,
-} from "../functions/UtilityFunctions";
+import { UpperFirstLetter } from "../functions/UtilityFunctions";
 import {
   faAngleDoubleDown,
   faAngleDoubleUp,
   faCheck,
-  faCrown,
-  faSkull,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -176,7 +171,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
     };
   }, [combatEntry.result]);
 
-  const RollEntryColor = getAdjustedColor(EntryColor(), combatEntry.roll);
+  // const RollEntryColor = getAdjustedColor(EntryColor(), combatEntry.roll);
 
   const FumbledPerfect = () => {
     if (combatEntry.roll === 1) {
