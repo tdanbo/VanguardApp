@@ -48,7 +48,7 @@ type RGB = {
 
 function hexToRgb(hex: string): RGB | null {
   let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+  hex = hex.replace(shorthandRegex, function (r, g, b) {
     return r + r + g + g + b + b;
   });
 

@@ -44,13 +44,6 @@ const Navigator = styled.button<NavigatorProps>`
   height: 38px;
 `;
 
-const Spacer = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  flex: 1;
-`;
-
 const storageModifiers = [
   "Storage 2",
   "Storage 4",

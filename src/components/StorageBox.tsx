@@ -1,12 +1,10 @@
 import * as Constants from "../Constants";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
-import { RestCharacter, GetBurnRate } from "../functions/CharacterFunctions";
 import { onDeleteItem } from "../functions/CharacterFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon, faHorseHead } from "@fortawesome/free-solid-svg-icons";
+import { faHorseHead } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import { useRoll } from "../functions/CombatFunctions";
 import { ItemEntry } from "../Types";
 
 const OuterContainer = styled.div`
@@ -36,29 +34,11 @@ const Navigator = styled.div`
   letter-spacing: 1px;
 `;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 18px;
-`;
-
 const Icon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 16px;
-`;
-
-const Divider = styled.div`
-  display: flex;
-  background-color: rgba(0, 0, 0, 0.25);
-  width: 2px;
-  height: 16px;
-  margin: 5px;
-  background-color: ${Constants.WIDGET_BACKGROUND};
 `;
 
 interface StorageBoxProps {

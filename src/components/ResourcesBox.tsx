@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useContext, useState, useEffect } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { UpdateResources, GetBurnRate } from "../functions/CharacterFunctions";
+import { UpdateResources } from "../functions/CharacterFunctions";
 import {
   faCircle,
   faDroplet,
