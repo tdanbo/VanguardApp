@@ -180,14 +180,29 @@ function ActiveBox({ active_name, active }: Props) {
     });
   };
 
+  const FumbledPerfect = (active_name: string) => {
+    if (active_name === "attack") {
+      return "Perfect: +1d6 damage.\nFumbled: Enemy performs a free attack against you.";
+    } else if (active_name === "defense") {
+      return "Perfect: You perform a free attack against the enemy.\nFumbled: +3 Damage taken.";
+    } else if (active_name === "casting") {
+      return "Perfect: No corruption gain.\nFumbled: +1d4 corruption gain.";
+    } else if (active_name === "sneaking") {
+      return "Perfect: No detection for the entire group.\nFumbled: Detection leading in to likely leading in to combat.";
+    } else {
+      return "";
+    }
+  };
+
   return (
     <Container>
       <Value
+        title={FumbledPerfect(active_name)}
         onClick={handleActiveRoll}
         className="dice-icon-hover button-hover"
       >
         {Math.max(active.value + modValue, 1)}
-        <ActiveValue> {active_name.toUpperCase()}</ActiveValue>
+        <ActiveValue>{active_name.toUpperCase()}</ActiveValue>
       </Value>
       <Row>
         <Modifier

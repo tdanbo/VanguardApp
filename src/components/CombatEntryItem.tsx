@@ -2,9 +2,18 @@ import * as Constants from "../Constants";
 import { CombatEntry } from "../Types";
 import "../App.css";
 import styled from "styled-components";
-
-import { UpperFirstLetter } from "../functions/UtilityFunctions";
-import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  UpperFirstLetter,
+  getAdjustedColor,
+} from "../functions/UtilityFunctions";
+import {
+  faAngleDoubleDown,
+  faAngleDoubleUp,
+  faCheck,
+  faCrown,
+  faSkull,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { CharacterPortraits } from "../Images";
@@ -102,6 +111,14 @@ const Source = styled.div<ColorTypeProps>`
   color: ${Constants.WIDGET_SECONDARY_FONT};
 `;
 
+const FumbledSubText = styled.div`
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+`;
+
 function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   const EntryColor = () => {
     return (
@@ -159,6 +176,48 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
     };
   }, [combatEntry.result]);
 
+  const RollEntryColor = getAdjustedColor(EntryColor(), combatEntry.roll);
+
+  const FumbledPerfect = () => {
+    if (combatEntry.roll === 1) {
+      return 0; // Perfect
+    } else if (combatEntry.roll === 20) {
+      return 1; // Fumbled
+    } else {
+      return 2; // Normal
+    }
+  };
+
+  const FumbledPerfectText = () => {
+    if (FumbledPerfect() === 0) {
+      if (combatEntry.active === "attack") {
+        return "+1d6 damage.";
+      } else if (combatEntry.active === "defense") {
+        return "Free attack against the enemy.";
+      } else if (combatEntry.active === "casting") {
+        return "No corruption gain.";
+      } else if (combatEntry.active === "sneaking") {
+        return "No detection for the entire group.";
+      } else {
+        return "";
+      }
+    } else if (FumbledPerfect() === 1) {
+      if (combatEntry.active === "attack") {
+        return "Free attack against you.";
+      } else if (combatEntry.active === "defense") {
+        return "+3 Damage taken.";
+      } else if (combatEntry.active === "casting") {
+        return "+1d4 corruption gain.";
+      } else if (combatEntry.active === "sneaking") {
+        return "Conflict is inevitable! If attacked, you are surprised!";
+      } else {
+        return "";
+      }
+    } else {
+      return "";
+    }
+  };
+
   return (
     <Container src={CharacterPortraits[combatEntry.portrait]}>
       <ColorBlock $rgb={EntryColor()} $issuccess={combatEntry.success} />
@@ -192,32 +251,64 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
             {UpperFirstLetter(combatEntry.active)}
           </Active>
         )}
-
+        <FumbledSubText>{FumbledPerfectText()}</FumbledSubText>
         <Source $rgb={EntryColor()} $issuccess={combatEntry.success}>
-          {UpperFirstLetter(combatEntry.source)}
           {combatEntry.source === "Skill Test" ? (
-            combatEntry.success ? (
-              <FontAwesomeIcon
-                icon={faCheck}
-                color="#5cb57c"
-                style={{
-                  fontSize: "20px",
-                  position: "relative",
-                  top: "4px",
-                  left: "5px",
-                }}
-              />
+            combatEntry.roll === 1 ? (
+              <>
+                <span>{"Perfect " + UpperFirstLetter(combatEntry.source)}</span>
+                <FontAwesomeIcon
+                  icon={faAngleDoubleUp} // icon for perfect test
+                  color="#5cb57c" // color choice
+                  style={{
+                    fontSize: "20px",
+                    position: "relative",
+                    top: "4px",
+                    left: "5px",
+                  }}
+                />
+              </>
+            ) : combatEntry.roll === 20 ? (
+              <>
+                <span>{"Fumbled " + UpperFirstLetter(combatEntry.source)}</span>
+                <FontAwesomeIcon
+                  icon={faAngleDoubleDown} // icon for fumbled test
+                  color="#b55c5c" // color choice
+                  style={{
+                    fontSize: "20px",
+                    position: "relative",
+                    top: "4px",
+                    left: "5px",
+                  }}
+                />
+              </>
             ) : (
-              <FontAwesomeIcon
-                icon={faXmark}
-                color="#b55c5c"
-                style={{
-                  fontSize: "20px",
-                  position: "relative",
-                  top: "4px",
-                  left: "5px",
-                }}
-              />
+              <>
+                <span>{UpperFirstLetter(combatEntry.source)}</span>
+                {combatEntry.success ? (
+                  <FontAwesomeIcon
+                    icon={faCheck}
+                    color="#5cb57c"
+                    style={{
+                      fontSize: "20px",
+                      position: "relative",
+                      top: "4px",
+                      left: "5px",
+                    }}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faXmark}
+                    color="#b55c5c"
+                    style={{
+                      fontSize: "20px",
+                      position: "relative",
+                      top: "4px",
+                      left: "5px",
+                    }}
+                  />
+                )}
+              </>
             )
           ) : null}
         </Source>

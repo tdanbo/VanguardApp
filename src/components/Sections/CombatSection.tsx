@@ -19,7 +19,11 @@ const Container = styled.div`
 `;
 
 import { useRef } from "react";
-import { RollSounds } from "../../Images";
+import {
+  RollSounds,
+  CriticalSuccessSounds,
+  CriticalFailureSounds,
+} from "../../Images";
 // import { set } from "lodash";
 
 interface CombatSectionProps {
@@ -70,9 +74,9 @@ function CombatSection({ scrollRef }: CombatSectionProps) {
     };
   }, []);
 
-  const playRandomSound = () => {
-    const randomIndex = Math.floor(Math.random() * RollSounds.length);
-    const randomSound = RollSounds[randomIndex];
+  const playRandomSound = (SoundList: string[]) => {
+    const randomIndex = Math.floor(Math.random() * SoundList.length);
+    const randomSound = SoundList[randomIndex];
 
     if (audioRef.current) {
       audioRef.current.src = randomSound;
@@ -104,7 +108,18 @@ function CombatSection({ scrollRef }: CombatSectionProps) {
       getCombatLog(session.id).then((response) => {
         if (!deepCompareCombatEntries(response, combatLog)) {
           setCombatLog(response);
-          playRandomSound();
+          const last_roll = response.at(-1);
+          if (!last_roll) return;
+          if (last_roll.source === "Skill Test" && last_roll.roll === 1) {
+            playRandomSound(CriticalSuccessSounds);
+          } else if (
+            last_roll.source === "Skill Test" &&
+            last_roll.roll === 20
+          ) {
+            playRandomSound(CriticalFailureSounds);
+          } else {
+            playRandomSound(RollSounds);
+          }
         }
       });
     }, 500);
