@@ -54,9 +54,9 @@ interface SelectorProps {
 function SelectorComponent({ setGmMode }: SelectorProps) {
   const [isModalOpen, setIsModalOpen] = useState(true);
 
+  const [characterPortrait, setCharacterPortrait] = useState<string>("");
   const [characterRace, setCharacterRace] = useState<string>("");
   const [characterName, setCharacterName] = useState<string>("");
-  const [characterPortrait, setCharacterPortrait] = useState<string>("");
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
 
   console.log(characterName, characterRace, characterPortrait);
@@ -87,6 +87,8 @@ function SelectorComponent({ setGmMode }: SelectorProps) {
             setCharacterRace={setCharacterRace}
             characterName={characterName}
             characterRace={characterRace}
+            closeModal={handleClose}
+            source={"characterSelect"}
           />
         );
       case "selectPortrait":

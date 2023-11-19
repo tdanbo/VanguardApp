@@ -1,4 +1,4 @@
-import { CreatureEntry } from "../../Types";
+import { CharacterEntry, CreatureEntry } from "../../Types";
 
 import styled from "styled-components";
 import CreatureEntryItem from "../CreatureEntryItem";
@@ -19,23 +19,23 @@ const ItemContainer = styled.div`
 
 interface CreatureBrowserProps {
   browserState: number;
-  creatureList: CreatureEntry[];
-  encounter: CreatureEntry[];
-  setEncounter: React.Dispatch<React.SetStateAction<CreatureEntry[]>>;
+  creatureList: CharacterEntry[];
+  creatureEncounter: CharacterEntry[];
+  setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
 }
 
-function sortItems(a: CreatureEntry, b: CreatureEntry): number {
+function sortItems(a: CharacterEntry, b: CharacterEntry): number {
   const raceComparison =
-    Constants.RACE_FILTER.indexOf(a.race) -
-    Constants.RACE_FILTER.indexOf(b.race);
+    Constants.RACE_FILTER.indexOf(a.name) -
+    Constants.RACE_FILTER.indexOf(b.name);
 
-  if (raceComparison === 0) {
-    // If races are the same, sort by resistance
-    return (
-      Constants.DIFFICULTY_FILTER.indexOf(a.resistance) -
-      Constants.DIFFICULTY_FILTER.indexOf(b.resistance)
-    );
-  }
+  // if (raceComparison === 0) {
+  //   // If races are the same, sort by resistance
+  //   return (
+  //     Constants.DIFFICULTY_FILTER.indexOf(a.resistance) -
+  //     Constants.DIFFICULTY_FILTER.indexOf(b.resistance)
+  //   );
+  // }
 
   return raceComparison;
 }
@@ -43,12 +43,12 @@ function sortItems(a: CreatureEntry, b: CreatureEntry): number {
 function CreatureBrowser({
   browserState,
   creatureList,
-  encounter,
-  setEncounter,
+  creatureEncounter,
+  setCreatureEncounter,
 }: CreatureBrowserProps) {
   const sortedCreatureList = creatureList.sort(sortItems);
   return (
-    <Container hidden={browserState !== 3}>
+    <Container hidden={browserState !== 4}>
       <ItemContainer>
         {sortedCreatureList &&
           sortedCreatureList.map((creature, index) => (
@@ -56,8 +56,8 @@ function CreatureBrowser({
               key={index}
               browser={true}
               creature={creature}
-              encounter={encounter}
-              setEncounter={setEncounter}
+              encounter={creatureEncounter}
+              setEncounter={setCreatureEncounter}
             />
           ))}
       </ItemContainer>

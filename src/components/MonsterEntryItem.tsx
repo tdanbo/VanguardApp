@@ -3,7 +3,7 @@ import { CreatureEntry } from "../Types";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
-import { CharacterEntry } from "../Types";
+
 const BaseContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -97,14 +97,14 @@ const AbilityDetail = styled.div`
 // `;
 
 interface AbilityEntryItemProps {
-  creature: CharacterEntry;
+  creature: CreatureEntry;
   browser: boolean;
   setInventoryState?: (inventoryState: number) => void;
-  encounter: CharacterEntry[];
-  setEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
+  encounter: CreatureEntry[];
+  setEncounter: React.Dispatch<React.SetStateAction<CreatureEntry[]>>;
 }
 
-function CreatureEntryItem({
+function MonsterEntryItem({
   creature,
   browser,
   encounter,
@@ -128,7 +128,7 @@ function CreatureEntryItem({
 
   const AddEncounterCreature = () => {
     console.log("Add Creature");
-    const newEncounterCreature: CharacterEntry = {
+    const newEncounterCreature: CreatureEntry = {
       ...creature,
       name: suffixLetter(),
       damage: 0,
@@ -137,7 +137,7 @@ function CreatureEntryItem({
     setEncounter([...encounter, newEncounterCreature]);
   };
 
-  const DeleteEncounterCreature = (_creature: CharacterEntry) => {
+  const DeleteEncounterCreature = (_creature: CreatureEntry) => {
     console.log("Delete Creature");
   };
 
@@ -152,7 +152,9 @@ function CreatureEntryItem({
         </ExpandButten>
         <NameContainer>
           <CreatureName>{creature.name}</CreatureName>
-          <AbilityDetail>{creature.name}</AbilityDetail>
+          <AbilityDetail>
+            {creature.resistance} {creature.race}
+          </AbilityDetail>
         </NameContainer>
         {browser ? (
           <AddButton className={"button-hover"} onClick={AddEncounterCreature}>
@@ -171,4 +173,4 @@ function CreatureEntryItem({
   );
 }
 
-export default CreatureEntryItem;
+export default MonsterEntryItem;

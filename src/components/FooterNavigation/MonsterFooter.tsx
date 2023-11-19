@@ -52,15 +52,12 @@ const Container = styled.div`
 import { useState } from "react";
 
 interface CreatureFooterProps {
-  creatureList: CreatureEntry[];
-  setCreatureList: (creatureList: CreatureEntry[]) => void;
+  monsterList: CreatureEntry[];
+  setMonsterList: (monsterList: CreatureEntry[]) => void;
 }
 
-function CreatureFooter({
-  creatureList,
-  setCreatureList,
-}: CreatureFooterProps) {
-  const [fullList, setFullList] = useState<CreatureEntry[]>(creatureList);
+function MonsterFooter({ monsterList, setMonsterList }: CreatureFooterProps) {
+  const [fullList, setFullList] = useState<CreatureEntry[]>(monsterList);
   const [active, setActive] = useState<string | null>(null);
 
   function sortItems(a: CreatureEntry, b: CreatureEntry): number {
@@ -85,7 +82,7 @@ function CreatureFooter({
       (creature) => creature.category === category,
     );
     const sortedItems = filteredItems.sort(sortItems);
-    setCreatureList(sortedItems);
+    setMonsterList(sortedItems);
   }
 
   useEffect(() => {
@@ -101,7 +98,7 @@ function CreatureFooter({
     <Container>
       <AllButton
         onClick={() => {
-          setCreatureList([...fullList].sort(sortItems));
+          setMonsterList([...fullList].sort(sortItems));
           setActive(null);
         }}
       >
@@ -135,4 +132,4 @@ function CreatureFooter({
   );
 }
 
-export default CreatureFooter;
+export default MonsterFooter;

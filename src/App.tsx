@@ -1,47 +1,49 @@
 import "./App.css";
 import "./index.css";
 
-import InventorySection from "./components/Sections/InventorySection";
-
 import * as Constants from "./Constants";
 import styled from "styled-components";
 import CharacterProvider from "./contexts/CharacterContext";
 import UserProvider from "./contexts/UserContext";
 import SessionProvider from "./contexts/SessionContext";
-import HealthBox from "./components/HealthBox";
-import StatsControls from "./components/StatsControls/StatsControls";
+
 import EquipmentBrowser from "./components/Modals/EquipmentBrowser";
-import CreatureBrowser from "./components/Modals/CreatureBrowser";
+import MonsterBrowser from "./components/Modals/MonsterBrowser";
 
 import CharacterNavigation from "./components/NavigationControl/CharacterNavigation";
-import InventoryNavigation from "./components/NavigationControl/InventoryNavigation";
-import ActiveControls from "./components/ActiveControls";
-import EmptyNavigation from "./components/NavigationControl/EmptyNavigation";
+
 import DayNavigator from "./components/TravelBox";
-import ResourcesBox from "./components/ResourcesBox";
+
 import XpBox from "./components/XpBox";
 import SelectorNavigation from "./components/NavigationControl/SelectorNavigation";
 
 import CharacterNameBox from "./components/CharacterNameBox";
 import { useState, useRef } from "react";
 import AbilityBrowser from "./components/Modals/AbilityBrowser";
-import AbilitySection from "./components/Sections/AbilitySection";
+
 import CombatSection from "./components/Sections/CombatSection";
 import DiceSection from "./components/Sections/DiceSection";
 import SearchAbilityBox from "./components/SearchAbilityBox";
 import SearchItemBox from "./components/SearchItemBox";
-import SearchCreatureBox from "./components/SearchCreatureBox";
-import { AbilityEntry, ItemEntry, CreatureEntry } from "./Types";
-import SecondaryStatsControls from "./components/StatsControls/SecondaryStatsControls";
+import SearchMonsterBox from "./components/SearchMonsterBox";
+import {
+  AbilityEntry,
+  ItemEntry,
+  CreatureEntry,
+  CharacterEntry,
+} from "./Types";
+
 import EncounterSection from "./components/Sections/EncounterSection";
 import ResetEncounter from "./components/ResetEncounter";
-import GenerateEncounter from "./components/Modals/GenerateEncounter";
+import CreatureBrowser from "./components/Modals/CreatureBrowser";
 import EquipmentFooter from "./components/FooterNavigation/EquipmentFooter";
 import AbilityFooter from "./components/FooterNavigation/AbilityFooter";
-import CreatureFooter from "./components/FooterNavigation/CreatureFooter";
+import MonsterFooter from "./components/FooterNavigation/MonsterFooter";
 import TradingFooter from "./components/FooterNavigation/TradingFooter";
 import TimeTrackBox from "./components/TimeTrackBox";
-import RestBox from "./components/RestBox";
+import SearchCreatureBox from "./components/SearchCreatureBox";
+
+import CharacterSheet from "./character/CharacterSheet";
 
 const Row = styled.div`
   display: flex;
@@ -97,29 +99,6 @@ const Column = styled.div`
   height: 100%;
 `;
 
-const StatsContainer = styled.div`
-  display: flex;
-  margin: 20px;
-  gap: 20px;
-`;
-
-const HealthContainer = styled.div`
-  display: flex;
-  margin: 20px;
-  gap: 20px;
-`;
-
-const InventoryContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-
-  margin: 20px;
-  gap: 20px;
-
-  overflow: scroll;
-  scrollbar-width: none !important;
-`;
-
 const EncounterContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -168,9 +147,13 @@ function App() {
   const [inventoryState, setInventoryState] = useState(1);
   const [abilityList, setAbilityList] = useState<AbilityEntry[]>([]);
   const [itemList, setItemList] = useState<ItemEntry[]>([]);
-  const [creatureList, setCreatureList] = useState<CreatureEntry[]>([]);
+  const [monsterList, setMonsterList] = useState<CreatureEntry[]>([]);
+  const [creatureList, setCreatureList] = useState<CharacterEntry[]>([]);
   const [gmMode, setGmMode] = useState<boolean>(true);
   const [encounter, setEncounter] = useState<CreatureEntry[]>([]);
+  const [creatureEncounter, setCreatureEncounter] = useState<CharacterEntry[]>(
+    [],
+  );
 
   const onDeleteCreature = (id: string) => {
     setEncounter((currentEncounter) =>
@@ -196,6 +179,11 @@ function App() {
                   setList={setAbilityList}
                   browserState={browserState}
                 />
+                <SearchMonsterBox
+                  monsterList={monsterList}
+                  setList={setMonsterList}
+                  browserState={browserState}
+                />
                 <SearchCreatureBox
                   creatureList={creatureList}
                   setList={setCreatureList}
@@ -216,13 +204,18 @@ function App() {
                   setAbilityList={setAbilityList}
                   setInventoryState={setInventoryState}
                 />
-                <CreatureBrowser
+                <MonsterBrowser
                   browserState={browserState}
-                  creatureList={creatureList}
+                  monsterList={monsterList}
                   encounter={encounter}
                   setEncounter={setEncounter}
                 />
-                <GenerateEncounter browserState={browserState} />
+                <CreatureBrowser
+                  browserState={browserState}
+                  creatureList={creatureList}
+                  creatureEncounter={creatureEncounter}
+                  setCreatureEncounter={setCreatureEncounter}
+                />
               </BrowserContainer>
               <FooterLeftContainer>
                 {browserState === 1 ? (
@@ -243,9 +236,9 @@ function App() {
                     setAbilityList={setAbilityList}
                   />
                 ) : browserState === 3 ? (
-                  <CreatureFooter
-                    creatureList={creatureList}
-                    setCreatureList={setCreatureList}
+                  <MonsterFooter
+                    monsterList={monsterList}
+                    setMonsterList={setMonsterList}
                   />
                 ) : null}
               </FooterLeftContainer>
@@ -284,37 +277,13 @@ function App() {
                   </FooterCenterContainer>
                 </>
               ) : (
-                <>
-                  <StatsContainer key="container">
-                    <CharacterNavigation
-                      browserState={browserState}
-                      setBrowserState={setBrowserState}
-                      gmMode={gmMode}
-                    />
-                    <HealthBox />
-                    <StatsControls />
-                  </StatsContainer>
-                  <HealthContainer>
-                    <EmptyNavigation />
-                    <ActiveControls />
-                    <SecondaryStatsControls />
-                  </HealthContainer>
-                  <InventoryContainer>
-                    <InventoryNavigation
-                      inventoryState={inventoryState}
-                      setInventoryState={setInventoryState}
-                    />
-                    <ScrollContainer>
-                      <InventorySection inventoryState={inventoryState} />
-                      <AbilitySection inventoryState={inventoryState} />
-                    </ScrollContainer>
-                  </InventoryContainer>
-                  <FooterCenterContainer>
-                    <RestBox />
-
-                    <ResourcesBox />
-                  </FooterCenterContainer>
-                </>
+                <CharacterSheet
+                  browserState={browserState}
+                  setBrowserState={setBrowserState}
+                  gmMode={gmMode}
+                  inventoryState={inventoryState}
+                  setInventoryState={setInventoryState}
+                />
               )}
             </Column>
             <Column>

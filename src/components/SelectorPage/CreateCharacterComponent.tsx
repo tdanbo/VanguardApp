@@ -18,15 +18,7 @@ import {
   ButtonContainer,
 } from "./SelectorStyles";
 
-interface LoginProps {
-  setSelector: (selector: string) => void;
-  setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
-  characterPortrait: string;
-  characterName: string;
-  characterRace: string;
-  setCharacterRace: React.Dispatch<React.SetStateAction<string>>;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
-}
+import { CharacterContext } from "../../contexts/CharacterContext";
 
 interface Stats {
   id: number;
@@ -116,13 +108,15 @@ const ValueBox = styled.div`
 `;
 
 interface LoginProps {
-  setSelector: (selector: string) => void;
+  setSelector?: (selector: string) => void;
   setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   characterPortrait: string;
   characterName: string;
   characterRace: string;
   setCharacterRace: React.Dispatch<React.SetStateAction<string>>;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
+  source: string;
+  closeModal: () => void;
 }
 
 function CreateCharacterComponent({
@@ -132,7 +126,11 @@ function CreateCharacterComponent({
   characterRace,
   setCharacterRace,
   setCharacterName,
+  closeModal,
+  source,
 }: LoginProps) {
+  const { setCharacter } = useContext(CharacterContext);
+
   useEffect(() => {
     console.log("CreateCharacterComponent rendered");
 
@@ -217,7 +215,9 @@ function CreateCharacterComponent({
   };
 
   const handlePortraitSelect = () => {
-    setSelector("selectPortrait");
+    if (setSelector) {
+      setSelector("selectPortrait");
+    }
   };
 
   const { session } = useContext(SessionContext);
@@ -280,8 +280,19 @@ function CreateCharacterComponent({
   };
 
   const handlePostCharacter = async () => {
-    setSelector("characterSelect");
     await addNewCharacter(NewCharacterEntry);
+    setCharacter(NewCharacterEntry);
+    closeModal();
+  };
+
+  const handleBack = () => {
+    if (source === "characterSelect") {
+      if (setSelector) {
+        setSelector("characterSelect");
+      }
+    } else {
+      closeModal();
+    }
   };
 
   return (
@@ -331,9 +342,7 @@ function CreateCharacterComponent({
         </CenterContainer>
       </ModalContainer>
       <ButtonContainer>
-        <ControlButton onClick={() => setSelector("characterSelect")}>
-          Back
-        </ControlButton>
+        <ControlButton onClick={() => handleBack()}>Back</ControlButton>
         <ControlButton disabled={!isValidName} onClick={handlePostCharacter}>
           Accept
         </ControlButton>
