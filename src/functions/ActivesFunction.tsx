@@ -3,12 +3,15 @@ import { ManAtArms } from "./rules/ManAtArms";
 import { PolearmMastery } from "./rules/PolearmMastery";
 import { ShieldFighter } from "./rules/ShieldFighter";
 import { ArmoredMystic } from "./rules/ArmoredMystic";
+import { TwohandedForce } from "./rules/TwohandedForce";
 import {
   GetUsedSlots,
   GetMaxSlots,
   postSelectedCharacter,
 } from "./CharacterFunctions";
 import { cloneDeep } from "lodash";
+import { Marksman } from "./rules/Marksman";
+import { Robust } from "./rules/Robust";
 
 export const UpdateActives = (character: CharacterEntry) => {
   const characterClone = cloneDeep(character);
@@ -44,6 +47,9 @@ export const UpdateActives = (character: CharacterEntry) => {
   PolearmMastery(characterClone, characterClone.actives);
   ShieldFighter(characterClone, characterClone.actives);
   ArmoredMystic(characterClone, characterClone.actives);
+  Marksman(characterClone, characterClone.actives);
+  TwohandedForce(characterClone, characterClone.actives);
+  Robust(characterClone, characterClone.actives);
 
   console.log(characterClone);
 
@@ -68,6 +74,12 @@ const UpdateQualities = (character: CharacterEntry) => {
     character.equipment.off,
     character.equipment.armor,
   ];
+
+  equippedItems.forEach((item) => {
+    if (item && item.quality && item.quality.includes("Reinforced")) {
+      character.actives.defense.dice += 1;
+    }
+  });
 
   const qualityModifiers = {
     "Impeding 1": { sneaking: -1, defense: -1, casting: -1 },

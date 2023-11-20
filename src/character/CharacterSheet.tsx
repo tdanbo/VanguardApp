@@ -10,7 +10,15 @@ import SecondaryStatsControls from "../components/StatsControls/SecondaryStatsCo
 import RestBox from "../components/RestBox";
 import CharacterNavigation from "../components/NavigationControl/CharacterNavigation";
 import styled from "styled-components";
-
+import XpBox from "../components/XpBox";
+import CharacterNameBox from "../components/CharacterNameBox";
+import * as Constants from "../Constants";
+import { useContext } from "react";
+import { CharacterContext } from "../contexts/CharacterContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import { CharacterEntry } from "../Types";
 const StatsContainer = styled.div`
   display: flex;
   margin: 20px;
@@ -46,10 +54,33 @@ const FooterCenterContainer = styled.div`
   display: flex;
   flex-direction: row;
   min-height: 50px;
-  margin-left: 20px;
+  margin-left: 90px;
   margin-right: 20px;
   margin-bottom: 5px;
   gap: 20px;
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  min-height: 50px;
+  margin-left: 90px;
+  margin-top: 5px;
+  gap: 20px;
+`;
+
+const Button = styled.button`
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  border-radius: ${Constants.BORDER_RADIUS};
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  height: 35px;
 `;
 
 type CharacterSheetProps = {
@@ -58,6 +89,8 @@ type CharacterSheetProps = {
   gmMode: boolean;
   inventoryState: number;
   setInventoryState: (value: number) => void;
+  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function CharacterSheet({
@@ -66,9 +99,36 @@ function CharacterSheet({
   gmMode,
   inventoryState,
   setInventoryState,
+  setGmMode,
+  setCreatureEdit,
 }: CharacterSheetProps) {
+  console.log("Current gmMode:");
+  console.log(gmMode);
+
+  const HandleLeaveEdit = () => {
+    setCreatureEdit(false);
+  };
+
+  const [mainCharacter, setMainCharacter] = useState<CharacterEntry>();
+  const { character, setCharacter } = useContext(CharacterContext);
+
+  const selectMainChar = () => {
+    if (!mainCharacter) return;
+    setCharacter(mainCharacter);
+  };
+
+  useEffect(() => {
+    if (character.npc === false) {
+      setMainCharacter(character);
+    }
+  }, [character]);
+
   return (
     <>
+      <HeaderContainer>
+        <CharacterNameBox />
+        <XpBox />
+      </HeaderContainer>
       <StatsContainer key="container">
         <CharacterNavigation
           browserState={browserState}
@@ -94,8 +154,26 @@ function CharacterSheet({
         </ScrollContainer>
       </InventoryContainer>
       <FooterCenterContainer>
-        <RestBox />
-        <ResourcesBox />
+        {gmMode ? (
+          <>
+            <Button onClick={HandleLeaveEdit}>Leave Creature Edit</Button>
+            <Button>Delete Creature</Button>
+          </>
+        ) : character.npc === false ? (
+          <>
+            <RestBox />
+            <ResourcesBox />
+          </>
+        ) : (
+          <>
+            <Button title={"Back Main Character"} onClick={selectMainChar}>
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </Button>
+            <Button title={"Kick Member"}>
+              <FontAwesomeIcon icon={faXmark} />
+            </Button>
+          </>
+        )}
       </FooterCenterContainer>
     </>
   );

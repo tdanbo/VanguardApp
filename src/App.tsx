@@ -10,14 +10,6 @@ import SessionProvider from "./contexts/SessionContext";
 import EquipmentBrowser from "./components/Modals/EquipmentBrowser";
 import MonsterBrowser from "./components/Modals/MonsterBrowser";
 
-import CharacterNavigation from "./components/NavigationControl/CharacterNavigation";
-
-import DayNavigator from "./components/TravelBox";
-
-import XpBox from "./components/XpBox";
-import SelectorNavigation from "./components/NavigationControl/SelectorNavigation";
-
-import CharacterNameBox from "./components/CharacterNameBox";
 import { useState, useRef } from "react";
 import AbilityBrowser from "./components/Modals/AbilityBrowser";
 
@@ -33,17 +25,16 @@ import {
   CharacterEntry,
 } from "./Types";
 
-import EncounterSection from "./components/Sections/EncounterSection";
-import ResetEncounter from "./components/ResetEncounter";
 import CreatureBrowser from "./components/Modals/CreatureBrowser";
 import EquipmentFooter from "./components/FooterNavigation/EquipmentFooter";
 import AbilityFooter from "./components/FooterNavigation/AbilityFooter";
 import MonsterFooter from "./components/FooterNavigation/MonsterFooter";
 import TradingFooter from "./components/FooterNavigation/TradingFooter";
-import TimeTrackBox from "./components/TimeTrackBox";
+
 import SearchCreatureBox from "./components/SearchCreatureBox";
 
 import CharacterSheet from "./character/CharacterSheet";
+import GameMaster from "./gamemaster/GameMaster";
 
 const Row = styled.div`
   display: flex;
@@ -81,42 +72,12 @@ const FooterRightContainer = styled.div`
   gap: 20px;
 `;
 
-const FooterCenterContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  min-height: 50px;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-bottom: 5px;
-  gap: 20px;
-`;
-
 const Column = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
   background-color: ${Constants.BACKGROUND};
   height: 100%;
-`;
-
-const EncounterContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-
-  margin: 20px;
-  gap: 20px;
-  height: 100%;
-
-  overflow: scroll;
-  scrollbar-width: none !important;
-`;
-
-const ScrollContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  overflow: scroll;
-  scrollbar-width: none !important;
 `;
 
 const CombatContainer = styled.div`
@@ -141,7 +102,7 @@ const BrowserContainer = styled.div`
   overflow: scroll;
   scrollbar-width: none !important;
 `;
-
+import SelectorNavigation from "./components/NavigationControl/SelectorNavigation";
 function App() {
   const [browserState, setBrowserState] = useState(0);
   const [inventoryState, setInventoryState] = useState(1);
@@ -149,14 +110,16 @@ function App() {
   const [itemList, setItemList] = useState<ItemEntry[]>([]);
   const [monsterList, setMonsterList] = useState<CreatureEntry[]>([]);
   const [creatureList, setCreatureList] = useState<CharacterEntry[]>([]);
-  const [gmMode, setGmMode] = useState<boolean>(true);
+  export const [gmMode, setGmMode] = useState<boolean>(true);
   const [encounter, setEncounter] = useState<CreatureEntry[]>([]);
   const [creatureEncounter, setCreatureEncounter] = useState<CharacterEntry[]>(
     [],
   );
+  const [mainCharacter, setMainCharacter] = useState<CharacterEntry>();
+  const [creatureEdit, setCreatureEdit] = useState<boolean>(false);
 
   const onDeleteCreature = (id: string) => {
-    setEncounter((currentEncounter) =>
+    setCreatureEncounter((currentEncounter) =>
       currentEncounter.filter((creature) => creature.id !== id),
     );
   };
@@ -169,6 +132,7 @@ function App() {
           <Row>
             <Column>
               <HeaderContainer>
+                <SelectorNavigation gmMode={gmMode} setGmMode={setGmMode} />
                 <SearchItemBox
                   itemList={itemList}
                   setList={setItemList}
@@ -215,6 +179,7 @@ function App() {
                   creatureList={creatureList}
                   creatureEncounter={creatureEncounter}
                   setCreatureEncounter={setCreatureEncounter}
+                  setCreatureEdit={setCreatureEdit}
                 />
               </BrowserContainer>
               <FooterLeftContainer>
@@ -244,38 +209,28 @@ function App() {
               </FooterLeftContainer>
             </Column>
             <Column>
-              <HeaderContainer>
-                <SelectorNavigation gmMode={gmMode} setGmMode={setGmMode} />
-                {gmMode ? (
-                  <DayNavigator />
-                ) : (
-                  <>
-                    <CharacterNameBox />
-                    <XpBox />
-                  </>
-                )}
-              </HeaderContainer>
               {gmMode ? (
-                <>
-                  <EncounterContainer key="container">
-                    <CharacterNavigation
-                      browserState={browserState}
-                      setBrowserState={setBrowserState}
-                      gmMode={gmMode}
-                    />
-                    <ScrollContainer>
-                      <EncounterSection
-                        encounter={encounter}
-                        setEncounter={setEncounter}
-                        onDeleteCreature={onDeleteCreature}
-                      />
-                    </ScrollContainer>
-                  </EncounterContainer>
-                  <FooterCenterContainer>
-                    <ResetEncounter setEncounter={setEncounter} />
-                    <TimeTrackBox />
-                  </FooterCenterContainer>
-                </>
+                creatureEdit ? (
+                  <CharacterSheet
+                    browserState={browserState}
+                    setBrowserState={setBrowserState}
+                    gmMode={gmMode}
+                    inventoryState={inventoryState}
+                    setInventoryState={setInventoryState}
+                    setGmMode={setGmMode}
+                    setCreatureEdit={setCreatureEdit}
+                  />
+                ) : (
+                  <GameMaster
+                    browserState={browserState}
+                    setBrowserState={setBrowserState}
+                    gmMode={gmMode}
+                    creatureEncounter={creatureEncounter}
+                    setCreatureEncounter={setCreatureEncounter}
+                    onDeleteCreature={onDeleteCreature}
+                    setGmMode={setGmMode}
+                  />
+                )
               ) : (
                 <CharacterSheet
                   browserState={browserState}
@@ -283,6 +238,8 @@ function App() {
                   gmMode={gmMode}
                   inventoryState={inventoryState}
                   setInventoryState={setInventoryState}
+                  setGmMode={setGmMode}
+                  setCreatureEdit={setCreatureEdit}
                 />
               )}
             </Column>

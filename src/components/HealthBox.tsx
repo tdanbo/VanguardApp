@@ -24,6 +24,8 @@ const Container = styled.div<PortraitProps>`
   background-size: cover;
   background-position: center 40%;
   border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
 `;
 
 // background-image: url("/dist/assets/portrait1.jpeg");

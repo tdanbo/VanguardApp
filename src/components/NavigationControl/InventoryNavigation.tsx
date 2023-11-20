@@ -1,16 +1,18 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBolt } from "@fortawesome/free-solid-svg-icons";
+import { faBolt, faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
 import StorageBox from "../StorageBox";
 import OverburdenBox from "../OverburdenBox";
 import { CharacterContext } from "../../contexts/CharacterContext";
-import { useContext } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import AddMemberBox from "../AddMemberBox";
+import { getNpcEntry } from "../../functions/CharacterFunctions";
+import { CharacterEntry } from "../../Types";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 11px;
 `;
 
 interface NavigatorProps {
@@ -23,7 +25,7 @@ const Navigator = styled.button<NavigatorProps>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 16px;
   border: ${(props) =>
     props.$active ? `1px solid ${Constants.WIDGET_BORDER}` : `0px solid white`};
   color: ${(props) =>
@@ -41,7 +43,7 @@ const Navigator = styled.button<NavigatorProps>`
     border: 1px solid ${Constants.WIDGET_BORDER};
   }
   width: 50px;
-  height: 38px;
+  height: 36px;
 `;
 
 const storageModifiers = [
@@ -60,12 +62,18 @@ function InventoryNavigation({
   inventoryState,
   setInventoryState,
 }: NavigationProps) {
-  const { character } = useContext(CharacterContext);
+  const { character, setCharacter } = useContext(CharacterContext);
 
   const onHandleItems = () => {
     if (inventoryState === 1) {
       setInventoryState(2);
     } else setInventoryState(1);
+  };
+
+  const selectMember = async (id: string) => {
+    console.log(id);
+    const member = await getNpcEntry(id);
+    setCharacter(member);
   };
 
   return (
@@ -79,13 +87,22 @@ function InventoryNavigation({
           <FontAwesomeIcon icon={faBolt} />
         </Navigator>
       )}
-      {character.inventory.flatMap((item) =>
-        item.quality.map((quality) => {
-          if (storageModifiers.includes(quality)) {
-            return <StorageBox item={item} />;
-          }
-          return null;
-        }),
+      {character.npc === true ? null : (
+        <>
+          {character.entourage.map(
+            (id, index) =>
+              id !== "" && (
+                <Navigator
+                  key={index} // Always use a key when mapping over arrays in React
+                  $active={inventoryState === 1}
+                  onClick={() => selectMember(id)}
+                >
+                  <FontAwesomeIcon icon={faUser} />
+                </Navigator>
+              ),
+          )}
+          <AddMemberBox />
+        </>
       )}
     </Container>
   );

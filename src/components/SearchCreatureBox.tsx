@@ -7,7 +7,10 @@ import { CharacterEntry, CreatureEntry } from "../Types";
 import axios from "axios";
 import { API } from "../Constants";
 import { toTitleCase } from "../functions/UtilityFunctions";
+import { useContext } from "react";
+import { CharacterContext } from "../contexts/CharacterContext";
 import CreateCharacterComponent from "../components/SelectorPage/CreateCharacterComponent";
+import BackgroundImage from "../assets/icons/background.jpeg";
 const {
   WIDGET_BACKGROUND_EMPTY,
   WIDGET_BORDER,
@@ -48,6 +51,24 @@ const Button = styled.button`
   color: ${WIDGET_SECONDARY_FONT};
 `;
 
+const OverlayStyles = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(rgba(7, 9, 11, 0.95), rgba(7, 9, 11, 0.95)),
+    url(${BackgroundImage});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 interface SearchItemBoxProps {
   creatureList: CharacterEntry[];
   setList: (list: CharacterEntry[]) => void;
@@ -62,7 +83,12 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
   const [fullList, setFullList] = useState<CharacterEntry[]>(creatureList);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-
+  const [characterPortrait, setCharacterPortrait] = useState<string>("");
+  const [characterRace, setCharacterRace] = useState<string>("");
+  const [characterName, setCharacterName] = useState<string>("");
+  const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { character, setCharacter } = useContext(CharacterContext);
   const filterItems = (query: string) => {
     if (query === "") {
       return fullList;
@@ -76,6 +102,7 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
     const fetchItems = async () => {
       try {
         const response = await axios.get(`${API}/api/creaturesv2`);
+        console.log(response.data);
         setFullList(response.data);
         setLoading(false);
       } catch (error) {
@@ -83,7 +110,7 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
       }
     };
     fetchItems();
-  }, []);
+  }, [character]);
 
   useEffect(() => {
     if (filterItems(search).length === 0) {
@@ -101,12 +128,6 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
     console.log("Creating creature");
   };
 
-  const [characterPortrait, setCharacterPortrait] = useState<string>("");
-  const [characterRace, setCharacterRace] = useState<string>("");
-  const [characterName, setCharacterName] = useState<string>("");
-  const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const handleOpen = () => {
     setIsModalOpen(true);
   };
@@ -115,7 +136,7 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
     setIsModalOpen(false);
   };
 
-  return (
+  return isModalOpen === false ? (
     <Container hidden={browserState !== 4}>
       <Input
         className="flex-grow"
@@ -130,6 +151,9 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
           <FontAwesomeIcon icon={faPlus} />
         </Button>
       )}
+    </Container>
+  ) : (
+    <OverlayStyles>
       <CreateCharacterComponent
         setCharacterLog={setCharacterLog}
         characterPortrait={characterPortrait}
@@ -140,7 +164,7 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
         closeModal={handleClose}
         source={""}
       />
-    </Container>
+    </OverlayStyles>
   );
 };
 

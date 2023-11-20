@@ -99,6 +99,7 @@ const SearchItemBox: FC<SearchItemBoxProps> = ({
     const fetchItems = async () => {
       try {
         const response = await axios.get(`${API}/api/creatures`);
+        console.log(response.data);
         setFullList(response.data);
         setLoading(false);
       } catch (error) {

@@ -39,6 +39,7 @@ export type AttackActive = {
   dice2: number;
   dice2_mod: number;
   dice2_name: string;
+  attacks: number;
 };
 
 export type DefenseActive = {
@@ -80,6 +81,7 @@ interface EquipmentEntry {
 export interface CharacterEntry {
   name: string;
   id: string;
+  npc: boolean;
   portrait: string;
   details: CharacterDetails;
   damage: number;
@@ -91,6 +93,7 @@ export interface CharacterEntry {
   equipment: EquipmentEntry;
   rations: Rations;
   money: number;
+  entourage: string[];
 }
 
 export interface modifiedCreature {

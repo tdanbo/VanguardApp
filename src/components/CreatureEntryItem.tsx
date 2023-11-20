@@ -1,9 +1,13 @@
 import * as Constants from "../Constants";
 import { CreatureEntry } from "../Types";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import { CharacterEntry } from "../Types";
+import { CharacterContext } from "../contexts/CharacterContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { size } from "lodash";
 const BaseContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -60,6 +64,7 @@ const ExpandButten = styled.div`
   font-weight: bold;
   color: ${Constants.WIDGET_SECONDARY_FONT};
   padding-bottom: 5px;
+  font-size: 12px;
 `;
 
 const CreatureName = styled.div`
@@ -102,6 +107,7 @@ interface AbilityEntryItemProps {
   setInventoryState?: (inventoryState: number) => void;
   encounter: CharacterEntry[];
   setEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
+  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function CreatureEntryItem({
@@ -109,7 +115,9 @@ function CreatureEntryItem({
   browser,
   encounter,
   setEncounter,
+  setCreatureEdit,
 }: AbilityEntryItemProps) {
+  const { character, setCharacter } = useContext(CharacterContext);
   const [_expanded, setExpanded] = useState<boolean>(false);
 
   const suffixLetter = () => {
@@ -141,14 +149,16 @@ function CreatureEntryItem({
     console.log("Delete Creature");
   };
 
+  const editCreature = () => {
+    setCharacter(creature);
+    setCreatureEdit(true);
+  };
+
   return (
     <BaseContainer>
       <Container>
-        <ExpandButten
-          className={"button-hover"}
-          onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
-        >
-          {/* {expanded ? "-" : "+"} */}
+        <ExpandButten className={"button-hover"} onClick={() => editCreature()}>
+          <FontAwesomeIcon icon={faUser} />
         </ExpandButten>
         <NameContainer>
           <CreatureName>{creature.name}</CreatureName>

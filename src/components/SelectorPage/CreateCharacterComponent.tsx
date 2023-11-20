@@ -6,7 +6,10 @@ import { UpperFirstLetter } from "../../functions/UtilityFunctions";
 import styled from "styled-components";
 import { CharacterPortraits } from "../../Images";
 import RaceDropdownBox from "./RaceDropdownBox";
-import { addNewCharacter } from "../../functions/CharacterFunctions";
+import {
+  addNewCharacter,
+  addNewCreature,
+} from "../../functions/CharacterFunctions";
 import { EmptyWeapon, EmptyArmor } from "../../Types";
 import { toTitleCase } from "../../functions/UtilityFunctions";
 import {
@@ -17,7 +20,7 @@ import {
   ControlButton,
   ButtonContainer,
 } from "./SelectorStyles";
-
+import { v4 as uuidv4 } from "uuid";
 import { CharacterContext } from "../../contexts/CharacterContext";
 
 interface Stats {
@@ -222,9 +225,24 @@ function CreateCharacterComponent({
 
   const { session } = useContext(SessionContext);
 
+  let creature_id = "";
+  if (source === "characterSelect") {
+    creature_id = session.id;
+  } else {
+    creature_id = uuidv4();
+  }
+
+  let npc_state = true;
+  if (source === "characterSelect") {
+    npc_state = false;
+  } else {
+    npc_state = true;
+  }
+
   const NewCharacterEntry: CharacterEntry = {
     name: characterName,
-    id: session.id,
+    id: creature_id,
+    npc: npc_state,
     portrait: characterPortrait,
     details: {
       race: characterRace,
@@ -253,6 +271,7 @@ function CreateCharacterComponent({
         dice2: 0,
         dice2_mod: 0,
         dice2_name: "damage",
+        attacks: 1,
       },
       defense: {
         stat: "quick",
@@ -277,15 +296,21 @@ function CreateCharacterComponent({
     },
     rations: { food: 0, water: 0 },
     money: 0,
+    entourage: [],
   };
 
   const handlePostCharacter = async () => {
-    await addNewCharacter(NewCharacterEntry);
+    if (source === "characterSelect") {
+      await addNewCharacter(NewCharacterEntry);
+    } else {
+      await addNewCreature(NewCharacterEntry);
+    }
     setCharacter(NewCharacterEntry);
     closeModal();
   };
 
   const handleBack = () => {
+    console.log("Back");
     if (source === "characterSelect") {
       if (setSelector) {
         setSelector("characterSelect");

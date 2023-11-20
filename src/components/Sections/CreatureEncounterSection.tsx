@@ -1,10 +1,10 @@
 import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
-import { CharacterEntry, CreatureEntry } from "../../Types";
+import { CharacterEntry } from "../../Types";
 import { getCharacters } from "../../functions/SessionsFunctions";
 import { SessionContext } from "../../contexts/SessionContext";
 import EncounterCharacterEntry from "../EncounterCharacterEntry";
-import EncounterMonsterEntry from "../EncounterMonsterEntry";
+import EncounterCreatureEntry from "../EncounterCreatureEntry";
 import { Stat } from "../../Types";
 
 const Container = styled.div`
@@ -14,28 +14,23 @@ const Container = styled.div`
   gap: 10px;
   width: 100%;
 `;
+
 interface EncounterSectionProps {
-  encounter: CreatureEntry[];
-  setEncounter: React.Dispatch<React.SetStateAction<CreatureEntry[]>>;
+  encounter: CharacterEntry[];
+  setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   onDeleteCreature: (id: string) => void;
 }
 
-function isCharacterEntry(
-  entry: CharacterEntry | CreatureEntry,
-): entry is CharacterEntry {
-  return (entry as CharacterEntry).portrait !== undefined;
-}
-
-function EncounterSection({
+function CreatureEncounterSection({
   encounter,
-  setEncounter,
+  setCreatureEncounter,
   onDeleteCreature,
 }: EncounterSectionProps) {
   const { session } = useContext(SessionContext);
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
   // If setSortedEncounter is part of your useState declaration, it should look like this
   const [sortedEncounter, setSortedEncounter] = useState<
-    (CharacterEntry | CreatureEntry)[]
+    (CharacterEntry | CharacterEntry)[]
   >([]);
 
   useEffect(() => {
@@ -85,7 +80,7 @@ function EncounterSection({
   return (
     <Container>
       {Array.from(sortedEncounter).map((entry, index) => {
-        if (isCharacterEntry(entry)) {
+        if (entry.id === session.id) {
           return (
             <EncounterCharacterEntry
               key={entry.id + index} // Assuming 'id' exists on CharacterEntry
@@ -94,15 +89,13 @@ function EncounterSection({
           );
         } else {
           return (
-            <EncounterMonsterEntry
+            <EncounterCreatureEntry
               key={entry.name + index}
               creature={entry}
-              onDelete={() => {
-                if (entry.id !== undefined) {
-                  onDeleteCreature(entry.id);
-                }
+              onDeleteCreature={() => {
+                onDeleteCreature(entry.id);
               }}
-              setEncounter={setEncounter}
+              setCreatureEncounter={setCreatureEncounter}
               encounter={encounter}
             />
           );
@@ -112,4 +105,4 @@ function EncounterSection({
   );
 }
 
-export default EncounterSection;
+export default CreatureEncounterSection;
