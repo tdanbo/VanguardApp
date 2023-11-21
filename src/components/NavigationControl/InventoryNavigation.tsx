@@ -5,6 +5,7 @@ import * as Constants from "../../Constants";
 import StorageBox from "../StorageBox";
 import OverburdenBox from "../OverburdenBox";
 import { CharacterContext } from "../../contexts/CharacterContext";
+import { SessionContext } from "../../contexts/SessionContext";
 import { useContext, useEffect, useState } from "react";
 import AddMemberBox from "../AddMemberBox";
 import { getNpcEntry } from "../../functions/CharacterFunctions";
@@ -63,7 +64,7 @@ function InventoryNavigation({
   setInventoryState,
 }: NavigationProps) {
   const { character, setCharacter } = useContext(CharacterContext);
-
+  const { session } = useContext(SessionContext);
   const onHandleItems = () => {
     if (inventoryState === 1) {
       setInventoryState(2);
@@ -87,7 +88,7 @@ function InventoryNavigation({
           <FontAwesomeIcon icon={faBolt} />
         </Navigator>
       )}
-      {character.npc === true ? null : (
+      {character.id === session.id ? (
         <>
           {character.entourage.map(
             (id, index) =>
@@ -103,7 +104,7 @@ function InventoryNavigation({
           )}
           <AddMemberBox />
         </>
-      )}
+      ) : null}
     </Container>
   );
 }

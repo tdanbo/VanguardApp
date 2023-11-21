@@ -19,6 +19,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { CharacterEntry } from "../Types";
+import { SessionContext } from "../contexts/SessionContext";
+import { deleteSessionCharacter } from "../functions/SessionsFunctions";
+import { postSelectedCharacter } from "../functions/CharacterFunctions";
 const StatsContainer = styled.div`
   display: flex;
   margin: 20px;
@@ -105,12 +108,31 @@ function CharacterSheet({
   console.log("Current gmMode:");
   console.log(gmMode);
 
+  const HandleDeleteMember = () => {
+    console.log("Delete Member");
+    // Making sure we don't delete the main character
+    if (!mainCharacter) return;
+    if (character.name !== mainCharacter.name)
+      deleteSessionCharacter(character.name, character.id);
+    DeleteMemberFromEntourage();
+  };
+
+  const DeleteMemberFromEntourage = () => {
+    if (!mainCharacter) return;
+    mainCharacter.entourage = mainCharacter.entourage.filter(
+      (idstring) => idstring !== character.id,
+    );
+    postSelectedCharacter(mainCharacter);
+    setCharacter(mainCharacter);
+  };
+
   const HandleLeaveEdit = () => {
     setCreatureEdit(false);
   };
 
   const [mainCharacter, setMainCharacter] = useState<CharacterEntry>();
   const { character, setCharacter } = useContext(CharacterContext);
+  const { session } = useContext(SessionContext);
 
   const selectMainChar = () => {
     if (!mainCharacter) return;
@@ -118,7 +140,7 @@ function CharacterSheet({
   };
 
   useEffect(() => {
-    if (character.npc === false) {
+    if (character.id === session.id) {
       setMainCharacter(character);
     }
   }, [character]);
@@ -159,7 +181,7 @@ function CharacterSheet({
             <Button onClick={HandleLeaveEdit}>Leave Creature Edit</Button>
             <Button>Delete Creature</Button>
           </>
-        ) : character.npc === false ? (
+        ) : character.id === session.id ? (
           <>
             <RestBox />
             <ResourcesBox />
@@ -169,7 +191,7 @@ function CharacterSheet({
             <Button title={"Back Main Character"} onClick={selectMainChar}>
               <FontAwesomeIcon icon={faChevronLeft} />
             </Button>
-            <Button title={"Kick Member"}>
+            <Button title={"Kick Member"} onClick={HandleDeleteMember}>
               <FontAwesomeIcon icon={faXmark} />
             </Button>
           </>

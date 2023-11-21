@@ -110,7 +110,7 @@ function App() {
   const [itemList, setItemList] = useState<ItemEntry[]>([]);
   const [monsterList, setMonsterList] = useState<CreatureEntry[]>([]);
   const [creatureList, setCreatureList] = useState<CharacterEntry[]>([]);
-  export const [gmMode, setGmMode] = useState<boolean>(true);
+  const [gmMode, setGmMode] = useState<boolean>(true);
   const [encounter, setEncounter] = useState<CreatureEntry[]>([]);
   const [creatureEncounter, setCreatureEncounter] = useState<CharacterEntry[]>(
     [],
