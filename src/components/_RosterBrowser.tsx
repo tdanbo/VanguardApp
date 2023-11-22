@@ -1,6 +1,6 @@
 import * as Constants from "../Constants";
 import styled from "styled-components";
-
+import { CharacterEntry } from "../Types";
 import { useState, useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -86,10 +86,9 @@ const ResourceChangeContainer = styled.div`
 
 interface AddMemberProps {}
 
-function AddMemberBox({}: AddMemberProps) {
+function RosterBrowser({}: AddMemberProps) {
   const [member, setMember] = useState<string>("");
   const [template, setTemplate] = useState<string>("");
-  const { character, setCharacter } = useContext(CharacterContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const stopPropagation = (e: React.MouseEvent) => {
@@ -106,23 +105,6 @@ function AddMemberBox({}: AddMemberProps) {
 
   const handleMemberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMember(e.target.value);
-  };
-
-  const handleTemplateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTemplate(e.target.value);
-  };
-
-  const handleSubmit = async () => {
-    const newCreature = await getCreatureEntry(template);
-    if (newCreature) {
-      newCreature.name = member;
-      newCreature.npc = false;
-      console.log(newCreature);
-      await addNewCharacter(newCreature); // Assuming this is an async operation
-      const updatedEntourage = [...character.entourage, newCreature.id];
-      setCharacter({ ...character, entourage: updatedEntourage });
-      setIsModalOpen(false);
-    }
   };
 
   return (
@@ -143,12 +125,6 @@ function AddMemberBox({}: AddMemberProps) {
                       onChange={handleMemberChange}
                     ></ValueInput>
                   </InputContainer>
-                  <InputContainer>
-                    <ValueInput
-                      value={template}
-                      onChange={handleTemplateChange}
-                    ></ValueInput>
-                  </InputContainer>
                 </ResourceChangeContainer>
               </CenterContainer>
               <Divider />
@@ -157,7 +133,7 @@ function AddMemberBox({}: AddMemberProps) {
               <LargeCircleButton onClick={handleClose}>
                 <FontAwesomeIcon icon={faAngleLeft} />
               </LargeCircleButton>
-              <LargeCircleButton onClick={handleSubmit}>
+              <LargeCircleButton>
                 <FontAwesomeIcon icon={faCheck} />
               </LargeCircleButton>
             </ButtonContainer>
@@ -167,4 +143,4 @@ function AddMemberBox({}: AddMemberProps) {
     </>
   );
 }
-export default AddMemberBox;
+export default RosterBrowser;

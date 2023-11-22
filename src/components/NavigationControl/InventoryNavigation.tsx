@@ -7,7 +7,7 @@ import OverburdenBox from "../OverburdenBox";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import { SessionContext } from "../../contexts/SessionContext";
 import { useContext, useEffect, useState } from "react";
-import AddMemberBox from "../AddMemberBox";
+import AddMemberBox from "../_RosterBrowser";
 import { getNpcEntry } from "../../functions/CharacterFunctions";
 import { CharacterEntry } from "../../Types";
 const Container = styled.div`

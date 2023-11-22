@@ -792,6 +792,12 @@ export async function addNewCharacter(NewCharacterEntry: CharacterEntry) {
     });
 }
 
+export async function addNewRoster(NewCharacterEntry: CharacterEntry) {
+  return axios.post(`${API}/api/rosterlog`, NewCharacterEntry).then((res) => {
+    return res;
+  });
+}
+
 export async function addNewCreature(NewCharacterEntry: CharacterEntry) {
   return axios.post(`${API}/api/creaturelog`, NewCharacterEntry).then((res) => {
     return res;

@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import RosterBrowser from "../_RosterBrowser";
 import {
   faShield,
   faBolt,
   faGhost,
   faBookDead,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
 const Container = styled.div`
@@ -89,6 +91,12 @@ function CharacterNavigation({
           <FontAwesomeIcon icon={faBookDead} />
         </Navigator>
       )}
+      <Navigator
+        $active={browserState === 5}
+        onClick={() => handleNavigationClick(5)}
+      >
+        <FontAwesomeIcon icon={faUsers} />
+      </Navigator>
     </Container>
   );
 }

@@ -26,11 +26,12 @@ import {
 } from "./Types";
 
 import CreatureBrowser from "./components/Modals/CreatureBrowser";
+import RosterBrowser from "./components/Modals/RosterBrowser";
 import EquipmentFooter from "./components/FooterNavigation/EquipmentFooter";
 import AbilityFooter from "./components/FooterNavigation/AbilityFooter";
 import MonsterFooter from "./components/FooterNavigation/MonsterFooter";
 import TradingFooter from "./components/FooterNavigation/TradingFooter";
-
+import SearchRosterBox from "./components/SearchRosterBox";
 import SearchCreatureBox from "./components/SearchCreatureBox";
 
 import CharacterSheet from "./character/CharacterSheet";
@@ -110,6 +111,7 @@ function App() {
   const [itemList, setItemList] = useState<ItemEntry[]>([]);
   const [monsterList, setMonsterList] = useState<CreatureEntry[]>([]);
   const [creatureList, setCreatureList] = useState<CharacterEntry[]>([]);
+  const [rosterlist, setRosterList] = useState<CharacterEntry[]>([]);
   const [gmMode, setGmMode] = useState<boolean>(true);
   const [encounter, setEncounter] = useState<CreatureEntry[]>([]);
   const [creatureEncounter, setCreatureEncounter] = useState<CharacterEntry[]>(
@@ -153,6 +155,11 @@ function App() {
                   setList={setCreatureList}
                   browserState={browserState}
                 />
+                <SearchRosterBox
+                  rosterlist={rosterlist}
+                  setList={setRosterList}
+                  browserState={browserState}
+                />
               </HeaderContainer>
               <BrowserContainer>
                 <EquipmentBrowser
@@ -177,6 +184,13 @@ function App() {
                 <CreatureBrowser
                   browserState={browserState}
                   creatureList={creatureList}
+                  creatureEncounter={creatureEncounter}
+                  setCreatureEncounter={setCreatureEncounter}
+                  setCreatureEdit={setCreatureEdit}
+                />
+                <RosterBrowser
+                  browserState={browserState}
+                  rosterlist={rosterlist}
                   creatureEncounter={creatureEncounter}
                   setCreatureEncounter={setCreatureEncounter}
                   setCreatureEdit={setCreatureEdit}

@@ -6,7 +6,8 @@ import styled from "styled-components";
 import { CharacterEntry } from "../Types";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faPlus } from "@fortawesome/free-solid-svg-icons";
+import AddCreatureToRoster from "./AddCreatureToRoster";
 import { size } from "lodash";
 const BaseContainer = styled.div`
   display: flex;
@@ -165,9 +166,15 @@ function CreatureEntryItem({
           <AbilityDetail>{creature.name}</AbilityDetail>
         </NameContainer>
         {browser ? (
-          <AddButton className={"button-hover"} onClick={AddEncounterCreature}>
-            +
-          </AddButton>
+          <>
+            <AddCreatureToRoster character_template={creature} />
+            <AddButton
+              className={"button-hover"}
+              onClick={AddEncounterCreature}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </AddButton>
+          </>
         ) : (
           <AddButton
             className={"button-hover"}
