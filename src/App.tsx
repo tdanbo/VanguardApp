@@ -187,6 +187,8 @@ function App() {
                   creatureEncounter={creatureEncounter}
                   setCreatureEncounter={setCreatureEncounter}
                   setCreatureEdit={setCreatureEdit}
+                  gmMode={gmMode}
+                  mainCharacter={mainCharacter}
                 />
                 <RosterBrowser
                   browserState={browserState}
@@ -194,6 +196,8 @@ function App() {
                   creatureEncounter={creatureEncounter}
                   setCreatureEncounter={setCreatureEncounter}
                   setCreatureEdit={setCreatureEdit}
+                  gmMode={gmMode}
+                  mainCharacter={mainCharacter}
                 />
               </BrowserContainer>
               <FooterLeftContainer>

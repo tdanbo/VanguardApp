@@ -798,6 +798,11 @@ export async function addNewRoster(NewCharacterEntry: CharacterEntry) {
   });
 }
 
+export async function deleteRosterCharacter(name: string, id: string) {
+  const response = await axios.delete(`${API}/api/rosterlog/${id}/${name}`);
+  return response.data;
+}
+
 export async function addNewCreature(NewCharacterEntry: CharacterEntry) {
   return axios.post(`${API}/api/creaturelog`, NewCharacterEntry).then((res) => {
     return res;

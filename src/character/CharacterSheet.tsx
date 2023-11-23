@@ -21,7 +21,10 @@ import { useEffect, useState } from "react";
 import { CharacterEntry } from "../Types";
 import { SessionContext } from "../contexts/SessionContext";
 import { deleteSessionCharacter } from "../functions/SessionsFunctions";
-import { postSelectedCharacter } from "../functions/CharacterFunctions";
+import {
+  postSelectedCharacter,
+  addNewRoster,
+} from "../functions/CharacterFunctions";
 const StatsContainer = styled.div`
   display: flex;
   margin: 20px;
@@ -114,6 +117,7 @@ function CharacterSheet({
     if (!mainCharacter) return;
     if (character.name !== mainCharacter.name)
       deleteSessionCharacter(character.name, character.id);
+    addNewRoster(character);
     DeleteMemberFromEntourage();
   };
 

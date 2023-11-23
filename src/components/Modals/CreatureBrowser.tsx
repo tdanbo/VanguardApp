@@ -23,6 +23,7 @@ interface CreatureBrowserProps {
   creatureEncounter: CharacterEntry[];
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  gmMode: boolean;
 }
 
 function sortItems(a: CharacterEntry, b: CharacterEntry): number {
@@ -47,6 +48,7 @@ function CreatureBrowser({
   creatureEncounter,
   setCreatureEncounter,
   setCreatureEdit,
+  gmMode,
 }: CreatureBrowserProps) {
   const sortedCreatureList = creatureList.sort(sortItems);
   return (
@@ -61,6 +63,8 @@ function CreatureBrowser({
               encounter={creatureEncounter}
               setEncounter={setCreatureEncounter}
               setCreatureEdit={setCreatureEdit}
+              gmMode={gmMode}
+              browserState={browserState}
             />
           ))}
       </ItemContainer>

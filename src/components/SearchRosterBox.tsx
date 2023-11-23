@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../Constants";
@@ -7,6 +7,7 @@ import { CreatureEntry } from "../Types";
 import axios from "axios";
 import { API } from "../Constants";
 import { toTitleCase } from "../functions/UtilityFunctions";
+import { CharacterContext } from "../contexts/CharacterContext";
 import { CharacterEntry } from "../Types";
 const {
   WIDGET_BACKGROUND_EMPTY,
@@ -62,7 +63,7 @@ const SearchRosterBox: FC<SearchItemBoxProps> = ({
   const [fullList, setFullList] = useState<CharacterEntry[]>(rosterlist);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-
+  const { character, setCharacter } = useContext(CharacterContext);
   const filterItems = (query: string) => {
     if (query === "") {
       return fullList;
@@ -84,7 +85,7 @@ const SearchRosterBox: FC<SearchItemBoxProps> = ({
       }
     };
     fetchItems();
-  }, []);
+  }, [character]);
 
   useEffect(() => {
     setList(filterItems(search));

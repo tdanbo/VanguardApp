@@ -76,12 +76,15 @@ const ResourceChangeContainer = styled.div`
 
 interface AddMemberProps {
   character_template: CharacterEntry;
+
+  setRosterList: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
 }
 
 function AddCreatureToRoster({ character_template }: AddMemberProps) {
   const [member, setMember] = useState<string>("");
   const [template, setTemplate] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { character, setCharacter } = useContext(CharacterContext);
 
   const stopPropagation = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -100,8 +103,10 @@ function AddCreatureToRoster({ character_template }: AddMemberProps) {
   };
 
   const handleSubmit = async () => {
+    const characterClone = { ...character };
     character_template.name = member;
     await addNewRoster(character_template); // Assuming this is an async operation
+    setCharacter(characterClone);
     setIsModalOpen(false);
   };
 
