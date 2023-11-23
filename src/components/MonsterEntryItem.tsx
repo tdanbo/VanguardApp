@@ -3,7 +3,7 @@ import { CreatureEntry } from "../Types";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
-import AddCreatureToRoster from "./AddCreatureToRoster";
+
 const BaseContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -157,15 +157,9 @@ function MonsterEntryItem({
           </AbilityDetail>
         </NameContainer>
         {browser ? (
-          <>
-            <AddCreatureToRoster character_template={creature} />
-            <AddButton
-              className={"button-hover"}
-              onClick={AddEncounterCreature}
-            >
-              +
-            </AddButton>
-          </>
+          <AddButton className={"button-hover"} onClick={AddEncounterCreature}>
+            +
+          </AddButton>
         ) : (
           <AddButton
             className={"button-hover"}

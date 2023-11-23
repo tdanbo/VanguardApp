@@ -117,7 +117,7 @@ function App() {
   const [creatureEncounter, setCreatureEncounter] = useState<CharacterEntry[]>(
     [],
   );
-  const [mainCharacter, setMainCharacter] = useState<CharacterEntry>();
+
   const [creatureEdit, setCreatureEdit] = useState<boolean>(false);
 
   const onDeleteCreature = (id: string) => {
@@ -188,7 +188,6 @@ function App() {
                   setCreatureEncounter={setCreatureEncounter}
                   setCreatureEdit={setCreatureEdit}
                   gmMode={gmMode}
-                  mainCharacter={mainCharacter}
                 />
                 <RosterBrowser
                   browserState={browserState}
@@ -197,7 +196,6 @@ function App() {
                   setCreatureEncounter={setCreatureEncounter}
                   setCreatureEdit={setCreatureEdit}
                   gmMode={gmMode}
-                  mainCharacter={mainCharacter}
                 />
               </BrowserContainer>
               <FooterLeftContainer>

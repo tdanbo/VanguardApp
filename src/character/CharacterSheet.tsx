@@ -192,7 +192,7 @@ function CharacterSheet({
           </>
         ) : (
           <>
-            <Button title={"Back Main Character"} onClick={selectMainChar}>
+            <Button title={"Back To Main Character"} onClick={selectMainChar}>
               <FontAwesomeIcon icon={faChevronLeft} />
             </Button>
             <Button title={"Kick Member"} onClick={HandleDeleteMember}>
