@@ -60,6 +60,7 @@ function CreateCharacterButtons({
         dice2: 0,
         dice2_mod: 0,
         dice2_name: "damage",
+        attacks: 1,
       },
       defense: {
         stat: "quick",
@@ -84,6 +85,8 @@ function CreateCharacterButtons({
     },
     rations: { food: 0, water: 0 },
     money: 0,
+    npc: false,
+    entourage: [],
   };
 
   const handlePostCharacter = async () => {

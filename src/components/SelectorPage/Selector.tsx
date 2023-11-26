@@ -1,11 +1,7 @@
 import * as Constants from "../../Constants";
 import { useState } from "react";
 import { CharacterEntry } from "../../Types";
-import {
-  faArrowRotateBack,
-  faChevronLeft,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CreateSessionComponent from "./CreateSessionComponent";
 import SelectCharacterComponent from "./SelectCharacterComponent";
@@ -85,8 +81,6 @@ function SelectorComponent({ setGmMode }: SelectorProps) {
         return (
           <CreateCharacterComponent
             setSelector={setSelector}
-            setCharacterLog={setCharacterLog}
-            characterPortrait={characterPortrait}
             setCharacterName={setCharacterName}
             setCharacterRace={setCharacterRace}
             characterName={characterName}
@@ -123,7 +117,7 @@ function SelectorComponent({ setGmMode }: SelectorProps) {
     <OverlayStyles>{renderContent(selector)}</OverlayStyles>
   ) : (
     <Navigator onClick={handleOpen}>
-      <FontAwesomeIcon icon={faChevronLeft} />
+      <FontAwesomeIcon icon={faDoorOpen} />
     </Navigator>
   );
 }

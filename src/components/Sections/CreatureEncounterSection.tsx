@@ -19,12 +19,14 @@ interface EncounterSectionProps {
   encounter: CharacterEntry[];
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   onDeleteCreature: (id: string) => void;
+  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function CreatureEncounterSection({
   encounter,
   setCreatureEncounter,
   onDeleteCreature,
+  setCreatureEdit,
 }: EncounterSectionProps) {
   const { session } = useContext(SessionContext);
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
@@ -37,7 +39,7 @@ function CreatureEncounterSection({
     getCharacters(session.id).then((response) => {
       setCharacterLog(response);
     });
-  }, [session.id]);
+  }, [encounter, session.id]);
 
   useEffect(() => {
     // Assuming combinedList is already declared and available in this scope
@@ -97,6 +99,7 @@ function CreatureEncounterSection({
               }}
               setCreatureEncounter={setCreatureEncounter}
               encounter={encounter}
+              setCreatureEdit={setCreatureEdit}
             />
           );
         }

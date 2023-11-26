@@ -59,6 +59,7 @@ interface GameMasterProps {
   setMainCharacter: React.Dispatch<
     React.SetStateAction<CharacterEntry | undefined>
   >;
+  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function GameMaster({
@@ -69,6 +70,7 @@ function GameMaster({
   setCreatureEncounter,
   onDeleteCreature,
   setMainCharacter,
+  setCreatureEdit,
 }: GameMasterProps) {
   console.log("Current gmMode:");
   console.log(gmMode);
@@ -88,6 +90,7 @@ function GameMaster({
         />
         <ScrollContainer>
           <CreatureEncounterSection
+            setCreatureEdit={setCreatureEdit}
             encounter={creatureEncounter}
             setCreatureEncounter={setCreatureEncounter}
             onDeleteCreature={onDeleteCreature}

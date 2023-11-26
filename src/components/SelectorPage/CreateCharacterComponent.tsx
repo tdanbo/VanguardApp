@@ -229,6 +229,24 @@ function CreateCharacterComponent({
 
   const { session } = useContext(SessionContext);
 
+  const difficulty: Record<string, number> = {
+    Weak: 0,
+    Ordinary: 50,
+    Challenging: 150,
+    Strong: 300,
+    Mighty: 600,
+    Legendary: 1200,
+  };
+
+  useEffect(() => {
+    setCharacterXp(difficulty[characterDifficulty]);
+  }, [characterDifficulty]);
+
+  const handleDifficultyDropdownChange = (selectedDifficulty: string) => {
+    setCharacterDifficulty(selectedDifficulty);
+    console.log(NewCharacterEntry.details.xp_earned);
+  };
+
   let creature_id = "";
   if (source === "characterSelect") {
     creature_id = session.id;
@@ -242,15 +260,6 @@ function CreateCharacterComponent({
   } else {
     npc_state = true;
   }
-
-  const difficulty: Record<string, number> = {
-    Weak: 0,
-    Ordinary: 50,
-    Challenging: 150,
-    Strong: 300,
-    Mighty: 600,
-    Legendary: 1200,
-  };
 
   const NewCharacterEntry: CharacterEntry = {
     name: characterName,
@@ -310,15 +319,6 @@ function CreateCharacterComponent({
     rations: { food: 0, water: 0 },
     money: 0,
     entourage: [],
-  };
-
-  useEffect(() => {
-    setCharacterXp(difficulty[characterDifficulty]);
-  }, [characterDifficulty]);
-
-  const handleDifficultyDropdownChange = (selectedDifficulty: string) => {
-    setCharacterDifficulty(selectedDifficulty);
-    console.log(NewCharacterEntry.details.xp_earned);
   };
 
   const handlePostCharacter = async () => {

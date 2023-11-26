@@ -8,7 +8,6 @@ import UserProvider from "./contexts/UserContext";
 import SessionProvider from "./contexts/SessionContext";
 
 import EquipmentBrowser from "./components/Modals/EquipmentBrowser";
-import MonsterBrowser from "./components/Modals/MonsterBrowser";
 
 import { useState, useRef } from "react";
 import AbilityBrowser from "./components/Modals/AbilityBrowser";
@@ -113,7 +112,6 @@ function App() {
   const [creatureList, setCreatureList] = useState<CharacterEntry[]>([]);
   const [rosterlist, setRosterList] = useState<CharacterEntry[]>([]);
   const [gmMode, setGmMode] = useState<boolean>(true);
-  const [encounter, setEncounter] = useState<CreatureEntry[]>([]);
   const [creatureEncounter, setCreatureEncounter] = useState<CharacterEntry[]>(
     [],
   );
@@ -177,12 +175,6 @@ function App() {
                   abilityList={abilityList}
                   setAbilityList={setAbilityList}
                   setInventoryState={setInventoryState}
-                />
-                <MonsterBrowser
-                  browserState={browserState}
-                  monsterList={monsterList}
-                  encounter={encounter}
-                  setEncounter={setEncounter}
                 />
                 <CreatureBrowser
                   browserState={browserState}
@@ -251,6 +243,7 @@ function App() {
                     onDeleteCreature={onDeleteCreature}
                     setGmMode={setGmMode}
                     setMainCharacter={setMainCharacter}
+                    setCreatureEdit={setCreatureEdit}
                   />
                 )
               ) : (

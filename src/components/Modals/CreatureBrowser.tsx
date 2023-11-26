@@ -31,14 +31,6 @@ function sortItems(a: CharacterEntry, b: CharacterEntry): number {
     Constants.RACE_FILTER.indexOf(a.name) -
     Constants.RACE_FILTER.indexOf(b.name);
 
-  // if (raceComparison === 0) {
-  //   // If races are the same, sort by resistance
-  //   return (
-  //     Constants.DIFFICULTY_FILTER.indexOf(a.resistance) -
-  //     Constants.DIFFICULTY_FILTER.indexOf(b.resistance)
-  //   );
-  // }
-
   return raceComparison;
 }
 

@@ -19,7 +19,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
 import { CharacterEntry } from "../Types";
-import { SessionContext } from "../contexts/SessionContext";
 import { deleteSessionCharacter } from "../functions/SessionsFunctions";
 import { deleteCreature } from "../functions/CharacterFunctions";
 import {
@@ -61,7 +60,7 @@ const FooterCenterContainer = styled.div`
   display: flex;
   flex-direction: row;
   min-height: 50px;
-  margin-left: 90px;
+  margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 5px;
   gap: 20px;
@@ -74,6 +73,7 @@ const HeaderContainer = styled.div`
   margin-left: 90px;
   margin-top: 5px;
   gap: 20px;
+  height: 50px;
 `;
 
 const Button = styled.button`
@@ -139,18 +139,17 @@ function CharacterSheet({
   const DeleteMemberFromEntourage = () => {
     if (!mainCharacter) return;
     mainCharacter.entourage = mainCharacter.entourage.filter(
-      (rostermember) => rostermember.id !== character.id,
+      (rostermember) => rostermember.name !== character.name,
     );
     postSelectedCharacter(mainCharacter);
     setCharacter(mainCharacter);
   };
 
   const { character, setCharacter } = useContext(CharacterContext);
-  const { session } = useContext(SessionContext);
 
   useEffect(() => {
     if (!character) return;
-    if (character.id === session.id) {
+    if (character.npc === false) {
       setMainCharacter(character);
     }
   }, [character]);
@@ -191,17 +190,19 @@ function CharacterSheet({
       <FooterCenterContainer>
         {gmMode ? (
           <>
+            <EmptyNavigation />
             <Button title={"Delete Creature"} onClick={HandleDeleteCreature}>
               <FontAwesomeIcon icon={faXmark} />
             </Button>
           </>
-        ) : character.id === session.id ? (
+        ) : character.npc === false ? (
           <>
             <RestBox />
             <ResourcesBox />
           </>
         ) : (
           <>
+            <EmptyNavigation />
             <Button title={"Kick Member"} onClick={HandleDeleteMember}>
               <FontAwesomeIcon icon={faXmark} />
             </Button>

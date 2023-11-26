@@ -1,6 +1,6 @@
 import { useState, useEffect, FC, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../Constants";
 import styled from "styled-components";
 import axios from "axios";
@@ -20,6 +20,7 @@ const Container = styled.div`
   flex-direction: row;
   flex-grow: 1;
   gap: 10px;
+  align-items: center;
 `;
 
 const Input = styled.input`
@@ -30,6 +31,7 @@ const Input = styled.input`
   color: ${WIDGET_SECONDARY_FONT};
   font-weight: bold;
   text-align: center;
+  height: 35px;
 `;
 
 const Button = styled.button`
@@ -38,6 +40,7 @@ const Button = styled.button`
   flex-grow: 1;
   width: 50px;
   max-width: 50px;
+  height: 40px;
   border-radius: ${BORDER_RADIUS};
   border: 1px solid ${WIDGET_BORDER};
   background-color: ${WIDGET_BACKGROUND};
@@ -100,11 +103,7 @@ const SearchRosterBox: FC<SearchItemBoxProps> = ({
         onChange={(e) => setSearch(e.target.value)}
       />
       <Button>
-        {rosterlist.length > 0 ? (
-          <FontAwesomeIcon icon={faSearch} />
-        ) : (
-          <FontAwesomeIcon icon={faPlus} />
-        )}
+        <FontAwesomeIcon icon={faSearch} />
       </Button>
     </Container>
   );

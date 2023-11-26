@@ -3,7 +3,6 @@ import { SetStateAction } from "react";
 import styled from "styled-components";
 import "../App.css";
 
-import { CreatureEntry } from "../Types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { CharacterEntry } from "../Types";

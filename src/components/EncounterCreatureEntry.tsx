@@ -1,49 +1,23 @@
 import styled from "styled-components";
-import {
-  AbilityEntry,
-  ItemEntry,
-  CharacterEntry,
-  CreatureStats,
-  modifiedCreature,
-} from "../Types";
+import { CharacterEntry } from "../Types";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Robust } from "../functions/CreatureRules/Robust";
-import { Armored } from "../functions/CreatureRules/Armored";
-import { NaturalWeapon } from "../functions/CreatureRules/NaturalWeapon";
-import { IronFist } from "../functions/CreatureRules/IronFist";
-import { Feats } from "../functions/CreatureRules/Feats";
-import { ExceptionalStats } from "../functions/CreatureRules/ExceptionalStats";
 import { cloneDeep } from "lodash";
-import { getAbility, getItem } from "../functions/UtilityFunctions";
 import AbilityEntryItem from "./AbilityEntryItem";
-import { getCreatureMovement } from "../functions/CharacterFunctions";
-import { useEffect, useState, memo } from "react";
-import { Berserker } from "../functions/CreatureRules/Berserker";
-import { Marksman } from "../functions/CreatureRules/Marksman";
-import { SixthSense } from "../functions/CreatureRules/SixthSense";
-import { PolearmMastery } from "../functions/CreatureRules/PolearmMastery";
-import { ManAtArms } from "../functions/CreatureRules/ManAtArms";
-import { AlternativeDamage } from "../functions/CreatureRules/AlternativeDamage";
-import { ShieldFighter } from "../functions/CreatureRules/ShieldFighter";
-import { TwinAttack } from "../functions/CreatureRules/TwinAttack";
-import { Tactician } from "../functions/CreatureRules/Tactician";
-import { NaturalWarrior } from "../functions/CreatureRules/NaturalWarrior";
-import { Dominate } from "../functions/CreatureRules/Dominate";
-import { SurvivalInstinct } from "../functions/CreatureRules/SurvivalInstinct";
+import { useState, memo, useEffect } from "react";
+import { useContext } from "react";
+import { CharacterContext } from "../contexts/CharacterContext";
 import {
-  faCoins,
   faHeart,
   faShield,
   faSkull,
   faXmark,
+  faCoins,
 } from "@fortawesome/free-solid-svg-icons";
 
 import Icon from "@mdi/react";
-import { mdiSword, mdiSpear, mdiBowArrow } from "@mdi/js";
-import { TwoHandedForce } from "../functions/CreatureRules/TwoHandedForce";
-import { SteelThrow } from "../functions/CreatureRules/SteelThrow";
+import { mdiSword } from "@mdi/js";
 
 import { UpdateActives } from "../functions/ActivesFunction";
 
@@ -148,6 +122,8 @@ const NameContainer = styled.div`
   font-size: 18px;
   font-weight: bold;
   color: ${Constants.WIDGET_PRIMARY_FONT};
+  cursor: pointer;
+  user-select: none;
 `;
 
 const NameBox = styled.div`
@@ -194,12 +170,6 @@ const AttacksStat = styled.div`
 const ActiveBox = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const ActiveEmptyBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-width: 48px;
 `;
 
 const ActiveSub = styled.div`
@@ -267,25 +237,7 @@ interface EncounterBoxProps {
   onDeleteCreature: (creature: CharacterEntry) => void;
   encounter: CharacterEntry[];
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
-}
-
-function createTitleString(creature: modifiedCreature): string {
-  let titleString = "";
-
-  titleString += `${getCreatureMovement(creature)} Movement\n\n`;
-
-  // Loop through each stat and append its name, value, and modifier to the title string
-  for (const statName in creature.stats) {
-    if (creature.stats.hasOwnProperty(statName)) {
-      const value = creature.stats[statName as keyof CreatureStats];
-      const modifier = ModifierConverter[value];
-      titleString += `${statName}: ${value} (${
-        modifier >= 0 ? "+" : ""
-      }${modifier})\n`;
-    }
-  }
-
-  return titleString.trim(); // trim() is used to remove the extra newline at the end
+  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function EncounterCreatureEntry({
@@ -293,8 +245,10 @@ function EncounterCreatureEntry({
   onDeleteCreature,
   encounter,
   setCreatureEncounter,
+  setCreatureEdit,
 }: EncounterBoxProps) {
   console.log("Rendering EncounterCreatureEntry");
+  const { setCharacter } = useContext(CharacterContext);
 
   const creatureClone = cloneDeep(creature);
   const actives = UpdateActives(creatureClone);
@@ -331,6 +285,39 @@ function EncounterCreatureEntry({
     return `${num}`;
   };
 
+  const [resistance, setResistance] = useState<string>("Weak");
+
+  useEffect(() => {
+    if (creatureClone.details.xp_earned === 0) {
+      setResistance("Weak");
+    } else if (creatureClone.details.xp_earned <= 50) {
+      setResistance("Ordinary");
+    } else if (creatureClone.details.xp_earned <= 150) {
+      setResistance("Challenging");
+    } else if (creatureClone.details.xp_earned <= 300) {
+      setResistance("Strong");
+    } else if (creatureClone.details.xp_earned <= 600) {
+      setResistance("Mighty");
+    } else {
+      setResistance("Legendary");
+    }
+  }, []); // Add creatureClone.details.xp_earned as a dependency
+
+  const [loot, setLoot] = useState<string>("");
+
+  useEffect(() => {
+    const lootString = creatureClone.inventory
+      .map((item) => item.name)
+      .join(", ");
+    setLoot(lootString);
+  }, []);
+
+  const HandleCharacterSheet = () => {
+    setCharacter(creature);
+    setCreatureEdit(true);
+    console.log("HandleCharacterSheet");
+  };
+
   return (
     <MainContainer>
       {hp - currentDamage <= 0 && (
@@ -338,7 +325,7 @@ function EncounterCreatureEntry({
           <FontAwesomeIcon icon={faSkull} />
         </DeadOverlay>
       )}
-      <Container src={CharacterPortraits["Character66"]}>
+      <Container src={CharacterPortraits[creatureClone.portrait]}>
         <ColorBlock $rgb={Constants.BRIGHT_RED} />
         <ActiveBox>
           <ActiveStat
@@ -366,11 +353,11 @@ function EncounterCreatureEntry({
             {Math.ceil(actives.defense.dice / 2) + actives.defense.dice_mod}
           </ActiveArmorSub>
         </ActiveBox>
-        <NameContainer>
+        <NameContainer onClick={HandleCharacterSheet}>
           <NameBox title={creatureClone.name}>{creature.name}</NameBox>
           <ActiveSub>
-            {creatureClone.details.xp_earned} {creature.details.race}{" "}
-            {/* <FontAwesomeIcon icon={faCoins} title={creature.loot} /> */}
+            {resistance} {creature.details.race}{" "}
+            <FontAwesomeIcon icon={faCoins} title={loot} />
           </ActiveSub>
         </NameContainer>
         {actives.attack.dice1_name !== "Knuckles" ? (

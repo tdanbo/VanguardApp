@@ -140,7 +140,7 @@ function CreatureEntryItem({
       ...creature,
       name: suffixLetter(),
       damage: 0,
-      id: uuidv4(), // This adds a new 'id' field to the creature object
+      id: uuidv4(),
     };
     setEncounter([...encounter, newEncounterCreature]);
   };
@@ -160,14 +160,14 @@ function CreatureEntryItem({
     if (characterClone.id === session.id) {
       const new_roster_entry: RosterEntry = {
         name: creature.name,
-        id: creature.id,
+        id: session.id,
       };
       characterClone.entourage = [
         ...characterClone.entourage,
         new_roster_entry,
       ];
       deleteRosterCharacter(creature.name, creature.id);
-      creature.npc = false;
+      creature.id = session.id;
       addNewCharacter(creature);
       postSelectedCharacter(characterClone);
       setCharacter(characterClone);

@@ -4,7 +4,6 @@ import {
   faShield,
   faBolt,
   faGhost,
-  faBookDead,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
@@ -76,18 +75,10 @@ function CharacterNavigation({
       </Navigator>
       {gmMode && (
         <Navigator
-          $active={browserState === 3}
-          onClick={() => handleNavigationClick(3)}
-        >
-          <FontAwesomeIcon icon={faGhost} />
-        </Navigator>
-      )}
-      {gmMode && (
-        <Navigator
           $active={browserState === 4}
           onClick={() => handleNavigationClick(4)}
         >
-          <FontAwesomeIcon icon={faBookDead} />
+          <FontAwesomeIcon icon={faGhost} />
         </Navigator>
       )}
       <Navigator

@@ -82,6 +82,7 @@ import Plunderer from "./assets/characters/Plunderer.jpeg";
 import GoblinBodyguard from "./assets/characters/GoblinBodyguard.jpeg";
 import GoblinShaman from "./assets/characters/GoblinShaman.jpeg";
 import MareCat from "./assets/characters/MareCat.jpeg";
+import Aboar from "./assets/characters/Aboar.jpeg";
 
 import RollA from "./assets/sounds/RollA.wav";
 import RollB from "./assets/sounds/RollB.wav";
@@ -187,4 +188,5 @@ export const CharacterPortraits: { [key: string]: string } = {
   GoblinBodyguard: GoblinBodyguard,
   GoblinShaman: GoblinShaman,
   MareCat: MareCat,
+  Aboar: Aboar,
 };

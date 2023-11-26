@@ -8,7 +8,6 @@ import {
 import * as Constants from "../../Constants";
 import OverburdenBox from "../OverburdenBox";
 import { CharacterContext } from "../../contexts/CharacterContext";
-import { SessionContext } from "../../contexts/SessionContext";
 import { useContext } from "react";
 import { getNpcEntry } from "../../functions/CharacterFunctions";
 import { CharacterEntry } from "../../Types";
@@ -65,16 +64,14 @@ function InventoryNavigation({
   gmMode,
 }: NavigationProps) {
   const { character, setCharacter } = useContext(CharacterContext);
-  const { session } = useContext(SessionContext);
   const onHandleItems = () => {
     if (inventoryState === 1) {
       setInventoryState(2);
     } else setInventoryState(1);
   };
 
-  const selectMember = async (id: string) => {
-    console.log(id);
-    const member = await getNpcEntry(id);
+  const selectMember = async (name: string) => {
+    const member = await getNpcEntry(name);
     setCharacter(member);
   };
 
@@ -102,7 +99,7 @@ function InventoryNavigation({
           <FontAwesomeIcon icon={faBolt} />
         </Navigator>
       )}
-      {character.id === session.id ? (
+      {character.npc === false ? (
         <>
           {character.entourage.map((rostermember, index) =>
             rostermember.id !== "" ? (
@@ -110,7 +107,7 @@ function InventoryNavigation({
                 title={rostermember.name}
                 key={index}
                 $active={inventoryState === 1}
-                onClick={() => selectMember(rostermember.id)}
+                onClick={() => selectMember(rostermember.name)}
               >
                 <FontAwesomeIcon icon={faUser} />
               </Navigator>

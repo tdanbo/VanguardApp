@@ -27,10 +27,10 @@ export async function getCharacterEntry(
   return response.data;
 }
 
-export async function getNpcEntry(id: string): Promise<CharacterEntry> {
+export async function getNpcEntry(name: string): Promise<CharacterEntry> {
   // Fetch the character using axios or any other method
   const response = await axios.get<CharacterEntry>(
-    `${API}/api/characterlog/npc/${id}`,
+    `${API}/api/characterlog/npc/${name}`,
   );
   return response.data;
 }
