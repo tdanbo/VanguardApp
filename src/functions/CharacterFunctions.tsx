@@ -767,20 +767,19 @@ export function RestCharacter(character: CharacterEntry) {
 }
 
 export async function postSelectedCharacter(updatedCharacter: CharacterEntry) {
-  console.log("posting character");
-  let endpoint = "characterlog";
-  if (updatedCharacter.npc) {
-    endpoint = "creaturelog";
-  }
   try {
     const res = await axios.put(
-      `${API}/api/${endpoint}/${updatedCharacter.name}`,
+      `${API}/api/characterlog/${updatedCharacter.name}`,
       updatedCharacter,
     );
     console.log(res);
     // Assuming res.data contains the updated character
   } catch (error) {
-    console.error("Error updating character:", error);
+    const res = await axios.put(
+      `${API}/api/creaturelog/${updatedCharacter.name}`,
+      updatedCharacter,
+    );
+    console.log(res);
   }
 }
 
