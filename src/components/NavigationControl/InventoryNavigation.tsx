@@ -1,13 +1,15 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBolt, faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBolt,
+  faChevronLeft,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
-import StorageBox from "../StorageBox";
 import OverburdenBox from "../OverburdenBox";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import { SessionContext } from "../../contexts/SessionContext";
-import { useContext, useEffect, useState } from "react";
-import AddMemberBox from "../_RosterBrowser";
+import { useContext } from "react";
 import { getNpcEntry } from "../../functions/CharacterFunctions";
 import { CharacterEntry } from "../../Types";
 const Container = styled.div`
@@ -47,21 +49,20 @@ const Navigator = styled.button<NavigatorProps>`
   height: 36px;
 `;
 
-const storageModifiers = [
-  "Storage 2",
-  "Storage 4",
-  "Storage 6",
-  "Storage 8",
-  "Storage 10",
-];
 interface NavigationProps {
   inventoryState: number;
   setInventoryState: (browserState: number) => void;
+  mainCharacter: CharacterEntry | undefined;
+  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  gmMode: boolean;
 }
 
 function InventoryNavigation({
   inventoryState,
+  mainCharacter,
   setInventoryState,
+  setCreatureEdit,
+  gmMode,
 }: NavigationProps) {
   const { character, setCharacter } = useContext(CharacterContext);
   const { session } = useContext(SessionContext);
@@ -77,6 +78,19 @@ function InventoryNavigation({
     setCharacter(member);
   };
 
+  const backToMain = () => {
+    console.log("Back to main character");
+    if (!mainCharacter) return;
+    console.log("Back to main character");
+    setCharacter(mainCharacter);
+  };
+
+  const HandleLeaveEdit = () => {
+    if (!mainCharacter) return;
+    setCharacter(mainCharacter);
+    setCreatureEdit(false);
+  };
+
   return (
     <Container>
       {inventoryState === 1 ? (
@@ -90,21 +104,36 @@ function InventoryNavigation({
       )}
       {character.id === session.id ? (
         <>
-          {character.entourage.map(
-            (id, index) =>
-              id !== "" && (
-                <Navigator
-                  key={index} // Always use a key when mapping over arrays in React
-                  $active={inventoryState === 1}
-                  onClick={() => selectMember(id)}
-                >
-                  <FontAwesomeIcon icon={faUser} />
-                </Navigator>
-              ),
+          {character.entourage.map((rostermember, index) =>
+            rostermember.id !== "" ? (
+              <Navigator
+                title={rostermember.name}
+                key={index}
+                $active={inventoryState === 1}
+                onClick={() => selectMember(rostermember.id)}
+              >
+                <FontAwesomeIcon icon={faUser} />
+              </Navigator>
+            ) : null,
           )}
-          <AddMemberBox />
         </>
-      ) : null}
+      ) : gmMode ? (
+        <Navigator
+          title={"Leave Edit Mode"}
+          $active={inventoryState === 1}
+          onClick={HandleLeaveEdit}
+        >
+          <FontAwesomeIcon icon={faChevronLeft} />
+        </Navigator>
+      ) : (
+        <Navigator
+          title={"Back to Main Character"}
+          $active={inventoryState === 1}
+          onClick={backToMain}
+        >
+          <FontAwesomeIcon icon={faChevronLeft} />
+        </Navigator>
+      )}
     </Container>
   );
 }

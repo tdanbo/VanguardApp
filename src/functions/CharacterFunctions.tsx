@@ -809,6 +809,11 @@ export async function addNewCreature(NewCharacterEntry: CharacterEntry) {
   });
 }
 
+export async function deleteCreature(name: string) {
+  const response = await axios.delete(`${API}/api/creaturelog/${name}`);
+  return response.data;
+}
+
 export function swapActives(
   character: CharacterEntry,
   source: string,
@@ -929,6 +934,8 @@ export function GetBurnRate(character: CharacterEntry) {
       });
     });
   });
+
+  burn_rate += character.entourage.length * 2;
 
   return burn_rate;
 }

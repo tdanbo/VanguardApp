@@ -305,7 +305,9 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
                 )}
               </>
             )
-          ) : null}
+          ) : (
+            <span>{UpperFirstLetter(combatEntry.source)}</span>
+          )}
         </Source>
       </ResultContainer>
     </Container>

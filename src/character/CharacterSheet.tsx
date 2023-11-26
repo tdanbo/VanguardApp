@@ -16,11 +16,12 @@ import * as Constants from "../Constants";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useEffect } from "react";
 import { CharacterEntry } from "../Types";
 import { SessionContext } from "../contexts/SessionContext";
 import { deleteSessionCharacter } from "../functions/SessionsFunctions";
+import { deleteCreature } from "../functions/CharacterFunctions";
 import {
   postSelectedCharacter,
   addNewRoster,
@@ -97,6 +98,10 @@ type CharacterSheetProps = {
   setInventoryState: (value: number) => void;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  mainCharacter: CharacterEntry | undefined;
+  setMainCharacter: React.Dispatch<
+    React.SetStateAction<CharacterEntry | undefined>
+  >;
 };
 
 function CharacterSheet({
@@ -105,8 +110,9 @@ function CharacterSheet({
   gmMode,
   inventoryState,
   setInventoryState,
-  setGmMode,
   setCreatureEdit,
+  mainCharacter,
+  setMainCharacter,
 }: CharacterSheetProps) {
   console.log("Current gmMode:");
   console.log(gmMode);
@@ -121,29 +127,29 @@ function CharacterSheet({
     DeleteMemberFromEntourage();
   };
 
+  const HandleDeleteCreature = () => {
+    console.log("Delete Creature");
+    if (!mainCharacter) return;
+    if (!gmMode) return;
+    deleteCreature(character.name);
+    setCharacter(mainCharacter);
+    setCreatureEdit(false);
+  };
+
   const DeleteMemberFromEntourage = () => {
     if (!mainCharacter) return;
     mainCharacter.entourage = mainCharacter.entourage.filter(
-      (idstring) => idstring !== character.id,
+      (rostermember) => rostermember.id !== character.id,
     );
     postSelectedCharacter(mainCharacter);
     setCharacter(mainCharacter);
   };
 
-  const HandleLeaveEdit = () => {
-    setCreatureEdit(false);
-  };
-
-  const [mainCharacter, setMainCharacter] = useState<CharacterEntry>();
   const { character, setCharacter } = useContext(CharacterContext);
   const { session } = useContext(SessionContext);
 
-  const selectMainChar = () => {
-    if (!mainCharacter) return;
-    setCharacter(mainCharacter);
-  };
-
   useEffect(() => {
+    if (!character) return;
     if (character.id === session.id) {
       setMainCharacter(character);
     }
@@ -173,6 +179,9 @@ function CharacterSheet({
         <InventoryNavigation
           inventoryState={inventoryState}
           setInventoryState={setInventoryState}
+          mainCharacter={mainCharacter}
+          setCreatureEdit={setCreatureEdit}
+          gmMode={gmMode}
         />
         <ScrollContainer>
           <InventorySection inventoryState={inventoryState} />
@@ -182,8 +191,9 @@ function CharacterSheet({
       <FooterCenterContainer>
         {gmMode ? (
           <>
-            <Button onClick={HandleLeaveEdit}>Leave Creature Edit</Button>
-            <Button>Delete Creature</Button>
+            <Button title={"Delete Creature"} onClick={HandleDeleteCreature}>
+              <FontAwesomeIcon icon={faXmark} />
+            </Button>
           </>
         ) : character.id === session.id ? (
           <>
@@ -192,9 +202,6 @@ function CharacterSheet({
           </>
         ) : (
           <>
-            <Button title={"Back To Main Character"} onClick={selectMainChar}>
-              <FontAwesomeIcon icon={faChevronLeft} />
-            </Button>
             <Button title={"Kick Member"} onClick={HandleDeleteMember}>
               <FontAwesomeIcon icon={faXmark} />
             </Button>

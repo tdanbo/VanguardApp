@@ -4,11 +4,11 @@ import ResetCreatureEncounter from "../components/ResetCreatureEncounter";
 import TimeTrackBox from "../components/TimeTrackBox";
 
 import DayNavigator from "../components/TravelBox";
-import SelectorNavigation from "../components/NavigationControl/SelectorNavigation";
 
 import styled from "styled-components";
 import { CharacterEntry } from "../Types";
 
+import { defaultCharacter } from "../contexts/CharacterContext";
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -56,19 +56,25 @@ interface GameMasterProps {
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   onDeleteCreature: (id: string) => void;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setMainCharacter: React.Dispatch<
+    React.SetStateAction<CharacterEntry | undefined>
+  >;
 }
 
 function GameMaster({
   browserState,
   gmMode,
-  setGmMode,
   creatureEncounter,
   setBrowserState,
   setCreatureEncounter,
   onDeleteCreature,
+  setMainCharacter,
 }: GameMasterProps) {
   console.log("Current gmMode:");
   console.log(gmMode);
+
+  setMainCharacter(defaultCharacter);
+
   return (
     <>
       <HeaderContainer>

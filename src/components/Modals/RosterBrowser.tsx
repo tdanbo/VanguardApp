@@ -1,4 +1,4 @@
-import { CharacterEntry, CreatureEntry } from "../../Types";
+import { CharacterEntry } from "../../Types";
 
 import styled from "styled-components";
 import CreatureEntryItem from "../CreatureEntryItem";

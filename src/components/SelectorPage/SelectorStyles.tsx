@@ -38,7 +38,7 @@ export const ModalContainer = styled.div`
   border: 1px solid ${Constants.WIDGET_BORDER};
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 
-  max-height: 500px;
+  max-height: 800px;
   margin-bottom: 10px;
   overflow: auto;
   border-bottom-left-radius: ${Constants.BORDER_RADIUS};

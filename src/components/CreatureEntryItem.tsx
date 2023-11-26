@@ -1,5 +1,5 @@
 import * as Constants from "../Constants";
-import { CreatureEntry } from "../Types";
+import { RosterEntry } from "../Types";
 import { useState, useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
@@ -14,7 +14,6 @@ import {
   deleteRosterCharacter,
   addNewCharacter,
 } from "../functions/CharacterFunctions";
-import { size } from "lodash";
 const BaseContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -97,22 +96,6 @@ const AbilityDetail = styled.div`
   font-size: 10px;
 `;
 
-// const LevelSelection = styled.div<LevelProps>`
-//   margin: 1px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   border-radius: 3px;
-//   background-color: ${(props) =>
-//     props.$active ? EntryColor(props.type) : Constants.WIDGET_BACKGROUND_EMPTY};
-//   border: 1px solid #3d3d3c;
-//   color: ${Constants.WIDGET_PRIMARY_FONT};
-//   font-size: 12px;
-//   width: 40px;
-//   height: 20px;
-//   cursor: pointer;
-// `;
-
 interface AbilityEntryItemProps {
   creature: CharacterEntry;
   browser: boolean;
@@ -122,7 +105,6 @@ interface AbilityEntryItemProps {
   setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
   gmMode: boolean;
   browserState: number;
-  setRosterList: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
 }
 
 function CreatureEntryItem({
@@ -133,11 +115,10 @@ function CreatureEntryItem({
   setCreatureEdit,
   gmMode,
   browserState,
-  setRosterList,
 }: AbilityEntryItemProps) {
   const { character, setCharacter } = useContext(CharacterContext);
   const { session } = useContext(SessionContext);
-  const [_expanded, setExpanded] = useState<boolean>(false);
+  const [_expanded] = useState<boolean>(false);
 
   const suffixLetter = () => {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -177,7 +158,14 @@ function CreatureEntryItem({
     console.log("Add Member");
     const characterClone = { ...character };
     if (characterClone.id === session.id) {
-      characterClone.entourage = [...characterClone.entourage, creature.id];
+      const new_roster_entry: RosterEntry = {
+        name: creature.name,
+        id: creature.id,
+      };
+      characterClone.entourage = [
+        ...characterClone.entourage,
+        new_roster_entry,
+      ];
       deleteRosterCharacter(creature.name, creature.id);
       creature.npc = false;
       addNewCharacter(creature);
@@ -210,10 +198,7 @@ function CreatureEntryItem({
           gmMode ? (
             browserState === 4 ? (
               <>
-                <AddCreatureToRoster
-                  character_template={creature}
-                  setRosterList={setRosterList}
-                />
+                <AddCreatureToRoster character_template={creature} />
                 <AddButton
                   className={"button-hover"}
                   onClick={AddEncounterCreature}

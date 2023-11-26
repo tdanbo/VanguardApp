@@ -78,6 +78,11 @@ interface EquipmentEntry {
   armor: ItemEntry;
 }
 
+export interface RosterEntry {
+  name: string;
+  id: string;
+}
+
 export interface CharacterEntry {
   name: string;
   id: string;
@@ -93,7 +98,7 @@ export interface CharacterEntry {
   equipment: EquipmentEntry;
   rations: Rations;
   money: number;
-  entourage: string[];
+  entourage: RosterEntry[];
 }
 
 export interface modifiedCreature {

@@ -1,12 +1,11 @@
 import { useState, useEffect, FC } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../Constants";
 import styled from "styled-components";
-import { CharacterEntry, CreatureEntry } from "../Types";
+import { CharacterEntry } from "../Types";
 import axios from "axios";
 import { API } from "../Constants";
-import { toTitleCase } from "../functions/UtilityFunctions";
 import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext";
 import CreateCharacterComponent from "../components/SelectorPage/CreateCharacterComponent";
@@ -83,12 +82,10 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
   const [fullList, setFullList] = useState<CharacterEntry[]>(creatureList);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [characterPortrait, setCharacterPortrait] = useState<string>("");
   const [characterRace, setCharacterRace] = useState<string>("");
   const [characterName, setCharacterName] = useState<string>("");
-  const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { character, setCharacter } = useContext(CharacterContext);
+  const { character } = useContext(CharacterContext);
   const filterItems = (query: string) => {
     if (query === "") {
       return fullList;
@@ -124,10 +121,6 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
     return <p>Loading...</p>; // Or replace with a loading spinner
   }
 
-  const createCreature = () => {
-    console.log("Creating creature");
-  };
-
   const handleOpen = () => {
     setIsModalOpen(true);
   };
@@ -142,21 +135,13 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
         className="flex-grow"
         onChange={(e) => setSearch(e.target.value)}
       />
-      {isModalOpen === false && creatureList.length > 0 ? (
-        <Button>
-          <FontAwesomeIcon icon={faSearch} />
-        </Button>
-      ) : (
-        <Button onClick={handleOpen}>
-          <FontAwesomeIcon icon={faPlus} />
-        </Button>
-      )}
+      <Button onClick={handleOpen}>
+        <FontAwesomeIcon icon={faPlus} />
+      </Button>
     </Container>
   ) : (
     <OverlayStyles>
       <CreateCharacterComponent
-        setCharacterLog={setCharacterLog}
-        characterPortrait={characterPortrait}
         setCharacterName={setCharacterName}
         setCharacterRace={setCharacterRace}
         characterName={characterName}

@@ -117,6 +117,9 @@ function App() {
   const [creatureEncounter, setCreatureEncounter] = useState<CharacterEntry[]>(
     [],
   );
+  const [mainCharacter, setMainCharacter] = useState<
+    CharacterEntry | undefined
+  >();
 
   const [creatureEdit, setCreatureEdit] = useState<boolean>(false);
 
@@ -235,6 +238,8 @@ function App() {
                     setInventoryState={setInventoryState}
                     setGmMode={setGmMode}
                     setCreatureEdit={setCreatureEdit}
+                    mainCharacter={mainCharacter}
+                    setMainCharacter={setMainCharacter}
                   />
                 ) : (
                   <GameMaster
@@ -245,6 +250,7 @@ function App() {
                     setCreatureEncounter={setCreatureEncounter}
                     onDeleteCreature={onDeleteCreature}
                     setGmMode={setGmMode}
+                    setMainCharacter={setMainCharacter}
                   />
                 )
               ) : (
@@ -256,6 +262,8 @@ function App() {
                   setInventoryState={setInventoryState}
                   setGmMode={setGmMode}
                   setCreatureEdit={setCreatureEdit}
+                  mainCharacter={mainCharacter}
+                  setMainCharacter={setMainCharacter}
                 />
               )}
             </Column>

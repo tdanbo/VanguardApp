@@ -76,13 +76,10 @@ const ResourceChangeContainer = styled.div`
 
 interface AddMemberProps {
   character_template: CharacterEntry;
-
-  setRosterList: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
 }
 
 function AddCreatureToRoster({ character_template }: AddMemberProps) {
   const [member, setMember] = useState<string>("");
-  const [template, setTemplate] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { character, setCharacter } = useContext(CharacterContext);
 
