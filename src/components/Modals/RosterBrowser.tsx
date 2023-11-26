@@ -19,7 +19,7 @@ const ItemContainer = styled.div`
 
 interface CreatureBrowserProps {
   browserState: number;
-  creatureList: CharacterEntry[];
+  rosterlist: CharacterEntry[];
   creatureEncounter: CharacterEntry[];
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,20 +31,28 @@ function sortItems(a: CharacterEntry, b: CharacterEntry): number {
     Constants.RACE_FILTER.indexOf(a.name) -
     Constants.RACE_FILTER.indexOf(b.name);
 
+  // if (raceComparison === 0) {
+  //   // If races are the same, sort by resistance
+  //   return (
+  //     Constants.DIFFICULTY_FILTER.indexOf(a.resistance) -
+  //     Constants.DIFFICULTY_FILTER.indexOf(b.resistance)
+  //   );
+  // }
+
   return raceComparison;
 }
 
-function CreatureBrowser({
+function RosterBrowser({
   browserState,
-  creatureList,
+  rosterlist,
   creatureEncounter,
   setCreatureEncounter,
   setCreatureEdit,
   gmMode,
 }: CreatureBrowserProps) {
-  const sortedCreatureList = creatureList.sort(sortItems);
+  const sortedCreatureList = rosterlist.sort(sortItems);
   return (
-    <Container hidden={browserState !== 4}>
+    <Container hidden={browserState !== 5}>
       <ItemContainer>
         {sortedCreatureList &&
           sortedCreatureList.map((creature, index) => (
@@ -64,4 +72,4 @@ function CreatureBrowser({
   );
 }
 
-export default CreatureBrowser;
+export default RosterBrowser;

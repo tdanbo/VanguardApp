@@ -32,6 +32,7 @@ export const defaultCharacter: CharacterEntry = {
       dice2: 0,
       dice2_mod: 0,
       dice2_name: "damage",
+      attacks: 1,
     },
     defense: {
       stat: "quick",
@@ -56,6 +57,8 @@ export const defaultCharacter: CharacterEntry = {
     armor: EmptyArmor,
   },
   rations: { food: 0, water: 0 },
+  npc: false,
+  entourage: [],
 };
 
 interface CharacterContextType {

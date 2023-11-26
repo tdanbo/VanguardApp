@@ -78,6 +78,12 @@ import Character76 from "./assets/characters/Character76.jpeg";
 import Character77 from "./assets/characters/Character77.jpeg";
 import Character78 from "./assets/characters/Character78.jpeg";
 
+import Plunderer from "./assets/characters/Plunderer.jpeg";
+import GoblinBodyguard from "./assets/characters/GoblinBodyguard.jpeg";
+import GoblinShaman from "./assets/characters/GoblinShaman.jpeg";
+import MareCat from "./assets/characters/MareCat.jpeg";
+import Aboar from "./assets/characters/Aboar.jpeg";
+
 import RollA from "./assets/sounds/RollA.wav";
 import RollB from "./assets/sounds/RollB.wav";
 import RollC from "./assets/sounds/RollC.wav";
@@ -178,4 +184,9 @@ export const CharacterPortraits: { [key: string]: string } = {
   Character76: Character76,
   Character77: Character77,
   Character78: Character78,
+  Plunderer: Plunderer,
+  GoblinBodyguard: GoblinBodyguard,
+  GoblinShaman: GoblinShaman,
+  MareCat: MareCat,
+  Aboar: Aboar,
 };

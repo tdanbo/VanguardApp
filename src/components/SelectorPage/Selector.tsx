@@ -1,7 +1,7 @@
 import * as Constants from "../../Constants";
 import { useState } from "react";
 import { CharacterEntry } from "../../Types";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CreateSessionComponent from "./CreateSessionComponent";
 import SelectCharacterComponent from "./SelectCharacterComponent";
@@ -54,9 +54,9 @@ interface SelectorProps {
 function SelectorComponent({ setGmMode }: SelectorProps) {
   const [isModalOpen, setIsModalOpen] = useState(true);
 
+  const [characterPortrait, setCharacterPortrait] = useState<string>("");
   const [characterRace, setCharacterRace] = useState<string>("");
   const [characterName, setCharacterName] = useState<string>("");
-  const [characterPortrait, setCharacterPortrait] = useState<string>("");
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
 
   console.log(characterName, characterRace, characterPortrait);
@@ -81,12 +81,12 @@ function SelectorComponent({ setGmMode }: SelectorProps) {
         return (
           <CreateCharacterComponent
             setSelector={setSelector}
-            setCharacterLog={setCharacterLog}
-            characterPortrait={characterPortrait}
             setCharacterName={setCharacterName}
             setCharacterRace={setCharacterRace}
             characterName={characterName}
             characterRace={characterRace}
+            closeModal={handleClose}
+            source={"characterSelect"}
           />
         );
       case "selectPortrait":
@@ -117,7 +117,7 @@ function SelectorComponent({ setGmMode }: SelectorProps) {
     <OverlayStyles>{renderContent(selector)}</OverlayStyles>
   ) : (
     <Navigator onClick={handleOpen}>
-      <FontAwesomeIcon icon={faUser} />
+      <FontAwesomeIcon icon={faDoorOpen} />
     </Navigator>
   );
 }

@@ -28,10 +28,12 @@ const SelectStyled = styled.select`
   color: ${Constants.WIDGET_SECONDARY_FONT};
   font-size: 16px;
   cursor: pointer; // Change the cursor to indicate the select is clickable
-
+  min-height: 35px;
+  font-size: 16px;
   &:focus {
     outline: none; // Remove focus outline
   }
+  padding-left: 12px;
 `;
 
 const RaceDropdownBox: FC<DropdownProps> = ({

@@ -1,16 +1,20 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBolt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBolt,
+  faChevronLeft,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
-import StorageBox from "../StorageBox";
 import OverburdenBox from "../OverburdenBox";
 import { CharacterContext } from "../../contexts/CharacterContext";
 import { useContext } from "react";
-
+import { getNpcEntry } from "../../functions/CharacterFunctions";
+import { CharacterEntry } from "../../Types";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 11px;
 `;
 
 interface NavigatorProps {
@@ -23,7 +27,7 @@ const Navigator = styled.button<NavigatorProps>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 16px;
   border: ${(props) =>
     props.$active ? `1px solid ${Constants.WIDGET_BORDER}` : `0px solid white`};
   color: ${(props) =>
@@ -41,31 +45,47 @@ const Navigator = styled.button<NavigatorProps>`
     border: 1px solid ${Constants.WIDGET_BORDER};
   }
   width: 50px;
-  height: 38px;
+  height: 36px;
 `;
 
-const storageModifiers = [
-  "Storage 2",
-  "Storage 4",
-  "Storage 6",
-  "Storage 8",
-  "Storage 10",
-];
 interface NavigationProps {
   inventoryState: number;
   setInventoryState: (browserState: number) => void;
+  mainCharacter: CharacterEntry | undefined;
+  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  gmMode: boolean;
 }
 
 function InventoryNavigation({
   inventoryState,
+  mainCharacter,
   setInventoryState,
+  setCreatureEdit,
+  gmMode,
 }: NavigationProps) {
-  const { character } = useContext(CharacterContext);
-
+  const { character, setCharacter } = useContext(CharacterContext);
   const onHandleItems = () => {
     if (inventoryState === 1) {
       setInventoryState(2);
     } else setInventoryState(1);
+  };
+
+  const selectMember = async (name: string) => {
+    const member = await getNpcEntry(name);
+    setCharacter(member);
+  };
+
+  const backToMain = () => {
+    console.log("Back to main character");
+    if (!mainCharacter) return;
+    console.log("Back to main character");
+    setCharacter(mainCharacter);
+  };
+
+  const HandleLeaveEdit = () => {
+    if (!mainCharacter) return;
+    setCharacter(mainCharacter);
+    setCreatureEdit(false);
   };
 
   return (
@@ -79,13 +99,37 @@ function InventoryNavigation({
           <FontAwesomeIcon icon={faBolt} />
         </Navigator>
       )}
-      {character.inventory.flatMap((item) =>
-        item.quality.map((quality) => {
-          if (storageModifiers.includes(quality)) {
-            return <StorageBox item={item} />;
-          }
-          return null;
-        }),
+      {character.npc === false ? (
+        <>
+          {character.entourage.map((rostermember, index) =>
+            rostermember.id !== "" ? (
+              <Navigator
+                title={rostermember.name}
+                key={index}
+                $active={inventoryState === 1}
+                onClick={() => selectMember(rostermember.name)}
+              >
+                <FontAwesomeIcon icon={faUser} />
+              </Navigator>
+            ) : null,
+          )}
+        </>
+      ) : gmMode ? (
+        <Navigator
+          title={"Leave Edit Mode"}
+          $active={inventoryState === 1}
+          onClick={HandleLeaveEdit}
+        >
+          <FontAwesomeIcon icon={faChevronLeft} />
+        </Navigator>
+      ) : (
+        <Navigator
+          title={"Back to Main Character"}
+          $active={inventoryState === 1}
+          onClick={backToMain}
+        >
+          <FontAwesomeIcon icon={faChevronLeft} />
+        </Navigator>
       )}
     </Container>
   );

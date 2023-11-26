@@ -65,16 +65,22 @@ function SelectCharacterComponent({
       </Title>
       <ModalContainer>
         <CenterContainer>
-          {[...characterLog].reverse().map((character, index) => (
-            <CharacterBox
-              key={index}
-              setSelector={setSelector}
-              selectedCharacter={character}
-              closeModal={closeModal}
-              setGmMode={setGmMode}
-              setCharacterLog={setCharacterLog}
-            />
-          ))}
+          {[...characterLog]
+            .reverse()
+            .map(
+              (character, index) =>
+                (character.npc === false && (
+                  <CharacterBox
+                    key={index}
+                    setSelector={setSelector}
+                    selectedCharacter={character}
+                    closeModal={closeModal}
+                    setGmMode={setGmMode}
+                    setCharacterLog={setCharacterLog}
+                  />
+                )) ||
+                null,
+            )}
         </CenterContainer>
       </ModalContainer>
       <ButtonContainer>

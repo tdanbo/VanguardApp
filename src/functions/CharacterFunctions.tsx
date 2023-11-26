@@ -27,6 +27,22 @@ export async function getCharacterEntry(
   return response.data;
 }
 
+export async function getNpcEntry(name: string): Promise<CharacterEntry> {
+  // Fetch the character using axios or any other method
+  const response = await axios.get<CharacterEntry>(
+    `${API}/api/characterlog/npc/${name}`,
+  );
+  return response.data;
+}
+
+export async function getCreatureEntry(name: string): Promise<CharacterEntry> {
+  // Fetch the character using axios or any other method
+  const response = await axios.get<CharacterEntry>(
+    `${API}/api/creaturelog/${name}`,
+  );
+  return response.data;
+}
+
 interface onAddCharacterProps {
   item: ItemEntry;
   character: CharacterEntry;
@@ -242,7 +258,6 @@ export const getCharacterMovement = (character: CharacterEntry) => {
 
     character.equipment.armor.quality.forEach((quality: string) => {
       const lowercasedQuality = quality;
-      console.log(quality);
       if (lowercasedQuality in negativeQualities) {
         sneaking_mod += negativeQualities[lowercasedQuality];
       }
@@ -752,9 +767,14 @@ export function RestCharacter(character: CharacterEntry) {
 }
 
 export async function postSelectedCharacter(updatedCharacter: CharacterEntry) {
+  console.log("posting character");
+  let endpoint = "characterlog";
+  if (updatedCharacter.npc) {
+    endpoint = "creaturelog";
+  }
   try {
     const res = await axios.put(
-      `${API}/api/characterlog/${updatedCharacter.name}`,
+      `${API}/api/${endpoint}/${updatedCharacter.name}`,
       updatedCharacter,
     );
     console.log(res);
@@ -770,6 +790,28 @@ export async function addNewCharacter(NewCharacterEntry: CharacterEntry) {
     .then((res) => {
       return res;
     });
+}
+
+export async function addNewRoster(NewCharacterEntry: CharacterEntry) {
+  return axios.post(`${API}/api/rosterlog`, NewCharacterEntry).then((res) => {
+    return res;
+  });
+}
+
+export async function deleteRosterCharacter(name: string, id: string) {
+  const response = await axios.delete(`${API}/api/rosterlog/${id}/${name}`);
+  return response.data;
+}
+
+export async function addNewCreature(NewCharacterEntry: CharacterEntry) {
+  return axios.post(`${API}/api/creaturelog`, NewCharacterEntry).then((res) => {
+    return res;
+  });
+}
+
+export async function deleteCreature(name: string) {
+  const response = await axios.delete(`${API}/api/creaturelog/${name}`);
+  return response.data;
 }
 
 export function swapActives(
@@ -829,7 +871,6 @@ export function GetUsedSlots(character: CharacterEntry) {
 
     item.quality.forEach((quality) => {
       if (storageModifiers.includes(quality)) {
-        console.log("Storage Modifier Found");
         used_slots -= 1;
       }
     });
@@ -859,9 +900,6 @@ export function GetMaxSlots(character: CharacterEntry) {
 
     item.quality.forEach((quality) => {
       Object.entries(storageModifiers).forEach(([key, modifiers]) => {
-        console.log(key);
-        console.log(modifiers);
-        console.log(quality);
         if (quality.includes(key)) {
           console.log("Storage Modifier Found");
           max_slots += modifiers;
@@ -889,9 +927,6 @@ export function GetBurnRate(character: CharacterEntry) {
 
     item.quality.forEach((quality) => {
       Object.entries(storageModifiers).forEach(([key, modifiers]) => {
-        console.log(key);
-        console.log(modifiers);
-        console.log(quality);
         if (quality.includes(key)) {
           console.log("Storage Modifier Found");
           burn_rate += modifiers;
@@ -899,6 +934,8 @@ export function GetBurnRate(character: CharacterEntry) {
       });
     });
   });
+
+  burn_rate += character.entourage.length * 2;
 
   return burn_rate;
 }

@@ -1,15 +1,13 @@
 import { useState, useEffect, FC } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../Constants";
 import styled from "styled-components";
-import { CharacterEntry } from "../Types";
+import { CreatureEntry } from "../Types";
 import axios from "axios";
 import { API } from "../Constants";
-import { useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
-import CreateCharacterComponent from "../components/SelectorPage/CreateCharacterComponent";
-import BackgroundImage from "../assets/icons/background.jpeg";
+import { toTitleCase } from "../functions/UtilityFunctions";
+
 const {
   WIDGET_BACKGROUND_EMPTY,
   WIDGET_BORDER,
@@ -54,42 +52,44 @@ const Button = styled.button`
   color: ${WIDGET_SECONDARY_FONT};
 `;
 
-const OverlayStyles = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: linear-gradient(rgba(7, 9, 11, 0.95), rgba(7, 9, 11, 0.95)),
-    url(${BackgroundImage});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 999;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
 interface SearchItemBoxProps {
-  creatureList: CharacterEntry[];
-  setList: (list: CharacterEntry[]) => void;
+  monsterList: CreatureEntry[];
+  setList: (list: CreatureEntry[]) => void;
   browserState: number;
 }
 
-const SearchCreatureBox: FC<SearchItemBoxProps> = ({
-  creatureList,
+const SearchItemBox: FC<SearchItemBoxProps> = ({
+  monsterList,
   setList,
   browserState,
 }) => {
-  const [fullList, setFullList] = useState<CharacterEntry[]>(creatureList);
+  const [fullList, setFullList] = useState<CreatureEntry[]>(monsterList);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [characterRace, setCharacterRace] = useState<string>("");
-  const [characterName, setCharacterName] = useState<string>("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { character } = useContext(CharacterContext);
+
+  const generalCreature: CreatureEntry[] = [
+    {
+      name: toTitleCase(search),
+      race: "Human",
+      category: "Cultural Being",
+      resistance: "Weak",
+      stats: {
+        cunning: 0,
+        discreet: 0,
+        persuasive: 0,
+        quick: 0,
+        resolute: 0,
+        strong: 0,
+        vigilant: 0,
+        accurate: 0,
+      },
+      armor: "None",
+      weapon: [],
+      abilities: {},
+      loot: "",
+    },
+  ];
+
   const filterItems = (query: string) => {
     if (query === "") {
       return fullList;
@@ -102,7 +102,7 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get(`${API}/api/creaturesv2`);
+        const response = await axios.get(`${API}/api/creatures`);
         console.log(response.data);
         setFullList(response.data);
         setLoading(false);
@@ -111,11 +111,11 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
       }
     };
     fetchItems();
-  }, [character]);
+  }, []);
 
   useEffect(() => {
     if (filterItems(search).length === 0) {
-      setList([] as CharacterEntry[]);
+      setList(generalCreature as CreatureEntry[]);
     } else {
       setList(filterItems(search));
     }
@@ -125,36 +125,21 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
     return <p>Loading...</p>; // Or replace with a loading spinner
   }
 
-  const handleOpen = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsModalOpen(false);
-  };
-
-  return isModalOpen === false ? (
-    <Container hidden={browserState !== 4}>
+  return (
+    <Container hidden={browserState !== 3}>
       <Input
         className="flex-grow"
         onChange={(e) => setSearch(e.target.value)}
       />
-      <Button onClick={handleOpen}>
-        <FontAwesomeIcon icon={faPlus} />
+      <Button>
+        {monsterList.length > 0 ? (
+          <FontAwesomeIcon icon={faSearch} />
+        ) : (
+          <FontAwesomeIcon icon={faPlus} />
+        )}
       </Button>
     </Container>
-  ) : (
-    <OverlayStyles>
-      <CreateCharacterComponent
-        setCharacterName={setCharacterName}
-        setCharacterRace={setCharacterRace}
-        characterName={characterName}
-        characterRace={characterRace}
-        closeModal={handleClose}
-        source={""}
-      />
-    </OverlayStyles>
   );
 };
 
-export default SearchCreatureBox;
+export default SearchItemBox;

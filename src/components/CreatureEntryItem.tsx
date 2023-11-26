@@ -1,9 +1,19 @@
 import * as Constants from "../Constants";
-import { CreatureEntry } from "../Types";
-import { useState } from "react";
+import { RosterEntry } from "../Types";
+import { useState, useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
-
+import { CharacterEntry } from "../Types";
+import { CharacterContext } from "../contexts/CharacterContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import AddCreatureToRoster from "./AddCreatureToRoster";
+import { SessionContext } from "../contexts/SessionContext";
+import {
+  postSelectedCharacter,
+  deleteRosterCharacter,
+  addNewCharacter,
+} from "../functions/CharacterFunctions";
 const BaseContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -60,14 +70,20 @@ const ExpandButten = styled.div`
   font-weight: bold;
   color: ${Constants.WIDGET_SECONDARY_FONT};
   padding-bottom: 5px;
+  font-size: 12px;
 `;
 
-const CreatureName = styled.div`
+type BrowserProps = {
+  browserState: number;
+};
+
+const CreatureName = styled.div<BrowserProps>`
   align-items: flex-end;
   display: flex;
   flex-grow: 1;
   flex: 1;
-  color: ${Constants.BRIGHT_RED};
+  color: ${(props) =>
+    props.browserState === 4 ? Constants.BRIGHT_RED : Constants.BLUE};
   font-size: 15px;
   font-weight: bold;
 `;
@@ -80,28 +96,15 @@ const AbilityDetail = styled.div`
   font-size: 10px;
 `;
 
-// const LevelSelection = styled.div<LevelProps>`
-//   margin: 1px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   border-radius: 3px;
-//   background-color: ${(props) =>
-//     props.$active ? EntryColor(props.type) : Constants.WIDGET_BACKGROUND_EMPTY};
-//   border: 1px solid #3d3d3c;
-//   color: ${Constants.WIDGET_PRIMARY_FONT};
-//   font-size: 12px;
-//   width: 40px;
-//   height: 20px;
-//   cursor: pointer;
-// `;
-
 interface AbilityEntryItemProps {
-  creature: CreatureEntry;
+  creature: CharacterEntry;
   browser: boolean;
   setInventoryState?: (inventoryState: number) => void;
-  encounter: CreatureEntry[];
-  setEncounter: React.Dispatch<React.SetStateAction<CreatureEntry[]>>;
+  encounter: CharacterEntry[];
+  setEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
+  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  gmMode: boolean;
+  browserState: number;
 }
 
 function CreatureEntryItem({
@@ -109,8 +112,13 @@ function CreatureEntryItem({
   browser,
   encounter,
   setEncounter,
+  setCreatureEdit,
+  gmMode,
+  browserState,
 }: AbilityEntryItemProps) {
-  const [_expanded, setExpanded] = useState<boolean>(false);
+  const { character, setCharacter } = useContext(CharacterContext);
+  const { session } = useContext(SessionContext);
+  const [_expanded] = useState<boolean>(false);
 
   const suffixLetter = () => {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -128,38 +136,89 @@ function CreatureEntryItem({
 
   const AddEncounterCreature = () => {
     console.log("Add Creature");
-    const newEncounterCreature: CreatureEntry = {
+    const newEncounterCreature: CharacterEntry = {
       ...creature,
       name: suffixLetter(),
       damage: 0,
-      id: uuidv4(), // This adds a new 'id' field to the creature object
+      id: uuidv4(),
     };
     setEncounter([...encounter, newEncounterCreature]);
   };
 
-  const DeleteEncounterCreature = (_creature: CreatureEntry) => {
+  const DeleteEncounterCreature = (_creature: CharacterEntry) => {
     console.log("Delete Creature");
+  };
+
+  const editCreature = () => {
+    setCharacter(creature);
+    setCreatureEdit(true);
+  };
+
+  const AddMemberToRoster = () => {
+    console.log("Add Member");
+    const characterClone = { ...character };
+    if (characterClone.id === session.id) {
+      const new_roster_entry: RosterEntry = {
+        name: creature.name,
+        id: session.id,
+      };
+      characterClone.entourage = [
+        ...characterClone.entourage,
+        new_roster_entry,
+      ];
+      deleteRosterCharacter(creature.name, creature.id);
+      creature.id = session.id;
+      addNewCharacter(creature);
+      postSelectedCharacter(characterClone);
+      setCharacter(characterClone);
+    } else {
+      console.log("Not the main character");
+    }
+  };
+
+  const RemoveMemberFromRoster = () => {
+    const characterClone = { ...character };
+    deleteRosterCharacter(creature.name, creature.id);
+    setCharacter(characterClone);
   };
 
   return (
     <BaseContainer>
       <Container>
-        <ExpandButten
-          className={"button-hover"}
-          onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
-        >
-          {/* {expanded ? "-" : "+"} */}
+        <ExpandButten className={"button-hover"} onClick={() => editCreature()}>
+          <FontAwesomeIcon icon={faUser} />
         </ExpandButten>
         <NameContainer>
-          <CreatureName>{creature.name}</CreatureName>
-          <AbilityDetail>
-            {creature.resistance} {creature.race}
-          </AbilityDetail>
+          <CreatureName browserState={browserState}>
+            {creature.name}
+          </CreatureName>
+          <AbilityDetail>{creature.name}</AbilityDetail>
         </NameContainer>
         {browser ? (
-          <AddButton className={"button-hover"} onClick={AddEncounterCreature}>
-            +
-          </AddButton>
+          gmMode ? (
+            browserState === 4 ? (
+              <>
+                <AddCreatureToRoster character_template={creature} />
+                <AddButton
+                  className={"button-hover"}
+                  onClick={AddEncounterCreature}
+                >
+                  <FontAwesomeIcon icon={faPlus} />
+                </AddButton>
+              </>
+            ) : (
+              <AddButton
+                className={"button-hover"}
+                onClick={RemoveMemberFromRoster}
+              >
+                <FontAwesomeIcon icon={faMinus} />
+              </AddButton>
+            )
+          ) : (
+            <AddButton className={"button-hover"} onClick={AddMemberToRoster}>
+              <FontAwesomeIcon icon={faPlus} />
+            </AddButton>
+          )
         ) : (
           <AddButton
             className={"button-hover"}

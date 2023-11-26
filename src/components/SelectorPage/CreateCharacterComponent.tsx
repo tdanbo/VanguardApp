@@ -4,9 +4,11 @@ import { CharacterEntry } from "../../Types";
 import { SessionContext } from "../../contexts/SessionContext";
 import { UpperFirstLetter } from "../../functions/UtilityFunctions";
 import styled from "styled-components";
-import { CharacterPortraits } from "../../Images";
 import RaceDropdownBox from "./RaceDropdownBox";
-import { addNewCharacter } from "../../functions/CharacterFunctions";
+import {
+  addNewCharacter,
+  addNewCreature,
+} from "../../functions/CharacterFunctions";
 import { EmptyWeapon, EmptyArmor } from "../../Types";
 import { toTitleCase } from "../../functions/UtilityFunctions";
 import {
@@ -17,16 +19,9 @@ import {
   ControlButton,
   ButtonContainer,
 } from "./SelectorStyles";
-
-interface LoginProps {
-  setSelector: (selector: string) => void;
-  setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
-  characterPortrait: string;
-  characterName: string;
-  characterRace: string;
-  setCharacterRace: React.Dispatch<React.SetStateAction<string>>;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
-}
+import { v4 as uuidv4 } from "uuid";
+import { CharacterContext } from "../../contexts/CharacterContext";
+import AddCreaturePortrait from "../AddCreaturePortrait";
 
 interface Stats {
   id: number;
@@ -39,25 +34,7 @@ const Container = styled.div`
   flex-direction: row;
   flex-grow: 1;
   gap: 5px;
-  height: 75px;
   margin-bottom: 20px;
-`;
-
-interface PortraitProps {
-  src: string;
-}
-
-const PortraitSelect = styled.button<PortraitProps>`
-  display: flex;
-  flex-grow: 1;
-  flex: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border-radius: ${Constants.BORDER_RADIUS};
-  color: ${Constants.WIDGET_BORDER};
-  background-image: ${(props) => `url(${props.src})`};
-  background-size: cover;
-  background-position: center 40%;
-  border: 1px solid ${Constants.WIDGET_BORDER};
 `;
 
 const NameInput = styled.input`
@@ -70,6 +47,8 @@ const NameInput = styled.input`
   color: ${Constants.WIDGET_PRIMARY_FONT};
   outline: none;
   border: 1px solid ${Constants.WIDGET_BORDER};
+  min-height: 35px;
+  font-size: 16px;
 `;
 
 const InputtContainer = styled.div`
@@ -116,23 +95,26 @@ const ValueBox = styled.div`
 `;
 
 interface LoginProps {
-  setSelector: (selector: string) => void;
-  setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
-  characterPortrait: string;
+  setSelector?: (selector: string) => void;
   characterName: string;
   characterRace: string;
   setCharacterRace: React.Dispatch<React.SetStateAction<string>>;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
+  source: string;
+  closeModal: () => void;
 }
 
 function CreateCharacterComponent({
   setSelector,
-  characterPortrait,
   characterName,
   characterRace,
   setCharacterRace,
   setCharacterName,
+  closeModal,
+  source,
 }: LoginProps) {
+  const { setCharacter } = useContext(CharacterContext);
+  const [characterPortrait, setCharacterPortrait] = useState<string>("");
   useEffect(() => {
     console.log("CreateCharacterComponent rendered");
 
@@ -163,6 +145,7 @@ function CreateCharacterComponent({
   console.log(characterRace);
 
   const [stats, setStats] = useState<Stats[]>([
+    { id: 8, label: "Accurate", value: 5 },
     { id: 1, label: "Cunning", value: 15 },
     { id: 2, label: "Discreet", value: 13 },
     { id: 3, label: "Persuasive", value: 11 },
@@ -170,10 +153,11 @@ function CreateCharacterComponent({
     { id: 5, label: "Resolute", value: 10 },
     { id: 6, label: "Strong", value: 9 },
     { id: 7, label: "Vigilant", value: 7 },
-    { id: 8, label: "Accurate", value: 5 },
   ]);
   const [selectedButton, setSelectedButton] = useState<number | null>(null);
-
+  const [characterDifficulty, setCharacterDifficulty] =
+    useState<string>("Weak");
+  const [characterXp, setCharacterXp] = useState<number>(0);
   const handleButtonClick = (id: number) => {
     if (!selectedButton) {
       setSelectedButton(id);
@@ -210,26 +194,82 @@ function CreateCharacterComponent({
     "Dwarf",
     "Troll",
     "Undead",
+    "Beast",
+  ];
+
+  const creature_options = [
+    "Abomination",
+    "Ambrian",
+    "Barbarian",
+    "Bear",
+    "Boar",
+    "Cat",
+    "Elf",
+    "Goblin",
+    "Ogre",
+    "Reptile",
+    "Spider",
+    "Spirit",
+    "Troll",
+    "Undead",
+  ];
+
+  const difficulty_options = [
+    "Weak",
+    "Ordinary",
+    "Challenging",
+    "Strong",
+    "Mighty",
+    "Legendary",
   ];
 
   const handleDropdownChange = (selectedOption: string) => {
     setCharacterRace(UpperFirstLetter(selectedOption));
   };
 
-  const handlePortraitSelect = () => {
-    setSelector("selectPortrait");
+  const { session } = useContext(SessionContext);
+
+  const difficulty: Record<string, number> = {
+    Weak: 0,
+    Ordinary: 50,
+    Challenging: 150,
+    Strong: 300,
+    Mighty: 600,
+    Legendary: 1200,
   };
 
-  const { session } = useContext(SessionContext);
+  useEffect(() => {
+    setCharacterXp(difficulty[characterDifficulty]);
+  }, [characterDifficulty]);
+
+  const handleDifficultyDropdownChange = (selectedDifficulty: string) => {
+    setCharacterDifficulty(selectedDifficulty);
+    console.log(NewCharacterEntry.details.xp_earned);
+  };
+
+  let creature_id = "";
+  if (source === "characterSelect") {
+    creature_id = session.id;
+  } else {
+    creature_id = uuidv4();
+  }
+
+  let npc_state = true;
+  if (source === "characterSelect") {
+    npc_state = false;
+  } else {
+    npc_state = true;
+  }
 
   const NewCharacterEntry: CharacterEntry = {
     name: characterName,
-    id: session.id,
+    id: creature_id,
+    npc: npc_state,
     portrait: characterPortrait,
     details: {
       race: characterRace,
       movement: 0,
-      xp_earned: 50,
+      xp_earned: characterXp,
       modifier: 0,
     },
     damage: 0,
@@ -253,6 +293,7 @@ function CreateCharacterComponent({
         dice2: 0,
         dice2_mod: 0,
         dice2_name: "damage",
+        attacks: 1,
       },
       defense: {
         stat: "quick",
@@ -277,11 +318,28 @@ function CreateCharacterComponent({
     },
     rations: { food: 0, water: 0 },
     money: 0,
+    entourage: [],
   };
 
   const handlePostCharacter = async () => {
-    setSelector("characterSelect");
-    await addNewCharacter(NewCharacterEntry);
+    if (source === "characterSelect") {
+      await addNewCharacter(NewCharacterEntry);
+    } else {
+      await addNewCreature(NewCharacterEntry);
+    }
+    setCharacter(NewCharacterEntry);
+    closeModal();
+  };
+
+  const handleBack = () => {
+    console.log("Back");
+    if (source === "characterSelect") {
+      if (setSelector) {
+        setSelector("characterSelect");
+      }
+    } else {
+      closeModal();
+    }
   };
 
   return (
@@ -290,10 +348,13 @@ function CreateCharacterComponent({
       <ModalContainer>
         <CenterContainer>
           <Container>
-            <PortraitSelect
-              onClick={handlePortraitSelect}
-              src={CharacterPortraits[characterPortrait]}
+            <AddCreaturePortrait
+              characterPortrait={characterPortrait}
+              setCharacterPortrait={setCharacterPortrait}
+              source={source}
             />
+          </Container>
+          <Container>
             <InputtContainer>
               <NameInput
                 placeholder={"Character Name"}
@@ -302,8 +363,15 @@ function CreateCharacterComponent({
               />
               <RaceDropdownBox
                 onChange={handleDropdownChange}
-                options={options}
+                options={
+                  source === "characterSelect" ? options : creature_options
+                }
                 value={characterRace}
+              />
+              <RaceDropdownBox
+                onChange={handleDifficultyDropdownChange}
+                options={difficulty_options}
+                value={characterDifficulty}
               />
             </InputtContainer>
           </Container>
@@ -331,9 +399,7 @@ function CreateCharacterComponent({
         </CenterContainer>
       </ModalContainer>
       <ButtonContainer>
-        <ControlButton onClick={() => setSelector("characterSelect")}>
-          Back
-        </ControlButton>
+        <ControlButton onClick={() => handleBack()}>Back</ControlButton>
         <ControlButton disabled={!isValidName} onClick={handlePostCharacter}>
           Accept
         </ControlButton>

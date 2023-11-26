@@ -34,7 +34,6 @@ export const Feats = (
       defense += 1;
     }
     if (selectedfeat === "Impeding 2") {
-      console.log("Impeding 2");
       defense += 2;
     }
     if (selectedfeat === "Impeding 3") {
@@ -48,9 +47,6 @@ export const Feats = (
   if (creatureAbilities["Man-at-Arms"] >= 2) {
     defense = 0;
   }
-
-  console.log("Balance");
-  console.log(defense);
 
   clonedCreature.defense += defense;
 

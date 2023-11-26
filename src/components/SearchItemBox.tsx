@@ -21,6 +21,8 @@ const Container = styled.div`
   flex-direction: row;
   flex-grow: 1;
   gap: 10px;
+  align-items: center;
+  height: 50px;
 `;
 
 const Input = styled.input`
@@ -31,6 +33,7 @@ const Input = styled.input`
   color: ${WIDGET_SECONDARY_FONT};
   font-weight: bold;
   text-align: center;
+  height: 35px;
 `;
 
 const Button = styled.button`
@@ -39,6 +42,7 @@ const Button = styled.button`
   flex-grow: 1;
   width: 50px;
   max-width: 50px;
+  height: 40px;
   border-radius: ${BORDER_RADIUS};
   border: 1px solid ${WIDGET_BORDER};
   background-color: ${WIDGET_BACKGROUND};
