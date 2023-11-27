@@ -90,8 +90,24 @@ const ValueBox = styled.div`
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   color: ${Constants.WIDGET_PRIMARY_FONT};
   border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: ${Constants.BORDER_RADIUS} 0 0 ${Constants.BORDER_RADIUS};
+
   font-size: 16px;
+  max-width: 180px;
+`;
+
+const ModifierBox = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex: 1;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: 0 ${Constants.BORDER_RADIUS} ${Constants.BORDER_RADIUS} 0;
+  font-size: 16px;
+  max-width: 50px;
 `;
 
 interface LoginProps {
@@ -274,14 +290,14 @@ function CreateCharacterComponent({
     },
     damage: 0,
     stats: {
-      cunning: { value: stats[0].value, mod: 0 },
-      discreet: { value: stats[1].value, mod: 0 },
-      persuasive: { value: stats[2].value, mod: 0 },
-      quick: { value: stats[3].value, mod: 0 },
-      resolute: { value: stats[4].value, mod: 0 },
-      strong: { value: stats[5].value, mod: 0 },
-      vigilant: { value: stats[6].value, mod: 0 },
-      accurate: { value: stats[7].value, mod: 0 },
+      cunning: { value: stats[1].value, mod: 0 },
+      discreet: { value: stats[2].value, mod: 0 },
+      persuasive: { value: stats[3].value, mod: 0 },
+      quick: { value: stats[4].value, mod: 0 },
+      resolute: { value: stats[5].value, mod: 0 },
+      strong: { value: stats[6].value, mod: 0 },
+      vigilant: { value: stats[7].value, mod: 0 },
+      accurate: { value: stats[0].value, mod: 0 },
     },
     actives: {
       attack: {
@@ -342,6 +358,16 @@ function CreateCharacterComponent({
     }
   };
 
+  const ModiferScore: Record<number, string> = {
+    15: "-5",
+    13: "-3",
+    11: "-1",
+    10: "0",
+    9: "+1",
+    7: "+3",
+    5: "+5",
+  };
+
   return (
     <MainContainer>
       <Title>Create Character</Title>
@@ -394,6 +420,22 @@ function CreateCharacterComponent({
               >
                 {button.value}
               </ValueBox>
+              <ModifierBox
+                onClick={() => handleButtonClick(button.id)}
+                style={
+                  selectedButton === button.id
+                    ? {
+                        backgroundColor: Constants.WIDGET_BACKGROUND_EMPTY,
+                        border: `1px solid ${Constants.WIDGET_BORDER}`,
+                      }
+                    : {
+                        backgroundColor: Constants.WIDGET_BACKGROUND,
+                        border: `1px solid ${Constants.WIDGET_BORDER}`,
+                      }
+                }
+              >
+                {ModiferScore[button.value]}
+              </ModifierBox>
             </StatBox>
           ))}
         </CenterContainer>

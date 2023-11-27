@@ -83,6 +83,11 @@ import GoblinBodyguard from "./assets/characters/GoblinBodyguard.jpeg";
 import GoblinShaman from "./assets/characters/GoblinShaman.jpeg";
 import MareCat from "./assets/characters/MareCat.jpeg";
 import Aboar from "./assets/characters/Aboar.jpeg";
+import GuardWarrior from "./assets/characters/GuardWarrior.jpeg";
+import CultFollower from "./assets/characters/CultFollower.jpeg";
+import CultLeader from "./assets/characters/CultLeader.jpeg";
+import Xanatha from "./assets/characters/Xanatha.jpeg";
+import Dragoul from "./assets/characters/Dragoul.jpeg";
 
 import RollA from "./assets/sounds/RollA.wav";
 import RollB from "./assets/sounds/RollB.wav";
@@ -189,4 +194,9 @@ export const CharacterPortraits: { [key: string]: string } = {
   GoblinShaman: GoblinShaman,
   MareCat: MareCat,
   Aboar: Aboar,
+  GuardWarrior: GuardWarrior,
+  CultFollower: CultFollower,
+  CultLeader: CultLeader,
+  Xanatha: Xanatha,
+  Dragoul: Dragoul,
 };

@@ -27,6 +27,8 @@ function AbilitySection({ inventoryState }: NavigationProps) {
   const { character } = useContext(CharacterContext);
 
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
+  console.log("sortedAbilities");
+  console.log(sortedAbilities);
 
   return (
     <Container hidden={inventoryState === 0 || inventoryState === 1}>

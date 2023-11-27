@@ -252,7 +252,8 @@ function EncounterCreatureEntry({
 
   const creatureClone = cloneDeep(creature);
   const actives = UpdateActives(creatureClone);
-
+  console.log("actives");
+  console.log(actives);
   const pain = Math.ceil(creatureClone.stats.strong.value / 2);
   const attack = ModifierConverter[actives.attack.value];
   const defense = ModifierConverter[actives.defense.value];
@@ -423,10 +424,10 @@ function EncounterCreatureEntry({
                       color={Constants.BRIGHT_RED}
                     />
                     {Math.ceil(actives.attack.dice2 / 2) +
-                      actives.attack.dice1_mod}
+                      actives.attack.dice2_mod}
                     {" / " +
                       (Math.ceil(actives.attack.dice2 / 2) +
-                        actives.attack.dice1_mod)}
+                        actives.attack.dice2_mod)}
                   </>
                 ) : (
                   <>
@@ -437,7 +438,7 @@ function EncounterCreatureEntry({
                       color={Constants.BRIGHT_RED}
                     />
                     {Math.ceil(actives.attack.dice2 / 2) +
-                      actives.attack.dice1_mod}
+                      actives.attack.dice2_mod}
                   </>
                 )}
               </>
