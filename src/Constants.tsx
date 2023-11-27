@@ -91,13 +91,13 @@ export const CATEGORY_FILTER = [
 ];
 
 export const TYPE_FILTER = [
-  "Ability",
-  "Ritual",
-  "Mystical Power",
-  "Monsterous Trait",
-  "Trait",
-  "Boon",
-  "Burden",
+  "ability",
+  "ritual",
+  "mystical power",
+  "monsterous trait",
+  "trait",
+  "boon",
+  "burden",
 ];
 
 export const DIFFICULTY_FILTER = [

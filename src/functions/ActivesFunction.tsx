@@ -12,6 +12,10 @@ import {
 import { cloneDeep } from "lodash";
 import { Marksman } from "./rules/Marksman";
 import { Robust } from "./rules/Robust";
+import { NaturalWeapon } from "./rules/NaturalWeapon";
+import { Armored } from "./rules/Armored";
+import { IronFist } from "./rules/IronFist";
+import { TwinAttack } from "./rules/TwinAttack";
 
 export const UpdateActives = (character: CharacterEntry) => {
   const characterClone = cloneDeep(character);
@@ -43,14 +47,17 @@ export const UpdateActives = (character: CharacterEntry) => {
 
   UpdateQualities(characterClone);
   Overburden(characterClone);
+  NaturalWeapon(characterClone, characterClone.actives);
   ManAtArms(characterClone, characterClone.actives);
   PolearmMastery(characterClone, characterClone.actives);
   ShieldFighter(characterClone, characterClone.actives);
   ArmoredMystic(characterClone, characterClone.actives);
   Marksman(characterClone, characterClone.actives);
   TwohandedForce(characterClone, characterClone.actives);
+  Armored(characterClone, characterClone.actives);
+  IronFist(characterClone, characterClone.actives);
   Robust(characterClone, characterClone.actives);
-
+  TwinAttack(characterClone, characterClone.actives);
   console.log(characterClone);
 
   postSelectedCharacter(characterClone);
@@ -69,6 +76,10 @@ const Overburden = (character: CharacterEntry) => {
 };
 
 const UpdateQualities = (character: CharacterEntry) => {
+  character.actives.attack.dice1_mod = 0;
+  character.actives.attack.dice2_mod = 0;
+  character.actives.defense.dice_mod = 0;
+
   const equippedItems = [
     character.equipment.main,
     character.equipment.off,
@@ -80,6 +91,14 @@ const UpdateQualities = (character: CharacterEntry) => {
       character.actives.defense.dice += 1;
     }
   });
+
+  if (character.equipment.main.quality.includes("Deep Impact")) {
+    character.actives.attack.dice1_mod += 1;
+  }
+
+  if (character.equipment.off.quality.includes("Deep Impact")) {
+    character.actives.attack.dice2_mod += 1;
+  }
 
   const qualityModifiers = {
     "Impeding 1": { sneaking: -1, defense: -1, casting: -1 },
