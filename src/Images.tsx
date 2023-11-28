@@ -88,6 +88,8 @@ import CultFollower from "./assets/characters/CultFollower.jpeg";
 import CultLeader from "./assets/characters/CultLeader.jpeg";
 import Xanatha from "./assets/characters/Xanatha.jpeg";
 import Dragoul from "./assets/characters/Dragoul.jpeg";
+import RobberBaron from "./assets/characters/RobberBaron.jpeg";
+import FortuneHunter from "./assets/characters/FortuneHunter.jpeg";
 
 import RollA from "./assets/sounds/RollA.wav";
 import RollB from "./assets/sounds/RollB.wav";
@@ -199,4 +201,6 @@ export const CharacterPortraits: { [key: string]: string } = {
   CultLeader: CultLeader,
   Xanatha: Xanatha,
   Dragoul: Dragoul,
+  RobberBaron: RobberBaron,
+  FortuneHunter: FortuneHunter,
 };

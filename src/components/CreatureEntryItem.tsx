@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import AddCreatureToRoster from "./AddCreatureToRoster";
 import { SessionContext } from "../contexts/SessionContext";
+import { useEffect } from "react";
 import {
   postSelectedCharacter,
   deleteRosterCharacter,
@@ -154,6 +155,24 @@ function CreatureEntryItem({
     setCreatureEdit(true);
   };
 
+  const [resistance, setResistance] = useState<string>("Weak");
+
+  useEffect(() => {
+    if (creature.details.xp_earned === 0) {
+      setResistance("Weak");
+    } else if (creature.details.xp_earned <= 50) {
+      setResistance("Ordinary");
+    } else if (creature.details.xp_earned <= 150) {
+      setResistance("Challenging");
+    } else if (creature.details.xp_earned <= 300) {
+      setResistance("Strong");
+    } else if (creature.details.xp_earned <= 600) {
+      setResistance("Mighty");
+    } else {
+      setResistance("Legendary");
+    }
+  }, []);
+
   const AddMemberToRoster = () => {
     console.log("Add Member");
     const characterClone = { ...character };
@@ -161,6 +180,7 @@ function CreatureEntryItem({
       const new_roster_entry: RosterEntry = {
         name: creature.name,
         id: session.id,
+        resistance: resistance,
       };
       characterClone.entourage = [
         ...characterClone.entourage,
