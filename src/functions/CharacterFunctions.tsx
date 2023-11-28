@@ -934,7 +934,20 @@ export function GetBurnRate(character: CharacterEntry) {
     });
   });
 
-  burn_rate += character.entourage.length * 2;
-
+  character.entourage.forEach((member) => {
+    if (member.resistance === "Weak") {
+      burn_rate += 1;
+    } else if (member.resistance === "Ordinary") {
+      burn_rate += 2;
+    } else if (member.resistance === "Challenging") {
+      burn_rate += 3;
+    } else if (member.resistance === "Strong") {
+      burn_rate += 4;
+    } else if (member.resistance === "Mighty") {
+      burn_rate += 5;
+    } else if (member.resistance === "Legendary") {
+      burn_rate += 6;
+    }
+  });
   return burn_rate;
 }

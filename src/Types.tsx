@@ -81,6 +81,7 @@ interface EquipmentEntry {
 export interface RosterEntry {
   name: string;
   id: string;
+  resistance: string;
 }
 
 export interface CharacterEntry {
