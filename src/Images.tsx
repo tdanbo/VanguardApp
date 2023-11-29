@@ -91,6 +91,21 @@ import Dragoul from "./assets/characters/Dragoul.jpeg";
 import RobberBaron from "./assets/characters/RobberBaron.jpeg";
 import FortuneHunter from "./assets/characters/FortuneHunter.jpeg";
 
+import Abomination from "./assets/characters/Abomination.jpg";
+import Ambrian from "./assets/characters/Ambrian.jpg";
+import Barbarian from "./assets/characters/Barbarian.jpg";
+import Bear from "./assets/characters/Bear.jpg";
+import Boar from "./assets/characters/Boar.jpg";
+import Cat from "./assets/characters/Cat.jpg";
+import Elf from "./assets/characters/Elf.jpg";
+import Goblin from "./assets/characters/Goblin.jpg";
+import Ogre from "./assets/characters/Ogre.jpg";
+import Reptile from "./assets/characters/Reptile.jpg";
+import Spider from "./assets/characters/Spider.jpg";
+import Spirit from "./assets/characters/Spirit.jpg";
+import Troll from "./assets/characters/Troll.jpg";
+import Undead from "./assets/characters/Undead.jpg";
+
 import RollA from "./assets/sounds/RollA.wav";
 import RollB from "./assets/sounds/RollB.wav";
 import RollC from "./assets/sounds/RollC.wav";
@@ -203,4 +218,18 @@ export const CharacterPortraits: { [key: string]: string } = {
   Dragoul: Dragoul,
   RobberBaron: RobberBaron,
   FortuneHunter: FortuneHunter,
+  Abomination: Abomination,
+  Ambrian: Ambrian,
+  Barbarian: Barbarian,
+  Bear: Bear,
+  Boar: Boar,
+  Cat: Cat,
+  Elf: Elf,
+  Goblin: Goblin,
+  Ogre: Ogre,
+  Reptile: Reptile,
+  Spider: Spider,
+  Spirit: Spirit,
+  Troll: Troll,
+  Undead: Undead,
 };
