@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { CharacterEntry } from "../Types";
 
 import { defaultCharacter } from "../contexts/CharacterContext";
+import { useEffect } from "react";
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -75,7 +76,9 @@ function GameMaster({
   console.log("Current gmMode:");
   console.log(gmMode);
 
-  setMainCharacter(defaultCharacter);
+  useEffect(() => {
+    setMainCharacter(defaultCharacter);
+  }, []);
 
   return (
     <>

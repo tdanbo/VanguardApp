@@ -32,6 +32,7 @@ const PortraitSelect = styled.button<PortraitProps>`
   border: 0px solid ${Constants.WIDGET_BORDER};
   height: 250px;
   font-size: 60px;
+  min-height: 250px;
 `;
 
 const Overlay = styled.div`
@@ -74,7 +75,6 @@ const GridContainer = styled.div`
 interface AddPortraitProps {
   characterPortrait: string;
   setCharacterPortrait: (portrait: string) => void;
-  source: string;
 }
 
 function AddCreaturePortrait({

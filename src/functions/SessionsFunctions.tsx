@@ -10,6 +10,7 @@ export async function postSession(NewSessionEntry: SessionEntry) {
 }
 
 export async function getCharacters(id: string): Promise<CharacterEntry[]> {
+  if (id === "") return [];
   const response = await axios.get<CharacterEntry[]>(
     `${API}/api/session-characters/${id}`,
   );

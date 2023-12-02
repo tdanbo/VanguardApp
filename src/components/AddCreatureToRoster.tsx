@@ -10,7 +10,7 @@ import {
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { addNewRoster } from "../functions/CharacterFunctions";
-
+import AddCreaturePortrait from "./AddCreaturePortrait";
 import {
   MainContainer,
   ModalContainer,
@@ -82,7 +82,9 @@ function AddCreatureToRoster({ character_template }: AddMemberProps) {
   const [member, setMember] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { character, setCharacter } = useContext(CharacterContext);
-
+  const [characterPortrait, setCharacterPortrait] = useState<string>(
+    character_template.details.race,
+  );
   const stopPropagation = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
@@ -102,6 +104,7 @@ function AddCreatureToRoster({ character_template }: AddMemberProps) {
   const handleSubmit = async () => {
     const characterClone = { ...character };
     character_template.name = member;
+    character_template.portrait = characterPortrait;
     await addNewRoster(character_template); // Assuming this is an async operation
     setCharacter(characterClone);
     setIsModalOpen(false);
@@ -118,6 +121,13 @@ function AddCreatureToRoster({ character_template }: AddMemberProps) {
             <Title>Add Member</Title>
             <ModalContainer>
               <CenterContainer>
+                <ResourceChangeContainer>
+                  <AddCreaturePortrait
+                    characterPortrait={characterPortrait}
+                    setCharacterPortrait={setCharacterPortrait}
+                  />
+                </ResourceChangeContainer>
+
                 <ResourceChangeContainer>
                   <InputContainer>
                     <ValueInput

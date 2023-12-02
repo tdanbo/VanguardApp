@@ -129,8 +129,26 @@ function CreateCharacterComponent({
   closeModal,
   source,
 }: LoginProps) {
+  const creature_options = [
+    "Abomination",
+    "Ambrian",
+    "Barbarian",
+    "Bear",
+    "Boar",
+    "Cat",
+    "Elf",
+    "Goblin",
+    "Ogre",
+    "Reptile",
+    "Spider",
+    "Spirit",
+    "Troll",
+    "Undead",
+  ];
   const { setCharacter } = useContext(CharacterContext);
-  const [characterPortrait, setCharacterPortrait] = useState<string>("");
+  const [characterPortrait, setCharacterPortrait] = useState<string>(
+    creature_options[0],
+  );
   useEffect(() => {
     console.log("CreateCharacterComponent rendered");
 
@@ -213,23 +231,6 @@ function CreateCharacterComponent({
     "Beast",
   ];
 
-  const creature_options = [
-    "Abomination",
-    "Ambrian",
-    "Barbarian",
-    "Bear",
-    "Boar",
-    "Cat",
-    "Elf",
-    "Goblin",
-    "Ogre",
-    "Reptile",
-    "Spider",
-    "Spirit",
-    "Troll",
-    "Undead",
-  ];
-
   const difficulty_options = [
     "Weak",
     "Ordinary",
@@ -240,6 +241,7 @@ function CreateCharacterComponent({
   ];
 
   const handleDropdownChange = (selectedOption: string) => {
+    setCharacterPortrait(UpperFirstLetter(selectedOption));
     setCharacterRace(UpperFirstLetter(selectedOption));
   };
 
@@ -377,7 +379,6 @@ function CreateCharacterComponent({
             <AddCreaturePortrait
               characterPortrait={characterPortrait}
               setCharacterPortrait={setCharacterPortrait}
-              source={source}
             />
           </Container>
           <Container>

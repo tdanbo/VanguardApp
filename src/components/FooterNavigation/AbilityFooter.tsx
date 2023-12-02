@@ -6,7 +6,7 @@ import { API } from "../../Constants";
 import { useEffect } from "react";
 
 interface ButtonProps {
-  isActive: boolean;
+  "data-isactive": boolean;
 }
 
 const Button = styled.button<ButtonProps>`
@@ -17,7 +17,7 @@ const Button = styled.button<ButtonProps>`
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-radius: 5px;
   color: ${(props) =>
-    props.isActive
+    props["data-isactive"]
       ? Constants.WIDGET_SECONDARY_FONT
       : Constants.WIDGET_PRIMARY_FONT};
   cursor: pointer;
@@ -25,7 +25,7 @@ const Button = styled.button<ButtonProps>`
   height: 34px;
   justify-content: center;
   align-items: center;
-  opacity: ${(props) => (props.isActive ? 1 : 0.5)};
+  opacity: ${(props) => (props["data-isactive"] ? 1 : 0.5)};
 `;
 
 const AllButton = styled.button`
@@ -96,43 +96,43 @@ function AbilityFooter({ abilityList, setAbilityList }: AbilityFooterProps) {
       </AllButton>
       <Button
         onClick={() => filterAndSortItems("Ability")}
-        isActive={active === "Ability"}
+        data-isactive={active === "Ability"}
       >
         Abilities
       </Button>
       <Button
         onClick={() => filterAndSortItems("Mystical Power")}
-        isActive={active === "Mystical Power"}
+        data-isactive={active === "Mystical Power"}
       >
         Mystical Powers
       </Button>
       <Button
         onClick={() => filterAndSortItems("Ritual")}
-        isActive={active === "Ritual"}
+        data-isactive={active === "Ritual"}
       >
         Rituals
       </Button>
       <Button
         onClick={() => filterAndSortItems("Trait")}
-        isActive={active === "Trait"}
+        data-isactive={active === "Trait"}
       >
         Traits
       </Button>
       <Button
         onClick={() => filterAndSortItems("Monsterous Trait")}
-        isActive={active === "Monsterous Trait"}
+        data-isactive={active === "Monsterous Trait"}
       >
         Monsterous Traits
       </Button>
       <Button
         onClick={() => filterAndSortItems("Boon")}
-        isActive={active === "Boon"}
+        data-isactive={active === "Boon"}
       >
         Boons
       </Button>
       <Button
         onClick={() => filterAndSortItems("Burden")}
-        isActive={active === "Burden"}
+        data-isactive={active === "Burden"}
       >
         Burdens
       </Button>

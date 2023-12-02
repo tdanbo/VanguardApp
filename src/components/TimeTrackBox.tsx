@@ -22,7 +22,7 @@ const DayContainer = styled.div`
 `;
 
 interface HourContainerProps {
-  isActive: boolean;
+  "data-isactive": boolean;
 }
 
 const HourContainer = styled.button<HourContainerProps>`
@@ -36,11 +36,11 @@ const HourContainer = styled.button<HourContainerProps>`
   border: 1px solid ${Constants.WIDGET_BACKGROUND_EMPTY};
   font-size: 12px;
   color: ${(props) =>
-    props.isActive
+    props["data-isactive"]
       ? Constants.WIDGET_PRIMARY_FONT
       : Constants.WIDGET_BACKGROUND};
   background-color: ${(props) =>
-    props.isActive
+    props["data-isactive"]
       ? Constants.WIDGET_BACKGROUND
       : Constants.WIDGET_BACKGROUND_EMPTY};
   border-radius: ${Constants.BORDER_RADIUS};
@@ -79,7 +79,7 @@ function TimeTrackBox() {
           <HourContainer
             key={index}
             onClick={() => handleTimeChange(index)}
-            isActive={index === activeHour} // Check if this button is the active one
+            data-isactive={index === activeHour} // Use data-isactive instead of isactive
           >
             {index}
           </HourContainer>
