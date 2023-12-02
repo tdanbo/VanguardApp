@@ -20,7 +20,7 @@ export const UpdateActives = (character: CharacterEntry) => {
     return characterClone.actives;
   }
 
-  console.log("Updating Actives");
+  console.log("Updating Actives!");
 
   characterClone.actives.attack.value =
     characterClone.stats[characterClone.actives.attack.stat].value;
