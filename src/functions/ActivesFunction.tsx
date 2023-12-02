@@ -4,11 +4,7 @@ import { PolearmMastery } from "./rules/PolearmMastery";
 import { ShieldFighter } from "./rules/ShieldFighter";
 import { ArmoredMystic } from "./rules/ArmoredMystic";
 import { TwohandedForce } from "./rules/TwohandedForce";
-import {
-  GetUsedSlots,
-  GetMaxSlots,
-  postSelectedCharacter,
-} from "./CharacterFunctions";
+import { GetUsedSlots, GetMaxSlots } from "./CharacterFunctions";
 import { cloneDeep } from "lodash";
 import { Marksman } from "./rules/Marksman";
 import { Robust } from "./rules/Robust";
@@ -60,7 +56,7 @@ export const UpdateActives = (character: CharacterEntry) => {
   TwinAttack(characterClone, characterClone.actives);
   console.log(characterClone);
 
-  postSelectedCharacter(characterClone);
+  // postSelectedCharacter(characterClone); # This can be removed in the future i think but keep it in case.
 
   return characterClone.actives;
 };

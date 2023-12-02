@@ -7,7 +7,7 @@ import { API } from "../../Constants";
 import { useEffect } from "react";
 
 interface ButtonProps {
-  isActive: boolean;
+  "data-isactive": boolean;
 }
 
 const Button = styled.button<ButtonProps>`
@@ -18,7 +18,7 @@ const Button = styled.button<ButtonProps>`
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-radius: 5px;
   color: ${(props) =>
-    props.isActive
+    props["data-isactive"]
       ? Constants.WIDGET_SECONDARY_FONT
       : Constants.WIDGET_PRIMARY_FONT};
   cursor: pointer;
@@ -26,7 +26,7 @@ const Button = styled.button<ButtonProps>`
   height: 34px;
   justify-content: center;
   align-items: center;
-  opacity: ${(props) => (props.isActive ? 1 : 0.5)};
+  opacity: ${(props) => (props["data-isactive"] ? 1 : 0.5)};
 `;
 
 const AllButton = styled.button`
@@ -178,43 +178,43 @@ function TradingFooter({ itemList, setItemList }: TradingFooterProps) {
       </AllButton>
       <Button
         onClick={() => filterItems(LonelyFarm)}
-        isActive={activeTown === "Lonely Farm"}
+        data-isactive={activeTown === "Lonely Farm"}
       >
         Lonely Farm
       </Button>
       <Button
         onClick={() => filterItems(SolitaryVillage)}
-        isActive={activeTown === "Solitary Village"}
+        data-isactive={activeTown === "Solitary Village"}
       >
         Solitary Village
       </Button>
       <Button
         onClick={() => filterItems(OrdinaryVillage)}
-        isActive={activeTown === "Ordinary Village"}
+        data-isactive={activeTown === "Ordinary Village"}
       >
         Ordinary Village
       </Button>
       <Button
         onClick={() => filterItems(TradeStation)}
-        isActive={activeTown === "Trade Station"}
+        data-isactive={activeTown === "Trade Station"}
       >
         Trade Station
       </Button>
       <Button
         onClick={() => filterItems(AmbrianTown)}
-        isActive={activeTown === "Ambrian Town"}
+        data-isactive={activeTown === "Ambrian Town"}
       >
         Ambrian Town
       </Button>
       <Button
         onClick={() => filterItems(ThistleHold)}
-        isActive={activeTown === "Thistle Hold"}
+        data-isactive={activeTown === "Thistle Hold"}
       >
         Thistle Hold
       </Button>
       <Button
         onClick={() => filterItems(Yndaros)}
-        isActive={activeTown === "Yndaros"}
+        data-isactive={activeTown === "Yndaros"}
       >
         Yndaros
       </Button>

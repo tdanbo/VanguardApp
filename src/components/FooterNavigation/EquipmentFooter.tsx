@@ -6,7 +6,7 @@ import { API } from "../../Constants";
 import { useEffect } from "react";
 
 interface ButtonProps {
-  isActive: boolean;
+  "data-isactive": boolean;
 }
 
 const Button = styled.button<ButtonProps>`
@@ -17,7 +17,7 @@ const Button = styled.button<ButtonProps>`
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-radius: 5px;
   color: ${(props) =>
-    props.isActive
+    props["data-isactive"]
       ? Constants.WIDGET_SECONDARY_FONT
       : Constants.WIDGET_PRIMARY_FONT};
   cursor: pointer;
@@ -25,7 +25,7 @@ const Button = styled.button<ButtonProps>`
   height: 34px;
   justify-content: center;
   align-items: center;
-  opacity: ${(props) => (props.isActive ? 1 : 0.5)};
+  opacity: ${(props) => (props["data-isactive"] ? 1 : 0.5)};
 `;
 
 const AllButton = styled.button`
@@ -101,37 +101,37 @@ function EquipmentFooter({ itemList, setItemList }: EquipmentFooterProps) {
       </AllButton>
       <Button
         onClick={() => filterAndSortItems("weapon")}
-        isActive={active === "weapon"}
+        data-isactive={active === "weapon"}
       >
         Weapons
       </Button>
       <Button
         onClick={() => filterAndSortItems("ranged")}
-        isActive={active === "ranged"}
+        data-isactive={active === "ranged"}
       >
         Ranged
       </Button>
       <Button
         onClick={() => filterAndSortItems("armor")}
-        isActive={active === "armor"}
+        data-isactive={active === "armor"}
       >
         Armor
       </Button>
       <Button
         onClick={() => filterAndSortItems("elixirs")}
-        isActive={active === "elixirs"}
+        data-isactive={active === "elixirs"}
       >
         Elixirs
       </Button>
       <Button
         onClick={() => filterAndSortItems("tool")}
-        isActive={active === "tools"}
+        data-isactive={active === "tools"}
       >
         Tools
       </Button>
       <Button
         onClick={() => filterAndSortItems("ammunition")}
-        isActive={active === "ammunition"}
+        data-isactive={active === "ammunition"}
       >
         Ammunition
       </Button>

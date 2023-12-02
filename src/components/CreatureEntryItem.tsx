@@ -75,7 +75,7 @@ const ExpandButten = styled.div`
 `;
 
 type BrowserProps = {
-  browserState: number;
+  browserstate: number;
 };
 
 const CreatureName = styled.div<BrowserProps>`
@@ -84,7 +84,7 @@ const CreatureName = styled.div<BrowserProps>`
   flex-grow: 1;
   flex: 1;
   color: ${(props) =>
-    props.browserState === 4 ? Constants.BRIGHT_RED : Constants.BLUE};
+    props.browserstate === 4 ? Constants.BRIGHT_RED : Constants.BLUE};
   font-size: 15px;
   font-weight: bold;
 `;
@@ -209,7 +209,7 @@ function CreatureEntryItem({
           <FontAwesomeIcon icon={faUser} />
         </ExpandButten>
         <NameContainer>
-          <CreatureName browserState={browserState}>
+          <CreatureName browserstate={browserState}>
             {creature.name}
           </CreatureName>
           <AbilityDetail>{creature.name}</AbilityDetail>
