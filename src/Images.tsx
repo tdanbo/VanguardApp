@@ -91,7 +91,7 @@ import Dragoul from "./assets/characters/Dragoul.jpeg";
 import RobberBaron from "./assets/characters/RobberBaron.jpeg";
 import FortuneHunter from "./assets/characters/FortuneHunter.jpeg";
 
-// Race images
+// Race image
 import Abomination from "./assets/characters/Abomination.jpg";
 import Ambrian from "./assets/characters/Ambrian.jpg";
 import Barbarian from "./assets/characters/Barbarian.jpg";
