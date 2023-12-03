@@ -101,7 +101,7 @@ import Cat from "./assets/characters/Cat.jpg";
 import Elf from "./assets/characters/Elf.jpeg";
 import Goblin from "./assets/characters/Goblin.jpg";
 import Ogre from "./assets/characters/Ogre.jpg";
-import Reptile from "./assets/characters/Reptile.jpg";
+import Reptile from "./assets/characters/Reptile.jpeg";
 import Spider from "./assets/characters/Spider.jpg";
 import Spirit from "./assets/characters/Spirit.jpg";
 import Troll from "./assets/characters/Troll.jpg";
