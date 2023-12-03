@@ -98,7 +98,7 @@ import Barbarian from "./assets/characters/Barbarian.jpg";
 import Bear from "./assets/characters/Bear.jpg";
 import Boar from "./assets/characters/Boar.jpg";
 import Cat from "./assets/characters/Cat.jpg";
-import Elf from "./assets/characters/Elf.jpg";
+import Elf from "./assets/characters/Elf.jpeg";
 import Goblin from "./assets/characters/Goblin.jpg";
 import Ogre from "./assets/characters/Ogre.jpg";
 import Reptile from "./assets/characters/Reptile.jpg";
