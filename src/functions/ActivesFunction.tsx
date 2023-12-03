@@ -13,6 +13,8 @@ import { Armored } from "./rules/Armored";
 import { IronFist } from "./rules/IronFist";
 import { TwinAttack } from "./rules/TwinAttack";
 import { SteelThrow } from "./rules/SteelThrow";
+import { Berserker } from "./rules/Berserker";
+import { NaturalWarrior } from "./rules/NaturalWarrior";
 
 export const UpdateActives = (character: CharacterEntry) => {
   const characterClone = cloneDeep(character);
@@ -44,8 +46,10 @@ export const UpdateActives = (character: CharacterEntry) => {
 
   UpdateQualities(characterClone);
   Overburden(characterClone);
-  SteelThrow(characterClone, characterClone.actives);
   NaturalWeapon(characterClone, characterClone.actives);
+  NaturalWarrior(characterClone, characterClone.actives);
+  Berserker(characterClone, characterClone.actives);
+  SteelThrow(characterClone, characterClone.actives);
   ManAtArms(characterClone, characterClone.actives);
   PolearmMastery(characterClone, characterClone.actives);
   ShieldFighter(characterClone, characterClone.actives);
@@ -56,6 +60,7 @@ export const UpdateActives = (character: CharacterEntry) => {
   IronFist(characterClone, characterClone.actives);
   Robust(characterClone, characterClone.actives);
   TwinAttack(characterClone, characterClone.actives);
+
   console.log(characterClone);
 
   // postSelectedCharacter(characterClone); # This can be removed in the future i think but keep it in case.
