@@ -12,6 +12,7 @@ import { NaturalWeapon } from "./rules/NaturalWeapon";
 import { Armored } from "./rules/Armored";
 import { IronFist } from "./rules/IronFist";
 import { TwinAttack } from "./rules/TwinAttack";
+import { SteelThrow } from "./rules/SteelThrow";
 
 export const UpdateActives = (character: CharacterEntry) => {
   const characterClone = cloneDeep(character);
@@ -43,6 +44,7 @@ export const UpdateActives = (character: CharacterEntry) => {
 
   UpdateQualities(characterClone);
   Overburden(characterClone);
+  SteelThrow(characterClone, characterClone.actives);
   NaturalWeapon(characterClone, characterClone.actives);
   ManAtArms(characterClone, characterClone.actives);
   PolearmMastery(characterClone, characterClone.actives);
