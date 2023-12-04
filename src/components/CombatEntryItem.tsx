@@ -190,7 +190,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
       } else if (combatEntry.active === "defense") {
         return "Free attack against the enemy.";
       } else if (combatEntry.active === "casting") {
-        return "No corruption gain.";
+        return "Double the spell effect.";
       } else if (combatEntry.active === "sneaking") {
         return "No detection for the entire group.";
       } else {
@@ -202,7 +202,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
       } else if (combatEntry.active === "defense") {
         return "+3 Damage taken.";
       } else if (combatEntry.active === "casting") {
-        return "+1d4 corruption gain.";
+        return "Your spell hit a random foe/friend.";
       } else if (combatEntry.active === "sneaking") {
         return "Conflict is inevitable! If attacked, you are surprised!";
       } else {
