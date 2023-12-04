@@ -77,6 +77,10 @@ import Character75 from "./assets/characters/Character75.jpeg";
 import Character76 from "./assets/characters/Character76.jpeg";
 import Character77 from "./assets/characters/Character77.jpeg";
 import Character78 from "./assets/characters/Character78.jpeg";
+import ClericA from "./assets/characters/ClericA.jpeg";
+import ClericB from "./assets/characters/ClericB.jpeg";
+import ClericC from "./assets/characters/ClericC.jpeg";
+import ClericD from "./assets/characters/ClericD.jpeg";
 
 import Plunderer from "./assets/characters/Plunderer.jpeg";
 import GoblinBodyguard from "./assets/characters/GoblinBodyguard.jpeg";
@@ -233,4 +237,8 @@ export const CharacterPortraits: { [key: string]: string } = {
   Spirit: Spirit,
   Troll: Troll,
   Undead: Undead,
+  ClericA: ClericA,
+  ClericB: ClericB,
+  ClericC: ClericC,
+  ClericD: ClericD,
 };
