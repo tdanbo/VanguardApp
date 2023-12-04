@@ -212,7 +212,9 @@ function CreatureEntryItem({
           <CreatureName browserstate={browserState}>
             {creature.name}
           </CreatureName>
-          <AbilityDetail>{creature.name}</AbilityDetail>
+          <AbilityDetail>
+            {resistance} {creature.details.race}
+          </AbilityDetail>
         </NameContainer>
         {browser ? (
           gmMode ? (
