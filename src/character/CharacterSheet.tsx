@@ -18,7 +18,7 @@ import { CharacterContext } from "../contexts/CharacterContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
-import { CharacterEntry } from "../Types";
+import { CharacterEntry, SessionEntry } from "../Types";
 import { deleteSessionCharacter } from "../functions/SessionsFunctions";
 import { deleteCreature } from "../functions/CharacterFunctions";
 import {
@@ -91,6 +91,9 @@ const Button = styled.button`
 `;
 
 type CharacterSheetProps = {
+  websocket: WebSocket;
+  session: SessionEntry;
+  sessionCharacter: CharacterEntry;
   browserState: number;
   setBrowserState: (value: number) => void;
   gmMode: boolean;
@@ -105,6 +108,9 @@ type CharacterSheetProps = {
 };
 
 function CharacterSheet({
+  websocket,
+  session,
+  sessionCharacter,
   browserState,
   setBrowserState,
   gmMode,
@@ -158,7 +164,11 @@ function CharacterSheet({
     <>
       <HeaderContainer>
         <CharacterNameBox />
-        <XpBox />
+        <XpBox
+          websocket={websocket}
+          session={session}
+          sessionCharacter={sessionCharacter}
+        />
       </HeaderContainer>
       <StatsContainer key="container">
         <CharacterNavigation

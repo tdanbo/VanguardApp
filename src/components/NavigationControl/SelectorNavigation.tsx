@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import SelectorComponent from "../SelectorPage/Selector";
+import { SessionEntry } from "../../Types";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -11,12 +12,13 @@ const Container = styled.div`
 interface NavigationProps {
   gmMode: boolean;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
 }
 
-function SelectorNavigation({ setGmMode }: NavigationProps) {
+function SelectorNavigation({ setGmMode, setSession }: NavigationProps) {
   return (
     <Container>
-      <SelectorComponent setGmMode={setGmMode} />
+      <SelectorComponent setGmMode={setGmMode} setSession={setSession} />
     </Container>
   );
 }

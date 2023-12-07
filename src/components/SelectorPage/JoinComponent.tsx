@@ -3,6 +3,15 @@ import * as Constants from "../../Constants";
 import { SessionContext } from "../../contexts/SessionContext";
 import styled from "styled-components";
 import { getSession } from "../../functions/SessionsFunctions";
+import { useEffect } from "react";
+import { getCharacters } from "../../functions/SessionsFunctions";
+
+import { CharacterEntry, SessionEntry } from "../../Types";
+import {
+  CharacterContext,
+  defaultCharacter,
+} from "../../contexts/CharacterContext";
+
 import {
   MainContainer,
   ModalContainer,
@@ -28,26 +37,41 @@ const InputButton = styled.input`
 `;
 
 interface LoginProps {
-  setSelector: (selector: string) => void;
+  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
+  closeModal: () => void;
+  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
 }
 
-function JoinComponent({ setSelector }: LoginProps) {
+function JoinComponent({ setGmMode, closeModal, setSession }: LoginProps) {
   const [sessionName, setSessionName] = useState("");
-  const { setSession } = useContext(SessionContext);
 
   const handleSessionName = (e: any) => {
+    console.log(e.target.value);
     setSessionName(e.target.value);
   };
 
   const handleJoinSession = () => {
+    console.log(sessionName);
     getSession(sessionName).then((res) => {
       if (res) {
         setSession(res);
-        setSelector("characterSelect");
       } else {
         console.log("Session not found");
       }
     });
+  };
+
+  const joinGm = () => {
+    handleJoinSession();
+    setGmMode(true);
+    closeModal();
+  };
+
+  const joinSession = () => {
+    handleJoinSession();
+    setGmMode(false);
+    closeModal();
   };
 
   return (
@@ -60,10 +84,11 @@ function JoinComponent({ setSelector }: LoginProps) {
         </CenterContainer>
       </ModalContainer>
       <ButtonContainer>
-        <ControlButton onClick={() => setSelector("createSession")}>
+        {/* <ControlButton onClick={() => setSelector("createSession")}>
           Create Session
-        </ControlButton>
-        <ControlButton onClick={handleJoinSession}>Join Session</ControlButton>
+        </ControlButton> */}
+        <ControlButton onClick={joinGm}>Join As GM</ControlButton>
+        <ControlButton onClick={joinSession}>Join As Player</ControlButton>
       </ButtonContainer>
     </MainContainer>
   );

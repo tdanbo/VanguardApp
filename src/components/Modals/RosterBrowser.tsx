@@ -1,8 +1,11 @@
-import { CharacterEntry } from "../../Types";
+import { CharacterEntry, SessionEntry } from "../../Types";
 
 import styled from "styled-components";
 import CreatureEntryItem from "../CreatureEntryItem";
 import * as Constants from "../../Constants";
+import { useContext } from "react";
+import { SessionContext } from "../../contexts/SessionContext";
+import CharacterBox from "../SelectorPage/CharacterBox";
 const Container = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? "none" : "flex")};
   flex-direction: column;
@@ -18,6 +21,8 @@ const ItemContainer = styled.div`
 `;
 
 interface CreatureBrowserProps {
+  session: SessionEntry;
+  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   browserState: number;
   rosterlist: CharacterEntry[];
   creatureEncounter: CharacterEntry[];
@@ -44,29 +49,21 @@ function sortItems(a: CharacterEntry, b: CharacterEntry): number {
 
 function RosterBrowser({
   browserState,
-  rosterlist,
-  creatureEncounter,
-  setCreatureEncounter,
-  setCreatureEdit,
-  gmMode,
+  session,
+  setCharacterName,
 }: CreatureBrowserProps) {
-  const sortedCreatureList = rosterlist.sort(sortItems);
+  console.log("RosterBrowser");
+  console.log(session);
   return (
     <Container hidden={browserState !== 5}>
       <ItemContainer>
-        {sortedCreatureList &&
-          sortedCreatureList.map((creature, index) => (
-            <CreatureEntryItem
-              key={index}
-              browser={true}
-              creature={creature}
-              encounter={creatureEncounter}
-              setEncounter={setCreatureEncounter}
-              setCreatureEdit={setCreatureEdit}
-              gmMode={gmMode}
-              browserState={browserState}
-            />
-          ))}
+        {session.characters.map((character, index) => (
+          <CharacterBox
+            key={index}
+            selectedCharacter={character}
+            setCharacterName={setCharacterName}
+          />
+        ))}
       </ItemContainer>
     </Container>
   );

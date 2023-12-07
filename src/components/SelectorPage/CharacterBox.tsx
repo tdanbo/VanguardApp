@@ -11,11 +11,8 @@ import { CharacterPortraits } from "../../Images";
 // import { SessionContext } from "../../contexts/SessionContext";
 // import { useWebSocket } from "../../contexts/WebSocketContext";
 interface SessionBoxProps {
-  setSelector: (selector: string) => void;
   selectedCharacter: CharacterEntry;
-  closeModal: () => void;
-  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
-  setCharacterLog: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
+  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Container = styled.div`
@@ -71,16 +68,12 @@ const PortraitCenter = styled.div<PortraitCenterProps>`
 
 function CharacterBox({
   selectedCharacter,
-  closeModal,
-  setGmMode,
-} // setCharacterLog,
-: SessionBoxProps) {
+  setCharacterName, // setCharacterLog,
+}: SessionBoxProps) {
   // const { session } = useContext(SessionContext);
-  const { setCharacter } = useContext(CharacterContext);
+
   const handleOnClick = () => {
-    setGmMode(false);
-    setCharacter(selectedCharacter);
-    closeModal();
+    setCharacterName(selectedCharacter.name);
   };
 
   // const handleDeleteCharacter = async () => {

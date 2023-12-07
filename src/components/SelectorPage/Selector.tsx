@@ -1,10 +1,9 @@
 import * as Constants from "../../Constants";
 import { useState } from "react";
-import { CharacterEntry } from "../../Types";
+import { CharacterEntry, SessionEntry } from "../../Types";
 import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CreateSessionComponent from "./CreateSessionComponent";
-import SelectCharacterComponent from "./SelectCharacterComponent";
 import CreateCharacterComponent from "./CreateCharacterComponent";
 import JoinComponent from "./JoinComponent";
 import styled from "styled-components";
@@ -49,9 +48,10 @@ const Navigator = styled.div`
 
 interface SelectorProps {
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
 }
 
-function SelectorComponent({ setGmMode }: SelectorProps) {
+function SelectorComponent({ setGmMode, setSession }: SelectorProps) {
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const [characterPortrait, setCharacterPortrait] = useState<string>("");
@@ -64,7 +64,14 @@ function SelectorComponent({ setGmMode }: SelectorProps) {
   const renderContent = (selectorValue: string) => {
     switch (selectorValue) {
       case "joinSession":
-        return <JoinComponent setSelector={setSelector} />;
+        return (
+          <JoinComponent
+            setGmMode={setGmMode}
+            closeModal={handleClose}
+            setCharacterLog={setCharacterLog}
+            setSession={setSession}
+          />
+        );
       case "createSession":
         return <CreateSessionComponent setSelector={setSelector} />;
       case "characterSelect":

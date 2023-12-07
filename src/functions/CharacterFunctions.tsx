@@ -1,7 +1,7 @@
 import axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
 import { API } from "../Constants";
-import { CharacterEntry, modifiedCreature } from "../Types";
+import { CharacterEntry, SessionEntry, modifiedCreature } from "../Types";
 import { ExceptionalStats } from "./rules/ExceptionalStats";
 import { CheckAbility } from "./ActivesFunction";
 import {
@@ -764,6 +764,14 @@ export function RestCharacter(character: CharacterEntry) {
   const water_character = RestWater(food_character);
 
   return water_character;
+}
+
+export async function update_session(session: SessionEntry) {
+  try {
+    const res = await axios.put(`${API}/api/session/${session.id}`);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function postSelectedCharacter(updatedCharacter: CharacterEntry) {

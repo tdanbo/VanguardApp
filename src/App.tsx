@@ -9,7 +9,7 @@ import SessionProvider from "./contexts/SessionContext";
 
 import EquipmentBrowser from "./components/Modals/EquipmentBrowser";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import AbilityBrowser from "./components/Modals/AbilityBrowser";
 
 import CombatSection from "./components/Sections/CombatSection";
@@ -22,6 +22,9 @@ import {
   ItemEntry,
   CreatureEntry,
   CharacterEntry,
+  SessionEntry,
+  EmptySession,
+  EmptyCharacter,
 } from "./Types";
 
 import CreatureBrowser from "./components/Modals/CreatureBrowser";
@@ -35,6 +38,8 @@ import SearchCreatureBox from "./components/SearchCreatureBox";
 
 import CharacterSheet from "./character/CharacterSheet";
 import GameMaster from "./gamemaster/GameMaster";
+
+import useWebSocket from "./websocket";
 
 const Row = styled.div`
   display: flex;
@@ -103,7 +108,22 @@ const BrowserContainer = styled.div`
   scrollbar-width: none !important;
 `;
 import SelectorNavigation from "./components/NavigationControl/SelectorNavigation";
+import { getSession } from "./functions/SessionsFunctions";
+
 function App() {
+  // This function is the main function for setting the session.
+
+  const [session, setSession] = useState<SessionEntry>(EmptySession);
+  const [characterName, setCharacterName] = useState<string>("");
+
+  const websocketURL = Constants.WEBSOCKET + session.id;
+  console.log(websocketURL);
+  const websocket = useWebSocket(websocketURL);
+
+  const sessionCharacter =
+    session.characters.find((entry) => entry.name === characterName) ||
+    EmptyCharacter;
+
   const [browserState, setBrowserState] = useState(0);
   const [inventoryState, setInventoryState] = useState(1);
   const [abilityList, setAbilityList] = useState<AbilityEntry[]>([]);
@@ -115,6 +135,7 @@ function App() {
   const [creatureEncounter, setCreatureEncounter] = useState<CharacterEntry[]>(
     [],
   );
+
   const [mainCharacter, setMainCharacter] = useState<
     CharacterEntry | undefined
   >();
@@ -128,6 +149,22 @@ function App() {
   };
 
   const scrollableRef = useRef(null);
+
+  useEffect(() => {
+    if (websocket) {
+      websocket.onmessage = (message) => {
+        console.log("Message Received");
+        console.log(message);
+        getSession(session.id).then((data) => {
+          setSession(data);
+        });
+      };
+    }
+  }, [websocket, session]);
+
+  console.log("Session Joined");
+  console.log(session);
+
   return (
     <UserProvider>
       <SessionProvider>
@@ -135,7 +172,16 @@ function App() {
           <Row>
             <Column>
               <HeaderContainer>
-                <SelectorNavigation gmMode={gmMode} setGmMode={setGmMode} />
+                <SelectorNavigation
+                  gmMode={gmMode}
+                  setGmMode={setGmMode}
+                  setSession={setSession}
+                />
+                <SearchRosterBox
+                  rosterlist={rosterlist}
+                  setList={setRosterList}
+                  browserState={browserState}
+                />
                 <SearchItemBox
                   itemList={itemList}
                   setList={setItemList}
@@ -154,11 +200,6 @@ function App() {
                 <SearchCreatureBox
                   creatureList={creatureList}
                   setList={setCreatureList}
-                  browserState={browserState}
-                />
-                <SearchRosterBox
-                  rosterlist={rosterlist}
-                  setList={setRosterList}
                   browserState={browserState}
                 />
               </HeaderContainer>
@@ -185,6 +226,8 @@ function App() {
                   gmMode={gmMode}
                 />
                 <RosterBrowser
+                  session={session}
+                  setCharacterName={setCharacterName}
                   browserState={browserState}
                   rosterlist={rosterlist}
                   creatureEncounter={creatureEncounter}
@@ -223,6 +266,9 @@ function App() {
               {gmMode ? (
                 creatureEdit ? (
                   <CharacterSheet
+                    websocket={websocket}
+                    session={session}
+                    sessionCharacter={sessionCharacter}
                     browserState={browserState}
                     setBrowserState={setBrowserState}
                     gmMode={gmMode}
@@ -248,6 +294,9 @@ function App() {
                 )
               ) : (
                 <CharacterSheet
+                  websocket={websocket}
+                  session={session}
+                  sessionCharacter={sessionCharacter}
                   browserState={browserState}
                   setBrowserState={setBrowserState}
                   gmMode={gmMode}

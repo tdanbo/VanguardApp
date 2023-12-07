@@ -12,6 +12,8 @@ const defaultSession: SessionEntry = {
     distance: 0,
     weather: "",
   },
+  characters: [],
+  combatlog: [],
 };
 
 interface SessionContextType {

@@ -6,7 +6,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { API } from "../Constants";
 import { CharacterContext } from "../contexts/CharacterContext";
-import { CharacterEntry } from "../Types";
+import { CharacterEntry, SessionEntry } from "../Types";
 const {
   WIDGET_BACKGROUND_EMPTY,
   WIDGET_BORDER,

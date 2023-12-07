@@ -66,3 +66,13 @@ export async function getSessionUsers(id: string) {
   const response = await axios.get(`${API}/api/sessions/users/${id}`);
   return response.data;
 }
+
+export async function update_session(session: SessionEntry) {
+  try {
+    const res = await axios.put(`${API}/api/session/${session.id}`, session);
+    // You can handle the response if needed
+  } catch (error) {
+    console.error(error);
+    throw error; // You may want to throw the error so that it can be caught and handled elsewhere if needed
+  }
+}
