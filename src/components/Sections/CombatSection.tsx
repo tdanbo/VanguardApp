@@ -2,7 +2,7 @@ import CombatEntryItem from "../CombatEntryItem";
 import { CombatEntry } from "../../Types";
 
 import { getCombatLog } from "../../functions/CombatFunctions";
-import { SessionContext } from "../../contexts/SessionContext";
+import { SessionContext } from "../../contexts/_SessionContext";
 import { useState, useEffect, useContext, RefObject } from "react";
 import styled from "styled-components";
 const Container = styled.div`
@@ -85,22 +85,6 @@ function CombatSection({ scrollRef }: CombatSectionProps) {
       });
     }
   };
-
-  // useEffect(() => {
-  //   playRandomSound();
-  //   console.log("Combat Log Response: ", combatlogResponse);
-  //   if (combatlogResponse) {
-  //     setCombatLog(combatlogResponse);
-  //   }
-  // }, [combatlogResponse]);
-
-  // useEffect(() => {
-  //   if (session.id === "") return;
-  //   getCombatLog(session.id).then((response) => {
-  //     console.log("Getting Combat Log");
-  //     setCombatLog(response);
-  //   });
-  // }, [session]);
 
   useEffect(() => {
     const interval = setInterval(() => {

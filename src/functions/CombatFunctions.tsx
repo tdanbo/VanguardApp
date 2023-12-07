@@ -1,8 +1,6 @@
 import axios from "axios";
-import { CombatEntry } from "../Types";
+import { CharacterEntry, CombatEntry, SessionEntry } from "../Types";
 import { useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
-import { SessionContext } from "../contexts/SessionContext";
 import { API } from "../Constants";
 import { v4 as uuidv4 } from "uuid";
 export async function getCombatLog(id: string): Promise<CombatEntry[]> {
@@ -18,11 +16,11 @@ interface RollDiceProps {
   count: number;
   target: number;
   add_mod: boolean;
+  character: CharacterEntry;
+  session: SessionEntry;
 }
 
 export function useRoll() {
-  const { character } = useContext(CharacterContext);
-  const { session } = useContext(SessionContext);
   // const { sendRequest } = useWebSocket();
 
   return async ({
@@ -32,6 +30,8 @@ export function useRoll() {
     active,
     source,
     modifier,
+    character,
+    session,
   }: RollDiceProps) => {
     let roll = 0;
     let total = 0;
@@ -47,10 +47,6 @@ export function useRoll() {
     }
 
     const roll_result = total;
-
-    // console.log("Roll Result: " + roll_result);
-    // console.log("Modifier: " + modifier);
-    // console.log("Target: " + target);
 
     let success = true;
     if (target === 0) {

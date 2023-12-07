@@ -19,7 +19,6 @@ export function ManAtArms(character: CharacterEntry, actives: Actives) {
 
     character.equipment.armor.quality.forEach((quality: string) => {
       const lowercasedQuality = quality;
-      console.log(quality);
       if (lowercasedQuality in negativeQualities) {
         actives.defense.value += negativeQualities[lowercasedQuality];
         actives.sneaking.value += negativeQualities[lowercasedQuality];

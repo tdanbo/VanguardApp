@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import { CharacterEntry, CreatureEntry } from "../../Types";
 import { getCharacters } from "../../functions/SessionsFunctions";
-import { SessionContext } from "../../contexts/SessionContext";
+import { SessionContext } from "../../contexts/_SessionContext";
 import EncounterCharacterEntry from "../EncounterCharacterEntry";
 import EncounterMonsterEntry from "../EncounterMonsterEntry";
 import { Stat } from "../../Types";

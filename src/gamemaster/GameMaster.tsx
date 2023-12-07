@@ -1,15 +1,13 @@
 import CharacterNavigation from "../components/NavigationControl/CharacterNavigation";
 import CreatureEncounterSection from "../components/Sections/CreatureEncounterSection";
 import ResetCreatureEncounter from "../components/ResetCreatureEncounter";
-import TimeTrackBox from "../components/TimeTrackBox";
+import TimeTrackBox from "./TimeTrackBox";
 
-import DayNavigator from "../components/TravelBox";
+import DayNavigator from "./TravelBox";
 
 import styled from "styled-components";
-import { CharacterEntry } from "../Types";
+import { CharacterEntry, SessionEntry } from "../Types";
 
-import { defaultCharacter } from "../contexts/CharacterContext";
-import { useEffect } from "react";
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -50,6 +48,7 @@ const ScrollContainer = styled.div`
 `;
 
 interface GameMasterProps {
+  session: SessionEntry;
   browserState: number;
   setBrowserState: (value: number) => void;
   gmMode: boolean;
@@ -57,33 +56,23 @@ interface GameMasterProps {
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   onDeleteCreature: (id: string) => void;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
-  setMainCharacter: React.Dispatch<
-    React.SetStateAction<CharacterEntry | undefined>
-  >;
   setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function GameMaster({
+  session,
   browserState,
   gmMode,
   creatureEncounter,
   setBrowserState,
   setCreatureEncounter,
   onDeleteCreature,
-  setMainCharacter,
   setCreatureEdit,
 }: GameMasterProps) {
-  console.log("Current gmMode:");
-  console.log(gmMode);
-
-  useEffect(() => {
-    setMainCharacter(defaultCharacter);
-  }, []);
-
   return (
     <>
       <HeaderContainer>
-        <DayNavigator />
+        <DayNavigator session={session} />
       </HeaderContainer>
       <EncounterContainer key="container">
         <CharacterNavigation
@@ -102,7 +91,7 @@ function GameMaster({
       </EncounterContainer>
       <FooterCenterContainer>
         <ResetCreatureEncounter setCreatureEncounter={setCreatureEncounter} />
-        <TimeTrackBox />
+        <TimeTrackBox session={session} />
       </FooterCenterContainer>
     </>
   );

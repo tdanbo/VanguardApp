@@ -1,10 +1,11 @@
 import * as Constants from "../../Constants";
-import { CharacterContext } from "../../contexts/CharacterContext";
+import { CharacterContext } from "../../contexts/_CharacterContext";
 import { useContext, useState, useEffect } from "react";
 import { useRoll } from "../../functions/CombatFunctions";
 import { swapActives } from "../../functions/CharacterFunctions";
 import styled from "styled-components";
 import "../../App.css";
+import { SessionEntry } from "../../Types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEye,
@@ -18,6 +19,7 @@ type Props = {
   type_value: number;
   swapSource: null | string;
   setSwapSource: (swapSource: null | string) => void;
+  session: SessionEntry;
 };
 
 const Container = styled.div`
@@ -83,7 +85,13 @@ const ValueButton = styled.button`
   border-radius: ${Constants.BORDER_RADIUS};
 `;
 
-function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
+function StatBox({
+  type_name,
+  type_value,
+  swapSource,
+  setSwapSource,
+  session,
+}: Props) {
   const { character, setCharacter } = useContext(CharacterContext);
   const [value, setValue] = useState<number>(type_value);
   const [modifier, setModifier] = useState<number>(0);
@@ -106,6 +114,8 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
 
   const handleSkillRoll = () => {
     onRollDice({
+      character,
+      session,
       dice: 20,
       count: 1,
       modifier: modifier,
@@ -141,12 +151,10 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
 
   const addModifier = () => {
     setModifier(modifier + 1);
-    console.log(value);
   };
 
   const subModifier = () => {
     setModifier(modifier - 1);
-    console.log(value);
   };
 
   return (

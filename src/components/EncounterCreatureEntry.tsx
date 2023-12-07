@@ -1,13 +1,11 @@
 import styled from "styled-components";
-import { CharacterEntry } from "../Types";
+import { CharacterEntry, SessionEntry } from "../Types";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cloneDeep } from "lodash";
-import AbilityEntryItem from "./AbilityEntryItem";
+import AbilityEntryItem from "../charactersheet/AbilityEntryItem";
 import { useState, memo, useEffect } from "react";
-import { useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
 import {
   faHeart,
   faShield,
@@ -238,6 +236,8 @@ interface EncounterBoxProps {
   encounter: CharacterEntry[];
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  character: CharacterEntry;
+  session: SessionEntry;
 }
 
 function EncounterCreatureEntry({
@@ -246,14 +246,11 @@ function EncounterCreatureEntry({
   encounter,
   setCreatureEncounter,
   setCreatureEdit,
+  character,
+  session,
 }: EncounterBoxProps) {
-  console.log("Rendering EncounterCreatureEntry");
-  const { setCharacter } = useContext(CharacterContext);
-
   const creatureClone = cloneDeep(creature);
   const actives = UpdateActives(creatureClone);
-  console.log("actives");
-  console.log(actives);
   const pain = Math.ceil(creatureClone.stats.strong.value / 2);
   const attack = ModifierConverter[actives.attack.value];
   const defense = ModifierConverter[actives.defense.value];
@@ -272,7 +269,6 @@ function EncounterCreatureEntry({
 
     encounter_clone.forEach((encounterCreature) => {
       if (encounterCreature.id === creature.id) {
-        console.log("Adjusting damage");
         encounterCreature.damage = damage_calc;
       }
     });
@@ -314,9 +310,8 @@ function EncounterCreatureEntry({
   }, []);
 
   const HandleCharacterSheet = () => {
-    setCharacter(creature);
+    // setCharacter(creature);
     setCreatureEdit(true);
-    console.log("HandleCharacterSheet");
   };
 
   return (
@@ -453,6 +448,8 @@ function EncounterCreatureEntry({
         {creatureClone.abilities.map((ability, index) => {
           return (
             <AbilityEntryItem
+              character={character}
+              session={session}
               key={`ability-${ability.name}-${index}`}
               ability={ability}
               browser={false}

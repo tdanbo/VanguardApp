@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { SessionContext } from "../../contexts/SessionContext";
+import { SessionContext } from "../../contexts/_SessionContext";
 import { SessionEntry } from "../../Types";
 import { postSession } from "../../functions/SessionsFunctions";
 import * as Constants from "../../Constants";

@@ -105,8 +105,6 @@ export function onChangeAbilityLevel({
     }
   });
 
-  console.log(ability);
-
   const updatedCharacter = {
     ...character,
     abilities: updatedAbilities,
@@ -120,7 +118,6 @@ export function onChangeAbilityLevel({
     originalLevel: ability.level,
   });
 
-  console.log("On Change Ability Post");
   postSelectedCharacter(updatedCharacterStats);
   return updatedCharacterStats;
 }
@@ -148,7 +145,6 @@ export function onDeleteAbility({ ability, character }: onDeleteProps) {
     abilities: updatedAbilities,
   };
 
-  console.log("onDeleteAbility POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -173,7 +169,6 @@ export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
     level: abilityWithId.level,
     originalLevel: ability.level,
   });
-  console.log("onAddAbilityItem POST");
   postSelectedCharacter(updatedCharacterStats);
   return updatedCharacterStats;
 };
@@ -289,7 +284,6 @@ export const onAddCorruption = (character: CharacterEntry, value: number) => {
     ...character,
     corruption: character_corruption,
   };
-  console.log("onAddCorruption POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 };
@@ -307,7 +301,6 @@ export const onSubCorruption = (character: CharacterEntry, value: number) => {
     ...character,
     corruption: character_corruption,
   };
-  console.log("onSubCorruption POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 };
@@ -321,7 +314,6 @@ export const onResetCorruption = (character: CharacterEntry) => {
     ...character,
     corruption: character_corruption,
   };
-  console.log("onResetCorruption POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 };
@@ -355,7 +347,6 @@ export const setBaseModifier = (character: CharacterEntry, value: number) => {
     ...character,
     details: character_details,
   };
-  console.log("setBaseModifier POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 };
@@ -380,7 +371,6 @@ export const onAddInventoryItem = ({
       ...character,
       inventory: newUpdatedInventory,
     };
-    console.log("onAddInventoryItem POST");
     postSelectedCharacter(updatedCharacter);
     return updatedCharacter;
   }
@@ -415,7 +405,6 @@ export function onUnequipItem({ character, position }: UnEquipProps) {
     ...character,
     equipment: newEquipment,
   };
-  console.log("onUnequipItem POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -452,7 +441,6 @@ export function onEquipItem({ character, item, position }: EquipProps) {
     ...character,
     equipment: equipment,
   };
-  console.log("onEquipItem POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -492,7 +480,6 @@ export function onDeleteItem({ id, character }: onDeleteItemProps) {
     inventory: updatedInventory,
     equipment: updatedEquipment, // update the equipment of the character
   };
-  console.log("onDeleteItem POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -530,7 +517,6 @@ export function onChangeQuantity({
     ...characterClone,
     inventory: inventory,
   };
-  console.log("onChangeQuantity POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -549,8 +535,6 @@ export function onUseAmmunition(character: CharacterEntry): {
   updatedCharacter: CharacterEntry;
   hasAmmunition: boolean;
 } {
-  console.log("onUseAmmunition");
-
   let usedAmmunitionId = "";
 
   const { main, off, armor } = character.equipment;
@@ -561,11 +545,8 @@ export function onUseAmmunition(character: CharacterEntry): {
     (item) => item.category === "ammunition" && item.quantity.count > 0,
   );
 
-  console.log("Has Ammunition: ", hasAmmunition); // Log whether ammunition exists
-
   const updatedEquipmentSlots = slots.map((item) => {
     if (item.category === "ammunition" && item.quantity.count > 0) {
-      console.log("Identified Ammunition:", item); // Log identified ammunition item
       usedAmmunitionId = item.id;
       const updatedItem = {
         ...item,
@@ -574,7 +555,6 @@ export function onUseAmmunition(character: CharacterEntry): {
           count: item.quantity.count - 1,
         },
       };
-      console.log("Updated Ammunition:", updatedItem); // Log updated ammunition item
       return updatedItem;
     }
     return item;
@@ -602,7 +582,6 @@ export function onUseAmmunition(character: CharacterEntry): {
     inventory: updatedInventory,
   };
 
-  console.log("onUseAmmunition POST");
   postSelectedCharacter(updatedCharacter);
   return { updatedCharacter, hasAmmunition };
 }
@@ -613,7 +592,6 @@ export function onAddToughness(character: CharacterEntry) {
 
   if (characterClone.damage > 0) {
     characterClone.damage -= value_step;
-    console.log("onAddToughness POST");
     postSelectedCharacter(characterClone);
   }
 
@@ -635,7 +613,6 @@ export function onSubToughness(character: CharacterEntry) {
   } else {
     characterClone.damage += value_step;
   }
-  console.log("onSubToughness POST");
   postSelectedCharacter(characterClone);
   return characterClone;
 }
@@ -656,7 +633,6 @@ export function onAddPermCorruption(character: CharacterEntry) {
     ...character,
     corruption: character_corruption,
   };
-  console.log("onAddPermCorruption POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -676,7 +652,6 @@ export function onSubPermCorruption(character: CharacterEntry) {
     ...character,
     corruption: character_corruption,
   };
-  console.log("onSubPermCorruption POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -694,7 +669,6 @@ export function onAddUnspentXp(character: CharacterEntry) {
       xp_earned: character_xp_earned,
     },
   };
-  console.log("onAddUnspentXp POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -717,7 +691,6 @@ export function onSubUnspentXp(character: CharacterEntry) {
       xp_earned: character.details.xp_earned,
     },
   };
-  console.log("onSubUnspentXp POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -766,28 +739,18 @@ export function RestCharacter(character: CharacterEntry) {
   return water_character;
 }
 
-export async function update_session(session: SessionEntry) {
-  try {
-    const res = await axios.put(`${API}/api/session/${session.id}`);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 export async function postSelectedCharacter(updatedCharacter: CharacterEntry) {
   try {
     const res = await axios.put(
       `${API}/api/characterlog/${updatedCharacter.name}`,
       updatedCharacter,
     );
-    console.log(res);
     // Assuming res.data contains the updated character
   } catch (error) {
     const res = await axios.put(
       `${API}/api/creaturelog/${updatedCharacter.name}`,
       updatedCharacter,
     );
-    console.log(res);
   }
 }
 
@@ -841,7 +804,6 @@ export function swapActives(
     ...character,
     actives: characterActives,
   };
-  console.log("swapActives POST");
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 }
@@ -857,7 +819,6 @@ export function UpdateResources(
   newCharacter.rations.food = food;
   newCharacter.rations.water = water;
   newCharacter.money = money;
-  console.log("UpdateResources POST");
   postSelectedCharacter(newCharacter);
   return newCharacter;
 }
@@ -908,7 +869,6 @@ export function GetMaxSlots(character: CharacterEntry) {
     item.quality.forEach((quality) => {
       Object.entries(storageModifiers).forEach(([key, modifiers]) => {
         if (quality.includes(key)) {
-          console.log("Storage Modifier Found");
           max_slots += modifiers;
         }
       });
@@ -935,7 +895,6 @@ export function GetBurnRate(character: CharacterEntry) {
     item.quality.forEach((quality) => {
       Object.entries(storageModifiers).forEach(([key, modifiers]) => {
         if (quality.includes(key)) {
-          console.log("Storage Modifier Found");
           burn_rate += modifiers;
         }
       });

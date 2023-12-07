@@ -1,12 +1,11 @@
 import * as Constants from "../Constants";
-import { useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
 import { RestCharacter, GetBurnRate } from "../functions/CharacterFunctions";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { useRoll } from "../functions/CombatFunctions";
+import { CharacterEntry, SessionEntry } from "../Types";
 
 const OuterContainer = styled.div`
   display: flex;
@@ -59,24 +58,26 @@ const Divider = styled.div`
   background-color: ${Constants.WIDGET_BACKGROUND};
 `;
 
-function RestBox() {
-  const { character, setCharacter } = useContext(CharacterContext);
+interface RestBoxProps {
+  character: CharacterEntry;
+  session: SessionEntry;
+}
+
+function RestBox({ character, session }: RestBoxProps) {
   const onRollDice = useRoll(); // Moved this outside the HandleRest function
 
   const HandleRest = () => {
     const updatedCharacter = RestCharacter(character);
     if (updatedCharacter) {
-      setCharacter(updatedCharacter);
+      // setCharacter(updatedCharacter);
     }
-
-    console.log("Resting");
-    console.log("Character: ", character);
-    console.log("Expanding");
 
     // Using the handleRoll function here doesn't make much sense unless you are planning to call this function somewhere else.
     // Otherwise, you can directly call onRollDice with the required parameters.
     const handleRoll = () => {
       onRollDice({
+        session,
+        character,
         dice: 20,
         modifier: 20,
         count: 0,

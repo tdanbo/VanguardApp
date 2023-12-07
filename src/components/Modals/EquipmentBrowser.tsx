@@ -1,5 +1,5 @@
 import InventoryEntry from "../InventoryEntry";
-import { ItemEntry } from "../../Types";
+import { CharacterEntry, ItemEntry, SessionEntry } from "../../Types";
 
 import styled from "styled-components";
 import * as Constants from "../../Constants";
@@ -18,11 +18,13 @@ const ItemContainer = styled.div`
 `;
 
 interface EquipmentBrowserProps {
+  character: CharacterEntry;
   browserState: number;
   itemList: ItemEntry[];
   setItemList: (itemList: ItemEntry[]) => void;
   setInventoryState: (inventoryState: number) => void;
   gmMode: boolean;
+  session: SessionEntry;
 }
 
 function sortItems(a: ItemEntry, b: ItemEntry): number {
@@ -38,10 +40,12 @@ function sortItems(a: ItemEntry, b: ItemEntry): number {
 }
 
 function EquipmentBrowser({
+  character,
   browserState,
   itemList,
   setInventoryState,
   gmMode,
+  session,
 }: EquipmentBrowserProps) {
   const sortedList = [...itemList].sort(sortItems);
   return (
@@ -50,6 +54,8 @@ function EquipmentBrowser({
         {sortedList &&
           sortedList.map((item, index) => (
             <InventoryEntry
+              session={session}
+              character={character}
               key={index}
               browser={true}
               index={index}

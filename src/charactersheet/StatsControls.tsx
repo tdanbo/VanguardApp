@@ -1,9 +1,7 @@
-import StatBox from "./StatBox";
-
-import { useContext, useState } from "react";
-import { CharacterContext } from "../../contexts/CharacterContext";
-
+import StatBox from "../components/StatsControls/StatBox";
+import { useState } from "react";
 import styled from "styled-components";
+import { CharacterEntry } from "../Types";
 
 const Container = styled.div`
   display: flex;
@@ -12,8 +10,11 @@ const Container = styled.div`
   gap: 10px;
 `;
 
-function StatsControls() {
-  const { character } = useContext(CharacterContext);
+interface StatsControlsProps {
+  character: CharacterEntry;
+}
+
+function StatsControls({ character }: StatsControlsProps) {
   const [swapSource, setSwapSource] = useState<null | string>(null);
   return (
     <Container>

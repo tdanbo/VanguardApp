@@ -1,22 +1,55 @@
-import { useState, useEffect } from "react";
+import React, { useRef } from "react";
+import { SessionEntry } from "./Types";
+import { set } from "lodash";
 
-function useWebSocket(url: string) {
-  const [websocket, setWebsocket] = useState<WebSocket | null>(null);
+function useWebSocket(
+  url: string,
+  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>,
+) {
+  const websocketRef = useRef<WebSocket | null>(null);
+  const storedUrlRef = useRef<string | null>(null);
 
-  useEffect(() => {
-    if (!websocket) {
+  function connectWebSocket() {
+    if (url !== storedUrlRef.current) {
       const ws = new WebSocket(url);
-      setWebsocket(ws);
+
+      ws.onopen = () => {
+        console.log("WebSocket connection opened.");
+      };
+
+      ws.onerror = (error) => {
+        console.error("WebSocket error:", error);
+        // You can add reconnection logic here, for example, with a delay
+        setTimeout(connectWebSocket, 1000); // Retry after 1 second
+      };
+
+      ws.onmessage = (event) => {
+        console.log("WebSocket message received");
+        setSession(JSON.parse(event.data));
+      };
+
+      ws.onclose = (event) => {
+        console.log("WebSocket connection closed:", event);
+        // You can add reconnection logic here as well
+        setTimeout(connectWebSocket, 1000); // Retry after 1 second
+      };
+
+      // Store the WebSocket instance and URL in the refs
+      websocketRef.current = ws;
+      storedUrlRef.current = url;
     }
+  }
 
-    return () => {
-      if (websocket && websocket.readyState === WebSocket.OPEN) {
-        websocket.close();
-      }
-    };
-  }, [url, websocket]);
+  // Call connectWebSocket when the component first mounts
+  if (!websocketRef.current || url !== storedUrlRef.current) {
+    connectWebSocket();
+  } else {
+    if (websocketRef.current.readyState === WebSocket.OPEN) {
+      console.log("WebSocket is already open!");
+    }
+  }
 
-  return websocket;
+  return websocketRef.current;
 }
 
 export default useWebSocket;

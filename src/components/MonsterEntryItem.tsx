@@ -127,7 +127,6 @@ function MonsterEntryItem({
   };
 
   const AddEncounterCreature = () => {
-    console.log("Add Creature");
     const newEncounterCreature: CreatureEntry = {
       ...creature,
       name: suffixLetter(),

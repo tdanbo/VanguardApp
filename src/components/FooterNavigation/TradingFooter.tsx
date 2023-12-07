@@ -125,7 +125,6 @@ function TradingFooter({ itemList, setItemList }: TradingFooterProps) {
   const [activeTown, setActiveTown] = useState<string | null>(null);
 
   const filterItems = (town: TownsEntry) => {
-    console.log(`Filtering for town: ${town.name}`);
     setActiveTown(town.name);
     const townTotal = town.total;
     let currentTotal = 0;
@@ -134,7 +133,6 @@ function TradingFooter({ itemList, setItemList }: TradingFooterProps) {
     shuffleArray(fullList);
 
     for (const item of fullList) {
-      console.log(`Checking item with cost: ${item.cost}`);
       // Ensure item.cost is treated as a number
       const itemCost = Number(item.cost);
 
@@ -142,11 +140,7 @@ function TradingFooter({ itemList, setItemList }: TradingFooterProps) {
         if (currentTotal + itemCost <= townTotal) {
           filteredItems.push(item);
           currentTotal += itemCost; // Now correctly adding numbers
-          console.log(`Adding item. Current total: ${currentTotal}`);
         } else {
-          console.log(
-            `Reached total capacity with ${filteredItems.length} items`,
-          );
           break;
         }
       }

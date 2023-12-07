@@ -23,8 +23,6 @@ export const UpdateActives = (character: CharacterEntry) => {
     return characterClone.actives;
   }
 
-  console.log("Updating Actives!");
-
   characterClone.actives.attack.value =
     characterClone.stats[characterClone.actives.attack.stat].value;
   characterClone.actives.defense.value =
@@ -61,15 +59,12 @@ export const UpdateActives = (character: CharacterEntry) => {
   Robust(characterClone, characterClone.actives);
   TwinAttack(characterClone, characterClone.actives);
 
-  console.log(characterClone);
-
   // postSelectedCharacter(characterClone); # This can be removed in the future i think but keep it in case.
 
   return characterClone.actives;
 };
 
 const Overburden = (character: CharacterEntry) => {
-  console.log("Checking Overburden");
   const used_slots = GetUsedSlots(character);
   const max_slots = GetMaxSlots(character);
 

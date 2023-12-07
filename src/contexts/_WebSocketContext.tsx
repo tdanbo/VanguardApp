@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { SessionContext } from "./SessionContext";
-import { CharacterContext } from "./CharacterContext";
+import { SessionContext } from "./_SessionContext";
+import { CharacterContext } from "./_CharacterContext";
 import { CharacterEntry, SessionEntry, CombatEntry } from "../Types";
 import { WEBSOCKET } from "../Constants";
 interface WebSocketContextValue {

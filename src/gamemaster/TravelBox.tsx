@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { useContext, useEffect, useState } from "react";
-import { SessionContext } from "../contexts/SessionContext";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TravelEntry } from "../Types";
+import { SessionEntry, TravelEntry } from "../Types";
 import { updateSession } from "../functions/SessionsFunctions";
 import {
   faAngleLeft,
@@ -17,7 +16,7 @@ import {
   CenterContainer,
   LargeCircleButton,
   ButtonContainer,
-} from "./SelectorPage/SelectorStyles";
+} from "../components/SelectorPage/SelectorStyles";
 import { cloneDeep } from "lodash";
 
 export const ModalContainer = styled.div`
@@ -236,9 +235,12 @@ const TooltipButton = styled.div`
   font-size: 11px;
 `;
 
-function TravelBox() {
+interface TravelBoxProps {
+  session: SessionEntry;
+}
+
+function TravelBox({ session }: TravelBoxProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { session, setSession } = useContext(SessionContext);
   const [timeOfDay, setTimeOfday] = useState<string>();
   const [tooltip, setTooltip] = useState<string>("A normal days of travel.");
   const ForcedSpeed = "No natural healing will occur while traveling.";
@@ -384,11 +386,8 @@ function TravelBox() {
 
     const updatedSession = { ...session, travel: travelEntry };
 
-    console.log(updatedSession);
-
     const newSession = await updateSession(updatedSession);
-    console.log(newSession);
-    setSession(newSession);
+    // setSession(newSession);
     handleClose();
   };
 
@@ -399,8 +398,7 @@ function TravelBox() {
     updatedSession.travel.distance = newDestination * 20;
 
     const newSession = await updateSession(updatedSession);
-    console.log(newSession);
-    setSession(newSession);
+    // setSession(newSession);
     handleClose();
   };
 

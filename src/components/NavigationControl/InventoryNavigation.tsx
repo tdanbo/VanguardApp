@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
 import OverburdenBox from "../OverburdenBox";
-import { CharacterContext } from "../../contexts/CharacterContext";
+import { CharacterContext } from "../../contexts/_CharacterContext";
 import { useContext } from "react";
 import { getNpcEntry } from "../../functions/CharacterFunctions";
 import { CharacterEntry } from "../../Types";
@@ -51,14 +51,12 @@ const Navigator = styled.button<NavigatorProps>`
 interface NavigationProps {
   inventoryState: number;
   setInventoryState: (browserState: number) => void;
-  mainCharacter: CharacterEntry | undefined;
   setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
   gmMode: boolean;
 }
 
 function InventoryNavigation({
   inventoryState,
-  mainCharacter,
   setInventoryState,
   setCreatureEdit,
   gmMode,
@@ -75,24 +73,11 @@ function InventoryNavigation({
     setCharacter(member);
   };
 
-  const backToMain = () => {
-    console.log("Back to main character");
-    if (!mainCharacter) return;
-    console.log("Back to main character");
-    setCharacter(mainCharacter);
-  };
-
-  const HandleLeaveEdit = () => {
-    if (!mainCharacter) return;
-    setCharacter(mainCharacter);
-    setCreatureEdit(false);
-  };
-
   return (
     <Container>
       {inventoryState === 1 ? (
         <Navigator $active={inventoryState === 1} onClick={onHandleItems}>
-          <OverburdenBox />
+          <OverburdenBox character={character} />
         </Navigator>
       ) : (
         <Navigator $active={inventoryState === 2} onClick={onHandleItems}>
@@ -115,18 +100,13 @@ function InventoryNavigation({
           )}
         </>
       ) : gmMode ? (
-        <Navigator
-          title={"Leave Edit Mode"}
-          $active={inventoryState === 1}
-          onClick={HandleLeaveEdit}
-        >
+        <Navigator title={"Leave Edit Mode"} $active={inventoryState === 1}>
           <FontAwesomeIcon icon={faChevronLeft} />
         </Navigator>
       ) : (
         <Navigator
           title={"Back to Main Character"}
           $active={inventoryState === 1}
-          onClick={backToMain}
         >
           <FontAwesomeIcon icon={faChevronLeft} />
         </Navigator>

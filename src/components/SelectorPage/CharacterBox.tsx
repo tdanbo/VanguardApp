@@ -1,7 +1,7 @@
 import * as Constants from "../../Constants";
 import styled from "styled-components";
 import { CharacterEntry } from "../../Types";
-import { CharacterContext } from "../../contexts/CharacterContext";
+import { CharacterContext } from "../../contexts/_CharacterContext";
 import { useContext } from "react";
 import { CharacterPortraits } from "../../Images";
 // import { deleteSessionCharacter } from "../../functions/SessionsFunctions";

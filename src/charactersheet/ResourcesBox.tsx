@@ -1,8 +1,8 @@
 import * as Constants from "../Constants";
 import styled from "styled-components";
 
-import { useContext, useState, useEffect } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
+import { useState, useEffect } from "react";
+import { CharacterEntry } from "../Types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { UpdateResources } from "../functions/CharacterFunctions";
 import {
@@ -22,7 +22,7 @@ import {
   LargeCircleButton,
   LargeCircleButtonDisabled,
   ButtonContainer,
-} from "./SelectorPage/SelectorStyles";
+} from "../components/SelectorPage/SelectorStyles";
 
 const OrangeColor = "rgba(205, 112, 57, 0.7)";
 const BlueColor = "rgba(96, 128, 148, 0.7)";
@@ -264,7 +264,6 @@ function ResourceChanger({
 
   const calcValue = (operation: string, mode: string, input: number) => {
     let newValue = value;
-    console.log(operation);
 
     let multiplier = 1;
     if (mode === "thaler") {
@@ -328,8 +327,11 @@ function ResourceChanger({
   );
 }
 
-function ResourcesBox() {
-  const { character, setCharacter } = useContext(CharacterContext);
+interface ResourceBoxProps {
+  character: CharacterEntry;
+}
+
+function ResourcesBox({ character }: ResourceBoxProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const stopPropagation = (e: React.MouseEvent) => {
@@ -362,7 +364,7 @@ function ResourcesBox() {
 
   const handleSubmit = () => {
     const UpdatedCharacter = UpdateResources(character, food, water, money);
-    setCharacter(UpdatedCharacter);
+    // setCharacter(UpdatedCharacter);
     setIsModalOpen(false);
   };
   return (

@@ -1,8 +1,7 @@
 import * as Constants from "../Constants";
 import styled from "styled-components";
 import { CharacterEntry } from "../Types";
-import { useState, useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheck,
@@ -76,12 +75,15 @@ const ResourceChangeContainer = styled.div`
 
 interface AddMemberProps {
   character_template: CharacterEntry;
+  character: CharacterEntry;
 }
 
-function AddCreatureToRoster({ character_template }: AddMemberProps) {
+function AddCreatureToRoster({
+  character_template,
+  character,
+}: AddMemberProps) {
   const [member, setMember] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { character, setCharacter } = useContext(CharacterContext);
   const [characterPortrait, setCharacterPortrait] = useState<string>(
     character_template.details.race,
   );
@@ -106,7 +108,7 @@ function AddCreatureToRoster({ character_template }: AddMemberProps) {
     character_template.name = member;
     character_template.portrait = characterPortrait;
     await addNewRoster(character_template); // Assuming this is an async operation
-    setCharacter(characterClone);
+    // setCharacter(characterClone);
     setIsModalOpen(false);
   };
 

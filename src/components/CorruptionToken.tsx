@@ -1,11 +1,10 @@
 import * as Constants from "../Constants";
 import styled from "styled-components";
-import { useContext } from "react";
 import {
   onAddCorruption,
   onSubCorruption,
 } from "../functions/CharacterFunctions";
-import { CharacterContext } from "../contexts/CharacterContext";
+import { CharacterEntry } from "../Types";
 
 interface cssProps {
   backgroundColor: string;
@@ -28,19 +27,18 @@ const Container = styled.div<cssProps>`
 
 interface CorruptionTokenProps {
   state: string;
+  character: CharacterEntry;
 }
 
-function CorruptionToken({ state }: CorruptionTokenProps) {
-  const { character, setCharacter } = useContext(CharacterContext);
-
+function CorruptionToken({ state, character }: CorruptionTokenProps) {
   const handleAddCorruption = () => {
     const updated_character = onAddCorruption(character, 1);
-    setCharacter(updated_character);
+    // setCharacter(updated_character);
   };
 
   const handleSubCorruption = () => {
     const updated_character = onSubCorruption(character, 1);
-    setCharacter(updated_character);
+    // setCharacter(updated_character);
   };
 
   if (state === "empty") {

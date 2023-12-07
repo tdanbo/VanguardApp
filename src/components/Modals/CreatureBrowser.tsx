@@ -1,4 +1,4 @@
-import { CharacterEntry } from "../../Types";
+import { CharacterEntry, SessionEntry } from "../../Types";
 
 import styled from "styled-components";
 import CreatureEntryItem from "../CreatureEntryItem";
@@ -18,6 +18,8 @@ const ItemContainer = styled.div`
 `;
 
 interface CreatureBrowserProps {
+  session: SessionEntry;
+  character: CharacterEntry;
   browserState: number;
   creatureList: CharacterEntry[];
   creatureEncounter: CharacterEntry[];
@@ -35,6 +37,8 @@ function sortItems(a: CharacterEntry, b: CharacterEntry): number {
 }
 
 function CreatureBrowser({
+  session,
+  character,
   browserState,
   creatureList,
   creatureEncounter,
@@ -49,6 +53,8 @@ function CreatureBrowser({
         {sortedCreatureList &&
           sortedCreatureList.map((creature, index) => (
             <CreatureEntryItem
+              session={session}
+              character={character}
               key={index}
               browser={true}
               creature={creature}

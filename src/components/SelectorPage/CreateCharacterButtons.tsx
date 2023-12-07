@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
-import { SessionContext } from "../../contexts/SessionContext";
+import { SessionContext } from "../../contexts/_SessionContext";
 import { useContext } from "react";
 import { CharacterEntry, EmptyArmor, EmptyWeapon } from "../../Types";
 import { addNewCharacter } from "../../functions/CharacterFunctions";

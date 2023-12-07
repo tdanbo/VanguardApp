@@ -4,7 +4,7 @@ import styled from "styled-components";
 import CreatureEntryItem from "../CreatureEntryItem";
 import * as Constants from "../../Constants";
 import { useContext } from "react";
-import { SessionContext } from "../../contexts/SessionContext";
+import { SessionContext } from "../../contexts/_SessionContext";
 import CharacterBox from "../SelectorPage/CharacterBox";
 const Container = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? "none" : "flex")};
@@ -52,8 +52,6 @@ function RosterBrowser({
   session,
   setCharacterName,
 }: CreatureBrowserProps) {
-  console.log("RosterBrowser");
-  console.log(session);
   return (
     <Container hidden={browserState !== 5}>
       <ItemContainer>

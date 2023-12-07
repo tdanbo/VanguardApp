@@ -1,16 +1,10 @@
 import * as Constants from "../Constants";
-import { CharacterContext } from "../contexts/CharacterContext";
 import { getCharacterXp } from "../functions/CharacterFunctions";
-import { useContext } from "react";
 import styled from "styled-components";
 import "../App.css";
 import { update_session } from "../functions/SessionsFunctions";
-
-import {
-  onAddUnspentXp,
-  onSubUnspentXp,
-} from "../functions/CharacterFunctions";
 import { CharacterEntry, SessionEntry } from "../Types";
+
 const Container = styled.div`
   margin-right: 20px;
   cursor: pointer;
@@ -34,24 +28,25 @@ const Container = styled.div`
 
 interface XpBoxProps {
   session: SessionEntry;
-  sessionCharacter: CharacterEntry;
+  character: CharacterEntry;
   websocket: WebSocket;
 }
 
-function XpBox({ session, sessionCharacter, websocket }: XpBoxProps) {
+function XpBox({ session, character, websocket }: XpBoxProps) {
   const handleAddXp = () => {
-    sessionCharacter.details.xp_earned += 1;
+    character.details.xp_earned += 1;
     update_session(session);
     websocket.send(JSON.stringify(session));
   };
 
   const handleSubXp = () => {
-    sessionCharacter.details.xp_earned -= 1;
-    if (sessionCharacter.details.xp_earned < 0) {
-      sessionCharacter.details.xp_earned = 0;
+    character.details.xp_earned -= 1;
+    if (character.details.xp_earned < 0) {
+      character.details.xp_earned = 0;
     }
     update_session(session);
     websocket.send(JSON.stringify(session));
+    // websocket.send(JSON.stringify("Update Session"));
   };
 
   return (
@@ -65,8 +60,7 @@ function XpBox({ session, sessionCharacter, websocket }: XpBoxProps) {
     >
       <h2>XP</h2>
       <h1>
-        {getCharacterXp(sessionCharacter)} /{" "}
-        {sessionCharacter.details.xp_earned}
+        {getCharacterXp(character)} / {character.details.xp_earned}
       </h1>
     </Container>
   );

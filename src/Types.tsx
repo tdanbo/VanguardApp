@@ -246,7 +246,7 @@ export const EmptyArmor: ItemEntry = {
 
 export const EmptySession: SessionEntry = {
   name: "",
-  id: "",
+  id: "1b1b1b1b1b",
   date: "",
   owner: "",
   travel: {

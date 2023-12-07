@@ -1,12 +1,11 @@
-import { useState, useEffect, FC, useContext } from "react";
+import { useState, useEffect, FC } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../Constants";
 import styled from "styled-components";
 import axios from "axios";
 import { API } from "../Constants";
-import { CharacterContext } from "../contexts/CharacterContext";
-import { CharacterEntry, SessionEntry } from "../Types";
+import { CharacterEntry } from "../Types";
 const {
   WIDGET_BACKGROUND_EMPTY,
   WIDGET_BORDER,
@@ -64,7 +63,6 @@ const SearchRosterBox: FC<SearchItemBoxProps> = ({
   const [fullList, setFullList] = useState<CharacterEntry[]>(rosterlist);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const { character } = useContext(CharacterContext);
   const filterItems = (query: string) => {
     if (query === "") {
       return fullList;
@@ -78,7 +76,6 @@ const SearchRosterBox: FC<SearchItemBoxProps> = ({
     const fetchItems = async () => {
       try {
         const response = await axios.get(`${API}/api/rosterlog`);
-        console.log(response.data);
         setFullList(response.data);
         setLoading(false);
       } catch (error) {
@@ -86,7 +83,7 @@ const SearchRosterBox: FC<SearchItemBoxProps> = ({
       }
     };
     fetchItems();
-  }, [character]);
+  }, []);
 
   useEffect(() => {
     setList(filterItems(search));

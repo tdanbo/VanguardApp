@@ -1,11 +1,9 @@
 import * as Constants from "../Constants";
-import { useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
 import { onDeleteItem } from "../functions/CharacterFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHorseHead } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import { ItemEntry } from "../Types";
+import { CharacterEntry, ItemEntry } from "../Types";
 
 const OuterContainer = styled.div`
   display: flex;
@@ -43,17 +41,17 @@ const Icon = styled.div`
 
 interface StorageBoxProps {
   item: ItemEntry;
+  character: CharacterEntry;
 }
 
-function StorageBox({ item }: StorageBoxProps) {
-  const { character, setCharacter } = useContext(CharacterContext);
+function StorageBox({ item, character }: StorageBoxProps) {
   const HandleDeleteItem = () => {
     const updatedCharacter = onDeleteItem({
       id: item.id,
       character,
     });
     if (updatedCharacter) {
-      setCharacter(updatedCharacter);
+      // setCharacter(updatedCharacter);
     }
   };
 

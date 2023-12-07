@@ -1,9 +1,8 @@
-import { useContext } from "react";
-import { CharacterContext } from "../../contexts/CharacterContext";
-import { getCharacterMovement } from "../../functions/CharacterFunctions";
+import { getCharacterMovement } from "../functions/CharacterFunctions";
 
 import styled from "styled-components";
-import * as Constants from "../../Constants";
+import * as Constants from "../Constants";
+import { CharacterEntry } from "../Types";
 
 const Container = styled.div`
   display: flex;
@@ -68,8 +67,11 @@ const ActiveValue = styled.div`
   letter-spacing: 1px;
 `;
 
-function SecondaryStatsControls() {
-  const { character } = useContext(CharacterContext);
+interface SecondaryStatsControlsProps {
+  character: CharacterEntry;
+}
+
+function SecondaryStatsControls({ character }: SecondaryStatsControlsProps) {
   const movement = getCharacterMovement(character);
   return (
     <Container>

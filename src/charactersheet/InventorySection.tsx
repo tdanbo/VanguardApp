@@ -1,11 +1,9 @@
-import InventoryEntry from "../InventoryEntry";
-import InventoryEntryEmpty from "../InventoryEntryEmpty";
-import { useContext } from "react";
-import { ItemEntry } from "../../Types";
-import { CharacterContext } from "../../contexts/CharacterContext";
+import InventoryEntry from "../components/InventoryEntry";
+import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
+import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import styled from "styled-components";
-import * as Constants from "../../Constants";
-import { GetMaxSlots } from "../../functions/CharacterFunctions";
+import * as Constants from "../Constants";
+import { GetMaxSlots } from "../functions/CharacterFunctions";
 const Container = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? "none" : "flex")};
   flex-direction: column;
@@ -15,6 +13,8 @@ const Container = styled.div<{ hidden: boolean }>`
 
 interface NavigationProps {
   inventoryState: number;
+  character: CharacterEntry;
+  session: SessionEntry;
 }
 
 function sortInventory(a: ItemEntry, b: ItemEntry): number {
@@ -24,9 +24,11 @@ function sortInventory(a: ItemEntry, b: ItemEntry): number {
   );
 }
 
-function InventorySection({ inventoryState }: NavigationProps) {
-  const { character } = useContext(CharacterContext);
-
+function InventorySection({
+  inventoryState,
+  character,
+  session,
+}: NavigationProps) {
   character.inventory.sort(sortInventory);
   const sortedInventory = [...character.inventory].sort(sortInventory);
 
@@ -39,6 +41,8 @@ function InventorySection({ inventoryState }: NavigationProps) {
         if (item !== undefined && item.category !== "container") {
           return (
             <InventoryEntry
+              session={session}
+              character={character}
               key={index}
               browser={false}
               index={index}

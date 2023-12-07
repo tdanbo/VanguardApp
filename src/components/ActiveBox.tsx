@@ -2,9 +2,14 @@ import * as Constants from "../Constants";
 import { useState } from "react";
 
 import styled from "styled-components";
-import { CharacterContext } from "../contexts/CharacterContext";
-import { useContext } from "react";
-import { ActiveKey, AttackActive, DefenseActive, SimpleActive } from "../Types";
+import {
+  ActiveKey,
+  AttackActive,
+  CharacterEntry,
+  DefenseActive,
+  SessionEntry,
+  SimpleActive,
+} from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
 import { onUseAmmunition } from "../functions/CharacterFunctions";
 import "../App.css";
@@ -91,6 +96,8 @@ const Dice = styled.button<DiceProps>`
 interface Props {
   active_name: ActiveKey;
   active: AttackActive | DefenseActive | SimpleActive;
+  character: CharacterEntry;
+  session: SessionEntry;
 }
 
 function isAttackActive(obj: any): obj is AttackActive {
@@ -103,8 +110,7 @@ function isDefenseActive(obj: any): obj is DefenseActive {
   // you can add more checks for other properties if needed
 }
 
-function ActiveBox({ active_name, active }: Props) {
-  const { character, setCharacter } = useContext(CharacterContext);
+function ActiveBox({ active_name, active, character, session }: Props) {
   const [modValue, setModvalue] = useState<number>(0);
 
   const handleAddValue = () => {
@@ -121,6 +127,8 @@ function ActiveBox({ active_name, active }: Props) {
 
   const handleActiveRoll = () => {
     onRollDice({
+      character,
+      session,
       dice: 20,
       count: 1,
       modifier: modValue,
@@ -138,6 +146,8 @@ function ActiveBox({ active_name, active }: Props) {
     damage_armor: string,
   ) => {
     onRollDice({
+      character,
+      session,
       dice: dice,
       count: 1,
       target: 0,
@@ -155,14 +165,8 @@ function ActiveBox({ active_name, active }: Props) {
     damage_armor: string,
   ) => {
     const { updatedCharacter, hasAmmunition } = onUseAmmunition(character);
-    console.log("Ranged Attack Updated Character");
-    console.log(updatedCharacter);
 
-    setCharacter(updatedCharacter);
-
-    console.log("Ranged Attack");
-    console.log(hasAmmunition);
-    console.log(updatedCharacter);
+    // setCharacter(updatedCharacter);
 
     if (!hasAmmunition) {
       // handle case when onUseAmmunition is false
@@ -170,6 +174,8 @@ function ActiveBox({ active_name, active }: Props) {
     }
 
     onRollDice({
+      character,
+      session,
       dice: dice,
       count: 1,
       target: 0,

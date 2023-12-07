@@ -1,14 +1,12 @@
 import * as Constants from "../Constants";
-import { RosterEntry } from "../Types";
+import { RosterEntry, SessionEntry } from "../Types";
 import { useState, useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import { CharacterEntry } from "../Types";
-import { CharacterContext } from "../contexts/CharacterContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import AddCreatureToRoster from "./AddCreatureToRoster";
-import { SessionContext } from "../contexts/SessionContext";
 import { useEffect } from "react";
 import {
   postSelectedCharacter,
@@ -98,6 +96,8 @@ const AbilityDetail = styled.div`
 `;
 
 interface AbilityEntryItemProps {
+  session: SessionEntry;
+  character: CharacterEntry;
   creature: CharacterEntry;
   browser: boolean;
   setInventoryState?: (inventoryState: number) => void;
@@ -109,6 +109,8 @@ interface AbilityEntryItemProps {
 }
 
 function CreatureEntryItem({
+  session,
+  character,
   creature,
   browser,
   encounter,
@@ -117,8 +119,6 @@ function CreatureEntryItem({
   gmMode,
   browserState,
 }: AbilityEntryItemProps) {
-  const { character, setCharacter } = useContext(CharacterContext);
-  const { session } = useContext(SessionContext);
   const [_expanded] = useState<boolean>(false);
 
   const suffixLetter = () => {
@@ -136,7 +136,6 @@ function CreatureEntryItem({
   };
 
   const AddEncounterCreature = () => {
-    console.log("Add Creature");
     const newEncounterCreature: CharacterEntry = {
       ...creature,
       name: suffixLetter(),
@@ -151,7 +150,7 @@ function CreatureEntryItem({
   };
 
   const editCreature = () => {
-    setCharacter(creature);
+    // setCharacter(creature);
     setCreatureEdit(true);
   };
 
@@ -174,7 +173,6 @@ function CreatureEntryItem({
   }, []);
 
   const AddMemberToRoster = () => {
-    console.log("Add Member");
     const characterClone = { ...character };
     if (characterClone.id === session.id) {
       const new_roster_entry: RosterEntry = {
@@ -190,7 +188,7 @@ function CreatureEntryItem({
       creature.id = session.id;
       addNewCharacter(creature);
       postSelectedCharacter(characterClone);
-      setCharacter(characterClone);
+      // setCharacter(characterClone);
     } else {
       console.log("Not the main character");
     }
@@ -199,7 +197,7 @@ function CreatureEntryItem({
   const RemoveMemberFromRoster = () => {
     const characterClone = { ...character };
     deleteRosterCharacter(creature.name, creature.id);
-    setCharacter(characterClone);
+    // setCharacter(characterClone);
   };
 
   return (
@@ -220,7 +218,10 @@ function CreatureEntryItem({
           gmMode ? (
             browserState === 4 ? (
               <>
-                <AddCreatureToRoster character_template={creature} />
+                <AddCreatureToRoster
+                  character_template={creature}
+                  character={character}
+                />
                 <AddButton
                   className={"button-hover"}
                   onClick={AddEncounterCreature}

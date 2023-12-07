@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
 import * as Constants from "../Constants";
+import { CharacterEntry } from "../Types";
 
 const Container = styled.div`
   display: flex;
@@ -14,8 +13,11 @@ const Container = styled.div`
   color: ${Constants.WIDGET_PRIMARY_FONT};
 `;
 
-function CharacterNameBox() {
-  const { character } = useContext(CharacterContext);
+interface CharacterNameBoxProps {
+  character: CharacterEntry;
+}
+
+function CharacterNameBox({ character }: CharacterNameBoxProps) {
   return <Container>{character.name}</Container>;
 }
 

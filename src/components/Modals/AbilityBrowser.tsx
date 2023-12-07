@@ -1,6 +1,6 @@
 import { AbilityEntry } from "../../Types";
 
-import AbilityEntryItem from "../AbilityEntryItem";
+import AbilityEntryItem from "../../charactersheet/AbilityEntryItem";
 import * as Constants from "../../Constants";
 import styled from "styled-components";
 

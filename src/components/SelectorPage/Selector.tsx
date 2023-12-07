@@ -59,8 +59,6 @@ function SelectorComponent({ setGmMode, setSession }: SelectorProps) {
   const [characterName, setCharacterName] = useState<string>("");
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
 
-  console.log(characterName, characterRace, characterPortrait);
-
   const renderContent = (selectorValue: string) => {
     switch (selectorValue) {
       case "joinSession":
@@ -74,16 +72,6 @@ function SelectorComponent({ setGmMode, setSession }: SelectorProps) {
         );
       case "createSession":
         return <CreateSessionComponent setSelector={setSelector} />;
-      case "characterSelect":
-        return (
-          <SelectCharacterComponent
-            setSelector={setSelector}
-            closeModal={handleClose}
-            characterLog={characterLog}
-            setCharacterLog={setCharacterLog}
-            setGmMode={setGmMode}
-          />
-        );
       case "createCharacter":
         return (
           <CreateCharacterComponent

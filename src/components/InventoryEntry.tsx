@@ -1,9 +1,7 @@
 import * as Constants from "../Constants";
 import { Qualities } from "../functions/rules/Qualities";
-import { ItemEntry } from "../Types";
-import { useContext } from "react";
+import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
-import { CharacterContext } from "../contexts/CharacterContext";
 import { onChangeQuantity } from "../functions/CharacterFunctions";
 import {
   onDeleteItem,
@@ -17,6 +15,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 interface InventoryEntryProps {
+  character: CharacterEntry;
+  session: SessionEntry;
   index: number;
   browser: boolean;
   equipped: string;
@@ -207,6 +207,8 @@ const QuantityBox = styled.button<RollBoxProps>`
 `;
 
 function InventoryEntry({
+  character,
+  session,
   item,
   browser,
   equipped,
@@ -214,24 +216,22 @@ function InventoryEntry({
   setInventoryState,
   gmMode,
 }: InventoryEntryProps) {
-  const { character, setCharacter } = useContext(CharacterContext);
-
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
 
   const HandleEquip = (item: ItemEntry, position: string) => {
     const updatedCharacter = onEquipItem({ character, item, position });
-    setCharacter(updatedCharacter);
+    // setCharacter(updatedCharacter);
   };
 
   const HandleUnequip = (position: string) => {
     const updatedCharacter = onUnequipItem({ character, position });
-    setCharacter(updatedCharacter);
+    // setCharacter(updatedCharacter);
   };
 
   const AddInventorySlot = () => {
     const updatedCharacter = onAddInventoryItem({ character, item });
     if (updatedCharacter) {
-      setCharacter(updatedCharacter);
+      // setCharacter(updatedCharacter);
     }
     if (setInventoryState) {
       setInventoryState(1);
@@ -241,7 +241,7 @@ function InventoryEntry({
   const DeleteInventorySlot = (id: string) => {
     const updatedCharacter = onDeleteItem({ id, character });
     if (updatedCharacter) {
-      setCharacter(updatedCharacter);
+      // setCharacter(updatedCharacter);
     }
   };
 
@@ -256,6 +256,8 @@ function InventoryEntry({
       source: item.name,
       active: "Inventory Item",
       add_mod: true,
+      character,
+      session,
     });
   };
 
@@ -301,7 +303,7 @@ function InventoryEntry({
       count: newQuantity,
       character,
     });
-    setCharacter(updatedCharacter);
+    // setCharacter(updatedCharacter);
   };
 
   const handleMinusClick = () => {
@@ -311,7 +313,7 @@ function InventoryEntry({
       count: newQuantity,
       character,
     });
-    setCharacter(updatedCharacter);
+    // setCharacter(updatedCharacter);
   };
 
   function ConvertCurrency(cost: number) {

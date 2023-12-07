@@ -1,7 +1,7 @@
 import * as Constants from "../../Constants";
 import { useState, useContext, useEffect } from "react";
 import { CharacterEntry } from "../../Types";
-import { SessionContext } from "../../contexts/SessionContext";
+import { SessionContext } from "../../contexts/_SessionContext";
 import { UpperFirstLetter } from "../../functions/UtilityFunctions";
 import styled from "styled-components";
 import RaceDropdownBox from "./RaceDropdownBox";
@@ -20,7 +20,7 @@ import {
   ButtonContainer,
 } from "./SelectorStyles";
 import { v4 as uuidv4 } from "uuid";
-import { CharacterContext } from "../../contexts/CharacterContext";
+import { CharacterContext } from "../../contexts/_CharacterContext";
 import AddCreaturePortrait from "../AddCreaturePortrait";
 
 interface Stats {
@@ -175,9 +175,6 @@ function CreateCharacterComponent({
     }
   }, [characterName]);
 
-  console.log(characterName);
-  console.log(characterRace);
-
   const [stats, setStats] = useState<Stats[]>([
     { id: 8, label: "Accurate", value: 5 },
     { id: 1, label: "Cunning", value: 15 },
@@ -262,7 +259,6 @@ function CreateCharacterComponent({
 
   const handleDifficultyDropdownChange = (selectedDifficulty: string) => {
     setCharacterDifficulty(selectedDifficulty);
-    console.log(NewCharacterEntry.details.xp_earned);
   };
 
   let creature_id = "";
@@ -350,7 +346,6 @@ function CreateCharacterComponent({
   };
 
   const handleBack = () => {
-    console.log("Back");
     if (source === "characterSelect") {
       if (setSelector) {
         setSelector("characterSelect");

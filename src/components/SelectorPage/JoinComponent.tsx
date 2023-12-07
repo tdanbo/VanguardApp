@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import * as Constants from "../../Constants";
-import { SessionContext } from "../../contexts/SessionContext";
+import { SessionContext } from "../../contexts/_SessionContext";
 import styled from "styled-components";
 import { getSession } from "../../functions/SessionsFunctions";
 import { useEffect } from "react";
@@ -10,7 +10,7 @@ import { CharacterEntry, SessionEntry } from "../../Types";
 import {
   CharacterContext,
   defaultCharacter,
-} from "../../contexts/CharacterContext";
+} from "../../contexts/_CharacterContext";
 
 import {
   MainContainer,
@@ -47,12 +47,10 @@ function JoinComponent({ setGmMode, closeModal, setSession }: LoginProps) {
   const [sessionName, setSessionName] = useState("");
 
   const handleSessionName = (e: any) => {
-    console.log(e.target.value);
     setSessionName(e.target.value);
   };
 
   const handleJoinSession = () => {
-    console.log(sessionName);
     getSession(sessionName).then((res) => {
       if (res) {
         setSession(res);
@@ -64,13 +62,13 @@ function JoinComponent({ setGmMode, closeModal, setSession }: LoginProps) {
 
   const joinGm = () => {
     handleJoinSession();
-    setGmMode(true);
+    // setGmMode(true);
     closeModal();
   };
 
   const joinSession = () => {
     handleJoinSession();
-    setGmMode(false);
+    // setGmMode(false);
     closeModal();
   };
 

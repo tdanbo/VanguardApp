@@ -1,8 +1,7 @@
 import * as Constants from "../Constants";
 import styled from "styled-components";
-import { useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
 import { GetUsedSlots, GetMaxSlots } from "../functions/CharacterFunctions";
+import { CharacterEntry } from "../Types";
 
 const Container = styled.div`
   display: flex;
@@ -27,9 +26,10 @@ const ColoredNumber = styled.span`
   color: ${(props) => props.color || "inherit"};
 `;
 
-function OverburdenBox() {
-  const { character } = useContext(CharacterContext);
-
+interface OverBurdenBoxProps {
+  character: CharacterEntry;
+}
+function OverburdenBox({ character }: OverBurdenBoxProps) {
   const used_slots = GetUsedSlots(character);
   const max_slots = GetMaxSlots(character);
 

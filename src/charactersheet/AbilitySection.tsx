@@ -1,10 +1,8 @@
-import InventoryEntryEmpty from "../InventoryEntryEmpty";
-import { useContext } from "react";
-import { AbilityEntry } from "../../Types";
-import { CharacterContext } from "../../contexts/CharacterContext";
+import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
+import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
 import styled from "styled-components";
-import AbilityEntryItem from "../AbilityEntryItem";
-import * as Constants from "../../Constants";
+import AbilityEntryItem from "./AbilityEntryItem";
+import * as Constants from "../Constants";
 const Container = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? "none" : "flex")};
   flex-direction: column;
@@ -14,6 +12,8 @@ const Container = styled.div<{ hidden: boolean }>`
 
 interface NavigationProps {
   inventoryState: number;
+  character: CharacterEntry;
+  session: SessionEntry;
 }
 
 function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
@@ -23,18 +23,24 @@ function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
   );
 }
 
-function AbilitySection({ inventoryState }: NavigationProps) {
-  const { character } = useContext(CharacterContext);
-
+function AbilitySection({
+  inventoryState,
+  character,
+  session,
+}: NavigationProps) {
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
-  console.log("sortedAbilities");
-  console.log(sortedAbilities);
 
   return (
     <Container hidden={inventoryState === 0 || inventoryState === 1}>
       {sortedAbilities.map((ability, index) => {
         return (
-          <AbilityEntryItem key={index} ability={ability} browser={false} />
+          <AbilityEntryItem
+            session={session}
+            key={index}
+            ability={ability}
+            browser={false}
+            character={character}
+          />
         );
       })}
       {Array.from({ length: 15 }).map((_, index) => {

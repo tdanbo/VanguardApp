@@ -7,7 +7,6 @@ import { CharacterEntry } from "../Types";
 import axios from "axios";
 import { API } from "../Constants";
 import { useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
 import CreateCharacterComponent from "../components/SelectorPage/CreateCharacterComponent";
 import BackgroundImage from "../assets/icons/background.jpeg";
 const {
@@ -89,7 +88,6 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
   const [characterRace, setCharacterRace] = useState<string>("");
   const [characterName, setCharacterName] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { character } = useContext(CharacterContext);
   const filterItems = (query: string) => {
     if (query === "") {
       return fullList;
@@ -103,7 +101,6 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
     const fetchItems = async () => {
       try {
         const response = await axios.get(`${API}/api/creaturesv2`);
-        console.log(response.data);
         setFullList(response.data);
         setLoading(false);
       } catch (error) {
@@ -111,7 +108,7 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
       }
     };
     fetchItems();
-  }, [character]);
+  }, []);
 
   useEffect(() => {
     if (filterItems(search).length === 0) {

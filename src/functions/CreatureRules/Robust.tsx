@@ -43,8 +43,6 @@ export const Robust = (
     damage = 4;
   }
 
-  console.log(damage, armor, defense);
-
   if (creatureAbilities["Berserker"] <= 2) {
     clonedCreature.defense = ModifierConverter[5 - defense];
   } else

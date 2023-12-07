@@ -1,8 +1,7 @@
 import * as Constants from "../Constants";
-import { AbilityEntry } from "../Types";
+import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
 import { useState, useContext, useEffect } from "react";
 
-import { CharacterContext } from "../contexts/CharacterContext";
 import { useRoll } from "../functions/CombatFunctions";
 import { onAddCorruption } from "../functions/CharacterFunctions";
 import { Ability } from "../Types";
@@ -252,14 +251,17 @@ interface AbilityEntryItemProps {
   ability: AbilityEntry;
   browser: boolean;
   setInventoryState?: (inventoryState: number) => void;
+  character: CharacterEntry;
+  session: SessionEntry;
 }
 
 function AbilityEntryItem({
   ability,
   browser,
   setInventoryState,
+  character,
+  session,
 }: AbilityEntryItemProps) {
-  const { character, setCharacter } = useContext(CharacterContext);
   const [abilityLevel, setAbilityLevel] = useState<string>(ability.level);
 
   useEffect(() => {
@@ -281,7 +283,7 @@ function AbilityEntryItem({
   const AddAbilitySlot = () => {
     const updatedCharacter = onAddAbilityItem({ character, ability });
     if (updatedCharacter) {
-      setCharacter(updatedCharacter);
+      // setCharacter(updatedCharacter);
     }
     if (setInventoryState) {
       setInventoryState(2);
@@ -291,7 +293,7 @@ function AbilityEntryItem({
   const DeleteAbilitySlot = (ability: AbilityEntry) => {
     const updatedCharacter = onDeleteAbility({ ability, character });
     if (updatedCharacter) {
-      setCharacter(updatedCharacter);
+      // setCharacter(updatedCharacter);
     }
   };
 
@@ -303,7 +305,7 @@ function AbilityEntryItem({
       character,
     });
     if (updatedCharacter) {
-      setCharacter(updatedCharacter);
+      // setCharacter(updatedCharacter);
     }
   }
 
@@ -311,6 +313,8 @@ function AbilityEntryItem({
 
   const RollCorruptionDice = async () => {
     const dice_result = await onRollDice({
+      session,
+      character,
       dice: 4,
       count: 1,
       target: 0,
@@ -323,7 +327,7 @@ function AbilityEntryItem({
     const updated_character = onAddCorruption(character, dice_result);
 
     if (updated_character) {
-      setCharacter(updated_character);
+      // setCharacter(updated_character);
     }
   };
 
@@ -343,6 +347,8 @@ function AbilityEntryItem({
                 type={ability.type}
                 onClick={() =>
                   onRollDice({
+                    session,
+                    character,
                     dice: roll.dice,
                     modifier: roll.mod,
                     count: 1,
@@ -365,6 +371,8 @@ function AbilityEntryItem({
                 type={ability.type}
                 onClick={() =>
                   onRollDice({
+                    session,
+                    character,
                     dice: roll.dice,
                     modifier: roll.mod,
                     count: 1,
@@ -387,6 +395,8 @@ function AbilityEntryItem({
                 type={ability.type}
                 onClick={() =>
                   onRollDice({
+                    session,
+                    character,
                     dice: roll.dice,
                     modifier: roll.mod,
                     count: 1,
