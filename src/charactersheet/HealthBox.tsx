@@ -1,15 +1,8 @@
-import * as Constants from "../Constants";
-import { CharacterEntry } from "../Types";
 import styled from "styled-components";
+import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import {
-  onAddPermCorruption,
-  onSubPermCorruption,
-  onAddToughness,
-  onSubToughness,
-  onAddCorruption,
-  onSubCorruption,
-} from "../functions/CharacterFunctions";
+import { CharacterEntry, SessionEntry } from "../Types";
+import { update_session } from "../functions/SessionsFunctions";
 
 interface PortraitProps {
   src: string;
@@ -177,37 +170,89 @@ const Divider = styled.div`
 
 interface HealthBoxProps {
   character: CharacterEntry;
+  session: SessionEntry;
+  websocket: WebSocket;
 }
 
-function HealthBox({ character }: HealthBoxProps) {
+function HealthBox({ character, session, websocket }: HealthBoxProps) {
   const handleAddToughness = () => {
-    const updated_character = onAddToughness(character);
-    // setCharacter(updated_character);
+    if (character.damage > 0) {
+      character.damage -= 1;
+    }
+    update_session(session, websocket); 
   };
 
   const handleSubToughness = () => {
-    const updated_character = onSubToughness(character);
-    // setCharacter(updated_character);
+      const maxToughness =
+      character.stats.strong.value < 10
+        ? 10
+        : character.stats.strong.value;
+
+    const value_step = 1;
+
+    if (character.damage === maxToughness) {
+      console.log("Max damage reached")
+    } else {
+      character.damage += value_step;
+    }
+    update_session(session, websocket); 
   };
 
   const handleAddCorruption = () => {
-    const updated_character = onAddPermCorruption(character);
-    // setCharacter(updated_character);
+    const character_corruption = character.corruption;
+    const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
+  
+    const value_step = 1;
+  
+    if (character_corruption.permanent === corruptionThreshold * 3) {
+      console.log("Max corruption reached")
+    } else {
+      character_corruption.permanent += value_step;
+    }
+    update_session(session, websocket);
   };
 
   const handleSubCorruption = () => {
-    const updated_character = onSubPermCorruption(character);
-    // setCharacter(updated_character);
+    const character_corruption = character.corruption;
+
+    const value_step = 1;
+  
+    if (character_corruption.permanent === 0) {
+      console.log("Min corruption reached")
+    } else {
+      character_corruption.permanent -= value_step;
+    }
+    update_session(session, websocket);
   };
 
   const handleTempAddCorruption = () => {
-    const updated_character = onAddCorruption(character, 1);
-    // setCharacter(updated_character);
+    console.log("Adding corruption")
+    let character_corruption = character.corruption;
+    const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
+    let value = 1;
+    for (let i = 0; i < value; i++) {
+      if (character_corruption.temporary === corruptionThreshold) {
+        if (character_corruption.permanent === corruptionThreshold * 3) {
+          console.log("Max corruption reached")
+        }
+        character_corruption.permanent += 1;
+      } else {
+        character_corruption.temporary += 1;
+      }
+    }
+    update_session(session, websocket);
   };
 
   const handleTempSubCorruption = () => {
-    const updated_character = onSubCorruption(character, 1);
-    // setCharacter(updated_character);
+    console.log("Subtracting corruption")
+    let character_corruption = character.corruption;
+    let value = 1;
+    character_corruption.temporary -= value;
+  
+    if (character_corruption.temporary < 0) {
+      character_corruption.temporary = 0;
+    }
+    update_session(session, websocket);
   };
 
   const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);

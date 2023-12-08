@@ -1,20 +1,21 @@
-import { CharacterEntry } from "../Types";
-import { ManAtArms } from "./rules/ManAtArms";
-import { PolearmMastery } from "./rules/PolearmMastery";
-import { ShieldFighter } from "./rules/ShieldFighter";
-import { ArmoredMystic } from "./rules/ArmoredMystic";
-import { TwohandedForce } from "./rules/TwohandedForce";
-import { GetUsedSlots, GetMaxSlots } from "./CharacterFunctions";
 import { cloneDeep } from "lodash";
-import { Marksman } from "./rules/Marksman";
-import { Robust } from "./rules/Robust";
-import { NaturalWeapon } from "./rules/NaturalWeapon";
+import { CharacterEntry } from "../Types";
+import { GetUsedSlots } from "./CharacterFunctions";
+import { GetMaxSlots } from "./RulesFunctions";
 import { Armored } from "./rules/Armored";
-import { IronFist } from "./rules/IronFist";
-import { TwinAttack } from "./rules/TwinAttack";
-import { SteelThrow } from "./rules/SteelThrow";
+import { ArmoredMystic } from "./rules/ArmoredMystic";
 import { Berserker } from "./rules/Berserker";
+import { IronFist } from "./rules/IronFist";
+import { ManAtArms } from "./rules/ManAtArms";
+import { Marksman } from "./rules/Marksman";
 import { NaturalWarrior } from "./rules/NaturalWarrior";
+import { NaturalWeapon } from "./rules/NaturalWeapon";
+import { PolearmMastery } from "./rules/PolearmMastery";
+import { Robust } from "./rules/Robust";
+import { ShieldFighter } from "./rules/ShieldFighter";
+import { SteelThrow } from "./rules/SteelThrow";
+import { TwinAttack } from "./rules/TwinAttack";
+import { TwohandedForce } from "./rules/TwohandedForce";
 
 export const UpdateActives = (character: CharacterEntry) => {
   const characterClone = cloneDeep(character);

@@ -1,18 +1,18 @@
-import * as Constants from "../Constants";
 import { useState } from "react";
+import * as Constants from "../Constants";
 
 import styled from "styled-components";
+import "../App.css";
 import {
   ActiveKey,
   AttackActive,
   CharacterEntry,
   DefenseActive,
   SessionEntry,
-  SimpleActive,
+  SimpleActive
 } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
-import { onUseAmmunition } from "../functions/CharacterFunctions";
-import "../App.css";
+import { update_session } from "../functions/SessionsFunctions";
 
 const Container = styled.div`
   display: flex;
@@ -98,6 +98,7 @@ interface Props {
   active: AttackActive | DefenseActive | SimpleActive;
   character: CharacterEntry;
   session: SessionEntry;
+  websocket: WebSocket;
 }
 
 function isAttackActive(obj: any): obj is AttackActive {
@@ -110,7 +111,7 @@ function isDefenseActive(obj: any): obj is DefenseActive {
   // you can add more checks for other properties if needed
 }
 
-function ActiveBox({ active_name, active, character, session }: Props) {
+function ActiveBox({ active_name, active, character, session, websocket }: Props) {
   const [modValue, setModvalue] = useState<number>(0);
 
   const handleAddValue = () => {
@@ -164,27 +165,57 @@ function ActiveBox({ active_name, active, character, session }: Props) {
     dice_mod: number,
     damage_armor: string,
   ) => {
-    const { updatedCharacter, hasAmmunition } = onUseAmmunition(character);
 
-    // setCharacter(updatedCharacter);
+      type Quantity = {
+        count: number;
+      };
+
+      type EquipmentItem = {
+        id: string;
+        category: string;
+        quantity: Quantity;
+      };
+
+      let usedAmmunitionId = "";
+      const { main, off, armor } = character.equipment;
+      const equipment_slots: EquipmentItem[] = [main, off];
+    
+      let hasAmmunition = false;
+    
+      equipment_slots.map((item) => {
+        if (item.category === "ammunition" && item.quantity.count > 0) {
+          hasAmmunition = true;
+          usedAmmunitionId = item.id;
+          item.quantity.count -= 1;
+          character.inventory.map((item) => {
+            if (item.id === usedAmmunitionId) {
+              item.quantity.count -= 1;
+            }
+          });
+        } else {
+          hasAmmunition = false;
+        }
+      });
+    
 
     if (!hasAmmunition) {
       // handle case when onUseAmmunition is false
-      return;
-    }
-
-    onRollDice({
-      character,
-      session,
-      dice: dice,
-      count: 1,
-      target: 0,
-      modifier: dice_mod,
-      source: dice_name,
-      active: damage_armor,
-      add_mod: false,
-    });
+      console.log("No ammunition")
+    } else {
+      update_session(session, websocket)
+      onRollDice({
+        character,
+        session,
+        dice: dice,
+        count: 1,
+        target: 0,
+        modifier: dice_mod,
+        source: dice_name,
+        active: damage_armor,
+        add_mod: false,
+      });
   };
+}
 
   return (
     <Container>

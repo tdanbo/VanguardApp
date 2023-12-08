@@ -1,5 +1,5 @@
-import InventoryEntry from "../InventoryEntry";
 import { CharacterEntry, ItemEntry, SessionEntry } from "../../Types";
+import InventoryEntry from "../InventoryEntry";
 
 import styled from "styled-components";
 import * as Constants from "../../Constants";
@@ -25,6 +25,7 @@ interface EquipmentBrowserProps {
   setInventoryState: (inventoryState: number) => void;
   gmMode: boolean;
   session: SessionEntry;
+  websocket: WebSocket;
 }
 
 function sortItems(a: ItemEntry, b: ItemEntry): number {
@@ -46,6 +47,7 @@ function EquipmentBrowser({
   setInventoryState,
   gmMode,
   session,
+  websocket,
 }: EquipmentBrowserProps) {
   const sortedList = [...itemList].sort(sortItems);
   return (
@@ -56,6 +58,7 @@ function EquipmentBrowser({
             <InventoryEntry
               session={session}
               character={character}
+              websocket={websocket}
               key={index}
               browser={true}
               index={index}

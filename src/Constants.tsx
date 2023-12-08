@@ -1,7 +1,7 @@
 // export const API = "http://localhost:8000";
 // export const WEBSOCKET = "ws://localhost:8000";
 export const API = "https://vanguard-api.onrender.com";
-export const WEBSOCKET = "ws://vanguard-api.onrender.com/session/";
+export const WEBSOCKET = "wss://vanguard-api.onrender.com/session/";
 
 export const COMBAT_BACKGROUND = "19, 23, 22";
 

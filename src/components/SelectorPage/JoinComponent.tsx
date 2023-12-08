@@ -1,24 +1,17 @@
-import { useContext, useState } from "react";
-import * as Constants from "../../Constants";
-import { SessionContext } from "../../contexts/_SessionContext";
+import { useState } from "react";
 import styled from "styled-components";
+import * as Constants from "../../Constants";
 import { getSession } from "../../functions/SessionsFunctions";
-import { useEffect } from "react";
-import { getCharacters } from "../../functions/SessionsFunctions";
 
 import { CharacterEntry, SessionEntry } from "../../Types";
-import {
-  CharacterContext,
-  defaultCharacter,
-} from "../../contexts/_CharacterContext";
 
 import {
+  ButtonContainer,
+  CenterContainer,
+  ControlButton,
   MainContainer,
   ModalContainer,
   Title,
-  CenterContainer,
-  ButtonContainer,
-  ControlButton,
 } from "./SelectorStyles";
 
 const InputButton = styled.input`
@@ -44,7 +37,7 @@ interface LoginProps {
 }
 
 function JoinComponent({ setGmMode, closeModal, setSession }: LoginProps) {
-  const [sessionName, setSessionName] = useState("");
+  const [sessionName, setSessionName] = useState("0nPFPbvRss");
 
   const handleSessionName = (e: any) => {
     setSessionName(e.target.value);

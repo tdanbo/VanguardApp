@@ -1,31 +1,13 @@
-import * as Constants from "../Constants";
-import { Qualities } from "../functions/rules/Qualities";
-import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
-import { useRoll } from "../functions/CombatFunctions";
-import { onChangeQuantity } from "../functions/CharacterFunctions";
-import {
-  onDeleteItem,
-  onEquipItem,
-  onUnequipItem,
-  onAddInventoryItem,
-} from "../functions/CharacterFunctions";
-
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
-
-interface InventoryEntryProps {
-  character: CharacterEntry;
-  session: SessionEntry;
-  index: number;
-  browser: boolean;
-  equipped: string;
-  item: ItemEntry;
-  id: string;
-  setInventoryState?: (inventoryState: number) => void;
-  gmMode: boolean;
-}
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import cloneDeep from "lodash/cloneDeep";
+import styled from "styled-components";
+import * as Constants from "../Constants";
+import { CharacterEntry, EmptyArmor, EmptyWeapon, ItemEntry, SessionEntry } from "../Types";
+import { useRoll } from "../functions/CombatFunctions";
+import { GetMaxSlots } from "../functions/RulesFunctions";
+import { update_session } from "../functions/SessionsFunctions";
+import { Qualities } from "../functions/rules/Qualities";
 const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -206,9 +188,23 @@ const QuantityBox = styled.button<RollBoxProps>`
   width: 40px;
 `;
 
+interface InventoryEntryProps {
+  character: CharacterEntry;
+  session: SessionEntry;
+  websocket: WebSocket;
+  index: number;
+  browser: boolean;
+  equipped: string;
+  item: ItemEntry;
+  id: string;
+  setInventoryState?: (inventoryState: number) => void;
+  gmMode: boolean;
+}
+
 function InventoryEntry({
   character,
   session,
+  websocket,
   item,
   browser,
   equipped,
@@ -218,31 +214,99 @@ function InventoryEntry({
 }: InventoryEntryProps) {
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
 
+  const generateRandomId = (length = 10) => {
+    return Math.random()
+      .toString(36)
+      .substring(2, 2 + length);
+  };
+
   const HandleEquip = (item: ItemEntry, position: string) => {
-    const updatedCharacter = onEquipItem({ character, item, position });
-    // setCharacter(updatedCharacter);
+    const equipment = character.equipment;
+  
+    const isItemInMainHand =
+      "id" in equipment.main && equipment.main.id === item.id;
+    const isItemInOffHand = "id" in equipment.off && equipment.off.id === item.id;
+    const isMainHand2H = "id" in equipment.main && equipment.main.equip === "2H";
+  
+    // Check if the same item is already equipped in the Main Hand (MH)
+    if (position === "OH" && (isItemInMainHand || isMainHand2H)) {
+      equipment.main = EmptyWeapon;
+    }
+  
+    if (position === "MH") {
+      equipment.main = cloneDeep(item);
+      if (isItemInOffHand) {
+        equipment.off = EmptyWeapon;
+      }
+    } else if (position === "OH") {
+      equipment.off = cloneDeep(item);
+    } else if (position === "2H") {
+      equipment.main = cloneDeep(item);
+      equipment.off = EmptyWeapon;
+    } else if (position === "AR") {
+      equipment.armor = cloneDeep(item);
+    }
+  
+    update_session(session, websocket);
   };
 
   const HandleUnequip = (position: string) => {
-    const updatedCharacter = onUnequipItem({ character, position });
-    // setCharacter(updatedCharacter);
+    const equipment = character.equipment;
+
+    if (position === "MH") {
+      equipment.main = EmptyWeapon;
+    } else if (position === "OH") {
+      equipment.off = EmptyWeapon;
+    } else if (position === "2H") {
+      equipment.main = EmptyWeapon;
+      equipment.off = EmptyWeapon;
+    } else if (position === "AR") {
+      equipment.armor = EmptyArmor;
+    }
+  
+    update_session(session, websocket);
   };
 
   const AddInventorySlot = () => {
-    const updatedCharacter = onAddInventoryItem({ character, item });
-    if (updatedCharacter) {
-      // setCharacter(updatedCharacter);
+    console.log("Adding Item")
+    const inventory = character.inventory;
+    if (inventory.length === GetMaxSlots(character) * 2) {
+      console.log("You can't carry any more items!")
+    } else {
+      const itemWithId: ItemEntry = {
+        ...item,
+        id: generateRandomId(),
+      };
+      inventory.push(itemWithId)    
     }
+    update_session(session, websocket);
     if (setInventoryState) {
       setInventoryState(1);
     }
   };
 
   const DeleteInventorySlot = (id: string) => {
-    const updatedCharacter = onDeleteItem({ id, character });
-    if (updatedCharacter) {
-      // setCharacter(updatedCharacter);
-    }
+      const inventory = character.inventory.filter((item) => item.id !== id);
+      const equipment = character.equipment;
+      // Check main equipment
+      if (equipment.main.id === id) {
+        equipment.main = EmptyWeapon;
+      }
+    
+      // Check off equipment
+      if (equipment.off.id === id) {
+        equipment.off = EmptyWeapon;
+      }
+    
+      // Check armor equipment
+      if (equipment.armor.id === id) {
+        equipment.armor = EmptyArmor;
+      }
+
+      character.inventory = inventory;
+      character.equipment = equipment;
+
+      update_session(session, websocket);
   };
 
   const onRollDice = useRoll();
@@ -297,23 +361,48 @@ function InventoryEntry({
   };
 
   const handlePlusClick = () => {
-    const newQuantity = item.quantity.count + 1;
-    const updatedCharacter = onChangeQuantity({
-      id: item.id,
-      count: newQuantity,
-      character,
+    const count = item.quantity.count + 1;
+    const inventory = character.inventory;
+    const equipment = character.equipment;
+  
+    inventory.forEach((item) => {
+      if (item.id === id) {
+        item.quantity.count = count;
+      }
     });
-    // setCharacter(updatedCharacter);
+  
+    if (equipment.main.id === id) {
+      equipment.main.quantity.count = count;
+    } else if (equipment.off.id === id) {
+      equipment.off.quantity.count = count;
+    } else if (equipment.armor.id === id) {
+      equipment.armor.quantity.count = count;
+    }
+  
+    update_session(session, websocket);
   };
 
   const handleMinusClick = () => {
-    const newQuantity = item.quantity.count - 1;
-    const updatedCharacter = onChangeQuantity({
-      id: item.id,
-      count: newQuantity,
-      character,
+    const count = item.quantity.count - 1;
+
+    const inventory = character.inventory;
+    const equipment = character.equipment;
+  
+    inventory.forEach((item) => {
+      if (item.id === id) {
+        item.quantity.count = count;
+      }
     });
-    // setCharacter(updatedCharacter);
+  
+    if (equipment.main.id === id) {
+      equipment.main.quantity.count = count;
+    } else if (equipment.off.id === id) {
+      equipment.off.quantity.count = count;
+    } else if (equipment.armor.id === id) {
+      equipment.armor.quantity.count = count;
+    }
+  
+    update_session(session, websocket);
   };
 
   function ConvertCurrency(cost: number) {

@@ -1,17 +1,11 @@
 import axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
 import { API } from "../Constants";
-import { CharacterEntry, SessionEntry, modifiedCreature } from "../Types";
-import { ExceptionalStats } from "./rules/ExceptionalStats";
-import { CheckAbility } from "./ActivesFunction";
 import {
-  ItemEntry,
   AbilityEntry,
-  ActiveKey,
-  StatName,
-  EmptyWeapon,
-  EmptyArmor,
+  ActiveKey, CharacterEntry, EmptyArmor, EmptyWeapon, ItemEntry, StatName, modifiedCreature
 } from "../Types";
+import { CheckAbility } from "./ActivesFunction";
 interface onDeleteProps {
   ability: AbilityEntry;
   character: CharacterEntry;
@@ -84,94 +78,6 @@ interface onChangeAbilityLevelProps {
   level: string;
   character: CharacterEntry;
 }
-
-export function onChangeAbilityLevel({
-  ability,
-  level,
-  character,
-}: onChangeAbilityLevelProps) {
-  if (!character) return;
-
-  const id = ability.id;
-
-  const updatedAbilities = character.abilities.map((ability) => {
-    if (ability.id === id) {
-      return {
-        ...ability,
-        level: level,
-      };
-    } else {
-      return ability;
-    }
-  });
-
-  const updatedCharacter = {
-    ...character,
-    abilities: updatedAbilities,
-  };
-
-  const updatedCharacterStats = ExceptionalStats({
-    character: updatedCharacter,
-    state: "change",
-    ability: ability,
-    level: level,
-    originalLevel: ability.level,
-  });
-
-  postSelectedCharacter(updatedCharacterStats);
-  return updatedCharacterStats;
-}
-export function onDeleteAbility({ ability, character }: onDeleteProps) {
-  if (!character) return;
-
-  const ability_id = ability.id;
-
-  const characterClone = cloneDeep(character);
-
-  const updatedCharacterStats = ExceptionalStats({
-    character: characterClone,
-    state: "sub",
-    ability: ability,
-    level: ability.level,
-    originalLevel: ability.level,
-  });
-
-  const updatedAbilities = updatedCharacterStats.abilities.filter(
-    (item) => item.id !== ability_id,
-  );
-
-  const updatedCharacter = {
-    ...updatedCharacterStats,
-    abilities: updatedAbilities,
-  };
-
-  postSelectedCharacter(updatedCharacter);
-  return updatedCharacter;
-}
-
-export const onAddAbilityItem = ({ character, ability }: onAddAbilityProps) => {
-  const abilityWithId = {
-    ...ability,
-    id: generateRandomId(),
-  };
-
-  const newAbilities: AbilityEntry[] = [...character.abilities, abilityWithId];
-
-  const updatedCharacter = {
-    ...character,
-    abilities: newAbilities,
-  };
-
-  const updatedCharacterStats = ExceptionalStats({
-    character: updatedCharacter,
-    state: "add",
-    ability: abilityWithId,
-    level: abilityWithId.level,
-    originalLevel: ability.level,
-  });
-  postSelectedCharacter(updatedCharacterStats);
-  return updatedCharacterStats;
-};
 
 export const getCreatureMovement = (creature: modifiedCreature) => {
   const movement: { [key: number]: number } = {
@@ -284,6 +190,7 @@ export const onAddCorruption = (character: CharacterEntry, value: number) => {
     ...character,
     corruption: character_corruption,
   };
+
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
 };
@@ -349,31 +256,6 @@ export const setBaseModifier = (character: CharacterEntry, value: number) => {
   };
   postSelectedCharacter(updatedCharacter);
   return updatedCharacter;
-};
-
-export const onAddInventoryItem = ({
-  character,
-  item,
-}: onAddCharacterProps) => {
-  const newInventory = cloneDeep(character.inventory);
-
-  if (newInventory.length === GetMaxSlots(character) * 2) {
-    return;
-  } else {
-    const itemWithId = {
-      ...item,
-      id: generateRandomId(),
-    };
-
-    const newUpdatedInventory: ItemEntry[] = [...newInventory, itemWithId];
-
-    const updatedCharacter = {
-      ...character,
-      inventory: newUpdatedInventory,
-    };
-    postSelectedCharacter(updatedCharacter);
-    return updatedCharacter;
-  }
 };
 
 interface UnEquipProps {
@@ -845,37 +727,6 @@ export function GetUsedSlots(character: CharacterEntry) {
   });
 
   return used_slots;
-}
-
-export function GetMaxSlots(character: CharacterEntry) {
-  let max_slots = Math.max(
-    Math.ceil(
-      (character.stats.strong.value + character.stats.resolute.value) / 2,
-    ),
-    10,
-  );
-
-  const storageModifiers = {
-    "Storage 2": 2,
-    "Storage 4": 4,
-    "Storage 6": 6,
-    "Storage 8": 8,
-    "Storage 10": 10,
-  };
-
-  character.inventory.forEach((item) => {
-    if (!item || !item.quality) return;
-
-    item.quality.forEach((quality) => {
-      Object.entries(storageModifiers).forEach(([key, modifiers]) => {
-        if (quality.includes(key)) {
-          max_slots += modifiers;
-        }
-      });
-    });
-  });
-
-  return max_slots;
 }
 
 export function GetBurnRate(character: CharacterEntry) {

@@ -1,8 +1,8 @@
-import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
-import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
 import styled from "styled-components";
-import AbilityEntryItem from "./AbilityEntryItem";
 import * as Constants from "../Constants";
+import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
+import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
+import AbilityEntryItem from "./AbilityEntryItem";
 const Container = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? "none" : "flex")};
   flex-direction: column;
@@ -14,6 +14,7 @@ interface NavigationProps {
   inventoryState: number;
   character: CharacterEntry;
   session: SessionEntry;
+  websocket: WebSocket;
 }
 
 function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
@@ -27,6 +28,7 @@ function AbilitySection({
   inventoryState,
   character,
   session,
+  websocket,
 }: NavigationProps) {
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
 
@@ -40,6 +42,7 @@ function AbilitySection({
             ability={ability}
             browser={false}
             character={character}
+            websocket={websocket}
           />
         );
       })}

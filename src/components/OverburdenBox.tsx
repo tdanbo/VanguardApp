@@ -1,7 +1,8 @@
-import * as Constants from "../Constants";
 import styled from "styled-components";
-import { GetUsedSlots, GetMaxSlots } from "../functions/CharacterFunctions";
+import * as Constants from "../Constants";
 import { CharacterEntry } from "../Types";
+import { GetUsedSlots } from "../functions/CharacterFunctions";
+import { GetMaxSlots } from "../functions/RulesFunctions";
 
 const Container = styled.div`
   display: flex;

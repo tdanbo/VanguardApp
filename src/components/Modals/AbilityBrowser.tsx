@@ -1,8 +1,8 @@
-import { AbilityEntry } from "../../Types";
+import { AbilityEntry, CharacterEntry, SessionEntry } from "../../Types";
 
-import AbilityEntryItem from "../../charactersheet/AbilityEntryItem";
-import * as Constants from "../../Constants";
 import styled from "styled-components";
+import * as Constants from "../../Constants";
+import AbilityEntryItem from "../../charactersheet/AbilityEntryItem";
 
 const Container = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? "none" : "flex")};
@@ -23,6 +23,9 @@ interface AbilityBrowserProps {
   abilityList: AbilityEntry[];
   setAbilityList: (abilityList: AbilityEntry[]) => void;
   setInventoryState: (inventoryState: number) => void;
+  character: CharacterEntry;
+  session: SessionEntry;
+  websocket: WebSocket;
 }
 
 function sortItems(a: AbilityEntry, b: AbilityEntry): number {
@@ -37,6 +40,9 @@ function AbilityBrowser({
   browserState,
   abilityList,
   setInventoryState,
+  character,
+  session,
+  websocket,
 }: AbilityBrowserProps) {
   const sortedList = [...abilityList].sort(sortItems);
   return (
@@ -45,6 +51,9 @@ function AbilityBrowser({
         {sortedList &&
           sortedList.map((ability, index) => (
             <AbilityEntryItem
+              character={character}
+              session={session}
+              websocket={websocket}
               key={index}
               browser={true}
               ability={ability}

@@ -1,44 +1,37 @@
 import "./App.css";
 import "./index.css";
 
-import * as Constants from "./Constants";
 import styled from "styled-components";
-import CharacterProvider from "./contexts/_CharacterContext";
-import UserProvider from "./contexts/_UserContext";
-import SessionProvider from "./contexts/_SessionContext";
+import * as Constants from "./Constants";
 
 import EquipmentBrowser from "./components/Modals/EquipmentBrowser";
 
-import { useState, useRef, useEffect } from "react";
+import { useRef, useState } from "react";
 import AbilityBrowser from "./components/Modals/AbilityBrowser";
 
-import CombatSection from "./components/Sections/CombatSection";
-import DiceSection from "./components/Sections/DiceSection";
-import SearchAbilityBox from "./components/SearchAbilityBox";
-import SearchItemBox from "./components/SearchItemBox";
-import SearchMonsterBox from "./components/SearchMonsterBox";
 import {
   AbilityEntry,
-  ItemEntry,
-  CreatureEntry,
   CharacterEntry,
-  SessionEntry,
-  EmptySession,
+  CreatureEntry,
   EmptyCharacter,
+  EmptySession,
+  ItemEntry,
+  SessionEntry,
 } from "./Types";
+import CombatSection from "./components/Sections/CombatSection";
+import DiceSection from "./components/Sections/DiceSection";
 
-import CreatureBrowser from "./components/Modals/CreatureBrowser";
-import RosterBrowser from "./components/Modals/RosterBrowser";
-import EquipmentFooter from "./components/FooterNavigation/EquipmentFooter";
 import AbilityFooter from "./components/FooterNavigation/AbilityFooter";
+import EquipmentFooter from "./components/FooterNavigation/EquipmentFooter";
 import MonsterFooter from "./components/FooterNavigation/MonsterFooter";
 import TradingFooter from "./components/FooterNavigation/TradingFooter";
-import SearchRosterBox from "./components/SearchRosterBox";
-import SearchCreatureBox from "./components/SearchCreatureBox";
+import CreatureBrowser from "./components/Modals/CreatureBrowser";
+import RosterBrowser from "./components/Modals/RosterBrowser";
 
 import CharacterSheet from "./charactersheet/CharacterSheet";
 import GameMaster from "./gamemaster/GameMaster";
 
+import SelectorNavigation from "./components/NavigationControl/SelectorNavigation";
 import useWebSocket from "./websocket";
 
 const Row = styled.div`
@@ -107,8 +100,6 @@ const BrowserContainer = styled.div`
   overflow: scroll;
   scrollbar-width: none !important;
 `;
-import SelectorNavigation from "./components/NavigationControl/SelectorNavigation";
-import { getSession } from "./functions/SessionsFunctions";
 
 function App() {
   // This function is the main function for setting the session.
@@ -190,6 +181,7 @@ function App() {
           <EquipmentBrowser
             session={session}
             character={character}
+            websocket={websocket}
             browserState={browserState}
             itemList={itemList}
             setItemList={setItemList}
@@ -197,6 +189,9 @@ function App() {
             gmMode={gmMode}
           />
           <AbilityBrowser
+            session={session}
+            character={character}
+            websocket={websocket}
             browserState={browserState}
             abilityList={abilityList}
             setAbilityList={setAbilityList}

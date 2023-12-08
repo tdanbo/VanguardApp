@@ -1,19 +1,16 @@
+import { useEffect, useState } from "react";
 import * as Constants from "../Constants";
 import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
-import { useState, useContext, useEffect } from "react";
 
-import { useRoll } from "../functions/CombatFunctions";
-import { onAddCorruption } from "../functions/CharacterFunctions";
-import { Ability } from "../Types";
 import styled from "styled-components";
+import { Ability } from "../Types";
+import { onAddCorruption } from "../functions/CharacterFunctions";
+import { useRoll } from "../functions/CombatFunctions";
 
-import {
-  onDeleteAbility,
-  onAddAbilityItem,
-  onChangeAbilityLevel,
-} from "../functions/CharacterFunctions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSkull } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { update_session } from "../functions/SessionsFunctions";
+import { ExceptionalStats } from "../functions/rules/ExceptionalStats";
 
 interface LevelComponentProps {
   level: string;
@@ -253,6 +250,7 @@ interface AbilityEntryItemProps {
   setInventoryState?: (inventoryState: number) => void;
   character: CharacterEntry;
   session: SessionEntry;
+  websocket: WebSocket;
 }
 
 function AbilityEntryItem({
@@ -261,8 +259,15 @@ function AbilityEntryItem({
   setInventoryState,
   character,
   session,
+  websocket,
 }: AbilityEntryItemProps) {
   const [abilityLevel, setAbilityLevel] = useState<string>(ability.level);
+
+  const generateRandomId = (length = 10) => {
+    return Math.random()
+      .toString(36)
+      .substring(2, 2 + length);
+  };
 
   useEffect(() => {
     if (browser) {
@@ -281,32 +286,80 @@ function AbilityEntryItem({
   const [expanded, setExpanded] = useState<boolean>(false);
 
   const AddAbilitySlot = () => {
-    const updatedCharacter = onAddAbilityItem({ character, ability });
-    if (updatedCharacter) {
-      // setCharacter(updatedCharacter);
-    }
+    const abilityWithId = {
+      ...ability,
+      id: generateRandomId(),
+    };
+    
+    character.abilities.push(abilityWithId);
+  
+    const update_stats = ExceptionalStats({
+      character: character,
+      state: "add",
+      ability: abilityWithId,
+      level: abilityWithId.level,
+      originalLevel: ability.level,
+    });
+
+    character.stats = update_stats.stats;
+    update_session(session, websocket);
     if (setInventoryState) {
       setInventoryState(2);
     }
   };
 
-  const DeleteAbilitySlot = (ability: AbilityEntry) => {
-    const updatedCharacter = onDeleteAbility({ ability, character });
-    if (updatedCharacter) {
-      // setCharacter(updatedCharacter);
-    }
+  const DeleteAbilitySlot = (ability: AbilityEntry) => {  
+      console.log("Delete Ability Slot")
+
+      const ability_id = ability.id;
+      const new_abilities = character.abilities.filter(
+        (item) => item.id !== ability_id,
+      );
+    
+      character.abilities = new_abilities;
+
+      const update_stats = ExceptionalStats({
+        character: character,
+        state: "sub",
+        ability: ability,
+        level: ability.level,
+        originalLevel: ability.level,
+      });
+    
+      character.stats = update_stats.stats;
+
+      update_session(session, websocket);
   };
 
   function handleLevelChange(ability: AbilityEntry, level: string) {
     setAbilityLevel(level);
-    const updatedCharacter = onChangeAbilityLevel({
-      ability,
-      level,
-      character,
+
+    const id = ability.id;
+  
+    const abilities = character.abilities.map((ability) => {
+      if (ability.id === id) {
+        return {
+          ...ability,
+          level: level,
+        };
+      } else {
+        return ability;
+      }
     });
-    if (updatedCharacter) {
-      // setCharacter(updatedCharacter);
-    }
+  
+    character.abilities = abilities;
+  
+    const update_stats = ExceptionalStats({
+      character: character,
+      state: "change",
+      ability: ability, 
+      level: level,
+      originalLevel: ability.level,
+    });
+
+    character.stats = update_stats.stats;
+  
+    update_session(session, websocket);
   }
 
   const onRollDice = useRoll();

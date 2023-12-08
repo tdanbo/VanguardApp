@@ -19,32 +19,37 @@ const Container = styled.div`
 interface CorruptionControlsProps {
   character: CharacterEntry;
   session: SessionEntry;
+  websocket: WebSocket;
 }
 
-function CorruptionControls({ character, session }: CorruptionControlsProps) {
+function CorruptionControls({ character, session, websocket }: CorruptionControlsProps) {
   const actives = UpdateActives(character);
 
   return (
     <Container>
       <ActiveBox
+        websocket={websocket}
         session={session}
         active_name={"attack"}
         active={actives["attack"] as AttackActive}
         character={character}
       />
       <ActiveBox
+        websocket={websocket}
         session={session}
         active_name={"defense"}
         active={actives["defense"] as DefenseActive}
         character={character}
       />
       <ActiveBox
+        websocket={websocket}
         session={session}
         active_name={"casting"}
         active={actives["casting"] as SimpleActive}
         character={character}
       />
       <ActiveBox
+        websocket={websocket}
         session={session}
         active_name={"sneaking"}
         active={actives["sneaking"] as SimpleActive}
