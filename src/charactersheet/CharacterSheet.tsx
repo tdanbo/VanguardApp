@@ -146,8 +146,8 @@ function CharacterSheet({
         </ScrollContainer>
       </InventoryContainer>
       <FooterCenterContainer>
-        <RestBox character={character} session={session} />
-        <ResourcesBox character={character} />
+        <RestBox character={character} session={session} websocket={websocket} />
+        <ResourcesBox character={character} session={session} websocket={websocket} />
       </FooterCenterContainer>
     </>
   );

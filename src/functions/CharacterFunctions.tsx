@@ -690,21 +690,6 @@ export function swapActives(
   return updatedCharacter;
 }
 
-export function UpdateResources(
-  character: CharacterEntry,
-  food: number,
-  water: number,
-  money: number,
-) {
-  const newCharacter = cloneDeep(character);
-
-  newCharacter.rations.food = food;
-  newCharacter.rations.water = water;
-  newCharacter.money = money;
-  postSelectedCharacter(newCharacter);
-  return newCharacter;
-}
-
 export function GetUsedSlots(character: CharacterEntry) {
   let used_slots = character.inventory.length;
 

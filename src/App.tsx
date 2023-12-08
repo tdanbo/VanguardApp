@@ -283,7 +283,7 @@ function App() {
       </Column>
       <Column>
         <CombatContainer ref={scrollableRef}>
-          <CombatSection scrollRef={scrollableRef} />
+          <CombatSection scrollRef={scrollableRef} session={session} />
         </CombatContainer>
         <FooterRightContainer>
           <DiceSection />

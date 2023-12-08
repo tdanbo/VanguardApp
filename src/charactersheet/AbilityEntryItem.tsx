@@ -366,6 +366,7 @@ function AbilityEntryItem({
 
   const RollCorruptionDice = async () => {
     const dice_result = await onRollDice({
+      websocket,
       session,
       character,
       dice: 4,
@@ -400,6 +401,7 @@ function AbilityEntryItem({
                 type={ability.type}
                 onClick={() =>
                   onRollDice({
+                    websocket,
                     session,
                     character,
                     dice: roll.dice,
@@ -424,6 +426,7 @@ function AbilityEntryItem({
                 type={ability.type}
                 onClick={() =>
                   onRollDice({
+                    websocket,
                     session,
                     character,
                     dice: roll.dice,
@@ -448,6 +451,7 @@ function AbilityEntryItem({
                 type={ability.type}
                 onClick={() =>
                   onRollDice({
+                    websocket,
                     session,
                     character,
                     dice: roll.dice,

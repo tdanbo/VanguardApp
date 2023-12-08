@@ -1,21 +1,21 @@
-import styled from "styled-components";
-import { CharacterEntry, SessionEntry } from "../Types";
-import * as Constants from "../Constants";
-import { CharacterPortraits } from "../Images";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { cloneDeep } from "lodash";
-import AbilityEntryItem from "../charactersheet/AbilityEntryItem";
-import { useState, memo, useEffect } from "react";
 import {
+  faCoins,
   faHeart,
   faShield,
   faSkull,
   faXmark,
-  faCoins,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cloneDeep } from "lodash";
+import { memo, useEffect, useState } from "react";
+import styled from "styled-components";
+import * as Constants from "../Constants";
+import { CharacterPortraits } from "../Images";
+import { CharacterEntry, SessionEntry } from "../Types";
+import AbilityEntryItem from "../charactersheet/AbilityEntryItem";
 
-import Icon from "@mdi/react";
 import { mdiSword } from "@mdi/js";
+import Icon from "@mdi/react";
 
 import { UpdateActives } from "../functions/ActivesFunction";
 
@@ -238,6 +238,7 @@ interface EncounterBoxProps {
   setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
   character: CharacterEntry;
   session: SessionEntry;
+  websocket: WebSocket;
 }
 
 function EncounterCreatureEntry({
@@ -248,6 +249,7 @@ function EncounterCreatureEntry({
   setCreatureEdit,
   character,
   session,
+  websocket,
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
   const actives = UpdateActives(creatureClone);
@@ -448,6 +450,7 @@ function EncounterCreatureEntry({
         {creatureClone.abilities.map((ability, index) => {
           return (
             <AbilityEntryItem
+              websocket={websocket}
               character={character}
               session={session}
               key={`ability-${ability.name}-${index}`}

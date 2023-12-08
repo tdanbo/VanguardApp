@@ -1,8 +1,8 @@
 import axios from "axios";
-import { CharacterEntry, CombatEntry, SessionEntry } from "../Types";
-import { useContext } from "react";
-import { API } from "../Constants";
 import { v4 as uuidv4 } from "uuid";
+import { API } from "../Constants";
+import { CharacterEntry, CombatEntry, SessionEntry } from "../Types";
+import { update_session } from "../functions/SessionsFunctions";
 export async function getCombatLog(id: string): Promise<CombatEntry[]> {
   const response = await axios.get<CombatEntry[]>(`${API}/api/combatlog/${id}`);
   return response.data;
@@ -18,6 +18,7 @@ interface RollDiceProps {
   add_mod: boolean;
   character: CharacterEntry;
   session: SessionEntry;
+  websocket: WebSocket;
 }
 
 export function useRoll() {
@@ -32,6 +33,7 @@ export function useRoll() {
     modifier,
     character,
     session,
+    websocket
   }: RollDiceProps) => {
     let roll = 0;
     let total = 0;
@@ -70,10 +72,10 @@ export function useRoll() {
       uuid: uuidv4(),
     };
 
-    // const updated_character = setBaseModifier(character, 0);
-    // setCharacter(updated_character);
-    await postCombatLog(NewCombatEntry);
-    // sendRequest("combatlog"); // asking websocket to update session combatlog for all clients
+    session.combatlog.push(NewCombatEntry);
+    session.combatlog.slice(-20);
+
+    update_session(session, websocket)
     return roll_result;
   };
 }

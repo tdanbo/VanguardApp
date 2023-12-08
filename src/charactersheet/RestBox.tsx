@@ -1,11 +1,11 @@
 import * as Constants from "../Constants";
-import { RestCharacter, GetBurnRate } from "../functions/CharacterFunctions";
+import { GetBurnRate, RestCharacter } from "../functions/CharacterFunctions";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import { useRoll } from "../functions/CombatFunctions";
 import { CharacterEntry, SessionEntry } from "../Types";
+import { useRoll } from "../functions/CombatFunctions";
 
 const OuterContainer = styled.div`
   display: flex;
@@ -61,9 +61,10 @@ const Divider = styled.div`
 interface RestBoxProps {
   character: CharacterEntry;
   session: SessionEntry;
+  websocket: WebSocket;
 }
 
-function RestBox({ character, session }: RestBoxProps) {
+function RestBox({ character, session, websocket }: RestBoxProps) {
   const onRollDice = useRoll(); // Moved this outside the HandleRest function
 
   const HandleRest = () => {
@@ -76,6 +77,7 @@ function RestBox({ character, session }: RestBoxProps) {
     // Otherwise, you can directly call onRollDice with the required parameters.
     const handleRoll = () => {
       onRollDice({
+        websocket,
         session,
         character,
         dice: 20,

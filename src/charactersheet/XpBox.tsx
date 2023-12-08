@@ -1,9 +1,9 @@
-import * as Constants from "../Constants";
-import { getCharacterXp } from "../functions/CharacterFunctions";
 import styled from "styled-components";
 import "../App.css";
-import { update_session } from "../functions/SessionsFunctions";
+import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
+import { getCharacterXp } from "../functions/CharacterFunctions";
+import { update_session } from "../functions/SessionsFunctions";
 
 const Container = styled.div`
   margin-right: 20px;
@@ -35,8 +35,7 @@ interface XpBoxProps {
 function XpBox({ session, character, websocket }: XpBoxProps) {
   const handleAddXp = () => {
     character.details.xp_earned += 1;
-    update_session(session);
-    websocket.send(JSON.stringify(session));
+    update_session(session, websocket);
   };
 
   const handleSubXp = () => {
@@ -44,9 +43,7 @@ function XpBox({ session, character, websocket }: XpBoxProps) {
     if (character.details.xp_earned < 0) {
       character.details.xp_earned = 0;
     }
-    update_session(session);
-    websocket.send(JSON.stringify(session));
-    // websocket.send(JSON.stringify("Update Session"));
+    update_session(session, websocket);
   };
 
   return (

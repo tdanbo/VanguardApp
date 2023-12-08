@@ -1,27 +1,27 @@
-import * as Constants from "../Constants";
 import styled from "styled-components";
+import * as Constants from "../Constants";
 
-import { useState, useEffect } from "react";
-import { CharacterEntry } from "../Types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { UpdateResources } from "../functions/CharacterFunctions";
 import {
-  faCircle,
-  faDroplet,
+  faAngleLeft,
   faCarrot,
   faCheck,
-  faAngleLeft,
+  faCircle,
+  faDroplet,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+import { CharacterEntry, SessionEntry } from "../Types";
+import { update_session } from "../functions/SessionsFunctions";
 
 import {
-  MainContainer,
-  ModalContainer,
-  Title,
+  ButtonContainer,
   CenterContainer,
   Divider,
   LargeCircleButton,
   LargeCircleButtonDisabled,
-  ButtonContainer,
+  MainContainer,
+  ModalContainer,
+  Title,
 } from "../components/SelectorPage/SelectorStyles";
 
 const OrangeColor = "rgba(205, 112, 57, 0.7)";
@@ -329,9 +329,11 @@ function ResourceChanger({
 
 interface ResourceBoxProps {
   character: CharacterEntry;
+  session: SessionEntry
+  websocket: WebSocket;
 }
 
-function ResourcesBox({ character }: ResourceBoxProps) {
+function ResourcesBox({ character, session, websocket }: ResourceBoxProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const stopPropagation = (e: React.MouseEvent) => {
@@ -363,8 +365,12 @@ function ResourcesBox({ character }: ResourceBoxProps) {
   };
 
   const handleSubmit = () => {
-    const UpdatedCharacter = UpdateResources(character, food, water, money);
-    // setCharacter(UpdatedCharacter);
+
+    character.rations.food = food;
+    character.rations.water = water;
+    character.money = money;
+
+    update_session(session, websocket)
     setIsModalOpen(false);
   };
   return (

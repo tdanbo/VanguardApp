@@ -313,6 +313,7 @@ function InventoryEntry({
 
   const handleRoll = () => {
     onRollDice({
+      websocket,
       dice: item.roll.dice,
       modifier: item.roll.mod,
       count: 1,
