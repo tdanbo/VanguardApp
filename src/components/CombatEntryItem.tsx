@@ -115,11 +115,7 @@ const FumbledSubText = styled.div`
   color: ${Constants.WIDGET_SECONDARY_FONT};
 `;
 
-function CombatEntryItem({
-  combatEntry,
-  index,
-  session,
-}: CombatEntryItemProps) {
+function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   const EntryColor = () => {
     return (
       Constants.TYPE_COLORS[combatEntry.active.toLowerCase()] ||
@@ -149,7 +145,7 @@ function CombatEntryItem({
   const [_rollCycles, setRollCycles] = useState<number>(0);
 
   useEffect(() => {
-    if (index !== 0) {
+    if (index !== 19) {
       // Only allow the animation effect on the first item
       setCurrentDisplay(combatEntry.result);
       return;
@@ -160,7 +156,7 @@ function CombatEntryItem({
     const rollInterval = setInterval(() => {
       setCurrentDisplay(Math.floor(Math.random() * combatEntry.dice) + 1); // assuming dice values start from 1
       setRollCycles((prev) => prev + 1);
-    }, 75); // This determines how fast the numbers change
+    }, 100); // This determines how fast the numbers change
 
     // After certain cycles or time, finalize the result and clear the timer
     const timer = setTimeout(() => {

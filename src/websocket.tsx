@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import { SessionEntry } from "./Types";
-import { set } from "lodash";
 import * as Constant from "./Constants";
 
 function useWebSocket(

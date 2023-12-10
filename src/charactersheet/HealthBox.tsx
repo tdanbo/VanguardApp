@@ -43,10 +43,6 @@ const Row = styled.div`
   border-radius: ${Constants.BORDER_RADIUS};
 `;
 
-interface ValueBoxProps {
-  placement: number;
-}
-
 const ValueBoxRight = styled.div`
   display: flex;
   align-items: center;

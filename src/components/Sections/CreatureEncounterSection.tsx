@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { CharacterEntry, SessionEntry } from "../../Types";
-import { getCharacters } from "../../functions/SessionsFunctions";
 import EncounterCharacterEntry from "../EncounterCharacterEntry";
 import EncounterCreatureEntry from "../EncounterCreatureEntry";
 import { Stat } from "../../Types";

@@ -25,42 +25,49 @@ function DiceSection({ character, session, websocket }: DiceBoxProps) {
         character={character}
         session={session}
         websocket={websocket}
+        isCreature={false}
       />
       <DiceBox
         type_name={6}
         character={character}
         session={session}
         websocket={websocket}
+        isCreature={false}
       />
       <DiceBox
         type_name={8}
         character={character}
         session={session}
         websocket={websocket}
+        isCreature={false}
       />
       <DiceBox
         type_name={10}
         character={character}
         session={session}
         websocket={websocket}
+        isCreature={false}
       />
       <DiceBox
         type_name={12}
         character={character}
         session={session}
         websocket={websocket}
+        isCreature={false}
       />
       <DiceBox
         type_name={20}
         character={character}
         session={session}
         websocket={websocket}
+        isCreature={false}
       />
       <DiceBox
         type_name={100}
         character={character}
         session={session}
         websocket={websocket}
+        isCreature={false}
       />
     </Container>
   );

@@ -13,7 +13,6 @@ import BackgroundImage from "../assets/icons/background.jpeg";
 import * as Constants from "../Constants";
 import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { update_session } from "../functions/SessionsFunctions";
 import {
   faSearch,
   faShield,
@@ -21,8 +20,6 @@ import {
   faGhost,
   faUsers,
   faPlus,
-  faXmark,
-  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   AbilityEntry,
@@ -97,20 +94,29 @@ const Input = styled.input`
   height: 35px;
 `;
 
-const Button = styled.button`
+interface ButtonProps {
+  $isactive: string;
+}
+
+const Button = styled.button<ButtonProps>`
   display: flex;
-  flex-direction: row;
   flex-grow: 1;
+  flex: 1;
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: 5px;
+  color: ${(props) =>
+    props.$isactive === "true"
+      ? Constants.WIDGET_SECONDARY_FONT
+      : Constants.WIDGET_PRIMARY_FONT};
+  cursor: pointer;
+  font-size: 16px;
   width: 50px;
   max-width: 50px;
   height: 40px;
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  align-items: center;
   justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
+  align-items: center;
+  opacity: ${(props) => (props.$isactive === "true" ? 1 : 0.5)};
 `;
 
 const AddButton = styled.button`
@@ -125,13 +131,6 @@ const AddButton = styled.button`
   justify-content: center;
   font-weight: bold;
   color: ${Constants.WIDGET_SECONDARY_FONT};
-`;
-
-const KillButtonRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: 10px;
 `;
 
 const ItemContainer = styled.div`
@@ -173,6 +172,7 @@ interface BrowserSectionProps {
   creaturesList: CharacterEntry[];
   setCreaturesList: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   isCreature: boolean;
+  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 let creatureList: CharacterEntry[] = [];
@@ -192,12 +192,12 @@ function BrowserSection({
   creaturesList,
   setCreaturesList,
   isCreature,
+  setGmMode,
 }: BrowserSectionProps) {
   const [entryList, setEntryList] = useState<
     (ItemEntry | AbilityEntry | CreatureEntry | CharacterEntry)[]
   >([]);
 
-  const [browserState, setBrowserState] = useState(0);
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [categorySelect, setCategorySelect] = useState<string>();
@@ -331,7 +331,7 @@ function BrowserSection({
 
   const [equipmentList, setEquipmentList] = useState<ItemEntry[]>([]);
   const [abilitiesList, setAbilitiesList] = useState<AbilityEntry[]>([]);
-  const [charactersList, setCharactersList] = useState<CharacterEntry[]>([]);
+  const [_charactersList, setCharactersList] = useState<CharacterEntry[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -367,8 +367,6 @@ function BrowserSection({
     } else if (categorySelect === "creatures") {
       setEntryList(creaturesList);
     } else if (categorySelect === "characters") {
-      console.log("CHARACTERS");
-      console.log(session.characters);
       setEntryList(session.characters);
     }
   }, [session, categorySelect]);
@@ -391,7 +389,6 @@ function BrowserSection({
   return (
     <>
       <HeaderContainer>
-        {/* <Container hidden={browserState !== 5}> */}
         <Container>
           {categorySelect === "creatures" ? (
             isModalOpen ? (
@@ -408,12 +405,12 @@ function BrowserSection({
                 />
               </OverlayStyles>
             ) : (
-              <Button onClick={handleOpen}>
+              <Button $isactive={"false"} onClick={handleOpen}>
                 <FontAwesomeIcon icon={faPlus} />
               </Button>
             )
           ) : (
-            <Button>
+            <Button $isactive={"false"}>
               <FontAwesomeIcon icon={faSearch} />
             </Button>
           )}
@@ -421,24 +418,35 @@ function BrowserSection({
             className="flex-grow"
             onChange={(e) => setSearch(e.target.value)}
           />
-          <Button onClick={() => HandleCategoryChange("abilities")}>
+          <Button
+            $isactive={(categorySelect === "abilities").toString()}
+            onClick={() => HandleCategoryChange("abilities")}
+          >
             <FontAwesomeIcon icon={faBolt} />
           </Button>
-          <Button onClick={() => HandleCategoryChange("equipment")}>
+          <Button
+            $isactive={(categorySelect === "equipment").toString()}
+            onClick={() => HandleCategoryChange("equipment")}
+          >
             <FontAwesomeIcon icon={faShield} />
           </Button>
           {isGm ? (
-            <Button onClick={() => HandleCategoryChange("creatures")}>
+            <Button
+              $isactive={(categorySelect === "creatures").toString()}
+              onClick={() => HandleCategoryChange("creatures")}
+            >
               <FontAwesomeIcon icon={faGhost} />
             </Button>
           ) : null}
-          <Button onClick={() => HandleCategoryChange("characters")}>
+          <Button
+            $isactive={(categorySelect === "characters").toString()}
+            onClick={() => HandleCategoryChange("characters")}
+          >
             <FontAwesomeIcon icon={faUsers} />
           </Button>
         </Container>
       </HeaderContainer>
       <CombatContainer>
-        {/* <Container hidden={browserState !== 1}> */}
         <ItemContainer>
           {sortedItemList &&
             sortedItemList.map((entry, index) => {
@@ -476,7 +484,6 @@ function BrowserSection({
                 entry.entry === "CharacterEntry" &&
                 categorySelect === "creatures"
               ) {
-                console.log(entry);
                 return (
                   <CreatureEntryItem
                     key={index}
@@ -487,10 +494,10 @@ function BrowserSection({
                     encounter={encounter}
                     setEncounter={setEncounter}
                     gmMode={gmMode}
-                    browserState={browserState}
                     setCharacterName={setCharacterName}
                     setIsCreature={setIsCreature}
                     websocket={websocket}
+                    setGmMode={setGmMode}
                   />
                 );
               } else if (

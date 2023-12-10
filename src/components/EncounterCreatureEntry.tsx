@@ -394,7 +394,7 @@ function EncounterCreatureEntry({
           </ActiveBox>
         ) : null}
         {actives.attack.dice2_name !== "Knuckles" ? (
-          <ActiveBox key={`active-box-1`}>
+          <ActiveBox key={`active-box-2`}>
             <ActiveStat
               title={`When this creature is attacking ${formatNumber(
                 attack, // If alt attack is not a thing yet, this is sufficient

@@ -4,7 +4,7 @@ import { CharacterEntry, SessionEntry } from "../../Types";
 import { CharacterPortraits } from "../../Images";
 import { update_session } from "../../functions/SessionsFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { GetMaxToughness } from "../../functions/RulesFunctions";
+// import { GetMaxToughness } from "../../functions/RulesFunctions";
 import {
   faCheck,
   faChevronRight,
@@ -74,97 +74,93 @@ const PortraitCenter = styled.div<PortraitCenterProps>`
   height: 100%;
 `;
 
-const Toughness = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  width: 20px;
-  max-width: 50px;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-`;
+// const Toughness = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   flex-grow: 1;
+//   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+//   width: 20px;
+//   max-width: 50px;
+//   height: 100%;
+//   align-items: center;
+//   justify-content: center;
+//   color: ${Constants.WIDGET_SECONDARY_FONT};
+// `;
 
-const RightTickBar = styled.div<BgColor>`
-  display: flex;
-  flex-grow: 1;
-  background-color: ${(props) => props.$bgcolor};
-  border-right: 1px solid ${Constants.WIDGET_BORDER};
-  border-top: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
-`;
+// const RightTickBar = styled.div<BgColor>`
+//   display: flex;
+//   flex-grow: 1;
+//   background-color: ${(props) => props.$bgcolor};
+//   border-right: 1px solid ${Constants.WIDGET_BORDER};
+//   border-top: 1px solid ${Constants.WIDGET_BORDER};
+//   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+// `;
 
-const Divider = styled.div`
-  display: flex;
-  background-color: rgba(255, 255, 255, 0.5);
-  width: 2px;
-  height: 16px;
-  margin: 4px;
-`;
+// const Divider = styled.div`
+//   display: flex;
+//   background-color: rgba(255, 255, 255, 0.5);
+//   width: 2px;
+//   height: 16px;
+//   margin: 4px;
+// `;
 
-const ValueBoxLeft = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  flex-grow: 1;
-  justify-content: center;
-  background-color: ${Constants.WIDGET_BACKGROUND};
+// const ValueBoxLeft = styled.div`
+//   display: flex;
+//   align-items: center;
+//   flex-direction: row;
+//   flex-grow: 1;
+//   justify-content: center;
+//   background-color: ${Constants.WIDGET_BACKGROUND};
 
-  max-width: 60px;
-  min-width: 60px;
-  color: ${Constants.WIDGET_PRIMARY_FONT};
-  border: 1px solid ${Constants.WIDGET_BORDER};
+//   max-width: 60px;
+//   min-width: 60px;
+//   color: ${Constants.WIDGET_PRIMARY_FONT};
+//   border: 1px solid ${Constants.WIDGET_BORDER};
 
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-top-left-radius: ${Constants.BORDER_RADIUS};
-  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
+//   border-top-right-radius: 0;
+//   border-bottom-right-radius: 0;
+//   border-top-left-radius: ${Constants.BORDER_RADIUS};
+//   border-bottom-left-radius: ${Constants.BORDER_RADIUS};
 
-  h1,
-  h2 {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
+//   h1,
+//   h2 {
+//     margin: 0;
+//     padding: 0;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     width: 100%;
+//   }
 
-  h1 {
-    font-weight: bold;
-    font-size: 25px;
-  }
+//   h1 {
+//     font-weight: bold;
+//     font-size: 25px;
+//   }
 
-  h2 {
-    display: none;
-    font-size: 18px;
-  }
+//   h2 {
+//     display: none;
+//     font-size: 18px;
+//   }
 
-  &:hover h1 {
-    display: none;
-  }
+//   &:hover h1 {
+//     display: none;
+//   }
 
-  &:hover h2 {
-    display: flex;
-  }
-`;
+//   &:hover h2 {
+//     display: flex;
+//   }
+// `;
 
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-  max-height: 35px;
-  min-height: 35px;
-  max-width: 200px;
-  background-color: ${Constants.BACKGROUND};
-  border-radius: ${Constants.BORDER_RADIUS};
-`;
-
-interface BgColor {
-  $bgcolor: string;
-}
+// const Row = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   flex: 1;
+//   max-height: 35px;
+//   min-height: 35px;
+//   max-width: 200px;
+//   background-color: ${Constants.BACKGROUND};
+//   border-radius: ${Constants.BORDER_RADIUS};
+// `;
 
 interface SessionBoxProps {
   character: CharacterEntry;
@@ -201,10 +197,10 @@ function CharacterBox({
     update_session(session, character, isCreature, websocket);
   };
 
-  const maxToughness = GetMaxToughness(character);
+  // const maxToughness = GetMaxToughness(character);
 
-  const damage_toughness = character.damage;
-  const remaining_toughness = maxToughness - character.damage;
+  // const damage_toughness = character.damage;
+  // const remaining_toughness = maxToughness - character.damage;
 
   return (
     <Container>
@@ -232,7 +228,7 @@ function CharacterBox({
           <h2>
             {remaining_toughness}
             <Divider></Divider>
-            {maxToughness}
+            // {maxToughness}
           </h2>
         </ValueBoxLeft>
         {Array.from({ length: remaining_toughness }).map((_, index) => {

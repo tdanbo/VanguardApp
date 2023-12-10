@@ -282,7 +282,7 @@ export const EmptyCharacter: CharacterEntry = {
     discreet: { value: 0, mod: 0 },
     persuasive: { value: 0, mod: 0 },
     quick: { value: 0, mod: 0 },
-    resolute: { value: 0, mod: 0 },
+    resolute: { value: 10, mod: 0 },
     strong: { value: 0, mod: 0 },
     vigilant: { value: 0, mod: 0 },
     accurate: { value: 0, mod: 0 },

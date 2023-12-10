@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { cloneDeep } from "lodash";
-import { updateSession } from "../functions/SessionsFunctions";
+import { update_session } from "../functions/SessionsFunctions";
 import { useState } from "react";
-import { SessionEntry } from "../Types";
+import { EmptyCharacter, SessionEntry } from "../Types";
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
@@ -52,9 +51,10 @@ const HourContainer = styled.button<HourContainerProps>`
 
 interface TimeTrackBoxProps {
   session: SessionEntry;
+  websocket: WebSocket;
 }
 
-function TimeTrackBox({ session }: TimeTrackBoxProps) {
+function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {
   // Ensure that the initial value is a valid hour (0-23); otherwise, set it to null
   const [activeHour, setActiveHour] = useState<number | null>(
     typeof session.travel.time === "number" &&
@@ -66,12 +66,9 @@ function TimeTrackBox({ session }: TimeTrackBoxProps) {
 
   const handleTimeChange = async (time: number) => {
     setActiveHour(time); // Set the active hour
-    const updatedSession = cloneDeep(session);
-    updatedSession.travel.time = time;
+    session.travel.time = time;
 
-    const newSession = await updateSession(updatedSession);
-    console.log(newSession);
-    // setSession(newSession);
+    update_session(session, EmptyCharacter, false, websocket);
   };
 
   return (

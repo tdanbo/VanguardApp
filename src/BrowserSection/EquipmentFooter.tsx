@@ -1,14 +1,5 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import axios from "axios";
-import { API } from "../Constants";
-import { useEffect } from "react";
-import {
-  ItemEntry,
-  CharacterEntry,
-  AbilityEntry,
-  CreatureEntry,
-} from "../Types";
 
 interface ButtonProps {
   "data-isactive": boolean;

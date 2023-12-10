@@ -1,9 +1,9 @@
 import { useState } from "react";
 import * as Constants from "../Constants";
 import styled from "styled-components";
-import { getSession } from "../functions/SessionsFunctions";
+import { get_session } from "../functions/SessionsFunctions";
 
-import { CharacterEntry, SessionEntry } from "../Types";
+import { SessionEntry } from "../Types";
 import BackgroundImage from "../assets/icons/background.jpeg";
 import {
   MainContainer,
@@ -47,28 +47,6 @@ const OverlayStyles = styled.div`
   align-items: center;
 `;
 
-const Navigator = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  color: ${Constants.WIDGET_BACKGROUND};
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BACKGROUND_EMPTY};
-  &:hover {
-    background-color: ${Constants.WIDGET_BACKGROUND};
-    color: ${Constants.WIDGET_PRIMARY_FONT};
-    border: 1px solid ${Constants.WIDGET_BORDER};
-  }
-  height: 35px;
-  width: 50px;
-`;
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
-
 interface LoginProps {
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
@@ -83,7 +61,7 @@ function JoinComponent({ setSession, setIsJoinOpen, setIsGm }: LoginProps) {
   };
 
   const handleJoinSession = () => {
-    getSession(sessionName).then((res) => {
+    get_session(sessionName).then((res) => {
       if (res) {
         setSession(res);
       } else {

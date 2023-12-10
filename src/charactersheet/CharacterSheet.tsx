@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
 import CharacterNavigation from "../components/NavigationControl/CharacterNavigation";
 import EmptyNavigation from "../components/NavigationControl/EmptyNavigation";
 import InventoryNavigation from "../components/NavigationControl/InventoryNavigation";
-import SelectorNavigation from "../components/NavigationControl/SelectorNavigation";
 import XpBox from "../CharacterSheet/XpBox";
 import CharacterNameBox from "../CharacterSheet/CharacterNameBox";
 import HealthBox from "../CharacterSheet/HealthBox";
@@ -65,20 +63,6 @@ const HeaderContainer = styled.div`
   margin-top: 5px;
   gap: 20px;
   height: 50px;
-`;
-
-const Button = styled.button`
-  display: flex;
-  flex: 1;
-  flex-grow: 1;
-  border-radius: ${Constants.BORDER_RADIUS};
-  justify-content: center;
-  align-items: center;
-  font-size: 15px;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  height: 35px;
 `;
 
 type CharacterSheetProps = {

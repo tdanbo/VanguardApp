@@ -1,12 +1,8 @@
-import { CreatureEntry } from "../Types";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import axios from "axios";
-import { API } from "../Constants";
-import { useEffect } from "react";
 
 interface ButtonProps {
-  isActive: boolean;
+  $isActive: string;
 }
 
 const Button = styled.button<ButtonProps>`
@@ -17,7 +13,7 @@ const Button = styled.button<ButtonProps>`
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-radius: 5px;
   color: ${(props) =>
-    props.isActive
+    props.$isActive === "true"
       ? Constants.WIDGET_SECONDARY_FONT
       : Constants.WIDGET_PRIMARY_FONT};
   cursor: pointer;
@@ -25,20 +21,7 @@ const Button = styled.button<ButtonProps>`
   height: 34px;
   justify-content: center;
   align-items: center;
-  opacity: ${(props) => (props.isActive ? 1 : 0.5)};
-`;
-
-const AllButton = styled.button`
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: 5px;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  cursor: pointer;
-  font-size: 12px;
-  height: 34px;
-  width: 34px;
-  justify-content: center;
-  align-items: center;
+  opacity: ${(props) => (props.$isActive === "true" ? 1 : 0.5)};
 `;
 
 const Container = styled.div`
@@ -72,25 +55,25 @@ function CreatureFooter({ setTypeFilter }: CreatureFooterProps) {
     <Container>
       <Button
         onClick={() => filterAndSortItems("Abomination")}
-        isActive={active === "Abomination"}
+        $isActive={(active === "Abomination").toString()}
       >
         Abominations
       </Button>
       <Button
         onClick={() => filterAndSortItems("Beast")}
-        isActive={active === "Beast"}
+        $isActive={(active === "Beast").toString()}
       >
         Beasts
       </Button>
       <Button
         onClick={() => filterAndSortItems("Cultural Being")}
-        isActive={active === "Cultural Being"}
+        $isActive={(active === "Cultural Being").toString()}
       >
         Cultural Beings
       </Button>
       <Button
         onClick={() => filterAndSortItems("Undead")}
-        isActive={active === "Undead"}
+        $isActive={(active === "Undead").toString()}
       >
         Undead
       </Button>

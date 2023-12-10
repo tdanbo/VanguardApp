@@ -1,15 +1,15 @@
-import styled from "styled-components";
 import * as Constants from "../Constants";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { EmptyCharacter, SessionEntry, TravelEntry } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
-import { updateSession, update_session } from "../functions/SessionsFunctions";
+import { update_session } from "../functions/SessionsFunctions";
 import {
   faAngleLeft,
   faAngleRight,
   faPersonWalking,
   faHorse,
+  faTent,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   MainContainer,
@@ -18,9 +18,9 @@ import {
   LargeCircleButton,
   ButtonContainer,
 } from "../components/SelectorPage/SelectorStyles";
-import { cloneDeep, forEach } from "lodash";
+import { forEach } from "lodash";
 import { GetBurnRate } from "../functions/CharacterFunctions";
-
+import styled from "styled-components";
 export const ModalContainer = styled.div`
   background-color: ${Constants.BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -142,7 +142,7 @@ const Divider = styled.div`
 `;
 
 interface StyledButtonProps {
-  isActive: boolean;
+  $isactive: string;
 }
 
 const Button = styled.div<StyledButtonProps>`
@@ -159,12 +159,13 @@ const Button = styled.div<StyledButtonProps>`
   color: ${Constants.WIDGET_SECONDARY_FONT};
   padding: 10px;
   cursor: pointer;
-  color: ${(props) =>
-    props.isActive ? Constants.WIDGET_SECONDARY_FONT : Constants.WIDGET_BORDER};
-  background-color: ${(props) =>
-    props.isActive
-      ? Constants.WIDGET_BACKGROUND
-      : Constants.WIDGET_BACKGROUND_EMPTY};
+
+  ${(props) =>
+    props.$isactive === "true" &&
+    `
+      background-color: ${Constants.WIDGET_BACKGROUND};
+      color: ${Constants.WIDGET_SECONDARY_FONT};
+    `}
 `;
 
 const ResultButton = styled.div`
@@ -246,9 +247,11 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [timeOfDay, setTimeOfday] = useState<string>();
   const [tooltip, setTooltip] = useState<string>("A normal days of travel.");
+  const NoTravelSpeed = "The party didn't travel during the day.";
+  const NormalSpeed = "A normal days of travel.";
   const ForcedSpeed = "No natural healing will occur while traveling.";
   const DeathSpeed =
-    "Succeed a Strong test or suffer 1d6+1 damage. Failing on a 20 will kill the character.";
+    "Strong test or suffer 1d6+1 damage. Failing on a 20 will kill the character.";
   const [distanceTraveled, setDistanceTraveled] = useState<number>(0);
   const [travelMethod, setTravelMethod] = useState<string>("Normal March");
   const [travelTerrain, setTravelTerrain] = useState<string>("Easy Terrain");
@@ -269,6 +272,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
   useEffect(() => {
     let distance = 0;
     if (travelMethod === "Normal March") {
+      setTooltip(NormalSpeed);
       if (travelLocation === "Ambria") {
         distance = 20;
       } else if (travelLocation === "Bright / Wild") {
@@ -326,6 +330,11 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
       distance += 10;
     } else if (travelTerrain === "Hard Terrain") {
       distance -= 5;
+    }
+
+    if (travelMethod === "No Travel") {
+      setTooltip(NoTravelSpeed);
+      distance = 0;
     }
 
     setDistanceTraveled(distance);
@@ -394,6 +403,10 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
     session.travel = travelEntry;
 
     forEach(session.characters, (character) => {
+      if (distanceTraveled > 0) {
+        character.details.xp_earned += 1;
+      }
+
       const burnrate = GetBurnRate(character);
       if (character.rations.food >= burnrate) {
         character.rations.food -= burnrate;
@@ -474,17 +487,26 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
                   </EtaButton>
                 </ResourceChangeContainer>
                 <ResourceChangeContainer>
+                  <Button
+                    onClick={() => setTravelMethod("No Travel")}
+                    $isactive={(travelMethod === "No Travel").toString()}
+                  >
+                    <FontAwesomeIcon icon={faTent} />
+                    No Travel
+                  </Button>
+                </ResourceChangeContainer>
+                <ResourceChangeContainer>
                   <Column>
                     <Button
                       onClick={() => setTravelMethod("Normal March")}
-                      isActive={travelMethod === "Normal March"}
+                      $isactive={(travelMethod === "Normal March").toString()}
                     >
                       <FontAwesomeIcon icon={faPersonWalking} />
                       Normal
                     </Button>
                     <Button
                       onClick={() => setTravelMethod("Forced March")}
-                      isActive={travelMethod === "Forced March"}
+                      $isactive={(travelMethod === "Forced March").toString()}
                       title={ForcedSpeed}
                     >
                       <FontAwesomeIcon icon={faPersonWalking} />
@@ -492,7 +514,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
                     </Button>
                     <Button
                       onClick={() => setTravelMethod("Death March")}
-                      isActive={travelMethod === "Death March"}
+                      $isactive={(travelMethod === "Death March").toString()}
                       title={DeathSpeed}
                     >
                       <FontAwesomeIcon icon={faPersonWalking} />
@@ -502,14 +524,14 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
                   <Column>
                     <Button
                       onClick={() => setTravelMethod("Normal Ride")}
-                      isActive={travelMethod === "Normal Ride"}
+                      $isactive={(travelMethod === "Normal Ride").toString()}
                     >
                       <FontAwesomeIcon icon={faHorse} />
                       Normal
                     </Button>
                     <Button
                       onClick={() => setTravelMethod("Forced Ride")}
-                      isActive={travelMethod === "Forced Ride"}
+                      $isactive={(travelMethod === "Forced Ride").toString()}
                       title={ForcedSpeed}
                     >
                       <FontAwesomeIcon icon={faHorse} />
@@ -517,7 +539,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
                     </Button>
                     <Button
                       onClick={() => setTravelMethod("Death Ride")}
-                      isActive={travelMethod === "Death Ride"}
+                      $isactive={(travelMethod === "Death Ride").toString()}
                       title={DeathSpeed}
                     >
                       <FontAwesomeIcon icon={faHorse} />
@@ -528,20 +550,20 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
                 <ResourceChangeContainer>
                   <Button
                     onClick={() => setTravelTerrain("Easy Terrain")}
-                    isActive={travelTerrain === "Easy Terrain"}
+                    $isactive={(travelTerrain === "Easy Terrain").toString()}
                   >
                     Easy Terrain
                   </Button>
                   <Button
                     onClick={() => setTravelTerrain("Normal Terrain")}
-                    isActive={travelTerrain === "Normal Terrain"}
+                    $isactive={(travelTerrain === "Normal Terrain").toString()}
                   >
                     Normal Terrain
                   </Button>
 
                   <Button
                     onClick={() => setTravelTerrain("Hard Terrain")}
-                    isActive={travelTerrain === "Hard Terrain"}
+                    $isactive={(travelTerrain === "Hard Terrain").toString()}
                   >
                     Hard Terrain
                   </Button>
@@ -549,19 +571,19 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
                 <ResourceChangeContainer>
                   <Button
                     onClick={() => setTravelLocation("Ambria")}
-                    isActive={travelLocation === "Ambria"}
+                    $isactive={(travelLocation === "Ambria").toString()}
                   >
                     Ambria
                   </Button>
                   <Button
                     onClick={() => setTravelLocation("Bright / Wild")}
-                    isActive={travelLocation === "Bright / Wild"}
+                    $isactive={(travelLocation === "Bright / Wild").toString()}
                   >
                     Bright / Wild
                   </Button>
                   <Button
                     onClick={() => setTravelLocation("Dark")}
-                    isActive={travelLocation === "Dark"}
+                    $isactive={(travelLocation === "Dark").toString()}
                   >
                     Dark
                   </Button>

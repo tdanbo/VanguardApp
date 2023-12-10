@@ -74,7 +74,6 @@ function GameMaster({
   setGmMode,
   websocket,
   setSession,
-  setIsJoinOpen,
   isGm,
   isCreature,
 }: GameMasterProps) {
@@ -105,7 +104,7 @@ function GameMaster({
       </EncounterContainer>
       <FooterCenterContainer>
         <ResetCreatureEncounter setCreatureEncounter={setCreatureEncounter} />
-        <TimeTrackBox session={session} />
+        <TimeTrackBox session={session} websocket={websocket} />
       </FooterCenterContainer>
     </>
   );

@@ -1,11 +1,6 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import SelectorNavigation from "./SelectorNavigation";
-import {
-  faBook,
-  faDoorOpen,
-  faHatWizard,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBook, faHatWizard } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
 import { SessionEntry } from "../../Types";
 const Container = styled.div`

@@ -1,11 +1,10 @@
 import * as Constants from "../Constants";
-import { GetBurnRate, RestCharacter } from "../functions/CharacterFunctions";
+import { GetBurnRate } from "../functions/CharacterFunctions";
 
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { CharacterEntry, SessionEntry } from "../Types";
-import { useRoll } from "../functions/CombatFunctions";
 
 const OuterContainer = styled.div`
   display: flex;

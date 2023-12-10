@@ -52,7 +52,7 @@ function App() {
     : session.characters.find((entry) => entry.name === characterName) ||
       EmptyCharacter;
 
-  const [browserState, setBrowserState] = useState(0);
+  const [browserState, setBrowserState] = useState(1);
   const [inventoryState, setInventoryState] = useState(1);
 
   const [creatureEncounter, setCreatureEncounter] = useState<CharacterEntry[]>(
@@ -109,6 +109,7 @@ function App() {
             setCreaturesList={setCreaturesList}
             setIsCreature={setIsCreature}
             isCreature={isCreature}
+            setGmMode={setGmMode}
           />
         ) : null}
       </Column>

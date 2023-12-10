@@ -1,4 +1,4 @@
-import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import cloneDeep from "lodash/cloneDeep";
 import styled from "styled-components";
@@ -145,8 +145,33 @@ const Divider = styled.div`
 type StyledButtonProps = {
   $isequipped: boolean;
   color: string;
-  index: number;
 };
+
+const EquipButtonTop = styled.button<StyledButtonProps>`
+  display: flex;
+  flex-grow: 1;
+  background-color: ${(props) =>
+    props.$isequipped ? props.color : Constants.WIDGET_BACKGROUND};
+  margin: 1px 0px 1px 1px;
+  width: 20px;
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-top-left-radius: ${Constants.BORDER_RADIUS};
+  width: 20px;
+  height: 100%;
+`;
+
+const EquipButtonBottom = styled.button<StyledButtonProps>`
+  display: flex;
+  flex-grow: 1;
+  background-color: ${(props) =>
+    props.$isequipped ? props.color : Constants.WIDGET_BACKGROUND};
+  margin: 1px 0px 1px 1px;
+  width: 20px;
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
+  width: 20px;
+  height: 100%;
+`;
 
 const EquipButton = styled.button<StyledButtonProps>`
   display: flex;
@@ -156,10 +181,8 @@ const EquipButton = styled.button<StyledButtonProps>`
   margin: 1px 0px 1px 1px;
   width: 20px;
   border: 1px solid ${Constants.WIDGET_BORDER};
-  border-top-left-radius: ${(props) =>
-    props.index === 0 || props.index === 2 ? Constants.BORDER_RADIUS : "unset"};
-  border-bottom-left-radius: ${(props) =>
-    props.index === 1 || props.index === 2 ? Constants.BORDER_RADIUS : "unset"};
+  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
+  border-top-left-radius: ${Constants.BORDER_RADIUS};
   width: 20px;
   height: 100%;
 `;
@@ -444,20 +467,18 @@ function InventoryEntry({
       <EquipContainer>
         {item.equip === "1H" && (
           <>
-            <EquipButton
+            <EquipButtonTop
               className={"button-hover"}
               color={COLOR}
-              index={0}
               key={"MH"}
               onClick={() => {
                 equipHandler(item, "MH");
               }}
               $isequipped={isItemEquipped(item, "MH")}
             />
-            <EquipButton
+            <EquipButtonBottom
               className={"button-hover"}
               color={COLOR}
-              index={1}
               key={"OH"}
               onClick={() => {
                 equipHandler(item, "OH");
@@ -470,7 +491,6 @@ function InventoryEntry({
           <EquipButton
             className={"button-hover"}
             color={COLOR}
-            index={2}
             key={"2H"}
             onClick={() => {
               equipHandler(item, "2H");
@@ -482,7 +502,6 @@ function InventoryEntry({
           <EquipButton
             className={"button-hover"}
             color={COLOR}
-            index={2}
             key={"AR"}
             onClick={() => {
               equipHandler(item, "AR");
@@ -555,7 +574,10 @@ function InventoryEntry({
             className={"button-hover"}
             onClick={() => AddInventorySlot()}
           >
-            <FontAwesomeIcon icon={faPlus} />
+            <FontAwesomeIcon
+              icon={faChevronRight}
+              style={{ fontSize: "12px" }}
+            />
           </AddButton>
         ) : equipped === "" ? (
           <AddButton

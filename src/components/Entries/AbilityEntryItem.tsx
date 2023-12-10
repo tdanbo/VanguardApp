@@ -4,10 +4,9 @@ import { AbilityEntry, CharacterEntry, SessionEntry } from "../../Types";
 
 import styled from "styled-components";
 import { Ability } from "../../Types";
-import { onAddCorruption } from "../../functions/CharacterFunctions";
 import { useRoll } from "../../functions/CombatFunctions";
 
-import { faSkull } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../../functions/SessionsFunctions";
 import { ExceptionalStats } from "../../functions/rules/ExceptionalStats";
@@ -381,11 +380,7 @@ function AbilityEntryItem({
       isCreature,
     });
 
-    const updated_character = onAddCorruption(character, dice_result);
-
-    if (updated_character) {
-      // setCharacter(updated_character);
-    }
+    console.log(dice_result);
   };
 
   interface DiceProps {
@@ -543,7 +538,10 @@ function AbilityEntryItem({
 
         {browser ? (
           <AddButton className={"button-hover"} onClick={AddAbilitySlot}>
-            +
+            <FontAwesomeIcon
+              icon={faChevronRight}
+              style={{ fontSize: "12px" }}
+            />
           </AddButton>
         ) : (
           <AddButton

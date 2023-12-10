@@ -1,5 +1,4 @@
 import * as Constants from "../Constants";
-import { onDeleteItem } from "../functions/CharacterFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHorseHead } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
@@ -44,15 +43,9 @@ interface StorageBoxProps {
   character: CharacterEntry;
 }
 
-function StorageBox({ item, character }: StorageBoxProps) {
+function StorageBox({}: StorageBoxProps) {
   const HandleDeleteItem = () => {
-    const updatedCharacter = onDeleteItem({
-      id: item.id,
-      character,
-    });
-    if (updatedCharacter) {
-      // setCharacter(updatedCharacter);
-    }
+    console.log("Delete Item");
   };
 
   return (

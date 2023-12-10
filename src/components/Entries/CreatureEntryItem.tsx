@@ -1,19 +1,13 @@
 import * as Constants from "../../Constants";
-import { RosterEntry, SessionEntry } from "../../Types";
-import { useState, useContext } from "react";
+import { SessionEntry } from "../../Types";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import { CharacterEntry } from "../../Types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faPlus } from "@fortawesome/free-solid-svg-icons";
 import AddCreatureToRoster from "../AddCreatureToRoster";
 import { useEffect } from "react";
-import {
-  postSelectedCharacter,
-  deleteRosterCharacter,
-  addNewCharacter,
-} from "../../functions/CharacterFunctions";
-import { set } from "lodash";
 const BaseContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -73,11 +67,7 @@ const ExpandButten = styled.div`
   font-size: 12px;
 `;
 
-type BrowserProps = {
-  browserstate: number;
-};
-
-const CreatureName = styled.div<BrowserProps>`
+const CreatureName = styled.div`
   align-items: flex-end;
   display: flex;
   flex-grow: 1;
@@ -104,24 +94,22 @@ interface AbilityEntryItemProps {
   encounter: CharacterEntry[];
   setEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   gmMode: boolean;
-  browserState: number;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   websocket: WebSocket;
+  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function CreatureEntryItem({
   session,
   character,
   creature,
-  browser,
   encounter,
   setEncounter,
-  gmMode,
-  browserState,
   setCharacterName,
   setIsCreature,
   websocket,
+  setGmMode,
 }: AbilityEntryItemProps) {
   const [_expanded] = useState<boolean>(false);
 
@@ -147,10 +135,7 @@ function CreatureEntryItem({
       id: uuidv4(),
     };
     setEncounter([...encounter, newEncounterCreature]);
-  };
-
-  const DeleteEncounterCreature = (_creature: CharacterEntry) => {
-    console.log("Delete Creature");
+    setGmMode(true);
   };
 
   const selectCreature = () => {
@@ -177,34 +162,6 @@ function CreatureEntryItem({
     }
   }, []);
 
-  const AddMemberToRoster = () => {
-    const characterClone = { ...character };
-    if (characterClone.id === session.id) {
-      const new_roster_entry: RosterEntry = {
-        name: creature.name,
-        id: session.id,
-        resistance: resistance,
-      };
-      characterClone.entourage = [
-        ...characterClone.entourage,
-        new_roster_entry,
-      ];
-      deleteRosterCharacter(creature.name, creature.id);
-      creature.id = session.id;
-      addNewCharacter(creature);
-      postSelectedCharacter(characterClone);
-      // setCharacter(characterClone);
-    } else {
-      console.log("Not the main character");
-    }
-  };
-
-  const RemoveMemberFromRoster = () => {
-    const characterClone = { ...character };
-    deleteRosterCharacter(creature.name, creature.id);
-    // setCharacter(characterClone);
-  };
-
   return (
     <BaseContainer>
       <Container>
@@ -215,9 +172,7 @@ function CreatureEntryItem({
           <FontAwesomeIcon icon={faUser} />
         </ExpandButten>
         <NameContainer>
-          <CreatureName browserstate={browserState}>
-            {creature.name}
-          </CreatureName>
+          <CreatureName>{creature.name}</CreatureName>
           <AbilityDetail>
             {resistance} {creature.details.race}
           </AbilityDetail>

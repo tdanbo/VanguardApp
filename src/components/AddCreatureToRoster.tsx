@@ -8,7 +8,6 @@ import {
   faAngleLeft,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import { addNewRoster } from "../functions/CharacterFunctions";
 import AddCreaturePortrait from "./AddCreaturePortrait";
 import { update_session } from "../functions/SessionsFunctions";
 import {
@@ -83,7 +82,6 @@ interface AddMemberProps {
 
 function AddCreatureToRoster({
   character_template,
-  character,
   session,
   websocket,
 }: AddMemberProps) {

@@ -5,10 +5,7 @@ import { UpperFirstLetter } from "../../functions/UtilityFunctions";
 import styled from "styled-components";
 import RaceDropdownBox from "./RaceDropdownBox";
 import { update_session } from "../../functions/SessionsFunctions";
-import {
-  addNewCharacter,
-  addNewCreature,
-} from "../../functions/CharacterFunctions";
+import { addNewCreature } from "../../functions/CharacterFunctions";
 import { EmptyWeapon, EmptyArmor } from "../../Types";
 import { toTitleCase } from "../../functions/UtilityFunctions";
 import {

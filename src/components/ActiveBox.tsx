@@ -188,7 +188,7 @@ function ActiveBox({
     };
 
     let usedAmmunitionId = "";
-    const { main, off, armor } = character.equipment;
+    const { main, off } = character.equipment;
     const equipment_slots: EquipmentItem[] = [main, off];
 
     let hasAmmunition = false;

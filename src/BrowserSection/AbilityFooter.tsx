@@ -1,9 +1,5 @@
-import { AbilityEntry } from "../Types";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import axios from "axios";
-import { API } from "../Constants";
-import { useEffect } from "react";
 
 interface ButtonProps {
   "data-isactive": boolean;
@@ -26,19 +22,6 @@ const Button = styled.button<ButtonProps>`
   justify-content: center;
   align-items: center;
   opacity: ${(props) => (props["data-isactive"] ? 1 : 0.5)};
-`;
-
-const AllButton = styled.button`
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: 5px;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  cursor: pointer;
-  font-size: 12px;
-  height: 34px;
-  width: 34px;
-  justify-content: center;
-  align-items: center;
 `;
 
 const Container = styled.div`
