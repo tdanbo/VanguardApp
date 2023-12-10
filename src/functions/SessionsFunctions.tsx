@@ -24,12 +24,11 @@ export async function update_session(
   // This function is called when the session is updated, and it will proc the broadcast to all users
   console.log("Updating session / Sending Updates To Clients");
   try {
+    websocket.send(JSON.stringify(session));
     if (isCreature) {
       await axios.put(`${API}/api/creaturelog/${character.name}`, character);
     }
-
     await axios.put(`${API}/api/session/${session.id}`, session);
-    websocket.send(JSON.stringify(session));
   } catch (error) {
     console.error(error);
     throw error; // You may want to throw the error so that it can be caught and handled elsewhere if needed

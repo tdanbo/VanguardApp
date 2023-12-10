@@ -3,32 +3,6 @@ import { API } from "../Constants";
 import { CharacterEntry, modifiedCreature } from "../Types";
 import { CheckAbility } from "./ActivesFunction";
 
-export async function getCharacterEntry(
-  selectedName: string,
-): Promise<CharacterEntry> {
-  // Fetch the character using axios or any other method
-  const response = await axios.get<CharacterEntry>(
-    `${API}/api/characterlog/${selectedName}`,
-  );
-  return response.data;
-}
-
-export async function getNpcEntry(name: string): Promise<CharacterEntry> {
-  // Fetch the character using axios or any other method
-  const response = await axios.get<CharacterEntry>(
-    `${API}/api/characterlog/npc/${name}`,
-  );
-  return response.data;
-}
-
-export async function getCreatureEntry(name: string): Promise<CharacterEntry> {
-  // Fetch the character using axios or any other method
-  const response = await axios.get<CharacterEntry>(
-    `${API}/api/creaturelog/${name}`,
-  );
-  return response.data;
-}
-
 export const getCreatureMovement = (creature: modifiedCreature) => {
   const movement: { [key: number]: number } = {
     5: -10,
@@ -146,11 +120,6 @@ export async function addNewCreature(NewCharacterEntry: CharacterEntry) {
   return axios.post(`${API}/api/creaturelog`, NewCharacterEntry).then((res) => {
     return res;
   });
-}
-
-export async function deleteCreature(name: string) {
-  const response = await axios.delete(`${API}/api/creaturelog/${name}`);
-  return response.data;
 }
 
 export function GetUsedSlots(character: CharacterEntry) {
