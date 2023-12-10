@@ -3,7 +3,6 @@ import CombatEntryItem from "../CombatEntryItem";
 import DiceSection from "../../components/Sections/DiceSection";
 import { RefObject, useEffect, useRef } from "react";
 import styled from "styled-components";
-
 const CombatContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -39,6 +38,7 @@ import {
   CriticalFailureSounds,
   CriticalSuccessSounds,
   RollSounds,
+  RestingSounds,
 } from "../../Images";
 // import { set } from "lodash";
 
@@ -119,10 +119,13 @@ function CombatSection({
     ) {
       const last_roll = session.combatlog.at(-1);
       if (!last_roll) return;
+
       if (last_roll.source === "Skill Test" && last_roll.roll === 1) {
         playRandomSound(CriticalSuccessSounds);
       } else if (last_roll.source === "Skill Test" && last_roll.roll === 20) {
         playRandomSound(CriticalFailureSounds);
+      } else if (last_roll.active === "Resting") {
+        playRandomSound(RestingSounds);
       } else {
         playRandomSound(RollSounds);
       }
