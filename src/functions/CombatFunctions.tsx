@@ -1,6 +1,4 @@
-import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import { API } from "../Constants";
 import { CharacterEntry, CombatEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
 
