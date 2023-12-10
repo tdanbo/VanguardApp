@@ -144,6 +144,9 @@ function CharacterSheet({
           inventoryState={inventoryState}
           setInventoryState={setInventoryState}
           gmMode={gmMode}
+          session={session}
+          websocket={websocket}
+          isCreature={isCreature}
         />
         <ScrollContainer>
           <InventorySection

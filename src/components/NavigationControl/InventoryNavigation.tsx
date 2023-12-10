@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBolt, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faBolt } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
 import OverburdenBox from "../OverburdenBox";
-import { CharacterEntry } from "../../Types";
+import { CharacterEntry, SessionEntry } from "../../Types";
+import StorageBox from "../StorageBox";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -46,13 +47,18 @@ interface NavigationProps {
   setInventoryState: (browserState: number) => void;
   gmMode: boolean;
   character: CharacterEntry;
+  session: SessionEntry;
+  websocket: WebSocket;
+  isCreature: boolean;
 }
 
 function InventoryNavigation({
   inventoryState,
   setInventoryState,
   character,
-  gmMode,
+  session,
+  websocket,
+  isCreature,
 }: NavigationProps) {
   const onHandleItems = () => {
     if (inventoryState === 1) {
@@ -63,26 +69,29 @@ function InventoryNavigation({
   return (
     <Container>
       {inventoryState === 1 ? (
-        <Navigator $active={inventoryState === 1} onClick={onHandleItems}>
-          <OverburdenBox character={character} />
-        </Navigator>
+        <>
+          <Navigator $active={inventoryState === 1} onClick={onHandleItems}>
+            <OverburdenBox character={character} />
+          </Navigator>
+          {character.inventory.map((item) => {
+            if (item.category === "container") {
+              return (
+                <StorageBox
+                  key={item.id}
+                  item={item}
+                  character={character}
+                  session={session}
+                  isCreature={isCreature}
+                  websocket={websocket}
+                />
+              );
+            }
+            return null; // Don't forget to handle other cases if needed
+          })}
+        </>
       ) : (
         <Navigator $active={inventoryState === 2} onClick={onHandleItems}>
           <FontAwesomeIcon icon={faBolt} />
-        </Navigator>
-      )}
-      {character.npc === false ? (
-        <></>
-      ) : gmMode ? (
-        <Navigator title={"Leave Edit Mode"} $active={inventoryState === 1}>
-          <FontAwesomeIcon icon={faChevronLeft} />
-        </Navigator>
-      ) : (
-        <Navigator
-          title={"Back to Main Character"}
-          $active={inventoryState === 1}
-        >
-          <FontAwesomeIcon icon={faChevronLeft} />
         </Navigator>
       )}
     </Container>

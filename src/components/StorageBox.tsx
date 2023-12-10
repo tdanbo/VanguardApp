@@ -1,8 +1,10 @@
 import * as Constants from "../Constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHorseHead } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import { CharacterEntry, ItemEntry } from "../Types";
+import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
+import { update_session } from "../functions/SessionsFunctions";
+
+import Icon from "@mdi/react";
+import { mdiSack } from "@mdi/js";
 
 const OuterContainer = styled.div`
   display: flex;
@@ -31,7 +33,7 @@ const Navigator = styled.div`
   letter-spacing: 1px;
 `;
 
-const Icon = styled.div`
+const IconBag = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,19 +43,34 @@ const Icon = styled.div`
 interface StorageBoxProps {
   item: ItemEntry;
   character: CharacterEntry;
+  session: SessionEntry;
+  websocket: WebSocket;
+  isCreature: boolean;
 }
 
-function StorageBox({}: StorageBoxProps) {
+function StorageBox({
+  item,
+  character,
+  session,
+  isCreature,
+  websocket,
+}: StorageBoxProps) {
+  console.log("Delete Item");
+  console.log(isCreature);
   const HandleDeleteItem = () => {
-    console.log("Delete Item");
+    const filter_inventory = character.inventory.filter(
+      (i) => i.id !== item.id,
+    );
+    character.inventory = filter_inventory;
+    update_session(session, character, isCreature, websocket);
   };
 
   return (
     <OuterContainer>
       <Navigator onClick={HandleDeleteItem}>
-        <Icon>
-          <FontAwesomeIcon icon={faHorseHead} />
-        </Icon>
+        <IconBag>
+          <Icon path={mdiSack} size={0.8} />
+        </IconBag>
         {/* <Divider />
         <Container>8</Container> */}
       </Navigator>

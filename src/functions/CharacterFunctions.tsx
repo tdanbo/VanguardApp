@@ -181,11 +181,11 @@ export function GetBurnRate(character: CharacterEntry) {
   let burn_rate = 1;
 
   const storageModifiers = {
-    "Storage 2": 1,
-    "Storage 4": 2,
-    "Storage 6": 3,
-    "Storage 8": 4,
-    "Storage 10": 5,
+    "Storage 2": 0,
+    "Storage 4": 1,
+    "Storage 6": 2,
+    "Storage 8": 3,
+    "Storage 10": 4,
   };
 
   character.inventory.forEach((item) => {
@@ -200,21 +200,19 @@ export function GetBurnRate(character: CharacterEntry) {
     });
   });
 
-  if (character)
-    character.entourage.forEach((member) => {
-      if (member.resistance === "Weak") {
-        burn_rate += 1;
-      } else if (member.resistance === "Ordinary") {
-        burn_rate += 2;
-      } else if (member.resistance === "Challenging") {
-        burn_rate += 3;
-      } else if (member.resistance === "Strong") {
-        burn_rate += 4;
-      } else if (member.resistance === "Mighty") {
-        burn_rate += 5;
-      } else if (member.resistance === "Legendary") {
-        burn_rate += 6;
-      }
-    });
+  if (character.details.xp_earned === 0) {
+    burn_rate += 0;
+  } else if (character.details.xp_earned <= 50) {
+    burn_rate += 1;
+  } else if (character.details.xp_earned <= 150) {
+    burn_rate += 2;
+  } else if (character.details.xp_earned <= 300) {
+    burn_rate += 3;
+  } else if (character.details.xp_earned <= 600) {
+    burn_rate += 4;
+  } else {
+    burn_rate += 5;
+  }
+
   return burn_rate;
 }
