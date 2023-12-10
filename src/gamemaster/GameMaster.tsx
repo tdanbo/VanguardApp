@@ -2,8 +2,7 @@ import CharacterNavigation from "../components/NavigationControl/CharacterNaviga
 import CreatureEncounterSection from "../components/Sections/CreatureEncounterSection";
 import ResetCreatureEncounter from "../components/ResetCreatureEncounter";
 import TimeTrackBox from "../Gamemaster/TimeTrackBox";
-
-import DayNavigator from "../Gamemaster/TravelBox";
+import TravelBox from "../Gamemaster/TravelBox";
 
 import styled from "styled-components";
 import { CharacterEntry, SessionEntry } from "../Types";
@@ -84,7 +83,7 @@ function GameMaster({
   return (
     <>
       <HeaderContainer>
-        <DayNavigator session={session} websocket={websocket} />
+        <TravelBox session={session} websocket={websocket} />
       </HeaderContainer>
       <EncounterContainer key="container">
         <CharacterNavigation
