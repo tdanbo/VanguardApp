@@ -1,7 +1,7 @@
 // export const API = "http://localhost:8000";
 // export const WEBSOCKET = "ws://localhost:8000";
 export const API = "https://vanguard-api.onrender.com";
-export const WEBSOCKET = "wss://vanguard-api.onrender.com";
+export const WEBSOCKET = "wss://vanguard-api.onrender.com/session/";
 
 export const COMBAT_BACKGROUND = "19, 23, 22";
 
@@ -29,6 +29,7 @@ export const YELLOW = "#926f2b";
 export const BRIGHT_YELLOW = "#BF8C2F";
 export const WHITE = "#bfb6ac";
 export const BRIGHT_RED = "#923333";
+export const BRIGHT_GREEN = "#339249";
 export const GREY = "#8f8e89";
 export const DARK = "#262223";
 export const NIGHT = "#336980";

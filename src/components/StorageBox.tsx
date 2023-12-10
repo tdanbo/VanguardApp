@@ -1,11 +1,10 @@
 import * as Constants from "../Constants";
-import { useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
-import { onDeleteItem } from "../functions/CharacterFunctions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHorseHead } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import { ItemEntry } from "../Types";
+import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
+import { update_session } from "../functions/SessionsFunctions";
+
+import Icon from "@mdi/react";
+import { mdiSack } from "@mdi/js";
 
 const OuterContainer = styled.div`
   display: flex;
@@ -34,7 +33,7 @@ const Navigator = styled.div`
   letter-spacing: 1px;
 `;
 
-const Icon = styled.div`
+const IconBag = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,26 +42,34 @@ const Icon = styled.div`
 
 interface StorageBoxProps {
   item: ItemEntry;
+  character: CharacterEntry;
+  session: SessionEntry;
+  websocket: WebSocket;
+  isCreature: boolean;
 }
 
-function StorageBox({ item }: StorageBoxProps) {
-  const { character, setCharacter } = useContext(CharacterContext);
+function StorageBox({
+  item,
+  character,
+  session,
+  isCreature,
+  websocket,
+}: StorageBoxProps) {
+  console.log(isCreature);
   const HandleDeleteItem = () => {
-    const updatedCharacter = onDeleteItem({
-      id: item.id,
-      character,
-    });
-    if (updatedCharacter) {
-      setCharacter(updatedCharacter);
-    }
+    const filter_inventory = character.inventory.filter(
+      (i) => i.id !== item.id,
+    );
+    character.inventory = filter_inventory;
+    update_session(session, character, isCreature, websocket);
   };
 
   return (
     <OuterContainer>
       <Navigator onClick={HandleDeleteItem}>
-        <Icon>
-          <FontAwesomeIcon icon={faHorseHead} />
-        </Icon>
+        <IconBag>
+          <Icon path={mdiSack} size={0.8} />
+        </IconBag>
         {/* <Divider />
         <Container>8</Container> */}
       </Navigator>

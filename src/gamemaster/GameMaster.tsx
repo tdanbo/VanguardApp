@@ -1,15 +1,13 @@
 import CharacterNavigation from "../components/NavigationControl/CharacterNavigation";
 import CreatureEncounterSection from "../components/Sections/CreatureEncounterSection";
 import ResetCreatureEncounter from "../components/ResetCreatureEncounter";
-import TimeTrackBox from "../components/TimeTrackBox";
+import TimeTrackBox from "../Gamemaster/TimeTrackBox";
 
-import DayNavigator from "../components/TravelBox";
+import DayNavigator from "../Gamemaster/TravelBox";
 
 import styled from "styled-components";
-import { CharacterEntry } from "../Types";
+import { CharacterEntry, SessionEntry } from "../Types";
 
-import { defaultCharacter } from "../contexts/CharacterContext";
-import { useEffect } from "react";
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -50,6 +48,7 @@ const ScrollContainer = styled.div`
 `;
 
 interface GameMasterProps {
+  session: SessionEntry;
   browserState: number;
   setBrowserState: (value: number) => void;
   gmMode: boolean;
@@ -57,52 +56,62 @@ interface GameMasterProps {
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   onDeleteCreature: (id: string) => void;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
-  setMainCharacter: React.Dispatch<
-    React.SetStateAction<CharacterEntry | undefined>
-  >;
-  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  websocket: WebSocket;
+  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
+  setIsJoinOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isGm: boolean;
+  isCreature: boolean;
+  setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
+  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function GameMaster({
+  session,
   browserState,
   gmMode,
   creatureEncounter,
   setBrowserState,
   setCreatureEncounter,
   onDeleteCreature,
-  setMainCharacter,
-  setCreatureEdit,
+  setGmMode,
+  websocket,
+  setSession,
+  isGm,
+  isCreature,
+  setIsCreature,
+  setCharacterName,
 }: GameMasterProps) {
-  console.log("Current gmMode:");
-  console.log(gmMode);
-
-  useEffect(() => {
-    setMainCharacter(defaultCharacter);
-  }, []);
-
   return (
     <>
       <HeaderContainer>
-        <DayNavigator />
+        <DayNavigator session={session} websocket={websocket} />
       </HeaderContainer>
       <EncounterContainer key="container">
         <CharacterNavigation
           browserState={browserState}
           setBrowserState={setBrowserState}
           gmMode={gmMode}
+          setGmMode={setGmMode}
+          setSession={setSession}
+          isGm={isGm}
         />
         <ScrollContainer>
           <CreatureEncounterSection
-            setCreatureEdit={setCreatureEdit}
             encounter={creatureEncounter}
             setCreatureEncounter={setCreatureEncounter}
             onDeleteCreature={onDeleteCreature}
+            session={session}
+            websocket={websocket}
+            isCreature={isCreature}
+            setIsCreature={setIsCreature}
+            setGmMode={setGmMode}
+            setCharacterName={setCharacterName}
           />
         </ScrollContainer>
       </EncounterContainer>
       <FooterCenterContainer>
         <ResetCreatureEncounter setCreatureEncounter={setCreatureEncounter} />
-        <TimeTrackBox />
+        <TimeTrackBox session={session} websocket={websocket} />
       </FooterCenterContainer>
     </>
   );

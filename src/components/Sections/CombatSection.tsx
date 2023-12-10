@@ -1,33 +1,52 @@
+import { CharacterEntry, CombatEntry, SessionEntry } from "../../Types";
 import CombatEntryItem from "../CombatEntryItem";
-import { CombatEntry } from "../../Types";
-
-import { getCombatLog } from "../../functions/CombatFunctions";
-import { SessionContext } from "../../contexts/SessionContext";
-import { useState, useEffect, useContext, RefObject } from "react";
+import DiceSection from "../../components/Sections/DiceSection";
+import { RefObject, useEffect, useRef } from "react";
 import styled from "styled-components";
+
+const CombatContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  gap: 20px;
+  height: 100%;
+  overflow: scroll;
+  scrollbar-width: none !important;
+`;
+
 const Container = styled.div`
   display: flex;
-
   flex-grow: 1;
-
-  flex-direction: column-reverse;
+  flex-direction: column;
   align-items: flex-end;
   justify-content: flex-start;
-
   gap: 10px;
   width: 100%;
 `;
 
-import { useRef } from "react";
+const FooterRightContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end; // Align children to the right
+  min-height: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 5px;
+  gap: 20px;
+`;
+
 import {
-  RollSounds,
-  CriticalSuccessSounds,
   CriticalFailureSounds,
+  CriticalSuccessSounds,
+  RollSounds,
 } from "../../Images";
 // import { set } from "lodash";
 
 interface CombatSectionProps {
-  scrollRef: RefObject<HTMLElement>;
+  scrollRef: RefObject<HTMLDivElement>;
+  session: SessionEntry;
+  character: CharacterEntry;
+  websocket: WebSocket;
 }
 
 function deepCompareCombatEntries(
@@ -52,9 +71,12 @@ function deepCompareCombatEntries(
   return true;
 }
 
-function CombatSection({ scrollRef }: CombatSectionProps) {
-  const [combatLog, setCombatLog] = useState<CombatEntry[]>([]);
-  const { session } = useContext(SessionContext);
+function CombatSection({
+  scrollRef,
+  session,
+  character,
+  websocket,
+}: CombatSectionProps) {
   // const { combatlogResponse } = useWebSocket();
 
   const scrollToBottom = () => {
@@ -86,57 +108,56 @@ function CombatSection({ scrollRef }: CombatSectionProps) {
     }
   };
 
-  // useEffect(() => {
-  //   playRandomSound();
-  //   console.log("Combat Log Response: ", combatlogResponse);
-  //   if (combatlogResponse) {
-  //     setCombatLog(combatlogResponse);
-  //   }
-  // }, [combatlogResponse]);
-
-  // useEffect(() => {
-  //   if (session.id === "") return;
-  //   getCombatLog(session.id).then((response) => {
-  //     console.log("Getting Combat Log");
-  //     setCombatLog(response);
-  //   });
-  // }, [session]);
+  // Inside your component
+  const prevCombatLogRef = useRef<CombatEntry[] | null>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (session.id === "") return;
-      getCombatLog(session.id).then((response) => {
-        if (!deepCompareCombatEntries(response, combatLog)) {
-          setCombatLog(response);
-          const last_roll = response.at(-1);
-          if (!last_roll) return;
-          if (last_roll.source === "Skill Test" && last_roll.roll === 1) {
-            playRandomSound(CriticalSuccessSounds);
-          } else if (
-            last_roll.source === "Skill Test" &&
-            last_roll.roll === 20
-          ) {
-            playRandomSound(CriticalFailureSounds);
-          } else {
-            playRandomSound(RollSounds);
-          }
-        }
-      });
-    }, 500);
+    // Compare the current combat log with the previous one
+    if (
+      prevCombatLogRef.current &&
+      !deepCompareCombatEntries(session.combatlog, prevCombatLogRef.current)
+    ) {
+      const last_roll = session.combatlog.at(-1);
+      if (!last_roll) return;
+      if (last_roll.source === "Skill Test" && last_roll.roll === 1) {
+        playRandomSound(CriticalSuccessSounds);
+      } else if (last_roll.source === "Skill Test" && last_roll.roll === 20) {
+        playRandomSound(CriticalFailureSounds);
+      } else {
+        playRandomSound(RollSounds);
+      }
+    }
 
-    return () => clearInterval(interval);
-  }, [session, combatLog]); // Add combatLog to dependencies
+    // Update the ref with the current combat log
+    prevCombatLogRef.current = session.combatlog;
+  }, [session.combatlog]);
 
   useEffect(() => {
     scrollToBottom();
-  }, [combatLog]);
+  }, [session]);
 
   return (
-    <Container>
-      {[...combatLog].reverse().map((item, index) => (
-        <CombatEntryItem key={index} combatEntry={item} index={index} />
-      ))}
-    </Container>
+    <>
+      <CombatContainer ref={scrollRef}>
+        <Container>
+          {session.combatlog.map((item, index) => (
+            <CombatEntryItem
+              key={index}
+              combatEntry={item}
+              index={index}
+              session={session}
+            />
+          ))}
+        </Container>
+      </CombatContainer>
+      <FooterRightContainer>
+        <DiceSection
+          character={character}
+          session={session}
+          websocket={websocket}
+        />
+      </FooterRightContainer>
+    </>
   );
 }
 

@@ -1,12 +1,8 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faShield,
-  faBolt,
-  faGhost,
-  faUsers,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBook, faHatWizard } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
+import { SessionEntry } from "../../Types";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -48,44 +44,43 @@ interface NavigationProps {
   browserState: number;
   setBrowserState: (browserState: number) => void;
   gmMode: boolean;
+  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
+  isGm: boolean;
 }
 
 function CharacterNavigation({
   browserState,
   setBrowserState,
+  isGm,
   gmMode,
+  setGmMode,
 }: NavigationProps) {
   const handleNavigationClick = (targetState: number) => {
     setBrowserState(browserState === targetState ? 0 : targetState);
   };
 
+  const HandleGmMode = () => {
+    setGmMode(!gmMode);
+  };
   return (
     <Container>
-      <Navigator
-        $active={browserState === 1}
-        onClick={() => handleNavigationClick(1)}
-      >
-        <FontAwesomeIcon icon={faShield} />
-      </Navigator>
-      <Navigator
-        $active={browserState === 2}
-        onClick={() => handleNavigationClick(2)}
-      >
-        <FontAwesomeIcon icon={faBolt} />
-      </Navigator>
-      {gmMode && (
+      {isGm ? (
         <Navigator
-          $active={browserState === 4}
-          onClick={() => handleNavigationClick(4)}
+          $active={gmMode}
+          onClick={HandleGmMode} // Toggle gmMode when clicked
+          title={"GM Mode"}
         >
-          <FontAwesomeIcon icon={faGhost} />
+          <FontAwesomeIcon icon={faHatWizard} />
         </Navigator>
-      )}
+      ) : null}
+
       <Navigator
-        $active={browserState === 5}
-        onClick={() => handleNavigationClick(5)}
+        $active={browserState === 0}
+        onClick={() => handleNavigationClick(1)}
+        title={"Game Browser"}
       >
-        <FontAwesomeIcon icon={faUsers} />
+        <FontAwesomeIcon icon={faBook} />
       </Navigator>
     </Container>
   );

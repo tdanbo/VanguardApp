@@ -1,24 +1,17 @@
-import * as Constants from "../../Constants";
-import { CharacterContext } from "../../contexts/CharacterContext";
-import { useContext, useState, useEffect } from "react";
-import { useRoll } from "../../functions/CombatFunctions";
-import { swapActives } from "../../functions/CharacterFunctions";
+import {
+  faBolt,
+  faCrosshairs,
+  faEye,
+  faShield,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import "../../App.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEye,
-  faBolt,
-  faShield,
-  faCrosshairs,
-} from "@fortawesome/free-solid-svg-icons";
-
-type Props = {
-  type_name: string;
-  type_value: number;
-  swapSource: null | string;
-  setSwapSource: (swapSource: null | string) => void;
-};
+import * as Constants from "../../Constants";
+import { ActiveKey, CharacterEntry, SessionEntry, StatName } from "../../Types";
+import { useRoll } from "../../functions/CombatFunctions";
+import { update_session } from "../../functions/SessionsFunctions";
 
 const Container = styled.div`
   display: flex;
@@ -83,8 +76,27 @@ const ValueButton = styled.button`
   border-radius: ${Constants.BORDER_RADIUS};
 `;
 
-function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
-  const { character, setCharacter } = useContext(CharacterContext);
+type Props = {
+  type_name: string;
+  type_value: number;
+  swapSource: null | string;
+  setSwapSource: (swapSource: null | string) => void;
+  session: SessionEntry;
+  character: CharacterEntry;
+  websocket: WebSocket;
+  isCreature: boolean;
+};
+
+function StatBox({
+  character,
+  type_name,
+  type_value,
+  swapSource,
+  setSwapSource,
+  session,
+  websocket,
+  isCreature,
+}: Props) {
   const [value, setValue] = useState<number>(type_value);
   const [modifier, setModifier] = useState<number>(0);
 
@@ -106,6 +118,9 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
 
   const handleSkillRoll = () => {
     onRollDice({
+      websocket,
+      character,
+      session,
       dice: 20,
       count: 1,
       modifier: modifier,
@@ -113,14 +128,25 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
       active: type_name,
       source: "Skill Test",
       add_mod: false,
+      isCreature,
     });
     setModifier(0);
   };
 
   const handleActiveClick = () => {
     if (swapSource) {
-      const updatedCharacter = swapActives(character, swapSource, type_name);
-      setCharacter(updatedCharacter);
+      const characterActives = character.actives;
+
+      // Iterate over the keys (e.g., 'attack', 'defense', etc.)
+      (Object.keys(characterActives) as ActiveKey[]).forEach((key) => {
+        if (characterActives[key].stat === swapSource.toLowerCase()) {
+          characterActives[key].stat = type_name.toLowerCase() as StatName;
+        } else if (characterActives[key].stat === type_name.toLowerCase()) {
+          characterActives[key].stat = swapSource.toLowerCase() as StatName;
+        }
+      });
+
+      update_session(session, character, isCreature, websocket);
       setSwapSource(null);
     } else {
       setSwapSource(type_name);
@@ -141,12 +167,10 @@ function StatBox({ type_name, type_value, swapSource, setSwapSource }: Props) {
 
   const addModifier = () => {
     setModifier(modifier + 1);
-    console.log(value);
   };
 
   const subModifier = () => {
     setModifier(modifier - 1);
-    console.log(value);
   };
 
   return (

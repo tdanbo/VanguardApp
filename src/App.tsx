@@ -1,75 +1,29 @@
 import "./App.css";
 import "./index.css";
 
-import * as Constants from "./Constants";
 import styled from "styled-components";
-import CharacterProvider from "./contexts/CharacterContext";
-import UserProvider from "./contexts/UserContext";
-import SessionProvider from "./contexts/SessionContext";
+import * as Constants from "./Constants";
 
-import EquipmentBrowser from "./components/Modals/EquipmentBrowser";
+import { useEffect, useRef, useState } from "react";
 
-import { useState, useRef } from "react";
-import AbilityBrowser from "./components/Modals/AbilityBrowser";
-
-import CombatSection from "./components/Sections/CombatSection";
-import DiceSection from "./components/Sections/DiceSection";
-import SearchAbilityBox from "./components/SearchAbilityBox";
-import SearchItemBox from "./components/SearchItemBox";
-import SearchMonsterBox from "./components/SearchMonsterBox";
 import {
-  AbilityEntry,
-  ItemEntry,
-  CreatureEntry,
   CharacterEntry,
+  EmptyCharacter,
+  EmptySession,
+  SessionEntry,
 } from "./Types";
+import CombatSection from "./components/Sections/CombatSection";
 
-import CreatureBrowser from "./components/Modals/CreatureBrowser";
-import RosterBrowser from "./components/Modals/RosterBrowser";
-import EquipmentFooter from "./components/FooterNavigation/EquipmentFooter";
-import AbilityFooter from "./components/FooterNavigation/AbilityFooter";
-import MonsterFooter from "./components/FooterNavigation/MonsterFooter";
-import TradingFooter from "./components/FooterNavigation/TradingFooter";
-import SearchRosterBox from "./components/SearchRosterBox";
-import SearchCreatureBox from "./components/SearchCreatureBox";
+import CharacterSheet from "./CharacterSheet/CharacterSheet";
+import GameMaster from "./Gamemaster/GameMaster";
 
-import CharacterSheet from "./character/CharacterSheet";
-import GameMaster from "./gamemaster/GameMaster";
-
+import useWebSocket from "./websocket";
+import BrowserSection from "./BrowserSection/BrowserSection";
+import JoinComponent from "./components/JoinComponent";
 const Row = styled.div`
   display: flex;
   flex-direction: row;
   height: 100%;
-`;
-
-const HeaderContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  min-height: 50px;
-  margin-left: 20px;
-  margin-top: 5px;
-  gap: 20px;
-`;
-
-const FooterLeftContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end; // Align children to the right
-  min-height: 50px;
-  margin-left: 20px;
-  margin-bottom: 5px;
-  gap: 20px;
-`;
-
-const FooterRightContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end; // Align children to the right
-  min-height: 50px;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-bottom: 5px;
-  gap: 20px;
 `;
 
 const Column = styled.div`
@@ -80,46 +34,31 @@ const Column = styled.div`
   height: 100%;
 `;
 
-const CombatContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  margin: 20px;
-  gap: 20px;
-  height: 100%;
-  overflow: scroll;
-  scrollbar-width: none !important;
-`;
-
-const BrowserContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 20px;
-  gap: 20px;
-  height: 100%;
-  overflow: scroll;
-  scrollbar-width: none !important;
-`;
-import SelectorNavigation from "./components/NavigationControl/SelectorNavigation";
 function App() {
-  const [browserState, setBrowserState] = useState(0);
+  // This function is the main function for setting the session.
+
+  const [session, setSession] = useState<SessionEntry>(EmptySession);
+  const [characterName, setCharacterName] = useState<string>("");
+  const [creaturesList, setCreaturesList] = useState<CharacterEntry[]>([]);
+  const [isCreature, setIsCreature] = useState<boolean>(false);
+  const [isGm, setIsGm] = useState<boolean>(false);
+  const [gmMode, setGmMode] = useState<boolean>(false);
+  const [isJoinOpen, setisJoinOpen] = useState<boolean>(true);
+
+  const url = Constants.WEBSOCKET + session.id;
+
+  const character = isCreature
+    ? creaturesList.find((entry) => entry.name === characterName) ||
+      EmptyCharacter
+    : session.characters.find((entry) => entry.name === characterName) ||
+      EmptyCharacter;
+
+  const [browserState, setBrowserState] = useState(1);
   const [inventoryState, setInventoryState] = useState(1);
-  const [abilityList, setAbilityList] = useState<AbilityEntry[]>([]);
-  const [itemList, setItemList] = useState<ItemEntry[]>([]);
-  const [monsterList, setMonsterList] = useState<CreatureEntry[]>([]);
-  const [creatureList, setCreatureList] = useState<CharacterEntry[]>([]);
-  const [rosterlist, setRosterList] = useState<CharacterEntry[]>([]);
-  const [gmMode, setGmMode] = useState<boolean>(true);
+
   const [creatureEncounter, setCreatureEncounter] = useState<CharacterEntry[]>(
     [],
   );
-  const [mainCharacter, setMainCharacter] = useState<
-    CharacterEntry | undefined
-  >();
-
-  const [creatureEdit, setCreatureEdit] = useState<boolean>(false);
 
   const onDeleteCreature = (id: string) => {
     setCreatureEncounter((currentEncounter) =>
@@ -127,151 +66,94 @@ function App() {
     );
   };
 
+  useEffect(() => {
+    setGmMode(false);
+  }, [characterName]);
+
   const scrollableRef = useRef(null);
+
+  console.log("-------------------");
+  console.log("Rendering Application");
+  console.log("Attempting to connect to: " + url);
+  const websocket = useWebSocket(url, setSession);
+
   return (
-    <UserProvider>
-      <SessionProvider>
-        <CharacterProvider>
-          <Row>
-            <Column>
-              <HeaderContainer>
-                <SelectorNavigation gmMode={gmMode} setGmMode={setGmMode} />
-                <SearchItemBox
-                  itemList={itemList}
-                  setList={setItemList}
-                  browserState={browserState}
-                />
-                <SearchAbilityBox
-                  itemList={abilityList}
-                  setList={setAbilityList}
-                  browserState={browserState}
-                />
-                <SearchMonsterBox
-                  monsterList={monsterList}
-                  setList={setMonsterList}
-                  browserState={browserState}
-                />
-                <SearchCreatureBox
-                  creatureList={creatureList}
-                  setList={setCreatureList}
-                  browserState={browserState}
-                />
-                <SearchRosterBox
-                  rosterlist={rosterlist}
-                  setList={setRosterList}
-                  browserState={browserState}
-                />
-              </HeaderContainer>
-              <BrowserContainer>
-                <EquipmentBrowser
-                  browserState={browserState}
-                  itemList={itemList}
-                  setItemList={setItemList}
-                  setInventoryState={setInventoryState}
-                  gmMode={gmMode}
-                />
-                <AbilityBrowser
-                  browserState={browserState}
-                  abilityList={abilityList}
-                  setAbilityList={setAbilityList}
-                  setInventoryState={setInventoryState}
-                />
-                <CreatureBrowser
-                  browserState={browserState}
-                  creatureList={creatureList}
-                  creatureEncounter={creatureEncounter}
-                  setCreatureEncounter={setCreatureEncounter}
-                  setCreatureEdit={setCreatureEdit}
-                  gmMode={gmMode}
-                />
-                <RosterBrowser
-                  browserState={browserState}
-                  rosterlist={rosterlist}
-                  creatureEncounter={creatureEncounter}
-                  setCreatureEncounter={setCreatureEncounter}
-                  setCreatureEdit={setCreatureEdit}
-                  gmMode={gmMode}
-                />
-              </BrowserContainer>
-              <FooterLeftContainer>
-                {browserState === 1 ? (
-                  gmMode === true ? (
-                    <TradingFooter
-                      itemList={itemList}
-                      setItemList={setItemList}
-                    />
-                  ) : (
-                    <EquipmentFooter
-                      itemList={itemList}
-                      setItemList={setItemList}
-                    />
-                  )
-                ) : browserState === 2 ? (
-                  <AbilityFooter
-                    abilityList={abilityList}
-                    setAbilityList={setAbilityList}
-                  />
-                ) : browserState === 3 ? (
-                  <MonsterFooter
-                    monsterList={monsterList}
-                    setMonsterList={setMonsterList}
-                  />
-                ) : null}
-              </FooterLeftContainer>
-            </Column>
-            <Column>
-              {gmMode ? (
-                creatureEdit ? (
-                  <CharacterSheet
-                    browserState={browserState}
-                    setBrowserState={setBrowserState}
-                    gmMode={gmMode}
-                    inventoryState={inventoryState}
-                    setInventoryState={setInventoryState}
-                    setGmMode={setGmMode}
-                    setCreatureEdit={setCreatureEdit}
-                    mainCharacter={mainCharacter}
-                    setMainCharacter={setMainCharacter}
-                  />
-                ) : (
-                  <GameMaster
-                    browserState={browserState}
-                    setBrowserState={setBrowserState}
-                    gmMode={gmMode}
-                    creatureEncounter={creatureEncounter}
-                    setCreatureEncounter={setCreatureEncounter}
-                    onDeleteCreature={onDeleteCreature}
-                    setGmMode={setGmMode}
-                    setMainCharacter={setMainCharacter}
-                    setCreatureEdit={setCreatureEdit}
-                  />
-                )
-              ) : (
-                <CharacterSheet
-                  browserState={browserState}
-                  setBrowserState={setBrowserState}
-                  gmMode={gmMode}
-                  inventoryState={inventoryState}
-                  setInventoryState={setInventoryState}
-                  setGmMode={setGmMode}
-                  setCreatureEdit={setCreatureEdit}
-                  mainCharacter={mainCharacter}
-                  setMainCharacter={setMainCharacter}
-                />
-              )}
-            </Column>
-            <Column>
-              <CombatContainer ref={scrollableRef}>
-                <CombatSection scrollRef={scrollableRef} />
-              </CombatContainer>
-              <FooterRightContainer>
-                <DiceSection />
-              </FooterRightContainer>
-            </Column>
-          </Row>
-        </CharacterProvider>
-      </SessionProvider>
-    </UserProvider>
+    <Row>
+      {isJoinOpen ? (
+        <JoinComponent
+          setGmMode={setGmMode}
+          setSession={setSession}
+          setIsJoinOpen={setisJoinOpen}
+          setIsGm={setIsGm}
+        />
+      ) : null}
+      <Column>
+        {browserState === 0 ? (
+          <BrowserSection
+            isGm={isGm}
+            session={session}
+            character={character}
+            websocket={websocket}
+            setInventoryState={setInventoryState}
+            gmMode={gmMode}
+            encounter={creatureEncounter}
+            setEncounter={setCreatureEncounter}
+            setCharacterName={setCharacterName}
+            creaturesList={creaturesList}
+            setCreaturesList={setCreaturesList}
+            setIsCreature={setIsCreature}
+            isCreature={isCreature}
+            setGmMode={setGmMode}
+          />
+        ) : null}
+      </Column>
+      <Column>
+        {gmMode ? (
+          <GameMaster
+            isGm={isGm}
+            session={session}
+            browserState={browserState}
+            setBrowserState={setBrowserState}
+            gmMode={gmMode}
+            creatureEncounter={creatureEncounter}
+            setCreatureEncounter={setCreatureEncounter}
+            onDeleteCreature={onDeleteCreature}
+            setGmMode={setGmMode}
+            websocket={websocket}
+            setSession={setSession}
+            setIsJoinOpen={setisJoinOpen}
+            isCreature={isCreature}
+            setIsCreature={setIsCreature}
+            setCharacterName={setCharacterName}
+          />
+        ) : (
+          <CharacterSheet
+            isGm={isGm}
+            websocket={websocket}
+            session={session}
+            setSession={setSession}
+            character={character}
+            browserState={browserState}
+            setBrowserState={setBrowserState}
+            gmMode={gmMode}
+            inventoryState={inventoryState}
+            setInventoryState={setInventoryState}
+            setGmMode={setGmMode}
+            setIsJoinOpen={setisJoinOpen}
+            isCreature={isCreature}
+            setCharacterName={setCharacterName}
+          />
+        )}
+      </Column>
+      <Column>
+        <CombatSection
+          scrollRef={scrollableRef}
+          session={session}
+          character={character}
+          websocket={websocket}
+        />
+      </Column>
+    </Row>
   );
 }
 

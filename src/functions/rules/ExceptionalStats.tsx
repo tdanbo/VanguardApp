@@ -1,6 +1,5 @@
 import { cloneDeep } from "lodash";
 import { CharacterEntry } from "../../Types";
-import { postSelectedCharacter } from "../CharacterFunctions";
 
 interface Ability {
   name: string;
@@ -69,7 +68,6 @@ export function ExceptionalStats({
     ...character,
     stats: clonedStats,
   };
-  console.log("ExceptionalStats POST");
-  postSelectedCharacter(updatedCharacter);
+
   return updatedCharacter;
 }

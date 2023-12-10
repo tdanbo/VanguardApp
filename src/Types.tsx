@@ -100,6 +100,7 @@ export interface CharacterEntry {
   rations: Rations;
   money: number;
   entourage: RosterEntry[];
+  entry: "CharacterEntry";
 }
 
 export interface modifiedCreature {
@@ -128,18 +129,7 @@ export interface CreatureEntry {
   loot: string;
   damage?: number;
   id?: string;
-}
-
-interface Roll {
-  roll: boolean;
-  mod: number;
-  dice: number;
-  type: string;
-}
-
-interface Quantity {
-  count: number;
-  bulk: boolean;
+  entry: "CreatureEntry";
 }
 
 export interface ItemEntry {
@@ -153,6 +143,7 @@ export interface ItemEntry {
   category: string;
   id: string;
   description: string;
+  entry: "ItemEntry";
 }
 
 export type CombatEntry = {
@@ -168,7 +159,20 @@ export type CombatEntry = {
   roll: number;
   modifier: number;
   target: number;
+  entry: "CombatEntry";
 };
+
+interface Roll {
+  roll: boolean;
+  mod: number;
+  dice: number;
+  type: string;
+}
+
+interface Quantity {
+  count: number;
+  bulk: boolean;
+}
 
 export type TravelEntry = {
   day: number;
@@ -183,6 +187,8 @@ export type SessionEntry = {
   date: string;
   owner: string;
   travel: TravelEntry;
+  characters: CharacterEntry[];
+  combatlog: CombatEntry[];
 };
 
 export interface AbilityRoll {
@@ -208,6 +214,7 @@ export type AbilityEntry = {
   tag: string;
   id: string;
   level: string;
+  entry: "AbilityEntry";
 };
 
 export type TownsEntry = {
@@ -227,6 +234,7 @@ export const EmptyWeapon: ItemEntry = {
   category: "weapon",
   id: "aaaaaaaaaa",
   description: "Fight with your bare hands.",
+  entry: "ItemEntry",
 };
 
 export const EmptyArmor: ItemEntry = {
@@ -240,4 +248,81 @@ export const EmptyArmor: ItemEntry = {
   category: "armor",
   id: "bbbbbbbbbb",
   description: "You feel robbed of your dignity.",
+  entry: "ItemEntry",
+};
+
+export const EmptySession: SessionEntry = {
+  name: "",
+  id: "1b1b1b1b1b",
+  date: "",
+  owner: "",
+  travel: {
+    day: 0,
+    time: 0,
+    distance: 0,
+    weather: "",
+  },
+  characters: [],
+  combatlog: [],
+};
+
+export const EmptyCharacter: CharacterEntry = {
+  name: "",
+  id: "1b1b1b1b1b",
+  portrait: "Ambrian",
+  details: {
+    race: "",
+    xp_earned: 0,
+    movement: 0,
+    modifier: 0,
+  },
+  damage: 0,
+  stats: {
+    cunning: { value: 0, mod: 0 },
+    discreet: { value: 0, mod: 0 },
+    persuasive: { value: 0, mod: 0 },
+    quick: { value: 0, mod: 0 },
+    resolute: { value: 10, mod: 0 },
+    strong: { value: 0, mod: 0 },
+    vigilant: { value: 0, mod: 0 },
+    accurate: { value: 0, mod: 0 },
+  },
+  actives: {
+    attack: {
+      stat: "accurate",
+      value: 0,
+      dice1: 0,
+      dice1_mod: 0,
+      dice1_name: "damage",
+      dice2: 0,
+      dice2_mod: 0,
+      dice2_name: "damage",
+      attacks: 1,
+    },
+    defense: {
+      stat: "quick",
+      value: 0,
+      dice: 0,
+      dice_mod: 0,
+      dice_name: "armor",
+    },
+    casting: { stat: "resolute", value: 0 },
+    sneaking: { stat: "discreet", value: 0 },
+  },
+  corruption: {
+    permanent: 0,
+    temporary: 0,
+  },
+  money: 0,
+  abilities: [],
+  inventory: [],
+  equipment: {
+    main: EmptyWeapon,
+    off: EmptyWeapon,
+    armor: EmptyArmor,
+  },
+  rations: { food: 0, water: 0 },
+  npc: false,
+  entourage: [],
+  entry: "CharacterEntry",
 };

@@ -1,16 +1,15 @@
 import * as Constants from "../Constants";
 import styled from "styled-components";
-import { CharacterEntry } from "../Types";
-import { useState, useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
+import { CharacterEntry, SessionEntry } from "../Types";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheck,
   faAngleLeft,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import { addNewRoster } from "../functions/CharacterFunctions";
 import AddCreaturePortrait from "./AddCreaturePortrait";
+import { update_session } from "../functions/SessionsFunctions";
 import {
   MainContainer,
   ModalContainer,
@@ -76,12 +75,18 @@ const ResourceChangeContainer = styled.div`
 
 interface AddMemberProps {
   character_template: CharacterEntry;
+  character: CharacterEntry;
+  session: SessionEntry;
+  websocket: WebSocket;
 }
 
-function AddCreatureToRoster({ character_template }: AddMemberProps) {
+function AddCreatureToRoster({
+  character_template,
+  session,
+  websocket,
+}: AddMemberProps) {
   const [member, setMember] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { character, setCharacter } = useContext(CharacterContext);
   const [characterPortrait, setCharacterPortrait] = useState<string>(
     character_template.details.race,
   );
@@ -102,11 +107,12 @@ function AddCreatureToRoster({ character_template }: AddMemberProps) {
   };
 
   const handleSubmit = async () => {
-    const characterClone = { ...character };
     character_template.name = member;
     character_template.portrait = characterPortrait;
-    await addNewRoster(character_template); // Assuming this is an async operation
-    setCharacter(characterClone);
+    character_template.npc = false;
+    character_template.id = session.id;
+    session.characters.push(character_template);
+    update_session(session, character_template, false, websocket);
     setIsModalOpen(false);
   };
 

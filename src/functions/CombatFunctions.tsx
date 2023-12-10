@@ -1,10 +1,8 @@
 import axios from "axios";
-import { CombatEntry } from "../Types";
-import { useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
-import { SessionContext } from "../contexts/SessionContext";
-import { API } from "../Constants";
 import { v4 as uuidv4 } from "uuid";
+import { API } from "../Constants";
+import { CharacterEntry, CombatEntry, SessionEntry } from "../Types";
+import { update_session } from "../functions/SessionsFunctions";
 export async function getCombatLog(id: string): Promise<CombatEntry[]> {
   const response = await axios.get<CombatEntry[]>(`${API}/api/combatlog/${id}`);
   return response.data;
@@ -18,11 +16,13 @@ interface RollDiceProps {
   count: number;
   target: number;
   add_mod: boolean;
+  character: CharacterEntry;
+  session: SessionEntry;
+  websocket: WebSocket;
+  isCreature: boolean;
 }
 
 export function useRoll() {
-  const { character } = useContext(CharacterContext);
-  const { session } = useContext(SessionContext);
   // const { sendRequest } = useWebSocket();
 
   return async ({
@@ -32,6 +32,10 @@ export function useRoll() {
     active,
     source,
     modifier,
+    character,
+    session,
+    websocket,
+    isCreature,
   }: RollDiceProps) => {
     let roll = 0;
     let total = 0;
@@ -47,10 +51,6 @@ export function useRoll() {
     }
 
     const roll_result = total;
-
-    // console.log("Roll Result: " + roll_result);
-    // console.log("Modifier: " + modifier);
-    // console.log("Target: " + target);
 
     let success = true;
     if (target === 0) {
@@ -72,12 +72,13 @@ export function useRoll() {
       modifier: modifier,
       target: target,
       uuid: uuidv4(),
+      entry: "CombatEntry",
     };
 
-    // const updated_character = setBaseModifier(character, 0);
-    // setCharacter(updated_character);
-    await postCombatLog(NewCombatEntry);
-    // sendRequest("combatlog"); // asking websocket to update session combatlog for all clients
+    session.combatlog.push(NewCombatEntry);
+    session.combatlog = session.combatlog.slice(-20);
+
+    update_session(session, character, isCreature, websocket);
     return roll_result;
   };
 }

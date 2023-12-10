@@ -1,14 +1,11 @@
 import * as Constants from "../../Constants";
-import { useState, useContext, useEffect } from "react";
-import { CharacterEntry } from "../../Types";
-import { SessionContext } from "../../contexts/SessionContext";
+import { useState, useEffect } from "react";
+import { CharacterEntry, SessionEntry } from "../../Types";
 import { UpperFirstLetter } from "../../functions/UtilityFunctions";
 import styled from "styled-components";
 import RaceDropdownBox from "./RaceDropdownBox";
-import {
-  addNewCharacter,
-  addNewCreature,
-} from "../../functions/CharacterFunctions";
+import { update_session } from "../../functions/SessionsFunctions";
+import { addNewCreature } from "../../functions/CharacterFunctions";
 import { EmptyWeapon, EmptyArmor } from "../../Types";
 import { toTitleCase } from "../../functions/UtilityFunctions";
 import {
@@ -20,7 +17,6 @@ import {
   ButtonContainer,
 } from "./SelectorStyles";
 import { v4 as uuidv4 } from "uuid";
-import { CharacterContext } from "../../contexts/CharacterContext";
 import AddCreaturePortrait from "../AddCreaturePortrait";
 
 interface Stats {
@@ -111,23 +107,25 @@ const ModifierBox = styled.div`
 `;
 
 interface LoginProps {
-  setSelector?: (selector: string) => void;
   characterName: string;
   characterRace: string;
-  setCharacterRace: React.Dispatch<React.SetStateAction<string>>;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   source: string;
   closeModal: () => void;
+  session: SessionEntry;
+  websocket: WebSocket;
+  isCreature: boolean;
 }
 
 function CreateCharacterComponent({
-  setSelector,
   characterName,
   characterRace,
-  setCharacterRace,
   setCharacterName,
   closeModal,
   source,
+  session,
+  websocket,
+  isCreature,
 }: LoginProps) {
   const creature_options = [
     "Abomination",
@@ -145,10 +143,9 @@ function CreateCharacterComponent({
     "Troll",
     "Undead",
   ];
-  const { setCharacter } = useContext(CharacterContext);
-  const [characterPortrait, setCharacterPortrait] = useState<string>(
-    creature_options[0],
-  );
+  const [name, setName] = useState<string>(characterName);
+  const [characterPortrait, setCharacterPortrait] =
+    useState<string>(characterRace);
   useEffect(() => {
     console.log("CreateCharacterComponent rendered");
 
@@ -159,7 +156,7 @@ function CreateCharacterComponent({
   const [isValidName, setIsValitName] = useState(false);
 
   const handleNameChange = (e: any) => {
-    setCharacterName(toTitleCase(e.target.value));
+    setName(toTitleCase(e.target.value));
     if (e.target.value !== "") {
       setIsValitName(true);
     } else {
@@ -175,9 +172,6 @@ function CreateCharacterComponent({
     }
   }, [characterName]);
 
-  console.log(characterName);
-  console.log(characterRace);
-
   const [stats, setStats] = useState<Stats[]>([
     { id: 8, label: "Accurate", value: 5 },
     { id: 1, label: "Cunning", value: 15 },
@@ -192,6 +186,7 @@ function CreateCharacterComponent({
   const [characterDifficulty, setCharacterDifficulty] =
     useState<string>("Weak");
   const [characterXp, setCharacterXp] = useState<number>(0);
+  const [race, setRace] = useState<string>(characterRace);
   const handleButtonClick = (id: number) => {
     if (!selectedButton) {
       setSelectedButton(id);
@@ -242,10 +237,8 @@ function CreateCharacterComponent({
 
   const handleDropdownChange = (selectedOption: string) => {
     setCharacterPortrait(UpperFirstLetter(selectedOption));
-    setCharacterRace(UpperFirstLetter(selectedOption));
+    setRace(UpperFirstLetter(selectedOption));
   };
-
-  const { session } = useContext(SessionContext);
 
   const difficulty: Record<string, number> = {
     Weak: 0,
@@ -262,7 +255,6 @@ function CreateCharacterComponent({
 
   const handleDifficultyDropdownChange = (selectedDifficulty: string) => {
     setCharacterDifficulty(selectedDifficulty);
-    console.log(NewCharacterEntry.details.xp_earned);
   };
 
   let creature_id = "";
@@ -280,12 +272,12 @@ function CreateCharacterComponent({
   }
 
   const NewCharacterEntry: CharacterEntry = {
-    name: characterName,
+    name: name,
     id: creature_id,
     npc: npc_state,
     portrait: characterPortrait,
     details: {
-      race: characterRace,
+      race: race,
       movement: 0,
       xp_earned: characterXp,
       modifier: 0,
@@ -337,27 +329,23 @@ function CreateCharacterComponent({
     rations: { food: 0, water: 0 },
     money: 0,
     entourage: [],
+    entry: "CharacterEntry",
   };
 
   const handlePostCharacter = async () => {
     if (source === "characterSelect") {
-      await addNewCharacter(NewCharacterEntry);
+      session.characters.push(NewCharacterEntry);
+      update_session(session, NewCharacterEntry, isCreature, websocket);
+      setCharacterName(NewCharacterEntry.name);
     } else {
       await addNewCreature(NewCharacterEntry);
     }
-    setCharacter(NewCharacterEntry);
+    // setCharacter(NewCharacterEntry);
     closeModal();
   };
 
   const handleBack = () => {
-    console.log("Back");
-    if (source === "characterSelect") {
-      if (setSelector) {
-        setSelector("characterSelect");
-      }
-    } else {
-      closeModal();
-    }
+    closeModal();
   };
 
   const ModiferScore: Record<number, string> = {
@@ -386,14 +374,14 @@ function CreateCharacterComponent({
               <NameInput
                 placeholder={"Character Name"}
                 onChange={handleNameChange}
-                value={characterName}
+                value={name}
               />
               <RaceDropdownBox
                 onChange={handleDropdownChange}
                 options={
                   source === "characterSelect" ? options : creature_options
                 }
-                value={characterRace}
+                value={race}
               />
               <RaceDropdownBox
                 onChange={handleDifficultyDropdownChange}

@@ -1,13 +1,18 @@
-import * as Constants from "../Constants";
 import { useState } from "react";
+import * as Constants from "../Constants";
 
 import styled from "styled-components";
-import { CharacterContext } from "../contexts/CharacterContext";
-import { useContext } from "react";
-import { ActiveKey, AttackActive, DefenseActive, SimpleActive } from "../Types";
-import { useRoll } from "../functions/CombatFunctions";
-import { onUseAmmunition } from "../functions/CharacterFunctions";
 import "../App.css";
+import {
+  ActiveKey,
+  AttackActive,
+  CharacterEntry,
+  DefenseActive,
+  SessionEntry,
+  SimpleActive,
+} from "../Types";
+import { useRoll } from "../functions/CombatFunctions";
+import { update_session } from "../functions/SessionsFunctions";
 
 const Container = styled.div`
   display: flex;
@@ -91,6 +96,10 @@ const Dice = styled.button<DiceProps>`
 interface Props {
   active_name: ActiveKey;
   active: AttackActive | DefenseActive | SimpleActive;
+  character: CharacterEntry;
+  session: SessionEntry;
+  websocket: WebSocket;
+  isCreature: boolean;
 }
 
 function isAttackActive(obj: any): obj is AttackActive {
@@ -103,8 +112,14 @@ function isDefenseActive(obj: any): obj is DefenseActive {
   // you can add more checks for other properties if needed
 }
 
-function ActiveBox({ active_name, active }: Props) {
-  const { character, setCharacter } = useContext(CharacterContext);
+function ActiveBox({
+  active_name,
+  active,
+  character,
+  session,
+  websocket,
+  isCreature,
+}: Props) {
   const [modValue, setModvalue] = useState<number>(0);
 
   const handleAddValue = () => {
@@ -121,6 +136,9 @@ function ActiveBox({ active_name, active }: Props) {
 
   const handleActiveRoll = () => {
     onRollDice({
+      websocket,
+      character,
+      session,
       dice: 20,
       count: 1,
       modifier: modValue,
@@ -128,6 +146,7 @@ function ActiveBox({ active_name, active }: Props) {
       source: "Skill Test",
       active: active_name,
       add_mod: false,
+      isCreature,
     });
   };
 
@@ -138,6 +157,9 @@ function ActiveBox({ active_name, active }: Props) {
     damage_armor: string,
   ) => {
     onRollDice({
+      websocket,
+      character,
+      session,
       dice: dice,
       count: 1,
       target: 0,
@@ -145,6 +167,7 @@ function ActiveBox({ active_name, active }: Props) {
       source: dice_name,
       active: damage_armor,
       add_mod: false,
+      isCreature,
     });
   };
 
@@ -154,30 +177,56 @@ function ActiveBox({ active_name, active }: Props) {
     dice_mod: number,
     damage_armor: string,
   ) => {
-    const { updatedCharacter, hasAmmunition } = onUseAmmunition(character);
-    console.log("Ranged Attack Updated Character");
-    console.log(updatedCharacter);
+    type Quantity = {
+      count: number;
+    };
 
-    setCharacter(updatedCharacter);
+    type EquipmentItem = {
+      id: string;
+      category: string;
+      quantity: Quantity;
+    };
 
-    console.log("Ranged Attack");
-    console.log(hasAmmunition);
-    console.log(updatedCharacter);
+    let usedAmmunitionId = "";
+    const { main, off } = character.equipment;
+    const equipment_slots: EquipmentItem[] = [main, off];
+
+    let hasAmmunition = false;
+
+    equipment_slots.map((item) => {
+      if (item.category === "ammunition" && item.quantity.count > 0) {
+        hasAmmunition = true;
+        usedAmmunitionId = item.id;
+        item.quantity.count -= 1;
+        character.inventory.map((item) => {
+          if (item.id === usedAmmunitionId) {
+            item.quantity.count -= 1;
+          }
+        });
+      } else {
+        hasAmmunition = false;
+      }
+    });
 
     if (!hasAmmunition) {
       // handle case when onUseAmmunition is false
-      return;
+      console.log("No ammunition");
+    } else {
+      update_session(session, character, isCreature, websocket);
+      onRollDice({
+        websocket,
+        character,
+        session,
+        dice: dice,
+        count: 1,
+        target: 0,
+        modifier: dice_mod,
+        source: dice_name,
+        active: damage_armor,
+        add_mod: false,
+        isCreature,
+      });
     }
-
-    onRollDice({
-      dice: dice,
-      count: 1,
-      target: 0,
-      modifier: dice_mod,
-      source: dice_name,
-      active: damage_armor,
-      add_mod: false,
-    });
   };
 
   return (

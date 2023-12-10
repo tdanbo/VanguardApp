@@ -1,5 +1,4 @@
-import { useState, useContext } from "react";
-import { SessionContext } from "../../contexts/SessionContext";
+import { useState } from "react";
 import { SessionEntry } from "../../Types";
 import { postSession } from "../../functions/SessionsFunctions";
 import * as Constants from "../../Constants";
@@ -14,9 +13,6 @@ import {
   ControlButton,
 } from "./SelectorStyles";
 
-interface LoginProps {
-  setSelector: (selector: string) => void;
-}
 function formatDate(date: Date): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -65,8 +61,12 @@ const EmailButton = styled.input`
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
 `;
 
-function CreateSessionComponent({ setSelector }: LoginProps) {
-  const { setSession } = useContext(SessionContext);
+interface LoginProps {
+  setSelector: (selector: string) => void;
+  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
+}
+
+function CreateSessionComponent({ setSelector, setSession }: LoginProps) {
   const [sessionName, setSessionName] = useState("");
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
@@ -109,6 +109,8 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
       distance: 0,
       weather: "RAINY",
     },
+    characters: [],
+    combatlog: [],
   };
 
   const handlePostSession = async () => {

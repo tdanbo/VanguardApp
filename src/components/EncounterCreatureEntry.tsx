@@ -1,23 +1,21 @@
-import styled from "styled-components";
-import { CharacterEntry } from "../Types";
-import * as Constants from "../Constants";
-import { CharacterPortraits } from "../Images";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { cloneDeep } from "lodash";
-import AbilityEntryItem from "./AbilityEntryItem";
-import { useState, memo, useEffect } from "react";
-import { useContext } from "react";
-import { CharacterContext } from "../contexts/CharacterContext";
 import {
+  faCoins,
   faHeart,
   faShield,
   faSkull,
   faXmark,
-  faCoins,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cloneDeep } from "lodash";
+import { memo, useEffect, useState } from "react";
+import styled from "styled-components";
+import * as Constants from "../Constants";
+import { CharacterPortraits } from "../Images";
+import { CharacterEntry, SessionEntry } from "../Types";
+import AbilityEntryItem from "./Entries/AbilityEntryItem";
 
-import Icon from "@mdi/react";
 import { mdiSword } from "@mdi/js";
+import Icon from "@mdi/react";
 
 import { UpdateActives } from "../functions/ActivesFunction";
 
@@ -237,7 +235,12 @@ interface EncounterBoxProps {
   onDeleteCreature: (creature: CharacterEntry) => void;
   encounter: CharacterEntry[];
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
-  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  session: SessionEntry;
+  websocket: WebSocket;
+  isCreature: boolean;
+  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
+  setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function EncounterCreatureEntry({
@@ -245,15 +248,15 @@ function EncounterCreatureEntry({
   onDeleteCreature,
   encounter,
   setCreatureEncounter,
-  setCreatureEdit,
+  session,
+  websocket,
+  isCreature,
+  setGmMode,
+  setCharacterName,
+  setIsCreature,
 }: EncounterBoxProps) {
-  console.log("Rendering EncounterCreatureEntry");
-  const { setCharacter } = useContext(CharacterContext);
-
   const creatureClone = cloneDeep(creature);
   const actives = UpdateActives(creatureClone);
-  console.log("actives");
-  console.log(actives);
   const pain = Math.ceil(creatureClone.stats.strong.value / 2);
   const attack = ModifierConverter[actives.attack.value];
   const defense = ModifierConverter[actives.defense.value];
@@ -272,7 +275,6 @@ function EncounterCreatureEntry({
 
     encounter_clone.forEach((encounterCreature) => {
       if (encounterCreature.id === creature.id) {
-        console.log("Adjusting damage");
         encounterCreature.damage = damage_calc;
       }
     });
@@ -313,11 +315,38 @@ function EncounterCreatureEntry({
     setLoot(lootString);
   }, []);
 
-  const HandleCharacterSheet = () => {
-    setCharacter(creature);
-    setCreatureEdit(true);
-    console.log("HandleCharacterSheet");
+  const GoToSheet = () => {
+    setIsCreature(true);
+    console.log(creature.name);
+    // This is a little dodgy removing the last two letter to get rid of the A,B,C on the creatures.
+    setCharacterName(creature.name.slice(0, -2));
+    setGmMode(false);
   };
+
+  const title =
+    "Cunning " +
+    ModifierConverter[creatureClone.stats.cunning.value] +
+    "\n" +
+    "Discreet " +
+    ModifierConverter[creatureClone.stats.discreet.value] +
+    "\n" +
+    "Persuasive " +
+    ModifierConverter[creatureClone.stats.persuasive.value] +
+    "\n" +
+    "Quick " +
+    ModifierConverter[creatureClone.stats.quick.value] +
+    "\n" +
+    "Resolute " +
+    ModifierConverter[creatureClone.stats.resolute.value] +
+    "\n" +
+    "Strong " +
+    ModifierConverter[creatureClone.stats.strong.value] +
+    "\n" +
+    "Vigilant " +
+    ModifierConverter[creatureClone.stats.vigilant.value] +
+    "\n" +
+    "Accurate " +
+    ModifierConverter[creatureClone.stats.accurate.value];
 
   return (
     <MainContainer>
@@ -354,8 +383,8 @@ function EncounterCreatureEntry({
             {Math.ceil(actives.defense.dice / 2) + actives.defense.dice_mod}
           </ActiveArmorSub>
         </ActiveBox>
-        <NameContainer onClick={HandleCharacterSheet}>
-          <NameBox title={creatureClone.name}>{creature.name}</NameBox>
+        <NameContainer onClick={GoToSheet}>
+          <NameBox title={title}>{creature.name}</NameBox>
           <ActiveSub>
             {resistance} {creature.details.race}{" "}
             <FontAwesomeIcon icon={faCoins} title={loot} />
@@ -404,7 +433,7 @@ function EncounterCreatureEntry({
           </ActiveBox>
         ) : null}
         {actives.attack.dice2_name !== "Knuckles" ? (
-          <ActiveBox key={`active-box-1`}>
+          <ActiveBox key={`active-box-2`}>
             <ActiveStat
               title={`When this creature is attacking ${formatNumber(
                 attack, // If alt attack is not a thing yet, this is sufficient
@@ -453,9 +482,13 @@ function EncounterCreatureEntry({
         {creatureClone.abilities.map((ability, index) => {
           return (
             <AbilityEntryItem
+              websocket={websocket}
+              character={creature}
+              session={session}
               key={`ability-${ability.name}-${index}`}
               ability={ability}
               browser={false}
+              isCreature={isCreature}
             />
           );
         })}
