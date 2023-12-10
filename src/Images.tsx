@@ -127,6 +127,9 @@ import FailureA from "./assets/sounds/FailureA.wav";
 import FailureB from "./assets/sounds/FailureB.wav";
 import FailureC from "./assets/sounds/FailureC.wav";
 
+import Resting from "./assets/sounds/Resting.wav";
+
+export const RestingSounds = [Resting, Resting, Resting, Resting, Resting];
 export const RollSounds = [RollA, RollB, RollC, RollD, RollE, RollF, RollG];
 export const CriticalSuccessSounds = [SuccessA, SuccessB, SuccessC];
 export const CriticalFailureSounds = [FailureA, FailureB, FailureC];
