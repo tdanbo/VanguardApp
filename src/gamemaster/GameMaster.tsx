@@ -1,8 +1,8 @@
 import CharacterNavigation from "../components/NavigationControl/CharacterNavigation";
 import CreatureEncounterSection from "../components/Sections/CreatureEncounterSection";
 import ResetCreatureEncounter from "../components/ResetCreatureEncounter";
-import TimeTrackBox from "./TimeTrackBox";
-import TravelBox from "./TravelBox";
+import TimeTrackBox from "../gamemaster/TimeTrackBox";
+import TravelBox from "../gamemaster/TravelBox";
 import styled from "styled-components";
 import { CharacterEntry, SessionEntry } from "../Types";
 

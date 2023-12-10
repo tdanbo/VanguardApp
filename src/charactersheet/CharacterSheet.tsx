@@ -3,16 +3,16 @@ import { CharacterEntry, SessionEntry } from "../Types";
 import CharacterNavigation from "../components/NavigationControl/CharacterNavigation";
 import EmptyNavigation from "../components/NavigationControl/EmptyNavigation";
 import InventoryNavigation from "../components/NavigationControl/InventoryNavigation";
-import XpBox from "./XpBox";
-import CharacterNameBox from "./CharacterNameBox";
-import HealthBox from "./HealthBox";
-import StatsControls from "./StatsControls";
-import ActiveControls from "./ActiveControls";
-import SecondaryStatsControls from "./SecondaryStatsControls";
-import RestBox from "./RestBox";
-import ResourcesBox from "./ResourcesBox";
-import InventorySection from "./InventorySection";
-import AbilitySection from "./AbilitySection";
+import XpBox from "../charactersheet/XpBox";
+import CharacterNameBox from "../charactersheet/CharacterNameBox";
+import HealthBox from "../charactersheet/HealthBox";
+import StatsControls from "../charactersheet/StatsControls";
+import ActiveControls from "../charactersheet/ActiveControls";
+import SecondaryStatsControls from "../charactersheet/SecondaryStatsControls";
+import RestBox from "../charactersheet/RestBox";
+import ResourcesBox from "../charactersheet/ResourcesBox";
+import InventorySection from "../charactersheet/InventorySection";
+import AbilitySection from "../charactersheet/AbilitySection";
 
 const StatsContainer = styled.div`
   display: flex;

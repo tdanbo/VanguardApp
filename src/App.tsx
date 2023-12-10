@@ -14,8 +14,8 @@ import {
 } from "./Types";
 import CombatSection from "./components/Sections/CombatSection";
 
-import CharacterSheet from "./CharacterSheet/CharacterSheet";
-import GameMaster from "./Gamemaster/GameMaster";
+import CharacterSheet from "./charactersheet/CharacterSheet";
+import GameMaster from "./gamemaster/GameMaster";
 
 import useWebSocket from "./websocket";
 import BrowserSection from "./BrowserSection/BrowserSection";
