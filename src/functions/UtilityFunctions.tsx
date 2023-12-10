@@ -1,7 +1,3 @@
-import axios from "axios";
-import { API } from "../Constants";
-import { AbilityEntry, ItemEntry } from "../Types";
-
 export function UpperFirstLetter(input: string): string {
   if (!input || typeof input !== "string") {
     return "";
