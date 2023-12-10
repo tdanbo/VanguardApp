@@ -1,8 +1,8 @@
-import { AbilityEntry } from "../../Types";
+import { AbilityEntry } from "../Types";
 import styled from "styled-components";
-import * as Constants from "../../Constants";
+import * as Constants from "../Constants";
 import axios from "axios";
-import { API } from "../../Constants";
+import { API } from "../Constants";
 import { useEffect } from "react";
 
 interface ButtonProps {
@@ -52,48 +52,24 @@ const Container = styled.div`
 import { useState } from "react";
 
 interface AbilityFooterProps {
-  abilityList: AbilityEntry[];
-  setAbilityList: (abilityList: AbilityEntry[]) => void;
+  setTypeFilter: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function AbilityFooter({ abilityList, setAbilityList }: AbilityFooterProps) {
-  const [fullList, setFullList] = useState<AbilityEntry[]>(abilityList);
+function AbilityFooter({ setTypeFilter }: AbilityFooterProps) {
   const [active, setActive] = useState<string | null>(null);
 
-  function sortItems(a: AbilityEntry, b: AbilityEntry): number {
-    const categoryComparison =
-      Constants.TYPE_FILTER.indexOf(a.type) -
-      Constants.TYPE_FILTER.indexOf(b.type);
-
-    return categoryComparison;
-  }
-
-  function filterAndSortItems(type: string) {
-    setActive(type);
-    const filteredItems = fullList.filter((item) => item.type === type);
-    const sortedItems = filteredItems.sort(sortItems);
-    setAbilityList(sortedItems);
-  }
-
-  useEffect(() => {
-    const fetchItems = async () => {
-      const response = await axios.get(`${API}/api/abilities`);
-      const sortedItems = [...response.data].sort(sortItems);
-      setFullList(sortedItems);
-    };
-    fetchItems();
-  }, []);
+  const filterAndSortItems = (type: string) => {
+    if (type === active) {
+      setActive(null);
+      setTypeFilter("all");
+    } else {
+      setActive(type);
+      setTypeFilter(type);
+    }
+  };
 
   return (
     <Container>
-      <AllButton
-        onClick={() => {
-          setAbilityList([...fullList].sort(sortItems));
-          setActive(null);
-        }}
-      >
-        A
-      </AllButton>
       <Button
         onClick={() => filterAndSortItems("Ability")}
         data-isactive={active === "Ability"}
@@ -119,22 +95,10 @@ function AbilityFooter({ abilityList, setAbilityList }: AbilityFooterProps) {
         Traits
       </Button>
       <Button
-        onClick={() => filterAndSortItems("Monsterous Trait")}
-        data-isactive={active === "Monsterous Trait"}
-      >
-        Monsterous Traits
-      </Button>
-      <Button
-        onClick={() => filterAndSortItems("Boon")}
+        onClick={() => filterAndSortItems("BoonBurden")}
         data-isactive={active === "Boon"}
       >
-        Boons
-      </Button>
-      <Button
-        onClick={() => filterAndSortItems("Burden")}
-        data-isactive={active === "Burden"}
-      >
-        Burdens
+        Boons / Burdens
       </Button>
     </Container>
   );

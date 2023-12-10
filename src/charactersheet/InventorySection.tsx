@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
-import InventoryEntry from "../components/InventoryEntry";
+import InventoryEntry from "../components/Entries/InventoryEntry";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 import { GetMaxSlots } from "../functions/RulesFunctions";
 const Container = styled.div<{ hidden: boolean }>`
@@ -16,6 +16,7 @@ interface NavigationProps {
   character: CharacterEntry;
   session: SessionEntry;
   websocket: WebSocket;
+  isCreature: boolean;
 }
 
 function sortInventory(a: ItemEntry, b: ItemEntry): number {
@@ -29,10 +30,11 @@ function InventorySection({
   inventoryState,
   character,
   session,
-  websocket
+  websocket,
+  isCreature,
 }: NavigationProps) {
-  console.log("Websocket Inventory Section")
-  console.log(websocket)
+  console.log("Websocket Inventory Section");
+  console.log(websocket);
 
   character.inventory.sort(sortInventory);
   const sortedInventory = [...character.inventory].sort(sortInventory);
@@ -56,6 +58,7 @@ function InventorySection({
               id={item.id}
               equipped={""}
               gmMode={false}
+              isCreature={isCreature}
             />
           );
         }

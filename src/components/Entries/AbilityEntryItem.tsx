@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import * as Constants from "../Constants";
-import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
+import * as Constants from "../../Constants";
+import { AbilityEntry, CharacterEntry, SessionEntry } from "../../Types";
 
 import styled from "styled-components";
-import { Ability } from "../Types";
-import { onAddCorruption } from "../functions/CharacterFunctions";
-import { useRoll } from "../functions/CombatFunctions";
+import { Ability } from "../../Types";
+import { onAddCorruption } from "../../functions/CharacterFunctions";
+import { useRoll } from "../../functions/CombatFunctions";
 
 import { faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { update_session } from "../functions/SessionsFunctions";
-import { ExceptionalStats } from "../functions/rules/ExceptionalStats";
+import { update_session } from "../../functions/SessionsFunctions";
+import { ExceptionalStats } from "../../functions/rules/ExceptionalStats";
 
 interface LevelComponentProps {
   level: string;
@@ -251,6 +251,7 @@ interface AbilityEntryItemProps {
   character: CharacterEntry;
   session: SessionEntry;
   websocket: WebSocket;
+  isCreature: boolean;
 }
 
 function AbilityEntryItem({
@@ -260,6 +261,7 @@ function AbilityEntryItem({
   character,
   session,
   websocket,
+  isCreature,
 }: AbilityEntryItemProps) {
   const [abilityLevel, setAbilityLevel] = useState<string>(ability.level);
 
@@ -290,9 +292,9 @@ function AbilityEntryItem({
       ...ability,
       id: generateRandomId(),
     };
-    
+
     character.abilities.push(abilityWithId);
-  
+
     const update_stats = ExceptionalStats({
       character: character,
       state: "add",
@@ -302,40 +304,40 @@ function AbilityEntryItem({
     });
 
     character.stats = update_stats.stats;
-    update_session(session, websocket);
+    update_session(session, character, isCreature, websocket);
     if (setInventoryState) {
       setInventoryState(2);
     }
   };
 
-  const DeleteAbilitySlot = (ability: AbilityEntry) => {  
-      console.log("Delete Ability Slot")
+  const DeleteAbilitySlot = (ability: AbilityEntry) => {
+    console.log("Delete Ability Slot");
 
-      const ability_id = ability.id;
-      const new_abilities = character.abilities.filter(
-        (item) => item.id !== ability_id,
-      );
-    
-      character.abilities = new_abilities;
+    const ability_id = ability.id;
+    const new_abilities = character.abilities.filter(
+      (item) => item.id !== ability_id,
+    );
 
-      const update_stats = ExceptionalStats({
-        character: character,
-        state: "sub",
-        ability: ability,
-        level: ability.level,
-        originalLevel: ability.level,
-      });
-    
-      character.stats = update_stats.stats;
+    character.abilities = new_abilities;
 
-      update_session(session, websocket);
+    const update_stats = ExceptionalStats({
+      character: character,
+      state: "sub",
+      ability: ability,
+      level: ability.level,
+      originalLevel: ability.level,
+    });
+
+    character.stats = update_stats.stats;
+
+    update_session(session, character, isCreature, websocket);
   };
 
   function handleLevelChange(ability: AbilityEntry, level: string) {
     setAbilityLevel(level);
 
     const id = ability.id;
-  
+
     const abilities = character.abilities.map((ability) => {
       if (ability.id === id) {
         return {
@@ -346,20 +348,20 @@ function AbilityEntryItem({
         return ability;
       }
     });
-  
+
     character.abilities = abilities;
-  
+
     const update_stats = ExceptionalStats({
       character: character,
       state: "change",
-      ability: ability, 
+      ability: ability,
       level: level,
       originalLevel: ability.level,
     });
 
     character.stats = update_stats.stats;
-  
-    update_session(session, websocket);
+
+    update_session(session, character, isCreature, websocket);
   }
 
   const onRollDice = useRoll();
@@ -376,6 +378,7 @@ function AbilityEntryItem({
       source: ability.name,
       active: "Corruption",
       add_mod: true,
+      isCreature,
     });
 
     const updated_character = onAddCorruption(character, dice_result);
@@ -411,6 +414,7 @@ function AbilityEntryItem({
                     source: ability.name,
                     active: ability.type,
                     add_mod: true,
+                    isCreature,
                   })
                 }
               >
@@ -436,6 +440,7 @@ function AbilityEntryItem({
                     source: ability.name,
                     active: ability.type,
                     add_mod: true,
+                    isCreature,
                   })
                 }
               >
@@ -461,6 +466,7 @@ function AbilityEntryItem({
                     source: ability.name,
                     active: ability.type,
                     add_mod: true,
+                    isCreature,
                   })
                 }
               >

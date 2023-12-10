@@ -12,7 +12,7 @@ import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { CharacterEntry, SessionEntry } from "../Types";
-import AbilityEntryItem from "../charactersheet/AbilityEntryItem";
+import AbilityEntryItem from "./Entries/AbilityEntryItem";
 
 import { mdiSword } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -235,10 +235,9 @@ interface EncounterBoxProps {
   onDeleteCreature: (creature: CharacterEntry) => void;
   encounter: CharacterEntry[];
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
-  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
-  character: CharacterEntry;
   session: SessionEntry;
   websocket: WebSocket;
+  isCreature: boolean;
 }
 
 function EncounterCreatureEntry({
@@ -246,10 +245,9 @@ function EncounterCreatureEntry({
   onDeleteCreature,
   encounter,
   setCreatureEncounter,
-  setCreatureEdit,
-  character,
   session,
   websocket,
+  isCreature,
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
   const actives = UpdateActives(creatureClone);
@@ -311,11 +309,6 @@ function EncounterCreatureEntry({
     setLoot(lootString);
   }, []);
 
-  const HandleCharacterSheet = () => {
-    // setCharacter(creature);
-    setCreatureEdit(true);
-  };
-
   return (
     <MainContainer>
       {hp - currentDamage <= 0 && (
@@ -351,7 +344,7 @@ function EncounterCreatureEntry({
             {Math.ceil(actives.defense.dice / 2) + actives.defense.dice_mod}
           </ActiveArmorSub>
         </ActiveBox>
-        <NameContainer onClick={HandleCharacterSheet}>
+        <NameContainer>
           <NameBox title={creatureClone.name}>{creature.name}</NameBox>
           <ActiveSub>
             {resistance} {creature.details.race}{" "}
@@ -451,11 +444,12 @@ function EncounterCreatureEntry({
           return (
             <AbilityEntryItem
               websocket={websocket}
-              character={character}
+              character={creature}
               session={session}
               key={`ability-${ability.name}-${index}`}
               ability={ability}
               browser={false}
+              isCreature={isCreature}
             />
           );
         })}

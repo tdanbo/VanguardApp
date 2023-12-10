@@ -1,5 +1,5 @@
 import * as Constants from "../Constants";
-import { CombatEntry } from "../Types";
+import { CombatEntry, SessionEntry } from "../Types";
 import "../App.css";
 import styled from "styled-components";
 import { UpperFirstLetter } from "../functions/UtilityFunctions";
@@ -16,6 +16,7 @@ import { useState, useEffect } from "react";
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
   index: number;
+  session: SessionEntry;
 }
 
 interface ColorTypeProps {
@@ -114,7 +115,11 @@ const FumbledSubText = styled.div`
   color: ${Constants.WIDGET_SECONDARY_FONT};
 `;
 
-function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
+function CombatEntryItem({
+  combatEntry,
+  index,
+  session,
+}: CombatEntryItemProps) {
   const EntryColor = () => {
     return (
       Constants.TYPE_COLORS[combatEntry.active.toLowerCase()] ||
@@ -218,13 +223,15 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
       <ColorBlock $rgb={EntryColor()} $issuccess={combatEntry.success} />
       <ResultContainer>
         {combatEntry.active === "Resting" ? (
-          <Result
-            title={title}
-            $rgb={EntryColor()}
-            $issuccess={combatEntry.success}
-          >
-            <FontAwesomeIcon icon={faMoon} />
-          </Result>
+          <>
+            <Result
+              title={title}
+              $rgb={EntryColor()}
+              $issuccess={combatEntry.success}
+            >
+              <FontAwesomeIcon icon={faMoon} />
+            </Result>
+          </>
         ) : (
           <Result
             title={title}
@@ -233,7 +240,6 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
             className={isRolling ? "rolling" : ""}
           >
             {currentDisplay}
-            {/* {combatEntry.result} */}
           </Result>
         )}
 

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import * as Constants from "../Constants";
 import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
-import AbilityEntryItem from "./AbilityEntryItem";
+import AbilityEntryItem from "../components/Entries/AbilityEntryItem";
 const Container = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? "none" : "flex")};
   flex-direction: column;
@@ -15,6 +15,7 @@ interface NavigationProps {
   character: CharacterEntry;
   session: SessionEntry;
   websocket: WebSocket;
+  isCreature: boolean;
 }
 
 function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
@@ -29,6 +30,7 @@ function AbilitySection({
   character,
   session,
   websocket,
+  isCreature,
 }: NavigationProps) {
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
 
@@ -43,6 +45,7 @@ function AbilitySection({
             browser={false}
             character={character}
             websocket={websocket}
+            isCreature={isCreature}
           />
         );
       })}

@@ -1,8 +1,7 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { CharacterEntry } from "../../Types";
+import { CharacterEntry, SessionEntry } from "../../Types";
 import { getCharacters } from "../../functions/SessionsFunctions";
-import { SessionContext } from "../../contexts/_SessionContext";
 import EncounterCharacterEntry from "../EncounterCharacterEntry";
 import EncounterCreatureEntry from "../EncounterCreatureEntry";
 import { Stat } from "../../Types";
@@ -19,16 +18,19 @@ interface EncounterSectionProps {
   encounter: CharacterEntry[];
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   onDeleteCreature: (id: string) => void;
-  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  session: SessionEntry;
+  websocket: WebSocket;
+  isCreature: boolean;
 }
 
 function CreatureEncounterSection({
   encounter,
   setCreatureEncounter,
   onDeleteCreature,
-  setCreatureEdit,
+  session,
+  websocket,
+  isCreature,
 }: EncounterSectionProps) {
-  const { session } = useContext(SessionContext);
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
   // If setSortedEncounter is part of your useState declaration, it should look like this
   const [sortedEncounter, setSortedEncounter] = useState<
@@ -36,10 +38,8 @@ function CreatureEncounterSection({
   >([]);
 
   useEffect(() => {
-    getCharacters(session.id).then((response) => {
-      setCharacterLog(response);
-    });
-  }, [encounter, session.id]);
+    setCharacterLog(session.characters);
+  }, [encounter, session]);
 
   useEffect(() => {
     // Assuming combinedList is already declared and available in this scope
@@ -99,7 +99,9 @@ function CreatureEncounterSection({
               }}
               setCreatureEncounter={setCreatureEncounter}
               encounter={encounter}
-              setCreatureEdit={setCreatureEdit}
+              session={session}
+              websocket={websocket}
+              isCreature={isCreature}
             />
           );
         }

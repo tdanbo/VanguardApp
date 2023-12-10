@@ -1,8 +1,8 @@
-import { CreatureEntry } from "../../Types";
+import { CreatureEntry } from "../Types";
 
 import styled from "styled-components";
-import MonsterEntryItem from "../MonsterEntryItem";
-import * as Constants from "../../Constants";
+import MonsterEntryItem from "./MonsterEntryItem";
+import * as Constants from "../Constants";
 const Container = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? "none" : "flex")};
   flex-direction: column;

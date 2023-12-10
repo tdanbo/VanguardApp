@@ -100,7 +100,7 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get(`${API}/api/creaturesv2`);
+        const response = await axios.get(`${API}/api/creatures`);
         setFullList(response.data);
         setLoading(false);
       } catch (error) {
@@ -144,10 +144,11 @@ const SearchCreatureBox: FC<SearchItemBoxProps> = ({
     <OverlayStyles>
       <CreateCharacterComponent
         setCharacterName={setCharacterName}
-        setCharacterRace={setCharacterRace}
         characterName={characterName}
         characterRace={characterRace}
         closeModal={handleClose}
+        session={session}
+        websocket={websocket}
         source={""}
       />
     </OverlayStyles>

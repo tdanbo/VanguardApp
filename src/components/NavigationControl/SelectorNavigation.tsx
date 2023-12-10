@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SelectorComponent from "../SelectorPage/Selector";
+import SelectorComponent from "../../_Delete/Selector";
 import { SessionEntry } from "../../Types";
 const Container = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ interface NavigationProps {
 
 function SelectorNavigation({ setGmMode, setSession }: NavigationProps) {
   return (
-    <Container>
+    <Container title={"Leave Session"}>
       <SelectorComponent setGmMode={setGmMode} setSession={setSession} />
     </Container>
   );

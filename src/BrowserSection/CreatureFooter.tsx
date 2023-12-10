@@ -1,8 +1,8 @@
-import { CreatureEntry } from "../../Types";
+import { CreatureEntry } from "../Types";
 import styled from "styled-components";
-import * as Constants from "../../Constants";
+import * as Constants from "../Constants";
 import axios from "axios";
-import { API } from "../../Constants";
+import { API } from "../Constants";
 import { useEffect } from "react";
 
 interface ButtonProps {
@@ -52,58 +52,24 @@ const Container = styled.div`
 import { useState } from "react";
 
 interface CreatureFooterProps {
-  monsterList: CreatureEntry[];
-  setMonsterList: (monsterList: CreatureEntry[]) => void;
+  setTypeFilter: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function MonsterFooter({ monsterList, setMonsterList }: CreatureFooterProps) {
-  const [fullList, setFullList] = useState<CreatureEntry[]>(monsterList);
+function CreatureFooter({ setTypeFilter }: CreatureFooterProps) {
   const [active, setActive] = useState<string | null>(null);
 
-  function sortItems(a: CreatureEntry, b: CreatureEntry): number {
-    const raceComparison =
-      Constants.RACE_FILTER.indexOf(a.race) -
-      Constants.RACE_FILTER.indexOf(b.race);
-
-    if (raceComparison === 0) {
-      // If races are the same, sort by resistance
-      return (
-        Constants.DIFFICULTY_FILTER.indexOf(a.resistance) -
-        Constants.DIFFICULTY_FILTER.indexOf(b.resistance)
-      );
+  const filterAndSortItems = (type: string) => {
+    if (type === active) {
+      setActive(null);
+      setTypeFilter("all");
+    } else {
+      setActive(type);
+      setTypeFilter(type);
     }
-
-    return raceComparison;
-  }
-
-  function filterAndSortItems(category: string) {
-    setActive(category);
-    const filteredItems = fullList.filter(
-      (creature) => creature.category === category,
-    );
-    const sortedItems = filteredItems.sort(sortItems);
-    setMonsterList(sortedItems);
-  }
-
-  useEffect(() => {
-    const fetchItems = async () => {
-      const response = await axios.get(`${API}/api/creatures`);
-      const sortedItems = [...response.data].sort(sortItems);
-      setFullList(sortedItems);
-    };
-    fetchItems();
-  }, []);
+  };
 
   return (
     <Container>
-      <AllButton
-        onClick={() => {
-          setMonsterList([...fullList].sort(sortItems));
-          setActive(null);
-        }}
-      >
-        A
-      </AllButton>
       <Button
         onClick={() => filterAndSortItems("Abomination")}
         isActive={active === "Abomination"}
@@ -132,4 +98,4 @@ function MonsterFooter({ monsterList, setMonsterList }: CreatureFooterProps) {
   );
 }
 
-export default MonsterFooter;
+export default CreatureFooter;

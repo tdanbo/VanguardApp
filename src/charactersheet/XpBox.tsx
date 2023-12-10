@@ -30,12 +30,13 @@ interface XpBoxProps {
   session: SessionEntry;
   character: CharacterEntry;
   websocket: WebSocket;
+  isCreature: boolean;
 }
 
-function XpBox({ session, character, websocket }: XpBoxProps) {
+function XpBox({ session, character, websocket, isCreature }: XpBoxProps) {
   const handleAddXp = () => {
     character.details.xp_earned += 1;
-    update_session(session, websocket);
+    update_session(session, character, isCreature, websocket);
   };
 
   const handleSubXp = () => {
@@ -43,7 +44,7 @@ function XpBox({ session, character, websocket }: XpBoxProps) {
     if (character.details.xp_earned < 0) {
       character.details.xp_earned = 0;
     }
-    update_session(session, websocket);
+    update_session(session, character, isCreature, websocket);
   };
 
   return (

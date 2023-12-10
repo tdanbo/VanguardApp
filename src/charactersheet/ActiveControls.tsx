@@ -20,9 +20,15 @@ interface CorruptionControlsProps {
   character: CharacterEntry;
   session: SessionEntry;
   websocket: WebSocket;
+  isCreature: boolean;
 }
 
-function CorruptionControls({ character, session, websocket }: CorruptionControlsProps) {
+function CorruptionControls({
+  character,
+  session,
+  websocket,
+  isCreature,
+}: CorruptionControlsProps) {
   const actives = UpdateActives(character);
 
   return (
@@ -33,6 +39,7 @@ function CorruptionControls({ character, session, websocket }: CorruptionControl
         active_name={"attack"}
         active={actives["attack"] as AttackActive}
         character={character}
+        isCreature={isCreature}
       />
       <ActiveBox
         websocket={websocket}
@@ -40,6 +47,7 @@ function CorruptionControls({ character, session, websocket }: CorruptionControl
         active_name={"defense"}
         active={actives["defense"] as DefenseActive}
         character={character}
+        isCreature={isCreature}
       />
       <ActiveBox
         websocket={websocket}
@@ -47,6 +55,7 @@ function CorruptionControls({ character, session, websocket }: CorruptionControl
         active_name={"casting"}
         active={actives["casting"] as SimpleActive}
         character={character}
+        isCreature={isCreature}
       />
       <ActiveBox
         websocket={websocket}
@@ -54,6 +63,7 @@ function CorruptionControls({ character, session, websocket }: CorruptionControl
         active_name={"sneaking"}
         active={actives["sneaking"] as SimpleActive}
         character={character}
+        isCreature={isCreature}
       />
     </Container>
   );

@@ -1,18 +1,19 @@
-import * as Constants from "../Constants";
-import { RosterEntry, SessionEntry } from "../Types";
+import * as Constants from "../../Constants";
+import { RosterEntry, SessionEntry } from "../../Types";
 import { useState, useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
-import { CharacterEntry } from "../Types";
+import { CharacterEntry } from "../../Types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
-import AddCreatureToRoster from "./AddCreatureToRoster";
+import AddCreatureToRoster from "../AddCreatureToRoster";
 import { useEffect } from "react";
 import {
   postSelectedCharacter,
   deleteRosterCharacter,
   addNewCharacter,
-} from "../functions/CharacterFunctions";
+} from "../../functions/CharacterFunctions";
+import { set } from "lodash";
 const BaseContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -81,8 +82,7 @@ const CreatureName = styled.div<BrowserProps>`
   display: flex;
   flex-grow: 1;
   flex: 1;
-  color: ${(props) =>
-    props.browserstate === 4 ? Constants.BRIGHT_RED : Constants.BLUE};
+  color: ${Constants.BRIGHT_RED};
   font-size: 15px;
   font-weight: bold;
 `;
@@ -103,9 +103,11 @@ interface AbilityEntryItemProps {
   setInventoryState?: (inventoryState: number) => void;
   encounter: CharacterEntry[];
   setEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
-  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
   gmMode: boolean;
   browserState: number;
+  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
+  setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
+  websocket: WebSocket;
 }
 
 function CreatureEntryItem({
@@ -115,9 +117,11 @@ function CreatureEntryItem({
   browser,
   encounter,
   setEncounter,
-  setCreatureEdit,
   gmMode,
   browserState,
+  setCharacterName,
+  setIsCreature,
+  websocket,
 }: AbilityEntryItemProps) {
   const [_expanded] = useState<boolean>(false);
 
@@ -149,9 +153,10 @@ function CreatureEntryItem({
     console.log("Delete Creature");
   };
 
-  const editCreature = () => {
-    // setCharacter(creature);
-    setCreatureEdit(true);
+  const selectCreature = () => {
+    console.log("Select Creature");
+    setIsCreature(true);
+    setCharacterName(creature.name);
   };
 
   const [resistance, setResistance] = useState<string>("Weak");
@@ -203,7 +208,10 @@ function CreatureEntryItem({
   return (
     <BaseContainer>
       <Container>
-        <ExpandButten className={"button-hover"} onClick={() => editCreature()}>
+        <ExpandButten
+          className={"button-hover"}
+          onClick={() => selectCreature()}
+        >
           <FontAwesomeIcon icon={faUser} />
         </ExpandButten>
         <NameContainer>
@@ -214,42 +222,15 @@ function CreatureEntryItem({
             {resistance} {creature.details.race}
           </AbilityDetail>
         </NameContainer>
-        {browser ? (
-          gmMode ? (
-            browserState === 4 ? (
-              <>
-                <AddCreatureToRoster
-                  character_template={creature}
-                  character={character}
-                />
-                <AddButton
-                  className={"button-hover"}
-                  onClick={AddEncounterCreature}
-                >
-                  <FontAwesomeIcon icon={faPlus} />
-                </AddButton>
-              </>
-            ) : (
-              <AddButton
-                className={"button-hover"}
-                onClick={RemoveMemberFromRoster}
-              >
-                <FontAwesomeIcon icon={faMinus} />
-              </AddButton>
-            )
-          ) : (
-            <AddButton className={"button-hover"} onClick={AddMemberToRoster}>
-              <FontAwesomeIcon icon={faPlus} />
-            </AddButton>
-          )
-        ) : (
-          <AddButton
-            className={"button-hover"}
-            onClick={() => DeleteEncounterCreature(creature)}
-          >
-            x
-          </AddButton>
-        )}
+        <AddCreatureToRoster
+          character_template={creature}
+          character={character}
+          session={session}
+          websocket={websocket}
+        />
+        <AddButton className={"button-hover"} onClick={AddEncounterCreature}>
+          <FontAwesomeIcon icon={faPlus} />
+        </AddButton>
       </Container>
     </BaseContainer>
   );

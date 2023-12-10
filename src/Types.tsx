@@ -100,6 +100,7 @@ export interface CharacterEntry {
   rations: Rations;
   money: number;
   entourage: RosterEntry[];
+  entry: "CharacterEntry";
 }
 
 export interface modifiedCreature {
@@ -128,18 +129,7 @@ export interface CreatureEntry {
   loot: string;
   damage?: number;
   id?: string;
-}
-
-interface Roll {
-  roll: boolean;
-  mod: number;
-  dice: number;
-  type: string;
-}
-
-interface Quantity {
-  count: number;
-  bulk: boolean;
+  entry: "CreatureEntry";
 }
 
 export interface ItemEntry {
@@ -153,6 +143,7 @@ export interface ItemEntry {
   category: string;
   id: string;
   description: string;
+  entry: "ItemEntry";
 }
 
 export type CombatEntry = {
@@ -168,7 +159,20 @@ export type CombatEntry = {
   roll: number;
   modifier: number;
   target: number;
+  entry: "CombatEntry";
 };
+
+interface Roll {
+  roll: boolean;
+  mod: number;
+  dice: number;
+  type: string;
+}
+
+interface Quantity {
+  count: number;
+  bulk: boolean;
+}
 
 export type TravelEntry = {
   day: number;
@@ -210,6 +214,7 @@ export type AbilityEntry = {
   tag: string;
   id: string;
   level: string;
+  entry: "AbilityEntry";
 };
 
 export type TownsEntry = {
@@ -229,6 +234,7 @@ export const EmptyWeapon: ItemEntry = {
   category: "weapon",
   id: "aaaaaaaaaa",
   description: "Fight with your bare hands.",
+  entry: "ItemEntry",
 };
 
 export const EmptyArmor: ItemEntry = {
@@ -242,6 +248,7 @@ export const EmptyArmor: ItemEntry = {
   category: "armor",
   id: "bbbbbbbbbb",
   description: "You feel robbed of your dignity.",
+  entry: "ItemEntry",
 };
 
 export const EmptySession: SessionEntry = {
@@ -317,4 +324,5 @@ export const EmptyCharacter: CharacterEntry = {
   rations: { food: 0, water: 0 },
   npc: false,
   entourage: [],
+  entry: "CharacterEntry",
 };

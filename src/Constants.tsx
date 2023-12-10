@@ -29,6 +29,7 @@ export const YELLOW = "#926f2b";
 export const BRIGHT_YELLOW = "#BF8C2F";
 export const WHITE = "#bfb6ac";
 export const BRIGHT_RED = "#923333";
+export const BRIGHT_GREEN = "#339249";
 export const GREY = "#8f8e89";
 export const DARK = "#262223";
 export const NIGHT = "#336980";

@@ -1,8 +1,8 @@
-import { AbilityEntry, CharacterEntry, SessionEntry } from "../../Types";
+import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
 
 import styled from "styled-components";
-import * as Constants from "../../Constants";
-import AbilityEntryItem from "../../charactersheet/AbilityEntryItem";
+import * as Constants from "../Constants";
+import AbilityEntryItem from "../components/Entries/AbilityEntryItem";
 
 const Container = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? "none" : "flex")};

@@ -84,6 +84,7 @@ type Props = {
   session: SessionEntry;
   character: CharacterEntry;
   websocket: WebSocket;
+  isCreature: boolean;
 };
 
 function StatBox({
@@ -93,7 +94,8 @@ function StatBox({
   swapSource,
   setSwapSource,
   session,
-  websocket
+  websocket,
+  isCreature,
 }: Props) {
   const [value, setValue] = useState<number>(type_value);
   const [modifier, setModifier] = useState<number>(0);
@@ -116,6 +118,7 @@ function StatBox({
 
   const handleSkillRoll = () => {
     onRollDice({
+      websocket,
       character,
       session,
       dice: 20,
@@ -125,6 +128,7 @@ function StatBox({
       active: type_name,
       source: "Skill Test",
       add_mod: false,
+      isCreature,
     });
     setModifier(0);
   };
@@ -141,8 +145,8 @@ function StatBox({
           characterActives[key].stat = swapSource.toLowerCase() as StatName;
         }
       });
-    
-      update_session(session, websocket);
+
+      update_session(session, character, isCreature, websocket);
       setSwapSource(null);
     } else {
       setSwapSource(type_name);

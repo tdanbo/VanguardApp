@@ -4,16 +4,18 @@ import { CharacterEntry, SessionEntry } from "../Types";
 import CharacterNavigation from "../components/NavigationControl/CharacterNavigation";
 import EmptyNavigation from "../components/NavigationControl/EmptyNavigation";
 import InventoryNavigation from "../components/NavigationControl/InventoryNavigation";
-import AbilitySection from "./AbilitySection";
-import ActiveControls from "./ActiveControls";
-import CharacterNameBox from "./CharacterNameBox";
-import HealthBox from "./HealthBox";
-import InventorySection from "./InventorySection";
-import ResourcesBox from "./ResourcesBox";
-import RestBox from "./RestBox";
-import SecondaryStatsControls from "./SecondaryStatsControls";
-import StatsControls from "./StatsControls";
-import XpBox from "./XpBox";
+import SelectorNavigation from "../components/NavigationControl/SelectorNavigation";
+import XpBox from "../CharacterSheet/XpBox";
+import CharacterNameBox from "../CharacterSheet/CharacterNameBox";
+import HealthBox from "../CharacterSheet/HealthBox";
+import StatsControls from "../CharacterSheet/StatsControls";
+import ActiveControls from "../CharacterSheet/ActiveControls";
+import SecondaryStatsControls from "../CharacterSheet/SecondaryStatsControls";
+import RestBox from "../CharacterSheet/RestBox";
+import ResourcesBox from "../CharacterSheet/ResourcesBox";
+import InventorySection from "../CharacterSheet/InventorySection";
+import AbilitySection from "../CharacterSheet/AbilitySection";
+
 const StatsContainer = styled.div`
   display: flex;
   margin: 20px;
@@ -89,7 +91,10 @@ type CharacterSheetProps = {
   inventoryState: number;
   setInventoryState: (value: number) => void;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
-  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
+  setIsJoinOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isGm: boolean;
+  isCreature: boolean;
 };
 
 function CharacterSheet({
@@ -101,33 +106,59 @@ function CharacterSheet({
   gmMode,
   inventoryState,
   setInventoryState,
-  setCreatureEdit,
+  setGmMode,
+  setSession,
+  isGm,
+  isCreature,
 }: CharacterSheetProps) {
   return (
     <>
       <HeaderContainer>
         <CharacterNameBox character={character} />
-        <XpBox websocket={websocket} session={session} character={character} />
+        <XpBox
+          websocket={websocket}
+          session={session}
+          character={character}
+          isCreature={isCreature}
+        />
       </HeaderContainer>
       <StatsContainer key="container">
         <CharacterNavigation
           browserState={browserState}
           setBrowserState={setBrowserState}
           gmMode={gmMode}
+          setGmMode={setGmMode}
+          setSession={setSession}
+          isGm={isGm}
         />
-        <HealthBox websocket={websocket} session={session} character={character} />
-        <StatsControls websocket={websocket} session={session} character={character} />
+        <HealthBox
+          websocket={websocket}
+          session={session}
+          character={character}
+          isCreature={isCreature}
+        />
+        <StatsControls
+          websocket={websocket}
+          session={session}
+          character={character}
+          isCreature={isCreature}
+        />
       </StatsContainer>
       <HealthContainer>
         <EmptyNavigation />
-        <ActiveControls websocket={websocket} session={session} character={character} />
+        <ActiveControls
+          websocket={websocket}
+          session={session}
+          character={character}
+          isCreature={isCreature}
+        />
         <SecondaryStatsControls character={character} />
       </HealthContainer>
       <InventoryContainer>
         <InventoryNavigation
+          character={character}
           inventoryState={inventoryState}
           setInventoryState={setInventoryState}
-          setCreatureEdit={setCreatureEdit}
           gmMode={gmMode}
         />
         <ScrollContainer>
@@ -136,18 +167,30 @@ function CharacterSheet({
             inventoryState={inventoryState}
             character={character}
             websocket={websocket}
+            isCreature={isCreature}
           />
           <AbilitySection
             session={session}
             inventoryState={inventoryState}
             character={character}
             websocket={websocket}
+            isCreature={isCreature}
           />
         </ScrollContainer>
       </InventoryContainer>
       <FooterCenterContainer>
-        <RestBox character={character} session={session} websocket={websocket} />
-        <ResourcesBox character={character} session={session} websocket={websocket} />
+        <RestBox
+          character={character}
+          session={session}
+          websocket={websocket}
+          isCreature={isCreature}
+        />
+        <ResourcesBox
+          character={character}
+          session={session}
+          websocket={websocket}
+          isCreature={isCreature}
+        />
       </FooterCenterContainer>
     </>
   );

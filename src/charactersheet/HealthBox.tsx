@@ -3,6 +3,7 @@ import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { CharacterEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
+import { GetMaxToughness } from "../functions/RulesFunctions";
 
 interface PortraitProps {
   src: string;
@@ -172,87 +173,91 @@ interface HealthBoxProps {
   character: CharacterEntry;
   session: SessionEntry;
   websocket: WebSocket;
+  isCreature: boolean;
 }
 
-function HealthBox({ character, session, websocket }: HealthBoxProps) {
+function HealthBox({
+  character,
+  session,
+  websocket,
+  isCreature,
+}: HealthBoxProps) {
   const handleAddToughness = () => {
     if (character.damage > 0) {
       character.damage -= 1;
     }
-    update_session(session, websocket); 
+    update_session(session, character, isCreature, websocket);
   };
 
   const handleSubToughness = () => {
-      const maxToughness =
-      character.stats.strong.value < 10
-        ? 10
-        : character.stats.strong.value;
+    const maxToughness =
+      character.stats.strong.value < 10 ? 10 : character.stats.strong.value;
 
     const value_step = 1;
 
     if (character.damage === maxToughness) {
-      console.log("Max damage reached")
+      console.log("Max damage reached");
     } else {
       character.damage += value_step;
     }
-    update_session(session, websocket); 
+    update_session(session, character, isCreature, websocket);
   };
 
   const handleAddCorruption = () => {
     const character_corruption = character.corruption;
     const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
-  
+
     const value_step = 1;
-  
+
     if (character_corruption.permanent === corruptionThreshold * 3) {
-      console.log("Max corruption reached")
+      console.log("Max corruption reached");
     } else {
       character_corruption.permanent += value_step;
     }
-    update_session(session, websocket);
+    update_session(session, character, isCreature, websocket);
   };
 
   const handleSubCorruption = () => {
     const character_corruption = character.corruption;
 
     const value_step = 1;
-  
+
     if (character_corruption.permanent === 0) {
-      console.log("Min corruption reached")
+      console.log("Min corruption reached");
     } else {
       character_corruption.permanent -= value_step;
     }
-    update_session(session, websocket);
+    update_session(session, character, isCreature, websocket);
   };
 
   const handleTempAddCorruption = () => {
-    console.log("Adding corruption")
+    console.log("Adding corruption");
     let character_corruption = character.corruption;
     const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
     let value = 1;
     for (let i = 0; i < value; i++) {
       if (character_corruption.temporary === corruptionThreshold) {
         if (character_corruption.permanent === corruptionThreshold * 3) {
-          console.log("Max corruption reached")
+          console.log("Max corruption reached");
         }
         character_corruption.permanent += 1;
       } else {
         character_corruption.temporary += 1;
       }
     }
-    update_session(session, websocket);
+    update_session(session, character, isCreature, websocket);
   };
 
   const handleTempSubCorruption = () => {
-    console.log("Subtracting corruption")
+    console.log("Subtracting corruption");
     let character_corruption = character.corruption;
     let value = 1;
     character_corruption.temporary -= value;
-  
+
     if (character_corruption.temporary < 0) {
       character_corruption.temporary = 0;
     }
-    update_session(session, websocket);
+    update_session(session, character, isCreature, websocket);
   };
 
   const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
@@ -263,8 +268,8 @@ function HealthBox({ character, session, websocket }: HealthBoxProps) {
   const temporary_corruption = character.corruption.temporary;
   const clean_corruption = corruptionThreshold - temporary_corruption;
 
-  const maxToughness =
-    character.stats.strong.value < 10 ? 10 : character.stats.strong.value;
+  const maxToughness = GetMaxToughness(character);
+
   const damage_toughness = character.damage;
   const remaining_toughness = maxToughness - character.damage;
 

@@ -1,13 +1,15 @@
 import React, { useRef } from "react";
 import { SessionEntry } from "./Types";
 import { set } from "lodash";
+import * as Constant from "./Constants";
 
 function useWebSocket(
   url: string,
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>,
 ) {
-  const websocketRef = useRef<WebSocket | null>(null);
-  const storedUrlRef = useRef<string | null>(null);
+  const base_url = Constant.WEBSOCKET + "BaseSession";
+  const websocketRef = useRef<WebSocket>(new WebSocket(base_url));
+  const storedUrlRef = useRef<string>(base_url);
 
   function connectWebSocket() {
     if (url !== storedUrlRef.current) {

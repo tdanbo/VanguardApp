@@ -1,9 +1,9 @@
 import CharacterNavigation from "../components/NavigationControl/CharacterNavigation";
 import CreatureEncounterSection from "../components/Sections/CreatureEncounterSection";
 import ResetCreatureEncounter from "../components/ResetCreatureEncounter";
-import TimeTrackBox from "./TimeTrackBox";
+import TimeTrackBox from "../Gamemaster/TimeTrackBox";
 
-import DayNavigator from "./TravelBox";
+import DayNavigator from "../Gamemaster/TravelBox";
 
 import styled from "styled-components";
 import { CharacterEntry, SessionEntry } from "../Types";
@@ -56,7 +56,11 @@ interface GameMasterProps {
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   onDeleteCreature: (id: string) => void;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
-  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  websocket: WebSocket;
+  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
+  setIsJoinOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isGm: boolean;
+  isCreature: boolean;
 }
 
 function GameMaster({
@@ -67,25 +71,35 @@ function GameMaster({
   setBrowserState,
   setCreatureEncounter,
   onDeleteCreature,
-  setCreatureEdit,
+  setGmMode,
+  websocket,
+  setSession,
+  setIsJoinOpen,
+  isGm,
+  isCreature,
 }: GameMasterProps) {
   return (
     <>
       <HeaderContainer>
-        <DayNavigator session={session} />
+        <DayNavigator session={session} websocket={websocket} />
       </HeaderContainer>
       <EncounterContainer key="container">
         <CharacterNavigation
           browserState={browserState}
           setBrowserState={setBrowserState}
           gmMode={gmMode}
+          setGmMode={setGmMode}
+          setSession={setSession}
+          isGm={isGm}
         />
         <ScrollContainer>
           <CreatureEncounterSection
-            setCreatureEdit={setCreatureEdit}
             encounter={creatureEncounter}
             setCreatureEncounter={setCreatureEncounter}
             onDeleteCreature={onDeleteCreature}
+            session={session}
+            websocket={websocket}
+            isCreature={isCreature}
           />
         </ScrollContainer>
       </EncounterContainer>

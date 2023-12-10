@@ -1,8 +1,8 @@
-import { CharacterEntry, ItemEntry, SessionEntry } from "../../Types";
-import InventoryEntry from "../InventoryEntry";
+import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
+import InventoryEntry from "../components/Entries/InventoryEntry";
 
 import styled from "styled-components";
-import * as Constants from "../../Constants";
+import * as Constants from "../Constants";
 const Container = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? "none" : "flex")};
   flex-direction: column;

@@ -62,40 +62,13 @@ interface RestBoxProps {
   character: CharacterEntry;
   session: SessionEntry;
   websocket: WebSocket;
+  isCreature: boolean;
 }
 
-function RestBox({ character, session, websocket }: RestBoxProps) {
-  const onRollDice = useRoll(); // Moved this outside the HandleRest function
-
-  const HandleRest = () => {
-    const updatedCharacter = RestCharacter(character);
-    if (updatedCharacter) {
-      // setCharacter(updatedCharacter);
-    }
-
-    // Using the handleRoll function here doesn't make much sense unless you are planning to call this function somewhere else.
-    // Otherwise, you can directly call onRollDice with the required parameters.
-    const handleRoll = () => {
-      onRollDice({
-        websocket,
-        session,
-        character,
-        dice: 20,
-        modifier: 20,
-        count: 0,
-        target: 0,
-        source: character.name,
-        active: "Resting",
-        add_mod: false,
-      });
-    };
-
-    handleRoll(); // If you wish to execute the roll immediately after updating the character
-  };
-
+function RestBox({ character }: RestBoxProps) {
   return (
     <OuterContainer>
-      <Navigator onClick={HandleRest}>
+      <Navigator>
         <Container>{GetBurnRate(character)}</Container>
         <Divider />
         <Icon>

@@ -9,7 +9,7 @@ import {
   CharacterEntry,
   DefenseActive,
   SessionEntry,
-  SimpleActive
+  SimpleActive,
 } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
 import { update_session } from "../functions/SessionsFunctions";
@@ -99,6 +99,7 @@ interface Props {
   character: CharacterEntry;
   session: SessionEntry;
   websocket: WebSocket;
+  isCreature: boolean;
 }
 
 function isAttackActive(obj: any): obj is AttackActive {
@@ -111,7 +112,14 @@ function isDefenseActive(obj: any): obj is DefenseActive {
   // you can add more checks for other properties if needed
 }
 
-function ActiveBox({ active_name, active, character, session, websocket }: Props) {
+function ActiveBox({
+  active_name,
+  active,
+  character,
+  session,
+  websocket,
+  isCreature,
+}: Props) {
   const [modValue, setModvalue] = useState<number>(0);
 
   const handleAddValue = () => {
@@ -128,6 +136,7 @@ function ActiveBox({ active_name, active, character, session, websocket }: Props
 
   const handleActiveRoll = () => {
     onRollDice({
+      websocket,
       character,
       session,
       dice: 20,
@@ -137,6 +146,7 @@ function ActiveBox({ active_name, active, character, session, websocket }: Props
       source: "Skill Test",
       active: active_name,
       add_mod: false,
+      isCreature,
     });
   };
 
@@ -147,6 +157,7 @@ function ActiveBox({ active_name, active, character, session, websocket }: Props
     damage_armor: string,
   ) => {
     onRollDice({
+      websocket,
       character,
       session,
       dice: dice,
@@ -156,6 +167,7 @@ function ActiveBox({ active_name, active, character, session, websocket }: Props
       source: dice_name,
       active: damage_armor,
       add_mod: false,
+      isCreature,
     });
   };
 
@@ -165,45 +177,44 @@ function ActiveBox({ active_name, active, character, session, websocket }: Props
     dice_mod: number,
     damage_armor: string,
   ) => {
+    type Quantity = {
+      count: number;
+    };
 
-      type Quantity = {
-        count: number;
-      };
+    type EquipmentItem = {
+      id: string;
+      category: string;
+      quantity: Quantity;
+    };
 
-      type EquipmentItem = {
-        id: string;
-        category: string;
-        quantity: Quantity;
-      };
+    let usedAmmunitionId = "";
+    const { main, off, armor } = character.equipment;
+    const equipment_slots: EquipmentItem[] = [main, off];
 
-      let usedAmmunitionId = "";
-      const { main, off, armor } = character.equipment;
-      const equipment_slots: EquipmentItem[] = [main, off];
-    
-      let hasAmmunition = false;
-    
-      equipment_slots.map((item) => {
-        if (item.category === "ammunition" && item.quantity.count > 0) {
-          hasAmmunition = true;
-          usedAmmunitionId = item.id;
-          item.quantity.count -= 1;
-          character.inventory.map((item) => {
-            if (item.id === usedAmmunitionId) {
-              item.quantity.count -= 1;
-            }
-          });
-        } else {
-          hasAmmunition = false;
-        }
-      });
-    
+    let hasAmmunition = false;
+
+    equipment_slots.map((item) => {
+      if (item.category === "ammunition" && item.quantity.count > 0) {
+        hasAmmunition = true;
+        usedAmmunitionId = item.id;
+        item.quantity.count -= 1;
+        character.inventory.map((item) => {
+          if (item.id === usedAmmunitionId) {
+            item.quantity.count -= 1;
+          }
+        });
+      } else {
+        hasAmmunition = false;
+      }
+    });
 
     if (!hasAmmunition) {
       // handle case when onUseAmmunition is false
-      console.log("No ammunition")
+      console.log("No ammunition");
     } else {
-      update_session(session, websocket)
+      update_session(session, character, isCreature, websocket);
       onRollDice({
+        websocket,
         character,
         session,
         dice: dice,
@@ -213,9 +224,10 @@ function ActiveBox({ active_name, active, character, session, websocket }: Props
         source: dice_name,
         active: damage_armor,
         add_mod: false,
+        isCreature,
       });
+    }
   };
-}
 
   return (
     <Container>

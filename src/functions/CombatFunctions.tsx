@@ -19,6 +19,7 @@ interface RollDiceProps {
   character: CharacterEntry;
   session: SessionEntry;
   websocket: WebSocket;
+  isCreature: boolean;
 }
 
 export function useRoll() {
@@ -33,7 +34,8 @@ export function useRoll() {
     modifier,
     character,
     session,
-    websocket
+    websocket,
+    isCreature,
   }: RollDiceProps) => {
     let roll = 0;
     let total = 0;
@@ -70,12 +72,13 @@ export function useRoll() {
       modifier: modifier,
       target: target,
       uuid: uuidv4(),
+      entry: "CombatEntry",
     };
 
     session.combatlog.push(NewCombatEntry);
-    session.combatlog.slice(-20);
+    session.combatlog = session.combatlog.slice(-20);
 
-    update_session(session, websocket)
+    update_session(session, character, isCreature, websocket);
     return roll_result;
   };
 }

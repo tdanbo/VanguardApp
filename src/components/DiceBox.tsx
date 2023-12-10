@@ -1,9 +1,14 @@
 import * as Constants from "../Constants";
+import { SessionEntry, CharacterEntry } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
 import styled from "styled-components";
 
 type Props = {
   type_name: number;
+  websocket: WebSocket;
+  session: SessionEntry;
+  character: CharacterEntry;
+  isCreature: boolean;
 };
 
 const DiceContainer = styled.button`
@@ -22,11 +27,20 @@ const DiceContainer = styled.button`
   max-width: 49px;
 `;
 
-function DiceBox({ type_name }: Props) {
+function DiceBox({
+  type_name,
+  websocket,
+  session,
+  character,
+  isCreature,
+}: Props) {
   const onRollDice = useRoll();
 
   const RollDice = () => {
     onRollDice({
+      websocket,
+      session,
+      character,
       dice: type_name,
       modifier: 0,
       count: 1,
@@ -34,6 +48,7 @@ function DiceBox({ type_name }: Props) {
       source: "Dice",
       active: "Custom",
       add_mod: true,
+      isCreature,
     });
   };
 

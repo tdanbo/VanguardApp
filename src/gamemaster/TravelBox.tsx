@@ -2,8 +2,9 @@ import styled from "styled-components";
 import * as Constants from "../Constants";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SessionEntry, TravelEntry } from "../Types";
-import { updateSession } from "../functions/SessionsFunctions";
+import { EmptyCharacter, SessionEntry, TravelEntry } from "../Types";
+import { useRoll } from "../functions/CombatFunctions";
+import { updateSession, update_session } from "../functions/SessionsFunctions";
 import {
   faAngleLeft,
   faAngleRight,
@@ -17,7 +18,8 @@ import {
   LargeCircleButton,
   ButtonContainer,
 } from "../components/SelectorPage/SelectorStyles";
-import { cloneDeep } from "lodash";
+import { cloneDeep, forEach } from "lodash";
+import { GetBurnRate } from "../functions/CharacterFunctions";
 
 export const ModalContainer = styled.div`
   background-color: ${Constants.BACKGROUND};
@@ -237,9 +239,10 @@ const TooltipButton = styled.div`
 
 interface TravelBoxProps {
   session: SessionEntry;
+  websocket: WebSocket;
 }
 
-function TravelBox({ session }: TravelBoxProps) {
+function TravelBox({ session, websocket }: TravelBoxProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [timeOfDay, setTimeOfday] = useState<string>();
   const [tooltip, setTooltip] = useState<string>("A normal days of travel.");
@@ -377,6 +380,10 @@ function TravelBox({ session }: TravelBoxProps) {
       newdistance += distanceTraveled;
     }
 
+    if (newdistance < 0) {
+      newdistance = 0;
+    }
+
     const travelEntry: TravelEntry = {
       day: newday,
       time: 6,
@@ -384,21 +391,55 @@ function TravelBox({ session }: TravelBoxProps) {
       distance: newdistance,
     };
 
-    const updatedSession = { ...session, travel: travelEntry };
+    session.travel = travelEntry;
 
-    const newSession = await updateSession(updatedSession);
-    // setSession(newSession);
+    forEach(session.characters, (character) => {
+      const burnrate = GetBurnRate(character);
+      if (character.rations.food >= burnrate) {
+        character.rations.food -= burnrate;
+        if (character.damage > 0) {
+          character.damage -= 1;
+        }
+      }
+
+      if (character.rations.water >= burnrate) {
+        character.rations.water -= burnrate;
+        character.corruption.temporary = 0;
+      }
+    });
+
+    update_session(session, EmptyCharacter, false, websocket);
+
+    const onRollDice = useRoll(); // Moved this outside the HandleRest function
+
+    // Using the handleRoll function here doesn't make much sense unless you are planning to call this function somewhere else.
+    // Otherwise, you can directly call onRollDice with the required parameters.
+    const handleRoll = () => {
+      onRollDice({
+        websocket,
+        session,
+        character: EmptyCharacter,
+        dice: 20,
+        modifier: 20,
+        count: 0,
+        target: 0,
+        source: EmptyCharacter.name,
+        active: "Resting",
+        add_mod: false,
+        isCreature: false,
+      });
+    };
+
+    handleRoll(); // If you wish to execute the roll immediately after updating the character
     handleClose();
   };
 
   const [newDestination, setNewDestination] = useState<number>(0);
 
   const handleChangeDestination = async () => {
-    const updatedSession = cloneDeep(session);
-    updatedSession.travel.distance = newDestination * 20;
+    session.travel.distance = newDestination * 20;
 
-    const newSession = await updateSession(updatedSession);
-    // setSession(newSession);
+    update_session(session, EmptyCharacter, false, websocket);
     handleClose();
   };
 

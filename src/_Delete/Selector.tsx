@@ -1,13 +1,13 @@
-import * as Constants from "../../Constants";
+import * as Constants from "../Constants";
 import { useState } from "react";
-import { CharacterEntry, SessionEntry } from "../../Types";
+import { CharacterEntry, SessionEntry } from "../Types";
 import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import CreateSessionComponent from "./CreateSessionComponent";
-import CreateCharacterComponent from "./CreateCharacterComponent";
-import JoinComponent from "./JoinComponent";
+import CreateSessionComponent from "../components/SelectorPage/CreateSessionComponent";
+import CreateCharacterComponent from "../components/SelectorPage/CreateCharacterComponent";
+import JoinComponent from "../components/JoinComponent";
 import styled from "styled-components";
-import SelectPortraitComponent from "./SelectPortraitComponent";
+import SelectPortraitComponent from "../components/SelectorPage/SelectPortraitComponent";
 import BackgroundImage from "../../assets/icons/background.jpeg";
 const OverlayStyles = styled.div`
   position: fixed;

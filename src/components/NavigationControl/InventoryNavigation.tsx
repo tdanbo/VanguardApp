@@ -1,15 +1,8 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBolt,
-  faChevronLeft,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBolt, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../../Constants";
 import OverburdenBox from "../OverburdenBox";
-import { CharacterContext } from "../../contexts/_CharacterContext";
-import { useContext } from "react";
-import { getNpcEntry } from "../../functions/CharacterFunctions";
 import { CharacterEntry } from "../../Types";
 const Container = styled.div`
   display: flex;
@@ -51,26 +44,20 @@ const Navigator = styled.button<NavigatorProps>`
 interface NavigationProps {
   inventoryState: number;
   setInventoryState: (browserState: number) => void;
-  setCreatureEdit: React.Dispatch<React.SetStateAction<boolean>>;
   gmMode: boolean;
+  character: CharacterEntry;
 }
 
 function InventoryNavigation({
   inventoryState,
   setInventoryState,
-  setCreatureEdit,
+  character,
   gmMode,
 }: NavigationProps) {
-  const { character, setCharacter } = useContext(CharacterContext);
   const onHandleItems = () => {
     if (inventoryState === 1) {
       setInventoryState(2);
     } else setInventoryState(1);
-  };
-
-  const selectMember = async (name: string) => {
-    const member = await getNpcEntry(name);
-    setCharacter(member);
   };
 
   return (
@@ -85,20 +72,7 @@ function InventoryNavigation({
         </Navigator>
       )}
       {character.npc === false ? (
-        <>
-          {character.entourage.map((rostermember, index) =>
-            rostermember.id !== "" ? (
-              <Navigator
-                title={rostermember.name}
-                key={index}
-                $active={inventoryState === 1}
-                onClick={() => selectMember(rostermember.name)}
-              >
-                <FontAwesomeIcon icon={faUser} />
-              </Navigator>
-            ) : null,
-          )}
-        </>
+        <></>
       ) : gmMode ? (
         <Navigator title={"Leave Edit Mode"} $active={inventoryState === 1}>
           <FontAwesomeIcon icon={faChevronLeft} />

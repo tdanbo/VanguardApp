@@ -329,11 +329,17 @@ function ResourceChanger({
 
 interface ResourceBoxProps {
   character: CharacterEntry;
-  session: SessionEntry
+  session: SessionEntry;
   websocket: WebSocket;
+  isCreature: boolean;
 }
 
-function ResourcesBox({ character, session, websocket }: ResourceBoxProps) {
+function ResourcesBox({
+  character,
+  session,
+  websocket,
+  isCreature,
+}: ResourceBoxProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const stopPropagation = (e: React.MouseEvent) => {
@@ -365,12 +371,11 @@ function ResourcesBox({ character, session, websocket }: ResourceBoxProps) {
   };
 
   const handleSubmit = () => {
-
     character.rations.food = food;
     character.rations.water = water;
     character.money = money;
 
-    update_session(session, websocket)
+    update_session(session, character, isCreature, websocket);
     setIsModalOpen(false);
   };
   return (

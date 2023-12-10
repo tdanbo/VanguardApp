@@ -18,12 +18,24 @@ export async function getCharacters(id: string): Promise<CharacterEntry[]> {
   return response.data;
 }
 
-export async function updateSession(session: SessionEntry) {
-  const response = await axios.put<SessionEntry>(
-    `${API}/api/sessions/${session.id}`,
-    session,
-  );
-  return response.data;
+export async function updateSession(
+  session: SessionEntry,
+  character: CharacterEntry,
+  isCreature: boolean,
+) {
+  if (isCreature) {
+    const response = await axios.put(
+      `${API}/api/creaturelog/${character.name}`,
+      character,
+    );
+    return session;
+  } else {
+    const response = await axios.put<SessionEntry>(
+      `${API}/api/sessions/${session.id}`,
+      session,
+    );
+    return response.data;
+  }
 }
 
 export async function getSession(id: string): Promise<SessionEntry> {
@@ -67,10 +79,22 @@ export async function getSessionUsers(id: string) {
   return response.data;
 }
 
-export async function update_session(session: SessionEntry, websocket: WebSocket) {
+export async function update_session(
+  session: SessionEntry,
+  character: CharacterEntry,
+  isCreature: boolean,
+  websocket: WebSocket,
+) {
   // This function is called when the session is updated, and it will proc the broadcast to all users
-  console.log("Updating session / Sending Updates To Clients")
+  console.log("Updating session / Sending Updates To Clients");
   try {
+    if (isCreature) {
+      const creature = await axios.put(
+        `${API}/api/creaturelog/${character.name}`,
+        character,
+      );
+    }
+
     const res = await axios.put(`${API}/api/session/${session.id}`, session);
     websocket.send(JSON.stringify(session));
   } catch (error) {
