@@ -79,6 +79,7 @@ type CharacterSheetProps = {
   setIsJoinOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isGm: boolean;
   isCreature: boolean;
+  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
 };
 
 function CharacterSheet({

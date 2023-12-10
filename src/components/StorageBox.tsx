@@ -55,7 +55,6 @@ function StorageBox({
   isCreature,
   websocket,
 }: StorageBoxProps) {
-  console.log("Delete Item");
   console.log(isCreature);
   const HandleDeleteItem = () => {
     const filter_inventory = character.inventory.filter(

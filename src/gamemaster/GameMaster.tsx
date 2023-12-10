@@ -61,6 +61,8 @@ interface GameMasterProps {
   setIsJoinOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isGm: boolean;
   isCreature: boolean;
+  setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
+  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function GameMaster({
@@ -76,6 +78,8 @@ function GameMaster({
   setSession,
   isGm,
   isCreature,
+  setIsCreature,
+  setCharacterName,
 }: GameMasterProps) {
   return (
     <>
@@ -99,6 +103,9 @@ function GameMaster({
             session={session}
             websocket={websocket}
             isCreature={isCreature}
+            setIsCreature={setIsCreature}
+            setGmMode={setGmMode}
+            setCharacterName={setCharacterName}
           />
         </ScrollContainer>
       </EncounterContainer>

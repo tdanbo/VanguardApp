@@ -178,7 +178,7 @@ export function GetUsedSlots(character: CharacterEntry) {
 }
 
 export function GetBurnRate(character: CharacterEntry) {
-  let burn_rate = 1;
+  let burn_rate = 0;
 
   const storageModifiers = {
     "Storage 2": 0,

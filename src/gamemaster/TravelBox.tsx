@@ -547,47 +547,60 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
                     </Button>
                   </Column>
                 </ResourceChangeContainer>
-                <ResourceChangeContainer>
-                  <Button
-                    onClick={() => setTravelTerrain("Easy Terrain")}
-                    $isactive={(travelTerrain === "Easy Terrain").toString()}
-                  >
-                    Easy Terrain
-                  </Button>
-                  <Button
-                    onClick={() => setTravelTerrain("Normal Terrain")}
-                    $isactive={(travelTerrain === "Normal Terrain").toString()}
-                  >
-                    Normal Terrain
-                  </Button>
-
-                  <Button
-                    onClick={() => setTravelTerrain("Hard Terrain")}
-                    $isactive={(travelTerrain === "Hard Terrain").toString()}
-                  >
-                    Hard Terrain
-                  </Button>
-                </ResourceChangeContainer>
-                <ResourceChangeContainer>
-                  <Button
-                    onClick={() => setTravelLocation("Ambria")}
-                    $isactive={(travelLocation === "Ambria").toString()}
-                  >
-                    Ambria
-                  </Button>
-                  <Button
-                    onClick={() => setTravelLocation("Bright / Wild")}
-                    $isactive={(travelLocation === "Bright / Wild").toString()}
-                  >
-                    Bright / Wild
-                  </Button>
-                  <Button
-                    onClick={() => setTravelLocation("Dark")}
-                    $isactive={(travelLocation === "Dark").toString()}
-                  >
-                    Dark
-                  </Button>
-                </ResourceChangeContainer>
+                {
+                  travelMethod !== "No Travel" ? (
+                    <>
+                      <ResourceChangeContainer>
+                        <Button
+                          onClick={() => setTravelTerrain("Easy Terrain")}
+                          $isactive={(
+                            travelTerrain === "Easy Terrain"
+                          ).toString()}
+                        >
+                          Easy Terrain
+                        </Button>
+                        <Button
+                          onClick={() => setTravelTerrain("Normal Terrain")}
+                          $isactive={(
+                            travelTerrain === "Normal Terrain"
+                          ).toString()}
+                        >
+                          Normal Terrain
+                        </Button>
+                        <Button
+                          onClick={() => setTravelTerrain("Hard Terrain")}
+                          $isactive={(
+                            travelTerrain === "Hard Terrain"
+                          ).toString()}
+                        >
+                          Hard Terrain
+                        </Button>
+                      </ResourceChangeContainer>
+                      <ResourceChangeContainer>
+                        <Button
+                          onClick={() => setTravelLocation("Ambria")}
+                          $isactive={(travelLocation === "Ambria").toString()}
+                        >
+                          Ambria
+                        </Button>
+                        <Button
+                          onClick={() => setTravelLocation("Bright / Wild")}
+                          $isactive={(
+                            travelLocation === "Bright / Wild"
+                          ).toString()}
+                        >
+                          Bright / Wild
+                        </Button>
+                        <Button
+                          onClick={() => setTravelLocation("Dark")}
+                          $isactive={(travelLocation === "Dark").toString()}
+                        >
+                          Dark
+                        </Button>
+                      </ResourceChangeContainer>
+                    </>
+                  ) : null // Render nothing when travelMethod is "No Travel"
+                }
                 <ResourceChangeContainer>
                   <Column>
                     <ResultButton>{distanceTraveled} km</ResultButton>

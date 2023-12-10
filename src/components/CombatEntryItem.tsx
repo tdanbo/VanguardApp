@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { CharacterPortraits } from "../Images";
 import { useState, useEffect } from "react";
+import { toTitleCase } from "../functions/UtilityFunctions";
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
   index: number;
@@ -115,7 +116,11 @@ const FumbledSubText = styled.div`
   color: ${Constants.WIDGET_SECONDARY_FONT};
 `;
 
-function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
+function CombatEntryItem({
+  combatEntry,
+  index,
+  session,
+}: CombatEntryItemProps) {
   const EntryColor = () => {
     return (
       Constants.TYPE_COLORS[combatEntry.active.toLowerCase()] ||
@@ -250,13 +255,18 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
         )}
         <FumbledSubText>{FumbledPerfectText()}</FumbledSubText>
         <Source $rgb={EntryColor()} $issuccess={combatEntry.success}>
-          {combatEntry.source === "Skill Test" ? (
+          {combatEntry.active === "Resting" ? (
+            <span>
+              {toTitleCase(session.travel.weather)} Morning - Day{" "}
+              {session.travel.day}
+            </span>
+          ) : combatEntry.source === "Skill Test" ? (
             combatEntry.roll === 1 ? (
               <>
                 <span>{"Perfect " + UpperFirstLetter(combatEntry.source)}</span>
                 <FontAwesomeIcon
-                  icon={faAngleDoubleUp} // icon for perfect test
-                  color="#5cb57c" // color choice
+                  icon={faAngleDoubleUp}
+                  color="#5cb57c"
                   style={{
                     fontSize: "20px",
                     position: "relative",
@@ -269,8 +279,8 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
               <>
                 <span>{"Fumbled " + UpperFirstLetter(combatEntry.source)}</span>
                 <FontAwesomeIcon
-                  icon={faAngleDoubleDown} // icon for fumbled test
-                  color="#b55c5c" // color choice
+                  icon={faAngleDoubleDown}
+                  color="#b55c5c"
                   style={{
                     fontSize: "20px",
                     position: "relative",

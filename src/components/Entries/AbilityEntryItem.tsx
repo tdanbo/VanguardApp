@@ -310,8 +310,6 @@ function AbilityEntryItem({
   };
 
   const DeleteAbilitySlot = (ability: AbilityEntry) => {
-    console.log("Delete Ability Slot");
-
     const ability_id = ability.id;
     const new_abilities = character.abilities.filter(
       (item) => item.id !== ability_id,

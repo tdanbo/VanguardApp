@@ -345,7 +345,6 @@ function CreateCharacterComponent({
   };
 
   const handleBack = () => {
-    console.log("Back");
     closeModal();
   };
 

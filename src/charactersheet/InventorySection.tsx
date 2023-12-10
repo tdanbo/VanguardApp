@@ -33,9 +33,6 @@ function InventorySection({
   websocket,
   isCreature,
 }: NavigationProps) {
-  console.log("Websocket Inventory Section");
-  console.log(websocket);
-
   character.inventory.sort(sortInventory);
   const sortedInventory = [...character.inventory].sort(sortInventory);
 

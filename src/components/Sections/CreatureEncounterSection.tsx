@@ -20,6 +20,9 @@ interface EncounterSectionProps {
   session: SessionEntry;
   websocket: WebSocket;
   isCreature: boolean;
+  setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
+  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
+  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function CreatureEncounterSection({
@@ -29,6 +32,9 @@ function CreatureEncounterSection({
   session,
   websocket,
   isCreature,
+  setIsCreature,
+  setCharacterName,
+  setGmMode,
 }: EncounterSectionProps) {
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
   // If setSortedEncounter is part of your useState declaration, it should look like this
@@ -101,6 +107,9 @@ function CreatureEncounterSection({
               session={session}
               websocket={websocket}
               isCreature={isCreature}
+              setGmMode={setGmMode}
+              setCharacterName={setCharacterName}
+              setIsCreature={setIsCreature}
             />
           );
         }

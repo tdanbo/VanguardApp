@@ -238,6 +238,9 @@ interface EncounterBoxProps {
   session: SessionEntry;
   websocket: WebSocket;
   isCreature: boolean;
+  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
+  setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function EncounterCreatureEntry({
@@ -248,6 +251,9 @@ function EncounterCreatureEntry({
   session,
   websocket,
   isCreature,
+  setGmMode,
+  setCharacterName,
+  setIsCreature,
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
   const actives = UpdateActives(creatureClone);
@@ -309,6 +315,39 @@ function EncounterCreatureEntry({
     setLoot(lootString);
   }, []);
 
+  const GoToSheet = () => {
+    setIsCreature(true);
+    console.log(creature.name);
+    // This is a little dodgy removing the last two letter to get rid of the A,B,C on the creatures.
+    setCharacterName(creature.name.slice(0, -2));
+    setGmMode(false);
+  };
+
+  const title =
+    "Cunning " +
+    ModifierConverter[creatureClone.stats.cunning.value] +
+    "\n" +
+    "Discreet " +
+    ModifierConverter[creatureClone.stats.discreet.value] +
+    "\n" +
+    "Persuasive " +
+    ModifierConverter[creatureClone.stats.persuasive.value] +
+    "\n" +
+    "Quick " +
+    ModifierConverter[creatureClone.stats.quick.value] +
+    "\n" +
+    "Resolute " +
+    ModifierConverter[creatureClone.stats.resolute.value] +
+    "\n" +
+    "Strong " +
+    ModifierConverter[creatureClone.stats.strong.value] +
+    "\n" +
+    "Vigilant " +
+    ModifierConverter[creatureClone.stats.vigilant.value] +
+    "\n" +
+    "Accurate " +
+    ModifierConverter[creatureClone.stats.accurate.value];
+
   return (
     <MainContainer>
       {hp - currentDamage <= 0 && (
@@ -344,8 +383,8 @@ function EncounterCreatureEntry({
             {Math.ceil(actives.defense.dice / 2) + actives.defense.dice_mod}
           </ActiveArmorSub>
         </ActiveBox>
-        <NameContainer>
-          <NameBox title={creatureClone.name}>{creature.name}</NameBox>
+        <NameContainer onClick={GoToSheet}>
+          <NameBox title={title}>{creature.name}</NameBox>
           <ActiveSub>
             {resistance} {creature.details.race}{" "}
             <FontAwesomeIcon icon={faCoins} title={loot} />

@@ -139,9 +139,9 @@ function CreatureEntryItem({
   };
 
   const selectCreature = () => {
-    console.log("Select Creature");
     setIsCreature(true);
     setCharacterName(creature.name);
+    setGmMode(false);
   };
 
   const [resistance, setResistance] = useState<string>("Weak");

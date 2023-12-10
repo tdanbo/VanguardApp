@@ -60,12 +60,15 @@ function CharacterNavigation({
     setBrowserState(browserState === targetState ? 0 : targetState);
   };
 
+  const HandleGmMode = () => {
+    setGmMode(!gmMode);
+  };
   return (
     <Container>
       {isGm ? (
         <Navigator
           $active={gmMode}
-          onClick={() => setGmMode(!gmMode)} // Toggle gmMode when clicked
+          onClick={HandleGmMode} // Toggle gmMode when clicked
           title={"GM Mode"}
         >
           <FontAwesomeIcon icon={faHatWizard} />

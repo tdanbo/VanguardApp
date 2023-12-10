@@ -44,6 +44,7 @@ function App() {
   const [isGm, setIsGm] = useState<boolean>(false);
   const [gmMode, setGmMode] = useState<boolean>(false);
   const [isJoinOpen, setisJoinOpen] = useState<boolean>(true);
+
   const url = Constants.WEBSOCKET + session.id;
 
   const character = isCreature
@@ -66,13 +67,8 @@ function App() {
   };
 
   useEffect(() => {
-    console.log("Setting GM Mode to false");
     setGmMode(false);
   }, [characterName]);
-
-  useEffect(() => {
-    console.log("GM Mode: " + gmMode);
-  }, [gmMode]);
 
   const scrollableRef = useRef(null);
 
@@ -80,8 +76,6 @@ function App() {
   console.log("Rendering Application");
   console.log("Attempting to connect to: " + url);
   const websocket = useWebSocket(url, setSession);
-
-  // console.log(session);
 
   return (
     <Row>
@@ -129,6 +123,8 @@ function App() {
             setSession={setSession}
             setIsJoinOpen={setisJoinOpen}
             isCreature={isCreature}
+            setIsCreature={setIsCreature}
+            setCharacterName={setCharacterName}
           />
         ) : (
           <CharacterSheet
@@ -145,6 +141,7 @@ function App() {
             setGmMode={setGmMode}
             setIsJoinOpen={setisJoinOpen}
             isCreature={isCreature}
+            setCharacterName={setCharacterName}
           />
         )}
       </Column>
