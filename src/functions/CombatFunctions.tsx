@@ -3,10 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import { API } from "../Constants";
 import { CharacterEntry, CombatEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
-export async function getCombatLog(id: string): Promise<CombatEntry[]> {
-  const response = await axios.get<CombatEntry[]>(`${API}/api/combatlog/${id}`);
-  return response.data;
-}
 
 interface RollDiceProps {
   dice: number;
@@ -81,14 +77,4 @@ export function useRoll() {
     update_session(session, character, isCreature, websocket);
     return roll_result;
   };
-}
-
-export async function postCombatLog(NewCombatEntry: CombatEntry) {
-  try {
-    const response = await axios.post(`${API}/api/combatlog/`, NewCombatEntry);
-    return response.data;
-  } catch (error) {
-    console.error("Error posting combat log:", error);
-    throw error; // or handle the error as you see fit
-  }
 }

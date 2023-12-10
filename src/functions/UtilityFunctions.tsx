@@ -20,26 +20,6 @@ export function toTitleCase(input: string): string {
     .join(" "); // Join the array back to a string
 }
 
-export async function getAbility(name: string) {
-  try {
-    const response = await axios.get(`${API}/api/abilities/${name}`);
-    return response.data as AbilityEntry;
-  } catch (error) {
-    console.error(`Error fetching ability with name "${name}":`, error);
-    throw error;
-  }
-}
-
-export async function getItem(name: string) {
-  try {
-    const response = await axios.get(`${API}/api/equipment/${name}`);
-    return response.data as ItemEntry;
-  } catch (error) {
-    console.error(`Error fetching armor with name "${name}":`, error);
-    throw error;
-  }
-}
-
 type RGB = {
   r: number;
   g: number;
