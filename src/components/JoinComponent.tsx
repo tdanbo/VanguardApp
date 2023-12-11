@@ -35,7 +35,7 @@ const OverlayStyles = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: linear-gradient(rgba(7, 9, 11, 0.95), rgba(7, 9, 11, 0.95)),
+  background-image: linear-gradient(rgba(7, 9, 11, 0.93), rgba(7, 9, 11, 0.93)),
     url(${BackgroundImage});
   background-size: cover;
   background-position: center;
