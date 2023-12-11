@@ -44,6 +44,7 @@ const Row = styled.div`
 `;
 
 const ValueBoxRight = styled.div`
+  user-select: none;
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -54,7 +55,7 @@ const ValueBoxRight = styled.div`
   min-width: 60px;
   color: ${Constants.WIDGET_PRIMARY_FONT};
   border: 1px solid ${Constants.WIDGET_BORDER};
-
+  cursor: pointer;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: ${Constants.BORDER_RADIUS};
@@ -90,6 +91,7 @@ const ValueBoxRight = styled.div`
 `;
 
 const ValueBoxLeft = styled.div`
+  user-select: none;
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -100,7 +102,7 @@ const ValueBoxLeft = styled.div`
   min-width: 60px;
   color: ${Constants.WIDGET_PRIMARY_FONT};
   border: 1px solid ${Constants.WIDGET_BORDER};
-
+  cursor: pointer;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-top-left-radius: ${Constants.BORDER_RADIUS};
@@ -146,6 +148,7 @@ const LeftTickBar = styled.div<BgColor>`
   border-top: 1px solid ${Constants.WIDGET_BORDER};
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${(props) => props.$bgcolor};
+  cursor: pointer;
 `;
 
 const RightTickBar = styled.div<BgColor>`
@@ -155,6 +158,7 @@ const RightTickBar = styled.div<BgColor>`
   border-right: 1px solid ${Constants.WIDGET_BORDER};
   border-top: 1px solid ${Constants.WIDGET_BORDER};
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  cursor: pointer;
 `;
 
 const Divider = styled.div`
