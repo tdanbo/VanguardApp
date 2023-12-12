@@ -17,9 +17,12 @@ import CombatSection from "./components/Sections/CombatSection";
 import CharacterSheet from "./charactersheet/CharacterSheet";
 import GameMaster from "./gamemaster/GameMaster";
 
+import useSocketIO from "./socketio";
 import useWebSocket from "./websocket";
 import BrowserSection from "./BrowserSection/BrowserSection";
 import JoinComponent from "./components/JoinComponent";
+import { get_session, get_long_session } from "./functions/SessionsFunctions";
+import { set } from "lodash";
 const Row = styled.div`
   display: flex;
   flex-direction: row;
@@ -75,7 +78,34 @@ function App() {
   console.log("-------------------");
   console.log("Rendering Application");
   console.log("Attempting to connect to: " + url);
+
   const websocket = useWebSocket(url, setSession);
+  // const websocket = useSocketIO(url, setSession);
+
+  // useEffect(() => {
+  //   // let isMounted = true;
+  //   console.log(session);
+
+  //   const startLongPolling = async () => {
+  //     try {
+  //       if (session.state !== "") {
+  //         const updatedSession = await get_long_session(session);
+  //         setSession(updatedSession);
+  //         await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds before the next poll
+  //       }
+  //     } catch (error) {
+  //       console.error("Error during long polling:", error);
+  //       // Handle error or retry as needed
+  //     }
+  //   };
+
+  //   startLongPolling();
+
+  //   // Cleanup function to stop polling when the component unmounts
+  //   // return () => {
+  //   //   isMounted = false;
+  //   // };
+  // }, [session]); // Add session to the dependency array if the polling should restart when session changes
 
   return (
     <Row>

@@ -184,6 +184,7 @@ export type TravelEntry = {
 export type SessionEntry = {
   name: string;
   id: string;
+  state: string;
   date: string;
   owner: string;
   travel: TravelEntry;
@@ -254,6 +255,7 @@ export const EmptyArmor: ItemEntry = {
 export const EmptySession: SessionEntry = {
   name: "",
   id: "1b1b1b1b1b",
+  state: "",
   date: "",
   owner: "",
   travel: {
