@@ -2,11 +2,11 @@ import styled from "styled-components";
 import ActiveBox from "../components/ActiveBox";
 
 import {
-  AttackActive,
-  CharacterEntry,
-  DefenseActive,
-  SessionEntry,
-  SimpleActive,
+    AttackActive,
+    CharacterEntry,
+    DefenseActive,
+    SessionEntry,
+    SimpleActive,
 } from "../Types";
 import { UpdateActives } from "../functions/ActivesFunction";
 const Container = styled.div`
@@ -19,7 +19,7 @@ const Container = styled.div`
 interface CorruptionControlsProps {
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

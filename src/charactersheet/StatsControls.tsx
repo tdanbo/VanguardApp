@@ -13,7 +13,7 @@ const Container = styled.div`
 interface StatsControlsProps {
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

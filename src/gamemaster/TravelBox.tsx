@@ -1,26 +1,26 @@
-import * as Constants from "../Constants";
-import { useEffect, useState } from "react";
+import {
+    faAngleLeft,
+    faAngleRight,
+    faHorse,
+    faPersonWalking,
+    faTent,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { forEach } from "lodash";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import * as Constants from "../Constants";
 import { EmptyCharacter, SessionEntry, TravelEntry } from "../Types";
+import {
+    ButtonContainer,
+    CenterContainer,
+    LargeCircleButton,
+    MainContainer,
+    Title,
+} from "../components/SelectorPage/SelectorStyles";
+import { GetBurnRate } from "../functions/CharacterFunctions";
 import { useRoll } from "../functions/CombatFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-import {
-  faAngleLeft,
-  faAngleRight,
-  faPersonWalking,
-  faHorse,
-  faTent,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  MainContainer,
-  Title,
-  CenterContainer,
-  LargeCircleButton,
-  ButtonContainer,
-} from "../components/SelectorPage/SelectorStyles";
-import { forEach } from "lodash";
-import { GetBurnRate } from "../functions/CharacterFunctions";
-import styled from "styled-components";
 export const ModalContainer = styled.div`
   background-color: ${Constants.BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -240,7 +240,7 @@ const TooltipButton = styled.div`
 
 interface TravelBoxProps {
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
 }
 
 function TravelBox({ session, websocket }: TravelBoxProps) {

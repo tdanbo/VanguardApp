@@ -1,12 +1,12 @@
-import * as Constants from "../../Constants";
-import styled from "styled-components";
-import { CharacterEntry, SessionEntry } from "../../Types";
-import { CharacterPortraits } from "../../Images";
-import { update_session } from "../../functions/SessionsFunctions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { GetMaxToughness } from "../../functions/RulesFunctions";
 import { faCheck, faSkull, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import styled from "styled-components";
+import * as Constants from "../../Constants";
+import { CharacterPortraits } from "../../Images";
+import { CharacterEntry, SessionEntry } from "../../Types";
+import { GetMaxToughness } from "../../functions/RulesFunctions";
+import { update_session } from "../../functions/SessionsFunctions";
 
 const Container = styled.div`
   display: flex;
@@ -219,11 +219,13 @@ const ValueBoxRight = styled.div`
   }
 `;
 
+import { Socket } from "socket.io-client";
+
 interface SessionBoxProps {
   character: CharacterEntry;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   isCreature: boolean;
 }

@@ -249,7 +249,7 @@ interface AbilityEntryItemProps {
   setInventoryState?: (inventoryState: number) => void;
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

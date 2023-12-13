@@ -1,9 +1,9 @@
 import {
-  faCoins,
-  faHeart,
-  faShield,
-  faSkull,
-  faXmark,
+    faCoins,
+    faHeart,
+    faShield,
+    faSkull,
+    faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cloneDeep } from "lodash";
@@ -236,7 +236,7 @@ interface EncounterBoxProps {
   encounter: CharacterEntry[];
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;

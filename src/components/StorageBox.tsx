@@ -1,10 +1,10 @@
-import * as Constants from "../Constants";
 import styled from "styled-components";
+import * as Constants from "../Constants";
 import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
 
-import Icon from "@mdi/react";
 import { mdiSack } from "@mdi/js";
+import Icon from "@mdi/react";
 
 const OuterContainer = styled.div`
   display: flex;
@@ -44,7 +44,7 @@ interface StorageBoxProps {
   item: ItemEntry;
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

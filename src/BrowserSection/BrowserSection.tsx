@@ -1,26 +1,25 @@
 import styled from "styled-components";
 
-import AbilityFooter from "./AbilityFooter";
-import EquipmentFooter from "./EquipmentFooter";
-import CreatureFooter from "./CreatureFooter";
-
 import axios from "axios";
+import { Socket } from 'socket.io-client';
 import { API } from "../Constants";
-
-import CreateCharacterComponent from "../components/SelectorPage/CreateCharacterComponent";
 import BackgroundImage from "../assets/icons/background.jpeg";
+import CreateCharacterComponent from "../components/SelectorPage/CreateCharacterComponent";
+import AbilityFooter from "./AbilityFooter";
+import CreatureFooter from "./CreatureFooter";
+import EquipmentFooter from "./EquipmentFooter";
 
-import * as Constants from "../Constants";
-import { useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faSearch,
-  faShield,
   faBolt,
   faGhost,
-  faUsers,
   faPlus,
+  faSearch,
+  faShield,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect } from "react";
+import * as Constants from "../Constants";
 import {
   AbilityEntry,
   CharacterEntry,
@@ -30,10 +29,10 @@ import {
 } from "../Types";
 
 import { useState } from "react";
-import InventoryEntry from "../components/Entries/InventoryEntry";
-import CreatureEntryItem from "../components/Entries/CreatureEntryItem";
 import AbilityEntryItem from "../components/Entries/AbilityEntryItem";
 import CharacterBox from "../components/Entries/CharacterBox";
+import CreatureEntryItem from "../components/Entries/CreatureEntryItem";
+import InventoryEntry from "../components/Entries/InventoryEntry";
 
 const CombatContainer = styled.div`
   display: flex;
@@ -158,10 +157,11 @@ const OverlayStyles = styled.div`
   align-items: center;
 `;
 
+
 interface BrowserSectionProps {
   session: SessionEntry;
   character: CharacterEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   setInventoryState: (state: number) => void;
   gmMode: boolean;
   encounter: CharacterEntry[];

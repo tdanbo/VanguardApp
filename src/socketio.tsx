@@ -1,41 +1,51 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Socket, io } from "socket.io-client";
 import { SessionEntry } from "./Types";
 
 function useSocketIO(
-  url: string,
+  api: string,
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>,
-) {
-  const socket = io(url);
-
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  const [sessionMessageEvents, setSessionMessageEvents] = useState([]);
+  setIsConnected: React.Dispatch<React.SetStateAction<boolean>>,
+): Socket {
+  const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    function onConnect() {
+    // Initialize socket only once
+    socketRef.current = io(api, {
+      path: "/sessions",
+    });
+
+    socketRef.current.on('connect', () => {
       setIsConnected(true);
-    }
+    });
 
-    function onDisconnect() {
+    socketRef.current.on('disconnect', () => {
       setIsConnected(false);
-    }
+    });
 
-    function onMessage(value: SessionEntry) {
-      setSession(value);
-    }
+    socketRef.current.on('join', (data: SessionEntry) => {
+      console.log(data);
+      setSession(data);
+    });
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-    socket.on("sessionMessage", onMessage);
+    socketRef.current.on('update', (data: SessionEntry) => { // Replace 'any' with an appropriate type
+        
+        console.log('Update response:', data);
+        
+        setSession(data)
+        
+        // Additional logic based on the response
+    });
 
+    // Cleanup function
     return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("sessionMessage", onMessage);
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
     };
-  }, []);
+  }, [api, setIsConnected, setSession]); // Dependencies
 
-  return socket;
+  return socketRef.current!;
 }
 
 export default useSocketIO;

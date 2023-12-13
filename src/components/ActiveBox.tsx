@@ -4,12 +4,12 @@ import * as Constants from "../Constants";
 import styled from "styled-components";
 import "../App.css";
 import {
-  ActiveKey,
-  AttackActive,
-  CharacterEntry,
-  DefenseActive,
-  SessionEntry,
-  SimpleActive,
+    ActiveKey,
+    AttackActive,
+    CharacterEntry,
+    DefenseActive,
+    SessionEntry,
+    SimpleActive,
 } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
 import { update_session } from "../functions/SessionsFunctions";
@@ -98,7 +98,7 @@ interface Props {
   active: AttackActive | DefenseActive | SimpleActive;
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

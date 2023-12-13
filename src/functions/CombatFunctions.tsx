@@ -12,7 +12,7 @@ interface RollDiceProps {
   add_mod: boolean;
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

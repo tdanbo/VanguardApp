@@ -1,11 +1,11 @@
-import * as Constants from "../Constants";
-import { SessionEntry, CharacterEntry } from "../Types";
-import { useRoll } from "../functions/CombatFunctions";
 import styled from "styled-components";
+import * as Constants from "../Constants";
+import { CharacterEntry, SessionEntry } from "../Types";
+import { useRoll } from "../functions/CombatFunctions";
 
 type Props = {
   type_name: number;
-  websocket: WebSocket;
+  websocket: Socket;
   session: SessionEntry;
   character: CharacterEntry;
   isCreature: boolean;

@@ -1,13 +1,11 @@
-import * as Constants from "../../Constants";
-import { SessionEntry } from "../../Types";
-import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import styled from "styled-components";
-import { CharacterEntry } from "../../Types";
+import { faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
+import * as Constants from "../../Constants";
+import { CharacterEntry, SessionEntry } from "../../Types";
 import AddCreatureToRoster from "../AddCreatureToRoster";
-import { useEffect } from "react";
 const BaseContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -85,6 +83,8 @@ const AbilityDetail = styled.div`
   font-size: 10px;
 `;
 
+import { Socket } from "socket.io-client";
+
 interface AbilityEntryItemProps {
   session: SessionEntry;
   character: CharacterEntry;
@@ -96,7 +96,7 @@ interface AbilityEntryItemProps {
   gmMode: boolean;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
-  websocket: WebSocket;
+  websocket: Socket;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

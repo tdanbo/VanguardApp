@@ -15,7 +15,7 @@ interface NavigationProps {
   inventoryState: number;
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

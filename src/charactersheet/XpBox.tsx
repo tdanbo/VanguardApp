@@ -29,7 +29,7 @@ const Container = styled.div`
 interface XpBoxProps {
   session: SessionEntry;
   character: CharacterEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

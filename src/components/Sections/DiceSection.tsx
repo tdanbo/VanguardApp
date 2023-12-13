@@ -1,6 +1,6 @@
+import styled from "styled-components";
 import { CharacterEntry, SessionEntry } from "../../Types";
 import DiceBox from "../DiceBox";
-import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
@@ -14,7 +14,7 @@ const Container = styled.div`
 interface DiceBoxProps {
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
 }
 
 function DiceSection({ character, session, websocket }: DiceBoxProps) {

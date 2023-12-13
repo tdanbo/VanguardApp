@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
-import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 import AbilityEntryItem from "../components/Entries/AbilityEntryItem";
+import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 const Container = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? "none" : "flex")};
   flex-direction: column;
@@ -14,7 +14,7 @@ interface NavigationProps {
   inventoryState: number;
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

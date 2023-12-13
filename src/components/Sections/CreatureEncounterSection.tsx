@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { CharacterEntry, SessionEntry } from "../../Types";
+import { CharacterEntry, SessionEntry, Stat } from "../../Types";
 import EncounterCharacterEntry from "../EncounterCharacterEntry";
 import EncounterCreatureEntry from "../EncounterCreatureEntry";
-import { Stat } from "../../Types";
 
 const Container = styled.div`
   display: flex;
@@ -18,7 +17,7 @@ interface EncounterSectionProps {
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   onDeleteCreature: (id: string) => void;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;

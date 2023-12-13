@@ -1,8 +1,8 @@
 import {
-  faBolt,
-  faCrosshairs,
-  faEye,
-  faShield,
+    faBolt,
+    faCrosshairs,
+    faEye,
+    faShield,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -83,7 +83,7 @@ type Props = {
   setSwapSource: (swapSource: null | string) => void;
   session: SessionEntry;
   character: CharacterEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 };
 

@@ -4,11 +4,11 @@ import cloneDeep from "lodash/cloneDeep";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
 import {
-  CharacterEntry,
-  EmptyArmor,
-  EmptyWeapon,
-  ItemEntry,
-  SessionEntry,
+    CharacterEntry,
+    EmptyArmor,
+    EmptyWeapon,
+    ItemEntry,
+    SessionEntry,
 } from "../../Types";
 import { useRoll } from "../../functions/CombatFunctions";
 import { GetMaxSlots } from "../../functions/RulesFunctions";
@@ -220,7 +220,7 @@ const QuantityBox = styled.button<RollBoxProps>`
 interface InventoryEntryProps {
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   index: number;
   browser: boolean;
   equipped: string;

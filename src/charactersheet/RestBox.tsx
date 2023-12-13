@@ -60,7 +60,7 @@ const Divider = styled.div`
 interface RestBoxProps {
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

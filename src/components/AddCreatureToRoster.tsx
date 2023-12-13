@@ -1,23 +1,23 @@
-import * as Constants from "../Constants";
-import styled from "styled-components";
-import { CharacterEntry, SessionEntry } from "../Types";
-import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCheck,
   faAngleLeft,
+  faCheck,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import AddCreaturePortrait from "./AddCreaturePortrait";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
+import styled from "styled-components";
+import * as Constants from "../Constants";
+import { CharacterEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
+import AddCreaturePortrait from "./AddCreaturePortrait";
 import {
-  MainContainer,
-  ModalContainer,
-  Title,
+  ButtonContainer,
   CenterContainer,
   Divider,
   LargeCircleButton,
-  ButtonContainer,
+  MainContainer,
+  ModalContainer,
+  Title,
 } from "./SelectorPage/SelectorStyles";
 
 const Container = styled.div`
@@ -73,11 +73,13 @@ const ResourceChangeContainer = styled.div`
   margin-bottom: 20px;
 `;
 
+import { Socket } from "socket.io-client";
+
 interface AddMemberProps {
   character_template: CharacterEntry;
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
 }
 
 function AddCreatureToRoster({

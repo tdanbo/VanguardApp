@@ -1,10 +1,10 @@
-import CharacterNavigation from "../components/NavigationControl/CharacterNavigation";
-import CreatureEncounterSection from "../components/Sections/CreatureEncounterSection";
-import ResetCreatureEncounter from "../components/ResetCreatureEncounter";
-import TimeTrackBox from "../gamemaster/TimeTrackBox";
-import TravelBox from "../gamemaster/TravelBox";
 import styled from "styled-components";
 import { CharacterEntry, SessionEntry } from "../Types";
+import CharacterNavigation from "../components/NavigationControl/CharacterNavigation";
+import ResetCreatureEncounter from "../components/ResetCreatureEncounter";
+import CreatureEncounterSection from "../components/Sections/CreatureEncounterSection";
+import TimeTrackBox from "../gamemaster/TimeTrackBox";
+import TravelBox from "../gamemaster/TravelBox";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -54,7 +54,7 @@ interface GameMasterProps {
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   onDeleteCreature: (id: string) => void;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
-  websocket: WebSocket;
+  websocket: Socket;
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
   setIsJoinOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isGm: boolean;
