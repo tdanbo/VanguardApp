@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SessionEntry } from "../../Types";
-import { postSession } from "../../functions/SessionsFunctions";
+import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../../Constants";
 import styled from "styled-components";
 import {
@@ -66,7 +66,7 @@ interface LoginProps {
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
 }
 
-function CreateSessionComponent({ setSelector, setSession }: LoginProps) {
+function CreateSessionComponent({ setSelector }: LoginProps) {
   const [sessionName, setSessionName] = useState("");
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
@@ -111,12 +111,14 @@ function CreateSessionComponent({ setSelector, setSession }: LoginProps) {
     },
     characters: [],
     combatlog: [],
+    state: uuidv4(),
   };
 
   const handlePostSession = async () => {
-    await postSession(NewSessionEntry);
-    setSession(NewSessionEntry);
-    setSelector("characterSelect");
+    console.log(NewSessionEntry);
+    // await postSession(NewSessionEntry);
+    // setSession(NewSessionEntry);
+    // setSelector("characterSelect");
   };
 
   return (

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import axios from "axios";
-import { Socket } from 'socket.io-client';
+import { Socket } from "socket.io-client";
 import { API } from "../Constants";
 import BackgroundImage from "../assets/icons/background.jpeg";
 import CreateCharacterComponent from "../components/SelectorPage/CreateCharacterComponent";
@@ -16,6 +16,7 @@ import {
   faSearch,
   faShield,
   faUsers,
+  faWifi,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect } from "react";
@@ -130,6 +131,24 @@ const AddButton = styled.button`
   justify-content: center;
   font-weight: bold;
   color: ${Constants.WIDGET_SECONDARY_FONT};
+  padding-right: 50px;
+`;
+
+const WebsocketStatus = styled.button`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  max-height: 35px;
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  width: 40px;
+  max-width: 40px;
+  height: 40px;
 `;
 
 const ItemContainer = styled.div`
@@ -157,7 +176,6 @@ const OverlayStyles = styled.div`
   align-items: center;
 `;
 
-
 interface BrowserSectionProps {
   session: SessionEntry;
   character: CharacterEntry;
@@ -173,6 +191,7 @@ interface BrowserSectionProps {
   setCreaturesList: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   isCreature: boolean;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+  isConnected: boolean;
 }
 
 let creatureList: CharacterEntry[] = [];
@@ -193,6 +212,7 @@ function BrowserSection({
   setCreaturesList,
   isCreature,
   setGmMode,
+  isConnected,
 }: BrowserSectionProps) {
   const [entryList, setEntryList] = useState<
     (ItemEntry | AbilityEntry | CreatureEntry | CharacterEntry)[]
@@ -533,9 +553,26 @@ function BrowserSection({
                 />
               </OverlayStyles>
             ) : (
-              <AddButton onClick={handleOpen}>
-                <FontAwesomeIcon icon={faPlus} />
-              </AddButton>
+              <div style={{ display: "flex", gap: "5px" }}>
+                <WebsocketStatus>
+                  {isConnected ? (
+                    <FontAwesomeIcon
+                      icon={faWifi}
+                      color={Constants.BRIGHT_GREEN}
+                      title={"Connected"}
+                    />
+                  ) : (
+                    <FontAwesomeIcon
+                      icon={faWifi}
+                      color={Constants.BRIGHT_RED}
+                      title={"Disconnected"}
+                    />
+                  )}
+                </WebsocketStatus>
+                <AddButton onClick={handleOpen}>
+                  <FontAwesomeIcon icon={faPlus} />
+                </AddButton>
+              </div>
             ))}
         </ItemContainer>
       </CombatContainer>

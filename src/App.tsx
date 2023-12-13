@@ -107,15 +107,11 @@ function App() {
             setIsCreature={setIsCreature}
             isCreature={isCreature}
             setGmMode={setGmMode}
+            isConnected={isConnected}
           />
         ) : null}
       </Column>
       <Column>
-          {isConnected ? (
-            <div>CONNECTED</div>
-          ) : (
-            <div>NOT CONNECTED</div>
-          ) }
         {gmMode ? (
           <GameMaster
             isGm={isGm}
