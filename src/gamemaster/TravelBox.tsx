@@ -1,22 +1,23 @@
 import {
-    faAngleLeft,
-    faAngleRight,
-    faHorse,
-    faPersonWalking,
-    faTent,
+  faAngleLeft,
+  faAngleRight,
+  faHorse,
+  faPersonWalking,
+  faTent,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { forEach } from "lodash";
 import { useEffect, useState } from "react";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { EmptyCharacter, SessionEntry, TravelEntry } from "../Types";
 import {
-    ButtonContainer,
-    CenterContainer,
-    LargeCircleButton,
-    MainContainer,
-    Title,
+  ButtonContainer,
+  CenterContainer,
+  LargeCircleButton,
+  MainContainer,
+  Title,
 } from "../components/SelectorPage/SelectorStyles";
 import { GetBurnRate } from "../functions/CharacterFunctions";
 import { useRoll } from "../functions/CombatFunctions";

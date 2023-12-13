@@ -117,7 +117,7 @@ export const getCharacterXp = (character: CharacterEntry) => {
 };
 
 export async function addNewCreature(NewCharacterEntry: CharacterEntry) {
-  return axios.post(`${API}/api/creaturelog`, NewCharacterEntry).then((res) => {
+  return axios.post(`${API}/api/creatures`, NewCharacterEntry).then((res) => {
     return res;
   });
 }

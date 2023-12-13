@@ -1,9 +1,9 @@
 import {
-    faCoins,
-    faHeart,
-    faShield,
-    faSkull,
-    faXmark,
+  faCoins,
+  faHeart,
+  faShield,
+  faSkull,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cloneDeep } from "lodash";
@@ -16,6 +16,8 @@ import AbilityEntryItem from "./Entries/AbilityEntryItem";
 
 import { mdiSword } from "@mdi/js";
 import Icon from "@mdi/react";
+
+import { Socket } from "socket.io-client";
 
 import { UpdateActives } from "../functions/ActivesFunction";
 

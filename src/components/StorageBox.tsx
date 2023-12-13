@@ -1,10 +1,10 @@
+import { mdiSack } from "@mdi/js";
+import Icon from "@mdi/react";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
-
-import { mdiSack } from "@mdi/js";
-import Icon from "@mdi/react";
 
 const OuterContainer = styled.div`
   display: flex;

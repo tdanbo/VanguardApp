@@ -3,32 +3,9 @@ import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import { API } from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
-export async function postSession(NewSessionEntry: SessionEntry) {
-  const response = await axios
-    .post(`${API}/api/sessions/`, NewSessionEntry)
-    .then((res) => console.log(res));
-
-  return response;
-}
-
 export async function get_session(id: string): Promise<SessionEntry> {
   const response = await axios.get<SessionEntry>(`${API}/api/session/${id}`);
   return response.data;
-}
-
-export async function get_long_session(
-  session: SessionEntry,
-): Promise<SessionEntry> {
-  try {
-    const response = await axios.get<SessionEntry>(
-      `${API}/api/sessions/${session.id}/${session.state}`,
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching long session:", error);
-    // Optionally rethrow the error or handle it as needed
-    throw error;
-  }
 }
 
 export async function update_session(

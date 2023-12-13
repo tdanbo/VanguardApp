@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../../Constants";
@@ -9,12 +10,12 @@ import { UpperFirstLetter, toTitleCase } from "../../functions/UtilityFunctions"
 import AddCreaturePortrait from "../AddCreaturePortrait";
 import RaceDropdownBox from "./RaceDropdownBox";
 import {
-    ButtonContainer,
-    CenterContainer,
-    ControlButton,
-    MainContainer,
-    ModalContainer,
-    Title,
+  ButtonContainer,
+  CenterContainer,
+  ControlButton,
+  MainContainer,
+  ModalContainer,
+  Title,
 } from "./SelectorStyles";
 
 interface Stats {

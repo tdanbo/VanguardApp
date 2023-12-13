@@ -1,12 +1,13 @@
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 
 import {
-    faAngleLeft,
-    faCarrot,
-    faCheck,
-    faCircle,
-    faDroplet,
+  faAngleLeft,
+  faCarrot,
+  faCheck,
+  faCircle,
+  faDroplet,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -14,14 +15,14 @@ import { CharacterEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
 
 import {
-    ButtonContainer,
-    CenterContainer,
-    Divider,
-    LargeCircleButton,
-    LargeCircleButtonDisabled,
-    MainContainer,
-    ModalContainer,
-    Title,
+  ButtonContainer,
+  CenterContainer,
+  Divider,
+  LargeCircleButton,
+  LargeCircleButtonDisabled,
+  MainContainer,
+  ModalContainer,
+  Title,
 } from "../components/SelectorPage/SelectorStyles";
 
 const OrangeColor = "rgba(205, 112, 57, 0.7)";

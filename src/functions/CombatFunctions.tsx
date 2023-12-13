@@ -1,7 +1,7 @@
+import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import { CharacterEntry, CombatEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
-
 interface RollDiceProps {
   dice: number;
   active: string;

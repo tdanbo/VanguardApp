@@ -1,4 +1,5 @@
 import { RefObject, useEffect, useRef } from "react";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import { CharacterEntry, CombatEntry, SessionEntry } from "../../Types";
 import DiceSection from "../../components/Sections/DiceSection";
@@ -35,10 +36,10 @@ const FooterRightContainer = styled.div`
 `;
 
 import {
-    CriticalFailureSounds,
-    CriticalSuccessSounds,
-    RestingSounds,
-    RollSounds,
+  CriticalFailureSounds,
+  CriticalSuccessSounds,
+  RestingSounds,
+  RollSounds,
 } from "../../Images";
 // import { set } from "lodash";
 

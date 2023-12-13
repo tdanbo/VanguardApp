@@ -1,14 +1,15 @@
 import { faChevronRight, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import cloneDeep from "lodash/cloneDeep";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
 import {
-    CharacterEntry,
-    EmptyArmor,
-    EmptyWeapon,
-    ItemEntry,
-    SessionEntry,
+  CharacterEntry,
+  EmptyArmor,
+  EmptyWeapon,
+  ItemEntry,
+  SessionEntry,
 } from "../../Types";
 import { useRoll } from "../../functions/CombatFunctions";
 import { GetMaxSlots } from "../../functions/RulesFunctions";

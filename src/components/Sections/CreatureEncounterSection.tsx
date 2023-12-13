@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import { CharacterEntry, SessionEntry, Stat } from "../../Types";
 import EncounterCharacterEntry from "../EncounterCharacterEntry";
 import EncounterCreatureEntry from "../EncounterCreatureEntry";
-
 const Container = styled.div`
   display: flex;
   flex-grow: 1;

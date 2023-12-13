@@ -1,15 +1,15 @@
 import { useState } from "react";
-import * as Constants from "../Constants";
-
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import "../App.css";
+import * as Constants from "../Constants";
 import {
-    ActiveKey,
-    AttackActive,
-    CharacterEntry,
-    DefenseActive,
-    SessionEntry,
-    SimpleActive,
+  ActiveKey,
+  AttackActive,
+  CharacterEntry,
+  DefenseActive,
+  SessionEntry,
+  SimpleActive,
 } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
 import { update_session } from "../functions/SessionsFunctions";

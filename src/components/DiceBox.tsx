@@ -1,8 +1,8 @@
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
-
 type Props = {
   type_name: number;
   websocket: Socket;

@@ -1,18 +1,18 @@
 import {
-    faBolt,
-    faCrosshairs,
-    faEye,
-    faShield,
+  faBolt,
+  faCrosshairs,
+  faEye,
+  faShield,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import "../../App.css";
 import * as Constants from "../../Constants";
 import { ActiveKey, CharacterEntry, SessionEntry, StatName } from "../../Types";
 import { useRoll } from "../../functions/CombatFunctions";
 import { update_session } from "../../functions/SessionsFunctions";
-
 const Container = styled.div`
   display: flex;
   flex: 1;

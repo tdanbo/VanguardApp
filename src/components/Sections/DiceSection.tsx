@@ -1,7 +1,7 @@
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import { CharacterEntry, SessionEntry } from "../../Types";
 import DiceBox from "../DiceBox";
-
 const Container = styled.div`
   display: flex;
   flex-direction: row;

@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import * as Constants from "../../Constants";
-import { AbilityEntry, CharacterEntry, SessionEntry } from "../../Types";
-
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import { Ability } from "../../Types";
+import * as Constants from "../../Constants";
+import { Ability, AbilityEntry, CharacterEntry, SessionEntry } from "../../Types";
 import { useRoll } from "../../functions/CombatFunctions";
 
 import { faChevronRight, faSkull } from "@fortawesome/free-solid-svg-icons";

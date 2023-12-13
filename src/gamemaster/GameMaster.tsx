@@ -1,3 +1,4 @@
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import { CharacterEntry, SessionEntry } from "../Types";
 import CharacterNavigation from "../components/NavigationControl/CharacterNavigation";
@@ -5,7 +6,6 @@ import ResetCreatureEncounter from "../components/ResetCreatureEncounter";
 import CreatureEncounterSection from "../components/Sections/CreatureEncounterSection";
 import TimeTrackBox from "../gamemaster/TimeTrackBox";
 import TravelBox from "../gamemaster/TravelBox";
-
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;

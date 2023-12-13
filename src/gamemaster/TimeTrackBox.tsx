@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { EmptyCharacter, SessionEntry } from "../Types";
