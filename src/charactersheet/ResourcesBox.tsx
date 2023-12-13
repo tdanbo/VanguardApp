@@ -1,3 +1,4 @@
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 
@@ -331,7 +332,7 @@ function ResourceChanger({
 interface ResourceBoxProps {
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

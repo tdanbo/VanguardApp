@@ -17,9 +17,9 @@ import CombatSection from "./components/Sections/CombatSection";
 import CharacterSheet from "./charactersheet/CharacterSheet";
 import GameMaster from "./gamemaster/GameMaster";
 
-import useWebSocket from "./websocket";
 import BrowserSection from "./BrowserSection/BrowserSection";
 import JoinComponent from "./components/JoinComponent";
+import useSocketIO from "./socketio";
 const Row = styled.div`
   display: flex;
   flex-direction: row;
@@ -74,8 +74,11 @@ function App() {
 
   console.log("-------------------");
   console.log("Rendering Application");
-  console.log("Attempting to connect to: " + url);
-  const websocket = useWebSocket(url, setSession);
+  console.log("Session: " + url);
+
+  // const websocket = useWebSocket(url, setSession);
+  const [isConnected, setIsConnected] = useState(false);
+  const websocket = useSocketIO(Constants.API, setSession, setIsConnected);
 
   return (
     <Row>
@@ -104,6 +107,7 @@ function App() {
             setIsCreature={setIsCreature}
             isCreature={isCreature}
             setGmMode={setGmMode}
+            isConnected={isConnected}
           />
         ) : null}
       </Column>

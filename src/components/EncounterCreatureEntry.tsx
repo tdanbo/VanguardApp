@@ -17,6 +17,8 @@ import AbilityEntryItem from "./Entries/AbilityEntryItem";
 import { mdiSword } from "@mdi/js";
 import Icon from "@mdi/react";
 
+import { Socket } from "socket.io-client";
+
 import { UpdateActives } from "../functions/ActivesFunction";
 
 interface ColorTypeProps {
@@ -236,7 +238,7 @@ interface EncounterBoxProps {
   encounter: CharacterEntry[];
   setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;

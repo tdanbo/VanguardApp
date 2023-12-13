@@ -1,3 +1,4 @@
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
@@ -15,7 +16,7 @@ interface NavigationProps {
   inventoryState: number;
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

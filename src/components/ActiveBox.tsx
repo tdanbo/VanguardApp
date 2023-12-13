@@ -1,8 +1,8 @@
 import { useState } from "react";
-import * as Constants from "../Constants";
-
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import "../App.css";
+import * as Constants from "../Constants";
 import {
   ActiveKey,
   AttackActive,
@@ -98,7 +98,7 @@ interface Props {
   active: AttackActive | DefenseActive | SimpleActive;
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

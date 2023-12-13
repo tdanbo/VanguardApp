@@ -1,6 +1,7 @@
 import { faChevronRight, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import cloneDeep from "lodash/cloneDeep";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
 import {
@@ -220,7 +221,7 @@ const QuantityBox = styled.button<RollBoxProps>`
 interface InventoryEntryProps {
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   index: number;
   browser: boolean;
   equipped: string;

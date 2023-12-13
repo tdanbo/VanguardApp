@@ -1,18 +1,18 @@
 import styled from "styled-components";
 import { CharacterEntry, SessionEntry } from "../Types";
+import AbilitySection from "../charactersheet/AbilitySection";
+import ActiveControls from "../charactersheet/ActiveControls";
+import CharacterNameBox from "../charactersheet/CharacterNameBox";
+import HealthBox from "../charactersheet/HealthBox";
+import InventorySection from "../charactersheet/InventorySection";
+import ResourcesBox from "../charactersheet/ResourcesBox";
+import RestBox from "../charactersheet/RestBox";
+import SecondaryStatsControls from "../charactersheet/SecondaryStatsControls";
+import StatsControls from "../charactersheet/StatsControls";
+import XpBox from "../charactersheet/XpBox";
 import CharacterNavigation from "../components/NavigationControl/CharacterNavigation";
 import EmptyNavigation from "../components/NavigationControl/EmptyNavigation";
 import InventoryNavigation from "../components/NavigationControl/InventoryNavigation";
-import XpBox from "../charactersheet/XpBox";
-import CharacterNameBox from "../charactersheet/CharacterNameBox";
-import HealthBox from "../charactersheet/HealthBox";
-import StatsControls from "../charactersheet/StatsControls";
-import ActiveControls from "../charactersheet/ActiveControls";
-import SecondaryStatsControls from "../charactersheet/SecondaryStatsControls";
-import RestBox from "../charactersheet/RestBox";
-import ResourcesBox from "../charactersheet/ResourcesBox";
-import InventorySection from "../charactersheet/InventorySection";
-import AbilitySection from "../charactersheet/AbilitySection";
 
 const StatsContainer = styled.div`
   display: flex;
@@ -65,8 +65,10 @@ const HeaderContainer = styled.div`
   height: 50px;
 `;
 
+import { Socket } from "socket.io-client";
+
 type CharacterSheetProps = {
-  websocket: WebSocket;
+  websocket: Socket;
   session: SessionEntry;
   character: CharacterEntry;
   browserState: number;

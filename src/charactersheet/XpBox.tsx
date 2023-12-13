@@ -1,10 +1,10 @@
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import "../App.css";
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
 import { getCharacterXp } from "../functions/CharacterFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-
 const Container = styled.div`
   margin-right: 20px;
   cursor: pointer;
@@ -29,7 +29,7 @@ const Container = styled.div`
 interface XpBoxProps {
   session: SessionEntry;
   character: CharacterEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

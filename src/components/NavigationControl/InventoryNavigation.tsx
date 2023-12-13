@@ -1,9 +1,10 @@
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBolt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Socket } from "socket.io-client";
+import styled from "styled-components";
 import * as Constants from "../../Constants";
-import OverburdenBox from "../OverburdenBox";
 import { CharacterEntry, SessionEntry } from "../../Types";
+import OverburdenBox from "../OverburdenBox";
 import StorageBox from "../StorageBox";
 const Container = styled.div`
   display: flex;
@@ -48,7 +49,7 @@ interface NavigationProps {
   gmMode: boolean;
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

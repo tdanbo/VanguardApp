@@ -1,8 +1,9 @@
-import { CharacterEntry, CombatEntry, SessionEntry } from "../../Types";
-import CombatEntryItem from "../CombatEntryItem";
-import DiceSection from "../../components/Sections/DiceSection";
 import { RefObject, useEffect, useRef } from "react";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
+import { CharacterEntry, CombatEntry, SessionEntry } from "../../Types";
+import DiceSection from "../../components/Sections/DiceSection";
+import CombatEntryItem from "../CombatEntryItem";
 const CombatContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -37,8 +38,8 @@ const FooterRightContainer = styled.div`
 import {
   CriticalFailureSounds,
   CriticalSuccessSounds,
-  RollSounds,
   RestingSounds,
+  RollSounds,
 } from "../../Images";
 // import { set } from "lodash";
 
@@ -46,7 +47,7 @@ interface CombatSectionProps {
   scrollRef: RefObject<HTMLDivElement>;
   session: SessionEntry;
   character: CharacterEntry;
-  websocket: WebSocket;
+  websocket: Socket;
 }
 
 function deepCompareCombatEntries(

@@ -1,8 +1,9 @@
+import { useState } from "react";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { update_session } from "../functions/SessionsFunctions";
-import { useState } from "react";
 import { EmptyCharacter, SessionEntry } from "../Types";
+import { update_session } from "../functions/SessionsFunctions";
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
@@ -51,7 +52,7 @@ const HourContainer = styled.button<HourContainerProps>`
 
 interface TimeTrackBoxProps {
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
 }
 
 function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {

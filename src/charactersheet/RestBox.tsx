@@ -57,10 +57,12 @@ const Divider = styled.div`
   background-color: ${Constants.WIDGET_BACKGROUND};
 `;
 
+import { Socket } from "socket.io-client";
+
 interface RestBoxProps {
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

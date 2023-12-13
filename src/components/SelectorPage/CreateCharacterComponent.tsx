@@ -1,23 +1,22 @@
-import * as Constants from "../../Constants";
-import { useState, useEffect } from "react";
-import { CharacterEntry, SessionEntry } from "../../Types";
-import { UpperFirstLetter } from "../../functions/UtilityFunctions";
+import { useEffect, useState } from "react";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import RaceDropdownBox from "./RaceDropdownBox";
-import { update_session } from "../../functions/SessionsFunctions";
+import { v4 as uuidv4 } from "uuid";
+import * as Constants from "../../Constants";
+import { CharacterEntry, EmptyArmor, EmptyWeapon, SessionEntry } from "../../Types";
 import { addNewCreature } from "../../functions/CharacterFunctions";
-import { EmptyWeapon, EmptyArmor } from "../../Types";
-import { toTitleCase } from "../../functions/UtilityFunctions";
+import { update_session } from "../../functions/SessionsFunctions";
+import { UpperFirstLetter, toTitleCase } from "../../functions/UtilityFunctions";
+import AddCreaturePortrait from "../AddCreaturePortrait";
+import RaceDropdownBox from "./RaceDropdownBox";
 import {
+  ButtonContainer,
+  CenterContainer,
+  ControlButton,
   MainContainer,
   ModalContainer,
   Title,
-  CenterContainer,
-  ControlButton,
-  ButtonContainer,
 } from "./SelectorStyles";
-import { v4 as uuidv4 } from "uuid";
-import AddCreaturePortrait from "../AddCreaturePortrait";
 
 interface Stats {
   id: number;
@@ -113,7 +112,7 @@ interface LoginProps {
   source: string;
   closeModal: () => void;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

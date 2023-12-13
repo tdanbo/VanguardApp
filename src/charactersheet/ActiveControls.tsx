@@ -1,6 +1,5 @@
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import ActiveBox from "../components/ActiveBox";
-
 import {
   AttackActive,
   CharacterEntry,
@@ -8,6 +7,7 @@ import {
   SessionEntry,
   SimpleActive,
 } from "../Types";
+import ActiveBox from "../components/ActiveBox";
 import { UpdateActives } from "../functions/ActivesFunction";
 const Container = styled.div`
   display: flex;
@@ -19,7 +19,7 @@ const Container = styled.div`
 interface CorruptionControlsProps {
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 

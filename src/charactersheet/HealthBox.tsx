@@ -2,8 +2,8 @@ import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { CharacterEntry, SessionEntry } from "../Types";
-import { update_session } from "../functions/SessionsFunctions";
 import { GetMaxToughness } from "../functions/RulesFunctions";
+import { update_session } from "../functions/SessionsFunctions";
 
 interface PortraitProps {
   src: string;
@@ -169,10 +169,12 @@ const Divider = styled.div`
   margin: 4px;
 `;
 
+import { Socket } from "socket.io-client";
+
 interface HealthBoxProps {
   character: CharacterEntry;
   session: SessionEntry;
-  websocket: WebSocket;
+  websocket: Socket;
   isCreature: boolean;
 }
 
