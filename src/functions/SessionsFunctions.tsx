@@ -18,12 +18,11 @@ export async function update_session(
   console.log("Updating session / Sending Updates To Clients");
   session.state = uuidv4();
   try {
-    websocket.emit('update', session);
     if (isCreature) {
       await axios.put(`${API}/api/creatures/`, character);
     } else {
-    websocket.emit('update', session);
-    await axios.put(`${API}/api/session/`, session);
+      websocket.emit("update", session);
+      await axios.put(`${API}/api/session/`, session);
     }
   } catch (error) {
     console.error(error);
