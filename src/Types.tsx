@@ -238,6 +238,20 @@ export const EmptyWeapon: ItemEntry = {
   entry: "ItemEntry",
 };
 
+export const GeneralItem: ItemEntry = {
+  roll: { roll: false, dice: 0, mod: 0, type: "" },
+  quality: [],
+  equip: "",
+  quantity: { count: 0, bulk: false },
+  type: "General Good",
+  cost: 0,
+  name: "",
+  category: "general_good",
+  id: "",
+  description: "",
+  entry: "ItemEntry",
+};
+
 export const EmptyArmor: ItemEntry = {
   roll: { roll: true, dice: 4, mod: 0, type: "armor" },
   quality: [],

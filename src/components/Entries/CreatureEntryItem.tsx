@@ -1,4 +1,4 @@
-import { faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../../Constants";
 import { CharacterEntry, SessionEntry } from "../../Types";
 import AddCreatureToRoster from "../AddCreatureToRoster";
+import { delete_creature } from "../../functions/CharacterFunctions";
 const BaseContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,6 +32,7 @@ const NameContainer = styled.div`
   flex-grow: 1;
   flex: 1;
   margin-left: 5px;
+  cursor: pointer;
 `;
 
 const AddButton = styled.div`
@@ -98,6 +100,7 @@ interface AbilityEntryItemProps {
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   websocket: Socket;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setDeleteAdjust: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function CreatureEntryItem({
@@ -110,6 +113,7 @@ function CreatureEntryItem({
   setIsCreature,
   websocket,
   setGmMode,
+  setDeleteAdjust,
 }: AbilityEntryItemProps) {
   const [_expanded] = useState<boolean>(false);
 
@@ -127,7 +131,7 @@ function CreatureEntryItem({
     return creature.name + "Z"; // Fallback, should ideally handle this better
   };
 
-  const AddEncounterCreature = () => {
+  const AddEncounterCreature = async () => {
     const newEncounterCreature: CharacterEntry = {
       ...creature,
       name: suffixLetter(),
@@ -142,6 +146,12 @@ function CreatureEntryItem({
     setIsCreature(true);
     setCharacterName(creature.name);
     setGmMode(false);
+  };
+
+  const HandleDeleteCreature = async () => {
+    console.log("Deleting creature: " + creature.name);
+    await delete_creature(creature.name);
+    setDeleteAdjust((prevCount) => prevCount + 1);
   };
 
   const [resistance, setResistance] = useState<string>("Weak");
@@ -165,13 +175,14 @@ function CreatureEntryItem({
   return (
     <BaseContainer>
       <Container>
-        <ExpandButten
-          className={"button-hover"}
-          onClick={() => selectCreature()}
-        >
-          <FontAwesomeIcon icon={faUser} />
+        <ExpandButten className={"button-hover"} onClick={HandleDeleteCreature}>
+          <FontAwesomeIcon
+            icon={faSkull}
+            color={Constants.WIDGET_BACKGROUND}
+            title={"Delete Creature"}
+          />
         </ExpandButten>
-        <NameContainer>
+        <NameContainer onClick={() => selectCreature()}>
           <CreatureName>{creature.name}</CreatureName>
           <AbilityDetail>
             {resistance} {creature.details.race}

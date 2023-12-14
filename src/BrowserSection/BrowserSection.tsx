@@ -8,6 +8,7 @@ import CreateCharacterComponent from "../components/SelectorPage/CreateCharacter
 import AbilityFooter from "./AbilityFooter";
 import CreatureFooter from "./CreatureFooter";
 import EquipmentFooter from "./EquipmentFooter";
+import { GeneralItem } from "../Types";
 
 import {
   faBolt,
@@ -34,6 +35,7 @@ import AbilityEntryItem from "../components/Entries/AbilityEntryItem";
 import CharacterBox from "../components/Entries/CharacterBox";
 import CreatureEntryItem from "../components/Entries/CreatureEntryItem";
 import InventoryEntry from "../components/Entries/InventoryEntry";
+import { toTitleCase } from "../functions/UtilityFunctions";
 
 const CombatContainer = styled.div`
   display: flex;
@@ -192,6 +194,8 @@ interface BrowserSectionProps {
   isCreature: boolean;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   isConnected: boolean;
+  categorySelect: string;
+  setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
 }
 
 let creatureList: CharacterEntry[] = [];
@@ -208,19 +212,31 @@ function BrowserSection({
   setCharacterName,
   isGm,
   setIsCreature,
-  creaturesList,
   setCreaturesList,
   isCreature,
   setGmMode,
   isConnected,
+  categorySelect,
+  setCategorySelect,
 }: BrowserSectionProps) {
   const [entryList, setEntryList] = useState<
     (ItemEntry | AbilityEntry | CreatureEntry | CharacterEntry)[]
   >([]);
+  const [addAdjust, setAddAdjust] = useState(0);
+  const [deleteAdjust, setDeleteAdjust] = useState(0);
 
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState("all");
-  const [categorySelect, setCategorySelect] = useState<string>();
+
+  const generateRandomId = (length = 10) => {
+    return Math.random()
+      .toString(36)
+      .substring(2, 2 + length);
+  };
+
+  const SearchItem = GeneralItem;
+  SearchItem.name = toTitleCase(search);
+  SearchItem.id = generateRandomId();
 
   function filterItemsByType(
     entryList: (ItemEntry | AbilityEntry | CreatureEntry | CharacterEntry)[],
@@ -351,45 +367,62 @@ function BrowserSection({
 
   const [equipmentList, setEquipmentList] = useState<ItemEntry[]>([]);
   const [abilitiesList, setAbilitiesList] = useState<AbilityEntry[]>([]);
-  const [_charactersList, setCharactersList] = useState<CharacterEntry[]>([]);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchStaticData = async () => {
       try {
         const equipmentResponse = await axios.get(`${API}/api/equipment`);
         setEquipmentList(equipmentResponse.data);
 
         const abilitiesResponse = await axios.get(`${API}/api/abilities`);
         setAbilitiesList(abilitiesResponse.data);
-
-        const creaturesResponse = await axios.get(`${API}/api/creatures`);
-        creatureList = creaturesResponse.data;
-        setCreaturesList(creaturesResponse.data);
       } catch (error) {
-        // Handle any errors that occur during data fetching
-        console.error("Error fetching data:", error);
+        console.error("Error fetching static data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchData();
-  }, []); // Run this effect only once when the component mounts
+    fetchStaticData();
+  }, []);
 
   useEffect(() => {
-    setCharactersList(session.characters);
-  }, [session]);
+    const fetchCreatureData = async () => {
+      try {
+        const creaturesResponse = await axios.get(`${API}/api/creatures`);
+        setCreaturesList(creaturesResponse.data);
+        if (categorySelect === "creatures") {
+          setEntryList(creaturesResponse.data);
+        }
+        console.log("Fetching creature data");
+      } catch (error) {
+        console.error("Error fetching creature data:", error);
+      }
+    };
 
-  useEffect(() => {
-    // Update entryList when categorySelect changes
-    if (categorySelect === "equipment") {
-      setEntryList(equipmentList);
-    } else if (categorySelect === "abilities") {
-      setEntryList(abilitiesList);
-    } else if (categorySelect === "creatures") {
-      setEntryList(creaturesList);
-    } else if (categorySelect === "characters") {
-      setEntryList(session.characters);
+    if (categorySelect === "creatures") {
+      fetchCreatureData();
     }
-  }, [session, categorySelect]);
+  }, [categorySelect, deleteAdjust, addAdjust]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      switch (categorySelect) {
+        case "equipment":
+          setEntryList(equipmentList);
+          break;
+        case "abilities":
+          setEntryList(abilitiesList);
+          break;
+        case "characters":
+          setEntryList(session.characters);
+          break;
+        // ... rest of the code
+      }
+    }
+  }, [categorySelect, session, isLoading]);
 
   const HandleCategoryChange = (category: string) => {
     setCategorySelect(category);
@@ -405,6 +438,12 @@ function BrowserSection({
   const handleClose = () => {
     setIsModalOpen(false);
   };
+
+  console.log("categorySelect:", categorySelect);
+  console.log("entryList:", entryList);
+  console.log("sortedItemList:", sortedItemList);
+  console.log("equipmentList:", equipmentList);
+  console.log("abilitiesList:", abilitiesList);
 
   return (
     <>
@@ -422,6 +461,7 @@ function BrowserSection({
                   websocket={websocket}
                   source={""}
                   isCreature={false}
+                  setAddAdjust={setAddAdjust}
                 />
               </OverlayStyles>
             ) : (
@@ -468,6 +508,25 @@ function BrowserSection({
       </HeaderContainer>
       <CombatContainer>
         <ItemContainer>
+          {sortedItemList.length === 0 ? (
+            categorySelect === "equipment" ? (
+              <InventoryEntry
+                session={session}
+                character={character}
+                websocket={websocket}
+                key={"EmptyItem"}
+                browser={true}
+                index={1}
+                item={SearchItem}
+                equipped={""}
+                id={""}
+                setInventoryState={setInventoryState}
+                gmMode={gmMode}
+                isCreature={isCreature}
+              />
+            ) : null
+          ) : null}
+
           {sortedItemList &&
             sortedItemList.map((entry, index) => {
               if (entry.entry === "ItemEntry") {
@@ -518,6 +577,7 @@ function BrowserSection({
                     setIsCreature={setIsCreature}
                     websocket={websocket}
                     setGmMode={setGmMode}
+                    setDeleteAdjust={setDeleteAdjust}
                   />
                 );
               } else if (
@@ -550,6 +610,7 @@ function BrowserSection({
                   websocket={websocket}
                   source={"characterSelect"}
                   isCreature={isCreature}
+                  setAddAdjust={setAddAdjust}
                 />
               </OverlayStyles>
             ) : (

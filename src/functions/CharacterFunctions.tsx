@@ -122,6 +122,10 @@ export async function addNewCreature(NewCharacterEntry: CharacterEntry) {
   });
 }
 
+export async function delete_creature(name: string) {
+  await axios.delete(`${API}/api/creatures/${name}`);
+}
+
 export function GetUsedSlots(character: CharacterEntry) {
   let used_slots = character.inventory.length;
 

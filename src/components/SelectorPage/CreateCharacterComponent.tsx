@@ -3,10 +3,18 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../../Constants";
-import { CharacterEntry, EmptyArmor, EmptyWeapon, SessionEntry } from "../../Types";
+import {
+  CharacterEntry,
+  EmptyArmor,
+  EmptyWeapon,
+  SessionEntry,
+} from "../../Types";
 import { addNewCreature } from "../../functions/CharacterFunctions";
 import { update_session } from "../../functions/SessionsFunctions";
-import { UpperFirstLetter, toTitleCase } from "../../functions/UtilityFunctions";
+import {
+  UpperFirstLetter,
+  toTitleCase,
+} from "../../functions/UtilityFunctions";
 import AddCreaturePortrait from "../AddCreaturePortrait";
 import RaceDropdownBox from "./RaceDropdownBox";
 import {
@@ -114,6 +122,7 @@ interface LoginProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
+  setAddAdjust: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function CreateCharacterComponent({
@@ -125,6 +134,7 @@ function CreateCharacterComponent({
   session,
   websocket,
   isCreature,
+  setAddAdjust,
 }: LoginProps) {
   const creature_options = [
     "Abomination",
@@ -338,6 +348,7 @@ function CreateCharacterComponent({
       setCharacterName(NewCharacterEntry.name);
     } else {
       await addNewCreature(NewCharacterEntry);
+      setAddAdjust((prevCount) => prevCount + 1);
     }
     // setCharacter(NewCharacterEntry);
     closeModal();
