@@ -439,12 +439,6 @@ function BrowserSection({
     setIsModalOpen(false);
   };
 
-  console.log("categorySelect:", categorySelect);
-  console.log("entryList:", entryList);
-  console.log("sortedItemList:", sortedItemList);
-  console.log("equipmentList:", equipmentList);
-  console.log("abilitiesList:", abilitiesList);
-
   return (
     <>
       <HeaderContainer>
