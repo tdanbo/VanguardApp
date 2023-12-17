@@ -2,7 +2,6 @@ import axios from "axios";
 import { API } from "../Constants";
 import { CharacterEntry, modifiedCreature } from "../Types";
 import { CheckAbility } from "./ActivesFunction";
-import { ItemEntry } from "../Types";
 export const getCreatureMovement = (creature: modifiedCreature) => {
   const movement: { [key: number]: number } = {
     5: -10,

@@ -9,7 +9,6 @@ import AbilityFooter from "./AbilityFooter";
 import CreatureFooter from "./CreatureFooter";
 import EquipmentFooter from "./EquipmentFooter";
 import { GeneralItem } from "../Types";
-import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 
 import {
   faBolt,
