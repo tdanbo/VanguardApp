@@ -341,6 +341,7 @@ function InventoryEntry({
       };
       inventory.push(itemWithId);
     }
+    SetFlexibleEquip(character);
     update_session(session, character, isCreature, websocket);
     if (setInventoryState) {
       setInventoryState(1);
@@ -493,6 +494,49 @@ function InventoryEntry({
     return value.trim();
   }
 
+  interface StyledTextProps {
+    text: string;
+    style: React.CSSProperties;
+  }
+
+  const specialStyle = {
+    color: Constants.WIDGET_SECONDARY_FONT,
+  };
+
+  const StyledText: React.FC<StyledTextProps> = ({ text, style }) => {
+    const words = text.split(" ");
+    const specialWords = [
+      "1d4",
+      "1d6",
+      "1d8",
+      "corruption",
+      "resolute",
+      "Quick",
+      "Strong",
+      "Resolute",
+      "Cunning",
+      "Discreet",
+      "Persuasive",
+      "Quick",
+      "Vigilant",
+      "Accurate",
+    ];
+    return (
+      <div>
+        {words.map((word, index) => {
+          const key = `${word}-${index}`;
+          const isSpecialWord = specialWords.includes(word);
+          return (
+            <span key={key} style={isSpecialWord ? style : undefined}>
+              {word}
+              {index < words.length - 1 ? " " : ""}
+            </span>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <MasterContainer>
       <Container>
@@ -630,11 +674,11 @@ function InventoryEntry({
               return (
                 <>
                   <RowDivider key={"Divider" + index} />
-                  <div key={index}>{effect}</div>
+                  <StyledText text={effect} style={specialStyle} />
                 </>
               );
             } else {
-              return <div key={index}>{effect}</div>;
+              return <StyledText text={effect} style={specialStyle} />;
             }
           })}
         </EffectContainer>
