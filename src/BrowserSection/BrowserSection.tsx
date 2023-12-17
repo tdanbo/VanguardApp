@@ -9,6 +9,7 @@ import AbilityFooter from "./AbilityFooter";
 import CreatureFooter from "./CreatureFooter";
 import EquipmentFooter from "./EquipmentFooter";
 import { GeneralItem } from "../Types";
+import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 
 import {
   faBolt,
@@ -629,6 +630,7 @@ function BrowserSection({
                 </AddButton>
               </div>
             ))}
+          {/* <div style={{ display: "flex", flexGrow:  }}></div> */}
         </ItemContainer>
       </CombatContainer>
       <FooterLeftContainer>

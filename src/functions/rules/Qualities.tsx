@@ -169,6 +169,11 @@ export const Qualities: {
     description:
       "The weapon is designed in a way so that a skilled user can make it return if an attack misses the target. A passed Accurate test is required, which counts as a free action.",
   },
+  Recall: {
+    name: "Returning",
+    description:
+      "As a free action, the master can recall the weapon, which will return it to its wielder's hand.",
+  },
   "Area Effect (cone)": {
     name: "Area Effect (cone)",
     description:
