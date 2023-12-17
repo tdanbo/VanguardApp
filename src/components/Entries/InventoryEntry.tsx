@@ -34,7 +34,7 @@ const Container = styled.div`
 
 const EffectContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-grow: 1;
   border-radius: ${Constants.BORDER_RADIUS};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -156,6 +156,15 @@ const Divider = styled.div`
   height: 20px;
   margin-left: 2px;
   margin-right: 2px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+`;
+
+const RowDivider = styled.div`
+  display: flex;
+  background-color: ${Constants.BACKGROUND};
+  width: 100%;
+  height: 1px;
   margin-top: 5px;
   margin-bottom: 5px;
 `;
@@ -614,8 +623,21 @@ function InventoryEntry({
           ) // else part for equipped
         }
       </Container>
-      {item.effect !== undefined && item.effect.length > 0 && (
-        <EffectContainer>{item.effect}</EffectContainer>
+      {Array.isArray(item.effect) && item.effect.length > 0 && (
+        <EffectContainer>
+          {item.effect.map((effect, index) => {
+            if (index > 0) {
+              return (
+                <>
+                  <RowDivider key={"Divider" + index} />
+                  <div key={index}>{effect}</div>
+                </>
+              );
+            } else {
+              return <div key={index}>{effect}</div>;
+            }
+          })}
+        </EffectContainer>
       )}
     </MasterContainer>
   );

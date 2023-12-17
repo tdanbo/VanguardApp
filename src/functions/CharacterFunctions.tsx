@@ -197,22 +197,36 @@ export function SetFlexibleEquip(character: CharacterEntry) {
 
   for (const item of character.inventory) {
     if (hasFlexibleEquipped) {
-      if (item.type === "Long Weapon" || item.type === "Heavy Weapon") {
+      if (
+        item.type === "Long Weapon" ||
+        item.type === "Heavy Weapon" ||
+        item.type === "Artifact Long Weapon" ||
+        item.type === "Artifact Heavy Weapon"
+      ) {
         item.equip = "1H";
       }
     } else {
-      if (item.type === "Long Weapon" || item.type === "Heavy Weapon") {
+      if (
+        item.type === "Long Weapon" ||
+        item.type === "Heavy Weapon" ||
+        item.type === "Artifact Long Weapon" ||
+        item.type === "Artifact Heavy Weapon"
+      ) {
         item.equip = "2H";
       }
       if (
         character.equipment.main.type === "Long Weapon" ||
-        character.equipment.main.type === "Heavy Weapon"
+        character.equipment.main.type === "Heavy Weapon" ||
+        character.equipment.main.type === "Artifact Long Weapon" ||
+        character.equipment.main.type === "Artifact Heavy Weapon"
       ) {
         character.equipment.main.equip = "2H";
       }
       if (
         character.equipment.off.type === "Long Weapon" ||
-        character.equipment.off.type === "Heavy Weapon"
+        character.equipment.off.type === "Heavy Weapon" ||
+        character.equipment.off.type === "Artifact Long Weapon" ||
+        character.equipment.off.type === "Artifact Heavy Weapon"
       ) {
         character.equipment.off.equip = "2H";
       }
