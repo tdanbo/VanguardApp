@@ -143,6 +143,7 @@ export interface ItemEntry {
   category: string;
   id: string;
   description: string;
+  effect: string;
   entry: "ItemEntry";
 }
 
@@ -236,6 +237,7 @@ export const EmptyWeapon: ItemEntry = {
   id: "aaaaaaaaaa",
   description: "Fight with your bare hands.",
   entry: "ItemEntry",
+  effect: "",
 };
 
 export const GeneralItem: ItemEntry = {
@@ -250,6 +252,7 @@ export const GeneralItem: ItemEntry = {
   id: "",
   description: "",
   entry: "ItemEntry",
+  effect: "",
 };
 
 export const EmptyArmor: ItemEntry = {
@@ -264,6 +267,7 @@ export const EmptyArmor: ItemEntry = {
   id: "bbbbbbbbbb",
   description: "You feel robbed of your dignity.",
   entry: "ItemEntry",
+  effect: "",
 };
 
 export const EmptySession: SessionEntry = {

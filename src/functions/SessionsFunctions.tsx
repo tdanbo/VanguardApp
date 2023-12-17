@@ -17,11 +17,11 @@ export async function update_session(
   // This function is called when the session is updated, and it will proc the broadcast to all users
   console.log("Updating session / Sending Updates To Clients");
   session.state = uuidv4();
+  websocket.emit("update", session);
   try {
     if (isCreature) {
       await axios.put(`${API}/api/creatures/`, character);
     } else {
-      websocket.emit("update", session);
       await axios.put(`${API}/api/session/`, session);
     }
   } catch (error) {

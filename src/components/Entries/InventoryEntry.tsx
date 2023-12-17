@@ -15,16 +15,33 @@ import { useRoll } from "../../functions/CombatFunctions";
 import { GetMaxSlots } from "../../functions/RulesFunctions";
 import { update_session } from "../../functions/SessionsFunctions";
 import { Qualities } from "../../functions/rules/Qualities";
+import { SetFlexibleEquip } from "../../functions/CharacterFunctions";
+const MasterContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  min-height: 35px;
+  gap: 5px;
+  height: 35px;
   max-height: 35px;
+`;
+
+const EffectContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
   border-radius: ${Constants.BORDER_RADIUS};
   border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  gap: 5px;
+  background-color: #191c1b;
+  font-size: 12px;
+  padding: 5px;
+  color: rgba(255, 255, 255, 0.2);
 `;
 
 const AddButton = styled.div`
@@ -254,6 +271,7 @@ function InventoryEntry({
 
   const HandleEquip = (item: ItemEntry, position: string) => {
     const equipment = character.equipment;
+    const equip_item = cloneDeep(item);
 
     const isItemInMainHand =
       "id" in equipment.main && equipment.main.id === item.id;
@@ -268,19 +286,20 @@ function InventoryEntry({
     }
 
     if (position === "MH") {
-      equipment.main = cloneDeep(item);
+      equipment.main = equip_item;
       if (isItemInOffHand) {
         equipment.off = EmptyWeapon;
       }
     } else if (position === "OH") {
-      equipment.off = cloneDeep(item);
+      equipment.off = equip_item;
     } else if (position === "2H") {
-      equipment.main = cloneDeep(item);
+      equipment.main = equip_item;
       equipment.off = EmptyWeapon;
     } else if (position === "AR") {
-      equipment.armor = cloneDeep(item);
+      equipment.armor = equip_item;
     }
 
+    SetFlexibleEquip(character);
     update_session(session, character, isCreature, websocket);
   };
 
@@ -297,7 +316,7 @@ function InventoryEntry({
     } else if (position === "AR") {
       equipment.armor = EmptyArmor;
     }
-
+    SetFlexibleEquip(character);
     update_session(session, character, isCreature, websocket);
   };
 
@@ -339,6 +358,8 @@ function InventoryEntry({
 
     character.inventory = inventory;
     character.equipment = equipment;
+
+    SetFlexibleEquip(character);
 
     update_session(session, character, isCreature, websocket);
   };
@@ -464,134 +485,139 @@ function InventoryEntry({
   }
 
   return (
-    <Container>
-      <EquipContainer>
-        {item.equip === "1H" && (
-          <>
-            <EquipButtonTop
+    <MasterContainer>
+      <Container>
+        <EquipContainer>
+          {item.equip === "1H" && (
+            <>
+              <EquipButtonTop
+                className={"button-hover"}
+                color={COLOR}
+                key={"MH"}
+                onClick={() => {
+                  equipHandler(item, "MH");
+                }}
+                $isequipped={isItemEquipped(item, "MH")}
+              />
+              <EquipButtonBottom
+                className={"button-hover"}
+                color={COLOR}
+                key={"OH"}
+                onClick={() => {
+                  equipHandler(item, "OH");
+                }}
+                $isequipped={isItemEquipped(item, "OH")}
+              />
+            </>
+          )}
+          {item.equip === "2H" && (
+            <EquipButton
               className={"button-hover"}
               color={COLOR}
-              key={"MH"}
+              key={"2H"}
               onClick={() => {
-                equipHandler(item, "MH");
+                equipHandler(item, "2H");
               }}
-              $isequipped={isItemEquipped(item, "MH")}
+              $isequipped={isItemEquipped(item, "2H")}
             />
-            <EquipButtonBottom
+          )}
+          {item.equip === "AR" && (
+            <EquipButton
               className={"button-hover"}
               color={COLOR}
-              key={"OH"}
+              key={"AR"}
               onClick={() => {
-                equipHandler(item, "OH");
+                equipHandler(item, "AR");
               }}
-              $isequipped={isItemEquipped(item, "OH")}
+              $isequipped={isItemEquipped(item, "AR")}
             />
-          </>
-        )}
-        {item.equip === "2H" && (
-          <EquipButton
-            className={"button-hover"}
-            color={COLOR}
-            key={"2H"}
-            onClick={() => {
-              equipHandler(item, "2H");
-            }}
-            $isequipped={isItemEquipped(item, "2H")}
-          />
-        )}
-        {item.equip === "AR" && (
-          <EquipButton
-            className={"button-hover"}
-            color={COLOR}
-            key={"AR"}
-            onClick={() => {
-              equipHandler(item, "AR");
-            }}
-            $isequipped={isItemEquipped(item, "AR")}
-          />
-        )}
-        {!["1H", "2H", "AR"].includes(item.equip) && (
-          <NoEquipBox key={"unequip"} color={COLOR} />
-        )}
-      </EquipContainer>
-      <NameContainer>
-        <NameBox color={COLOR}>{item.name}</NameBox>
-        <TypeBox>
-          {item.type}
-          {gmMode === true && <CostBox>{ConvertCurrency(item.cost)}</CostBox>}
-        </TypeBox>{" "}
-      </NameContainer>
+          )}
+          {!["1H", "2H", "AR"].includes(item.equip) && (
+            <NoEquipBox key={"unequip"} color={COLOR} />
+          )}
+        </EquipContainer>
+        <NameContainer>
+          <NameBox color={COLOR}>{item.name}</NameBox>
+          <TypeBox>
+            {item.type}
+            {gmMode === true && <CostBox>{ConvertCurrency(item.cost)}</CostBox>}
+          </TypeBox>{" "}
+        </NameContainer>
 
-      <QualityContainer>
-        {item.quality.map((quality, index) => {
-          let description = "";
+        <QualityContainer>
+          {item.quality.map((quality, index) => {
+            let description = "";
 
-          if (quality === "Effect") {
-            description = item.description;
-          } else if (Qualities[quality]) {
-            description = Qualities[quality].description;
-          } else {
-            console.warn("Missing quality:", quality);
-            return null; // Skip rendering this item if the quality is missing
-          }
+            if (quality === "Effect") {
+              description = item.description;
+            } else if (Qualities[quality]) {
+              description = Qualities[quality].description;
+            } else {
+              console.warn("Missing quality:", quality);
+              return null; // Skip rendering this item if the quality is missing
+            }
 
-          const titleContent = `${quality}\n\n${description}`;
+            const titleContent = `${quality}\n\n${description}`;
 
-          return (
-            <QualityBox key={index} title={titleContent}>
-              {quality.slice(0, 2)}
-            </QualityBox>
-          );
-        })}
-      </QualityContainer>
-      {item.quality.length > 0 && (item.roll.roll || item.quantity.bulk) && (
-        <Divider />
+            return (
+              <QualityBox key={index} title={titleContent}>
+                {quality.slice(0, 2)}
+              </QualityBox>
+            );
+          })}
+        </QualityContainer>
+        {item.quality.length > 0 && (item.roll.roll || item.quantity.bulk) && (
+          <Divider />
+        )}
+
+        <RollContainer>
+          {item.roll.roll === true && (
+            <RollBox color={COLOR} onClick={handleRoll}>
+              d{item.roll.dice}
+              {item.roll.mod > 0 ? `+${item.roll.mod}` : null}
+            </RollBox>
+          )}
+          {item.quantity.bulk === true && (
+            <QuantityBox
+              color={COLOR}
+              onClick={handleMinusClick}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                handlePlusClick();
+              }}
+              className="mouse-icon-hover"
+            >
+              {item.quantity.count}x
+            </QuantityBox>
+          )}
+        </RollContainer>
+        {
+          browser ? (
+            <AddButton
+              className={"button-hover"}
+              onClick={() => AddInventorySlot()}
+            >
+              <FontAwesomeIcon
+                icon={faChevronRight}
+                style={{ fontSize: "12px" }}
+              />
+            </AddButton>
+          ) : equipped === "" ? (
+            <AddButton
+              className={"button-hover"}
+              onClick={() => DeleteInventorySlot(id)}
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </AddButton> // else part for equipped
+          ) : (
+            <AddButton></AddButton>
+          ) // else part for equipped
+        }
+      </Container>
+      {item.effect !== undefined && item.effect.length > 0 && (
+        <EffectContainer>{item.effect}</EffectContainer>
       )}
-
-      <RollContainer>
-        {item.roll.roll === true && (
-          <RollBox color={COLOR} onClick={handleRoll}>
-            d{item.roll.dice}
-            {item.roll.mod > 0 ? `+${item.roll.mod}` : null}
-          </RollBox>
-        )}
-        {item.quantity.bulk === true && (
-          <QuantityBox
-            color={COLOR}
-            onClick={handleMinusClick}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              handlePlusClick();
-            }}
-            className="mouse-icon-hover"
-          >
-            {item.quantity.count}x
-          </QuantityBox>
-        )}
-      </RollContainer>
-      {
-        browser ? (
-          <AddButton
-            className={"button-hover"}
-            onClick={() => AddInventorySlot()}
-          >
-            <FontAwesomeIcon
-              icon={faChevronRight}
-              style={{ fontSize: "12px" }}
-            />
-          </AddButton>
-        ) : equipped === "" ? (
-          <AddButton
-            className={"button-hover"}
-            onClick={() => DeleteInventorySlot(id)}
-          >
-            <FontAwesomeIcon icon={faXmark} />
-          </AddButton> // else part for equipped
-        ) : (
-          <AddButton></AddButton>
-        ) // else part for equipped
-      }
-    </Container>
+    </MasterContainer>
   );
 }
 export default InventoryEntry;
