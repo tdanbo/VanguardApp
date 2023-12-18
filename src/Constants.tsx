@@ -8,6 +8,7 @@ export const COMBAT_BACKGROUND = "19, 23, 22";
 export const BACKGROUND = "rgba(19, 23, 22, 1.0)";
 export const WIDGET_PRIMARY_FONT = "rgba(255, 255, 255, 0.85)";
 export const WIDGET_SECONDARY_FONT = "rgba(255, 255, 255, 0.60)";
+export const WIDGET_SECONDARY_HIGHLIGHT = "rgba(255, 255, 255, 0.4)";
 // export const WIDGET_SECONDARY_FONT = "rgba(180, 140, 90, 0.75)";
 // export const WIDGET_SECONDARY_FONT = "rgb(173, 162, 132)";
 
@@ -120,4 +121,37 @@ export const RACE_FILTER = [
   "Winged Creature",
   "Abomination",
   "Undead",
+];
+
+export const SPECIAL_WORDS = [
+  "+d4",
+  "d4",
+  "+d6",
+  "d6",
+  "+d8",
+  "d8",
+  "corruption",
+  "resolute",
+  "Quick",
+  "Strong",
+  "Resolute",
+  "Cunning",
+  "Discreet",
+  "Persuasive",
+  "Quick",
+  "Vigilant",
+  "Accurate",
+  "Armor",
+  "active",
+  "damage",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
 ];

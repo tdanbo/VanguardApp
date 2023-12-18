@@ -16,6 +16,7 @@ import { ShieldFighter } from "./rules/ShieldFighter";
 import { SteelThrow } from "./rules/SteelThrow";
 import { TwinAttack } from "./rules/TwinAttack";
 import { TwohandedForce } from "./rules/TwohandedForce";
+import { ItemRules } from "./rules/ItemRules";
 
 export const UpdateActives = (character: CharacterEntry) => {
   const characterClone = cloneDeep(character);
@@ -45,6 +46,7 @@ export const UpdateActives = (character: CharacterEntry) => {
 
   UpdateQualities(characterClone);
   Overburden(characterClone);
+  ItemRules(characterClone, characterClone.actives);
   NaturalWeapon(characterClone, characterClone.actives);
   NaturalWarrior(characterClone, characterClone.actives);
   Berserker(characterClone, characterClone.actives);
