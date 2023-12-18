@@ -78,10 +78,10 @@ export const TYPE_COLORS: Record<ColorType, string> = {
 };
 
 export const CATEGORY_FILTER = [
-  "artifact",
   "weapon",
   "ranged",
   "ammunition",
+  "artifact",
   "armor",
   "elixirs",
   "tool",
