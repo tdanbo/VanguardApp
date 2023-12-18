@@ -68,9 +68,16 @@ const EquipContainer = styled.div`
 const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  flex: 1;
   margin-left: 5px;
+`;
+
+const Description = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-size: 10px;
+  margin-top: 5px;
+  color: ${(props) => props.color};
+  opacity: 0.5;
 `;
 
 const NameBox = styled.div`
@@ -500,41 +507,44 @@ function InventoryEntry({
   }
 
   const specialStyle = {
-    color: Constants.WIDGET_SECONDARY_FONT,
+    color: Constants.WIDGET_SECONDARY_HIGHLIGHT,
   };
 
   const StyledText: React.FC<StyledTextProps> = ({ text, style }) => {
-    const words = text.split(" ");
-    const specialWords = [
-      "1d4",
-      "1d6",
-      "1d8",
-      "corruption",
-      "resolute",
-      "Quick",
-      "Strong",
-      "Resolute",
-      "Cunning",
-      "Discreet",
-      "Persuasive",
-      "Quick",
-      "Vigilant",
-      "Accurate",
-    ];
-    return (
-      <div>
-        {words.map((word, index) => {
-          const key = `${word}-${index}`;
-          const isSpecialWord = specialWords.includes(word);
-          return (
-            <span key={key} style={isSpecialWord ? style : undefined}>
-              {word}
-              {index < words.length - 1 ? " " : ""}
-            </span>
-          );
-        })}
-      </div>
+    const escapeRegExp = (word: string) => word.replace(/[+]/g, "\\+");
+
+    const regex = new RegExp(
+      `\\b(${Constants.SPECIAL_WORDS.map(escapeRegExp).join("|")})\\b`,
+      "i",
     );
+
+    const getStyledWords = (
+      fragment: string,
+      _idx: number,
+    ): JSX.Element[] | string => {
+      const matches = fragment.match(regex);
+
+      if (!matches) {
+        return fragment;
+      }
+
+      return fragment.split(regex).map((part, partIndex) => {
+        const key = `${part}-${partIndex}`;
+        const isSpecialWord = Constants.SPECIAL_WORDS.includes(part);
+        return (
+          <span key={key} style={isSpecialWord ? style : undefined}>
+            {part}
+          </span>
+        );
+      });
+    };
+
+    const words = text.split(/(\s+)/).map((word, index) => {
+      const key = `${word}-${index}`;
+      return <span key={key}>{getStyledWords(word, index)}</span>;
+    });
+
+    return <div>{words}</div>;
   };
 
   return (
@@ -596,7 +606,9 @@ function InventoryEntry({
             {gmMode === true && <CostBox>{ConvertCurrency(item.cost)}</CostBox>}
           </TypeBox>{" "}
         </NameContainer>
-
+        {item.description !== "" && (
+          <Description color={COLOR}> — {item.description}</Description>
+        )}
         <QualityContainer>
           {item.quality.map((quality, index) => {
             let description = "";
@@ -622,7 +634,6 @@ function InventoryEntry({
         {item.quality.length > 0 && (item.roll.roll || item.quantity.bulk) && (
           <Divider />
         )}
-
         <RollContainer>
           {item.roll.roll === true && (
             <RollBox color={COLOR} onClick={handleRoll}>
