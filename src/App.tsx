@@ -29,6 +29,15 @@ const Row = styled.div`
 const Column = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 2;
+  background-color: ${Constants.BACKGROUND};
+  height: 100%;
+  gap: ${Constants.WIDGET_GAB};
+`;
+
+const SideColumn = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
   background-color: ${Constants.BACKGROUND};
   height: 100%;
@@ -90,7 +99,7 @@ function App() {
           setIsGm={setIsGm}
         />
       ) : null}
-      <Column>
+      <SideColumn>
         {browserState === 0 ? (
           <BrowserSection
             isGm={isGm}
@@ -112,7 +121,7 @@ function App() {
             setCategorySelect={setCategorySelect}
           />
         ) : null}
-      </Column>
+      </SideColumn>
       <Column>
         {gmMode ? (
           <GameMaster
@@ -151,14 +160,14 @@ function App() {
           />
         )}
       </Column>
-      <Column>
+      <SideColumn>
         <CombatSection
           scrollRef={scrollableRef}
           session={session}
           character={character}
           websocket={websocket}
         />
-      </Column>
+      </SideColumn>
     </Row>
   );
 }

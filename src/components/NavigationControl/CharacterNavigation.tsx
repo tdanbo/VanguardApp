@@ -6,7 +6,6 @@ import { SessionEntry } from "../../Types";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-
   gap: 10px;
 `;
 
@@ -16,8 +15,6 @@ interface NavigatorProps {
 
 const Navigator = styled.button<NavigatorProps>`
   cursor: pointer;
-  display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
   border: 1px solid ${Constants.WIDGET_BACKGROUND_EMPTY};
@@ -36,8 +33,6 @@ const Navigator = styled.button<NavigatorProps>`
     color: ${Constants.WIDGET_PRIMARY_FONT};
     border: 1px solid ${Constants.WIDGET_BORDER};
   }
-  width: 50px;
-  height: 35px;
 `;
 
 interface NavigationProps {

@@ -273,17 +273,9 @@ function CreateCharacterComponent({
     creature_id = uuidv4();
   }
 
-  let npc_state = true;
-  if (source === "characterSelect") {
-    npc_state = false;
-  } else {
-    npc_state = true;
-  }
-
   const NewCharacterEntry: CharacterEntry = {
     name: name,
     id: creature_id,
-    npc: npc_state,
     portrait: characterPortrait,
     details: {
       race: race,
@@ -337,7 +329,6 @@ function CreateCharacterComponent({
     },
     rations: { food: 0, water: 0 },
     money: 0,
-    entourage: [],
     entry: "CharacterEntry",
   };
 

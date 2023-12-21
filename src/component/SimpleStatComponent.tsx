@@ -1,15 +1,5 @@
-import { getCharacterMovement } from "../functions/CharacterFunctions";
-
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { CharacterEntry } from "../Types";
-
-const Container = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  gap: 10px;
-`;
 
 const BoxContainer = styled.div`
   display: flex;
@@ -68,29 +58,25 @@ const ActiveValue = styled.div`
 `;
 
 interface SecondaryStatsControlsProps {
-  character: CharacterEntry;
+  value: number;
+  title: string;
+  stat: string;
 }
 
-function SecondaryStatsControls({ character }: SecondaryStatsControlsProps) {
-  const movement = getCharacterMovement(character);
+function SimpleStatComponent({
+  value,
+  title,
+  stat,
+}: SecondaryStatsControlsProps) {
   return (
-    <Container>
-      <BoxContainer>
-        <Value>
-          {Math.ceil(character.stats.strong.value / 2)}{" "}
-          <ActiveValue>PAIN</ActiveValue>
-        </Value>
-        <ValueName>Threshold</ValueName>
-      </BoxContainer>
-      <BoxContainer>
-        <Value>
-          {movement / 5}
-          <ActiveValue>SQUARES</ActiveValue>
-        </Value>
-        <ValueName>Movement</ValueName>
-      </BoxContainer>
-    </Container>
+    <BoxContainer>
+      <Value>
+        {value}
+        <ActiveValue>{title}</ActiveValue>
+      </Value>
+      <ValueName>{stat}</ValueName>
+    </BoxContainer>
   );
 }
 
-export default SecondaryStatsControls;
+export default SimpleStatComponent;

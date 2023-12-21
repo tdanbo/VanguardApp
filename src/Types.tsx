@@ -78,28 +78,25 @@ interface EquipmentEntry {
   armor: ItemEntry;
 }
 
-export interface RosterEntry {
-  name: string;
-  id: string;
-  resistance: string;
-}
+type health = {
+  damage: number;
+  corruption: number;
+  healing: number;
+};
 
 export interface CharacterEntry {
   name: string;
   id: string;
-  npc: boolean;
   portrait: string;
   details: CharacterDetails;
-  damage: number;
+  health: health;
   stats: Stats;
-  corruption: Corruption;
   actives: Actives;
   abilities: AbilityEntry[];
   inventory: ItemEntry[];
   equipment: EquipmentEntry;
   rations: Rations;
   money: number;
-  entourage: RosterEntry[];
   entry: "CharacterEntry";
 }
 
@@ -287,7 +284,7 @@ export const EmptySession: SessionEntry = {
 };
 
 export const EmptyCharacter: CharacterEntry = {
-  name: "",
+  name: "Default Character",
   id: "1b1b1b1b1b",
   portrait: "Ambrian",
   details: {
@@ -296,7 +293,11 @@ export const EmptyCharacter: CharacterEntry = {
     movement: 0,
     modifier: 0,
   },
-  damage: 0,
+  health: {
+    damage: 0,
+    corruption: 0,
+    healing: 0,
+  },
   stats: {
     cunning: { value: 0, mod: 0 },
     discreet: { value: 0, mod: 0 },
@@ -329,10 +330,6 @@ export const EmptyCharacter: CharacterEntry = {
     casting: { stat: "resolute", value: 0 },
     sneaking: { stat: "discreet", value: 0 },
   },
-  corruption: {
-    permanent: 0,
-    temporary: 0,
-  },
   money: 0,
   abilities: [],
   inventory: [],
@@ -342,7 +339,5 @@ export const EmptyCharacter: CharacterEntry = {
     armor: EmptyArmor,
   },
   rations: { food: 0, water: 0 },
-  npc: false,
-  entourage: [],
   entry: "CharacterEntry",
 };

@@ -1,57 +1,38 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { CharacterPortraits } from "../Images";
 import { CharacterEntry, SessionEntry } from "../Types";
-import { GetMaxToughness } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 
-interface PortraitProps {
-  src: string;
+const Container = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+interface DivProps {
+  height: string;
 }
 
-const Container = styled.div<PortraitProps>`
+const Row = styled.div<DivProps>`
   display: flex;
-  flex: 1;
-  background-image: url(${(props) => props.src});
-  background-size: cover;
-  background-position: center 40%;
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-`;
-
-// background-image: url("/dist/assets/portrait1.jpeg");
-
-const InnerContainer = styled.div`
-  display: flex;
-  flex: 2;
+  flex-grow: 1;
+  flex-basis: 0;
   flex-direction: row;
-  justiy-content: end;
-  align-items: end;
-  gap: 10px;
-  margin: 10px;
-`;
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-  max-height: 50px;
-  min-height: 50px;
-  background-color: ${Constants.BACKGROUND};
+  border 1px solid ${Constants.WIDGET_BORDER};
   border-radius: ${Constants.BORDER_RADIUS};
+  max-height: ${(props) => props.height};
+  height: ${(props) => props.height};
 `;
 
 const ValueBoxRight = styled.div`
-  user-select: none;
   display: flex;
-  align-items: center;
   flex-direction: row;
   flex-grow: 1;
+  user-select: none;
+  align-items: center;
   justify-content: center;
   background-color: ${Constants.WIDGET_BACKGROUND};
-  max-width: 60px;
-  min-width: 60px;
   color: ${Constants.WIDGET_PRIMARY_FONT};
   border: 1px solid ${Constants.WIDGET_BORDER};
   cursor: pointer;
@@ -59,81 +40,8 @@ const ValueBoxRight = styled.div`
   border-bottom-left-radius: 0;
   border-top-right-radius: ${Constants.BORDER_RADIUS};
   border-bottom-right-radius: ${Constants.BORDER_RADIUS};
-
-  h1,
-  h2 {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-
-  h1 {
-    font-weight: bold;
-    font-size: 25px;
-  }
-
-  h2 {
-    display: none;
-    font-size: 18px;
-  }
-
-  &:hover h1 {
-    display: none;
-  }
-
-  &:hover h2 {
-    display: flex;
-  }
-`;
-
-const ValueBoxLeft = styled.div`
-  user-select: none;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  flex-grow: 1;
-  justify-content: center;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  max-width: 60px;
-  min-width: 60px;
-  color: ${Constants.WIDGET_PRIMARY_FONT};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  cursor: pointer;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-top-left-radius: ${Constants.BORDER_RADIUS};
-  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
-
-  h1,
-  h2 {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-
-  h1 {
-    font-weight: bold;
-    font-size: 25px;
-  }
-
-  h2 {
-    display: none;
-    font-size: 18px;
-  }
-
-  &:hover h1 {
-    display: none;
-  }
-
-  &:hover h2 {
-    display: flex;
-  }
+  font-weight: bold;
+  font-size: 20px;
 `;
 
 interface BgColor {
@@ -150,21 +58,10 @@ const LeftTickBar = styled.div<BgColor>`
   cursor: pointer;
 `;
 
-const RightTickBar = styled.div<BgColor>`
-  display: flex;
-  flex-grow: 1;
-  background-color: ${(props) => props.$bgcolor};
-  border-right: 1px solid ${Constants.WIDGET_BORDER};
-  border-top: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
-  cursor: pointer;
-`;
-
 const Divider = styled.div`
   display: flex;
   background-color: rgba(255, 255, 255, 0.5);
   width: 2px;
-  height: 16px;
   margin: 4px;
 `;
 
@@ -177,33 +74,12 @@ interface HealthBoxProps {
   isCreature: boolean;
 }
 
-function HealthBox({
+function CorruptionStatComponent({
   character,
   session,
   websocket,
   isCreature,
 }: HealthBoxProps) {
-  const handleAddToughness = () => {
-    if (character.damage > 0) {
-      character.damage -= 1;
-    }
-    update_session(session, character, isCreature, websocket);
-  };
-
-  const handleSubToughness = () => {
-    const maxToughness =
-      character.stats.strong.value < 10 ? 10 : character.stats.strong.value;
-
-    const value_step = 1;
-
-    if (character.damage === maxToughness) {
-      console.log("Max damage reached");
-    } else {
-      character.damage += value_step;
-    }
-    update_session(session, character, isCreature, websocket);
-  };
-
   const handleAddCorruption = () => {
     const character_corruption = character.corruption;
     const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
@@ -269,16 +145,11 @@ function HealthBox({
   const temporary_corruption = character.corruption.temporary;
   const clean_corruption = corruptionThreshold - temporary_corruption;
 
-  const maxToughness = GetMaxToughness(character);
-
-  const damage_toughness = character.damage;
-  const remaining_toughness = maxToughness - character.damage;
-
   return (
-    <Container src={CharacterPortraits[character.portrait]}>
-      <InnerContainer>
-        <Row>
-          {[...Array(temporary_corruption)].map((_, index) => (
+    <Row height={"100%"}>
+      <Container>
+        <Row height={"70%"}>
+          {[...Array(remaining_corruption)].map((_, index) => (
             <LeftTickBar
               onClick={handleTempSubCorruption}
               onContextMenu={(e) => {
@@ -286,9 +157,22 @@ function HealthBox({
                 handleTempAddCorruption();
               }}
               key={index}
-              $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
+              $bgcolor={Constants.TYPE_COLORS["permanent_corruption"]}
             />
           ))}
+          {[...Array(maxCorruptionPermanent - remaining_corruption)].map(
+            (_, index) => (
+              <LeftTickBar
+                onClick={handleTempSubCorruption}
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  handleTempAddCorruption();
+                }}
+                key={index}
+                $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
+              />
+            ),
+          )}
           {[...Array(clean_corruption)].map((_, index) => (
             <LeftTickBar
               onClick={handleTempSubCorruption}
@@ -300,6 +184,19 @@ function HealthBox({
               $bgcolor={Constants.TYPE_COLORS["casting"]}
             />
           ))}
+          {[...Array(temporary_corruption)].map((_, index) => (
+            <LeftTickBar
+              onClick={handleTempSubCorruption}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                handleTempAddCorruption();
+              }}
+              key={index}
+              $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
+            />
+          ))}
+        </Row>
+        <Row height={"30%"}>
           <ValueBoxRight
             onClick={handleAddCorruption}
             onContextMenu={(e) => {
@@ -307,49 +204,12 @@ function HealthBox({
               handleSubCorruption();
             }}
           >
-            <h1>{remaining_corruption}</h1>
-            <h2>
-              {remaining_corruption}
-              <Divider></Divider>
-              {maxCorruptionPermanent}
-            </h2>
+            {clean_corruption}
           </ValueBoxRight>
         </Row>
-        <Row
-          onClick={handleSubToughness}
-          onContextMenu={(e) => {
-            e.preventDefault();
-            handleAddToughness();
-          }}
-        >
-          <ValueBoxLeft>
-            <h1>{remaining_toughness}</h1>
-            <h2>
-              {remaining_toughness}
-              <Divider></Divider>
-              {maxToughness}
-            </h2>
-          </ValueBoxLeft>
-          {Array.from({ length: remaining_toughness }).map((_, index) => {
-            return (
-              <RightTickBar
-                key={index}
-                $bgcolor={Constants.TYPE_COLORS["health"]}
-              />
-            );
-          })}
-          {Array.from({ length: damage_toughness }).map((_, index) => {
-            return (
-              <RightTickBar
-                key={index}
-                $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
-              />
-            );
-          })}
-        </Row>
-      </InnerContainer>
-    </Container>
+      </Container>
+    </Row>
   );
 }
 
-export default HealthBox;
+export default CorruptionStatComponent;

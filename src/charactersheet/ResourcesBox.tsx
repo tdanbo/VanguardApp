@@ -34,8 +34,6 @@ const BronzeColor = "rgba(140, 110, 90, 0.7)";
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
-
-  height: 35px;
   gap: 20px;
   justify-content: right;
 `;
