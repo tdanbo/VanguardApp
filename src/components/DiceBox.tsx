@@ -23,8 +23,6 @@ const DiceContainer = styled.button`
   background-color: ${Constants.WIDGET_BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
   color: ${Constants.WIDGET_PRIMARY_FONT};
-  height: 35px;
-  max-width: 49px;
 `;
 
 function DiceBox({

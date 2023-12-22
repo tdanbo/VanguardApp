@@ -33,18 +33,17 @@ const Column = styled.div`
   background-color: ${Constants.BACKGROUND};
   height: 100%;
   gap: 25px;
-  padding: 25px;
+  padding: 25px 100px 25px 100px;
   box-sizing: border-box;
 `;
 
 const SideColumn = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
   background-color: ${Constants.BACKGROUND};
   height: 100%;
   gap: 25px;
-  padding: 25px;
+  padding: 25px 25px 25px 25px;
   box-sizing: border-box;
 `;
 

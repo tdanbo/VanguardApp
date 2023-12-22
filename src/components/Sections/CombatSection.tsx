@@ -4,6 +4,43 @@ import styled from "styled-components";
 import { CharacterEntry, CombatEntry, SessionEntry } from "../../Types";
 import DiceSection from "../../components/Sections/DiceSection";
 import CombatEntryItem from "../CombatEntryItem";
+import * as Constants from "../../Constants";
+type DivProps = {
+  width: string;
+};
+interface ContainerProps {
+  height: string;
+}
+
+const Container = styled.div<ContainerProps>`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  gap: ${Constants.WIDGET_GAB};
+  height: ${(props) => props.height};
+`;
+
+const Row = styled.div<DivProps>`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: ${Constants.WIDGET_GAB};
+  max-width: ${(props) => props.width};
+`;
+
+const Column = styled.div<DivProps>`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: ${Constants.WIDGET_GAB};
+  max-width: ${(props) => props.width};
+  justify-content: flex-start;
+  overflow: scroll;
+  scrollbar-width: none !important;
+`;
+
 const CombatContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -12,16 +49,6 @@ const CombatContainer = styled.div`
   height: 100%;
   overflow: scroll;
   scrollbar-width: none !important;
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-start;
-  gap: 10px;
-  width: 100%;
 `;
 
 const FooterRightContainer = styled.div`
@@ -142,8 +169,8 @@ function CombatSection({
 
   return (
     <>
-      <CombatContainer ref={scrollRef}>
-        <Container>
+      <Container height={"95%"}>
+        <Column ref={scrollRef} width={"100%"}>
           {session.combatlog.map((item, index) => (
             <CombatEntryItem
               key={index}
@@ -152,15 +179,17 @@ function CombatSection({
               session={session}
             />
           ))}
-        </Container>
-      </CombatContainer>
-      <FooterRightContainer>
-        <DiceSection
-          character={character}
-          session={session}
-          websocket={websocket}
-        />
-      </FooterRightContainer>
+        </Column>
+      </Container>
+      <Container height={"5%"}>
+        <Row width={"100%"}>
+          <DiceSection
+            character={character}
+            session={session}
+            websocket={websocket}
+          />
+        </Row>
+      </Container>
     </>
   );
 }
