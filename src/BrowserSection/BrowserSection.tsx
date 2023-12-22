@@ -37,52 +37,41 @@ import CreatureEntryItem from "../components/Entries/CreatureEntryItem";
 import InventoryEntry from "../components/Entries/InventoryEntry";
 import { toTitleCase } from "../functions/UtilityFunctions";
 
-const CombatContainer = styled.div`
+type DivProps = {
+  width: string;
+};
+
+interface ContainerProps {
+  height: string;
+}
+
+const Container = styled.div<ContainerProps>`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  gap: ${Constants.WIDGET_GAB};
+  height: ${(props) => props.height};
+`;
+
+const Row = styled.div<ContainerProps>`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: ${Constants.WIDGET_GAB};
+  max-height: ${(props) => props.height};
+  height: ${(props) => props.height};
+`;
+
+const Column = styled.div<DivProps>`
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 20px;
-  gap: 20px;
-  height: 100%;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: ${Constants.WIDGET_GAB};
+  max-width: ${(props) => props.width};
   overflow: scroll;
   scrollbar-width: none !important;
-  border-radius: ${Constants.BORDER_RADIUS};
-`;
-
-const HeaderContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  min-height: 50px;
-  margin-left: 20px;
-  margin-top: 5px;
-  gap: 20px;
-`;
-
-const FooterLeftContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end; // Align children to the right
-  min-height: 50px;
-  margin-left: 20px;
-  margin-bottom: 5px;
-  gap: 20px;
-`;
-
-// const Container = styled.div`
-//   display: ${(props) => (props.hidden ? "none" : "flex")};
-//   flex-direction: col;
-//   flex-grow: 1;
-//   gap: 10px;
-//   align-items: center;
-// `;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: col;
-  flex-grow: 1;
-  gap: 10px;
-  align-items: center;
 `;
 
 const Input = styled.input`
@@ -93,7 +82,6 @@ const Input = styled.input`
   color: ${Constants.WIDGET_SECONDARY_FONT};
   font-weight: bold;
   text-align: center;
-  height: 35px;
 `;
 
 interface ButtonProps {
@@ -113,44 +101,10 @@ const Button = styled.button<ButtonProps>`
       : Constants.WIDGET_PRIMARY_FONT};
   cursor: pointer;
   font-size: 16px;
-  width: 50px;
-  max-width: 50px;
-  height: 40px;
+  max-width: 40px;
   justify-content: center;
   align-items: center;
   opacity: ${(props) => (props.$isactive === "true" ? 1 : 0.5)};
-`;
-
-const AddButton = styled.button`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  max-height: 35px;
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  padding-right: 50px;
-`;
-
-const WebsocketStatus = styled.button`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  max-height: 35px;
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  width: 40px;
-  max-width: 40px;
-  height: 40px;
 `;
 
 const ItemContainer = styled.div`
@@ -441,198 +395,146 @@ function BrowserSection({
 
   return (
     <>
-      <HeaderContainer>
-        <Container>
-          {categorySelect === "creatures" ? (
-            isModalOpen ? (
-              <OverlayStyles>
-                <CreateCharacterComponent
-                  setCharacterName={setCharacterName}
-                  characterName={""}
-                  characterRace={"Ambrian"}
-                  closeModal={handleClose}
-                  session={session}
-                  websocket={websocket}
-                  source={""}
-                  isCreature={false}
-                  setAddAdjust={setAddAdjust}
-                />
-              </OverlayStyles>
-            ) : (
-              <Button $isactive={"false"} onClick={handleOpen}>
-                <FontAwesomeIcon icon={faPlus} />
-              </Button>
-            )
-          ) : (
-            <Button $isactive={"false"}>
-              <FontAwesomeIcon icon={faSearch} />
-            </Button>
-          )}
-          <Input
-            className="flex-grow"
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <Button
-            $isactive={(categorySelect === "abilities").toString()}
-            onClick={() => HandleCategoryChange("abilities")}
-          >
-            <FontAwesomeIcon icon={faBolt} />
-          </Button>
-          <Button
-            $isactive={(categorySelect === "equipment").toString()}
-            onClick={() => HandleCategoryChange("equipment")}
-          >
-            <FontAwesomeIcon icon={faShield} />
-          </Button>
-          {isGm ? (
-            <Button
-              $isactive={(categorySelect === "creatures").toString()}
-              onClick={() => HandleCategoryChange("creatures")}
-            >
-              <FontAwesomeIcon icon={faGhost} />
-            </Button>
-          ) : null}
-          <Button
-            $isactive={(categorySelect === "characters").toString()}
-            onClick={() => HandleCategoryChange("characters")}
-          >
-            <FontAwesomeIcon icon={faUsers} />
-          </Button>
-        </Container>
-      </HeaderContainer>
-      <CombatContainer>
-        <ItemContainer>
-          {sortedItemList.length === 0 ? (
-            categorySelect === "equipment" ? (
-              <InventoryEntry
-                session={session}
-                character={character}
-                websocket={websocket}
-                key={"EmptyItem"}
-                browser={true}
-                index={1}
-                item={SearchItem}
-                equipped={""}
-                id={""}
-                setInventoryState={setInventoryState}
-                gmMode={gmMode}
-                isCreature={isCreature}
-              />
-            ) : null
-          ) : null}
-
-          {sortedItemList &&
-            sortedItemList.map((entry, index) => {
-              if (entry.entry === "ItemEntry") {
-                return (
-                  <InventoryEntry
-                    session={session}
-                    character={character}
-                    websocket={websocket}
-                    key={index}
-                    browser={true}
-                    index={index}
-                    item={entry}
-                    equipped={""}
-                    id={""}
-                    setInventoryState={setInventoryState}
-                    gmMode={gmMode}
-                    isCreature={isCreature}
-                  />
-                );
-              } else if (entry.entry === "AbilityEntry") {
-                return (
-                  <AbilityEntryItem
-                    key={index}
-                    ability={entry}
-                    browser={true}
-                    setInventoryState={setInventoryState}
-                    character={character}
-                    session={session}
-                    websocket={websocket}
-                    isCreature={isCreature}
-                  />
-                );
-              } else if (
-                entry.entry === "CharacterEntry" &&
-                categorySelect === "creatures"
-              ) {
-                return (
-                  <CreatureEntryItem
-                    key={index}
-                    session={session}
-                    character={character}
-                    creature={entry}
-                    browser={true}
-                    encounter={encounter}
-                    setEncounter={setEncounter}
-                    gmMode={gmMode}
+      <Container height={"10%"}>
+        <Column width="100%">
+          <Row height={"70%"}> </Row>
+          <Row height={"30%"}>
+            {categorySelect === "creatures" ? (
+              isModalOpen ? (
+                <OverlayStyles>
+                  <CreateCharacterComponent
                     setCharacterName={setCharacterName}
-                    setIsCreature={setIsCreature}
-                    websocket={websocket}
-                    setGmMode={setGmMode}
-                    setDeleteAdjust={setDeleteAdjust}
-                  />
-                );
-              } else if (
-                entry.entry === "CharacterEntry" &&
-                categorySelect === "characters"
-              ) {
-                return (
-                  <CharacterBox
-                    key={index}
-                    character={entry}
-                    setCharacterName={setCharacterName}
+                    characterName={""}
+                    characterRace={"Ambrian"}
+                    closeModal={handleClose}
                     session={session}
                     websocket={websocket}
-                    setIsCreature={setIsCreature}
-                    isCreature={isCreature}
+                    source={""}
+                    isCreature={false}
+                    setAddAdjust={setAddAdjust}
                   />
-                );
-              }
-              return null; // Add a default case if needed
-            })}
-          {categorySelect === "characters" &&
-            (isModalOpen ? (
-              <OverlayStyles>
-                <CreateCharacterComponent
-                  setCharacterName={setCharacterName}
-                  characterName={""}
-                  characterRace={"Ambrian"}
-                  closeModal={handleClose}
-                  session={session}
-                  websocket={websocket}
-                  source={"characterSelect"}
-                  isCreature={isCreature}
-                  setAddAdjust={setAddAdjust}
-                />
-              </OverlayStyles>
-            ) : (
-              <div style={{ display: "flex", gap: "5px" }}>
-                <WebsocketStatus>
-                  {isConnected ? (
-                    <FontAwesomeIcon
-                      icon={faWifi}
-                      color={Constants.BRIGHT_GREEN}
-                      title={"Connected"}
-                    />
-                  ) : (
-                    <FontAwesomeIcon
-                      icon={faWifi}
-                      color={Constants.BRIGHT_RED}
-                      title={"Disconnected"}
-                    />
-                  )}
-                </WebsocketStatus>
-                <AddButton onClick={handleOpen}>
+                </OverlayStyles>
+              ) : (
+                <Button $isactive={"false"} onClick={handleOpen}>
                   <FontAwesomeIcon icon={faPlus} />
-                </AddButton>
-              </div>
-            ))}
-          {/* <div style={{ display: "flex", flexGrow:  }}></div> */}
-        </ItemContainer>
-      </CombatContainer>
-      <FooterLeftContainer>
+                </Button>
+              )
+            ) : (
+              <Button $isactive={"false"}>
+                <FontAwesomeIcon icon={faSearch} />
+              </Button>
+            )}
+            <Input
+              className="flex-grow"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <Button
+              $isactive={(categorySelect === "abilities").toString()}
+              onClick={() => HandleCategoryChange("abilities")}
+            >
+              <FontAwesomeIcon icon={faBolt} />
+            </Button>
+            <Button
+              $isactive={(categorySelect === "equipment").toString()}
+              onClick={() => HandleCategoryChange("equipment")}
+            >
+              <FontAwesomeIcon icon={faShield} />
+            </Button>
+            {isGm ? (
+              <Button
+                $isactive={(categorySelect === "creatures").toString()}
+                onClick={() => HandleCategoryChange("creatures")}
+              >
+                <FontAwesomeIcon icon={faGhost} />
+              </Button>
+            ) : null}
+          </Row>
+        </Column>
+      </Container>
+      <Container height={"60%"}>
+        <Column width="100%">
+          <ItemContainer>
+            {sortedItemList.length === 0 ? (
+              categorySelect === "equipment" ? (
+                <InventoryEntry
+                  session={session}
+                  character={character}
+                  websocket={websocket}
+                  key={"EmptyItem"}
+                  browser={true}
+                  index={1}
+                  item={SearchItem}
+                  equipped={""}
+                  id={""}
+                  setInventoryState={setInventoryState}
+                  gmMode={gmMode}
+                  isCreature={isCreature}
+                />
+              ) : null
+            ) : null}
+
+            {sortedItemList &&
+              sortedItemList.map((entry, index) => {
+                if (entry.entry === "ItemEntry") {
+                  return (
+                    <InventoryEntry
+                      session={session}
+                      character={character}
+                      websocket={websocket}
+                      key={index}
+                      browser={true}
+                      index={index}
+                      item={entry}
+                      equipped={""}
+                      id={""}
+                      setInventoryState={setInventoryState}
+                      gmMode={gmMode}
+                      isCreature={isCreature}
+                    />
+                  );
+                } else if (entry.entry === "AbilityEntry") {
+                  return (
+                    <AbilityEntryItem
+                      key={index}
+                      ability={entry}
+                      browser={true}
+                      setInventoryState={setInventoryState}
+                      character={character}
+                      session={session}
+                      websocket={websocket}
+                      isCreature={isCreature}
+                    />
+                  );
+                } else if (
+                  entry.entry === "CharacterEntry" &&
+                  categorySelect === "creatures"
+                ) {
+                  return (
+                    <CreatureEntryItem
+                      key={index}
+                      session={session}
+                      character={character}
+                      creature={entry}
+                      browser={true}
+                      encounter={encounter}
+                      setEncounter={setEncounter}
+                      gmMode={gmMode}
+                      setCharacterName={setCharacterName}
+                      setIsCreature={setIsCreature}
+                      websocket={websocket}
+                      setGmMode={setGmMode}
+                      setDeleteAdjust={setDeleteAdjust}
+                    />
+                  );
+                }
+                {
+                  return null; // Add a default case if needed
+                }
+              })}
+          </ItemContainer>
+        </Column>
+      </Container>
+      <Container height={"3%"}>
         {categorySelect === "equipment" ? (
           <EquipmentFooter setTypeFilter={setFilterType} />
         ) : categorySelect === "abilities" ? (
@@ -640,7 +542,7 @@ function BrowserSection({
         ) : categorySelect == "creatures" ? (
           <CreatureFooter setTypeFilter={setFilterType} />
         ) : null}
-      </FooterLeftContainer>
+      </Container>
     </>
   );
 }

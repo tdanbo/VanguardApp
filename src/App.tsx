@@ -13,7 +13,7 @@ import {
   SessionEntry,
 } from "./Types";
 import CombatSection from "./components/Sections/CombatSection";
-
+import PartySection from "./BrowserSection/PartySection";
 import CharacterSheet from "./charactersheet/CharacterSheet";
 import GameMaster from "./gamemaster/GameMaster";
 
@@ -32,7 +32,9 @@ const Column = styled.div`
   flex: 2;
   background-color: ${Constants.BACKGROUND};
   height: 100%;
-  gap: ${Constants.WIDGET_GAB};
+  gap: 25px;
+  padding: 25px;
+  box-sizing: border-box;
 `;
 
 const SideColumn = styled.div`
@@ -41,6 +43,9 @@ const SideColumn = styled.div`
   flex: 1;
   background-color: ${Constants.BACKGROUND};
   height: 100%;
+  gap: 25px;
+  padding: 25px;
+  box-sizing: border-box;
 `;
 
 function App() {
@@ -62,7 +67,7 @@ function App() {
     : session.characters.find((entry) => entry.name === characterName) ||
       EmptyCharacter;
 
-  const [browserState, setBrowserState] = useState(1);
+  const [browserState, setBrowserState] = useState(0);
   const [inventoryState, setInventoryState] = useState(1);
 
   const [creatureEncounter, setCreatureEncounter] = useState<CharacterEntry[]>(
@@ -100,6 +105,14 @@ function App() {
         />
       ) : null}
       <SideColumn>
+        <PartySection
+          session={session}
+          websocket={websocket}
+          setCharacterName={setCharacterName}
+          setIsCreature={setIsCreature}
+          isCreature={isCreature}
+          isConnected={isConnected}
+        />
         {browserState === 0 ? (
           <BrowserSection
             isGm={isGm}

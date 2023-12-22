@@ -37,6 +37,9 @@ export const BRIGHT_GREEN = "#339249";
 export const GREY = "#8f8e89";
 export const DARK = "#262223";
 export const NIGHT = "#336980";
+export const CREAM = "#e3dcca";
+export const DARK_CREAM = "#ccc6b6";
+
 export const TYPE_COLORS: Record<ColorType, string> = {
   health: BRIGHT_RED,
   attack: BRIGHT_RED,
@@ -79,6 +82,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   resting: NIGHT,
   container: BLUE_VAR,
   permanent_corruption: DESAT_PURPLE,
+  temporary_corruption: PURPLE,
 };
 
 export const CATEGORY_FILTER = [

@@ -30,23 +30,40 @@ const Row = styled.div<DivProps>`
   height: ${(props) => props.height};
 `;
 
-const ValueBoxRight = styled.div`
+const Modifier = styled.button`
   display: flex;
-  flex-direction: row;
   flex-grow: 1;
-  user-select: none;
   align-items: center;
   justify-content: center;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  color: ${Constants.WIDGET_PRIMARY_FONT};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  cursor: pointer;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: ${Constants.BORDER_RADIUS};
-  border-bottom-right-radius: ${Constants.BORDER_RADIUS};
+  font-size: 1rem;
   font-weight: bold;
-  font-size: 20px;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  width: 50%;
+  h1,
+  h2 {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  h1 {
+    font-weight: bold;
+    font-size: 20px;
+  }
+  h2 {
+    display: none;
+    font-size: 20px;
+  }
+  &:hover h1 {
+    display: none;
+  }
+  &:hover h2 {
+    display: flex;
+  }
 `;
 
 interface BgColor {
@@ -79,16 +96,56 @@ const Divider = styled.div`
   display: flex;
   background-color: rgba(255, 255, 255, 0.5);
   width: 2px;
+  height: 16px;
   margin: 4px;
 `;
 
+const Plus = styled.button`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  border-top-right-radius: ${Constants.BORDER_RADIUS};
+  border-bottom-right-radius: ${Constants.BORDER_RADIUS};
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-right: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  border-left: 0px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  max-width: 30px;
+`;
+
+const Minus = styled.button`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  border-top-left-radius: ${Constants.BORDER_RADIUS};
+  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-right: 0px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  border-left: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  max-width: 30px;
+`;
+
 import { Socket } from "socket.io-client";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 interface HealthBoxProps {
   character: CharacterEntry;
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
+  browser: boolean;
 }
 
 function CorruptionStatComponent({
@@ -96,6 +153,7 @@ function CorruptionStatComponent({
   session,
   websocket,
   isCreature,
+  browser,
 }: HealthBoxProps) {
   const handleAddCorruption = () => {
     const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
@@ -159,14 +217,14 @@ function CorruptionStatComponent({
 
   return (
     <Row height={"100%"}>
-      <Container width={"75%"}>
-        <Row height={"70%"}>
+      <Container width={"100%"}>
+        <Row height={"100%"}>
           {[...Array(remaining_corruption)].map((_, index, array) => (
             <TickBar
-              onClick={handleTempSubCorruption}
+              onClick={handleAddCorruption}
               onContextMenu={(e) => {
                 e.preventDefault();
-                handleTempAddCorruption();
+                handleSubCorruption();
               }}
               key={index}
               $bgcolor={Constants.TYPE_COLORS["permanent_corruption"]}
@@ -177,10 +235,10 @@ function CorruptionStatComponent({
           {[...Array(maxCorruptionPermanent - remaining_corruption)].map(
             (_, index, array) => (
               <TickBar
-                onClick={handleTempSubCorruption}
+                onClick={handleAddCorruption}
                 onContextMenu={(e) => {
                   e.preventDefault();
-                  handleTempAddCorruption();
+                  handleSubCorruption();
                 }}
                 key={index}
                 $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
@@ -189,41 +247,16 @@ function CorruptionStatComponent({
               />
             ),
           )}
-        </Row>
-        <Row height={"30%"}>
-          <ValueBoxRight
-            onClick={handleAddCorruption}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              handleSubCorruption();
-            }}
-          >
-            {clean_corruption}
-          </ValueBoxRight>
-        </Row>
-      </Container>
-      <Container width={"25%"}>
-        <Row height={"70%"}>
           {[...Array(clean_corruption)].map((_, index, array) => (
             <TickBar
-              onClick={handleTempSubCorruption}
-              onContextMenu={(e) => {
-                e.preventDefault();
-                handleTempAddCorruption();
-              }}
               key={index}
-              $bgcolor={Constants.TYPE_COLORS["casting"]}
+              $bgcolor={Constants.TYPE_COLORS["temporary_corruption"]}
               isFirst={index === 0} // Apply rounded corners on the left for the first item
               isLast={index === array.length - 1}
-            />
+            ></TickBar>
           ))}
           {[...Array(temporary_corruption)].map((_, index, array) => (
             <TickBar
-              onClick={handleTempSubCorruption}
-              onContextMenu={(e) => {
-                e.preventDefault();
-                handleTempAddCorruption();
-              }}
               key={index}
               $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
               isFirst={index === 0} // Apply rounded corners on the left for the first item
@@ -231,17 +264,32 @@ function CorruptionStatComponent({
             />
           ))}
         </Row>
-        <Row height={"30%"}>
-          <ValueBoxRight
-            onClick={handleAddCorruption}
+        {!browser ? (
+          <Row
+            height={"30%"}
+            className="button-hover"
+            onClick={handleTempAddCorruption}
             onContextMenu={(e) => {
               e.preventDefault();
-              handleSubCorruption();
+              handleTempSubCorruption();
             }}
           >
-            {clean_corruption}
-          </ValueBoxRight>
-        </Row>
+            <Minus>
+              <FontAwesomeIcon icon={faMinus} />
+            </Minus>
+            <Modifier>
+              <h1>{remaining_corruption + clean_corruption}</h1>
+              <h2>
+                {remaining_corruption + corruptionThreshold}
+                <Divider></Divider>
+                {remaining_corruption + clean_corruption}
+              </h2>
+            </Modifier>
+            <Plus>
+              <FontAwesomeIcon icon={faPlus} />
+            </Plus>
+          </Row>
+        ) : null}
       </Container>
     </Row>
   );

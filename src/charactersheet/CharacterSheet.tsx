@@ -19,20 +19,6 @@ import InventoryNavigation from "../components/NavigationControl/InventoryNaviga
 
 import * as Constants from "../Constants";
 
-const DividerRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-`;
-
-const RowScroll = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: 10px;
-  overflow: scroll;
-`;
-
 interface ContainerProps {
   height: string;
 }
@@ -70,20 +56,20 @@ const Column = styled.div<DivProps>`
 `;
 
 const DividerVertical = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  gap: 10px;
   height 100%;
   width: 1px;
+  background: linear-gradient(to bottom, ${Constants.WIDGET_SECONDARY_FONT_INACTIVE} 0%, transparent 100%);
 `;
 
 const DividerHorizontal = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  height 1px;
-  width: 100%;
+width: 100%;
+min-height 2px;
+height: 2px;
+background: linear-gradient(to right, 
+  transparent 0%, 
+  ${Constants.WIDGET_SECONDARY_FONT_INACTIVE} 50%, 
+  transparent 100%);
+
 `;
 
 import { Socket } from "socket.io-client";
@@ -267,6 +253,7 @@ function CharacterSheet({
               session={session}
               character={character}
               isCreature={isCreature}
+              browser={false}
             />
           </Row>
         </Row>
@@ -277,6 +264,7 @@ function CharacterSheet({
               session={session}
               character={character}
               isCreature={isCreature}
+              browser={false}
             />
           </Row>
           <Row width={"50%"}>
@@ -291,7 +279,7 @@ function CharacterSheet({
           </Row>
         </Row>
       </Container>
-      <Container height={"66%"}>
+      <Container height={"60%"}>
         <Column width={"50%"}>
           <InventorySection
             session={session}
@@ -300,6 +288,7 @@ function CharacterSheet({
             isCreature={isCreature}
           />
         </Column>
+        <DividerVertical />
         <Column width={"50%"}>
           <AbilitySection
             session={session}

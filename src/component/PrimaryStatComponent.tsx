@@ -20,7 +20,6 @@ const Container = styled.div`
   flex-basis: 0;
   flex-direction: column;
   gap: 2px;
-
   &:hover .second-row {
     display: flex; // Or visibility: visible; if you want to keep the space reserved
   }
@@ -68,19 +67,22 @@ const ActiveButton = styled.button<DiceProps>`
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   border-right: 1px solid ${Constants.WIDGET_BORDER};
   border-left: 0px solid ${Constants.WIDGET_BORDER};
+  text-shadow: 1px 1px 1px ${Constants.BACKGROUND};
+  max-width: 30px;
 `;
 
-const ModifierButton = styled.button`
+const Modifier = styled.button`
   display: flex;
+  flex-grow: 1;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  color: ${Constants.WIDGET_PRIMARY_FONT};
-  font-size: 1.25rem;
+  font-size: 20px;
   font-weight: bold;
-  background-color: ${Constants.WIDGET_BACKGROUND};
+  color: ${Constants.WIDGET_SECONDARY_FONT};
   border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: ${Constants.BORDER_RADIUS};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  width: 50%;
+  letter-spacing: 5px;
 `;
 
 const ValueName = styled.div`
@@ -97,6 +99,7 @@ const ValueName = styled.div`
 const ValueButton = styled.button`
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   align-items: center;
   justify-content: center;
   font-size: 2.5rem;
@@ -132,6 +135,7 @@ const DiceIcon = styled.div`
   background-color: ${Constants.WIDGET_BACKGROUND};
   width: 25%;
   padding-top: 5px;
+  max-width: 30px;
 `;
 
 const Plus = styled.button`
@@ -139,7 +143,7 @@ const Plus = styled.button`
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 15px;
   font-weight: bold;
   color: ${Constants.WIDGET_SECONDARY_FONT};
   border-top-right-radius: ${Constants.BORDER_RADIUS};
@@ -149,7 +153,7 @@ const Plus = styled.button`
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   border-left: 0px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
-  width: 25%;
+  max-width: 30px;
 `;
 
 const Minus = styled.button`
@@ -157,7 +161,7 @@ const Minus = styled.button`
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 15px;
   font-weight: bold;
   color: ${Constants.WIDGET_SECONDARY_FONT};
   border-top-left-radius: ${Constants.BORDER_RADIUS};
@@ -167,8 +171,7 @@ const Minus = styled.button`
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   border-left: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
-  width: 25%;
-  min-width: 25%;
+  max-width: 30px;
 `;
 
 type Props = {
@@ -325,7 +328,7 @@ function PrimaryStatComponent({
             color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
           />
         </Minus>
-        <ModifierButton
+        <Modifier
           className="mouse-icon-hover"
           onClick={subModifier}
           onContextMenu={(e) => {
@@ -334,7 +337,7 @@ function PrimaryStatComponent({
           }}
         >
           {modifier > 0 ? `+${modifier}` : modifier}
-        </ModifierButton>
+        </Modifier>
         <Plus>
           <FontAwesomeIcon
             icon={faPlus}

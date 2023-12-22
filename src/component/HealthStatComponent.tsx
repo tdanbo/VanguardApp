@@ -30,6 +30,7 @@ const Row = styled.div<DivProps>`
   border-radius: ${Constants.BORDER_RADIUS};
   max-height: ${(props) => props.height};
   height: ${(props) => props.height};
+  
 `;
 
 interface BgColor {
@@ -59,30 +60,6 @@ const TickBar = styled.div<BgColor>`
     props.isFirst ? "1px solid " + Constants.WIDGET_BORDER : "0"};
 `;
 
-const StartTickBar = styled.div<BgColor>`
-  display: flex;
-  flex-grow: 1;
-  background-color: ${(props) => props.$bgcolor};
-  border-radius-left-top: ${Constants.BORDER_RADIUS};
-  border-radius-right-bottom: ${Constants.BORDER_RADIUS};
-  border-right: 1px solid ${Constants.WIDGET_BORDER};
-  border-top: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
-  cursor: pointer;
-`;
-
-const EndTickBar = styled.div<BgColor>`
-  display: flex;
-  flex-grow: 1;
-  background-color: ${(props) => props.$bgcolor};
-  border-radius-right-top: ${Constants.BORDER_RADIUS};
-  border-radius-right-bottom: ${Constants.BORDER_RADIUS};
-  border-right: 1px solid ${Constants.WIDGET_BORDER};
-  border-top: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
-  cursor: pointer;
-`;
-
 const Divider = styled.div`
   display: flex;
   background-color: rgba(255, 255, 255, 0.5);
@@ -96,7 +73,7 @@ const Plus = styled.button`
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 15px;
   font-weight: bold;
   color: ${Constants.WIDGET_SECONDARY_FONT};
   border-top-right-radius: ${Constants.BORDER_RADIUS};
@@ -106,7 +83,7 @@ const Plus = styled.button`
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   border-left: 0px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
-  width: 25%;
+  max-width: 30px;
 `;
 
 const Minus = styled.button`
@@ -114,7 +91,7 @@ const Minus = styled.button`
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 15px;
   font-weight: bold;
   color: ${Constants.WIDGET_SECONDARY_FONT};
   border-top-left-radius: ${Constants.BORDER_RADIUS};
@@ -124,8 +101,7 @@ const Minus = styled.button`
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   border-left: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
-  width: 25%;
-  min-width: 25%;
+  max-width: 30px;
 `;
 
 const Modifier = styled.button`
@@ -150,11 +126,11 @@ const Modifier = styled.button`
   }
   h1 {
     font-weight: bold;
-    font-size: 25px;
+    font-size: 20px;
   }
   h2 {
     display: none;
-    font-size: 18px;
+    font-size: 20px;
   }
   &:hover h1 {
     display: none;
@@ -173,6 +149,7 @@ interface HealthBoxProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
+  browser: boolean;
 }
 
 function HealthStatComponent({
@@ -180,6 +157,7 @@ function HealthStatComponent({
   session,
   websocket,
   isCreature,
+  browser,
 }: HealthBoxProps) {
   const handleAddToughness = () => {
     if (character.health.damage > 0) {
@@ -210,7 +188,7 @@ function HealthStatComponent({
   return (
     <Container>
       <Row
-        height="70%"
+        height="100%"
         onClick={handleSubToughness}
         onContextMenu={(e) => {
           e.preventDefault();
@@ -238,22 +216,30 @@ function HealthStatComponent({
           );
         })}
       </Row>
-      <Row height="30%" className="button-hover">
-        <Minus>
-          <FontAwesomeIcon icon={faMinus} />
-        </Minus>
-        <Modifier>
-          <h1>{remaining_toughness}</h1>
-          <h2>
-            {maxToughness}
-            <Divider></Divider>
-            {remaining_toughness}
-          </h2>
-        </Modifier>
-        <Plus>
-          <FontAwesomeIcon icon={faPlus} />
-        </Plus>
-      </Row>
+      {!browser ? (
+        <Row height="30%" className="button-hover">
+          <Minus>
+            <FontAwesomeIcon
+              icon={faMinus}
+              color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+            />
+          </Minus>
+          <Modifier>
+            <h1>{remaining_toughness}</h1>
+            <h2>
+              {maxToughness}
+              <Divider></Divider>
+              {remaining_toughness}
+            </h2>
+          </Modifier>
+          <Plus>
+            <FontAwesomeIcon
+              icon={faPlus}
+              color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+            />
+          </Plus>
+        </Row>
+      ) : null}
     </Container>
   );
 }

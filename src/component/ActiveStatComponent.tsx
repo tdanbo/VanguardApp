@@ -45,6 +45,7 @@ const Row = styled.div<DivProps>`
 
 const Value = styled.button`
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -82,12 +83,13 @@ const Modifier = styled.button`
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 20px;
   font-weight: bold;
   color: ${Constants.WIDGET_SECONDARY_FONT};
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
   width: 50%;
+  letter-spacing: 5px;
 `;
 
 type DiceProps = {
@@ -113,6 +115,7 @@ const Dice = styled.button<DiceProps>`
   border-right: 1px solid ${Constants.WIDGET_BORDER};
   border-left: 0px solid ${Constants.WIDGET_BORDER};
   text-shadow: 1px 1px 1px ${Constants.BACKGROUND};
+  max-width: 30px;
 `;
 
 const DiceIcon = styled.div`
@@ -130,6 +133,7 @@ const DiceIcon = styled.div`
   background-color: ${Constants.WIDGET_BACKGROUND};
   width: 25%;
   padding-top: 5px;
+  max-width: 30px;
 `;
 
 const Plus = styled.button`
@@ -137,7 +141,7 @@ const Plus = styled.button`
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 15px;
   font-weight: bold;
   color: ${Constants.WIDGET_SECONDARY_FONT};
   border-top-right-radius: ${Constants.BORDER_RADIUS};
@@ -147,7 +151,7 @@ const Plus = styled.button`
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   border-left: 0px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
-  width: 25%;
+  max-width: 30px;
 `;
 
 const Minus = styled.button`
@@ -155,7 +159,7 @@ const Minus = styled.button`
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 15px;
   font-weight: bold;
   color: ${Constants.WIDGET_SECONDARY_FONT};
   border-top-left-radius: ${Constants.BORDER_RADIUS};
@@ -166,7 +170,7 @@ const Minus = styled.button`
   border-left: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
   width: 25%;
-  min-width: 25%;
+  max-width: 30px;
 `;
 
 interface Props {
@@ -421,21 +425,23 @@ function ActiveStatComponent({
           </Dice>
         )}
       </Row>
-      <Row height={"30%"} className="button-hover">
+      <Row
+        height={"30%"}
+        className="button-hover"
+        onClick={handleSubValue}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          handleAddValue();
+        }}
+      >
         <Minus>
           <FontAwesomeIcon
             icon={faMinus}
             color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
           />
         </Minus>
-        <Modifier
-          onClick={handleSubValue}
-          onContextMenu={(e) => {
-            e.preventDefault();
-            handleAddValue();
-          }}
-          className="mouse-icon-hover"
-        >
+        <Modifier className="mouse-icon-hover">
+          {modValue > 0 ? "+" : ""}
           {modValue}
         </Modifier>
 

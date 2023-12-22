@@ -7,13 +7,11 @@ import { CharacterPortraits } from "../../Images";
 import { CharacterEntry, SessionEntry } from "../../Types";
 import { GetMaxToughness } from "../../functions/RulesFunctions";
 import { update_session } from "../../functions/SessionsFunctions";
+import HealthStatComponent from "../../component/HealthStatComponent";
 
 const Container = styled.div`
   display: flex;
-  min-height: 35px;
-  max-height: 35px;
-  align-items: center;
-  justify-content: center;
+  flex-grow: 1;
   border-radius: ${Constants.BORDER_RADIUS};
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   cursor: pointer;
@@ -155,71 +153,13 @@ const Row = styled.div`
   display: flex;
   flex-direction: row;
   flex: 1;
-  max-height: 35px;
-  min-height: 35px;
   max-width: 200px;
   background-color: ${Constants.BACKGROUND};
   border-radius: ${Constants.BORDER_RADIUS};
 `;
 
-const LeftTickBar = styled.div<BgColor>`
-  display: flex;
-  flex-grow: 1;
-  border-left: 1px solid ${Constants.WIDGET_BORDER};
-  border-top: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${(props) => props.$bgcolor};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-`;
-
-const ValueBoxRight = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  flex-grow: 1;
-  justify-content: center;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-
-  max-width: 50px;
-  min-width: 50px;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: ${Constants.BORDER_RADIUS};
-  border-bottom-right-radius: ${Constants.BORDER_RADIUS};
-
-  h1,
-  h2 {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-
-  h1 {
-    font-weight: bold;
-    font-size: 20px;
-  }
-
-  h2 {
-    display: none;
-    font-size: 14px;
-  }
-
-  &:hover h1 {
-    display: none;
-  }
-
-  &:hover h2 {
-    display: flex;
-  }
-`;
-
 import { Socket } from "socket.io-client";
+import CorruptionStatComponent from "../../component/CorruptionStatComponent";
 
 interface SessionBoxProps {
   character: CharacterEntry;
@@ -268,7 +208,27 @@ function CharacterBox({
 
   return (
     <Container>
-      {remaining_toughness === 0 ? (
+      <CorruptionStatComponent
+        character={character}
+        session={session}
+        websocket={websocket}
+        isCreature={isCreature}
+        browser={true}
+      />
+      <PortraitCenter
+        onClick={handleOnClick}
+        src={CharacterPortraits[character.portrait]}
+      >
+        {character.name}
+      </PortraitCenter>
+      <HealthStatComponent
+        character={character}
+        session={session}
+        websocket={websocket}
+        isCreature={isCreature}
+        browser={true}
+      />
+      {/* {remaining_toughness === 0 ? (
         killCharacter ? (
           <LeftControl
             onClick={() => setKillCharacter(false)}
@@ -289,26 +249,6 @@ function CharacterBox({
         )
       ) : (
         <Row>
-          {/* {[...Array(temporary_corruption)].map((_, index) => (
-            <LeftTickBar
-              key={index}
-              $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
-            />
-          ))}
-          {[...Array(clean_corruption)].map((_, index) => (
-            <LeftTickBar
-              key={index}
-              $bgcolor={Constants.TYPE_COLORS["casting"]}
-            />
-          ))}
-          <ValueBoxRight>
-            <h1>{clean_corruption}</h1>
-            <h2>
-              {temporary_corruption}
-              <Divider></Divider>
-              {corruptionThreshold}
-            </h2>
-          </ValueBoxRight> */}
         </Row>
       )}
 
@@ -367,7 +307,7 @@ function CharacterBox({
             />
           ))}
         </Row>
-      )}
+      )} */}
     </Container>
   );
 }
