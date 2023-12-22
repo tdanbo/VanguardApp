@@ -258,13 +258,13 @@ function CharacterBox({
 
   const maxToughness = GetMaxToughness(character);
 
-  const damage_toughness = character.damage;
-  const remaining_toughness = maxToughness - character.damage;
+  const damage_toughness = character.health.damage;
+  const remaining_toughness = maxToughness - character.health.damage;
 
-  const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
+  // const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
 
-  const temporary_corruption = character.corruption.temporary;
-  const clean_corruption = corruptionThreshold - temporary_corruption;
+  // const temporary_corruption = character.corruption.temporary;
+  // const clean_corruption = corruptionThreshold - temporary_corruption;
 
   return (
     <Container>
@@ -289,7 +289,7 @@ function CharacterBox({
         )
       ) : (
         <Row>
-          {[...Array(temporary_corruption)].map((_, index) => (
+          {/* {[...Array(temporary_corruption)].map((_, index) => (
             <LeftTickBar
               key={index}
               $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
@@ -308,7 +308,7 @@ function CharacterBox({
               <Divider></Divider>
               {corruptionThreshold}
             </h2>
-          </ValueBoxRight>
+          </ValueBoxRight> */}
         </Row>
       )}
 

@@ -55,7 +55,6 @@ const Row = styled.div<DivProps>`
   flex-grow: 1;
   flex-basis: 0;
   gap: ${Constants.WIDGET_GAB};
-  background-color: #252525;
   max-width: ${(props) => props.width};
 `;
 
@@ -65,7 +64,6 @@ const Column = styled.div<DivProps>`
   flex-grow: 1;
   flex-basis: 0;
   gap: ${Constants.WIDGET_GAB};
-  background-color: #252525;
   max-width: ${(props) => props.width};
   overflow: scroll;
   scrollbar-width: none !important;

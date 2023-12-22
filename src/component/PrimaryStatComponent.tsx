@@ -3,7 +3,6 @@ import {
   faCrosshairs,
   faEye,
   faShield,
-  faDiceD6,
   faMinus,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
@@ -18,16 +17,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
+  flex-basis: 0;
   flex-direction: column;
   gap: 2px;
+
+  &:hover .second-row {
+    display: flex; // Or visibility: visible; if you want to keep the space reserved
+  }
 `;
 
 const Row = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: row;
-  border 1px solid ${Constants.WIDGET_BORDER};
+  border: 1px solid ${Constants.WIDGET_BORDER};
   border-radius: ${Constants.BORDER_RADIUS};
+
+  // Hiding the second row by default
+  &:nth-child(2) {
+    display: none; // Or visibility: hidden; if you want to keep the space reserved
+  }
 `;
 
 const Column = styled.div`
@@ -241,13 +250,41 @@ function PrimaryStatComponent({
 
   const icon = (active: string) => {
     if (active === "sneaking") {
-      return <FontAwesomeIcon icon={faEye} />;
+      return (
+        <FontAwesomeIcon
+          icon={faEye}
+          style={{
+            filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
+          }}
+        />
+      );
     } else if (active === "casting") {
-      return <FontAwesomeIcon icon={faBolt} />;
+      return (
+        <FontAwesomeIcon
+          icon={faBolt}
+          style={{
+            filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
+          }}
+        />
+      );
     } else if (active === "defense") {
-      return <FontAwesomeIcon icon={faShield} />;
+      return (
+        <FontAwesomeIcon
+          icon={faShield}
+          style={{
+            filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
+          }}
+        />
+      );
     } else if (active === "attack") {
-      return <FontAwesomeIcon icon={faCrosshairs} />;
+      return (
+        <FontAwesomeIcon
+          icon={faCrosshairs}
+          style={{
+            filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
+          }}
+        />
+      );
     }
   };
 
@@ -261,46 +298,41 @@ function PrimaryStatComponent({
 
   return (
     <Container>
-      <Row>
-        <DiceIcon>
+      <Row className="button-hover first-row">
+        <DiceIcon onClick={handleSkillRoll}>
           {/* <FontAwesomeIcon
             icon={faDiceD6}
             color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
           /> */}
         </DiceIcon>
-        <ValueButton
-          className="mouse-icon-hover button-hover"
-          onClick={subModifier}
-          onContextMenu={(e) => {
-            e.preventDefault();
-            addModifier();
-          }}
-        >
+        <ValueButton onClick={handleSkillRoll}>
           {value + modifier}
-          <ValueName
-            className="dice-icon-hover button-hover"
-            onClick={handleSkillRoll}
-          >
-            {type_name}
-          </ValueName>
+          <ValueName className="dice-icon-hover">{type_name}</ValueName>
         </ValueButton>
 
         <ActiveButton
-          className="active_button button-hover"
+          className="active_button"
           onClick={handleActiveClick}
           color={Constants.TYPE_COLORS[active]}
         >
           {icon(active)}
         </ActiveButton>
       </Row>
-      <Row>
+      <Row className="button-hover second-row">
         <Minus>
           <FontAwesomeIcon
             icon={faMinus}
             color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
           />
         </Minus>
-        <ModifierButton className="button-hover">
+        <ModifierButton
+          className="mouse-icon-hover"
+          onClick={subModifier}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            addModifier();
+          }}
+        >
           {modifier > 0 ? `+${modifier}` : modifier}
         </ModifierButton>
         <Plus>

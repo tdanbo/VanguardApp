@@ -32,59 +32,51 @@ const Row = styled.div<DivProps>`
   height: ${(props) => props.height};
 `;
 
-const ValueBoxLeft = styled.div`
-  user-select: none;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  flex-grow: 1;
-  justify-content: center;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  color: ${Constants.WIDGET_PRIMARY_FONT};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  cursor: pointer;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-top-left-radius: ${Constants.BORDER_RADIUS};
-  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
-
-  h1,
-  h2 {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-
-  h1 {
-    font-weight: bold;
-    font-size: 25px;
-  }
-
-  h2 {
-    display: none;
-    font-size: 18px;
-  }
-
-  &:hover h1 {
-    display: none;
-  }
-
-  &:hover h2 {
-    display: flex;
-  }
-`;
-
 interface BgColor {
   $bgcolor: string;
+  isFirst?: boolean;
+  isLast?: boolean;
 }
 
-const RightTickBar = styled.div<BgColor>`
+const TickBar = styled.div<BgColor>`
   display: flex;
   flex-grow: 1;
   background-color: ${(props) => props.$bgcolor};
+  border-right: 1px solid ${Constants.WIDGET_BORDER};
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  cursor: pointer;
+  border-radius: ${Constants.BORDER_RADIUS};
+  border-top-left-radius: ${(props) =>
+    props.isFirst ? Constants.BORDER_RADIUS : "0"};
+  border-bottom-left-radius: ${(props) =>
+    props.isFirst ? Constants.BORDER_RADIUS : "0"};
+  border-top-right-radius: ${(props) =>
+    props.isLast ? Constants.BORDER_RADIUS : "0"};
+  border-bottom-right-radius: ${(props) =>
+    props.isLast ? Constants.BORDER_RADIUS : "0"};
+  border-left: ${(props) =>
+    props.isFirst ? "1px solid " + Constants.WIDGET_BORDER : "0"};
+`;
+
+const StartTickBar = styled.div<BgColor>`
+  display: flex;
+  flex-grow: 1;
+  background-color: ${(props) => props.$bgcolor};
+  border-radius-left-top: ${Constants.BORDER_RADIUS};
+  border-radius-right-bottom: ${Constants.BORDER_RADIUS};
+  border-right: 1px solid ${Constants.WIDGET_BORDER};
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  cursor: pointer;
+`;
+
+const EndTickBar = styled.div<BgColor>`
+  display: flex;
+  flex-grow: 1;
+  background-color: ${(props) => props.$bgcolor};
+  border-radius-right-top: ${Constants.BORDER_RADIUS};
+  border-radius-right-bottom: ${Constants.BORDER_RADIUS};
   border-right: 1px solid ${Constants.WIDGET_BORDER};
   border-top: 1px solid ${Constants.WIDGET_BORDER};
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
@@ -99,7 +91,82 @@ const Divider = styled.div`
   margin: 4px;
 `;
 
+const Plus = styled.button`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  border-top-right-radius: ${Constants.BORDER_RADIUS};
+  border-bottom-right-radius: ${Constants.BORDER_RADIUS};
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-right: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  border-left: 0px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  width: 25%;
+`;
+
+const Minus = styled.button`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  border-top-left-radius: ${Constants.BORDER_RADIUS};
+  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-right: 0px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  border-left: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  width: 25%;
+  min-width: 25%;
+`;
+
+const Modifier = styled.button`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  width: 50%;
+  h1,
+  h2 {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  h1 {
+    font-weight: bold;
+    font-size: 25px;
+  }
+  h2 {
+    display: none;
+    font-size: 18px;
+  }
+  &:hover h1 {
+    display: none;
+  }
+  &:hover h2 {
+    display: flex;
+  }
+`;
+
 import { Socket } from "socket.io-client";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 interface HealthBoxProps {
   character: CharacterEntry;
@@ -115,8 +182,8 @@ function HealthStatComponent({
   isCreature,
 }: HealthBoxProps) {
   const handleAddToughness = () => {
-    if (character.damage > 0) {
-      character.damage -= 1;
+    if (character.health.damage > 0) {
+      character.health.damage -= 1;
     }
     update_session(session, character, isCreature, websocket);
   };
@@ -127,18 +194,18 @@ function HealthStatComponent({
 
     const value_step = 1;
 
-    if (character.damage === maxToughness) {
+    if (character.health.damage === maxToughness) {
       console.log("Max damage reached");
     } else {
-      character.damage += value_step;
+      character.health.damage += value_step;
     }
     update_session(session, character, isCreature, websocket);
   };
 
   const maxToughness = GetMaxToughness(character);
 
-  const damage_toughness = character.damage;
-  const remaining_toughness = maxToughness - character.damage;
+  const damage_toughness = character.health.damage;
+  const remaining_toughness = maxToughness - character.health.damage;
 
   return (
     <Container>
@@ -150,32 +217,42 @@ function HealthStatComponent({
           handleAddToughness();
         }}
       >
-        {Array.from({ length: remaining_toughness }).map((_, index) => {
+        {Array.from({ length: remaining_toughness }).map((_, index, array) => {
           return (
-            <RightTickBar
+            <TickBar
               key={index}
               $bgcolor={Constants.TYPE_COLORS["health"]}
+              isFirst={index === 0} // Apply rounded corners on the left for the first item
+              isLast={index === array.length - 1}
             />
           );
         })}
-        {Array.from({ length: damage_toughness }).map((_, index) => {
+        {Array.from({ length: damage_toughness }).map((_, index, array) => {
           return (
-            <RightTickBar
+            <TickBar
               key={index}
               $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
+              isFirst={index === 0} // Apply rounded corners on the left for the first item
+              isLast={index === array.length - 1} // Apply rounded corners on the right for the last item
             />
           );
         })}
       </Row>
-      <Row height="30%">
-        <ValueBoxLeft>
+      <Row height="30%" className="button-hover">
+        <Minus>
+          <FontAwesomeIcon icon={faMinus} />
+        </Minus>
+        <Modifier>
           <h1>{remaining_toughness}</h1>
           <h2>
-            {remaining_toughness}
-            <Divider></Divider>
             {maxToughness}
+            <Divider></Divider>
+            {remaining_toughness}
           </h2>
-        </ValueBoxLeft>
+        </Modifier>
+        <Plus>
+          <FontAwesomeIcon icon={faPlus} />
+        </Plus>
       </Row>
     </Container>
   );

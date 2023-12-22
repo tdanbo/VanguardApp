@@ -20,6 +20,7 @@ import {
   faPlus,
   faSkull,
 } from "@fortawesome/free-solid-svg-icons";
+
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
@@ -111,6 +112,7 @@ const Dice = styled.button<DiceProps>`
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   border-right: 1px solid ${Constants.WIDGET_BORDER};
   border-left: 0px solid ${Constants.WIDGET_BORDER};
+  text-shadow: 1px 1px 1px ${Constants.BACKGROUND};
 `;
 
 const DiceIcon = styled.div`
@@ -310,17 +312,14 @@ function ActiveStatComponent({
 
   return (
     <Container>
-      <Row height={"70%"}>
+      <Row height={"70%"} className="button-hover">
         <DiceIcon>
           {/* <FontAwesomeIcon
             icon={faDiceD6}
             color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
           /> */}
         </DiceIcon>
-        <Value
-          onClick={handleActiveRoll}
-          className="dice-icon-hover button-hover"
-        >
+        <Value onClick={handleActiveRoll} className="dice-icon-hover">
           {Math.max(active.value + modValue, 1)}
           <ActiveValue>{active_name.toUpperCase()}</ActiveValue>
         </Value>
@@ -328,7 +327,6 @@ function ActiveStatComponent({
           <>
             {active.dice1 !== 0 && (
               <Dice
-                className="button-hover"
                 onClick={() => {
                   [
                     "Bow",
@@ -361,7 +359,6 @@ function ActiveStatComponent({
             )}
             {active.dice2_name !== "Knuckles" && active.dice2 !== 0 && (
               <Dice
-                className="button-hover"
                 onClick={() => {
                   [
                     "Bow",
@@ -395,7 +392,6 @@ function ActiveStatComponent({
           </>
         ) : isDefenseActive(active) ? (
           <Dice
-            className="button-hover"
             onClick={() => {
               handleDiceRoll(
                 active.dice,
@@ -411,17 +407,21 @@ function ActiveStatComponent({
           </Dice>
         ) : (
           <Dice
-            className="button-hover"
             onClick={() => {
               handleDiceRoll(4, "Corruption", 0, "Armor");
             }}
             color={Constants.TYPE_COLORS[active_name]}
           >
-            <FontAwesomeIcon icon={faSkull} />
+            <FontAwesomeIcon
+              icon={faSkull}
+              style={{
+                filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
+              }}
+            />
           </Dice>
         )}
       </Row>
-      <Row height={"30%"}>
+      <Row height={"30%"} className="button-hover">
         <Minus>
           <FontAwesomeIcon
             icon={faMinus}
@@ -434,7 +434,7 @@ function ActiveStatComponent({
             e.preventDefault();
             handleAddValue();
           }}
-          className="mouse-icon-hover button-hover"
+          className="mouse-icon-hover"
         >
           {modValue}
         </Modifier>

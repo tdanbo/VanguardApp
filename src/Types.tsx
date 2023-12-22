@@ -62,11 +62,6 @@ export interface Actives {
   sneaking: SimpleActive;
 }
 
-type Corruption = {
-  permanent: number;
-  temporary: number;
-};
-
 interface Rations {
   food: number;
   water: number;
@@ -81,7 +76,7 @@ interface EquipmentEntry {
 type health = {
   damage: number;
   corruption: number;
-  healing: number;
+  shield: number;
 };
 
 export interface CharacterEntry {
@@ -296,7 +291,7 @@ export const EmptyCharacter: CharacterEntry = {
   health: {
     damage: 0,
     corruption: 0,
-    healing: 0,
+    shield: 0,
   },
   stats: {
     cunning: { value: 0, mod: 0 },

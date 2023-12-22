@@ -3,11 +3,16 @@ import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
 
-const Container = styled.div`
+interface ColumnProps {
+  width: string;
+}
+
+const Container = styled.div<ColumnProps>`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
   gap: 2px;
+  width: ${(props) => props.width};
 `;
 
 interface DivProps {
@@ -46,16 +51,28 @@ const ValueBoxRight = styled.div`
 
 interface BgColor {
   $bgcolor: string;
+  isFirst?: boolean;
+  isLast?: boolean;
 }
-
-const LeftTickBar = styled.div<BgColor>`
+const TickBar = styled.div<BgColor>`
   display: flex;
   flex-grow: 1;
-  border-left: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${(props) => props.$bgcolor};
+  border-right: 1px solid ${Constants.WIDGET_BORDER};
   border-top: 1px solid ${Constants.WIDGET_BORDER};
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${(props) => props.$bgcolor};
   cursor: pointer;
+  border-radius: ${Constants.BORDER_RADIUS};
+  border-top-left-radius: ${(props) =>
+    props.isFirst ? Constants.BORDER_RADIUS : "0"};
+  border-bottom-left-radius: ${(props) =>
+    props.isFirst ? Constants.BORDER_RADIUS : "0"};
+  border-top-right-radius: ${(props) =>
+    props.isLast ? Constants.BORDER_RADIUS : "0"};
+  border-bottom-right-radius: ${(props) =>
+    props.isLast ? Constants.BORDER_RADIUS : "0"};
+  border-left: ${(props) =>
+    props.isFirst ? "1px solid " + Constants.WIDGET_BORDER : "0"};
 `;
 
 const Divider = styled.div`
@@ -81,45 +98,41 @@ function CorruptionStatComponent({
   isCreature,
 }: HealthBoxProps) {
   const handleAddCorruption = () => {
-    const character_corruption = character.corruption;
     const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
 
     const value_step = 1;
 
-    if (character_corruption.permanent === corruptionThreshold * 3) {
+    if (character.health.corruption === corruptionThreshold * 3) {
       console.log("Max corruption reached");
     } else {
-      character_corruption.permanent += value_step;
+      character.health.corruption += value_step;
     }
     update_session(session, character, isCreature, websocket);
   };
 
   const handleSubCorruption = () => {
-    const character_corruption = character.corruption;
-
     const value_step = 1;
 
-    if (character_corruption.permanent === 0) {
+    if (character.health.corruption === 0) {
       console.log("Min corruption reached");
     } else {
-      character_corruption.permanent -= value_step;
+      character.health.corruption -= value_step;
     }
     update_session(session, character, isCreature, websocket);
   };
 
   const handleTempAddCorruption = () => {
     console.log("Adding corruption");
-    let character_corruption = character.corruption;
     const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
     let value = 1;
     for (let i = 0; i < value; i++) {
-      if (character_corruption.temporary === corruptionThreshold) {
-        if (character_corruption.permanent === corruptionThreshold * 3) {
+      if (character.health.shield === corruptionThreshold) {
+        if (character.health.corruption === corruptionThreshold * 3) {
           console.log("Max corruption reached");
         }
-        character_corruption.permanent += 1;
+        character.health.corruption += 1;
       } else {
-        character_corruption.temporary += 1;
+        character.health.shield += 1;
       }
     }
     update_session(session, character, isCreature, websocket);
@@ -127,12 +140,11 @@ function CorruptionStatComponent({
 
   const handleTempSubCorruption = () => {
     console.log("Subtracting corruption");
-    let character_corruption = character.corruption;
     let value = 1;
-    character_corruption.temporary -= value;
+    character.health.shield -= value;
 
-    if (character_corruption.temporary < 0) {
-      character_corruption.temporary = 0;
+    if (character.health.shield < 0) {
+      character.health.shield = 0;
     }
     update_session(session, character, isCreature, websocket);
   };
@@ -141,16 +153,16 @@ function CorruptionStatComponent({
   const maxCorruptionPermanent = corruptionThreshold * 3;
 
   const remaining_corruption =
-    maxCorruptionPermanent - character.corruption.permanent;
-  const temporary_corruption = character.corruption.temporary;
+    maxCorruptionPermanent - character.health.corruption;
+  const temporary_corruption = character.health.shield;
   const clean_corruption = corruptionThreshold - temporary_corruption;
 
   return (
     <Row height={"100%"}>
-      <Container>
+      <Container width={"75%"}>
         <Row height={"70%"}>
-          {[...Array(remaining_corruption)].map((_, index) => (
-            <LeftTickBar
+          {[...Array(remaining_corruption)].map((_, index, array) => (
+            <TickBar
               onClick={handleTempSubCorruption}
               onContextMenu={(e) => {
                 e.preventDefault();
@@ -158,11 +170,13 @@ function CorruptionStatComponent({
               }}
               key={index}
               $bgcolor={Constants.TYPE_COLORS["permanent_corruption"]}
+              isFirst={index === 0} // Apply rounded corners on the left for the first item
+              isLast={index === array.length - 1}
             />
           ))}
           {[...Array(maxCorruptionPermanent - remaining_corruption)].map(
-            (_, index) => (
-              <LeftTickBar
+            (_, index, array) => (
+              <TickBar
                 onClick={handleTempSubCorruption}
                 onContextMenu={(e) => {
                   e.preventDefault();
@@ -170,11 +184,28 @@ function CorruptionStatComponent({
                 }}
                 key={index}
                 $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
+                isFirst={index === 0} // Apply rounded corners on the left for the first item
+                isLast={index === array.length - 1}
               />
             ),
           )}
-          {[...Array(clean_corruption)].map((_, index) => (
-            <LeftTickBar
+        </Row>
+        <Row height={"30%"}>
+          <ValueBoxRight
+            onClick={handleAddCorruption}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              handleSubCorruption();
+            }}
+          >
+            {clean_corruption}
+          </ValueBoxRight>
+        </Row>
+      </Container>
+      <Container width={"25%"}>
+        <Row height={"70%"}>
+          {[...Array(clean_corruption)].map((_, index, array) => (
+            <TickBar
               onClick={handleTempSubCorruption}
               onContextMenu={(e) => {
                 e.preventDefault();
@@ -182,10 +213,12 @@ function CorruptionStatComponent({
               }}
               key={index}
               $bgcolor={Constants.TYPE_COLORS["casting"]}
+              isFirst={index === 0} // Apply rounded corners on the left for the first item
+              isLast={index === array.length - 1}
             />
           ))}
-          {[...Array(temporary_corruption)].map((_, index) => (
-            <LeftTickBar
+          {[...Array(temporary_corruption)].map((_, index, array) => (
+            <TickBar
               onClick={handleTempSubCorruption}
               onContextMenu={(e) => {
                 e.preventDefault();
@@ -193,6 +226,8 @@ function CorruptionStatComponent({
               }}
               key={index}
               $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
+              isFirst={index === 0} // Apply rounded corners on the left for the first item
+              isLast={index === array.length - 1}
             />
           ))}
         </Row>
