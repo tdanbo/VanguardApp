@@ -7,17 +7,27 @@ interface ColumnProps {
   width: string;
 }
 
-const Container = styled.div<ColumnProps>`
+const Container = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
   gap: 2px;
-  width: ${(props) => props.width};
 `;
 
 interface DivProps {
   height: string;
 }
+
+const Column = styled.div<ColumnProps>`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: 2px;
+  max-width: ${(props) => props.width};
+  overflow: scroll;
+  scrollbar-width: none !important;
+`;
 
 const Row = styled.div<DivProps>`
   display: flex;
@@ -28,9 +38,14 @@ const Row = styled.div<DivProps>`
   border-radius: ${Constants.BORDER_RADIUS};
   max-height: ${(props) => props.height};
   height: ${(props) => props.height};
+  
 `;
 
-const Modifier = styled.button`
+interface ButtonProps {
+  fontsize: string;
+}
+
+const Modifier = styled.button<ButtonProps>`
   display: flex;
   flex-grow: 1;
   align-items: center;
@@ -52,11 +67,11 @@ const Modifier = styled.button`
   }
   h1 {
     font-weight: bold;
-    font-size: 20px;
+    font-size: ${(props) => props.fontsize};
   }
   h2 {
     display: none;
-    font-size: 20px;
+    font-size: ${(props) => props.fontsize};
   }
   &:hover h1 {
     display: none;
@@ -93,11 +108,10 @@ const TickBar = styled.div<BgColor>`
 `;
 
 const Divider = styled.div`
-  display: flex;
   background-color: rgba(255, 255, 255, 0.5);
   width: 2px;
   height: 16px;
-  margin: 4px;
+  margin: 0px 4px 0px 4px;
 `;
 
 const Plus = styled.button`
@@ -216,10 +230,23 @@ function CorruptionStatComponent({
   const clean_corruption = corruptionThreshold - temporary_corruption;
 
   return (
-    <Row height={"100%"}>
-      <Container width={"100%"}>
-        <Row height={"100%"}>
-          {[...Array(remaining_corruption)].map((_, index, array) => (
+    <Column width={"100%"}>
+      <Row height={browser ? "50%" : "70%"}>
+        {[...Array(remaining_corruption)].map((_, index, array) => (
+          <TickBar
+            onClick={handleAddCorruption}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              handleSubCorruption();
+            }}
+            key={index}
+            $bgcolor={Constants.TYPE_COLORS["permanent_corruption"]}
+            isFirst={index === 0} // Apply rounded corners on the left for the first item
+            isLast={index === array.length - 1}
+          />
+        ))}
+        {[...Array(maxCorruptionPermanent - remaining_corruption)].map(
+          (_, index, array) => (
             <TickBar
               onClick={handleAddCorruption}
               onContextMenu={(e) => {
@@ -227,71 +254,54 @@ function CorruptionStatComponent({
                 handleSubCorruption();
               }}
               key={index}
-              $bgcolor={Constants.TYPE_COLORS["permanent_corruption"]}
-              isFirst={index === 0} // Apply rounded corners on the left for the first item
-              isLast={index === array.length - 1}
-            />
-          ))}
-          {[...Array(maxCorruptionPermanent - remaining_corruption)].map(
-            (_, index, array) => (
-              <TickBar
-                onClick={handleAddCorruption}
-                onContextMenu={(e) => {
-                  e.preventDefault();
-                  handleSubCorruption();
-                }}
-                key={index}
-                $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
-                isFirst={index === 0} // Apply rounded corners on the left for the first item
-                isLast={index === array.length - 1}
-              />
-            ),
-          )}
-          {[...Array(clean_corruption)].map((_, index, array) => (
-            <TickBar
-              key={index}
-              $bgcolor={Constants.TYPE_COLORS["temporary_corruption"]}
-              isFirst={index === 0} // Apply rounded corners on the left for the first item
-              isLast={index === array.length - 1}
-            ></TickBar>
-          ))}
-          {[...Array(temporary_corruption)].map((_, index, array) => (
-            <TickBar
-              key={index}
               $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
               isFirst={index === 0} // Apply rounded corners on the left for the first item
               isLast={index === array.length - 1}
             />
-          ))}
-        </Row>
-        {!browser ? (
-          <Row
-            height={"30%"}
-            className="button-hover"
-            onClick={handleTempAddCorruption}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              handleTempSubCorruption();
-            }}
-          >
-            <Minus>
-              <FontAwesomeIcon icon={faMinus} />
-            </Minus>
-            <Modifier>
-              <h1>{remaining_corruption + clean_corruption}</h1>
-              <h2>
-                {remaining_corruption + corruptionThreshold}
-                <Divider></Divider>
-                {remaining_corruption + clean_corruption}
-              </h2>
-            </Modifier>
-            <Plus>
-              <FontAwesomeIcon icon={faPlus} />
-            </Plus>
-          </Row>
-        ) : null}
-      </Container>
-    </Row>
+          ),
+        )}
+        {[...Array(clean_corruption)].map((_, index, array) => (
+          <TickBar
+            key={index}
+            $bgcolor={Constants.TYPE_COLORS["temporary_corruption"]}
+            isFirst={index === 0} // Apply rounded corners on the left for the first item
+            isLast={index === array.length - 1}
+          ></TickBar>
+        ))}
+        {[...Array(temporary_corruption)].map((_, index, array) => (
+          <TickBar
+            key={index}
+            $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
+            isFirst={index === 0} // Apply rounded corners on the left for the first item
+            isLast={index === array.length - 1}
+          />
+        ))}
+      </Row>
+      <Row
+        height={browser ? "50%" : "30%"}
+        className="button-hover"
+        onClick={handleTempAddCorruption}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          handleTempSubCorruption();
+        }}
+      >
+        <Minus>
+          <FontAwesomeIcon icon={faMinus} />
+        </Minus>
+        <Modifier fontsize={browser ? "16px" : "20px"}>
+          <h1>{remaining_corruption + clean_corruption}</h1>
+          <h2>
+            {remaining_corruption + corruptionThreshold}
+            <Divider></Divider>
+            {remaining_corruption + clean_corruption}
+          </h2>
+        </Modifier>
+        <Plus>
+          <FontAwesomeIcon icon={faPlus} />
+        </Plus>
+      </Row>
+    </Column>
   );
 }
 

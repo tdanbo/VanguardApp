@@ -9,7 +9,7 @@ import AbilityFooter from "./AbilityFooter";
 import CreatureFooter from "./CreatureFooter";
 import EquipmentFooter from "./EquipmentFooter";
 import { GeneralItem } from "../Types";
-
+import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 import {
   faBolt,
   faGhost,
@@ -60,7 +60,16 @@ const Row = styled.div<ContainerProps>`
   flex-basis: 0;
   gap: ${Constants.WIDGET_GAB};
   max-height: ${(props) => props.height};
+
   height: ${(props) => props.height};
+`;
+
+const ExpanderRox = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: ${Constants.WIDGET_GAB};
 `;
 
 const Column = styled.div<DivProps>`
@@ -111,7 +120,6 @@ const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  gap: 10px;
 `;
 
 const OverlayStyles = styled.div`
@@ -453,85 +461,86 @@ function BrowserSection({
       </Container>
       <Container height={"60%"}>
         <Column width="100%">
-          <ItemContainer>
-            {sortedItemList.length === 0 ? (
-              categorySelect === "equipment" ? (
-                <InventoryEntry
-                  session={session}
-                  character={character}
-                  websocket={websocket}
-                  key={"EmptyItem"}
-                  browser={true}
-                  index={1}
-                  item={SearchItem}
-                  equipped={""}
-                  id={""}
-                  setInventoryState={setInventoryState}
-                  gmMode={gmMode}
-                  isCreature={isCreature}
-                />
-              ) : null
-            ) : null}
+          {sortedItemList.length === 0 ? (
+            categorySelect === "equipment" ? (
+              <InventoryEntry
+                session={session}
+                character={character}
+                websocket={websocket}
+                key={"EmptyItem"}
+                browser={true}
+                index={1}
+                item={SearchItem}
+                equipped={""}
+                id={""}
+                setInventoryState={setInventoryState}
+                gmMode={gmMode}
+                isCreature={isCreature}
+              />
+            ) : null
+          ) : null}
 
-            {sortedItemList &&
-              sortedItemList.map((entry, index) => {
-                if (entry.entry === "ItemEntry") {
-                  return (
-                    <InventoryEntry
-                      session={session}
-                      character={character}
-                      websocket={websocket}
-                      key={index}
-                      browser={true}
-                      index={index}
-                      item={entry}
-                      equipped={""}
-                      id={""}
-                      setInventoryState={setInventoryState}
-                      gmMode={gmMode}
-                      isCreature={isCreature}
-                    />
-                  );
-                } else if (entry.entry === "AbilityEntry") {
-                  return (
-                    <AbilityEntryItem
-                      key={index}
-                      ability={entry}
-                      browser={true}
-                      setInventoryState={setInventoryState}
-                      character={character}
-                      session={session}
-                      websocket={websocket}
-                      isCreature={isCreature}
-                    />
-                  );
-                } else if (
-                  entry.entry === "CharacterEntry" &&
-                  categorySelect === "creatures"
-                ) {
-                  return (
-                    <CreatureEntryItem
-                      key={index}
-                      session={session}
-                      character={character}
-                      creature={entry}
-                      browser={true}
-                      encounter={encounter}
-                      setEncounter={setEncounter}
-                      gmMode={gmMode}
-                      setCharacterName={setCharacterName}
-                      setIsCreature={setIsCreature}
-                      websocket={websocket}
-                      setGmMode={setGmMode}
-                      setDeleteAdjust={setDeleteAdjust}
-                    />
-                  );
-                }
-                {
-                  return null; // Add a default case if needed
-                }
-              })}
-          </ItemContainer>
+          {sortedItemList &&
+            sortedItemList.map((entry, index) => {
+              if (entry.entry === "ItemEntry") {
+                return (
+                  <InventoryEntry
+                    session={session}
+                    character={character}
+                    websocket={websocket}
+                    key={index}
+                    browser={true}
+                    index={index}
+                    item={entry}
+                    equipped={""}
+                    id={""}
+                    setInventoryState={setInventoryState}
+                    gmMode={gmMode}
+                    isCreature={isCreature}
+                  />
+                );
+              } else if (entry.entry === "AbilityEntry") {
+                return (
+                  <AbilityEntryItem
+                    key={index}
+                    ability={entry}
+                    browser={true}
+                    setInventoryState={setInventoryState}
+                    character={character}
+                    session={session}
+                    websocket={websocket}
+                    isCreature={isCreature}
+                  />
+                );
+              } else if (
+                entry.entry === "CharacterEntry" &&
+                categorySelect === "creatures"
+              ) {
+                return (
+                  <CreatureEntryItem
+                    key={index}
+                    session={session}
+                    character={character}
+                    creature={entry}
+                    browser={true}
+                    encounter={encounter}
+                    setEncounter={setEncounter}
+                    gmMode={gmMode}
+                    setCharacterName={setCharacterName}
+                    setIsCreature={setIsCreature}
+                    websocket={websocket}
+                    setGmMode={setGmMode}
+                    setDeleteAdjust={setDeleteAdjust}
+                  />
+                );
+              }
+              {
+                return null; // Add a default case if needed
+              }
+            })}
+          {Array.from({ length: 20 }).map((_, index) => {
+            return <InventoryEntryEmpty key={index} />;
+          })}
         </Column>
       </Container>
       <Container height={"3%"}>

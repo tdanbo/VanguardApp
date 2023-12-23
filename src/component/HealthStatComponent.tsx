@@ -9,17 +9,37 @@ interface PortraitProps {
   src: string;
 }
 
-const Container = styled.div`
+interface ContainerProps {
+  width: string;
+}
+
+const Container = styled.div<ContainerProps>`
   display: flex;
   flex-grow: 1;
-  flex-direction: column;
+  flex-direction: row;
   gap: 2px;
+  width: ${(props) => props.width};
 `;
 // background-image: url("/dist/assets/portrait1.jpeg");
 
 interface DivProps {
   height: string;
 }
+
+interface ColumnProps {
+  width: string;
+}
+
+const Column = styled.div<ColumnProps>`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: 2px;
+  max-width: ${(props) => props.width};
+  overflow: scroll;
+  scrollbar-width: none !important;
+`;
 
 const Row = styled.div<DivProps>`
   display: flex;
@@ -61,11 +81,10 @@ const TickBar = styled.div<BgColor>`
 `;
 
 const Divider = styled.div`
-  display: flex;
   background-color: rgba(255, 255, 255, 0.5);
   width: 2px;
   height: 16px;
-  margin: 4px;
+  margin: 0px 4px 0px 4px;
 `;
 
 const Plus = styled.button`
@@ -104,8 +123,13 @@ const Minus = styled.button`
   max-width: 30px;
 `;
 
-const Modifier = styled.button`
+interface ButtonProps {
+  fontsize: string;
+}
+
+const Modifier = styled.button<ButtonProps>`
   display: flex;
+  flex-direction: row;
   flex-grow: 1;
   align-items: center;
   justify-content: center;
@@ -114,7 +138,6 @@ const Modifier = styled.button`
   color: ${Constants.WIDGET_SECONDARY_FONT};
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
-  width: 50%;
   h1,
   h2 {
     margin: 0;
@@ -126,11 +149,11 @@ const Modifier = styled.button`
   }
   h1 {
     font-weight: bold;
-    font-size: 20px;
+    font-size: ${(props) => props.fontsize};
   }
   h2 {
     display: none;
-    font-size: 20px;
+    font-size: ${(props) => props.fontsize};
   }
   &:hover h1 {
     display: none;
@@ -186,15 +209,8 @@ function HealthStatComponent({
   const remaining_toughness = maxToughness - character.health.damage;
 
   return (
-    <Container>
-      <Row
-        height="100%"
-        onClick={handleSubToughness}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          handleAddToughness();
-        }}
-      >
+    <Column width={"100%"}>
+      <Row height={browser ? "50%" : "70%"}>
         {Array.from({ length: remaining_toughness }).map((_, index, array) => {
           return (
             <TickBar
@@ -216,31 +232,37 @@ function HealthStatComponent({
           );
         })}
       </Row>
-      {!browser ? (
-        <Row height="30%" className="button-hover">
-          <Minus>
-            <FontAwesomeIcon
-              icon={faMinus}
-              color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
-            />
-          </Minus>
-          <Modifier>
-            <h1>{remaining_toughness}</h1>
-            <h2>
-              {maxToughness}
-              <Divider></Divider>
-              {remaining_toughness}
-            </h2>
-          </Modifier>
-          <Plus>
-            <FontAwesomeIcon
-              icon={faPlus}
-              color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
-            />
-          </Plus>
-        </Row>
-      ) : null}
-    </Container>
+      <Row
+        height={browser ? "50%" : "30%"}
+        className="button-hover"
+        onClick={handleSubToughness}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          handleAddToughness();
+        }}
+      >
+        <Minus>
+          <FontAwesomeIcon
+            icon={faMinus}
+            color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+          />
+        </Minus>
+        <Modifier fontsize={browser ? "16px" : "20px"}>
+          <h1>{remaining_toughness}</h1>
+          <h2>
+            {maxToughness}
+            <Divider></Divider>
+            {remaining_toughness}
+          </h2>
+        </Modifier>
+        <Plus>
+          <FontAwesomeIcon
+            icon={faPlus}
+            color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+          />
+        </Plus>
+      </Row>
+    </Column>
   );
 }
 

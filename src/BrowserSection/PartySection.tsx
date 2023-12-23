@@ -37,7 +37,7 @@ const Column = styled.div<DivProps>`
   flex-direction: column;
   flex-grow: 1;
   flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
+  gap: 5px;
   max-width: ${(props) => props.width};
 `;
 

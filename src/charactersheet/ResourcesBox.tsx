@@ -40,7 +40,7 @@ const Container = styled.div`
 
 const CurrencyContainer = styled.button`
   display: flex;
-  flex: 1;
+  flex-direction: row;
   flex-grow: 1;
   border-radius: ${Constants.BORDER_RADIUS};
   justify-content: center;
@@ -159,6 +159,7 @@ const IconButton = styled.div<IconButtonProps>`
 
 const ResultBox = styled.div`
   flex: 1;
+
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   border: 1px solid ${Constants.WIDGET_BORDER};
   display: flex;

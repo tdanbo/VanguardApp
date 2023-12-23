@@ -18,13 +18,40 @@ const Container = styled.div`
   border: 1px solid ${Constants.WIDGET_BORDER};
 `;
 
+interface PortraitCenterProps {
+  src: string;
+}
+
+const PortraitCenter = styled.div<PortraitCenterProps>`
+  display: flex;
+
+  flex-direction: row;
+  font-size: 14px;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  background: linear-gradient(
+      rgba(${Constants.COMBAT_BACKGROUND}, 0.925),
+      rgba(${Constants.COMBAT_BACKGROUND}, 0.925)
+    ),
+    url(${(props) => props.src});
+  background-size: cover;
+  background-position: center 25%;
+
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 50%;
+`;
+
+interface BgColor {
+  $bgcolor: string;
+}
+
 const LeftControl = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  width: 20px;
-  max-width: 50px;
   height: 100%;
   align-items: center;
   justify-content: center;
@@ -36,126 +63,37 @@ const RightControl = styled.div`
   flex-direction: column;
   flex-grow: 1;
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  width: 20px;
-  max-width: 50px;
   height: 100%;
   align-items: center;
   justify-content: center;
   color: ${Constants.WIDGET_BORDER};
 `;
 
-interface PortraitCenterProps {
-  src: string;
-}
-
-const PortraitCenter = styled.div<PortraitCenterProps>`
-  font-size: 1rem;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  background: linear-gradient(
-      rgba(${Constants.COMBAT_BACKGROUND}, 0.925),
-      rgba(${Constants.COMBAT_BACKGROUND}, 0.925)
-    ),
-    url(${(props) => props.src});
-  background-size: cover;
-  background-position: center 25%;
-
+const DeadControl = styled.div`
   display: flex;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-`;
-
-interface BgColor {
-  $bgcolor: string;
-}
-
-const RightTickBar = styled.div<BgColor>`
-  display: flex;
+  flex-direction: column;
   flex-grow: 1;
-  background-color: ${(props) => props.$bgcolor};
-  border-right: 1px solid ${Constants.WIDGET_BORDER};
-  border-top: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-`;
-
-const Divider = styled.div`
-  display: flex;
-  background-color: rgba(255, 255, 255, 0.5);
-  width: 2px;
-  height: 16px;
-  margin: 4px;
-`;
-
-// const LeftControl = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   flex-grow: 1;
-//   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-//   width: 20px;
-//   max-width: 50px;
-//   height: 100%;
-//   align-items: center;
-//   justify-content: center;
-//   color: ${Constants.WIDGET_BORDER};
-// `;
-
-const ValueBoxLeft = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  flex-grow: 1;
-  justify-content: center;
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-
-  max-width: 50px;
-  min-width: 50px;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-top-left-radius: ${Constants.BORDER_RADIUS};
-  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
-
-  h1,
-  h2 {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-
-  h1 {
-    font-weight: bold;
-    font-size: 20px;
-  }
-
-  h2 {
-    display: none;
-    font-size: 14px;
-  }
-
-  &:hover h1 {
-    display: none;
-  }
-
-  &:hover h2 {
-    display: flex;
-  }
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: ${Constants.WIDGET_BORDER};
+  border-radius: ${Constants.BORDER_RADIUS};
 `;
 
-const Row = styled.div`
+interface DivProps {
+  width: string;
+}
+
+const Column = styled.div<DivProps>`
   display: flex;
-  flex-direction: row;
-  flex: 1;
-  max-width: 200px;
-  background-color: ${Constants.BACKGROUND};
-  border-radius: ${Constants.BORDER_RADIUS};
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: 1px;
+  max-width: ${(props) => props.width};
+  overflow: scroll;
+  scrollbar-width: none !important;
 `;
 
 import { Socket } from "socket.io-client";
@@ -208,27 +146,7 @@ function CharacterBox({
 
   return (
     <Container>
-      <CorruptionStatComponent
-        character={character}
-        session={session}
-        websocket={websocket}
-        isCreature={isCreature}
-        browser={true}
-      />
-      <PortraitCenter
-        onClick={handleOnClick}
-        src={CharacterPortraits[character.portrait]}
-      >
-        {character.name}
-      </PortraitCenter>
-      <HealthStatComponent
-        character={character}
-        session={session}
-        websocket={websocket}
-        isCreature={isCreature}
-        browser={true}
-      />
-      {/* {remaining_toughness === 0 ? (
+      {remaining_toughness === 0 ? (
         killCharacter ? (
           <LeftControl
             onClick={() => setKillCharacter(false)}
@@ -248,8 +166,13 @@ function CharacterBox({
           </LeftControl>
         )
       ) : (
-        <Row>
-        </Row>
+        <CorruptionStatComponent
+          character={character}
+          session={session}
+          websocket={websocket}
+          isCreature={isCreature}
+          browser={true}
+        />
       )}
 
       {killCharacter ? (
@@ -269,13 +192,13 @@ function CharacterBox({
       )}
       {remaining_toughness === 0 ? (
         killCharacter ? (
-          <RightControl onClick={handleDeleteCharacter}>
+          <DeadControl onClick={handleDeleteCharacter}>
             <FontAwesomeIcon
               icon={faCheck}
               style={{ fontSize: "12px", color: Constants.BRIGHT_GREEN }}
               title={"Delete " + character.name}
             />
-          </RightControl>
+          </DeadControl>
         ) : (
           <RightControl
             onClick={() => setKillCharacter(true)}
@@ -285,29 +208,14 @@ function CharacterBox({
           </RightControl>
         ) // Remove the extra curly braces here
       ) : (
-        <Row>
-          <ValueBoxLeft>
-            <h1>{remaining_toughness}</h1>
-            <h2>
-              {remaining_toughness}
-              <Divider></Divider>
-              {maxToughness}
-            </h2>
-          </ValueBoxLeft>
-          {Array.from({ length: remaining_toughness }).map((_, index) => (
-            <RightTickBar
-              key={index}
-              $bgcolor={Constants.TYPE_COLORS["health"]}
-            />
-          ))}
-          {Array.from({ length: damage_toughness }).map((_, index) => (
-            <RightTickBar
-              key={index}
-              $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
-            />
-          ))}
-        </Row>
-      )} */}
+        <HealthStatComponent
+          character={character}
+          session={session}
+          websocket={websocket}
+          isCreature={isCreature}
+          browser={true}
+        />
+      )}
     </Container>
   );
 }
