@@ -89,9 +89,9 @@ const ValueName = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: bold;
-  color: ${Constants.WIDGET_BACKGROUND};
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
   letter-spacing: 1px;
   width: 50%;
 `;

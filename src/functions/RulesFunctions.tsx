@@ -93,3 +93,67 @@ export const GetCorruption = (character: CharacterEntry) => {
     character.stats.resolute.value +
     Math.ceil(character.stats.resolute.value / 2);
 };
+
+export function GetBurnRate(character: CharacterEntry) {
+  let burn_rate = 0;
+
+  const storageModifiers = {
+    "Storage 2": 0,
+    "Storage 4": 1,
+    "Storage 6": 2,
+    "Storage 8": 3,
+    "Storage 10": 4,
+  };
+
+  character.inventory.forEach((item) => {
+    if (!item || !item.quality) return;
+
+    item.quality.forEach((quality) => {
+      Object.entries(storageModifiers).forEach(([key, modifiers]) => {
+        if (quality.includes(key)) {
+          burn_rate += modifiers;
+        }
+      });
+    });
+  });
+
+  if (character.details.xp_earned === 0) {
+    burn_rate += 0;
+  } else if (character.details.xp_earned <= 50) {
+    burn_rate += 1;
+  } else if (character.details.xp_earned <= 150) {
+    burn_rate += 2;
+  } else if (character.details.xp_earned <= 300) {
+    burn_rate += 3;
+  } else if (character.details.xp_earned <= 600) {
+    burn_rate += 4;
+  } else {
+    burn_rate += 5;
+  }
+
+  return burn_rate;
+}
+
+export function GetUsedSlots(character: CharacterEntry) {
+  let used_slots = character.inventory.length;
+
+  const storageModifiers = [
+    "Storage 2",
+    "Storage 4",
+    "Storage 6",
+    "Storage 8",
+    "Storage 10",
+  ];
+
+  character.inventory.forEach((item) => {
+    if (!item || !item.quality) return;
+
+    item.quality.forEach((quality) => {
+      if (storageModifiers.includes(quality)) {
+        used_slots -= 1;
+      }
+    });
+  });
+
+  return used_slots;
+}

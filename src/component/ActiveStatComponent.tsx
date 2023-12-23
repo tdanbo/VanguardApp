@@ -20,6 +20,7 @@ import {
   faPlus,
   faSkull,
 } from "@fortawesome/free-solid-svg-icons";
+import { toTitleCase } from "../functions/UtilityFunctions";
 
 const Container = styled.div`
   display: flex;
@@ -71,9 +72,9 @@ const ActiveValue = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: bold;
-  color: ${Constants.WIDGET_BACKGROUND};
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
   letter-spacing: 1px;
   width: 50%;
 `;
@@ -325,7 +326,7 @@ function ActiveStatComponent({
         </DiceIcon>
         <Value onClick={handleActiveRoll} className="dice-icon-hover">
           {Math.max(active.value + modValue, 1)}
-          <ActiveValue>{active_name.toUpperCase()}</ActiveValue>
+          <ActiveValue>{toTitleCase(active_name)}</ActiveValue>
         </Value>
         {isAttackActive(active) ? (
           <>

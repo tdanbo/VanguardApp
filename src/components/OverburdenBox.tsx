@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterEntry } from "../Types";
-import { GetUsedSlots } from "../functions/CharacterFunctions";
+import { GetUsedSlots } from "../functions/RulesFunctions";
 import { GetMaxSlots } from "../functions/RulesFunctions";
 
 const Container = styled.div`
