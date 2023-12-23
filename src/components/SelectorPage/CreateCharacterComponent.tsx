@@ -273,17 +273,9 @@ function CreateCharacterComponent({
     creature_id = uuidv4();
   }
 
-  let npc_state = true;
-  if (source === "characterSelect") {
-    npc_state = false;
-  } else {
-    npc_state = true;
-  }
-
   const NewCharacterEntry: CharacterEntry = {
     name: name,
     id: creature_id,
-    npc: npc_state,
     portrait: characterPortrait,
     details: {
       race: race,
@@ -291,7 +283,11 @@ function CreateCharacterComponent({
       xp_earned: characterXp,
       modifier: 0,
     },
-    damage: 0,
+    health: {
+      damage: 0,
+      corruption: 0,
+      shield: 0,
+    },
     stats: {
       cunning: { value: stats[1].value, mod: 0 },
       discreet: { value: stats[2].value, mod: 0 },
@@ -324,10 +320,6 @@ function CreateCharacterComponent({
       casting: { stat: "resolute", value: 0 },
       sneaking: { stat: "discreet", value: 0 },
     },
-    corruption: {
-      permanent: 0,
-      temporary: 0,
-    },
     abilities: [],
     inventory: [],
     equipment: {
@@ -337,7 +329,6 @@ function CreateCharacterComponent({
     },
     rations: { food: 0, water: 0 },
     money: 0,
-    entourage: [],
     entry: "CharacterEntry",
   };
 

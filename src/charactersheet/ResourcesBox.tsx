@@ -34,15 +34,13 @@ const BronzeColor = "rgba(140, 110, 90, 0.7)";
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
-
-  height: 35px;
   gap: 20px;
   justify-content: right;
 `;
 
 const CurrencyContainer = styled.button`
   display: flex;
-  flex: 1;
+  flex-direction: row;
   flex-grow: 1;
   border-radius: ${Constants.BORDER_RADIUS};
   justify-content: center;
@@ -161,6 +159,7 @@ const IconButton = styled.div<IconButtonProps>`
 
 const ResultBox = styled.div`
   flex: 1;
+
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   border: 1px solid ${Constants.WIDGET_BORDER};
   display: flex;

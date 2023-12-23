@@ -135,9 +135,11 @@ function CreatureEntryItem({
     const newEncounterCreature: CharacterEntry = {
       ...creature,
       name: suffixLetter(),
-      damage: 0,
       id: uuidv4(),
     };
+
+    newEncounterCreature.health.damage = 0;
+
     setEncounter([...encounter, newEncounterCreature]);
     setGmMode(true);
   };

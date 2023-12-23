@@ -13,7 +13,7 @@ import {
   SessionEntry,
 } from "./Types";
 import CombatSection from "./components/Sections/CombatSection";
-
+import PartySection from "./BrowserSection/PartySection";
 import CharacterSheet from "./charactersheet/CharacterSheet";
 import GameMaster from "./gamemaster/GameMaster";
 
@@ -29,9 +29,23 @@ const Row = styled.div`
 const Column = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 2;
   background-color: ${Constants.BACKGROUND};
   height: 100%;
+  gap: 25px;
+  padding: 25px 50px 25px 50px;
+  box-sizing: border-box;
+`;
+
+const SideColumn = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: ${Constants.BACKGROUND};
+  height: 100%;
+  gap: 25px;
+  padding: 25px 25px 25px 25px;
+  box-sizing: border-box;
 `;
 
 function App() {
@@ -53,7 +67,7 @@ function App() {
     : session.characters.find((entry) => entry.name === characterName) ||
       EmptyCharacter;
 
-  const [browserState, setBrowserState] = useState(1);
+  const [browserState, setBrowserState] = useState(0);
   const [inventoryState, setInventoryState] = useState(1);
 
   const [creatureEncounter, setCreatureEncounter] = useState<CharacterEntry[]>(
@@ -90,7 +104,18 @@ function App() {
           setIsGm={setIsGm}
         />
       ) : null}
-      <Column>
+      <SideColumn>
+        <PartySection
+          session={session}
+          websocket={websocket}
+          setCharacterName={setCharacterName}
+          setIsCreature={setIsCreature}
+          isCreature={isCreature}
+          isConnected={isConnected}
+          isGm={isGm}
+          gmMode={gmMode}
+          setGmMode={setGmMode}
+        />
         {browserState === 0 ? (
           <BrowserSection
             isGm={isGm}
@@ -112,7 +137,7 @@ function App() {
             setCategorySelect={setCategorySelect}
           />
         ) : null}
-      </Column>
+      </SideColumn>
       <Column>
         {gmMode ? (
           <GameMaster
@@ -151,14 +176,14 @@ function App() {
           />
         )}
       </Column>
-      <Column>
+      <SideColumn>
         <CombatSection
           scrollRef={scrollableRef}
           session={session}
           character={character}
           websocket={websocket}
         />
-      </Column>
+      </SideColumn>
     </Row>
   );
 }

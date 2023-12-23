@@ -1,19 +1,11 @@
 import { Socket } from "socket.io-client";
-import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import InventoryEntry from "../components/Entries/InventoryEntry";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 import { GetMaxSlots } from "../functions/RulesFunctions";
-const Container = styled.div<{ hidden: boolean }>`
-  display: ${(props) => (props.hidden ? "none" : "flex")};
-  flex-direction: column;
-  flex-grow: 1;
-  gap: 10px;
-`;
 
 interface NavigationProps {
-  inventoryState: number;
   character: CharacterEntry;
   session: SessionEntry;
   websocket: Socket;
@@ -28,7 +20,6 @@ function sortInventory(a: ItemEntry, b: ItemEntry): number {
 }
 
 function InventorySection({
-  inventoryState,
   character,
   session,
   websocket,
@@ -40,7 +31,7 @@ function InventorySection({
   const totalSlots = GetMaxSlots(character) * 2;
 
   return (
-    <Container hidden={inventoryState === 0 || inventoryState === 2}>
+    <>
       {Array.from({ length: totalSlots }).map((_, index) => {
         const item = sortedInventory[index];
         if (item !== undefined && item.category !== "container") {
@@ -61,10 +52,10 @@ function InventorySection({
           );
         }
       })}
-      {Array.from({ length: 15 }).map((_, index) => {
+      {Array.from({ length: 20 }).map((_, index) => {
         return <InventoryEntryEmpty key={index} />;
       })}
-    </Container>
+    </>
   );
 }
 

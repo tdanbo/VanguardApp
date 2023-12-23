@@ -263,7 +263,9 @@ function EncounterCreatureEntry({
   const attack = ModifierConverter[actives.attack.value];
   const defense = ModifierConverter[actives.defense.value];
   const hp = Math.max(creatureClone.stats.strong.value, 10);
-  const [currentDamage, setCurrentDamage] = useState<number>(creature.damage!);
+  const [currentDamage, setCurrentDamage] = useState<number>(
+    creature.health.damage!,
+  );
 
   const handleAdjustHp = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault(); // Prevent the context menu from appearing on right-click
@@ -277,7 +279,7 @@ function EncounterCreatureEntry({
 
     encounter_clone.forEach((encounterCreature) => {
       if (encounterCreature.id === creature.id) {
-        encounterCreature.damage = damage_calc;
+        encounterCreature.health.damage = damage_calc;
       }
     });
 

@@ -13,7 +13,7 @@ type Props = {
 
 const DiceContainer = styled.button`
   display: flex;
-  flex: 1;
+  flex-direction: row;
   flex-grow: 1;
   border-radius: ${Constants.BORDER_RADIUS};
   justify-content: center;
@@ -23,8 +23,6 @@ const DiceContainer = styled.button`
   background-color: ${Constants.WIDGET_BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
   color: ${Constants.WIDGET_PRIMARY_FONT};
-  height: 35px;
-  max-width: 49px;
 `;
 
 function DiceBox({

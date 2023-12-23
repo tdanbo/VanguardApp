@@ -1,48 +1,54 @@
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import { CharacterEntry, SessionEntry } from "../Types";
-import CharacterNavigation from "../components/NavigationControl/CharacterNavigation";
 import ResetCreatureEncounter from "../components/ResetCreatureEncounter";
 import CreatureEncounterSection from "../components/Sections/CreatureEncounterSection";
 import TimeTrackBox from "../gamemaster/TimeTrackBox";
 import TravelBox from "../gamemaster/TravelBox";
-const HeaderContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  min-height: 50px;
-  margin-left: 90px;
-  margin-top: 5px;
-  gap: 20px;
-`;
+import * as Constants from "../Constants";
 
-const FooterCenterContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  min-height: 50px;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-bottom: 5px;
-  gap: 20px;
-`;
+interface ContainerProps {
+  height: string;
+}
 
-const EncounterContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-
-  margin: 20px;
-  gap: 20px;
-  height: 100%;
-
-  overflow: scroll;
-  scrollbar-width: none !important;
-`;
-
-const ScrollContainer = styled.div`
+const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  overflow: scroll;
-  scrollbar-width: none !important;
+  gap: ${Constants.WIDGET_GAB};
+  height: ${(props) => props.height};
+  max-height: ${(props) => props.height};
+`;
+
+interface DivProps {
+  width: string;
+}
+
+const Row = styled.div<DivProps>`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: ${Constants.WIDGET_GAB};
+  max-width: ${(props) => props.width};
+`;
+
+const DynamicContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  gap: ${Constants.WIDGET_GAB};
+  height: 0px; /* or another fixed value */
+`;
+
+const ScrollColumn = styled.div<DivProps>`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: ${Constants.WIDGET_GAB};
+  max-width: ${(props) => props.width};
+  overflow-y: scroll;
 `;
 
 interface GameMasterProps {
@@ -65,35 +71,27 @@ interface GameMasterProps {
 
 function GameMaster({
   session,
-  browserState,
-  gmMode,
+
   creatureEncounter,
-  setBrowserState,
+
   setCreatureEncounter,
   onDeleteCreature,
   setGmMode,
   websocket,
-  setSession,
-  isGm,
+
   isCreature,
   setIsCreature,
   setCharacterName,
 }: GameMasterProps) {
   return (
     <>
-      <HeaderContainer>
-        <TravelBox session={session} websocket={websocket} />
-      </HeaderContainer>
-      <EncounterContainer key="container">
-        <CharacterNavigation
-          browserState={browserState}
-          setBrowserState={setBrowserState}
-          gmMode={gmMode}
-          setGmMode={setGmMode}
-          setSession={setSession}
-          isGm={isGm}
-        />
-        <ScrollContainer>
+      <Container height={"40px"}>
+        <Row width={"100%"}>
+          <TravelBox session={session} websocket={websocket} />
+        </Row>
+      </Container>
+      <DynamicContainer key="container">
+        <ScrollColumn width="100%">
           <CreatureEncounterSection
             encounter={creatureEncounter}
             setCreatureEncounter={setCreatureEncounter}
@@ -105,12 +103,12 @@ function GameMaster({
             setGmMode={setGmMode}
             setCharacterName={setCharacterName}
           />
-        </ScrollContainer>
-      </EncounterContainer>
-      <FooterCenterContainer>
+        </ScrollColumn>
+      </DynamicContainer>
+      <Container height={"30px"}>
         <ResetCreatureEncounter setCreatureEncounter={setCreatureEncounter} />
         <TimeTrackBox session={session} websocket={websocket} />
-      </FooterCenterContainer>
+      </Container>
     </>
   );
 }

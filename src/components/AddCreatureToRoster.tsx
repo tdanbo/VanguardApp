@@ -111,7 +111,6 @@ function AddCreatureToRoster({
   const handleSubmit = async () => {
     character_template.name = member;
     character_template.portrait = characterPortrait;
-    character_template.npc = false;
     character_template.id = session.id;
     session.characters.push(character_template);
     update_session(session, character_template, false, websocket);

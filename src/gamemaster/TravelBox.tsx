@@ -19,7 +19,7 @@ import {
   MainContainer,
   Title,
 } from "../components/SelectorPage/SelectorStyles";
-import { GetBurnRate } from "../functions/CharacterFunctions";
+import { GetBurnRate } from "../functions/RulesFunctions";
 import { useRoll } from "../functions/CombatFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 export const ModalContainer = styled.div`
@@ -40,9 +40,6 @@ const Container = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: row;
-  margin-right: 20px;
-  margin-top: 10px;
-  height: 37px;
 `;
 
 const Overlay = styled.div`
@@ -411,14 +408,14 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
       const burnrate = GetBurnRate(character);
       if (character.rations.food >= burnrate) {
         character.rations.food -= burnrate;
-        if (character.damage > 0) {
-          character.damage -= 1;
+        if (character.health.damage > 0) {
+          character.health.damage -= 1;
         }
       }
 
       if (character.rations.water >= burnrate) {
         character.rations.water -= burnrate;
-        character.corruption.temporary = 0;
+        character.health.shield = 0;
       }
     });
 

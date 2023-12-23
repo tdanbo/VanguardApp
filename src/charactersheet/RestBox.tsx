@@ -1,5 +1,5 @@
 import * as Constants from "../Constants";
-import { GetBurnRate } from "../functions/CharacterFunctions";
+import { GetBurnRate } from "../functions/RulesFunctions";
 
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

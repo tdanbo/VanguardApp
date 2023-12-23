@@ -1,18 +1,10 @@
 import { Socket } from "socket.io-client";
-import styled from "styled-components";
 import * as Constants from "../Constants";
 import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
 import AbilityEntryItem from "../components/Entries/AbilityEntryItem";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
-const Container = styled.div<{ hidden: boolean }>`
-  display: ${(props) => (props.hidden ? "none" : "flex")};
-  flex-direction: column;
-  flex-grow: 1;
-  gap: 10px;
-`;
 
 interface NavigationProps {
-  inventoryState: number;
   character: CharacterEntry;
   session: SessionEntry;
   websocket: Socket;
@@ -27,7 +19,6 @@ function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
 }
 
 function AbilitySection({
-  inventoryState,
   character,
   session,
   websocket,
@@ -36,7 +27,7 @@ function AbilitySection({
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
 
   return (
-    <Container hidden={inventoryState === 0 || inventoryState === 1}>
+    <>
       {sortedAbilities.map((ability, index) => {
         return (
           <AbilityEntryItem
@@ -50,10 +41,10 @@ function AbilitySection({
           />
         );
       })}
-      {Array.from({ length: 15 }).map((_, index) => {
+      {Array.from({ length: 20 }).map((_, index) => {
         return <InventoryEntryEmpty key={index} />;
       })}
-    </Container>
+    </>
   );
 }
 

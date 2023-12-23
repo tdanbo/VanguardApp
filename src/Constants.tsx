@@ -3,25 +3,30 @@
 export const API = "https://vanguard-api.onrender.com";
 export const WEBSOCKET = "wss://vanguard-api.onrender.com/session/";
 
+export const VW = "5.0vw";
+
 export const COMBAT_BACKGROUND = "19, 23, 22";
 
 export const BACKGROUND = "rgba(19, 23, 22, 1.0)";
 export const WIDGET_PRIMARY_FONT = "rgba(255, 255, 255, 0.85)";
 export const WIDGET_SECONDARY_FONT = "rgba(255, 255, 255, 0.60)";
+export const WIDGET_SECONDARY_FONT_INACTIVE = "rgba(255, 255, 255, 0.20)";
 export const WIDGET_SECONDARY_HIGHLIGHT = "rgba(255, 255, 255, 0.4)";
 // export const WIDGET_SECONDARY_FONT = "rgba(180, 140, 90, 0.75)";
 // export const WIDGET_SECONDARY_FONT = "rgb(173, 162, 132)";
 
 export const WIDGET_BACKGROUND = "rgba(255, 255, 255, 0.075)";
+
 export const WIDGET_BACKGROUND_EMPTY = "rgba(255, 255, 255, 0.025)";
 export const WIDGET_BORDER = "rgba(255, 255, 255, 0.05)";
 
 export const BORDER_RADIUS = "3px";
-export const WIDGET_GAB = "2px";
+export const WIDGET_GAB = "10px";
 
 export type ColorType = string;
 
 export const PURPLE = "#60495c";
+export const DESAT_PURPLE = "#4f2f4b";
 export const RED = "#925833";
 export const BLUE = "#495C60";
 export const BLUE_VAR = "#60b4bf";
@@ -34,6 +39,9 @@ export const BRIGHT_GREEN = "#339249";
 export const GREY = "#8f8e89";
 export const DARK = "#262223";
 export const NIGHT = "#336980";
+export const CREAM = "#e3dcca";
+export const DARK_CREAM = "#ccc6b6";
+
 export const TYPE_COLORS: Record<ColorType, string> = {
   health: BRIGHT_RED,
   attack: BRIGHT_RED,
@@ -75,6 +83,8 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   trait: GREEN,
   resting: NIGHT,
   container: BLUE_VAR,
+  permanent_corruption: DESAT_PURPLE,
+  temporary_corruption: PURPLE,
 };
 
 export const CATEGORY_FILTER = [

@@ -4,35 +4,50 @@ import styled from "styled-components";
 import { CharacterEntry, CombatEntry, SessionEntry } from "../../Types";
 import DiceSection from "../../components/Sections/DiceSection";
 import CombatEntryItem from "../CombatEntryItem";
-const CombatContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 20px;
-  gap: 20px;
-  height: 100%;
-  overflow: scroll;
-  scrollbar-width: none !important;
-`;
+import * as Constants from "../../Constants";
+type DivProps = {
+  width: string;
+};
+interface ContainerProps {
+  height: string;
+}
 
-const Container = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-start;
-  gap: 10px;
-  width: 100%;
-`;
-
-const FooterRightContainer = styled.div`
+const DynamicContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: flex-end; // Align children to the right
-  min-height: 50px;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-bottom: 5px;
-  gap: 20px;
+  flex-grow: 1;
+  gap: ${Constants.WIDGET_GAB};
+  height: 0px; /* or another fixed value */
+`;
+
+const Container = styled.div<ContainerProps>`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  gap: ${Constants.WIDGET_GAB};
+  height: ${(props) => props.height};
+  max-height: ${(props) => props.height};
+`;
+
+const Row = styled.div<DivProps>`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: ${Constants.WIDGET_GAB};
+  max-width: ${(props) => props.width};
+`;
+
+const Column = styled.div<DivProps>`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: ${Constants.WIDGET_GAB};
+  max-width: ${(props) => props.width};
+  justify-content: flex-start;
+  overflow: scroll;
+  scrollbar-width: none !important;
 `;
 
 import {
@@ -142,8 +157,8 @@ function CombatSection({
 
   return (
     <>
-      <CombatContainer ref={scrollRef}>
-        <Container>
+      <DynamicContainer>
+        <Column ref={scrollRef} width={"100%"}>
           {session.combatlog.map((item, index) => (
             <CombatEntryItem
               key={index}
@@ -152,15 +167,17 @@ function CombatSection({
               session={session}
             />
           ))}
-        </Container>
-      </CombatContainer>
-      <FooterRightContainer>
-        <DiceSection
-          character={character}
-          session={session}
-          websocket={websocket}
-        />
-      </FooterRightContainer>
+        </Column>
+      </DynamicContainer>
+      <Container height={"30px"}>
+        <Row width={"100%"}>
+          <DiceSection
+            character={character}
+            session={session}
+            websocket={websocket}
+          />
+        </Row>
+      </Container>
     </>
   );
 }

@@ -1,7 +1,6 @@
 import { cloneDeep } from "lodash";
 import { CharacterEntry } from "../Types";
-import { GetUsedSlots } from "./CharacterFunctions";
-import { GetMaxSlots } from "./RulesFunctions";
+import { GetMaxSlots, GetUsedSlots } from "./RulesFunctions";
 import { Armored } from "./rules/Armored";
 import { ArmoredMystic } from "./rules/ArmoredMystic";
 import { Berserker } from "./rules/Berserker";

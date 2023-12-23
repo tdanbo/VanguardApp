@@ -9,15 +9,13 @@ import AbilityFooter from "./AbilityFooter";
 import CreatureFooter from "./CreatureFooter";
 import EquipmentFooter from "./EquipmentFooter";
 import { GeneralItem } from "../Types";
-
+import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 import {
   faBolt,
   faGhost,
   faPlus,
   faSearch,
   faShield,
-  faUsers,
-  faWifi,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect } from "react";
@@ -32,60 +30,48 @@ import {
 
 import { useState } from "react";
 import AbilityEntryItem from "../components/Entries/AbilityEntryItem";
-import CharacterBox from "../components/Entries/CharacterBox";
 import CreatureEntryItem from "../components/Entries/CreatureEntryItem";
 import InventoryEntry from "../components/Entries/InventoryEntry";
 import { toTitleCase } from "../functions/UtilityFunctions";
 
-const CombatContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 20px;
-  gap: 20px;
-  height: 100%;
-  overflow: scroll;
-  scrollbar-width: none !important;
-  border-radius: ${Constants.BORDER_RADIUS};
-`;
+interface ContainerProps {
+  height: string;
+}
 
-const HeaderContainer = styled.div`
+const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: row;
-  min-height: 50px;
-  margin-left: 20px;
-  margin-top: 5px;
-  gap: 20px;
-`;
-
-const FooterLeftContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end; // Align children to the right
-  min-height: 50px;
-  margin-left: 20px;
-  margin-bottom: 5px;
-  gap: 20px;
-`;
-
-// const Container = styled.div`
-//   display: ${(props) => (props.hidden ? "none" : "flex")};
-//   flex-direction: col;
-//   flex-grow: 1;
-//   gap: 10px;
-//   align-items: center;
-// `;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: col;
   flex-grow: 1;
-  gap: 10px;
-  align-items: center;
+  gap: ${Constants.WIDGET_GAB};
+  height: ${(props) => props.height};
+  max-height: ${(props) => props.height};
+  justify-content: flex-end;
+`;
+
+interface DivProps {
+  width: string;
+}
+
+const ExpandRow = styled.div<DivProps>`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: ${Constants.WIDGET_GAB};
+  max-width: ${(props) => props.width};
+  margin-top: 91px;
+`;
+
+const DynamicContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  gap: ${Constants.WIDGET_GAB};
+  height: 0px; /* or another fixed value */
 `;
 
 const Input = styled.input`
+  display: flex;
   flex-grow: 1;
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -93,7 +79,6 @@ const Input = styled.input`
   color: ${Constants.WIDGET_SECONDARY_FONT};
   font-weight: bold;
   text-align: center;
-  height: 35px;
 `;
 
 interface ButtonProps {
@@ -113,51 +98,10 @@ const Button = styled.button<ButtonProps>`
       : Constants.WIDGET_PRIMARY_FONT};
   cursor: pointer;
   font-size: 16px;
-  width: 50px;
-  max-width: 50px;
-  height: 40px;
+  max-width: 40px;
   justify-content: center;
   align-items: center;
   opacity: ${(props) => (props.$isactive === "true" ? 1 : 0.5)};
-`;
-
-const AddButton = styled.button`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  max-height: 35px;
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  padding-right: 50px;
-`;
-
-const WebsocketStatus = styled.button`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  max-height: 35px;
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  width: 40px;
-  max-width: 40px;
-  height: 40px;
-`;
-
-const ItemContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  gap: 10px;
 `;
 
 const OverlayStyles = styled.div`
@@ -176,6 +120,16 @@ const OverlayStyles = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const ScrollColumn = styled.div<DivProps>`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: ${Constants.WIDGET_GAB};
+  max-width: ${(props) => props.width};
+  overflow-y: scroll;
 `;
 
 interface BrowserSectionProps {
@@ -215,7 +169,6 @@ function BrowserSection({
   setCreaturesList,
   isCreature,
   setGmMode,
-  isConnected,
   categorySelect,
   setCategorySelect,
 }: BrowserSectionProps) {
@@ -441,8 +394,8 @@ function BrowserSection({
 
   return (
     <>
-      <HeaderContainer>
-        <Container>
+      <Container height={"130px"}>
+        <ExpandRow width={"100%"}>
           {categorySelect === "creatures" ? (
             isModalOpen ? (
               <OverlayStyles>
@@ -492,16 +445,10 @@ function BrowserSection({
               <FontAwesomeIcon icon={faGhost} />
             </Button>
           ) : null}
-          <Button
-            $isactive={(categorySelect === "characters").toString()}
-            onClick={() => HandleCategoryChange("characters")}
-          >
-            <FontAwesomeIcon icon={faUsers} />
-          </Button>
-        </Container>
-      </HeaderContainer>
-      <CombatContainer>
-        <ItemContainer>
+        </ExpandRow>
+      </Container>
+      <DynamicContainer>
+        <ScrollColumn width="100%">
           {sortedItemList.length === 0 ? (
             categorySelect === "equipment" ? (
               <InventoryEntry
@@ -574,65 +521,17 @@ function BrowserSection({
                     setDeleteAdjust={setDeleteAdjust}
                   />
                 );
-              } else if (
-                entry.entry === "CharacterEntry" &&
-                categorySelect === "characters"
-              ) {
-                return (
-                  <CharacterBox
-                    key={index}
-                    character={entry}
-                    setCharacterName={setCharacterName}
-                    session={session}
-                    websocket={websocket}
-                    setIsCreature={setIsCreature}
-                    isCreature={isCreature}
-                  />
-                );
               }
-              return null; // Add a default case if needed
+              {
+                return null; // Add a default case if needed
+              }
             })}
-          {categorySelect === "characters" &&
-            (isModalOpen ? (
-              <OverlayStyles>
-                <CreateCharacterComponent
-                  setCharacterName={setCharacterName}
-                  characterName={""}
-                  characterRace={"Ambrian"}
-                  closeModal={handleClose}
-                  session={session}
-                  websocket={websocket}
-                  source={"characterSelect"}
-                  isCreature={isCreature}
-                  setAddAdjust={setAddAdjust}
-                />
-              </OverlayStyles>
-            ) : (
-              <div style={{ display: "flex", gap: "5px" }}>
-                <WebsocketStatus>
-                  {isConnected ? (
-                    <FontAwesomeIcon
-                      icon={faWifi}
-                      color={Constants.BRIGHT_GREEN}
-                      title={"Connected"}
-                    />
-                  ) : (
-                    <FontAwesomeIcon
-                      icon={faWifi}
-                      color={Constants.BRIGHT_RED}
-                      title={"Disconnected"}
-                    />
-                  )}
-                </WebsocketStatus>
-                <AddButton onClick={handleOpen}>
-                  <FontAwesomeIcon icon={faPlus} />
-                </AddButton>
-              </div>
-            ))}
-          {/* <div style={{ display: "flex", flexGrow:  }}></div> */}
-        </ItemContainer>
-      </CombatContainer>
-      <FooterLeftContainer>
+          {Array.from({ length: 20 }).map((_, index) => {
+            return <InventoryEntryEmpty key={index} />;
+          })}
+        </ScrollColumn>
+      </DynamicContainer>
+      <Container height={"30px"}>
         {categorySelect === "equipment" ? (
           <EquipmentFooter setTypeFilter={setFilterType} />
         ) : categorySelect === "abilities" ? (
@@ -640,7 +539,7 @@ function BrowserSection({
         ) : categorySelect == "creatures" ? (
           <CreatureFooter setTypeFilter={setFilterType} />
         ) : null}
-      </FooterLeftContainer>
+      </Container>
     </>
   );
 }

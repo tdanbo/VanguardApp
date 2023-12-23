@@ -15,7 +15,7 @@ const Container = styled.div`
   justify-content: right;
   font-weight: bold;
   h1 {
-    font-size: 1.5em;
+    font-size: clamp(1px, ${Constants.VW}, 30px);
     color: ${Constants.WIDGET_PRIMARY_FONT};
   }
   h2 {

@@ -13,32 +13,50 @@ import {
 } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
 import { update_session } from "../functions/SessionsFunctions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEye,
+  faMinus,
+  faPlus,
+  faSkull,
+} from "@fortawesome/free-solid-svg-icons";
+import { toTitleCase } from "../functions/UtilityFunctions";
 
 const Container = styled.div`
   display: flex;
-  flex: 1;
+  flex-grow: 1;
   flex-direction: column;
   gap: 2px;
 `;
 
-const Row = styled.div`
+interface DivProps {
+  height: string;
+}
+
+const Row = styled.div<DivProps>`
   display: flex;
-  flex: 1;
+  flex-grow: 1;
+  flex-basis: 0;
   flex-direction: row;
-  gap: 2px;
+  border 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: ${Constants.BORDER_RADIUS};
+  max-height: ${(props) => props.height};
+  height: ${(props) => props.height};
 `;
 
 const Value = styled.button`
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
-  flex: 2;
   align-items: center;
   justify-content: center;
-  border-radius: ${Constants.BORDER_RADIUS};
   font-size: 2.5rem;
   font-weight: bold;
   color: ${Constants.WIDGET_PRIMARY_FONT};
-  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  border-left: 0px solid ${Constants.WIDGET_BORDER};
+  border-right: 0px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
   background-color: ${Constants.WIDGET_BACKGROUND};
   p {
@@ -47,31 +65,32 @@ const Value = styled.button`
     color: ${Constants.WIDGET_BACKGROUND};
     letter-spacing: 1px;
   }
+  width: 50%;
 `;
 
 const ActiveValue = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: bold;
-  color: ${Constants.WIDGET_BACKGROUND};
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
   letter-spacing: 1px;
+  width: 50%;
 `;
 
 const Modifier = styled.button`
   display: flex;
-  flex: 1;
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-  border-radius: ${Constants.BORDER_RADIUS};
-
-  font-size: 1rem;
+  font-size: 20px;
   font-weight: bold;
   color: ${Constants.WIDGET_SECONDARY_FONT};
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
+  width: 50%;
+  letter-spacing: 5px;
 `;
 
 type DiceProps = {
@@ -81,16 +100,81 @@ type DiceProps = {
 const Dice = styled.button<DiceProps>`
   display: flex;
   flex-grow: 1;
-  flex: 1;
-  align-items: center;
+  align-items: top;
   justify-content: center;
-  min-height: 30px;
-  border-radius: ${Constants.BORDER_RADIUS};
-  font-size: 1rem;
+  border-top-right-radius: ${Constants.BORDER_RADIUS};
+  border-bottom-right-radius: ${Constants.BORDER_RADIUS};
+  font-size: 20px;
   font-weight: bold;
   color: ${(props) => props.color};
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
+  width: 25%;
+  padding-top: 5px;
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  border-right: 1px solid ${Constants.WIDGET_BORDER};
+  border-left: 0px solid ${Constants.WIDGET_BORDER};
+  text-shadow: 1px 1px 1px ${Constants.BACKGROUND};
+  max-width: 30px;
+`;
+
+const DiceIcon = styled.button<DiceProps>`
+  display: flex;
+  flex-grow: 1;
+  align-items: top;
+  justify-content: center;
+  border-top-left-radius: ${Constants.BORDER_RADIUS};
+  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
+  font-size: 20px;
+  font-weight: bold;
+  color: ${(props) => props.color};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  width: 25%;
+  padding-top: 5px;
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  border-right: 0px solid ${Constants.WIDGET_BORDER};
+  border-left: 1px solid ${Constants.WIDGET_BORDER};
+  text-shadow: 1px 1px 1px ${Constants.BACKGROUND};
+  max-width: 30px;
+`;
+
+const Plus = styled.button`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  border-top-right-radius: ${Constants.BORDER_RADIUS};
+  border-bottom-right-radius: ${Constants.BORDER_RADIUS};
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-right: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  border-left: 0px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  max-width: 30px;
+`;
+
+const Minus = styled.button`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  border-top-left-radius: ${Constants.BORDER_RADIUS};
+  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-right: 0px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  border-left: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  max-width: 30px;
 `;
 
 interface Props {
@@ -112,7 +196,7 @@ function isDefenseActive(obj: any): obj is DefenseActive {
   // you can add more checks for other properties if needed
 }
 
-function ActiveBox({
+function ActiveStatComponent({
   active_name,
   active,
   character,
@@ -231,29 +315,53 @@ function ActiveBox({
 
   return (
     <Container>
-      <Value
-        onClick={handleActiveRoll}
-        className="dice-icon-hover button-hover"
-      >
-        {Math.max(active.value + modValue, 1)}
-        <ActiveValue>{active_name.toUpperCase()}</ActiveValue>
-      </Value>
-      <Row>
-        <Modifier
-          onClick={handleSubValue}
-          onContextMenu={(e) => {
-            e.preventDefault();
-            handleAddValue();
-          }}
-          className="mouse-icon-hover button-hover"
-        >
-          {modValue}
-        </Modifier>
+      <Row height={"70%"} className="button-hover">
+        {isAttackActive(active) ? (
+          <>
+            {active.dice2_name !== "Knuckles" && active.dice2 !== 0 && (
+              <DiceIcon
+                onClick={() => {
+                  [
+                    "Bow",
+                    "Crossbow",
+                    "Small Crossbow",
+                    "Repeating Crossbow",
+                    "Longbow",
+                    "Horsema's Longbow",
+                    "Composite Bow",
+                    "Arbalest",
+                  ].includes(active.dice2_name)
+                    ? handleRangeRoll(
+                        active.dice2,
+                        active.dice2_name,
+                        active.dice2_mod,
+                        "Damage",
+                      )
+                    : handleDiceRoll(
+                        active.dice2,
+                        active.dice2_name,
+                        active.dice2_mod,
+                        "Damage",
+                      );
+                }}
+                color={Constants.TYPE_COLORS[active_name]}
+              >
+                d{active.dice2}
+                {active.dice2_mod > 0 ? `+${active.dice2_mod}` : null}
+              </DiceIcon>
+            )}
+          </>
+        ) : (
+          <DiceIcon color={Constants.TYPE_COLORS[active_name]} />
+        )}
+        <Value onClick={handleActiveRoll} className="dice-icon-hover">
+          {Math.max(active.value + modValue, 1)}
+          <ActiveValue>{toTitleCase(active_name)}</ActiveValue>
+        </Value>
         {isAttackActive(active) ? (
           <>
             {active.dice1 !== 0 && (
               <Dice
-                className="button-hover"
                 onClick={() => {
                   [
                     "Bow",
@@ -284,43 +392,9 @@ function ActiveBox({
                 {active.dice1_mod > 0 ? `+${active.dice1_mod}` : null}
               </Dice>
             )}
-            {active.dice2_name !== "Knuckles" && active.dice2 !== 0 && (
-              <Dice
-                className="button-hover"
-                onClick={() => {
-                  [
-                    "Bow",
-                    "Crossbow",
-                    "Small Crossbow",
-                    "Repeating Crossbow",
-                    "Longbow",
-                    "Horsema's Longbow",
-                    "Composite Bow",
-                    "Arbalest",
-                  ].includes(active.dice2_name)
-                    ? handleRangeRoll(
-                        active.dice2,
-                        active.dice2_name,
-                        active.dice2_mod,
-                        "Damage",
-                      )
-                    : handleDiceRoll(
-                        active.dice2,
-                        active.dice2_name,
-                        active.dice2_mod,
-                        "Damage",
-                      );
-                }}
-                color={Constants.TYPE_COLORS[active_name]}
-              >
-                d{active.dice2}
-                {active.dice2_mod > 0 ? `+${active.dice2_mod}` : null}
-              </Dice>
-            )}
           </>
         ) : isDefenseActive(active) ? (
           <Dice
-            className="button-hover"
             onClick={() => {
               handleDiceRoll(
                 active.dice,
@@ -334,10 +408,58 @@ function ActiveBox({
             d{active.dice}
             {active.dice_mod > 0 ? `+${active.dice_mod}` : null}
           </Dice>
-        ) : null}
+        ) : active_name === "casting" ? (
+          <Dice
+            onClick={() => {
+              handleDiceRoll(4, "Corruption", 0, "Casting");
+            }}
+            color={Constants.TYPE_COLORS[active_name]}
+          >
+            <FontAwesomeIcon
+              icon={faSkull}
+              style={{
+                filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
+              }}
+            />
+          </Dice>
+        ) : (
+          <Dice color={Constants.TYPE_COLORS[active_name]}>
+            <FontAwesomeIcon
+              icon={faEye}
+              color={Constants.TYPE_COLORS[active_name]}
+            />
+          </Dice>
+        )}
+      </Row>
+      <Row
+        height={"30%"}
+        className="button-hover"
+        onClick={handleSubValue}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          handleAddValue();
+        }}
+      >
+        <Minus>
+          <FontAwesomeIcon
+            icon={faMinus}
+            color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+          />
+        </Minus>
+        <Modifier className="mouse-icon-hover">
+          {modValue > 0 ? "+" : ""}
+          {modValue}
+        </Modifier>
+
+        <Plus>
+          <FontAwesomeIcon
+            icon={faPlus}
+            color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+          />
+        </Plus>
       </Row>
     </Container>
   );
 }
 
-export default ActiveBox;
+export default ActiveStatComponent;

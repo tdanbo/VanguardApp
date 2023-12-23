@@ -5,10 +5,9 @@ import { CharacterEntry } from "../Types";
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
-  flex: 1;
   flex-direction: row;
   align-items: center;
-  font-size: 30px;
+  font-size: clamp(1px, ${Constants.VW}, 30px);
   font-weight: bold;
   color: ${Constants.WIDGET_PRIMARY_FONT};
 `;
