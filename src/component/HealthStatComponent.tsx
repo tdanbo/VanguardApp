@@ -1,26 +1,8 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { CharacterPortraits } from "../Images";
 import { CharacterEntry, SessionEntry } from "../Types";
 import { GetMaxToughness } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-
-interface PortraitProps {
-  src: string;
-}
-
-interface ContainerProps {
-  width: string;
-}
-
-const Container = styled.div<ContainerProps>`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  gap: 2px;
-  width: ${(props) => props.width};
-`;
-// background-image: url("/dist/assets/portrait1.jpeg");
 
 interface DivProps {
   height: string;
@@ -55,8 +37,8 @@ const Row = styled.div<DivProps>`
 
 interface BgColor {
   $bgcolor: string;
-  isFirst?: boolean;
-  isLast?: boolean;
+  $isFirst?: boolean;
+  $isLast?: boolean;
 }
 
 const TickBar = styled.div<BgColor>`
@@ -69,15 +51,15 @@ const TickBar = styled.div<BgColor>`
   cursor: pointer;
   border-radius: ${Constants.BORDER_RADIUS};
   border-top-left-radius: ${(props) =>
-    props.isFirst ? Constants.BORDER_RADIUS : "0"};
+    props.$isFirst ? Constants.BORDER_RADIUS : "0"};
   border-bottom-left-radius: ${(props) =>
-    props.isFirst ? Constants.BORDER_RADIUS : "0"};
+    props.$isFirst ? Constants.BORDER_RADIUS : "0"};
   border-top-right-radius: ${(props) =>
-    props.isLast ? Constants.BORDER_RADIUS : "0"};
+    props.$isLast ? Constants.BORDER_RADIUS : "0"};
   border-bottom-right-radius: ${(props) =>
-    props.isLast ? Constants.BORDER_RADIUS : "0"};
+    props.$isLast ? Constants.BORDER_RADIUS : "0"};
   border-left: ${(props) =>
-    props.isFirst ? "1px solid " + Constants.WIDGET_BORDER : "0"};
+    props.$isFirst ? "1px solid " + Constants.WIDGET_BORDER : "0"};
 `;
 
 const Divider = styled.div`
@@ -124,7 +106,7 @@ const Minus = styled.button`
 `;
 
 interface ButtonProps {
-  fontsize: string;
+  fontSize: string;
 }
 
 const Modifier = styled.button<ButtonProps>`
@@ -149,11 +131,11 @@ const Modifier = styled.button<ButtonProps>`
   }
   h1 {
     font-weight: bold;
-    font-size: ${(props) => props.fontsize};
+    font-size: ${(props) => props.fontSize};
   }
   h2 {
     display: none;
-    font-size: ${(props) => props.fontsize};
+    font-size: ${(props) => props.fontSize};
   }
   &:hover h1 {
     display: none;
@@ -216,8 +198,8 @@ function HealthStatComponent({
             <TickBar
               key={index}
               $bgcolor={Constants.TYPE_COLORS["health"]}
-              isFirst={index === 0} // Apply rounded corners on the left for the first item
-              isLast={index === array.length - 1}
+              $isFirst={index === 0} // Apply rounded corners on the left for the first item
+              $isLast={index === array.length - 1}
             />
           );
         })}
@@ -226,8 +208,8 @@ function HealthStatComponent({
             <TickBar
               key={index}
               $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
-              isFirst={index === 0} // Apply rounded corners on the left for the first item
-              isLast={index === array.length - 1} // Apply rounded corners on the right for the last item
+              $isFirst={index === 0} // Apply rounded corners on the left for the first item
+              $isLast={index === array.length - 1} // Apply rounded corners on the right for the last item
             />
           );
         })}
@@ -247,7 +229,7 @@ function HealthStatComponent({
             color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
           />
         </Minus>
-        <Modifier fontsize={browser ? "16px" : "20px"}>
+        <Modifier fontSize={browser ? "16px" : "20px"}>
           <h1>{remaining_toughness}</h1>
           <h2>
             {maxToughness}

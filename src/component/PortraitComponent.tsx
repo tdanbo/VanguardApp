@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { CharacterEntry, SessionEntry } from "../Types";
+import { CharacterEntry } from "../Types";
 import SmallStatComponent from "./SmallStatComponent";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   GetMovementSpeed,
@@ -16,9 +15,7 @@ import {
 import {
   faCarrot,
   faHeartCrack,
-  faMoon,
   faPersonRunning,
-  faWeight,
   faWeightHanging,
 } from "@fortawesome/free-solid-svg-icons";
 interface PortraitProps {

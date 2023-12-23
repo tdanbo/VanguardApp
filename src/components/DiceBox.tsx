@@ -13,7 +13,7 @@ type Props = {
 
 const DiceContainer = styled.button`
   display: flex;
-  flex: 1;
+  flex-direction: row;
   flex-grow: 1;
   border-radius: ${Constants.BORDER_RADIUS};
   justify-content: center;

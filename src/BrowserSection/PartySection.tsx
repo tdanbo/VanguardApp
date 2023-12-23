@@ -5,7 +5,12 @@ import * as Constants from "../Constants";
 import styled from "styled-components";
 import CreateCharacterComponent from "../components/SelectorPage/CreateCharacterComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faWifi } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHatWizard,
+  faPlus,
+  faUser,
+  faWifi,
+} from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import BackgroundImage from "../assets/icons/background.jpeg";
 type DivProps = {
@@ -21,6 +26,7 @@ const Container = styled.div<ContainerProps>`
   flex-grow: 1;
   gap: ${Constants.WIDGET_GAB};
   height: ${(props) => props.height};
+  max-height: ${(props) => props.height};
 `;
 
 const Row = styled.div<DivProps>`
@@ -37,7 +43,7 @@ const Column = styled.div<DivProps>`
   flex-direction: column;
   flex-grow: 1;
   flex-basis: 0;
-  gap: 5px;
+  gap: ${Constants.WIDGET_GAB};
   max-width: ${(props) => props.width};
 `;
 
@@ -63,7 +69,6 @@ const AddButton = styled.button`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  max-height: 35px;
   border-radius: ${Constants.BORDER_RADIUS};
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
@@ -78,7 +83,22 @@ const WebsocketStatus = styled.button`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  max-height: 35px;
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  width: 40px;
+  max-width: 40px;
+  height: 40px;
+`;
+
+const Navigator = styled.button`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
   border-radius: ${Constants.BORDER_RADIUS};
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
@@ -98,6 +118,9 @@ interface PartySectionProps {
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   isCreature: boolean;
   isConnected: boolean;
+  isGm: boolean;
+  gmMode: boolean;
+  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function PartySection({
@@ -107,6 +130,9 @@ function PartySection({
   setIsCreature,
   isCreature,
   isConnected,
+  isGm,
+  gmMode,
+  setGmMode,
 }: PartySectionProps) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [_addAdjust, setAddAdjust] = useState(0);
@@ -120,7 +146,7 @@ function PartySection({
   };
   return (
     <>
-      <Container height="3%">
+      <Container height="40px">
         <Row width="100%">
           {isModalOpen ? (
             <OverlayStyles>
@@ -158,9 +184,17 @@ function PartySection({
               </AddButton>
             </>
           )}
+          {isGm ? (
+            <Navigator
+              onClick={() => setGmMode((prevMode) => !prevMode)} // Toggle gmMode when clicked
+              title={"GM Mode"}
+            >
+              <FontAwesomeIcon icon={gmMode ? faHatWizard : faUser} />
+            </Navigator>
+          ) : null}
         </Row>
       </Container>
-      <Container height="20%">
+      <Container height="260px">
         <Column width="100%">
           {session.characters.map((entry, index) => {
             return (

@@ -7,13 +7,6 @@ interface ColumnProps {
   width: string;
 }
 
-const Container = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  gap: 2px;
-`;
-
 interface DivProps {
   height: string;
 }
@@ -42,7 +35,7 @@ const Row = styled.div<DivProps>`
 `;
 
 interface ButtonProps {
-  fontsize: string;
+  fontSize: string;
 }
 
 const Modifier = styled.button<ButtonProps>`
@@ -67,11 +60,11 @@ const Modifier = styled.button<ButtonProps>`
   }
   h1 {
     font-weight: bold;
-    font-size: ${(props) => props.fontsize};
+    font-size: ${(props) => props.fontSize};
   }
   h2 {
     display: none;
-    font-size: ${(props) => props.fontsize};
+    font-size: ${(props) => props.fontSize};
   }
   &:hover h1 {
     display: none;
@@ -83,8 +76,8 @@ const Modifier = styled.button<ButtonProps>`
 
 interface BgColor {
   $bgcolor: string;
-  isFirst?: boolean;
-  isLast?: boolean;
+  $isFirst?: boolean;
+  $isLast?: boolean;
 }
 const TickBar = styled.div<BgColor>`
   display: flex;
@@ -96,15 +89,15 @@ const TickBar = styled.div<BgColor>`
   cursor: pointer;
   border-radius: ${Constants.BORDER_RADIUS};
   border-top-left-radius: ${(props) =>
-    props.isFirst ? Constants.BORDER_RADIUS : "0"};
+    props.$isFirst ? Constants.BORDER_RADIUS : "0"};
   border-bottom-left-radius: ${(props) =>
-    props.isFirst ? Constants.BORDER_RADIUS : "0"};
+    props.$isFirst ? Constants.BORDER_RADIUS : "0"};
   border-top-right-radius: ${(props) =>
-    props.isLast ? Constants.BORDER_RADIUS : "0"};
+    props.$isLast ? Constants.BORDER_RADIUS : "0"};
   border-bottom-right-radius: ${(props) =>
-    props.isLast ? Constants.BORDER_RADIUS : "0"};
+    props.$isLast ? Constants.BORDER_RADIUS : "0"};
   border-left: ${(props) =>
-    props.isFirst ? "1px solid " + Constants.WIDGET_BORDER : "0"};
+    props.$isFirst ? "1px solid " + Constants.WIDGET_BORDER : "0"};
 `;
 
 const Divider = styled.div`
@@ -241,8 +234,8 @@ function CorruptionStatComponent({
             }}
             key={index}
             $bgcolor={Constants.TYPE_COLORS["permanent_corruption"]}
-            isFirst={index === 0} // Apply rounded corners on the left for the first item
-            isLast={index === array.length - 1}
+            $isFirst={index === 0} // Apply rounded corners on the left for the first item
+            $isLast={index === array.length - 1}
           />
         ))}
         {[...Array(maxCorruptionPermanent - remaining_corruption)].map(
@@ -255,25 +248,26 @@ function CorruptionStatComponent({
               }}
               key={index}
               $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
-              isFirst={index === 0} // Apply rounded corners on the left for the first item
-              isLast={index === array.length - 1}
+              $isFirst={index === 0} // Apply rounded corners on the left for the first item
+              $isLast={index === array.length - 1}
             />
           ),
         )}
+        <div style={{ width: "2px" }}></div>
         {[...Array(clean_corruption)].map((_, index, array) => (
           <TickBar
             key={index}
             $bgcolor={Constants.TYPE_COLORS["temporary_corruption"]}
-            isFirst={index === 0} // Apply rounded corners on the left for the first item
-            isLast={index === array.length - 1}
+            $isFirst={index === 0} // Apply rounded corners on the left for the first item
+            $isLast={index === array.length - 1}
           ></TickBar>
         ))}
         {[...Array(temporary_corruption)].map((_, index, array) => (
           <TickBar
             key={index}
             $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
-            isFirst={index === 0} // Apply rounded corners on the left for the first item
-            isLast={index === array.length - 1}
+            $isFirst={index === 0} // Apply rounded corners on the left for the first item
+            $isLast={index === array.length - 1}
           />
         ))}
       </Row>
@@ -289,7 +283,7 @@ function CorruptionStatComponent({
         <Minus>
           <FontAwesomeIcon icon={faMinus} />
         </Minus>
-        <Modifier fontsize={browser ? "16px" : "20px"}>
+        <Modifier fontSize={browser ? "16px" : "20px"}>
           <h1>{remaining_corruption + clean_corruption}</h1>
           <h2>
             {remaining_corruption + corruptionThreshold}

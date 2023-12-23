@@ -33,7 +33,7 @@ const Column = styled.div`
   background-color: ${Constants.BACKGROUND};
   height: 100%;
   gap: 25px;
-  padding: 25px 150px 25px 150px;
+  padding: 25px 50px 25px 50px;
   box-sizing: border-box;
 `;
 
@@ -112,6 +112,9 @@ function App() {
           setIsCreature={setIsCreature}
           isCreature={isCreature}
           isConnected={isConnected}
+          isGm={isGm}
+          gmMode={gmMode}
+          setGmMode={setGmMode}
         />
         {browserState === 0 ? (
           <BrowserSection

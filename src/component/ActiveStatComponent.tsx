@@ -15,7 +15,7 @@ import { useRoll } from "../functions/CombatFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faDiceD6,
+  faEye,
   faMinus,
   faPlus,
   faSkull,
@@ -104,7 +104,7 @@ const Dice = styled.button<DiceProps>`
   justify-content: center;
   border-top-right-radius: ${Constants.BORDER_RADIUS};
   border-bottom-right-radius: ${Constants.BORDER_RADIUS};
-  font-size: 1rem;
+  font-size: 20px;
   font-weight: bold;
   color: ${(props) => props.color};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -119,21 +119,25 @@ const Dice = styled.button<DiceProps>`
   max-width: 30px;
 `;
 
-const DiceIcon = styled.div`
+const DiceIcon = styled.button<DiceProps>`
   display: flex;
   flex-grow: 1;
   align-items: top;
   justify-content: center;
   border-top-left-radius: ${Constants.BORDER_RADIUS};
   border-bottom-left-radius: ${Constants.BORDER_RADIUS};
-  color: ${Constants.WIDGET_SECONDARY_FONT};
+  font-size: 20px;
+  font-weight: bold;
+  color: ${(props) => props.color};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  width: 25%;
+  padding-top: 5px;
   border-top: 1px solid ${Constants.WIDGET_BORDER};
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   border-right: 0px solid ${Constants.WIDGET_BORDER};
   border-left: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  width: 25%;
-  padding-top: 5px;
+  text-shadow: 1px 1px 1px ${Constants.BACKGROUND};
   max-width: 30px;
 `;
 
@@ -170,7 +174,6 @@ const Minus = styled.button`
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   border-left: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
-  width: 25%;
   max-width: 30px;
 `;
 
@@ -189,11 +192,6 @@ function isAttackActive(obj: any): obj is AttackActive {
 }
 
 function isDefenseActive(obj: any): obj is DefenseActive {
-  return typeof obj.value === "number" && typeof obj.dice === "number";
-  // you can add more checks for other properties if needed
-}
-
-function isSimpleActive(obj: any): obj is SimpleActive {
   return typeof obj.value === "number" && typeof obj.dice === "number";
   // you can add more checks for other properties if needed
 }
@@ -318,12 +316,44 @@ function ActiveStatComponent({
   return (
     <Container>
       <Row height={"70%"} className="button-hover">
-        <DiceIcon>
-          {/* <FontAwesomeIcon
-            icon={faDiceD6}
-            color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
-          /> */}
-        </DiceIcon>
+        {isAttackActive(active) ? (
+          <>
+            {active.dice2_name !== "Knuckles" && active.dice2 !== 0 && (
+              <DiceIcon
+                onClick={() => {
+                  [
+                    "Bow",
+                    "Crossbow",
+                    "Small Crossbow",
+                    "Repeating Crossbow",
+                    "Longbow",
+                    "Horsema's Longbow",
+                    "Composite Bow",
+                    "Arbalest",
+                  ].includes(active.dice2_name)
+                    ? handleRangeRoll(
+                        active.dice2,
+                        active.dice2_name,
+                        active.dice2_mod,
+                        "Damage",
+                      )
+                    : handleDiceRoll(
+                        active.dice2,
+                        active.dice2_name,
+                        active.dice2_mod,
+                        "Damage",
+                      );
+                }}
+                color={Constants.TYPE_COLORS[active_name]}
+              >
+                d{active.dice2}
+                {active.dice2_mod > 0 ? `+${active.dice2_mod}` : null}
+              </DiceIcon>
+            )}
+          </>
+        ) : (
+          <DiceIcon color={Constants.TYPE_COLORS[active_name]} />
+        )}
         <Value onClick={handleActiveRoll} className="dice-icon-hover">
           {Math.max(active.value + modValue, 1)}
           <ActiveValue>{toTitleCase(active_name)}</ActiveValue>
@@ -362,38 +392,6 @@ function ActiveStatComponent({
                 {active.dice1_mod > 0 ? `+${active.dice1_mod}` : null}
               </Dice>
             )}
-            {active.dice2_name !== "Knuckles" && active.dice2 !== 0 && (
-              <Dice
-                onClick={() => {
-                  [
-                    "Bow",
-                    "Crossbow",
-                    "Small Crossbow",
-                    "Repeating Crossbow",
-                    "Longbow",
-                    "Horsema's Longbow",
-                    "Composite Bow",
-                    "Arbalest",
-                  ].includes(active.dice2_name)
-                    ? handleRangeRoll(
-                        active.dice2,
-                        active.dice2_name,
-                        active.dice2_mod,
-                        "Damage",
-                      )
-                    : handleDiceRoll(
-                        active.dice2,
-                        active.dice2_name,
-                        active.dice2_mod,
-                        "Damage",
-                      );
-                }}
-                color={Constants.TYPE_COLORS[active_name]}
-              >
-                d{active.dice2}
-                {active.dice2_mod > 0 ? `+${active.dice2_mod}` : null}
-              </Dice>
-            )}
           </>
         ) : isDefenseActive(active) ? (
           <Dice
@@ -410,10 +408,10 @@ function ActiveStatComponent({
             d{active.dice}
             {active.dice_mod > 0 ? `+${active.dice_mod}` : null}
           </Dice>
-        ) : (
+        ) : active_name === "casting" ? (
           <Dice
             onClick={() => {
-              handleDiceRoll(4, "Corruption", 0, "Armor");
+              handleDiceRoll(4, "Corruption", 0, "Casting");
             }}
             color={Constants.TYPE_COLORS[active_name]}
           >
@@ -422,6 +420,13 @@ function ActiveStatComponent({
               style={{
                 filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
               }}
+            />
+          </Dice>
+        ) : (
+          <Dice color={Constants.TYPE_COLORS[active_name]}>
+            <FontAwesomeIcon
+              icon={faEye}
+              color={Constants.TYPE_COLORS[active_name]}
             />
           </Dice>
         )}

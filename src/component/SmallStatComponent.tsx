@@ -14,7 +14,8 @@ const Container = styled.div<ContainerProps>`
   flex-grow: 1;
   flex-direction: row;
   gap: 2px;
-  min-width: ${(props) => props.width};
+  width: ${(props) => props.width};
+  min-width: 118px;
   background-color: ${backgroundcolor};
   border-radius: ${Constants.BORDER_RADIUS};
   margin: 2px;

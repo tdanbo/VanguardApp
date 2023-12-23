@@ -3,6 +3,8 @@
 export const API = "https://vanguard-api.onrender.com";
 export const WEBSOCKET = "wss://vanguard-api.onrender.com/session/";
 
+export const VW = "5.0vw";
+
 export const COMBAT_BACKGROUND = "19, 23, 22";
 
 export const BACKGROUND = "rgba(19, 23, 22, 1.0)";

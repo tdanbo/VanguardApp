@@ -18,7 +18,6 @@ const Button = styled.button<ButtonProps>`
       : Constants.WIDGET_PRIMARY_FONT};
   cursor: pointer;
   font-size: 12px;
-  height: 34px;
   justify-content: center;
   align-items: center;
   opacity: ${(props) => (props["data-isactive"] ? 1 : 0.5)};
@@ -27,7 +26,6 @@ const Button = styled.button<ButtonProps>`
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
-  height: 34px;
   gap: 20px;
   justify-content: right;
 `;

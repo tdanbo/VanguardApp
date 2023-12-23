@@ -1,18 +1,9 @@
 import { Socket } from "socket.io-client";
-import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import InventoryEntry from "../components/Entries/InventoryEntry";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 import { GetMaxSlots } from "../functions/RulesFunctions";
-const Container = styled.div`
-  display: "flex";
-  flex-direction: column;
-  flex-grow: 1;
-  gap: 10px;
-  overflow: scroll;
-  scrollbar-width: none !important;
-`;
 
 interface NavigationProps {
   character: CharacterEntry;

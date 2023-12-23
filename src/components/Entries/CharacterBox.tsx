@@ -42,11 +42,6 @@ const PortraitCenter = styled.div<PortraitCenterProps>`
   height: 100%;
   width: 50%;
 `;
-
-interface BgColor {
-  $bgcolor: string;
-}
-
 const LeftControl = styled.div`
   display: flex;
   flex-direction: column;
@@ -79,21 +74,6 @@ const DeadControl = styled.div`
   justify-content: center;
   color: ${Constants.WIDGET_BORDER};
   border-radius: ${Constants.BORDER_RADIUS};
-`;
-
-interface DivProps {
-  width: string;
-}
-
-const Column = styled.div<DivProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: 1px;
-  max-width: ${(props) => props.width};
-  overflow: scroll;
-  scrollbar-width: none !important;
 `;
 
 import { Socket } from "socket.io-client";
@@ -136,7 +116,6 @@ function CharacterBox({
 
   const maxToughness = GetMaxToughness(character);
 
-  const damage_toughness = character.health.damage;
   const remaining_toughness = maxToughness - character.health.damage;
 
   // const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);

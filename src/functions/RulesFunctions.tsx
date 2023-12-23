@@ -92,6 +92,7 @@ export const GetCorruption = (character: CharacterEntry) => {
   const corruption =
     character.stats.resolute.value +
     Math.ceil(character.stats.resolute.value / 2);
+  return corruption;
 };
 
 export function GetBurnRate(character: CharacterEntry) {

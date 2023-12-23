@@ -1,3 +1,20 @@
+@media (max-width: 627px) {
+  .hide-div {
+    display: none !important;
+  }
+}
+
+.show-div {
+  display: none !important;
+}
+
+/* Show the container only when the viewport width is below 500px */
+@media (max-width: 627px) {
+  .show-div {
+    display: flex !important; /* or 'flex', 'inline-block', etc., depending on your layout */
+  }
+}
+
 html,
 body {
   height: 100%;

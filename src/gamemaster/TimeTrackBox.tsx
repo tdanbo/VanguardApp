@@ -7,7 +7,6 @@ import { update_session } from "../functions/SessionsFunctions";
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
-  height: 35px;
   gap: 20px;
   justify-content: right;
 `;
@@ -15,7 +14,6 @@ const Container = styled.div`
 const DayContainer = styled.div`
   display: flex;
   flex-grow: 1;
-  height: 35px;
   justify-content: right;
   gap: 2px;
 `;
@@ -26,10 +24,8 @@ interface HourContainerProps {
 
 const HourContainer = styled.button<HourContainerProps>`
   display: flex;
-  flex: 1;
   flex-grow: 1;
   flex-direction: column;
-  height: 35px;
   align-items: center;
   justify-content: center;
   border: 1px solid ${Constants.WIDGET_BACKGROUND_EMPTY};

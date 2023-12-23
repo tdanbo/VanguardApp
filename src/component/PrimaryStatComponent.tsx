@@ -23,6 +23,7 @@ const Container = styled.div`
   &:hover .second-row {
     display: flex; // Or visibility: visible; if you want to keep the space reserved
   }
+  width: 50px;
 `;
 
 const Row = styled.div`
@@ -36,13 +37,6 @@ const Row = styled.div`
   &:nth-child(2) {
     display: none; // Or visibility: hidden; if you want to keep the space reserved
   }
-`;
-
-const Column = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 2px;
 `;
 
 interface DiceProps {
@@ -310,7 +304,10 @@ function PrimaryStatComponent({
         </DiceIcon>
         <ValueButton onClick={handleSkillRoll}>
           {value + modifier}
-          <ValueName className="dice-icon-hover">{type_name}</ValueName>
+
+          <ValueName className="dice-icon-hover">
+            {modifier !== 0 ? `${type_name}*` : type_name}
+          </ValueName>
         </ValueButton>
 
         <ActiveButton
@@ -321,21 +318,21 @@ function PrimaryStatComponent({
           {icon(active)}
         </ActiveButton>
       </Row>
-      <Row className="button-hover second-row">
+      <Row
+        className="button-hover second-row"
+        onClick={subModifier}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          addModifier();
+        }}
+      >
         <Minus>
           <FontAwesomeIcon
             icon={faMinus}
             color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
           />
         </Minus>
-        <Modifier
-          className="mouse-icon-hover"
-          onClick={subModifier}
-          onContextMenu={(e) => {
-            e.preventDefault();
-            addModifier();
-          }}
-        >
+        <Modifier className="mouse-icon-hover">
           {modifier > 0 ? `+${modifier}` : modifier}
         </Modifier>
         <Plus>

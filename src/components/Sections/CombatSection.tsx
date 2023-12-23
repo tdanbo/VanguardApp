@@ -12,12 +12,21 @@ interface ContainerProps {
   height: string;
 }
 
+const DynamicContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  gap: ${Constants.WIDGET_GAB};
+  height: 0px; /* or another fixed value */
+`;
+
 const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   gap: ${Constants.WIDGET_GAB};
   height: ${(props) => props.height};
+  max-height: ${(props) => props.height};
 `;
 
 const Row = styled.div<DivProps>`
@@ -39,27 +48,6 @@ const Column = styled.div<DivProps>`
   justify-content: flex-start;
   overflow: scroll;
   scrollbar-width: none !important;
-`;
-
-const CombatContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 20px;
-  gap: 20px;
-  height: 100%;
-  overflow: scroll;
-  scrollbar-width: none !important;
-`;
-
-const FooterRightContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end; // Align children to the right
-  min-height: 50px;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-bottom: 5px;
-  gap: 20px;
 `;
 
 import {
@@ -169,7 +157,7 @@ function CombatSection({
 
   return (
     <>
-      <Container height={"95%"}>
+      <DynamicContainer>
         <Column ref={scrollRef} width={"100%"}>
           {session.combatlog.map((item, index) => (
             <CombatEntryItem
@@ -180,8 +168,8 @@ function CombatSection({
             />
           ))}
         </Column>
-      </Container>
-      <Container height={"5%"}>
+      </DynamicContainer>
+      <Container height={"30px"}>
         <Row width={"100%"}>
           <DiceSection
             character={character}

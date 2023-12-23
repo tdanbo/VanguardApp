@@ -16,8 +16,6 @@ import {
   faPlus,
   faSearch,
   faShield,
-  faUsers,
-  faWifi,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect } from "react";
@@ -32,14 +30,9 @@ import {
 
 import { useState } from "react";
 import AbilityEntryItem from "../components/Entries/AbilityEntryItem";
-import CharacterBox from "../components/Entries/CharacterBox";
 import CreatureEntryItem from "../components/Entries/CreatureEntryItem";
 import InventoryEntry from "../components/Entries/InventoryEntry";
 import { toTitleCase } from "../functions/UtilityFunctions";
-
-type DivProps = {
-  width: string;
-};
 
 interface ContainerProps {
   height: string;
@@ -51,39 +44,34 @@ const Container = styled.div<ContainerProps>`
   flex-grow: 1;
   gap: ${Constants.WIDGET_GAB};
   height: ${(props) => props.height};
-`;
-
-const Row = styled.div<ContainerProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
   max-height: ${(props) => props.height};
-
-  height: ${(props) => props.height};
+  justify-content: flex-end;
 `;
 
-const ExpanderRox = styled.div`
+interface DivProps {
+  width: string;
+}
+
+const ExpandRow = styled.div<DivProps>`
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-`;
-
-const Column = styled.div<DivProps>`
-  display: flex;
-  flex-direction: column;
   flex-grow: 1;
   flex-basis: 0;
   gap: ${Constants.WIDGET_GAB};
   max-width: ${(props) => props.width};
-  overflow: scroll;
-  scrollbar-width: none !important;
+  margin-top: 91px;
+`;
+
+const DynamicContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  gap: ${Constants.WIDGET_GAB};
+  height: 0px; /* or another fixed value */
 `;
 
 const Input = styled.input`
+  display: flex;
   flex-grow: 1;
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -116,12 +104,6 @@ const Button = styled.button<ButtonProps>`
   opacity: ${(props) => (props.$isactive === "true" ? 1 : 0.5)};
 `;
 
-const ItemContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-`;
-
 const OverlayStyles = styled.div`
   position: fixed;
   top: 0;
@@ -138,6 +120,16 @@ const OverlayStyles = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const ScrollColumn = styled.div<DivProps>`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+  gap: ${Constants.WIDGET_GAB};
+  max-width: ${(props) => props.width};
+  overflow-y: scroll;
 `;
 
 interface BrowserSectionProps {
@@ -177,7 +169,6 @@ function BrowserSection({
   setCreaturesList,
   isCreature,
   setGmMode,
-  isConnected,
   categorySelect,
   setCategorySelect,
 }: BrowserSectionProps) {
@@ -403,64 +394,61 @@ function BrowserSection({
 
   return (
     <>
-      <Container height={"10%"}>
-        <Column width="100%">
-          <Row height={"70%"}> </Row>
-          <Row height={"30%"}>
-            {categorySelect === "creatures" ? (
-              isModalOpen ? (
-                <OverlayStyles>
-                  <CreateCharacterComponent
-                    setCharacterName={setCharacterName}
-                    characterName={""}
-                    characterRace={"Ambrian"}
-                    closeModal={handleClose}
-                    session={session}
-                    websocket={websocket}
-                    source={""}
-                    isCreature={false}
-                    setAddAdjust={setAddAdjust}
-                  />
-                </OverlayStyles>
-              ) : (
-                <Button $isactive={"false"} onClick={handleOpen}>
-                  <FontAwesomeIcon icon={faPlus} />
-                </Button>
-              )
+      <Container height={"130px"}>
+        <ExpandRow width={"100%"}>
+          {categorySelect === "creatures" ? (
+            isModalOpen ? (
+              <OverlayStyles>
+                <CreateCharacterComponent
+                  setCharacterName={setCharacterName}
+                  characterName={""}
+                  characterRace={"Ambrian"}
+                  closeModal={handleClose}
+                  session={session}
+                  websocket={websocket}
+                  source={""}
+                  isCreature={false}
+                  setAddAdjust={setAddAdjust}
+                />
+              </OverlayStyles>
             ) : (
-              <Button $isactive={"false"}>
-                <FontAwesomeIcon icon={faSearch} />
+              <Button $isactive={"false"} onClick={handleOpen}>
+                <FontAwesomeIcon icon={faPlus} />
               </Button>
-            )}
-            <Input
-              className="flex-grow"
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <Button
-              $isactive={(categorySelect === "abilities").toString()}
-              onClick={() => HandleCategoryChange("abilities")}
-            >
-              <FontAwesomeIcon icon={faBolt} />
+            )
+          ) : (
+            <Button $isactive={"false"}>
+              <FontAwesomeIcon icon={faSearch} />
             </Button>
+          )}
+          <Input
+            className="flex-grow"
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <Button
+            $isactive={(categorySelect === "abilities").toString()}
+            onClick={() => HandleCategoryChange("abilities")}
+          >
+            <FontAwesomeIcon icon={faBolt} />
+          </Button>
+          <Button
+            $isactive={(categorySelect === "equipment").toString()}
+            onClick={() => HandleCategoryChange("equipment")}
+          >
+            <FontAwesomeIcon icon={faShield} />
+          </Button>
+          {isGm ? (
             <Button
-              $isactive={(categorySelect === "equipment").toString()}
-              onClick={() => HandleCategoryChange("equipment")}
+              $isactive={(categorySelect === "creatures").toString()}
+              onClick={() => HandleCategoryChange("creatures")}
             >
-              <FontAwesomeIcon icon={faShield} />
+              <FontAwesomeIcon icon={faGhost} />
             </Button>
-            {isGm ? (
-              <Button
-                $isactive={(categorySelect === "creatures").toString()}
-                onClick={() => HandleCategoryChange("creatures")}
-              >
-                <FontAwesomeIcon icon={faGhost} />
-              </Button>
-            ) : null}
-          </Row>
-        </Column>
+          ) : null}
+        </ExpandRow>
       </Container>
-      <Container height={"60%"}>
-        <Column width="100%">
+      <DynamicContainer>
+        <ScrollColumn width="100%">
           {sortedItemList.length === 0 ? (
             categorySelect === "equipment" ? (
               <InventoryEntry
@@ -541,9 +529,9 @@ function BrowserSection({
           {Array.from({ length: 20 }).map((_, index) => {
             return <InventoryEntryEmpty key={index} />;
           })}
-        </Column>
-      </Container>
-      <Container height={"3%"}>
+        </ScrollColumn>
+      </DynamicContainer>
+      <Container height={"30px"}>
         {categorySelect === "equipment" ? (
           <EquipmentFooter setTypeFilter={setFilterType} />
         ) : categorySelect === "abilities" ? (
