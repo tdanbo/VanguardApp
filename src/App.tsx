@@ -58,7 +58,7 @@ function App() {
   const [isGm, setIsGm] = useState<boolean>(false);
   const [gmMode, setGmMode] = useState<boolean>(false);
   const [isJoinOpen, setisJoinOpen] = useState<boolean>(true);
-  const [categorySelect, setCategorySelect] = useState<string>("creatures");
+  const [categorySelect, setCategorySelect] = useState<string>("equipment");
   const url = Constants.WEBSOCKET + session.id;
 
   const character = isCreature
