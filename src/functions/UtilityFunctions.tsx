@@ -1,3 +1,13 @@
+import * as Constants from "../Constants";
+import {
+  ItemEntry,
+  AbilityEntry,
+  CharacterEntry,
+  SessionEntry,
+} from "../Types";
+import { Socket } from "socket.io-client";
+import { useRoll } from "../functions/CombatFunctions";
+
 export function UpperFirstLetter(input: string): string {
   if (!input || typeof input !== "string") {
     return "";
@@ -66,3 +76,86 @@ export function getAdjustedColor(color: string, roll: number): string {
 
   return adjustBrightness(color, brightnessAdjustment);
 }
+
+interface StyledTextProps {
+  entry: ItemEntry | AbilityEntry;
+  effect: string;
+  websocket: Socket;
+  character: CharacterEntry;
+  session: SessionEntry;
+  isCreature: boolean;
+}
+
+export const StyledText: React.FC<StyledTextProps> = ({
+  entry,
+  effect,
+  websocket,
+  character,
+  session,
+  isCreature,
+}) => {
+  const onRollDice = useRoll();
+
+  const style = { color: "#FFFFFF", fontWeight: "bold" }; // Example style
+  const escapeRegExp = (word: string) => word.replace(/[+]/g, "\\+");
+
+  const regex = new RegExp(
+    `\\b(${Constants.SPECIAL_WORDS.map(escapeRegExp).join("|")})\\b`,
+    "i",
+  );
+
+  const getStyledWords = (
+    fragment: string,
+    _idx: number,
+  ): JSX.Element[] | string => {
+    const matches = fragment.match(regex);
+
+    if (!matches) {
+      return fragment;
+    }
+
+    const handleRoll = (part: string) => {
+      const dice = parseInt(part.substring(1));
+      onRollDice({
+        websocket,
+        dice: dice,
+        modifier: 0,
+        count: 1,
+        target: 0,
+        source: entry.name,
+        active: entry.type,
+        add_mod: true,
+        character,
+        session,
+        isCreature,
+      });
+    };
+
+    return fragment.split(regex).map((part, partIndex) => {
+      const key = `${part}-${partIndex}`;
+      const isSpecialWord = Constants.SPECIAL_WORDS.includes(part);
+      const isDiceWord = ["d4", "d6", "d8", "d10", "d12", "d20"].includes(part);
+
+      if (isDiceWord) {
+        return (
+          <button key={key} onClick={() => handleRoll(part)}>
+            {part}
+          </button>
+        );
+      }
+
+      return (
+        <span key={key} style={isSpecialWord ? style : undefined}>
+          {part}
+        </span>
+      );
+    });
+  };
+
+  const words = effect.split(/(\s+)/).map((word, index) => {
+    const key = `${word}-${index}`;
+    return <span key={key}>{getStyledWords(word, index)}</span>;
+  });
+
+  return <div>{words}</div>;
+};

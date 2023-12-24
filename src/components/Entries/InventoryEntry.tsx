@@ -16,6 +16,7 @@ import { GetMaxSlots } from "../../functions/RulesFunctions";
 import { update_session } from "../../functions/SessionsFunctions";
 import { Qualities } from "../../functions/rules/Qualities";
 import { SetFlexibleEquip } from "../../functions/CharacterFunctions";
+import { StyledText } from "../../functions/UtilityFunctions";
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -501,52 +502,6 @@ function InventoryEntry({
     return value.trim();
   }
 
-  interface StyledTextProps {
-    text: string;
-    style: React.CSSProperties;
-  }
-
-  const specialStyle = {
-    color: Constants.WIDGET_SECONDARY_HIGHLIGHT,
-  };
-
-  const StyledText: React.FC<StyledTextProps> = ({ text, style }) => {
-    const escapeRegExp = (word: string) => word.replace(/[+]/g, "\\+");
-
-    const regex = new RegExp(
-      `\\b(${Constants.SPECIAL_WORDS.map(escapeRegExp).join("|")})\\b`,
-      "i",
-    );
-
-    const getStyledWords = (
-      fragment: string,
-      _idx: number,
-    ): JSX.Element[] | string => {
-      const matches = fragment.match(regex);
-
-      if (!matches) {
-        return fragment;
-      }
-
-      return fragment.split(regex).map((part, partIndex) => {
-        const key = `${part}-${partIndex}`;
-        const isSpecialWord = Constants.SPECIAL_WORDS.includes(part);
-        return (
-          <span key={key} style={isSpecialWord ? style : undefined}>
-            {part}
-          </span>
-        );
-      });
-    };
-
-    const words = text.split(/(\s+)/).map((word, index) => {
-      const key = `${word}-${index}`;
-      return <span key={key}>{getStyledWords(word, index)}</span>;
-    });
-
-    return <div>{words}</div>;
-  };
-
   return (
     <MasterContainer>
       <Container>
@@ -680,17 +635,20 @@ function InventoryEntry({
       </Container>
       {Array.isArray(item.effect) && item.effect.length > 0 && (
         <EffectContainer>
-          {item.effect.map((effect, index) => {
-            if (index > 0) {
-              return (
-                <>
-                  <RowDivider key={"Divider" + index} />
-                  <StyledText text={effect} style={specialStyle} />
-                </>
-              );
-            } else {
-              return <StyledText text={effect} style={specialStyle} />;
-            }
+          {item.effect.map((effect, effectIndex) => {
+            return (
+              <>
+                {effectIndex > 0 && <RowDivider />}
+                <StyledText
+                  entry={item}
+                  effect={effect}
+                  websocket={websocket}
+                  character={character}
+                  session={session}
+                  isCreature={isCreature}
+                />
+              </>
+            );
           })}
         </EffectContainer>
       )}
