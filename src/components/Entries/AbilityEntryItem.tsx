@@ -2,14 +2,36 @@ import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
-import { Ability, AbilityEntry, CharacterEntry, SessionEntry } from "../../Types";
+import Icon from "@mdi/react";
+import {
+  Ability,
+  AbilityEntry,
+  CharacterEntry,
+  SessionEntry,
+} from "../../Types";
 import { useRoll } from "../../functions/CombatFunctions";
 
-import { faChevronRight, faSkull } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faCaretDown,
+  faChevronDown,
+  faChevronRight,
+  faChevronUp,
+  faEllipsisV,
+  faSkull,
+  faThumbTack,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../../functions/SessionsFunctions";
 import { ExceptionalStats } from "../../functions/rules/ExceptionalStats";
-
+import { StyledText } from "../../functions/UtilityFunctions";
+import {
+  mdiRomanNumeral1,
+  mdiRomanNumeral2,
+  mdiRomanNumeral3,
+  mdiSword,
+} from "@mdi/js";
 interface LevelComponentProps {
   level: string;
   ability: AbilityEntry;
@@ -55,12 +77,43 @@ const Container = styled.div`
   max-height: 35px;
 `;
 
+interface ExpandedContainerProps {
+  expanded: boolean;
+}
+
+const ExpandedContainer = styled.div<ExpandedContainerProps>`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-right: 5px;
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
+
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  /* When expanded is true, always show the icon */
+  ${({ expanded }) =>
+    expanded &&
+    `
+    visibility: visible;
+    opacity: 1;
+  `}
+`;
+
 const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   flex: 1;
   margin-left: 5px;
+  &:hover {
+    ${ExpandedContainer} {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
 `;
 
 const LevelSelectionContainer = styled.div`
@@ -92,7 +145,25 @@ const AddButton = styled.div`
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
+`;
+
+const DeleteButton = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  width: 20px;
+  max-width: 20px;
+  border-right-top-radius: ${Constants.BORDER_RADIUS};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
+  &:hover {
+    color: ${Constants.BRIGHT_RED};
+  }
 `;
 
 const ExpandButten = styled.div`
@@ -107,8 +178,9 @@ const ExpandButten = styled.div`
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
   padding-bottom: 5px;
+  font-size: 12px;
 `;
 
 const CorruptionButten = styled.div`
@@ -172,7 +244,6 @@ const Divider = styled.div`
 `;
 
 const LevelSelection = styled.div<LevelProps>`
-  margin: 1px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -183,7 +254,6 @@ const LevelSelection = styled.div<LevelProps>`
   color: ${Constants.WIDGET_PRIMARY_FONT};
   font-size: 12px;
   width: 40px;
-  height: 20px;
   cursor: pointer;
 `;
 
@@ -212,35 +282,11 @@ const RollButton = styled.div<LevelProps>`
   font-size: 14px;
 `;
 
-function parseBoldKeywords(input: string): JSX.Element[] {
-  const keywords = [
-    "Passive",
-    "Free",
-    "Attacks",
-    "Reaction",
-    "Special",
-    "Active",
-  ];
-  const regex = new RegExp(`\\b(${keywords.join("|")})\\b`, "gi");
-  const parts = input.split(regex);
-  return parts.map((part, index) => {
-    if (keywords.includes(part)) {
-      return <strong key={index}>{part}</strong>;
-    } else {
-      return <span key={index}>{part}</span>;
-    }
-  });
-}
-
-function LevelComponent({ ability_level, radius }: LevelComponentProps) {
-  return (
-    <LevelBaseContainer radius={radius}>
-      <AbilityDescription>
-        {parseBoldKeywords(ability_level.description)}
-      </AbilityDescription>
-    </LevelBaseContainer>
-  );
-}
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-basis: 0;
+`;
 
 interface AbilityEntryItemProps {
   ability: AbilityEntry;
@@ -262,6 +308,28 @@ function AbilityEntryItem({
   isCreature,
 }: AbilityEntryItemProps) {
   const [abilityLevel, setAbilityLevel] = useState<string>(ability.level);
+
+  interface LevelProps {
+    effect: string;
+    radius: string;
+  }
+
+  const LevelComponent = ({ effect, radius }: LevelProps) => {
+    return (
+      <LevelBaseContainer radius={radius}>
+        <AbilityDescription>
+          <StyledText
+            entry={ability}
+            effect={effect}
+            websocket={websocket}
+            character={character}
+            session={session}
+            isCreature={isCreature}
+          />
+        </AbilityDescription>
+      </LevelBaseContainer>
+    );
+  };
 
   const generateRandomId = (length = 10) => {
     return Math.random()
@@ -329,158 +397,84 @@ function AbilityEntryItem({
     update_session(session, character, isCreature, websocket);
   };
 
-  function handleLevelChange(ability: AbilityEntry, level: string) {
-    setAbilityLevel(level);
-
-    const id = ability.id;
-
-    const abilities = character.abilities.map((ability) => {
-      if (ability.id === id) {
-        return {
-          ...ability,
-          level: level,
-        };
-      } else {
-        return ability;
-      }
-    });
-
-    character.abilities = abilities;
-
-    const update_stats = ExceptionalStats({
-      character: character,
-      state: "change",
-      ability: ability,
-      level: level,
-      originalLevel: ability.level,
-    });
-
-    character.stats = update_stats.stats;
-
-    update_session(session, character, isCreature, websocket);
-  }
-
-  const onRollDice = useRoll();
-
-  const RollCorruptionDice = async () => {
-    const dice_result = await onRollDice({
-      websocket,
-      session,
-      character,
-      dice: 4,
-      count: 1,
-      target: 0,
-      modifier: 0,
-      source: ability.name,
-      active: "Corruption",
-      add_mod: true,
-      isCreature,
-    });
-
-    console.log(dice_result);
-  };
-
-  interface DiceProps {
+  interface LevelSelectorProps {
     ability: AbilityEntry;
   }
 
-  function DiceComponent({ ability }: DiceProps) {
-    const onRollDice = useRoll();
+  const LevelSelector = ({ ability }: LevelSelectorProps) => {
+    type Level = "Novice" | "Adept" | "Master";
+
+    const levels: Level[] = ["Novice", "Adept", "Master"];
+
+    const handleLevelChange = () => {
+      const currentIndex = levels.indexOf(abilityLevel as Level);
+      const nextIndex = (currentIndex + 1) % levels.length;
+      const nextLevel = levels[nextIndex];
+
+      setAbilityLevel(nextLevel);
+
+      const id = ability.id;
+
+      const abilities = character.abilities.map((ability) => {
+        if (ability.id === id) {
+          return {
+            ...ability,
+            level: nextLevel,
+          };
+        } else {
+          return ability;
+        }
+      });
+      character.abilities = abilities;
+
+      const update_stats = ExceptionalStats({
+        character: character,
+        state: "change",
+        ability: ability,
+        level: nextLevel,
+        originalLevel: ability.level,
+      });
+
+      character.stats = update_stats.stats;
+
+      update_session(session, character, isCreature, websocket);
+    };
+
+    const levelIcons: Record<Level, any> = {
+      Novice: mdiRomanNumeral1,
+      Adept: mdiRomanNumeral2,
+      Master: mdiRomanNumeral3,
+    };
+
+    const isActive = (level: Level) => {
+      const currentIndex = levels.indexOf(abilityLevel as Level);
+      const levelIndex = levels.indexOf(level);
+      return levelIndex <= currentIndex;
+    };
+
     return (
-      <>
-        {ability.level === "Novice"
-          ? Array.from(ability.novice.roll).map((roll, index) => (
-              <RollButton
-                $active={true}
-                key={index}
-                type={ability.type}
-                onClick={() =>
-                  onRollDice({
-                    websocket,
-                    session,
-                    character,
-                    dice: roll.dice,
-                    modifier: roll.mod,
-                    count: 1,
-                    target: 0,
-                    source: ability.name,
-                    active: ability.type,
-                    add_mod: true,
-                    isCreature,
-                  })
-                }
-              >
-                d{roll.dice}
-                {roll.mod > 0 ? `+${roll.mod}` : null}
-              </RollButton>
-            ))
-          : ability.level === "Adept"
-          ? Array.from(ability.adept.roll).map((roll, index) => (
-              <RollButton
-                $active={true}
-                key={index}
-                type={ability.type}
-                onClick={() =>
-                  onRollDice({
-                    websocket,
-                    session,
-                    character,
-                    dice: roll.dice,
-                    modifier: roll.mod,
-                    count: 1,
-                    target: 0,
-                    source: ability.name,
-                    active: ability.type,
-                    add_mod: true,
-                    isCreature,
-                  })
-                }
-              >
-                d{roll.dice}
-                {roll.mod > 0 ? `+${roll.mod}` : null}
-              </RollButton>
-            ))
-          : ability.level === "Master"
-          ? Array.from(ability.master.roll).map((roll, index) => (
-              <RollButton
-                $active={true}
-                key={index}
-                type={ability.type}
-                onClick={() =>
-                  onRollDice({
-                    websocket,
-                    session,
-                    character,
-                    dice: roll.dice,
-                    modifier: roll.mod,
-                    count: 1,
-                    target: 0,
-                    source: ability.name,
-                    active: ability.type,
-                    add_mod: true,
-                    isCreature,
-                  })
-                }
-              >
-                d{roll.dice}
-                {roll.mod > 0 ? `+${roll.mod}` : null}
-              </RollButton>
-            ))
-          : null}
-      </>
+      <LevelSelection
+        className={"button-hover"}
+        type={ability.type}
+        $active={isActive(abilityLevel as Level)}
+        onClick={handleLevelChange}
+      >
+        <Icon
+          path={levelIcons[abilityLevel as Level]}
+          size={1.0}
+          color={Constants.WIDGET_PRIMARY_FONT}
+        />
+      </LevelSelection>
     );
-  }
+  };
 
   return (
-    <BaseContainer>
+    <BaseContainer className="button-hover">
       <Container>
-        <ExpandButten
-          className={"button-hover"}
+        <ExpandButten className={"button-hover"}></ExpandButten>
+        <NameContainer
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >
-          {expanded ? "-" : "+"}
-        </ExpandButten>
-        <NameContainer>
           <AbilityName type={ability.type} $active={true}>
             {ability.name}
           </AbilityName>
@@ -490,47 +484,11 @@ function AbilityEntryItem({
               : `${ability.type}, ${ability.tradition}`}
           </AbilityDetail>
         </NameContainer>
-
-        <RollContainer>
-          <DiceComponent ability={ability} />
-          {ability.type === "Mystical Power" ? (
-            <CorruptionButten onClick={RollCorruptionDice}>
-              <FontAwesomeIcon icon={faSkull} />
-            </CorruptionButten>
-          ) : null}
-        </RollContainer>
-        <Divider />
         <LevelSelectionContainer>
-          {ability.novice.description !== "" && (
-            <LevelSelection
-              className={"button-hover"}
-              type={ability.type}
-              $active={["Novice", "Adept", "Master"].includes(ability.level)}
-              onClick={() => handleLevelChange(ability, "Novice")}
-            >
-              N
-            </LevelSelection>
-          )}
-          {ability.adept.description !== "" && (
-            <LevelSelection
-              className={"button-hover"}
-              type={ability.type}
-              $active={["Adept", "Master"].includes(ability.level)}
-              onClick={() => handleLevelChange(ability, "Adept")}
-            >
-              A
-            </LevelSelection>
-          )}
-          {ability.master.description !== "" && (
-            <LevelSelection
-              className={"button-hover"}
-              type={ability.type}
-              $active={ability.level === "Master"}
-              onClick={() => handleLevelChange(ability, "Master")}
-            >
-              M
-            </LevelSelection>
-          )}
+          {ability.adept.description !== "" &&
+          ability.master.description !== "" ? (
+            <LevelSelector ability={ability} />
+          ) : null}
         </LevelSelectionContainer>
 
         {browser ? (
@@ -541,21 +499,40 @@ function AbilityEntryItem({
             />
           </AddButton>
         ) : (
-          <AddButton
-            className={"button-hover"}
-            onClick={() => DeleteAbilitySlot(ability)}
-          >
-            x
-          </AddButton>
+          <Column>
+            <DeleteButton
+              className={"button-hover"}
+              onClick={() => DeleteAbilitySlot(ability)}
+            >
+              <FontAwesomeIcon icon={faXmark} style={{ fontSize: "12px" }} />
+            </DeleteButton>
+            {expanded ? (
+              <AddButton className={"button-hover"}>
+                <FontAwesomeIcon
+                  icon={faBars}
+                  style={{
+                    fontSize: "12px",
+                    color: Constants.WIDGET_SECONDARY_FONT,
+                  }}
+                />
+              </AddButton>
+            ) : (
+              <AddButton className={"button-hover"}>
+                <FontAwesomeIcon
+                  icon={faBars}
+                  style={{
+                    fontSize: "12px",
+                  }}
+                />
+              </AddButton>
+            )}
+          </Column>
         )}
       </Container>
       <LevelContainer $expanded={expanded}>
         {ability.novice.description !== "" && abilityLevel === "Novice" && (
           <LevelComponent
-            level="Novice"
-            ability={ability}
-            ability_level={ability.novice}
-            type={ability.type}
+            effect={ability.novice.description}
             radius={Constants.BORDER_RADIUS}
           />
         )}
@@ -563,17 +540,11 @@ function AbilityEntryItem({
         {ability.adept.description !== "" && abilityLevel === "Adept" && (
           <>
             <LevelComponent
-              level="Novice"
-              ability={ability}
-              ability_level={ability.novice}
-              type={ability.type}
+              effect={ability.novice.description}
               radius={"0px"}
             />
             <LevelComponent
-              level="Adept"
-              ability={ability}
-              ability_level={ability.adept}
-              type={ability.type}
+              effect={ability.adept.description}
               radius={Constants.BORDER_RADIUS}
             />
           </>
@@ -582,24 +553,12 @@ function AbilityEntryItem({
         {ability.master.description !== "" && abilityLevel === "Master" && (
           <>
             <LevelComponent
-              level="Novice"
-              ability={ability}
-              ability_level={ability.novice}
-              type={ability.type}
+              effect={ability.novice.description}
               radius={"0px"}
             />
+            <LevelComponent effect={ability.adept.description} radius={"0px"} />
             <LevelComponent
-              level="Adept"
-              ability={ability}
-              ability_level={ability.adept}
-              type={ability.type}
-              radius={"0px"}
-            />
-            <LevelComponent
-              level="Master"
-              ability={ability}
-              ability_level={ability.master}
-              type={ability.type}
+              effect={ability.master.description}
               radius={Constants.BORDER_RADIUS}
             />
           </>

@@ -1,4 +1,8 @@
-import { faChevronRight, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronRight,
+  faXmark,
+  faBars,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import cloneDeep from "lodash/cloneDeep";
 import { Socket } from "socket.io-client";
@@ -16,6 +20,8 @@ import { GetMaxSlots } from "../../functions/RulesFunctions";
 import { update_session } from "../../functions/SessionsFunctions";
 import { Qualities } from "../../functions/rules/Qualities";
 import { SetFlexibleEquip } from "../../functions/CharacterFunctions";
+import { StyledText } from "../../functions/UtilityFunctions";
+import { useState } from "react";
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -32,8 +38,12 @@ const Container = styled.div`
   max-height: 35px;
 `;
 
-const EffectContainer = styled.div`
-  display: flex;
+interface EffectContainerProps {
+  $expanded: boolean;
+}
+
+const EffectContainer = styled.div<EffectContainerProps>`
+  display: ${(props) => (props.$expanded ? "flex" : "none")};
   flex-direction: column;
   flex-grow: 1;
   border-radius: ${Constants.BORDER_RADIUS};
@@ -41,23 +51,40 @@ const EffectContainer = styled.div`
   background-color: #191c1b;
   font-size: 12px;
   padding: 5px;
-  color: rgba(255, 255, 255, 0.2);
+  color: ${Constants.WIDGET_SECONDARY_FONT};
 `;
 
 const AddButton = styled.div`
-  pointer: cursor;
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   width: 20px;
   max-width: 20px;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
   border-right-top-radius: ${Constants.BORDER_RADIUS};
-  border-right-bottom-radius: ${Constants.BORDER_RADIUS};
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
+`;
+
+const DeleteButton = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  width: 20px;
+  max-width: 20px;
+  border-right-top-radius: ${Constants.BORDER_RADIUS};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
+  &:hover {
+    color: ${Constants.BRIGHT_RED};
+  }
 `;
 
 const EquipContainer = styled.div`
@@ -67,8 +94,10 @@ const EquipContainer = styled.div`
 
 const NameContainer = styled.div`
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   margin-left: 5px;
+  user-select: none;
 `;
 
 const Description = styled.div`
@@ -87,14 +116,6 @@ const NameBox = styled.div`
   color: ${(props) => props.color};
   font-size: 16px;
   font-weight: bold;
-`;
-
-const TypeBox = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex: 1;
-  color: rgba(255, 255, 255, 0.2);
-  font-size: 10px;
 `;
 
 const CostBox = styled.div`
@@ -121,20 +142,6 @@ const RollContainer = styled.div`
   margin-top: 5px;
   margin-bottom: 5px;
   margin-right: 5px;
-`;
-
-const QualityBox = styled.div`
-  display: flex;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  margin-left: 2px;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-
-  font-size: 12px;
 `;
 
 interface RollBoxProps {
@@ -249,6 +256,35 @@ const QuantityBox = styled.button<RollBoxProps>`
   align-items: center;
   font-weight: bold;
   width: 40px;
+`;
+
+const TypeBox = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex: 1;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 10px;
+  gap: 5px;
+`;
+
+const QualityBox = styled.div`
+  display: flex;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+`;
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-basis: 0;
 `;
 
 interface InventoryEntryProps {
@@ -501,55 +537,11 @@ function InventoryEntry({
     return value.trim();
   }
 
-  interface StyledTextProps {
-    text: string;
-    style: React.CSSProperties;
-  }
-
-  const specialStyle = {
-    color: Constants.WIDGET_SECONDARY_HIGHLIGHT,
-  };
-
-  const StyledText: React.FC<StyledTextProps> = ({ text, style }) => {
-    const escapeRegExp = (word: string) => word.replace(/[+]/g, "\\+");
-
-    const regex = new RegExp(
-      `\\b(${Constants.SPECIAL_WORDS.map(escapeRegExp).join("|")})\\b`,
-      "i",
-    );
-
-    const getStyledWords = (
-      fragment: string,
-      _idx: number,
-    ): JSX.Element[] | string => {
-      const matches = fragment.match(regex);
-
-      if (!matches) {
-        return fragment;
-      }
-
-      return fragment.split(regex).map((part, partIndex) => {
-        const key = `${part}-${partIndex}`;
-        const isSpecialWord = Constants.SPECIAL_WORDS.includes(part);
-        return (
-          <span key={key} style={isSpecialWord ? style : undefined}>
-            {part}
-          </span>
-        );
-      });
-    };
-
-    const words = text.split(/(\s+)/).map((word, index) => {
-      const key = `${word}-${index}`;
-      return <span key={key}>{getStyledWords(word, index)}</span>;
-    });
-
-    return <div>{words}</div>;
-  };
+  const [expanded, setExpanded] = useState<boolean>(false);
 
   return (
     <MasterContainer>
-      <Container>
+      <Container className="button-hover">
         <EquipContainer>
           {item.equip === "1H" && (
             <>
@@ -599,41 +591,45 @@ function InventoryEntry({
             <NoEquipBox key={"unequip"} color={COLOR} />
           )}
         </EquipContainer>
-        <NameContainer>
+        <NameContainer
+          onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
+        >
           <NameBox color={COLOR}>{item.name}</NameBox>
-          <TypeBox>
-            {item.type}
-            {gmMode === true && <CostBox>{ConvertCurrency(item.cost)}</CostBox>}
-          </TypeBox>{" "}
+          <Row>
+            <TypeBox>
+              {gmMode === true && (
+                <CostBox>{ConvertCurrency(item.cost)}</CostBox>
+              )}
+              {item.type}
+              {item.quality.length > 0 && ","}
+              {item.quality.map((quality, index) => {
+                let description = "";
+
+                if (quality === "Effect") {
+                  description = item.description;
+                } else if (Qualities[quality]) {
+                  description = Qualities[quality].description;
+                } else {
+                  console.warn("Missing quality:", quality);
+                  return null; // Skip rendering this item if the quality is missing
+                }
+
+                const titleContent = `${quality}\n\n${description}`;
+                const isLastItem = index === item.quality.length - 1; // Check if it's the last item
+
+                return (
+                  <QualityBox key={index} title={titleContent}>
+                    {quality}
+                    {!isLastItem && ","}
+                  </QualityBox>
+                );
+              })}
+            </TypeBox>{" "}
+          </Row>
         </NameContainer>
-        {item.description !== "" && (
+        {/* {item.description !== "" && (
           <Description color={COLOR}> — {item.description}</Description>
-        )}
-        <QualityContainer>
-          {item.quality.map((quality, index) => {
-            let description = "";
-
-            if (quality === "Effect") {
-              description = item.description;
-            } else if (Qualities[quality]) {
-              description = Qualities[quality].description;
-            } else {
-              console.warn("Missing quality:", quality);
-              return null; // Skip rendering this item if the quality is missing
-            }
-
-            const titleContent = `${quality}\n\n${description}`;
-
-            return (
-              <QualityBox key={index} title={titleContent}>
-                {quality.slice(0, 2)}
-              </QualityBox>
-            );
-          })}
-        </QualityContainer>
-        {item.quality.length > 0 && (item.roll.roll || item.quantity.bulk) && (
-          <Divider />
-        )}
+        )} */}
         <RollContainer>
           {item.roll.roll === true && (
             <RollBox color={COLOR} onClick={handleRoll}>
@@ -655,8 +651,8 @@ function InventoryEntry({
             </QuantityBox>
           )}
         </RollContainer>
-        {
-          browser ? (
+        <Column>
+          {browser ? (
             <AddButton
               className={"button-hover"}
               onClick={() => AddInventorySlot()}
@@ -667,30 +663,55 @@ function InventoryEntry({
               />
             </AddButton>
           ) : equipped === "" ? (
-            <AddButton
-              className={"button-hover"}
-              onClick={() => DeleteInventorySlot(id)}
-            >
-              <FontAwesomeIcon icon={faXmark} />
-            </AddButton> // else part for equipped
-          ) : (
-            <AddButton></AddButton>
-          ) // else part for equipped
-        }
+            <>
+              <DeleteButton
+                className={"button-hover"}
+                onClick={() => DeleteInventorySlot(id)}
+              >
+                <FontAwesomeIcon icon={faXmark} style={{ fontSize: "12px" }} />
+              </DeleteButton>
+              {Array.isArray(item.effect) && item.effect.length > 0 ? (
+                expanded ? (
+                  <AddButton className={"button-hover"}>
+                    <FontAwesomeIcon
+                      icon={faBars}
+                      style={{
+                        fontSize: "12px",
+                        color: Constants.WIDGET_SECONDARY_FONT,
+                      }}
+                    />
+                  </AddButton>
+                ) : (
+                  <AddButton className={"button-hover"}>
+                    <FontAwesomeIcon
+                      icon={faBars}
+                      style={{ fontSize: "12px" }}
+                    />
+                  </AddButton>
+                )
+              ) : (
+                <AddButton />
+              )}
+            </>
+          ) : null}
+        </Column>
       </Container>
       {Array.isArray(item.effect) && item.effect.length > 0 && (
-        <EffectContainer>
-          {item.effect.map((effect, index) => {
-            if (index > 0) {
-              return (
-                <>
-                  <RowDivider key={"Divider" + index} />
-                  <StyledText text={effect} style={specialStyle} />
-                </>
-              );
-            } else {
-              return <StyledText text={effect} style={specialStyle} />;
-            }
+        <EffectContainer $expanded={expanded}>
+          {item.effect.map((effect, effectIndex) => {
+            return (
+              <>
+                {effectIndex > 0 && <RowDivider />}
+                <StyledText
+                  entry={item}
+                  effect={effect}
+                  websocket={websocket}
+                  character={character}
+                  session={session}
+                  isCreature={isCreature}
+                />
+              </>
+            );
           })}
         </EffectContainer>
       )}

@@ -1,3 +1,14 @@
+import * as Constants from "../Constants";
+import styled from "styled-components";
+import {
+  ItemEntry,
+  AbilityEntry,
+  CharacterEntry,
+  SessionEntry,
+} from "../Types";
+import { Socket } from "socket.io-client";
+import { useRoll } from "../functions/CombatFunctions";
+
 export function UpperFirstLetter(input: string): string {
   if (!input || typeof input !== "string") {
     return "";
@@ -66,3 +77,109 @@ export function getAdjustedColor(color: string, roll: number): string {
 
   return adjustBrightness(color, brightnessAdjustment);
 }
+
+interface StyledTextProps {
+  entry: ItemEntry | AbilityEntry;
+  effect: string;
+  websocket: Socket;
+  character: CharacterEntry;
+  session: SessionEntry;
+  isCreature: boolean;
+}
+
+interface DiceButtonProps {
+  color: string;
+}
+
+const DiceButton = styled.button<DiceButtonProps>`
+  border-radius: ${Constants.BORDER_RADIUS};
+  cursor: pointer;
+  font-weight: bold;
+  background-color: ${Constants.WIDGET_BACKGROUND};
+
+  color: ${(props) => props.color};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+`;
+
+export const StyledText: React.FC<StyledTextProps> = ({
+  entry,
+  effect,
+  websocket,
+  character,
+  session,
+  isCreature,
+}) => {
+  const onRollDice = useRoll();
+
+  const style = { color: Constants.WIDGET_PRIMARY_FONT, fontWeight: "bold" }; // Example style
+  // Updated escapeRegExp function
+  const escapeRegExp = (word: string) => word.replace(/(\+)?[+]/g, "\\$&");
+
+  // Updated regex
+  const regex = new RegExp(
+    `\\b(${Constants.SPECIAL_WORDS.map((word) =>
+      word.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+    ).join("|")})\\b`,
+    "i",
+  );
+
+  const getStyledWords = (
+    fragment: string,
+    _idx: number,
+  ): JSX.Element[] | string => {
+    const matches = fragment.match(regex);
+
+    if (!matches) {
+      return fragment;
+    }
+
+    const handleRoll = (part: string) => {
+      const dice = parseInt(part.substring(1));
+      onRollDice({
+        websocket,
+        dice: dice,
+        modifier: 0,
+        count: 1,
+        target: 0,
+        source: entry.name,
+        active: entry.type,
+        add_mod: true,
+        character,
+        session,
+        isCreature,
+      });
+    };
+
+    return fragment.split(regex).map((part, partIndex) => {
+      const key = `${part}-${partIndex}`;
+      const isSpecialWord = Constants.SPECIAL_WORDS.includes(part);
+      const isDiceWord = ["d4", "d6", "d8", "d10", "d12", "d20"].includes(part);
+
+      if (isDiceWord) {
+        return (
+          <DiceButton
+            color={Constants.TYPE_COLORS[entry.type.toLowerCase()]}
+            key={key}
+            onClick={() => handleRoll(part)}
+            className="button-hover"
+          >
+            {part}
+          </DiceButton>
+        );
+      }
+
+      return (
+        <span key={key} style={isSpecialWord ? style : undefined}>
+          {part}
+        </span>
+      );
+    });
+  };
+
+  const words = effect.split(/(\s+)/).map((word, index) => {
+    const key = `${word}-${index}`;
+    return <span key={key}>{getStyledWords(word, index)}</span>;
+  });
+
+  return <div>{words}</div>;
+};
