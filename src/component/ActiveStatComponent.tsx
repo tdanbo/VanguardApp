@@ -139,6 +139,7 @@ const DiceIcon = styled.button<DiceProps>`
   border-left: 1px solid ${Constants.WIDGET_BORDER};
   text-shadow: 1px 1px 1px ${Constants.BACKGROUND};
   max-width: 30px;
+  width: 30px;
 `;
 
 const Plus = styled.button`
@@ -318,7 +319,7 @@ function ActiveStatComponent({
       <Row height={"70%"} className="button-hover">
         {isAttackActive(active) ? (
           <>
-            {active.dice2_name !== "Knuckles" && active.dice2 !== 0 && (
+            {(active.dice2_name !== "Knuckles" && active.dice2 !== 0 && (
               <DiceIcon
                 onClick={() => {
                   [
@@ -349,7 +350,7 @@ function ActiveStatComponent({
                 d{active.dice2}
                 {active.dice2_mod > 0 ? `+${active.dice2_mod}` : null}
               </DiceIcon>
-            )}
+            )) || <DiceIcon color={Constants.TYPE_COLORS[active_name]} />}
           </>
         ) : (
           <DiceIcon color={Constants.TYPE_COLORS[active_name]} />

@@ -1,4 +1,5 @@
 import * as Constants from "../Constants";
+import styled from "styled-components";
 import {
   ItemEntry,
   AbilityEntry,
@@ -86,6 +87,20 @@ interface StyledTextProps {
   isCreature: boolean;
 }
 
+interface DiceButtonProps {
+  color: string;
+}
+
+const DiceButton = styled.button<DiceButtonProps>`
+  border-radius: ${Constants.BORDER_RADIUS};
+  cursor: pointer;
+  font-weight: bold;
+  background-color: ${Constants.WIDGET_BACKGROUND};
+
+  color: ${(props) => props.color};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+`;
+
 export const StyledText: React.FC<StyledTextProps> = ({
   entry,
   effect,
@@ -96,11 +111,15 @@ export const StyledText: React.FC<StyledTextProps> = ({
 }) => {
   const onRollDice = useRoll();
 
-  const style = { color: "#FFFFFF", fontWeight: "bold" }; // Example style
-  const escapeRegExp = (word: string) => word.replace(/[+]/g, "\\+");
+  const style = { color: Constants.WIDGET_PRIMARY_FONT, fontWeight: "bold" }; // Example style
+  // Updated escapeRegExp function
+  const escapeRegExp = (word: string) => word.replace(/(\+)?[+]/g, "\\$&");
 
+  // Updated regex
   const regex = new RegExp(
-    `\\b(${Constants.SPECIAL_WORDS.map(escapeRegExp).join("|")})\\b`,
+    `\\b(${Constants.SPECIAL_WORDS.map((word) =>
+      word.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
+    ).join("|")})\\b`,
     "i",
   );
 
@@ -138,9 +157,14 @@ export const StyledText: React.FC<StyledTextProps> = ({
 
       if (isDiceWord) {
         return (
-          <button key={key} onClick={() => handleRoll(part)}>
+          <DiceButton
+            color={Constants.TYPE_COLORS[entry.type.toLowerCase()]}
+            key={key}
+            onClick={() => handleRoll(part)}
+            className="button-hover"
+          >
             {part}
-          </button>
+          </DiceButton>
         );
       }
 

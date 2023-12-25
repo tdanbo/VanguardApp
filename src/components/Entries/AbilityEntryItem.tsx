@@ -11,7 +11,17 @@ import {
 } from "../../Types";
 import { useRoll } from "../../functions/CombatFunctions";
 
-import { faChevronRight, faSkull } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faCaretDown,
+  faChevronDown,
+  faChevronRight,
+  faChevronUp,
+  faEllipsisV,
+  faSkull,
+  faThumbTack,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../../functions/SessionsFunctions";
 import { ExceptionalStats } from "../../functions/rules/ExceptionalStats";
@@ -67,12 +77,43 @@ const Container = styled.div`
   max-height: 35px;
 `;
 
+interface ExpandedContainerProps {
+  expanded: boolean;
+}
+
+const ExpandedContainer = styled.div<ExpandedContainerProps>`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-right: 5px;
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
+
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  /* When expanded is true, always show the icon */
+  ${({ expanded }) =>
+    expanded &&
+    `
+    visibility: visible;
+    opacity: 1;
+  `}
+`;
+
 const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   flex: 1;
   margin-left: 5px;
+  &:hover {
+    ${ExpandedContainer} {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
 `;
 
 const LevelSelectionContainer = styled.div`
@@ -104,7 +145,25 @@ const AddButton = styled.div`
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
+`;
+
+const DeleteButton = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  width: 20px;
+  max-width: 20px;
+  border-right-top-radius: ${Constants.BORDER_RADIUS};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
+  &:hover {
+    color: ${Constants.BRIGHT_RED};
+  }
 `;
 
 const ExpandButten = styled.div`
@@ -119,8 +178,9 @@ const ExpandButten = styled.div`
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
   padding-bottom: 5px;
+  font-size: 12px;
 `;
 
 const CorruptionButten = styled.div`
@@ -220,6 +280,12 @@ const RollButton = styled.div<LevelProps>`
   font-weight: bold;
   width: 40px;
   font-size: 14px;
+`;
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-basis: 0;
 `;
 
 interface AbilityEntryItemProps {
@@ -403,15 +469,12 @@ function AbilityEntryItem({
   };
 
   return (
-    <BaseContainer>
+    <BaseContainer className="button-hover">
       <Container>
-        <ExpandButten
-          className={"button-hover"}
+        <ExpandButten className={"button-hover"}></ExpandButten>
+        <NameContainer
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >
-          {expanded ? "-" : "+"}
-        </ExpandButten>
-        <NameContainer>
           <AbilityName type={ability.type} $active={true}>
             {ability.name}
           </AbilityName>
@@ -422,7 +485,10 @@ function AbilityEntryItem({
           </AbilityDetail>
         </NameContainer>
         <LevelSelectionContainer>
-          <LevelSelector ability={ability} />
+          {ability.adept.description !== "" &&
+          ability.master.description !== "" ? (
+            <LevelSelector ability={ability} />
+          ) : null}
         </LevelSelectionContainer>
 
         {browser ? (
@@ -433,12 +499,34 @@ function AbilityEntryItem({
             />
           </AddButton>
         ) : (
-          <AddButton
-            className={"button-hover"}
-            onClick={() => DeleteAbilitySlot(ability)}
-          >
-            x
-          </AddButton>
+          <Column>
+            <DeleteButton
+              className={"button-hover"}
+              onClick={() => DeleteAbilitySlot(ability)}
+            >
+              <FontAwesomeIcon icon={faXmark} style={{ fontSize: "12px" }} />
+            </DeleteButton>
+            {expanded ? (
+              <AddButton className={"button-hover"}>
+                <FontAwesomeIcon
+                  icon={faBars}
+                  style={{
+                    fontSize: "12px",
+                    color: Constants.WIDGET_SECONDARY_FONT,
+                  }}
+                />
+              </AddButton>
+            ) : (
+              <AddButton className={"button-hover"}>
+                <FontAwesomeIcon
+                  icon={faBars}
+                  style={{
+                    fontSize: "12px",
+                  }}
+                />
+              </AddButton>
+            )}
+          </Column>
         )}
       </Container>
       <LevelContainer $expanded={expanded}>
