@@ -53,6 +53,8 @@ export const getCharacterXp = (character: CharacterEntry) => {
       return;
     } else if (ability.type.toLocaleLowerCase() === "burden") {
       return;
+    } else if (ability.type.toLocaleLowerCase() === "ritual") {
+      return;
     }
 
     if (ability.level === "Novice") {
