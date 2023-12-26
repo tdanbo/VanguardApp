@@ -34,7 +34,7 @@ function InventorySection({
     <>
       {Array.from({ length: totalSlots }).map((_, index) => {
         const item = sortedInventory[index];
-        if (item !== undefined && item.category !== "container") {
+        if (item !== undefined) {
           return (
             <InventoryEntry
               session={session}

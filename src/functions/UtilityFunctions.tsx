@@ -113,7 +113,6 @@ export const StyledText: React.FC<StyledTextProps> = ({
 
   const style = { color: Constants.WIDGET_PRIMARY_FONT, fontWeight: "bold" }; // Example style
   // Updated escapeRegExp function
-  const escapeRegExp = (word: string) => word.replace(/(\+)?[+]/g, "\\$&");
 
   // Updated regex
   const regex = new RegExp(

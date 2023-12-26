@@ -3,42 +3,18 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
 import Icon from "@mdi/react";
-import {
-  Ability,
-  AbilityEntry,
-  CharacterEntry,
-  SessionEntry,
-} from "../../Types";
-import { useRoll } from "../../functions/CombatFunctions";
+import { AbilityEntry, CharacterEntry, SessionEntry } from "../../Types";
 
 import {
   faBars,
-  faCaretDown,
-  faChevronDown,
   faChevronRight,
-  faChevronUp,
-  faEllipsisV,
-  faSkull,
-  faThumbTack,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../../functions/SessionsFunctions";
 import { ExceptionalStats } from "../../functions/rules/ExceptionalStats";
 import { StyledText } from "../../functions/UtilityFunctions";
-import {
-  mdiRomanNumeral1,
-  mdiRomanNumeral2,
-  mdiRomanNumeral3,
-  mdiSword,
-} from "@mdi/js";
-interface LevelComponentProps {
-  level: string;
-  ability: AbilityEntry;
-  ability_level: Ability;
-  type: string;
-  radius: string;
-}
+import { mdiRomanNumeral1, mdiRomanNumeral2, mdiRomanNumeral3 } from "@mdi/js";
 
 const EntryColor = (type: string) => {
   return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.WIDGET_BORDER;
@@ -124,15 +100,6 @@ const LevelSelectionContainer = styled.div`
   justify-content: right;
 `;
 
-const RollContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  justify-content: right;
-  gap: 2px;
-`;
-
 const AddButton = styled.div`
   cursor: pointer;
   display: flex;
@@ -183,22 +150,6 @@ const ExpandButten = styled.div`
   font-size: 12px;
 `;
 
-const CorruptionButten = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-grow: 1;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  background-color: rgba(25, 25, 25, 1);
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  justify-content: center;
-  align-items: center;
-  align-items: right;
-  font-weight: bold;
-  width: 40px;
-  font-size: 14px;
-`;
-
 interface LevelContainerProps {
   $expanded: boolean;
 }
@@ -232,17 +183,6 @@ const AbilityDetail = styled.div`
   font-size: 10px;
 `;
 
-const Divider = styled.div`
-  display: flex;
-  background-color: rgba(0, 0, 0, 0.25);
-  width: 2px;
-  height: 20px;
-  margin-left: 2px;
-  margin-right: 2px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-`;
-
 const LevelSelection = styled.div<LevelProps>`
   display: flex;
   align-items: center;
@@ -262,23 +202,6 @@ const AbilityDescription = styled.div`
   padding: 10px;
   flex-grow: 1;
   color: ${Constants.WIDGET_SECONDARY_FONT};
-  font-size: 14px;
-`;
-
-const RollButton = styled.div<LevelProps>`
-  cursor: pointer;
-  display: flex;
-  flex-grow: 1;
-  color: ${(props) =>
-    props.$active ? EntryColor(props.type) : Constants.WIDGET_SECONDARY_FONT};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  justify-content: center;
-  align-items: center;
-  align-items: right;
-  font-weight: bold;
-  width: 40px;
   font-size: 14px;
 `;
 
