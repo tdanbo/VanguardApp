@@ -100,15 +100,6 @@ const NameContainer = styled.div`
   user-select: none;
 `;
 
-const Description = styled.div`
-  display: flex;
-  flex-direction: row;
-  font-size: 10px;
-  margin-top: 5px;
-  color: ${(props) => props.color};
-  opacity: 0.5;
-`;
-
 const NameBox = styled.div`
   flex-grow: 1;
   display: flex;
@@ -125,15 +116,6 @@ const CostBox = styled.div`
   color: rgba(255, 255, 255, 0.4);
   font-size: 10px;
   margin-left: 5px;
-`;
-
-const QualityContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  justify-content: right;
 `;
 
 const RollContainer = styled.div`
@@ -161,17 +143,6 @@ const RollBox = styled.div<RollBoxProps>`
   font-weight: bold;
   width: 40px;
   font-size: 14px;
-`;
-
-const Divider = styled.div`
-  display: flex;
-  background-color: rgba(0, 0, 0, 0.25);
-  width: 2px;
-  height: 20px;
-  margin-left: 2px;
-  margin-right: 2px;
-  margin-top: 5px;
-  margin-bottom: 5px;
 `;
 
 const RowDivider = styled.div`
@@ -653,15 +624,39 @@ function InventoryEntry({
         </RollContainer>
         <Column>
           {browser ? (
-            <AddButton
-              className={"button-hover"}
-              onClick={() => AddInventorySlot()}
-            >
-              <FontAwesomeIcon
-                icon={faChevronRight}
-                style={{ fontSize: "12px" }}
-              />
-            </AddButton>
+            <>
+              <AddButton
+                className={"button-hover"}
+                onClick={() => AddInventorySlot()}
+              >
+                <FontAwesomeIcon
+                  icon={faChevronRight}
+                  style={{ fontSize: "12px" }}
+                />
+              </AddButton>
+              {Array.isArray(item.effect) && item.effect.length > 0 ? (
+                expanded ? (
+                  <AddButton className={"button-hover"}>
+                    <FontAwesomeIcon
+                      icon={faBars}
+                      style={{
+                        fontSize: "12px",
+                        color: Constants.WIDGET_SECONDARY_FONT,
+                      }}
+                    />
+                  </AddButton>
+                ) : (
+                  <AddButton className={"button-hover"}>
+                    <FontAwesomeIcon
+                      icon={faBars}
+                      style={{ fontSize: "12px" }}
+                    />
+                  </AddButton>
+                )
+              ) : (
+                <AddButton />
+              )}
+            </>
           ) : equipped === "" ? (
             <>
               <DeleteButton
