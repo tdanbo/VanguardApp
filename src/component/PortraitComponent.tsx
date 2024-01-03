@@ -41,7 +41,7 @@ interface HealthBoxProps {
 }
 
 function PortraitComponent({ character }: HealthBoxProps) {
-  const speed = GetMovementSpeed(character) / 5;
+  const speed = GetMovementSpeed(character);
   const pain = GetPainThreshold(character);
   const capacity = GetMaxSlots(character) - GetUsedSlots(character);
   const burn = GetBurnRate(character);
@@ -59,7 +59,7 @@ function PortraitComponent({ character }: HealthBoxProps) {
         title={"capacity"}
         icon={faWeightHanging}
       />
-      <SmallStatComponent value={burn} title={"burn"} icon={faCarrot} />
+      <SmallStatComponent value={burn} title={"consumption"} icon={faCarrot} />
     </Container>
   );
 }

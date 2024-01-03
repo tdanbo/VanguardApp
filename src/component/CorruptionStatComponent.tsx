@@ -2,7 +2,7 @@ import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
-
+import { CorruptionAdjust } from "../functions/RulesFunctions";
 interface ColumnProps {
   width: string;
 }
@@ -216,9 +216,12 @@ function CorruptionStatComponent({
 
   const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
   const maxCorruptionPermanent = corruptionThreshold * 3;
+  const corruptionRulesAdjustment = CorruptionAdjust(character);
 
   const remaining_corruption =
-    maxCorruptionPermanent - character.health.corruption;
+    maxCorruptionPermanent -
+    character.health.corruption -
+    corruptionRulesAdjustment;
   const temporary_corruption = character.health.shield;
   const clean_corruption = corruptionThreshold - temporary_corruption;
 

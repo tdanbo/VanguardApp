@@ -3,6 +3,12 @@ import * as Constants from "../Constants";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toTitleCase } from "../functions/UtilityFunctions";
+import {
+  faCarrot,
+  faHeartBroken,
+  faPersonRunning,
+  faWeightHanging,
+} from "@fortawesome/free-solid-svg-icons";
 interface ContainerProps {
   width: string;
 }
@@ -56,7 +62,7 @@ const Value = styled.div`
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
 
   color: ${Constants.WIDGET_SECONDARY_FONT};
@@ -93,7 +99,21 @@ interface SmallStatComponentProps {
   icon: any;
 }
 
+const OrangeColor = "rgba(205, 112, 57, 0.7)";
+
 function SmallStatComponent({ title, value, icon }: SmallStatComponentProps) {
+  let color = Constants.WIDGET_SECONDARY_FONT_INACTIVE;
+  if (icon === faCarrot) {
+    color = OrangeColor;
+  } else if (icon === faHeartBroken) {
+    color = Constants.BRIGHT_RED;
+  } else if (icon === faPersonRunning) {
+    color = Constants.GREEN;
+  } else if (icon === faWeightHanging) {
+    color = Constants.BRIGHT_YELLOW;
+  } else {
+    color = Constants.WIDGET_SECONDARY_FONT_INACTIVE;
+  }
   return (
     <Container width={"23%"}>
       <Column width={"100%"}>
@@ -101,11 +121,7 @@ function SmallStatComponent({ title, value, icon }: SmallStatComponentProps) {
           <Block></Block>
           <Value>{value}</Value>
           <Block>
-            <FontAwesomeIcon
-              icon={icon}
-              color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
-              size="sm"
-            />
+            <FontAwesomeIcon icon={icon} color={color} size="sm" />
           </Block>
         </Row>
         <Row height={"30%"}>

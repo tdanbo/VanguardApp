@@ -291,6 +291,7 @@ export const EmptyCharacter: CharacterEntry = {
   health: {
     damage: 0,
     corruption: 0,
+    permanent: 0,
     shield: 0,
   },
   stats: {

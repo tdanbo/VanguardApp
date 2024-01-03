@@ -59,6 +59,7 @@ export const COLOR_6 = "#924933";
 
 export const TYPE_COLORS: Record<ColorType, string> = {
   artifact_weapon: COLOR_1,
+  "artifact weapon": COLOR_1,
   health: COLOR_1,
   attack: COLOR_1,
   damage: COLOR_1,
@@ -68,6 +69,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   ability: COLOR_1,
 
   artifact_armor: COLOR_2,
+  "artifact cloak": COLOR_2,
   armor: COLOR_2,
   defense: COLOR_2,
   resting: COLOR_2,
