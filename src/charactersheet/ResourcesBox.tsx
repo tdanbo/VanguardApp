@@ -54,35 +54,35 @@ const CurrencyContainer = styled.button`
 
 const IconFContainer = styled.div`
   display: flex;
-  font-size: 25px;
+  font-size: 20px;
   color: ${OrangeColor};
 `;
 
 const IconWContainer = styled.div`
   display: flex;
 
-  font-size: 25px;
+  font-size: 20px;
   color: ${BlueColor};
 `;
 
 const IconTContainer = styled.div`
   display: flex;
 
-  font-size: 25px;
+  font-size: 20px;
   color: ${GoldColor};
 `;
 
 const IconSContainer = styled.div`
   display: flex;
 
-  font-size: 25px;
+  font-size: 20px;
   color: ${SilverColor};
 `;
 
 const IconOContainer = styled.div`
   display: flex;
 
-  font-size: 25px;
+  font-size: 20px;
   color: ${BronzeColor};
 `;
 
@@ -395,21 +395,15 @@ function ResourcesBox({
           <TextContainer>{character.rations.water}</TextContainer>
         </CurrencyContainer>
         <CurrencyContainer className="button-hover">
-          <IconTContainer>
-            <FontAwesomeIcon icon={faCircle} />
-          </IconTContainer>
+          <IconTContainer>T</IconTContainer>
           <TextContainer>{thaler}</TextContainer>
         </CurrencyContainer>
         <CurrencyContainer className="button-hover">
-          <IconSContainer>
-            <FontAwesomeIcon icon={faCircle} />
-          </IconSContainer>
+          <IconSContainer>S</IconSContainer>
           <TextContainer>{shillings}</TextContainer>
         </CurrencyContainer>
         <CurrencyContainer className="button-hover">
-          <IconOContainer>
-            <FontAwesomeIcon icon={faCircle} />
-          </IconOContainer>
+          <IconOContainer>O</IconOContainer>
           <TextContainer>{orthegs}</TextContainer>
         </CurrencyContainer>
       </Container>
