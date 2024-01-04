@@ -9,6 +9,7 @@ import {
   faBars,
   faChevronRight,
   faXmark,
+  faSkull,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../../functions/SessionsFunctions";
@@ -211,6 +212,16 @@ const Column = styled.div`
   flex-basis: 0;
 `;
 
+const CorruptionContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-basis: 0;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.05);
+  gap: 2px;
+`;
+
 interface AbilityEntryItemProps {
   ability: AbilityEntry;
   browser: boolean;
@@ -230,7 +241,10 @@ function AbilityEntryItem({
   websocket,
   isCreature,
 }: AbilityEntryItemProps) {
-  const [abilityLevel, setAbilityLevel] = useState<string>(ability.level);
+  const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
+  useEffect(() => {
+    setAbilityLevel(ability.level);
+  });
 
   interface LevelProps {
     effect: string;
@@ -407,6 +421,43 @@ function AbilityEntryItem({
               : `${ability.type}, ${ability.tradition}`}
           </AbilityDetail>
         </NameContainer>
+        <CorruptionContainer>
+          {ability.type === "Mystical Power" && (
+            <>
+              {ability.level === "Novice" && (
+                <FontAwesomeIcon icon={faSkull} style={{ fontSize: "20px" }} />
+              )}
+              {ability.level === "Adept" && (
+                <>
+                  <FontAwesomeIcon
+                    icon={faSkull}
+                    style={{ fontSize: "20px" }}
+                  />
+                  <FontAwesomeIcon
+                    icon={faSkull}
+                    style={{ fontSize: "20px" }}
+                  />
+                </>
+              )}
+              {ability.level === "Master" && (
+                <>
+                  <FontAwesomeIcon
+                    icon={faSkull}
+                    style={{ fontSize: "20px" }}
+                  />
+                  <FontAwesomeIcon
+                    icon={faSkull}
+                    style={{ fontSize: "20px" }}
+                  />
+                  <FontAwesomeIcon
+                    icon={faSkull}
+                    style={{ fontSize: "20px" }}
+                  />
+                </>
+              )}
+            </>
+          )}
+        </CorruptionContainer>
         <LevelSelectionContainer>
           {ability.adept.description !== "" &&
           ability.master.description !== "" ? (

@@ -2,6 +2,7 @@ import {
   faChevronRight,
   faXmark,
   faBars,
+  faSkull,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import cloneDeep from "lodash/cloneDeep";
@@ -256,6 +257,16 @@ const Column = styled.div`
   display: flex;
   flex-direction: column;
   flex-basis: 0;
+`;
+
+const CorruptionContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-basis: 0;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.05);
+  gap: 2px;
 `;
 
 interface InventoryEntryProps {
@@ -601,6 +612,13 @@ function InventoryEntry({
         {/* {item.description !== "" && (
           <Description color={COLOR}> — {item.description}</Description>
         )} */}
+        <CorruptionContainer>
+          {(item.category === "artifact" ||
+            item.category === "artifact_armor" ||
+            item.category === "artifact_weapon") && (
+            <FontAwesomeIcon icon={faSkull} style={{ fontSize: "20px" }} />
+          )}
+        </CorruptionContainer>
         <RollContainer>
           {item.roll.roll === true && (
             <RollBox color={COLOR} onClick={handleRoll}>
