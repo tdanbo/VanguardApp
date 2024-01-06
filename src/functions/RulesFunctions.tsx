@@ -1,6 +1,5 @@
 import { CharacterEntry } from "../Types";
 import { CheckAbility } from "./ActivesFunction";
-
 export function GetMaxSlots(character: CharacterEntry) {
   let max_slots = Math.max(
     Math.ceil(
@@ -201,14 +200,53 @@ export function CorruptionAdjust(character: CharacterEntry) {
     }
   }
 
+  const has_theurgy_novice = CheckAbility(character, "Theurgy", "novice");
+  const has_theurgy_adept = CheckAbility(character, "Theurgy", "adept");
+  const has_theurgy_master = CheckAbility(character, "Theurgy", "master");
+
+  const has_wizardry_novice = CheckAbility(character, "Wizardry", "novice");
+  const has_wizardry_adept = CheckAbility(character, "Wizardry", "adept");
+  const has_wizardry_master = CheckAbility(character, "Wizardry", "master");
+
   for (const ability of character.abilities) {
     if (ability.type === "Mystical Power") {
-      if (ability.level === "Novice") {
+      if (
+        ability.level === "Novice" ||
+        ability.level === "Adept" ||
+        ability.level === "Master"
+      ) {
+        if (ability.tradition.includes("Theurgy") && has_theurgy_novice) {
+          value_adjustment -= 1;
+        } else if (
+          ability.tradition.includes("Wizardry") &&
+          has_wizardry_novice
+        ) {
+          value_adjustment -= 1;
+        }
         value_adjustment += 1;
-      } else if (ability.level === "Adept") {
-        value_adjustment += 2;
-      } else if (ability.level === "Master") {
-        value_adjustment += 3;
+      }
+      if (ability.level === "Adept" || ability.level === "Master") {
+        if (ability.tradition.includes("Theurgy") && has_theurgy_adept) {
+          value_adjustment -= 1;
+        } else if (
+          ability.tradition.includes("Wizardry") &&
+          has_wizardry_adept
+        ) {
+          value_adjustment -= 1;
+        }
+        value_adjustment += 1;
+      }
+
+      if (ability.level === "Master") {
+        if (ability.tradition.includes("Theurgy") && has_theurgy_master) {
+          value_adjustment -= 1;
+        } else if (
+          ability.tradition.includes("Wizardry") &&
+          has_wizardry_master
+        ) {
+          value_adjustment -= 1;
+        }
+        value_adjustment += 1;
       }
     }
   }
