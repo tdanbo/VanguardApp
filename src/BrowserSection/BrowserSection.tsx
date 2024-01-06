@@ -476,7 +476,7 @@ function BrowserSection({
                     session={session}
                     character={character}
                     websocket={websocket}
-                    key={index}
+                    key={`InventoryEntry${index}`}
                     browser={true}
                     index={index}
                     item={entry}

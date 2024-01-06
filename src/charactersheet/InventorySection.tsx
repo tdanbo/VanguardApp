@@ -40,7 +40,7 @@ function InventorySection({
               session={session}
               character={character}
               websocket={websocket}
-              key={index}
+              key={`InventoryEntry${index}`}
               browser={false}
               index={index}
               item={item}
@@ -53,7 +53,7 @@ function InventorySection({
         }
       })}
       {Array.from({ length: 20 }).map((_, index) => {
-        return <InventoryEntryEmpty key={index} />;
+        return <InventoryEntryEmpty key={`EmptyEntry${index}`} />;
       })}
     </>
   );

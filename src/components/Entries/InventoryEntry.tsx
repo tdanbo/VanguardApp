@@ -9,6 +9,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
+import React, { Fragment } from "react";
 import {
   CharacterEntry,
   EmptyArmor,
@@ -711,21 +712,19 @@ function InventoryEntry({
       </Container>
       {Array.isArray(item.effect) && item.effect.length > 0 && (
         <EffectContainer $expanded={expanded}>
-          {item.effect.map((effect, effectIndex) => {
-            return (
-              <>
-                {effectIndex > 0 && <RowDivider />}
-                <StyledText
-                  entry={item}
-                  effect={effect}
-                  websocket={websocket}
-                  character={character}
-                  session={session}
-                  isCreature={isCreature}
-                />
-              </>
-            );
-          })}
+          {item.effect.map((effect, effectIndex) => (
+            <React.Fragment key={effectIndex}>
+              {effectIndex > 0 && <RowDivider />}
+              <StyledText
+                entry={item}
+                effect={effect}
+                websocket={websocket}
+                character={character}
+                session={session}
+                isCreature={isCreature}
+              />
+            </React.Fragment>
+          ))}
         </EffectContainer>
       )}
     </MasterContainer>
