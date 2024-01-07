@@ -9,7 +9,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
-import React, { Fragment } from "react";
+import React from "react";
 import {
   CharacterEntry,
   EmptyArmor,

@@ -19,10 +19,10 @@ import { toTitleCase } from "../functions/UtilityFunctions";
 import {
   GetImpedingValue,
   OverburdenValue,
-  GetMovementSpeed,
-  GetPainThreshold,
   GetStorageValue,
   GetPreciseValue,
+  GetEquipmentCorruption,
+  GetAbilityCorruption,
 } from "../functions/RulesFunctions";
 const InfoBox = styled.div`
   display: flex;
@@ -294,6 +294,29 @@ function InfoComponent({ character }: InfoComponentProps) {
                 <Column>
                   <Row>
                     <FontAwesomeIcon
+                      icon={faEye}
+                      color={Constants.GREEN}
+                    ></FontAwesomeIcon>
+                    Sneaking
+                  </Row>
+                  <Row>
+                    <LeftValue>
+                      {toTitleCase(character.actives.sneaking.stat)} Stat -
+                      Impeding Value = Sneaking
+                    </LeftValue>
+                    <VerticalDivider></VerticalDivider>
+                    <RightValue>
+                      {character.stats[character.actives.sneaking.stat].value} -{" "}
+                      {GetImpedingValue(character)} ={" "}
+                      {character.stats[character.actives.sneaking.stat].value -
+                        GetImpedingValue(character)}
+                    </RightValue>
+                  </Row>
+                </Column>
+                <Divider />
+                <Column>
+                  <Row>
+                    <FontAwesomeIcon
                       icon={faSkull}
                       color={Constants.PURPLE}
                     ></FontAwesomeIcon>
@@ -317,25 +340,49 @@ function InfoComponent({ character }: InfoComponentProps) {
                 <Column>
                   <Row>
                     <FontAwesomeIcon
-                      icon={faEye}
-                      color={Constants.GREEN}
+                      icon={faSkull}
+                      color={Constants.PURPLE}
                     ></FontAwesomeIcon>
-                    Sneaking
+                    Max Temporary Corruption
                   </Row>
                   <Row>
                     <LeftValue>
-                      {toTitleCase(character.actives.sneaking.stat)} Stat -
-                      Impeding Value = Sneaking
+                      Resolute Stat / 2 = ⌈ Temporary Corruption ⌉
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {character.stats[character.actives.sneaking.stat].value} -{" "}
-                      {GetImpedingValue(character)} ={" "}
-                      {character.stats[character.actives.sneaking.stat].value -
-                        GetImpedingValue(character)}
+                      {character.stats.resolute.value} / 2 = ⌈{" "}
+                      {character.stats.resolute.value / 2} ⌉
                     </RightValue>
                   </Row>
                 </Column>
+                <Divider />
+                <Column>
+                  <Row>
+                    <FontAwesomeIcon
+                      icon={faSkull}
+                      color={Constants.PURPLE}
+                    ></FontAwesomeIcon>
+                    Max Permanent Corruption
+                  </Row>
+                  <Row>
+                    <LeftValue>
+                      ( Temporary Corruption * 3 ) - Artifacts - Mystical Powers
+                      = Permanent Corruption
+                    </LeftValue>
+                    <VerticalDivider></VerticalDivider>
+                    <RightValue>
+                      ( {character.stats.resolute.value / 2} * 3 ) -{" "}
+                      {GetEquipmentCorruption(character)} -{" "}
+                      {GetAbilityCorruption(character)} ={" "}
+                      {(character.stats.resolute.value / 2) * 3 -
+                        GetEquipmentCorruption(character) -
+                        GetAbilityCorruption(character)}
+                    </RightValue>
+                  </Row>
+                </Column>
+
+                <Divider />
               </CenterContainer>
               <Divider />
             </ModalContainer>

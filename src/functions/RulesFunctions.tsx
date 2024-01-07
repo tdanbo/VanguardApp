@@ -85,6 +85,16 @@ export const GetCorruption = (character: CharacterEntry) => {
   return corruption;
 };
 
+export const GetTemporaryCorruption = (character: CharacterEntry) => {
+  const temporary_corruption = Math.ceil(character.stats.resolute.value / 2);
+  return temporary_corruption;
+};
+
+export const GetPermanentCorruption = (character: CharacterEntry) => {
+  const permanent_corruption = GetTemporaryCorruption(character) * 3;
+  return permanent_corruption;
+};
+
 export function GetBurnRate(character: CharacterEntry) {
   const burn_rate =
     Math.ceil(character.details.xp_earned / 50) +
@@ -165,7 +175,7 @@ export function GetUsedSlots(character: CharacterEntry) {
   return used_slots;
 }
 
-export function CorruptionAdjust(character: CharacterEntry) {
+export function GetEquipmentCorruption(character: CharacterEntry) {
   let value_adjustment = 0;
 
   for (const item of character.inventory) {
@@ -177,6 +187,12 @@ export function CorruptionAdjust(character: CharacterEntry) {
       value_adjustment += 1;
     }
   }
+
+  return value_adjustment;
+}
+
+export function GetAbilityCorruption(character: CharacterEntry) {
+  let value_adjustment = 0;
 
   const has_theurgy_novice = CheckAbility(character, "Theurgy", "novice");
   const has_theurgy_adept = CheckAbility(character, "Theurgy", "adept");

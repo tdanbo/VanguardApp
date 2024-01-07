@@ -17,10 +17,7 @@ import {
   faHeartCrack,
   faPersonRunning,
   faWeightHanging,
-  faInfo,
-  faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 interface PortraitProps {
   src: string;
 }
