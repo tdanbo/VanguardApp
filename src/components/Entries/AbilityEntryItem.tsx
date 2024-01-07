@@ -4,7 +4,7 @@ import styled from "styled-components";
 import * as Constants from "../../Constants";
 import Icon from "@mdi/react";
 import { AbilityEntry, CharacterEntry, SessionEntry } from "../../Types";
-
+import { CheckAbility } from "../../functions/ActivesFunction";
 import {
   faBars,
   faChevronRight,
@@ -405,6 +405,14 @@ function AbilityEntryItem({
     );
   };
 
+  const has_theurgy_novice = CheckAbility(character, "Theurgy", "novice");
+  const has_theurgy_adept = CheckAbility(character, "Theurgy", "adept");
+  const has_theurgy_master = CheckAbility(character, "Theurgy", "master");
+
+  const has_wizardry_novice = CheckAbility(character, "Wizardry", "novice");
+  const has_wizardry_adept = CheckAbility(character, "Wizardry", "adept");
+  const has_wizardry_master = CheckAbility(character, "Wizardry", "master");
+
   return (
     <BaseContainer className="button-hover">
       <Container>
@@ -424,37 +432,42 @@ function AbilityEntryItem({
         <CorruptionContainer>
           {ability.type === "Mystical Power" && (
             <>
-              {ability.level === "Novice" && (
-                <FontAwesomeIcon icon={faSkull} style={{ fontSize: "20px" }} />
-              )}
-              {ability.level === "Adept" && (
-                <>
+              {(ability.level === "Novice" ||
+                ability.level === "Adept" ||
+                ability.level === "Master") &&
+                !(
+                  ability.tradition.includes("Theurgy") && has_theurgy_novice
+                ) &&
+                !(
+                  ability.tradition.includes("Wizardry") && has_wizardry_novice
+                ) && (
                   <FontAwesomeIcon
                     icon={faSkull}
                     style={{ fontSize: "20px" }}
                   />
+                )}
+              {(ability.level === "Adept" || ability.level === "Master") &&
+                !(ability.tradition.includes("Theurgy") && has_theurgy_adept) &&
+                !(
+                  ability.tradition.includes("Wizardry") && has_wizardry_adept
+                ) && (
                   <FontAwesomeIcon
                     icon={faSkull}
                     style={{ fontSize: "20px" }}
                   />
-                </>
-              )}
-              {ability.level === "Master" && (
-                <>
+                )}
+              {ability.level === "Master" &&
+                !(
+                  ability.tradition.includes("Theurgy") && has_theurgy_master
+                ) &&
+                !(
+                  ability.tradition.includes("Wizardry") && has_wizardry_master
+                ) && (
                   <FontAwesomeIcon
                     icon={faSkull}
                     style={{ fontSize: "20px" }}
                   />
-                  <FontAwesomeIcon
-                    icon={faSkull}
-                    style={{ fontSize: "20px" }}
-                  />
-                  <FontAwesomeIcon
-                    icon={faSkull}
-                    style={{ fontSize: "20px" }}
-                  />
-                </>
-              )}
+                )}
             </>
           )}
         </CorruptionContainer>

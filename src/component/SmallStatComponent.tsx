@@ -95,7 +95,7 @@ const Block = styled.div`
 
 interface SmallStatComponentProps {
   title: string;
-  value: number;
+  value: string;
   icon: any;
 }
 
@@ -114,6 +114,7 @@ function SmallStatComponent({ title, value, icon }: SmallStatComponentProps) {
   } else {
     color = Constants.WIDGET_SECONDARY_FONT_INACTIVE;
   }
+
   return (
     <Container width={"23%"}>
       <Column width={"100%"}>

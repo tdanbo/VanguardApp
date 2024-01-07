@@ -2,7 +2,10 @@ import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
-import { CorruptionAdjust } from "../functions/RulesFunctions";
+import {
+  GetEquipmentCorruption,
+  GetAbilityCorruption,
+} from "../functions/RulesFunctions";
 interface ColumnProps {
   width: string;
 }
@@ -31,7 +34,6 @@ const Row = styled.div<DivProps>`
   border-radius: ${Constants.BORDER_RADIUS};
   max-height: ${(props) => props.height};
   height: ${(props) => props.height};
-  
 `;
 
 interface ButtonProps {
@@ -216,7 +218,8 @@ function CorruptionStatComponent({
 
   const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
   const maxCorruptionPermanent = corruptionThreshold * 3;
-  const corruptionRulesAdjustment = CorruptionAdjust(character);
+  const corruptionRulesAdjustment =
+    GetEquipmentCorruption(character) + GetAbilityCorruption(character);
 
   const remaining_corruption =
     maxCorruptionPermanent -
@@ -228,21 +231,8 @@ function CorruptionStatComponent({
   return (
     <Column width={"100%"}>
       <Row height={browser ? "50%" : "70%"}>
-        {[...Array(remaining_corruption)].map((_, index, array) => (
-          <TickBar
-            onClick={handleAddCorruption}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              handleSubCorruption();
-            }}
-            key={index}
-            $bgcolor={Constants.TYPE_COLORS["permanent_corruption"]}
-            $isFirst={index === 0} // Apply rounded corners on the left for the first item
-            $isLast={index === array.length - 1}
-          />
-        ))}
-        {[...Array(maxCorruptionPermanent - remaining_corruption)].map(
-          (_, index, array) => (
+        <div style={{ display: "flex", minWidth: "50%" }}>
+          {[...Array(remaining_corruption)].map((_, index, array) => (
             <TickBar
               onClick={handleAddCorruption}
               onContextMenu={(e) => {
@@ -250,29 +240,45 @@ function CorruptionStatComponent({
                 handleSubCorruption();
               }}
               key={index}
+              $bgcolor={Constants.TYPE_COLORS["permanent_corruption"]}
+              $isFirst={index === 0} // Apply rounded corners on the left for the first item
+              $isLast={index === array.length - 1}
+            />
+          ))}
+          {[...Array(maxCorruptionPermanent - remaining_corruption)].map(
+            (_, index, array) => (
+              <TickBar
+                onClick={handleAddCorruption}
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  handleSubCorruption();
+                }}
+                key={index}
+                $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
+                $isFirst={index === 0} // Apply rounded corners on the left for the first item
+                $isLast={index === array.length - 1}
+              />
+            ),
+          )}
+        </div>
+        <div style={{ display: "flex", minWidth: "50%" }}>
+          {[...Array(clean_corruption)].map((_, index, array) => (
+            <TickBar
+              key={index}
+              $bgcolor={Constants.TYPE_COLORS["temporary_corruption"]}
+              $isFirst={index === 0} // Apply rounded corners on the left for the first item
+              $isLast={index === array.length - 1}
+            ></TickBar>
+          ))}
+          {[...Array(temporary_corruption)].map((_, index, array) => (
+            <TickBar
+              key={index}
               $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
               $isFirst={index === 0} // Apply rounded corners on the left for the first item
               $isLast={index === array.length - 1}
             />
-          ),
-        )}
-        <div style={{ width: "2px" }}></div>
-        {[...Array(clean_corruption)].map((_, index, array) => (
-          <TickBar
-            key={index}
-            $bgcolor={Constants.TYPE_COLORS["temporary_corruption"]}
-            $isFirst={index === 0} // Apply rounded corners on the left for the first item
-            $isLast={index === array.length - 1}
-          ></TickBar>
-        ))}
-        {[...Array(temporary_corruption)].map((_, index, array) => (
-          <TickBar
-            key={index}
-            $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
-            $isFirst={index === 0} // Apply rounded corners on the left for the first item
-            $isLast={index === array.length - 1}
-          />
-        ))}
+          ))}
+        </div>
       </Row>
       <Row
         height={browser ? "50%" : "30%"}
@@ -287,11 +293,19 @@ function CorruptionStatComponent({
           <FontAwesomeIcon icon={faMinus} />
         </Minus>
         <Modifier fontSize={browser ? "16px" : "20px"}>
-          <h1>{remaining_corruption + clean_corruption}</h1>
+          <h1>{remaining_corruption}</h1>
           <h2>
-            {remaining_corruption + corruptionThreshold}
+            {maxCorruptionPermanent}
             <Divider></Divider>
-            {remaining_corruption + clean_corruption}
+            {remaining_corruption}
+          </h2>
+        </Modifier>
+        <Modifier fontSize={browser ? "16px" : "20px"}>
+          <h1>{clean_corruption}</h1>
+          <h2>
+            {corruptionThreshold}
+            <Divider></Divider>
+            {clean_corruption}
           </h2>
         </Modifier>
         <Plus>
