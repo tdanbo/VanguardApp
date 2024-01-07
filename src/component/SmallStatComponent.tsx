@@ -95,7 +95,7 @@ const Block = styled.div`
 
 interface SmallStatComponentProps {
   title: string;
-  value: number;
+  value: string;
   icon: any;
 }
 

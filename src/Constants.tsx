@@ -41,6 +41,7 @@ export const DARK = "#262223";
 export const NIGHT = "#336980";
 export const CREAM = "#e3dcca";
 export const DARK_CREAM = "#ccc6b6";
+export const ORANGE = "rgba(205, 112, 57, 0.7)";
 
 // Original Palette
 export const COLOR_1 = "#923333";
