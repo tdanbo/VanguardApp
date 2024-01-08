@@ -33,7 +33,7 @@ const Column = styled.div`
   background-color: ${Constants.BACKGROUND};
   height: 100%;
   gap: 25px;
-  padding: 25px 50px 25px 50px;
+  padding: 25px 100px 25px 100px;
   box-sizing: border-box;
 `;
 
@@ -105,38 +105,25 @@ function App() {
         />
       ) : null}
       <SideColumn>
-        <PartySection
+        <BrowserSection
+          isGm={isGm}
           session={session}
+          character={character}
           websocket={websocket}
+          setInventoryState={setInventoryState}
+          gmMode={gmMode}
+          encounter={creatureEncounter}
+          setEncounter={setCreatureEncounter}
           setCharacterName={setCharacterName}
+          creaturesList={creaturesList}
+          setCreaturesList={setCreaturesList}
           setIsCreature={setIsCreature}
           isCreature={isCreature}
-          isConnected={isConnected}
-          isGm={isGm}
-          gmMode={gmMode}
           setGmMode={setGmMode}
+          isConnected={isConnected}
+          categorySelect={categorySelect}
+          setCategorySelect={setCategorySelect}
         />
-        {browserState === 0 ? (
-          <BrowserSection
-            isGm={isGm}
-            session={session}
-            character={character}
-            websocket={websocket}
-            setInventoryState={setInventoryState}
-            gmMode={gmMode}
-            encounter={creatureEncounter}
-            setEncounter={setCreatureEncounter}
-            setCharacterName={setCharacterName}
-            creaturesList={creaturesList}
-            setCreaturesList={setCreaturesList}
-            setIsCreature={setIsCreature}
-            isCreature={isCreature}
-            setGmMode={setGmMode}
-            isConnected={isConnected}
-            categorySelect={categorySelect}
-            setCategorySelect={setCategorySelect}
-          />
-        ) : null}
       </SideColumn>
       <Column>
         {gmMode ? (
@@ -177,6 +164,17 @@ function App() {
         )}
       </Column>
       <SideColumn>
+        <PartySection
+          session={session}
+          websocket={websocket}
+          setCharacterName={setCharacterName}
+          setIsCreature={setIsCreature}
+          isCreature={isCreature}
+          isConnected={isConnected}
+          isGm={isGm}
+          gmMode={gmMode}
+          setGmMode={setGmMode}
+        />
         <CombatSection
           scrollRef={scrollableRef}
           session={session}

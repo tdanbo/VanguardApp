@@ -12,9 +12,10 @@ import { GeneralItem } from "../Types";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 import {
   faBolt,
+  faChevronDown,
+  faChevronUp,
   faGhost,
   faPlus,
-  faSearch,
   faShield,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -59,7 +60,6 @@ const ExpandRow = styled.div<DivProps>`
   flex-basis: 0;
   gap: ${Constants.WIDGET_GAB};
   max-width: ${(props) => props.width};
-  margin-top: 91px;
 `;
 
 const DynamicContainer = styled.div`
@@ -392,9 +392,11 @@ function BrowserSection({
     setIsModalOpen(false);
   };
 
+  const [HideBrowser, setHideBrowser] = useState<boolean>(false);
+
   return (
     <>
-      <Container height={"130px"}>
+      <Container height={"40px"}>
         <ExpandRow width={"100%"}>
           {categorySelect === "creatures" ? (
             isModalOpen ? (
@@ -417,129 +419,142 @@ function BrowserSection({
               </Button>
             )
           ) : (
-            <Button $isactive={"false"}>
-              <FontAwesomeIcon icon={faSearch} />
+            <Button
+              $isactive={"false"}
+              onClick={() => setHideBrowser(!HideBrowser)}
+            >
+              <FontAwesomeIcon
+                icon={HideBrowser ? faChevronDown : faChevronUp}
+              />
             </Button>
           )}
-          <Input
-            className="flex-grow"
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <Button
-            $isactive={(categorySelect === "abilities").toString()}
-            onClick={() => HandleCategoryChange("abilities")}
-          >
-            <FontAwesomeIcon icon={faBolt} />
-          </Button>
-          <Button
-            $isactive={(categorySelect === "equipment").toString()}
-            onClick={() => HandleCategoryChange("equipment")}
-          >
-            <FontAwesomeIcon icon={faShield} />
-          </Button>
-          {isGm ? (
-            <Button
-              $isactive={(categorySelect === "creatures").toString()}
-              onClick={() => HandleCategoryChange("creatures")}
-            >
-              <FontAwesomeIcon icon={faGhost} />
-            </Button>
+          {HideBrowser ? (
+            <>
+              <Input
+                className="flex-grow"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <Button
+                $isactive={(categorySelect === "abilities").toString()}
+                onClick={() => HandleCategoryChange("abilities")}
+              >
+                <FontAwesomeIcon icon={faBolt} />
+              </Button>
+              <Button
+                $isactive={(categorySelect === "equipment").toString()}
+                onClick={() => HandleCategoryChange("equipment")}
+              >
+                <FontAwesomeIcon icon={faShield} />
+              </Button>
+              {isGm ? (
+                <Button
+                  $isactive={(categorySelect === "creatures").toString()}
+                  onClick={() => HandleCategoryChange("creatures")}
+                >
+                  <FontAwesomeIcon icon={faGhost} />
+                </Button>
+              ) : null}
+            </>
           ) : null}
         </ExpandRow>
       </Container>
-      <DynamicContainer>
-        <ScrollColumn width="100%">
-          {sortedItemList.length === 0 ? (
-            categorySelect === "equipment" ? (
-              <InventoryEntry
-                session={session}
-                character={character}
-                websocket={websocket}
-                key={"EmptyItem"}
-                browser={true}
-                index={1}
-                item={SearchItem}
-                equipped={""}
-                id={""}
-                setInventoryState={setInventoryState}
-                gmMode={gmMode}
-                isCreature={isCreature}
-              />
-            ) : null
-          ) : null}
-
-          {sortedItemList &&
-            sortedItemList.map((entry, index) => {
-              if (entry.entry === "ItemEntry") {
-                return (
+      {HideBrowser ? (
+        <>
+          <DynamicContainer>
+            <ScrollColumn width="100%">
+              {sortedItemList.length === 0 ? (
+                categorySelect === "equipment" ? (
                   <InventoryEntry
                     session={session}
                     character={character}
                     websocket={websocket}
-                    key={`InventoryEntry${index}`}
+                    key={"EmptyItem"}
                     browser={true}
-                    index={index}
-                    item={entry}
+                    index={1}
+                    item={SearchItem}
                     equipped={""}
                     id={""}
                     setInventoryState={setInventoryState}
                     gmMode={gmMode}
                     isCreature={isCreature}
                   />
-                );
-              } else if (entry.entry === "AbilityEntry") {
-                return (
-                  <AbilityEntryItem
-                    key={index}
-                    ability={entry}
-                    browser={true}
-                    setInventoryState={setInventoryState}
-                    character={character}
-                    session={session}
-                    websocket={websocket}
-                    isCreature={isCreature}
-                  />
-                );
-              } else if (
-                entry.entry === "CharacterEntry" &&
-                categorySelect === "creatures"
-              ) {
-                return (
-                  <CreatureEntryItem
-                    key={index}
-                    session={session}
-                    character={character}
-                    creature={entry}
-                    browser={true}
-                    encounter={encounter}
-                    setEncounter={setEncounter}
-                    gmMode={gmMode}
-                    setCharacterName={setCharacterName}
-                    setIsCreature={setIsCreature}
-                    websocket={websocket}
-                    setGmMode={setGmMode}
-                    setDeleteAdjust={setDeleteAdjust}
-                  />
-                );
-              }
-              {
-                return null; // Add a default case if needed
-              }
-            })}
-          {Array.from({ length: 20 }).map((_, index) => {
-            return <InventoryEntryEmpty key={index} />;
-          })}
-        </ScrollColumn>
-      </DynamicContainer>
-      <Container height={"30px"}>
-        {categorySelect === "equipment" ? (
-          <EquipmentFooter setTypeFilter={setFilterType} />
-        ) : categorySelect === "abilities" ? (
-          <AbilityFooter setTypeFilter={setFilterType} />
-        ) : categorySelect == "creatures" ? (
-          <CreatureFooter setTypeFilter={setFilterType} />
-        ) : null}
-      </Container>
+                ) : null
+              ) : null}
+
+              {sortedItemList &&
+                sortedItemList.map((entry, index) => {
+                  if (entry.entry === "ItemEntry") {
+                    return (
+                      <InventoryEntry
+                        session={session}
+                        character={character}
+                        websocket={websocket}
+                        key={`InventoryEntry${index}`}
+                        browser={true}
+                        index={index}
+                        item={entry}
+                        equipped={""}
+                        id={""}
+                        setInventoryState={setInventoryState}
+                        gmMode={gmMode}
+                        isCreature={isCreature}
+                      />
+                    );
+                  } else if (entry.entry === "AbilityEntry") {
+                    return (
+                      <AbilityEntryItem
+                        key={index}
+                        ability={entry}
+                        browser={true}
+                        setInventoryState={setInventoryState}
+                        character={character}
+                        session={session}
+                        websocket={websocket}
+                        isCreature={isCreature}
+                      />
+                    );
+                  } else if (
+                    entry.entry === "CharacterEntry" &&
+                    categorySelect === "creatures"
+                  ) {
+                    return (
+                      <CreatureEntryItem
+                        key={index}
+                        session={session}
+                        character={character}
+                        creature={entry}
+                        browser={true}
+                        encounter={encounter}
+                        setEncounter={setEncounter}
+                        gmMode={gmMode}
+                        setCharacterName={setCharacterName}
+                        setIsCreature={setIsCreature}
+                        websocket={websocket}
+                        setGmMode={setGmMode}
+                        setDeleteAdjust={setDeleteAdjust}
+                      />
+                    );
+                  }
+                  {
+                    return null; // Add a default case if needed
+                  }
+                })}
+              {Array.from({ length: 20 }).map((_, index) => {
+                return <InventoryEntryEmpty key={index} />;
+              })}
+            </ScrollColumn>
+          </DynamicContainer>
+          <Container height={"30px"}>
+            {categorySelect === "equipment" ? (
+              <EquipmentFooter setTypeFilter={setFilterType} />
+            ) : categorySelect === "abilities" ? (
+              <AbilityFooter setTypeFilter={setFilterType} />
+            ) : categorySelect == "creatures" ? (
+              <CreatureFooter setTypeFilter={setFilterType} />
+            ) : null}
+          </Container>
+        </>
+      ) : null}
     </>
   );
 }

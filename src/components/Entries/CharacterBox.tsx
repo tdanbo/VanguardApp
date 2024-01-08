@@ -145,7 +145,7 @@ function CharacterBox({
           </LeftControl>
         )
       ) : (
-        <CorruptionStatComponent
+        <HealthStatComponent
           character={character}
           session={session}
           websocket={websocket}
@@ -187,7 +187,7 @@ function CharacterBox({
           </RightControl>
         ) // Remove the extra curly braces here
       ) : (
-        <HealthStatComponent
+        <CorruptionStatComponent
           character={character}
           session={session}
           websocket={websocket}

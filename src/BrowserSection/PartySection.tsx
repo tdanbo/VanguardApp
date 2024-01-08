@@ -76,7 +76,7 @@ const AddButton = styled.button`
   justify-content: center;
   font-weight: bold;
   color: ${Constants.WIDGET_SECONDARY_FONT};
-  padding-right: 50px;
+  padding-left: 50px;
 `;
 
 const WebsocketStatus = styled.button`
@@ -148,6 +148,14 @@ function PartySection({
     <>
       <Container height="40px">
         <Row width="100%">
+          {isGm ? (
+            <Navigator
+              onClick={() => setGmMode((prevMode) => !prevMode)} // Toggle gmMode when clicked
+              title={"GM Mode"}
+            >
+              <FontAwesomeIcon icon={gmMode ? faHatWizard : faUser} />
+            </Navigator>
+          ) : null}
           {isModalOpen ? (
             <OverlayStyles>
               <CreateCharacterComponent
@@ -164,6 +172,9 @@ function PartySection({
             </OverlayStyles>
           ) : (
             <>
+              <AddButton onClick={handleOpen}>
+                <FontAwesomeIcon icon={faPlus} />
+              </AddButton>
               <WebsocketStatus>
                 {isConnected ? (
                   <FontAwesomeIcon
@@ -179,19 +190,8 @@ function PartySection({
                   />
                 )}
               </WebsocketStatus>
-              <AddButton onClick={handleOpen}>
-                <FontAwesomeIcon icon={faPlus} />
-              </AddButton>
             </>
           )}
-          {isGm ? (
-            <Navigator
-              onClick={() => setGmMode((prevMode) => !prevMode)} // Toggle gmMode when clicked
-              title={"GM Mode"}
-            >
-              <FontAwesomeIcon icon={gmMode ? faHatWizard : faUser} />
-            </Navigator>
-          ) : null}
         </Row>
       </Container>
       <Container height="260px">
