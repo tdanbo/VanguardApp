@@ -193,7 +193,7 @@ function CreateCharacterComponent({
   ]);
   const [selectedButton, setSelectedButton] = useState<number | null>(null);
   const [characterDifficulty, setCharacterDifficulty] =
-    useState<string>("Weak");
+    useState<string>("Ordinary");
   const [characterXp, setCharacterXp] = useState<number>(0);
   const [race, setRace] = useState<string>(characterRace);
   const handleButtonClick = (id: number) => {
@@ -225,14 +225,14 @@ function CreateCharacterComponent({
     "Ambrian",
     "Barbarian",
     "Changeling",
-    "Ogre",
     "Goblin",
     "Elf",
     "Abducted Human",
     "Dwarf",
-    "Troll",
-    "Undead",
-    "Beast",
+    "Ogre",
+    // "Troll",
+    // "Undead",
+    // "Beast",
   ];
 
   const difficulty_options = [
@@ -245,7 +245,9 @@ function CreateCharacterComponent({
   ];
 
   const handleDropdownChange = (selectedOption: string) => {
-    setCharacterPortrait(UpperFirstLetter(selectedOption));
+    if (source !== "characterSelect") {
+      setCharacterPortrait(UpperFirstLetter(selectedOption));
+    }
     setRace(UpperFirstLetter(selectedOption));
   };
 
@@ -359,6 +361,16 @@ function CreateCharacterComponent({
     5: "+5",
   };
 
+  const CharacterModiferScore: Record<number, string> = {
+    15: "+5",
+    13: "+3",
+    11: "+1",
+    10: "0",
+    9: "-1",
+    7: "-3",
+    5: "-5",
+  };
+
   return (
     <MainContainer>
       <Title>Create Character</Title>
@@ -395,6 +407,7 @@ function CreateCharacterComponent({
             <StatBox key={button.id}>
               <NameBox>{button.label}</NameBox>
               <ValueBox
+                className="button-hover"
                 onClick={() => handleButtonClick(button.id)}
                 style={
                   selectedButton === button.id
@@ -411,6 +424,7 @@ function CreateCharacterComponent({
                 {button.value}
               </ValueBox>
               <ModifierBox
+                className="button-hover"
                 onClick={() => handleButtonClick(button.id)}
                 style={
                   selectedButton === button.id
@@ -424,7 +438,9 @@ function CreateCharacterComponent({
                       }
                 }
               >
-                {ModiferScore[button.value]}
+                {source === "characterSelect"
+                  ? CharacterModiferScore[button.value]
+                  : ModiferScore[button.value]}
               </ModifierBox>
             </StatBox>
           ))}
