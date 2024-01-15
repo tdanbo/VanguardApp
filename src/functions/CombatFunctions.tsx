@@ -2,6 +2,7 @@ import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import { CharacterEntry, CombatEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
+import { SetDurability } from "./RulesFunctions";
 interface RollDiceProps {
   dice: number;
   active: string;
@@ -14,6 +15,7 @@ interface RollDiceProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
+  item_id?: string;
 }
 
 export function useRoll() {
@@ -30,6 +32,7 @@ export function useRoll() {
     session,
     websocket,
     isCreature,
+    item_id,
   }: RollDiceProps) => {
     let roll = 0;
     let total = 0;
@@ -53,6 +56,8 @@ export function useRoll() {
       success = false;
     }
 
+    // Durability
+
     const NewCombatEntry: CombatEntry = {
       id: session.id,
       portrait: character.portrait,
@@ -71,6 +76,16 @@ export function useRoll() {
 
     session.combatlog.push(NewCombatEntry);
     session.combatlog = session.combatlog.slice(-20);
+
+    if (
+      item_id &&
+      (active === "Damage" || active === "Armor") &&
+      roll_result - modifier == 1
+    ) {
+      SetDurability(character, item_id);
+    }
+
+    console.log(active);
 
     update_session(session, character, isCreature, websocket);
     return roll_result;

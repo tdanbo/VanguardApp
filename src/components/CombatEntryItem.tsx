@@ -180,6 +180,9 @@ function CombatEntryItem({
 
   const FumbledPerfect = () => {
     if (combatEntry.roll === 1) {
+      if (combatEntry.active === "Damage" || combatEntry.active === "Armor") {
+        return 1; // Fumbled
+      }
       return 0; // Perfect
     } else if (combatEntry.roll === 20) {
       return 1; // Fumbled
@@ -204,6 +207,11 @@ function CombatEntryItem({
     } else if (FumbledPerfect() === 1) {
       if (combatEntry.active === "attack") {
         return "Free attack against you.";
+      } else if (
+        combatEntry.active === "Damage" ||
+        combatEntry.active === "Armor"
+      ) {
+        return "Durability Loss";
       } else if (combatEntry.active === "defense") {
         return "+3 Damage taken.";
       } else if (combatEntry.active === "casting") {
@@ -316,6 +324,20 @@ function CombatEntryItem({
                 )}
               </>
             )
+          ) : combatEntry.roll === 1 ? (
+            <span>
+              {UpperFirstLetter(combatEntry.source)}
+              <FontAwesomeIcon
+                icon={faAngleDoubleDown}
+                color="#b55c5c"
+                style={{
+                  fontSize: "20px",
+                  position: "relative",
+                  top: "4px",
+                  left: "5px",
+                }}
+              />
+            </span>
           ) : (
             <span>{UpperFirstLetter(combatEntry.source)}</span>
           )}

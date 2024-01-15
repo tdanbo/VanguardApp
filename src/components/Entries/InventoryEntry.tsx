@@ -24,6 +24,8 @@ import { Qualities } from "../../functions/rules/Qualities";
 import { SetFlexibleEquip } from "../../functions/CharacterFunctions";
 import { StyledText } from "../../functions/UtilityFunctions";
 import { useState } from "react";
+import { DeleteInventorySlot } from "../../functions/CharacterFunctions";
+import DurabilityBox from "../../component/DurabilityBox";
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -334,6 +336,10 @@ function InventoryEntry({
       equipment.armor = equip_item;
     }
 
+    character.actives.attack.equip1_id = equipment.main.id;
+    character.actives.attack.equip2_id = equipment.off.id;
+    character.actives.defense.equip_id = equipment.armor.id;
+
     SetFlexibleEquip(character);
     update_session(session, character, isCreature, websocket);
   };
@@ -351,6 +357,11 @@ function InventoryEntry({
     } else if (position === "AR") {
       equipment.armor = EmptyArmor;
     }
+
+    character.actives.attack.equip1_id = equipment.main.id;
+    character.actives.attack.equip2_id = equipment.off.id;
+    character.actives.defense.equip_id = equipment.armor.id;
+
     SetFlexibleEquip(character);
     update_session(session, character, isCreature, websocket);
   };
@@ -374,29 +385,8 @@ function InventoryEntry({
     }
   };
 
-  const DeleteInventorySlot = (id: string) => {
-    const inventory = character.inventory.filter((item) => item.id !== id);
-    const equipment = character.equipment;
-    // Check main equipment
-    if (equipment.main.id === id) {
-      equipment.main = EmptyWeapon;
-    }
-
-    // Check off equipment
-    if (equipment.off.id === id) {
-      equipment.off = EmptyWeapon;
-    }
-
-    // Check armor equipment
-    if (equipment.armor.id === id) {
-      equipment.armor = EmptyArmor;
-    }
-
-    character.inventory = inventory;
-    character.equipment = equipment;
-
-    SetFlexibleEquip(character);
-
+  const RemoveInventorySlot = (item_id: string) => {
+    DeleteInventorySlot(character, item_id);
     update_session(session, character, isCreature, websocket);
   };
 
@@ -620,6 +610,32 @@ function InventoryEntry({
             <FontAwesomeIcon icon={faSkull} style={{ fontSize: "20px" }} />
           )}
         </CorruptionContainer>
+        {["1H", "2H", "AR"].includes(item.equip) &&
+        item.category !== "ammunition" ? (
+          [
+            character.equipment.main.id,
+            character.equipment.off.id,
+            character.equipment.armor.id,
+          ].includes(item.id) ? (
+            <DurabilityBox
+              active={true}
+              item={item}
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+            />
+          ) : (
+            <DurabilityBox
+              active={false}
+              item={item}
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+            />
+          )
+        ) : null}
         <RollContainer>
           {item.roll.roll === true && (
             <RollBox color={COLOR} onClick={handleRoll}>
@@ -680,7 +696,7 @@ function InventoryEntry({
             <>
               <DeleteButton
                 className={"button-hover"}
-                onClick={() => DeleteInventorySlot(id)}
+                onClick={() => RemoveInventorySlot(id)}
               >
                 <FontAwesomeIcon icon={faXmark} style={{ fontSize: "12px" }} />
               </DeleteButton>

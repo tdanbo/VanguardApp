@@ -311,6 +311,8 @@ function CreateCharacterComponent({
         dice2_mod: 0,
         dice2_name: "damage",
         attacks: 1,
+        equip1_id: "",
+        equip2_id: "",
       },
       defense: {
         stat: "quick",
@@ -318,6 +320,7 @@ function CreateCharacterComponent({
         dice: 0,
         dice_mod: 0,
         dice_name: "armor",
+        equip_id: "",
       },
       casting: { stat: "resolute", value: 0 },
       sneaking: { stat: "discreet", value: 0 },
