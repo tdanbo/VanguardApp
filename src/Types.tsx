@@ -40,6 +40,8 @@ export type AttackActive = {
   dice2_mod: number;
   dice2_name: string;
   attacks: number;
+  equip1_id: string;
+  equip2_id: string;
 };
 
 export type DefenseActive = {
@@ -48,6 +50,7 @@ export type DefenseActive = {
   dice: number;
   dice_mod: number;
   dice_name: string;
+  equip_id: string;
 };
 
 export type SimpleActive = {
@@ -128,6 +131,7 @@ export interface ItemEntry {
   roll: Roll;
   quality: string[];
   equip: string;
+  durability: number;
   quantity: Quantity;
   type: string;
   cost: number;
@@ -230,6 +234,7 @@ export const EmptyWeapon: ItemEntry = {
   description: "Fight with your bare hands.",
   entry: "ItemEntry",
   effect: [],
+  durability: 0,
 };
 
 export const GeneralItem: ItemEntry = {
@@ -245,6 +250,7 @@ export const GeneralItem: ItemEntry = {
   description: "",
   entry: "ItemEntry",
   effect: [],
+  durability: 0,
 };
 
 export const EmptyArmor: ItemEntry = {
@@ -260,6 +266,7 @@ export const EmptyArmor: ItemEntry = {
   description: "You feel robbed of your dignity.",
   entry: "ItemEntry",
   effect: [],
+  durability: 0,
 };
 
 export const EmptySession: SessionEntry = {
@@ -314,6 +321,8 @@ export const EmptyCharacter: CharacterEntry = {
       dice2_mod: 0,
       dice2_name: "damage",
       attacks: 1,
+      equip1_id: "",
+      equip2_id: "",
     },
     defense: {
       stat: "quick",
@@ -321,6 +330,7 @@ export const EmptyCharacter: CharacterEntry = {
       dice: 0,
       dice_mod: 0,
       dice_name: "armor",
+      equip_id: "",
     },
     casting: { stat: "resolute", value: 0 },
     sneaking: { stat: "discreet", value: 0 },

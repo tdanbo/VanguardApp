@@ -140,6 +140,11 @@ function CombatSection({
         playRandomSound(CriticalSuccessSounds);
       } else if (last_roll.source === "Skill Test" && last_roll.roll === 20) {
         playRandomSound(CriticalFailureSounds);
+      } else if (
+        (last_roll.active === "Damage" && last_roll.roll === 1) ||
+        (last_roll.active === "Armor" && last_roll.roll === 1)
+      ) {
+        playRandomSound(CriticalFailureSounds);
       } else if (last_roll.active === "Resting") {
         playRandomSound(RestingSounds);
       } else {

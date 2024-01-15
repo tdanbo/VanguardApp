@@ -214,16 +214,8 @@ function HealthStatComponent({
           );
         })}
       </Row>
-      <Row
-        height={browser ? "50%" : "30%"}
-        className="button-hover"
-        onClick={handleSubToughness}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          handleAddToughness();
-        }}
-      >
-        <Minus>
+      <Row height={browser ? "50%" : "30%"}>
+        <Minus className="button-hover" onClick={handleSubToughness}>
           <FontAwesomeIcon
             icon={faMinus}
             color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
@@ -232,12 +224,12 @@ function HealthStatComponent({
         <Modifier fontSize={browser ? "16px" : "20px"}>
           <h1>{remaining_toughness}</h1>
           <h2>
-            {maxToughness}
-            <Divider></Divider>
             {remaining_toughness}
+            <Divider></Divider>
+            {maxToughness}
           </h2>
         </Modifier>
-        <Plus>
+        <Plus className="button-hover" onClick={handleAddToughness}>
           <FontAwesomeIcon
             icon={faPlus}
             color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}

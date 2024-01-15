@@ -280,35 +280,29 @@ function CorruptionStatComponent({
           ))}
         </div>
       </Row>
-      <Row
-        height={browser ? "50%" : "30%"}
-        className="button-hover"
-        onClick={handleTempAddCorruption}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          handleTempSubCorruption();
-        }}
-      >
-        <Minus>
+      <Row height={browser ? "50%" : "30%"}>
+        <Minus className="button-hover" onClick={handleTempAddCorruption}>
           <FontAwesomeIcon icon={faMinus} />
         </Minus>
         <Modifier fontSize={browser ? "16px" : "20px"}>
           <h1>{remaining_corruption}</h1>
           <h2>
-            {maxCorruptionPermanent}
-            <Divider></Divider>
             {remaining_corruption}
+            <Divider></Divider>
+
+            {maxCorruptionPermanent}
           </h2>
         </Modifier>
         <Modifier fontSize={browser ? "16px" : "20px"}>
           <h1>{clean_corruption}</h1>
           <h2>
-            {corruptionThreshold}
-            <Divider></Divider>
             {clean_corruption}
+
+            <Divider></Divider>
+            {corruptionThreshold}
           </h2>
         </Modifier>
-        <Plus>
+        <Plus className="button-hover" onClick={handleTempSubCorruption}>
           <FontAwesomeIcon icon={faPlus} />
         </Plus>
       </Row>

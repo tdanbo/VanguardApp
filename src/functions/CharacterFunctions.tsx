@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API } from "../Constants";
 import { CharacterEntry, modifiedCreature } from "../Types";
+import { EmptyArmor, EmptyWeapon } from "../Types";
 export const getCreatureMovement = (creature: modifiedCreature) => {
   const movement: { [key: number]: number } = {
     5: -10,
@@ -121,3 +122,27 @@ export function SetFlexibleEquip(character: CharacterEntry) {
     }
   }
 }
+
+export const DeleteInventorySlot = (character: CharacterEntry, id: string) => {
+  const inventory = character.inventory.filter((item) => item.id !== id);
+  const equipment = character.equipment;
+  // Check main equipment
+  if (equipment.main.id === id) {
+    equipment.main = EmptyWeapon;
+  }
+
+  // Check off equipment
+  if (equipment.off.id === id) {
+    equipment.off = EmptyWeapon;
+  }
+
+  // Check armor equipment
+  if (equipment.armor.id === id) {
+    equipment.armor = EmptyArmor;
+  }
+
+  character.inventory = inventory;
+  character.equipment = equipment;
+
+  SetFlexibleEquip(character);
+};

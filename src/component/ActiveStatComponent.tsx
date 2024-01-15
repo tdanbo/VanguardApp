@@ -104,7 +104,7 @@ const Dice = styled.button<DiceProps>`
   justify-content: center;
   border-top-right-radius: ${Constants.BORDER_RADIUS};
   border-bottom-right-radius: ${Constants.BORDER_RADIUS};
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
   color: ${(props) => props.color};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -126,7 +126,7 @@ const DiceIcon = styled.button<DiceProps>`
   justify-content: center;
   border-top-left-radius: ${Constants.BORDER_RADIUS};
   border-bottom-left-radius: ${Constants.BORDER_RADIUS};
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
   color: ${(props) => props.color};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -240,6 +240,7 @@ function ActiveStatComponent({
     dice_name: string,
     dice_mod: number,
     damage_armor: string,
+    active_id?: string,
   ) => {
     onRollDice({
       websocket,
@@ -253,6 +254,7 @@ function ActiveStatComponent({
       active: damage_armor,
       add_mod: false,
       isCreature,
+      item_id: active_id,
     });
   };
 
@@ -261,6 +263,7 @@ function ActiveStatComponent({
     dice_name: string,
     dice_mod: number,
     damage_armor: string,
+    active_id: string,
   ) => {
     type Quantity = {
       count: number;
@@ -310,6 +313,7 @@ function ActiveStatComponent({
         active: damage_armor,
         add_mod: false,
         isCreature,
+        item_id: active_id,
       });
     }
   };
@@ -337,12 +341,14 @@ function ActiveStatComponent({
                         active.dice2_name,
                         active.dice2_mod,
                         "Damage",
+                        active.equip2_id,
                       )
                     : handleDiceRoll(
                         active.dice2,
                         active.dice2_name,
                         active.dice2_mod,
                         "Damage",
+                        active.equip2_id,
                       );
                 }}
                 color={Constants.TYPE_COLORS[active_name]}
@@ -379,12 +385,14 @@ function ActiveStatComponent({
                         active.dice1_name,
                         active.dice1_mod,
                         "Damage",
+                        active.equip1_id,
                       )
                     : handleDiceRoll(
                         active.dice1,
                         active.dice1_name,
                         active.dice1_mod,
                         "Damage",
+                        active.equip1_id,
                       );
                 }}
                 color={Constants.TYPE_COLORS[active_name]}
@@ -402,6 +410,7 @@ function ActiveStatComponent({
                 active.dice_name,
                 active.dice_mod,
                 "Armor",
+                active.equip_id,
               );
             }}
             color={Constants.TYPE_COLORS[active_name]}
@@ -432,16 +441,8 @@ function ActiveStatComponent({
           </Dice>
         )}
       </Row>
-      <Row
-        height={"30%"}
-        className="button-hover"
-        onClick={handleSubValue}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          handleAddValue();
-        }}
-      >
-        <Minus>
+      <Row height={"30%"}>
+        <Minus className="button-hover" onClick={handleSubValue}>
           <FontAwesomeIcon
             icon={faMinus}
             color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
@@ -451,8 +452,7 @@ function ActiveStatComponent({
           {modValue > 0 ? "+" : ""}
           {modValue}
         </Modifier>
-
-        <Plus>
+        <Plus className="button-hover" onClick={handleAddValue}>
           <FontAwesomeIcon
             icon={faPlus}
             color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}

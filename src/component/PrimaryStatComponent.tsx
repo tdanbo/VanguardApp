@@ -318,15 +318,8 @@ function PrimaryStatComponent({
           {icon(active)}
         </ActiveButton>
       </Row>
-      <Row
-        className="button-hover second-row"
-        onClick={subModifier}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          addModifier();
-        }}
-      >
-        <Minus>
+      <Row className="second-row">
+        <Minus className="button-hover" onClick={subModifier}>
           <FontAwesomeIcon
             icon={faMinus}
             color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
@@ -335,7 +328,7 @@ function PrimaryStatComponent({
         <Modifier className="mouse-icon-hover">
           {modifier > 0 ? `+${modifier}` : modifier}
         </Modifier>
-        <Plus>
+        <Plus className="button-hover" onClick={addModifier}>
           <FontAwesomeIcon
             icon={faPlus}
             color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}

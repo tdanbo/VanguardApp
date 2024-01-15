@@ -88,7 +88,7 @@ const UpdateQualities = (character: CharacterEntry) => {
 
   equippedItems.forEach((item) => {
     if (item && item.quality && item.quality.includes("Reinforced")) {
-      character.actives.defense.dice += 1;
+      character.actives.defense.dice_mod += 1;
     }
   });
 
