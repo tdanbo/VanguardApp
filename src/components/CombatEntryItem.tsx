@@ -324,7 +324,7 @@ function CombatEntryItem({
                 )}
               </>
             )
-          ) : combatEntry.roll === 1 ? (
+          ) : combatEntry.active !== "Custom" && combatEntry.roll === 1 ? (
             <span>
               {UpperFirstLetter(combatEntry.source)}
               <FontAwesomeIcon
