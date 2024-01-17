@@ -129,6 +129,34 @@ import FailureC from "./assets/sounds/FailureC.wav";
 
 import Resting from "./assets/sounds/Resting.wav";
 
+import Dice6 from "./assets/icons/dice-d6-outline.png";
+import Dice4 from "./assets/icons/dice-d4-outline.png";
+import Dice8 from "./assets/icons/dice-d8-outline.png";
+import Dice10 from "./assets/icons/dice-d10-outline.png";
+import Dice12 from "./assets/icons/dice-d12-outline.png";
+import Dice20 from "./assets/icons/dice-d20-outline.png";
+
+import Dice4Fill from "./assets/icons/dice-d4.png";
+import Dice6Fill from "./assets/icons/dice-d6.png";
+import Dice8Fill from "./assets/icons/dice-d8.png";
+import Dice10Fill from "./assets/icons/dice-d10.png";
+import Dice12Fill from "./assets/icons/dice-d12.png";
+import Dice20Fill from "./assets/icons/dice-d20.png";
+
+export const Dice6Icon = Dice6;
+export const Dice4Icon = Dice4;
+export const Dice8Icon = Dice8;
+export const Dice10Icon = Dice10;
+export const Dice12Icon = Dice12;
+export const Dice20Icon = Dice20;
+
+export const Dice4FillIcon = Dice4Fill;
+export const Dice6FillIcon = Dice6Fill;
+export const Dice8FillIcon = Dice8Fill;
+export const Dice10FillIcon = Dice10Fill;
+export const Dice12FillIcon = Dice12Fill;
+export const Dice20FillIcon = Dice20Fill;
+
 export const RestingSounds = [Resting, Resting, Resting, Resting, Resting];
 export const RollSounds = [RollA, RollB, RollC, RollD, RollE, RollF, RollG];
 export const CriticalSuccessSounds = [SuccessA, SuccessB, SuccessC];

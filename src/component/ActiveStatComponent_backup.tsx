@@ -99,28 +99,7 @@ type DiceProps = {
   color: string;
 };
 
-const DiceContainerLeft = styled.button`
-  display: flex;
-  flex-grow: 1;
-  align-items: top;
-  justify-content: center;
-  border-top-left-radius: ${Constants.BORDER_RADIUS};
-  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
-  font-size: 16px;
-  font-weight: bold;
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  width: 25%;
-  border-top: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
-  border-right: 0px solid ${Constants.WIDGET_BORDER};
-  border-left: 1px solid ${Constants.WIDGET_BORDER};
-  text-shadow: 1px 1px 1px ${Constants.BACKGROUND};
-  max-width: 30px;
-  width: 30px;
-`;
-
-const DiceContainerRight = styled.button`
+const Dice = styled.button<DiceProps>`
   display: flex;
   flex-grow: 1;
   align-items: top;
@@ -133,12 +112,36 @@ const DiceContainerRight = styled.button`
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
   width: 25%;
+  padding-top: 5px;
   border-top: 1px solid ${Constants.WIDGET_BORDER};
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   border-right: 1px solid ${Constants.WIDGET_BORDER};
   border-left: 0px solid ${Constants.WIDGET_BORDER};
   text-shadow: 1px 1px 1px ${Constants.BACKGROUND};
   max-width: 30px;
+`;
+
+const DiceIcon = styled.button<DiceProps>`
+  display: flex;
+  flex-grow: 1;
+  align-items: top;
+  justify-content: center;
+  border-top-left-radius: ${Constants.BORDER_RADIUS};
+  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
+  font-size: 16px;
+  font-weight: bold;
+  color: ${(props) => props.color};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  width: 25%;
+  padding-top: 5px;
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  border-right: 0px solid ${Constants.WIDGET_BORDER};
+  border-left: 1px solid ${Constants.WIDGET_BORDER};
+  text-shadow: 1px 1px 1px ${Constants.BACKGROUND};
+  max-width: 30px;
+  width: 30px;
 `;
 
 const Plus = styled.button`
@@ -316,13 +319,50 @@ function ActiveStatComponent({
       });
     }
   };
-
+  // <>
+  //   {(active.dice2_name !== "Knuckles" && active.dice2 !== 0 && (
+  //     <DiceIcon
+  //       onClick={() => {
+  //         [
+  //           "Bow",
+  //           "Crossbow",
+  //           "Small Crossbow",
+  //           "Repeating Crossbow",
+  //           "Longbow",
+  //           "Horsema's Longbow",
+  //           "Composite Bow",
+  //           "Arbalest",
+  //         ].includes(active.dice2_name)
+  //           ? handleRangeRoll(
+  //               active.dice2,
+  //               active.dice2_name,
+  //               active.dice2_mod,
+  //               "Damage",
+  //               active.equip2_id,
+  //             )
+  //           : handleDiceRoll(
+  //               active.dice2,
+  //               active.dice2_name,
+  //               active.dice2_mod,
+  //               "Damage",
+  //               active.equip2_id,
+  //             );
+  //       }}
+  //       color={Constants.TYPE_COLORS[active_name]}
+  //     >
+  //       d{active.dice2}
+  //       {active.dice2_mod > 0 ? `+${active.dice2_mod}` : null}
+  //     </DiceIcon>
+  //   )) || <DiceIcon color={Constants.TYPE_COLORS[active_name]} />}
+  // </>
   return (
     <Container>
       <Row height={"70%"} className="button-hover">
-        <DiceContainerLeft>
-          {isAttackActive(active) ? <RollComponent dice={8} /> : null}
-        </DiceContainerLeft>
+        {isAttackActive(active) ? (
+          <RollComponent dice={8} />
+        ) : (
+          <DiceIcon color={Constants.TYPE_COLORS[active_name]} />
+        )}
         <Value onClick={handleActiveRoll} className="dice-icon-hover">
           {Math.max(active.value + modValue, 1)}
           <ActiveValue>{toTitleCase(active_name)}</ActiveValue>
@@ -330,17 +370,59 @@ function ActiveStatComponent({
         {isAttackActive(active) ? (
           <>
             {active.dice1 !== 0 && (
-              <DiceContainerRight>
-                <RollComponent dice={20} />
-              </DiceContainerRight>
+              <RollComponent dice={20} />
+              // <Dice
+              //   onClick={() => {
+              //     [
+              //       "Bow",
+              //       "Crossbow",
+              //       "Small Crossbow",
+              //       "Repeating Crossbow",
+              //       "Longbow",
+              //       "Horsema's Longbow",
+              //       "Composite Bow",
+              //       "Arbalest",
+              //     ].includes(active.dice1_name)
+              //       ? handleRangeRoll(
+              //           active.dice1,
+              //           active.dice1_name,
+              //           active.dice1_mod,
+              //           "Damage",
+              //           active.equip1_id,
+              //         )
+              //       : handleDiceRoll(
+              //           active.dice1,
+              //           active.dice1_name,
+              //           active.dice1_mod,
+              //           "Damage",
+              //           active.equip1_id,
+              //         );
+              //   }}
+              //   color={Constants.TYPE_COLORS[active_name]}
+              // >
+              //   d{active.dice1}
+              //   {active.dice1_mod > 0 ? `+${active.dice1_mod}` : null}
+              // </Dice>
             )}
           </>
         ) : isDefenseActive(active) ? (
-          <DiceContainerRight>
-            <RollComponent dice={20} />
-          </DiceContainerRight>
+          <Dice
+            onClick={() => {
+              handleDiceRoll(
+                active.dice,
+                active.dice_name,
+                active.dice_mod,
+                "Armor",
+                active.equip_id,
+              );
+            }}
+            color={Constants.TYPE_COLORS[active_name]}
+          >
+            d{active.dice}
+            {active.dice_mod > 0 ? `+${active.dice_mod}` : null}
+          </Dice>
         ) : active_name === "casting" ? (
-          <DiceContainerRight
+          <Dice
             onClick={() => {
               handleDiceRoll(4, "Corruption", 0, "Casting");
             }}
@@ -352,14 +434,14 @@ function ActiveStatComponent({
                 filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
               }}
             />
-          </DiceContainerRight>
+          </Dice>
         ) : (
-          <DiceContainerRight color={Constants.TYPE_COLORS[active_name]}>
+          <Dice color={Constants.TYPE_COLORS[active_name]}>
             <FontAwesomeIcon
               icon={faEye}
               color={Constants.TYPE_COLORS[active_name]}
             />
-          </DiceContainerRight>
+          </Dice>
         )}
       </Row>
       <Row height={"30%"}>

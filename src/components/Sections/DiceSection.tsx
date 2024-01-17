@@ -2,6 +2,7 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import { CharacterEntry, SessionEntry } from "../../Types";
 import DiceBox from "../DiceBox";
+import RollComponent from "../../component/RollComponent";
 const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -20,7 +21,14 @@ interface DiceBoxProps {
 function DiceSection({ character, session, websocket }: DiceBoxProps) {
   return (
     <Container>
-      <DiceBox
+      <RollComponent dice={4} />
+      <RollComponent dice={6} />
+      <RollComponent dice={8} />
+      <RollComponent dice={10} />
+      <RollComponent dice={12} />
+      <RollComponent dice={20} />
+      <RollComponent dice={100} />
+      {/* <DiceBox
         type_name={4}
         character={character}
         session={session}
@@ -68,7 +76,7 @@ function DiceSection({ character, session, websocket }: DiceBoxProps) {
         session={session}
         websocket={websocket}
         isCreature={false}
-      />
+      /> */}
     </Container>
   );
 }
