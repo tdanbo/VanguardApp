@@ -1,16 +1,13 @@
+import { useState } from "react";
 import styled from "styled-components";
 import {
   CharacterEntry,
   SessionEntry,
-  SimpleActive,
-  AttackActive,
-  DefenseActive,
 } from "../Types";
 import AbilitySection from "../charactersheet/AbilitySection";
 import CharacterNameBox from "../charactersheet/CharacterNameBox";
 import InventorySection from "../charactersheet/InventorySection";
 import ResourcesBox from "../charactersheet/ResourcesBox";
-import { useState } from "react";
 import XpBox from "../charactersheet/XpBox";
 
 import * as Constants from "../Constants";
@@ -75,14 +72,13 @@ const DividerVertical = styled.div`
 `;
 
 import { Socket } from "socket.io-client";
-import { UpdateActives } from "../functions/ActivesFunction";
 
-import PortraitComponent from "../component/PortraitComponent";
 import ActiveStatComponent from "../component/ActiveStatComponent";
-import HealthStatComponent from "../component/HealthStatComponent";
 import CorruptionStatComponent from "../component/CorruptionStatComponent";
+import HealthStatComponent from "../component/HealthStatComponent";
+import PortraitComponent from "../component/PortraitComponent";
 import PrimaryStatComponent from "../component/PrimaryStatComponent";
-
+import { GetActives } from "../functions/ActivesFunction";
 type CharacterSheetProps = {
   websocket: Socket;
   session: SessionEntry;
@@ -106,7 +102,7 @@ function CharacterSheet({
   character,
   isCreature,
 }: CharacterSheetProps) {
-  const actives = UpdateActives(character);
+  const actives = GetActives(character);
   const [swapSource, setSwapSource] = useState<null | string>(null);
   return (
     <>
@@ -125,7 +121,7 @@ function CharacterSheet({
       </Container>
       <Container height={"260px"}>
         <Row width={"50%"}>
-          <PortraitComponent character={character} />
+          <PortraitComponent character={character} actives={actives}/>
         </Row>
         <Column width={"100%"}>
           <Row width={"100%"}>
@@ -138,6 +134,7 @@ function CharacterSheet({
               swapSource={swapSource}
               setSwapSource={setSwapSource}
               isCreature={isCreature}
+              actives={actives}
             />
             <PrimaryStatComponent
               character={character}
@@ -148,6 +145,7 @@ function CharacterSheet({
               swapSource={swapSource}
               setSwapSource={setSwapSource}
               isCreature={isCreature}
+              actives={actives}
             />
             <PrimaryStatComponent
               character={character}
@@ -158,6 +156,7 @@ function CharacterSheet({
               swapSource={swapSource}
               setSwapSource={setSwapSource}
               isCreature={isCreature}
+              actives={actives}
             />
             <PrimaryStatComponent
               character={character}
@@ -168,6 +167,7 @@ function CharacterSheet({
               swapSource={swapSource}
               setSwapSource={setSwapSource}
               isCreature={isCreature}
+              actives={actives}
             />
           </Row>
           <Row width={"100%"}>
@@ -180,6 +180,7 @@ function CharacterSheet({
               swapSource={swapSource}
               setSwapSource={setSwapSource}
               isCreature={isCreature}
+              actives={actives}
             />
             <PrimaryStatComponent
               character={character}
@@ -190,6 +191,7 @@ function CharacterSheet({
               swapSource={swapSource}
               setSwapSource={setSwapSource}
               isCreature={isCreature}
+              actives={actives}
             />
             <PrimaryStatComponent
               character={character}
@@ -200,6 +202,7 @@ function CharacterSheet({
               swapSource={swapSource}
               setSwapSource={setSwapSource}
               isCreature={isCreature}
+              actives={actives}
             />
             <PrimaryStatComponent
               character={character}
@@ -210,6 +213,7 @@ function CharacterSheet({
               swapSource={swapSource}
               setSwapSource={setSwapSource}
               isCreature={isCreature}
+              actives={actives}
             />
           </Row>
         </Column>
@@ -240,7 +244,7 @@ function CharacterSheet({
             websocket={websocket}
             session={session}
             active_name={"attack"}
-            active={actives["attack"] as AttackActive}
+            active_value={actives.attack.value}
             character={character}
             isCreature={isCreature}
           />
@@ -250,7 +254,7 @@ function CharacterSheet({
             websocket={websocket}
             session={session}
             active_name={"defense"}
-            active={actives["defense"] as DefenseActive}
+            active_value={actives.defense.value}
             character={character}
             isCreature={isCreature}
           />
@@ -278,7 +282,7 @@ function CharacterSheet({
             websocket={websocket}
             session={session}
             active_name={"casting"}
-            active={actives["casting"] as SimpleActive}
+            active_value={actives.casting.value}
             character={character}
             isCreature={isCreature}
           />
@@ -288,7 +292,7 @@ function CharacterSheet({
             websocket={websocket}
             session={session}
             active_name={"sneaking"}
-            active={actives["sneaking"] as SimpleActive}
+            active_value={actives.sneaking.value}
             character={character}
             isCreature={isCreature}
           />

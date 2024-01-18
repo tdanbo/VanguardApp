@@ -1,31 +1,27 @@
 import {
-  faChevronRight,
-  faXmark,
   faBars,
+  faChevronRight,
   faSkull,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import cloneDeep from "lodash/cloneDeep";
+import React, { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
-import React from "react";
 import {
   CharacterEntry,
-  EmptyArmor,
-  EmptyWeapon,
   ItemEntry,
-  SessionEntry,
+  SessionEntry
 } from "../../Types";
+import DurabilityBox from "../../component/DurabilityBox";
+import RollComponent from "../../component/RollComponent";
+import { DeleteInventorySlot, SetFlexibleEquip } from "../../functions/CharacterFunctions";
 import { useRoll } from "../../functions/CombatFunctions";
 import { GetMaxSlots } from "../../functions/RulesFunctions";
 import { update_session } from "../../functions/SessionsFunctions";
-import { Qualities } from "../../functions/rules/Qualities";
-import { SetFlexibleEquip } from "../../functions/CharacterFunctions";
 import { StyledText } from "../../functions/UtilityFunctions";
-import { useState } from "react";
-import { DeleteInventorySlot } from "../../functions/CharacterFunctions";
-import DurabilityBox from "../../component/DurabilityBox";
+import { Qualities } from "../../functions/rules/Qualities";
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -138,9 +134,6 @@ const RollBox = styled.div<RollBoxProps>`
   display: flex;
   flex-grow: 1;
   color: ${(props) => props.color};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
   margin-left: 2px;
   justify-content: center;
   align-items: center;
@@ -307,60 +300,15 @@ function InventoryEntry({
   };
 
   const HandleEquip = (item: ItemEntry, position: string) => {
-    const equipment = character.equipment;
-    const equip_item = cloneDeep(item);
-
-    const isItemInMainHand =
-      "id" in equipment.main && equipment.main.id === item.id;
-    const isItemInOffHand =
-      "id" in equipment.off && equipment.off.id === item.id;
-    const isMainHand2H =
-      "id" in equipment.main && equipment.main.equip === "2H";
-
-    // Check if the same item is already equipped in the Main Hand (MH)
-    if (position === "OH" && (isItemInMainHand || isMainHand2H)) {
-      equipment.main = EmptyWeapon;
-    }
-
-    if (position === "MH") {
-      equipment.main = equip_item;
-      if (isItemInOffHand) {
-        equipment.off = EmptyWeapon;
-      }
-    } else if (position === "OH") {
-      equipment.off = equip_item;
-    } else if (position === "2H") {
-      equipment.main = equip_item;
-      equipment.off = EmptyWeapon;
-    } else if (position === "AR") {
-      equipment.armor = equip_item;
-    }
-
-    character.actives.attack.equip1_id = equipment.main.id;
-    character.actives.attack.equip2_id = equipment.off.id;
-    character.actives.defense.equip_id = equipment.armor.id;
-
+    item.equip.equipped = true;
+    
     SetFlexibleEquip(character);
     update_session(session, character, isCreature, websocket);
   };
 
   const HandleUnequip = (position: string) => {
-    const equipment = character.equipment;
-
-    if (position === "MH") {
-      equipment.main = EmptyWeapon;
-    } else if (position === "OH") {
-      equipment.off = EmptyWeapon;
-    } else if (position === "2H") {
-      equipment.main = EmptyWeapon;
-      equipment.off = EmptyWeapon;
-    } else if (position === "AR") {
-      equipment.armor = EmptyArmor;
-    }
-
-    character.actives.attack.equip1_id = equipment.main.id;
-    character.actives.attack.equip2_id = equipment.off.id;
-    character.actives.defense.equip_id = equipment.armor.id;
+    item.equip.equipped = false;
+    
 
     SetFlexibleEquip(character);
     update_session(session, character, isCreature, websocket);
@@ -408,35 +356,8 @@ function InventoryEntry({
     });
   };
 
-  const isItemEquipped = (item: ItemEntry, position: string) => {
-    switch (position) {
-      case "MH":
-        return (
-          "id" in character.equipment.main &&
-          item.id === character.equipment.main.id
-        );
-      case "OH":
-        return (
-          "id" in character.equipment.off &&
-          item.id === character.equipment.off.id
-        );
-      case "2H":
-        return (
-          "id" in character.equipment.main &&
-          item.id === character.equipment.main.id
-        );
-      case "AR":
-        return (
-          "id" in character.equipment.armor &&
-          item.id === character.equipment.armor.id
-        );
-      default:
-        return false;
-    }
-  };
-
   const equipHandler = (item: ItemEntry, position: string) => {
-    if (isItemEquipped(item, position)) {
+    if (item.equip.equipped) {
       HandleUnequip(position);
     } else {
       HandleEquip(item, position);
@@ -444,47 +365,12 @@ function InventoryEntry({
   };
 
   const handlePlusClick = () => {
-    const count = item.quantity.count + 1;
-    const inventory = character.inventory;
-    const equipment = character.equipment;
-
-    inventory.forEach((item) => {
-      if (item.id === id) {
-        item.quantity.count = count;
-      }
-    });
-
-    if (equipment.main.id === id) {
-      equipment.main.quantity.count = count;
-    } else if (equipment.off.id === id) {
-      equipment.off.quantity.count = count;
-    } else if (equipment.armor.id === id) {
-      equipment.armor.quantity.count = count;
-    }
-
+    item.quantity.count + 1;
     update_session(session, character, isCreature, websocket);
   };
 
   const handleMinusClick = () => {
-    const count = item.quantity.count - 1;
-
-    const inventory = character.inventory;
-    const equipment = character.equipment;
-
-    inventory.forEach((item) => {
-      if (item.id === id) {
-        item.quantity.count = count;
-      }
-    });
-
-    if (equipment.main.id === id) {
-      equipment.main.quantity.count = count;
-    } else if (equipment.off.id === id) {
-      equipment.off.quantity.count = count;
-    } else if (equipment.armor.id === id) {
-      equipment.armor.quantity.count = count;
-    }
-
+    item.quantity.count - 1;
     update_session(session, character, isCreature, websocket);
   };
 
@@ -515,52 +401,18 @@ function InventoryEntry({
   return (
     <MasterContainer>
       <Container className="button-hover">
-        <EquipContainer>
-          {item.equip === "1H" && (
-            <>
-              <EquipButtonTop
+      <EquipContainer>
+          {[1,2].includes(item.equip.slot) ? (
+                <EquipButton
                 className={"button-hover"}
                 color={COLOR}
-                key={"MH"}
+                key={"2H"}
                 onClick={() => {
-                  equipHandler(item, "MH");
+                  equipHandler(item, "2H");
                 }}
-                $isequipped={isItemEquipped(item, "MH")}
+                $isequipped={item.equip.equipped}
               />
-              <EquipButtonBottom
-                className={"button-hover"}
-                color={COLOR}
-                key={"OH"}
-                onClick={() => {
-                  equipHandler(item, "OH");
-                }}
-                $isequipped={isItemEquipped(item, "OH")}
-              />
-            </>
-          )}
-          {item.equip === "2H" && (
-            <EquipButton
-              className={"button-hover"}
-              color={COLOR}
-              key={"2H"}
-              onClick={() => {
-                equipHandler(item, "2H");
-              }}
-              $isequipped={isItemEquipped(item, "2H")}
-            />
-          )}
-          {item.equip === "AR" && (
-            <EquipButton
-              className={"button-hover"}
-              color={COLOR}
-              key={"AR"}
-              onClick={() => {
-                equipHandler(item, "AR");
-              }}
-              $isequipped={isItemEquipped(item, "AR")}
-            />
-          )}
-          {!["1H", "2H", "AR"].includes(item.equip) && (
+          ) : (
             <NoEquipBox key={"unequip"} color={COLOR} />
           )}
         </EquipContainer>
@@ -610,13 +462,8 @@ function InventoryEntry({
             <FontAwesomeIcon icon={faSkull} style={{ fontSize: "20px" }} />
           )}
         </CorruptionContainer>
-        {["1H", "2H", "AR"].includes(item.equip) &&
-        item.category !== "ammunition" ? (
-          [
-            character.equipment.main.id,
-            character.equipment.off.id,
-            character.equipment.armor.id,
-          ].includes(item.id) ? (
+        {[1, 2].includes(item.equip.slot) &&
+        item.category !== "ammunition" && item.equip.equipped ? (
             <DurabilityBox
               active={true}
               item={item}
@@ -635,14 +482,20 @@ function InventoryEntry({
               isCreature={isCreature}
             />
           )
-        ) : null}
+        }
         <RollContainer>
           {item.roll.roll === true && (
-            <RollBox color={COLOR} onClick={handleRoll}>
-              d{item.roll.dice}
-              {item.roll.mod > 0 ? `+${item.roll.mod}` : null}
+            // <RollBox color={COLOR} onClick={handleRoll}>
+            //    d{item.roll.dice}
+            //    {item.roll.mod > 0 ? `+${item.roll.mod}` : null}
+              
+            // </RollBox>
+            <RollBox color={COLOR}>
+            <RollComponent dice={item.roll.dice} dice_mod={item.roll.mod} color={COLOR}/>
             </RollBox>
+            
           )}
+          
           {item.quantity.bulk === true && (
             <QuantityBox
               color={COLOR}

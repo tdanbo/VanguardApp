@@ -1,3 +1,8 @@
+import {
+  faMinus,
+  faPlus
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
@@ -5,21 +10,10 @@ import "../App.css";
 import * as Constants from "../Constants";
 import {
   ActiveKey,
-  AttackActive,
   CharacterEntry,
-  DefenseActive,
-  SessionEntry,
-  SimpleActive,
+  SessionEntry
 } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
-import { update_session } from "../functions/SessionsFunctions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEye,
-  faMinus,
-  faPlus,
-  faSkull,
-} from "@fortawesome/free-solid-svg-icons";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import RollComponent from "./RollComponent";
 
@@ -179,26 +173,16 @@ const Minus = styled.button`
 
 interface Props {
   active_name: ActiveKey;
-  active: AttackActive | DefenseActive | SimpleActive;
+  active_value: number;
   character: CharacterEntry;
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
 }
 
-function isAttackActive(obj: any): obj is AttackActive {
-  return typeof obj.value === "number" && typeof obj.dice2 === "number";
-  // you can add more checks for other properties if needed
-}
-
-function isDefenseActive(obj: any): obj is DefenseActive {
-  return typeof obj.value === "number" && typeof obj.dice === "number";
-  // you can add more checks for other properties if needed
-}
-
 function ActiveStatComponent({
   active_name,
-  active,
+  active_value,
   character,
   session,
   websocket,
@@ -218,149 +202,16 @@ function ActiveStatComponent({
 
   const onRollDice = useRoll();
 
-  const handleActiveRoll = () => {
-    onRollDice({
-      websocket,
-      character,
-      session,
-      dice: 20,
-      count: 1,
-      modifier: modValue,
-      target: Math.max(active.value + modValue, 1),
-      source: "Skill Test",
-      active: active_name,
-      add_mod: false,
-      isCreature,
-    });
-  };
-
-  const handleDiceRoll = (
-    dice: number,
-    dice_name: string,
-    dice_mod: number,
-    damage_armor: string,
-    active_id?: string,
-  ) => {
-    onRollDice({
-      websocket,
-      character,
-      session,
-      dice: dice,
-      count: 1,
-      target: 0,
-      modifier: dice_mod,
-      source: dice_name,
-      active: damage_armor,
-      add_mod: false,
-      isCreature,
-      item_id: active_id,
-    });
-  };
-
-  const handleRangeRoll = (
-    dice: number,
-    dice_name: string,
-    dice_mod: number,
-    damage_armor: string,
-    active_id: string,
-  ) => {
-    type Quantity = {
-      count: number;
-    };
-
-    type EquipmentItem = {
-      id: string;
-      category: string;
-      quantity: Quantity;
-    };
-
-    let usedAmmunitionId = "";
-    const { main, off } = character.equipment;
-    const equipment_slots: EquipmentItem[] = [main, off];
-
-    let hasAmmunition = false;
-
-    equipment_slots.map((item) => {
-      if (item.category === "ammunition" && item.quantity.count > 0) {
-        hasAmmunition = true;
-        usedAmmunitionId = item.id;
-        item.quantity.count -= 1;
-        character.inventory.map((item) => {
-          if (item.id === usedAmmunitionId) {
-            item.quantity.count -= 1;
-          }
-        });
-      } else {
-        hasAmmunition = false;
-      }
-    });
-
-    if (!hasAmmunition) {
-      // handle case when onUseAmmunition is false
-      console.log("No ammunition");
-    } else {
-      update_session(session, character, isCreature, websocket);
-      onRollDice({
-        websocket,
-        character,
-        session,
-        dice: dice,
-        count: 1,
-        target: 0,
-        modifier: dice_mod,
-        source: dice_name,
-        active: damage_armor,
-        add_mod: false,
-        isCreature,
-        item_id: active_id,
-      });
-    }
-  };
-
   return (
     <Container>
       <Row height={"70%"} className="button-hover">
-        <DiceContainerLeft>
-          {isAttackActive(active) ? <RollComponent dice={8} /> : null}
-        </DiceContainerLeft>
-        <Value onClick={handleActiveRoll} className="dice-icon-hover">
-          {Math.max(active.value + modValue, 1)}
+        <Value className="dice-icon-hover">
+          {Math.max(active_value + modValue, 1)}
           <ActiveValue>{toTitleCase(active_name)}</ActiveValue>
         </Value>
-        {isAttackActive(active) ? (
-          <>
-            {active.dice1 !== 0 && (
-              <DiceContainerRight>
-                <RollComponent dice={20} />
-              </DiceContainerRight>
-            )}
-          </>
-        ) : isDefenseActive(active) ? (
-          <DiceContainerRight>
+        <DiceContainerRight>
             <RollComponent dice={20} />
           </DiceContainerRight>
-        ) : active_name === "casting" ? (
-          <DiceContainerRight
-            onClick={() => {
-              handleDiceRoll(4, "Corruption", 0, "Casting");
-            }}
-            color={Constants.TYPE_COLORS[active_name]}
-          >
-            <FontAwesomeIcon
-              icon={faSkull}
-              style={{
-                filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
-              }}
-            />
-          </DiceContainerRight>
-        ) : (
-          <DiceContainerRight color={Constants.TYPE_COLORS[active_name]}>
-            <FontAwesomeIcon
-              icon={faEye}
-              color={Constants.TYPE_COLORS[active_name]}
-            />
-          </DiceContainerRight>
-        )}
       </Row>
       <Row height={"30%"}>
         <Minus className="button-hover" onClick={handleSubValue}>

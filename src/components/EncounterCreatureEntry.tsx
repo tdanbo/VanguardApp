@@ -6,20 +6,18 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { mdiSword } from "@mdi/js";
+import Icon from "@mdi/react";
 import { cloneDeep } from "lodash";
 import { memo, useEffect, useState } from "react";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { CharacterEntry, SessionEntry } from "../Types";
+import { GetActives } from "../functions/ActivesFunction";
 import AbilityEntryItem from "./Entries/AbilityEntryItem";
 
-import { mdiSword } from "@mdi/js";
-import Icon from "@mdi/react";
-
 import { Socket } from "socket.io-client";
-
-import { UpdateActives } from "../functions/ActivesFunction";
 
 interface ColorTypeProps {
   $rgb: string;
@@ -258,7 +256,7 @@ function EncounterCreatureEntry({
   setIsCreature,
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
-  const actives = UpdateActives(creatureClone);
+  const actives = GetActives(creatureClone);
   const pain = Math.ceil(creatureClone.stats.strong.value / 2);
   const attack = ModifierConverter[actives.attack.value];
   const defense = ModifierConverter[actives.defense.value];

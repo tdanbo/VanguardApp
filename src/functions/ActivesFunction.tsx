@@ -1,10 +1,12 @@
+
 import { cloneDeep } from "lodash";
-import { CharacterEntry } from "../Types";
+import { ActivesEntry, CharacterEntry } from "../Types";
 import { GetMaxSlots, GetUsedSlots } from "./RulesFunctions";
 import { Armored } from "./rules/Armored";
 import { ArmoredMystic } from "./rules/ArmoredMystic";
 import { Berserker } from "./rules/Berserker";
 import { IronFist } from "./rules/IronFist";
+import { ItemRules } from "./rules/ItemRules";
 import { ManAtArms } from "./rules/ManAtArms";
 import { Marksman } from "./rules/Marksman";
 import { NaturalWarrior } from "./rules/NaturalWarrior";
@@ -15,14 +17,42 @@ import { ShieldFighter } from "./rules/ShieldFighter";
 import { SteelThrow } from "./rules/SteelThrow";
 import { TwinAttack } from "./rules/TwinAttack";
 import { TwohandedForce } from "./rules/TwohandedForce";
-import { ItemRules } from "./rules/ItemRules";
 
-export const UpdateActives = (character: CharacterEntry) => {
+export const GetActives = (character: CharacterEntry) => {
+  const CharacterActives: ActivesEntry = {
+    attack:{value:0, stat:""},
+    defense:{value:0, stat:""},
+    casting:{value:0, stat:""},
+    sneaking:{value:0, stat:""},
+  } 
+
+  for (const [_key, value] of Object.entries(character.stats)) {
+    if (value.active === "attack") {
+      CharacterActives.attack.value = value.value;
+      CharacterActives.attack.stat = value.active;
+    } else if (value.active === "defense") {
+      CharacterActives.defense.value = value.value;
+      CharacterActives.defense.stat = value.active;
+    } else if (value.active === "casting") {
+      CharacterActives.casting.value = value.value;
+      CharacterActives.casting.stat = value.active;
+    } else if (value.active === "sneaking") {
+      CharacterActives.sneaking.value = value.value;
+      CharacterActives.sneaking.stat = value.active;
+    }
+  }
+
+  return CharacterActives;
+}
+
+export const UpdateInventory = (character: CharacterEntry) => {
   const characterClone = cloneDeep(character);
 
   if (characterClone.id === "") {
-    return characterClone.actives;
+    return characterClone;
   }
+
+
 
   characterClone.actives.attack.value =
     characterClone.stats[characterClone.actives.attack.stat].value;

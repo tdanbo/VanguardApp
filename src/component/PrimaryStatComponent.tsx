@@ -2,18 +2,17 @@ import {
   faBolt,
   faCrosshairs,
   faEye,
-  faShield,
   faMinus,
   faPlus,
+  faShield,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { ActiveKey, CharacterEntry, SessionEntry, StatName } from "../Types";
+import { ActivesEntry, CharacterEntry, SessionEntry } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
-import { update_session } from "../functions/SessionsFunctions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
@@ -177,6 +176,7 @@ type Props = {
   character: CharacterEntry;
   websocket: Socket;
   isCreature: boolean;
+  actives: ActivesEntry;
 };
 
 function PrimaryStatComponent({
@@ -188,6 +188,7 @@ function PrimaryStatComponent({
   session,
   websocket,
   isCreature,
+  actives
 }: Props) {
   const [value, setValue] = useState<number>(type_value);
   const [modifier, setModifier] = useState<number>(0);
@@ -199,7 +200,7 @@ function PrimaryStatComponent({
   let active = "";
   // let active_mod = 0;
 
-  Object.entries(character.actives).forEach(([key, dict]) => {
+  Object.entries(actives).forEach(([key, dict]) => {
     if (dict.stat === type_name.toLowerCase()) {
       active = key;
       // active_mod = dict.mod;
@@ -225,25 +226,25 @@ function PrimaryStatComponent({
     setModifier(0);
   };
 
-  const handleActiveClick = () => {
-    if (swapSource) {
-      const characterActives = character.actives;
+  // const handleActiveClick = () => {
+  //   if (swapSource) {
+  //     const characterActives = actives;
 
-      // Iterate over the keys (e.g., 'attack', 'defense', etc.)
-      (Object.keys(characterActives) as ActiveKey[]).forEach((key) => {
-        if (characterActives[key].stat === swapSource.toLowerCase()) {
-          characterActives[key].stat = type_name.toLowerCase() as StatName;
-        } else if (characterActives[key].stat === type_name.toLowerCase()) {
-          characterActives[key].stat = swapSource.toLowerCase() as StatName;
-        }
-      });
+  //     // Iterate over the keys (e.g., 'attack', 'defense', etc.)
+  //     (Object.keys(characterActives) as ActiveKey[]).forEach((key) => {
+  //       if (characterActives[key].stat === swapSource.toLowerCase()) {
+  //         characterActives[key].stat = type_name.toLowerCase() as StatName;
+  //       } else if (characterActives[key].stat === type_name.toLowerCase()) {
+  //         characterActives[key].stat = swapSource.toLowerCase() as StatName;
+  //       }
+  //     });
 
-      update_session(session, character, isCreature, websocket);
-      setSwapSource(null);
-    } else {
-      setSwapSource(type_name);
-    }
-  };
+  //     update_session(session, character, isCreature, websocket);
+  //     setSwapSource(null);
+  //   } else {
+  //     setSwapSource(type_name);
+  //   }
+  // };
 
   const icon = (active: string) => {
     if (active === "sneaking") {
@@ -312,7 +313,7 @@ function PrimaryStatComponent({
 
         <ActiveButton
           className="active_button"
-          onClick={handleActiveClick}
+          // onClick={handleActiveClick}
           color={Constants.TYPE_COLORS[active]}
         >
           {icon(active)}
