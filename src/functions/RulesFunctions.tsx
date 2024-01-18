@@ -1,4 +1,4 @@
-import { CharacterEntry } from "../Types";
+import { CharacterEntry, ItemEntry } from "../Types";
 import { CheckAbility } from "./ActivesFunction";
 export function GetMaxSlots(character: CharacterEntry) {
   let max_slots = Math.max(
@@ -50,8 +50,9 @@ export const GetMovementSpeed = (character: CharacterEntry) => {
   return total_speed;
 };
 
-export const GetImpedingValue = (character: CharacterEntry) => {
+export const GetImpedingValue = (character: CharacterEntry): number => {
   let impeding = 0;
+
   if (!CheckAbility(character, "Man-at-Arms", "adept")) {
     const negativeQualities: { [key: string]: number } = {
       "Impeding 1": 1,
@@ -60,13 +61,17 @@ export const GetImpedingValue = (character: CharacterEntry) => {
       "Impeding 4": 4,
     };
 
-    character.equipment.armor.quality.forEach((quality: string) => {
-      const lowercasedQuality = quality;
-      if (lowercasedQuality in negativeQualities) {
-        impeding += negativeQualities[lowercasedQuality];
+    character.inventory.forEach((item: ItemEntry) => {
+      if (item.category === "armor" && item.equip.equipped) {
+        item.quality.forEach((quality: string) => {
+          if (quality in negativeQualities) {
+            impeding += negativeQualities[quality];
+          }
+        });
       }
     });
   }
+
   return impeding;
 };
 

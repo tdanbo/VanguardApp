@@ -1,21 +1,24 @@
-import { CharacterEntry, Actives } from "../../Types";
+import { CharacterEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
-export function IronFist(character: CharacterEntry, actives: Actives) {
+export function IronFist_dice(character: CharacterEntry, item: ItemEntry) {
   const ability_name = "Iron Fist";
   const ability = CheckAbility(character, ability_name, "novice");
   const ability_adept = CheckAbility(character, ability_name, "adept");
   const ability_master = CheckAbility(character, ability_name, "master");
 
-  if (ability_master) {
-    actives.attack.dice1 += 8;
-    actives.attack.dice2 += 8;
-  } else if (ability_adept) {
-    actives.attack.dice1 += 4;
-    actives.attack.dice2 += 4;
-  } else if (ability) {
-    console.log("Iron Fist");
+  let mod = 0;
+  if (item.category !== "weapon") {
+    return mod;
   }
 
-  return actives;
+  if (ability_master) {
+    mod += 8;
+  } else if (ability_adept) {
+    mod += 4;
+  } else if (ability) {
+    return mod;
+  }
+
+  return mod;
 }

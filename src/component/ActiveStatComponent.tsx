@@ -1,18 +1,11 @@
-import {
-  faMinus,
-  faPlus
-} from "@fortawesome/free-solid-svg-icons";
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import "../App.css";
 import * as Constants from "../Constants";
-import {
-  ActiveKey,
-  CharacterEntry,
-  SessionEntry
-} from "../Types";
+import { ActiveKey, CharacterEntry, SessionEntry } from "../Types";
 import { useRoll } from "../functions/CombatFunctions";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import RollComponent from "./RollComponent";
@@ -205,13 +198,14 @@ function ActiveStatComponent({
   return (
     <Container>
       <Row height={"70%"} className="button-hover">
+        <DiceContainerLeft />
         <Value className="dice-icon-hover">
           {Math.max(active_value + modValue, 1)}
           <ActiveValue>{toTitleCase(active_name)}</ActiveValue>
         </Value>
         <DiceContainerRight>
-            <RollComponent dice={20} />
-          </DiceContainerRight>
+          <RollComponent dice={20} />
+        </DiceContainerRight>
       </Row>
       <Row height={"30%"}>
         <Minus className="button-hover" onClick={handleSubValue}>

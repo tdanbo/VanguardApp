@@ -43,7 +43,7 @@ const Column = styled.div`
 
 interface HealthBoxProps {
   character: CharacterEntry;
-  actives: ActivesEntry
+  actives: ActivesEntry;
 }
 
 function PortraitComponent({ character, actives }: HealthBoxProps) {
@@ -76,7 +76,7 @@ function PortraitComponent({ character, actives }: HealthBoxProps) {
           icon={faCarrot}
         />
       </Column>
-      <InfoComponent character={character} actives={actives}/>
+      <InfoComponent character={character} actives={actives} />
     </Container>
   );
 }

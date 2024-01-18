@@ -1,6 +1,6 @@
-import { CharacterEntry, Actives } from "../../Types";
+import { CharacterEntry, ActivesEntry } from "../../Types";
 
-export function ItemRules(character: CharacterEntry, actives: Actives) {
+export function ItemRules(character: CharacterEntry, actives: ActivesEntry) {
   character.inventory.forEach((item) => {
     if (item.name === "The Haganor Skin") {
       actives.defense.dice += 4;

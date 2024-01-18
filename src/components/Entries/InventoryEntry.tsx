@@ -9,19 +9,29 @@ import React, { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
-import {
-  CharacterEntry,
-  ItemEntry,
-  SessionEntry
-} from "../../Types";
+import { CharacterEntry, ItemEntry, SessionEntry } from "../../Types";
 import DurabilityBox from "../../component/DurabilityBox";
 import RollComponent from "../../component/RollComponent";
-import { DeleteInventorySlot, SetFlexibleEquip } from "../../functions/CharacterFunctions";
+import { DeleteInventorySlot } from "../../functions/CharacterFunctions";
 import { useRoll } from "../../functions/CombatFunctions";
 import { GetMaxSlots } from "../../functions/RulesFunctions";
 import { update_session } from "../../functions/SessionsFunctions";
 import { StyledText } from "../../functions/UtilityFunctions";
 import { Qualities } from "../../functions/rules/Qualities";
+import { ManAtArms_dice } from "../../functions/rules/ManAtArms";
+import { NaturalWeapon_dice } from "../../functions/rules/NaturalWeapon";
+import { NaturalWarrior_dice } from "../../functions/rules/NaturalWarrior";
+import { Berserker_dice } from "../../functions/rules/Berserker";
+import { SteelThrow_dice } from "../../functions/rules/SteelThrow";
+import { PolearmMastery_dice } from "../../functions/rules/PolearmMastery";
+import { ShieldFighter_dice } from "../../functions/rules/ShieldFighter";
+import { ArmoredMystic_dice } from "../../functions/rules/ArmoredMystic";
+import { Marksman_dice } from "../../functions/rules/Marksman";
+import { TwohandedForce_dice } from "../../functions/rules/TwohandedForce";
+import { Armored_dice } from "../../functions/rules/Armored";
+import { IronFist_dice } from "../../functions/rules/IronFist";
+import { Robust_dice } from "../../functions/rules/Robust";
+import { TwinAttack_dice } from "../../functions/rules/TwinAttack";
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -292,7 +302,6 @@ function InventoryEntry({
   isCreature,
 }: InventoryEntryProps) {
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
-
   const generateRandomId = (length = 10) => {
     return Math.random()
       .toString(36)
@@ -301,16 +310,11 @@ function InventoryEntry({
 
   const HandleEquip = (item: ItemEntry, position: string) => {
     item.equip.equipped = true;
-    
-    SetFlexibleEquip(character);
     update_session(session, character, isCreature, websocket);
   };
 
   const HandleUnequip = (position: string) => {
     item.equip.equipped = false;
-    
-
-    SetFlexibleEquip(character);
     update_session(session, character, isCreature, websocket);
   };
 
@@ -326,7 +330,6 @@ function InventoryEntry({
       };
       inventory.push(itemWithId);
     }
-    SetFlexibleEquip(character);
     update_session(session, character, isCreature, websocket);
     if (setInventoryState) {
       setInventoryState(1);
@@ -365,12 +368,12 @@ function InventoryEntry({
   };
 
   const handlePlusClick = () => {
-    item.quantity.count + 1;
+    item.quantity.count += 1;
     update_session(session, character, isCreature, websocket);
   };
 
   const handleMinusClick = () => {
-    item.quantity.count - 1;
+    item.quantity.count -= 1;
     update_session(session, character, isCreature, websocket);
   };
 
@@ -398,20 +401,39 @@ function InventoryEntry({
 
   const [expanded, setExpanded] = useState<boolean>(false);
 
+  function GetDice() {
+    let dice = item.roll.dice;
+    dice += NaturalWeapon_dice(character, item);
+    dice += NaturalWarrior_dice(character, item);
+    dice += Berserker_dice(character, item);
+    dice += ManAtArms_dice(character, item);
+    dice += SteelThrow_dice(character, item);
+    dice += PolearmMastery_dice(character, item);
+    dice += ShieldFighter_dice(character, item);
+    dice += ArmoredMystic_dice(character, item);
+    dice += Marksman_dice(character, item);
+    dice += TwohandedForce_dice(character, item);
+    dice += Armored_dice(character, item);
+    dice += IronFist_dice(character, item);
+    dice += Robust_dice(character, item);
+    dice += TwinAttack_dice(character, item);
+    return dice;
+  }
+
   return (
     <MasterContainer>
       <Container className="button-hover">
-      <EquipContainer>
-          {[1,2].includes(item.equip.slot) ? (
-                <EquipButton
-                className={"button-hover"}
-                color={COLOR}
-                key={"2H"}
-                onClick={() => {
-                  equipHandler(item, "2H");
-                }}
-                $isequipped={item.equip.equipped}
-              />
+        <EquipContainer>
+          {[1, 2].includes(item.equip.slot) ? (
+            <EquipButton
+              className={"button-hover"}
+              color={COLOR}
+              key={"2H"}
+              onClick={() => {
+                equipHandler(item, "2H");
+              }}
+              $isequipped={item.equip.equipped}
+            />
           ) : (
             <NoEquipBox key={"unequip"} color={COLOR} />
           )}
@@ -463,39 +485,42 @@ function InventoryEntry({
           )}
         </CorruptionContainer>
         {[1, 2].includes(item.equip.slot) &&
-        item.category !== "ammunition" && item.equip.equipped ? (
-            <DurabilityBox
-              active={true}
-              item={item}
-              session={session}
-              character={character}
-              websocket={websocket}
-              isCreature={isCreature}
-            />
-          ) : (
-            <DurabilityBox
-              active={false}
-              item={item}
-              session={session}
-              character={character}
-              websocket={websocket}
-              isCreature={isCreature}
-            />
-          )
-        }
+        item.category !== "ammunition" &&
+        item.equip.equipped ? (
+          <DurabilityBox
+            active={true}
+            item={item}
+            session={session}
+            character={character}
+            websocket={websocket}
+            isCreature={isCreature}
+          />
+        ) : (
+          <DurabilityBox
+            active={false}
+            item={item}
+            session={session}
+            character={character}
+            websocket={websocket}
+            isCreature={isCreature}
+          />
+        )}
         <RollContainer>
           {item.roll.roll === true && (
             // <RollBox color={COLOR} onClick={handleRoll}>
             //    d{item.roll.dice}
             //    {item.roll.mod > 0 ? `+${item.roll.mod}` : null}
-              
+
             // </RollBox>
             <RollBox color={COLOR}>
-            <RollComponent dice={item.roll.dice} dice_mod={item.roll.mod} color={COLOR}/>
+              <RollComponent
+                dice={GetDice()}
+                dice_mod={item.roll.mod}
+                color={COLOR}
+              />
             </RollBox>
-            
           )}
-          
+
           {item.quantity.bulk === true && (
             <QuantityBox
               color={COLOR}

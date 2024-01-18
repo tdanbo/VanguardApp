@@ -1,46 +1,51 @@
-import { CharacterEntry, Actives } from "../../Types";
+import { ActivesEntry, CharacterEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
-export function ArmoredMystic(character: CharacterEntry, actives: Actives) {
+export function ArmoredMystic_active(
+  character: CharacterEntry,
+  character_actives: ActivesEntry,
+) {
   const abilityNovice = CheckAbility(character, "armored mystic", "novice");
   const abilityAdept = CheckAbility(character, "armored mystic", "adept");
 
-  if (abilityNovice) {
-    const negativeQualities: { [key: string]: number } = {
-      "Impeding 1": 1,
-      "Impeding 2": 2,
-      "Impeding 3": 3,
-      "Impeding 4": 4,
-    };
+  const negativeQualities: { [key: string]: number } = {
+    "Impeding 1": 1,
+    "Impeding 2": 2,
+    "Impeding 3": 3,
+    "Impeding 4": 4,
+  };
 
-    if (
-      ["Medium Armor", "Light Armor"].includes(character.equipment.armor.type)
+  for (const armor of character.inventory) {
+    if (abilityAdept && armor.equip.equipped && armor.type === "Heavy Armor") {
+      armor.quality.forEach((quality: string) => {
+        const lowercasedQuality = quality;
+        if (lowercasedQuality in negativeQualities) {
+          character_actives.casting.value +=
+            negativeQualities[lowercasedQuality];
+        }
+      });
+    } else if (
+      abilityNovice &&
+      armor.equip.equipped &&
+      ["Medium Armor", "Light Armor"].includes(armor.type)
     ) {
-      character.equipment.armor.quality.forEach((quality: string) => {
+      armor.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
-          actives.casting.value += negativeQualities[lowercasedQuality];
+          character_actives.casting.value +=
+            negativeQualities[lowercasedQuality];
         }
       });
     }
   }
+}
 
-  if (abilityAdept) {
-    const negativeQualities: { [key: string]: number } = {
-      "Impeding 1": 1,
-      "Impeding 2": 2,
-      "Impeding 3": 3,
-      "Impeding 4": 4,
-    };
+export function ArmoredMystic_dice(character: CharacterEntry, item: ItemEntry) {
+  const abilityMaster = CheckAbility(character, "armored mystic", "master");
 
-    if (character.equipment.armor.type === "Heavy Armor") {
-      character.equipment.armor.quality.forEach((quality: string) => {
-        const lowercasedQuality = quality;
-        if (lowercasedQuality in negativeQualities) {
-          actives.casting.value += negativeQualities[lowercasedQuality];
-        }
-      });
-    }
+  let mod = 0;
+  if (abilityMaster && item.category === "armor") {
+    mod += 4;
   }
-  return actives;
+  return mod;
 }

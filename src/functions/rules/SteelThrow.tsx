@@ -1,15 +1,12 @@
-import { CharacterEntry, Actives } from "../../Types";
+import { CharacterEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
-export function SteelThrow(character: CharacterEntry, actives: Actives) {
+export function SteelThrow_dice(character: CharacterEntry, item: ItemEntry) {
   const ability = CheckAbility(character, "steel throw", "novice");
 
-  if (ability) {
-    character.equipment.main.type === "Throwing Weapon" &&
-      (actives.attack.dice1 = 8);
-    character.equipment.off.type === "Throwing Weapon" &&
-      (actives.attack.dice2 = 8);
+  let mod = 0;
+  if (ability && item.type === "Throwing Weapon") {
+    mod += 2;
   }
-
-  return actives;
+  return mod;
 }

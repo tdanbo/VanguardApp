@@ -79,70 +79,7 @@ export async function delete_creature(name: string) {
   await axios.delete(`${API}/api/creatures/${name}`);
 }
 
-export function SetFlexibleEquip(character: CharacterEntry) {
-  const hasFlexibleEquipped =
-    character.equipment.main.quality.includes("Flexible") ||
-    character.equipment.off.quality.includes("Flexible");
-
-  for (const item of character.inventory) {
-    if (hasFlexibleEquipped) {
-      if (
-        item.type === "Long Weapon" ||
-        item.type === "Heavy Weapon" ||
-        item.type === "Artifact Long Weapon" ||
-        item.type === "Artifact Heavy Weapon"
-      ) {
-        item.equip = "1H";
-      }
-    } else {
-      if (
-        item.type === "Long Weapon" ||
-        item.type === "Heavy Weapon" ||
-        item.type === "Artifact Long Weapon" ||
-        item.type === "Artifact Heavy Weapon"
-      ) {
-        item.equip = "2H";
-      }
-      if (
-        character.equipment.main.type === "Long Weapon" ||
-        character.equipment.main.type === "Heavy Weapon" ||
-        character.equipment.main.type === "Artifact Long Weapon" ||
-        character.equipment.main.type === "Artifact Heavy Weapon"
-      ) {
-        character.equipment.main.equip = "2H";
-      }
-      if (
-        character.equipment.off.type === "Long Weapon" ||
-        character.equipment.off.type === "Heavy Weapon" ||
-        character.equipment.off.type === "Artifact Long Weapon" ||
-        character.equipment.off.type === "Artifact Heavy Weapon"
-      ) {
-        character.equipment.off.equip = "2H";
-      }
-    }
-  }
-}
-
 export const DeleteInventorySlot = (character: CharacterEntry, id: string) => {
   const inventory = character.inventory.filter((item) => item.id !== id);
-  const equipment = character.equipment;
-  // Check main equipment
-  if (equipment.main.id === id) {
-    equipment.main = EmptyWeapon;
-  }
-
-  // Check off equipment
-  if (equipment.off.id === id) {
-    equipment.off = EmptyWeapon;
-  }
-
-  // Check armor equipment
-  if (equipment.armor.id === id) {
-    equipment.armor = EmptyArmor;
-  }
-
   character.inventory = inventory;
-  character.equipment = equipment;
-
-  SetFlexibleEquip(character);
 };
