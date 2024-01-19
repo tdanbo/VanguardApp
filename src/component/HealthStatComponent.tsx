@@ -16,23 +16,20 @@ const Column = styled.div<ColumnProps>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  flex-basis: 0;
   gap: 2px;
-  max-width: ${(props) => props.width};
   overflow: scroll;
   scrollbar-width: none !important;
+  width: ${(props) => props.width};
 `;
 
 const Row = styled.div<DivProps>`
   display: flex;
   flex-grow: 1;
-  flex-basis: 0;
   flex-direction: row;
   border 1px solid ${Constants.WIDGET_BORDER};
   border-radius: ${Constants.BORDER_RADIUS};
   max-height: ${(props) => props.height};
-  height: ${(props) => props.height};
-  
+  height: ${(props) => props.height}; 
 `;
 
 interface BgColor {
@@ -145,9 +142,9 @@ const Modifier = styled.button<ButtonProps>`
   }
 `;
 
-import { Socket } from "socket.io-client";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Socket } from "socket.io-client";
 
 interface HealthBoxProps {
   character: CharacterEntry;
@@ -192,7 +189,7 @@ function HealthStatComponent({
 
   return (
     <Column width={"100%"}>
-      <Row height={browser ? "50%" : "70%"}>
+      <Row height={browser ? "50%" : "75%"}>
         {Array.from({ length: remaining_toughness }).map((_, index, array) => {
           return (
             <TickBar
@@ -214,7 +211,7 @@ function HealthStatComponent({
           );
         })}
       </Row>
-      <Row height={browser ? "50%" : "30%"}>
+      <Row height={browser ? "50%" : "25%"}>
         <Minus className="button-hover" onClick={handleSubToughness}>
           <FontAwesomeIcon
             icon={faMinus}
