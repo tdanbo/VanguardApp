@@ -9,11 +9,32 @@ import {
 } from "../Images";
 
 import * as Constants from "../Constants";
+import {
+  RollEntry,
+  RollTypeEntry,
+  CombatEntry,
+  SessionEntry,
+  CharacterEntry,
+  ItemEntry,
+} from "../Types";
+import { v4 as uuidv4 } from "uuid";
+import { SetDurability } from "../functions/RulesFunctions";
+import { update_session } from "../functions/SessionsFunctions";
+import { Socket } from "socket.io-client";
+import { set } from "lodash";
 
 type RollComponentProps = {
+  session: SessionEntry;
+  character: CharacterEntry;
+  websocket: Socket;
+  roll_type: RollTypeEntry;
+  roll_source: string;
   dice: number;
   dice_mod?: number;
   color?: string;
+  target?: number;
+  item?: ItemEntry;
+  isCreature: boolean;
 };
 
 type RollContainerProps = {
@@ -32,7 +53,7 @@ const RollContainer = styled.div<RollContainerProps>`
   width: ${dice_size};
   height: ${dice_size};
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
   color: ${(props) => props.color};
   text-align: center; /* Center text horizontally */
   background-image: url(${(props) => props.dice_icon});
@@ -42,7 +63,19 @@ const RollContainer = styled.div<RollContainerProps>`
   text-shadow: 1px 1px 2px black;
 `;
 
-function RollComponent({ dice, dice_mod = 0, color = Constants.WIDGET_SECONDARY_FONT }: RollComponentProps) {
+function RollComponent({
+  roll_type,
+  roll_source,
+  dice,
+  dice_mod = 0,
+  color = Constants.WIDGET_SECONDARY_FONT,
+  target = 0,
+  session,
+  character,
+  websocket,
+  isCreature,
+  item,
+}: RollComponentProps) {
   let dice_icon = Dice20FillIcon;
   if (dice === 4) {
     dice_icon = Dice4FillIcon;
@@ -60,9 +93,56 @@ function RollComponent({ dice, dice_mod = 0, color = Constants.WIDGET_SECONDARY_
     dice_icon = Dice20FillIcon;
   }
 
+  const RollDIce = () => {
+    let result = Math.floor(Math.random() * dice) + 1;
+    result += dice_mod;
+
+    let success = true;
+    if (target !== 0 && result > target) {
+      success = false;
+    }
+
+    const roll_entry: RollEntry = {
+      result: result,
+      roll: dice,
+      mod: dice_mod,
+      target: target,
+      success: success,
+      dice: dice,
+    };
+
+    const NewCombatEntry: CombatEntry = {
+      character,
+      roll_type, // Damage, Armor, Accurate etc
+      roll_source, // Short Sword, Medium Armor, Skill Test,
+      roll_entry,
+      uuid: uuidv4(),
+      entry: "CombatEntry",
+    };
+
+    session.combatlog.push(NewCombatEntry);
+    session.combatlog = session.combatlog.slice(-20);
+
+    if (
+      item &&
+      (roll_type === "damage" || roll_type === "armor") &&
+      roll_entry.roll == 1
+    ) {
+      SetDurability(character, item.id);
+    }
+    update_session(session, character, isCreature, websocket);
+  };
+
   return (
-    <RollContainer dice_icon={dice_icon} dice_size = {dice_size} color = {color} title={`Roll d${dice}`}>
-      d{dice}{dice_mod > 0 ? `+${dice_mod}` : null}
+    <RollContainer
+      dice_icon={dice_icon}
+      dice_size={dice_size}
+      color={color}
+      title={`Roll d${dice}`}
+      onClick={() => RollDIce()}
+    >
+      d{dice}
+      {dice_mod > 0 ? `+${dice_mod}` : null}
     </RollContainer>
   );
 }

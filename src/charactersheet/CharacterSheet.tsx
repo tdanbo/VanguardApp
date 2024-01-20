@@ -60,6 +60,9 @@ const ScrollColumn = styled.div<DivProps>`
   gap: ${Constants.WIDGET_GAB};
   max-width: ${(props) => props.width};
   overflow-y: scroll;
+  border-top: 1px solid ${Constants.WIDGET_BORDER};
+  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.BACKGROUND};
 `;
 
 const DividerVertical = styled.div`
@@ -68,14 +71,31 @@ const DividerVertical = styled.div`
   background: linear-gradient(to bottom, ${Constants.WIDGET_SECONDARY_FONT_INACTIVE} 0%, transparent 100%);
 `;
 
+const DividerHorizontal = styled.div`
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    to left,
+    ${Constants.WIDGET_SECONDARY_FONT_INACTIVE} 0%,
+    transparent 100%
+  );
+`;
+
 import { Socket } from "socket.io-client";
 
-import { faCrosshairs, faEye, faNotEqual, faShield, faSkull } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCrosshairs,
+  faEye,
+  faNotEqual,
+  faShield,
+  faSkull,
+} from "@fortawesome/free-solid-svg-icons";
 import CorruptionStatComponent from "../component/CorruptionStatComponent";
 import HealthStatComponent from "../component/HealthStatComponent";
 import PortraitComponent from "../component/PortraitComponent";
 import StatComponent from "../component/StatComponent";
 import { GetActives } from "../functions/ActivesFunction";
+import EquipmentSection from "./EquipmentSection";
 type CharacterSheetProps = {
   websocket: Socket;
   session: SessionEntry;
@@ -116,7 +136,7 @@ function CharacterSheet({
   const character_actives = GetActives(character);
   const [swapSource, setSwapSource] = useState<null | string>(null);
 
-  character.stats["resolute"].active
+  character.stats["resolute"].active;
   return (
     <>
       <Container height={"40px"}>
@@ -144,25 +164,33 @@ function CharacterSheet({
             <StatComponent
               stat_name={"cunning"}
               stat_value={character.stats.cunning.value}
-              stat_color={Constants.TYPE_COLORS[character.stats["cunning"].active]}
+              stat_color={
+                Constants.TYPE_COLORS[character.stats["cunning"].active]
+              }
               stat_icon={GetActiveIcon(character.stats["cunning"].active)}
             />
             <StatComponent
               stat_name={"discreet"}
               stat_value={character.stats.discreet.value}
-              stat_color={Constants.TYPE_COLORS[character.stats["discreet"].active]}
+              stat_color={
+                Constants.TYPE_COLORS[character.stats["discreet"].active]
+              }
               stat_icon={GetActiveIcon(character.stats["discreet"].active)}
             />
             <StatComponent
               stat_name={"persuasive"}
               stat_value={character.stats.persuasive.value}
-              stat_color={Constants.TYPE_COLORS[character.stats["persuasive"].active]}
+              stat_color={
+                Constants.TYPE_COLORS[character.stats["persuasive"].active]
+              }
               stat_icon={GetActiveIcon(character.stats["persuasive"].active)}
             />
             <StatComponent
               stat_name={"quick"}
               stat_value={character.stats.quick.value}
-              stat_color={Constants.TYPE_COLORS[character.stats["quick"].active]}
+              stat_color={
+                Constants.TYPE_COLORS[character.stats["quick"].active]
+              }
               stat_icon={GetActiveIcon(character.stats["quick"].active)}
             />
           </Row>
@@ -170,25 +198,33 @@ function CharacterSheet({
             <StatComponent
               stat_name={"resolute"}
               stat_value={character.stats.resolute.value}
-              stat_color={Constants.TYPE_COLORS[character.stats["resolute"].active]}
+              stat_color={
+                Constants.TYPE_COLORS[character.stats["resolute"].active]
+              }
               stat_icon={GetActiveIcon(character.stats["resolute"].active)}
             />
             <StatComponent
               stat_name={"strong"}
               stat_value={character.stats.strong.value}
-              stat_color={Constants.TYPE_COLORS[character.stats["strong"].active]}
+              stat_color={
+                Constants.TYPE_COLORS[character.stats["strong"].active]
+              }
               stat_icon={GetActiveIcon(character.stats["strong"].active)}
             />
             <StatComponent
               stat_name={"vigilant"}
               stat_value={character.stats.vigilant.value}
-              stat_color={Constants.TYPE_COLORS[character.stats["vigilant"].active]}
+              stat_color={
+                Constants.TYPE_COLORS[character.stats["vigilant"].active]
+              }
               stat_icon={GetActiveIcon(character.stats["vigilant"].active)}
             />
             <StatComponent
               stat_name={"accurate"}
               stat_value={character.stats.accurate.value}
-              stat_color={Constants.TYPE_COLORS[character.stats["accurate"].active]}
+              stat_color={
+                Constants.TYPE_COLORS[character.stats["accurate"].active]
+              }
               stat_icon={GetActiveIcon(character.stats["accurate"].active)}
             />
           </Row>
@@ -210,7 +246,7 @@ function CharacterSheet({
             stat_color={Constants.TYPE_COLORS["defense"]}
             active={true}
           />
-                    <HealthStatComponent
+          <HealthStatComponent
             websocket={websocket}
             session={session}
             character={character}
@@ -232,7 +268,6 @@ function CharacterSheet({
             stat_icon={faSkull}
             stat_color={Constants.TYPE_COLORS["casting"]}
             active={true}
-
           />
           <StatComponent
             stat_name={"sneaking"}
@@ -244,14 +279,23 @@ function CharacterSheet({
         </Row>
       </Container>
       <DynamicContainer>
-        <ScrollColumn width="50%">
-          <InventorySection
+        <Column width="50%">
+          <EquipmentSection
             session={session}
             character={character}
             websocket={websocket}
             isCreature={isCreature}
           />
-        </ScrollColumn>
+          <DividerHorizontal />
+          <ScrollColumn width="100%">
+            <InventorySection
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+            />
+          </ScrollColumn>
+        </Column>
         <DividerVertical />
         <ScrollColumn width="50%">
           <AbilitySection

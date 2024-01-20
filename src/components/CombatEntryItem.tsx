@@ -122,26 +122,26 @@ function CombatEntryItem({
 }: CombatEntryItemProps) {
   const EntryColor = () => {
     return (
-      Constants.TYPE_COLORS[combatEntry.active.toLowerCase()] ||
+      Constants.TYPE_COLORS[combatEntry.roll_source.toLowerCase()] ||
       Constants.WIDGET_SECONDARY_FONT
     );
   };
 
   let modifierText = "";
-  if (combatEntry.modifier > 0) {
-    modifierText = `+${combatEntry.modifier}`;
-  } else if (combatEntry.modifier < 0) {
-    modifierText = `${combatEntry.modifier}`;
+  if (combatEntry.roll_entry.mod > 0) {
+    modifierText = `+${combatEntry.roll_entry.mod}`;
+  } else if (combatEntry.roll_entry.mod < 0) {
+    modifierText = `${combatEntry.roll_entry.mod}`;
   }
 
-  let title = `Dice: d${combatEntry.dice}${modifierText}\nRoll: ${combatEntry.roll}\n`;
+  let title = `Dice: d${combatEntry.roll_entry.dice}${modifierText}\nRoll: ${combatEntry.roll_entry.roll}\n`;
 
-  if (combatEntry.source !== "Skill Test") {
-    title += `Modifier: ${combatEntry.modifier}\n`;
+  if (combatEntry.roll_source !== "Skill Test") {
+    title += `Modifier: ${combatEntry.roll_entry.mod}\n`;
   }
 
-  if (combatEntry.target > 0) {
-    title += `Target: ${combatEntry.target}`;
+  if (combatEntry.roll_entry.target > 0) {
+    title += `Target: ${combatEntry.roll_entry.target}`;
   }
 
   const [isRolling, setIsRolling] = useState(false);
@@ -151,14 +151,16 @@ function CombatEntryItem({
   useEffect(() => {
     if (index !== 19) {
       // Only allow the animation effect on the first item
-      setCurrentDisplay(combatEntry.result);
+      setCurrentDisplay(combatEntry.roll_entry.result);
       return;
     }
     setIsRolling(true);
 
     // Rapidly change the displayed roll result
     const rollInterval = setInterval(() => {
-      setCurrentDisplay(Math.floor(Math.random() * combatEntry.dice) + 1); // assuming dice values start from 1
+      setCurrentDisplay(
+        Math.floor(Math.random() * combatEntry.roll_entry.dice) + 1,
+      ); // assuming dice values start from 1
       setRollCycles((prev) => prev + 1);
     }, 100); // This determines how fast the numbers change
 
@@ -166,7 +168,7 @@ function CombatEntryItem({
     const timer = setTimeout(() => {
       setIsRolling(false);
       clearInterval(rollInterval);
-      setCurrentDisplay(combatEntry.result);
+      setCurrentDisplay(combatEntry.roll_entry.result);
       setRollCycles(0);
     }, 300); // Total duration of the roll animation
 
@@ -174,17 +176,20 @@ function CombatEntryItem({
       clearTimeout(timer);
       clearInterval(rollInterval);
     };
-  }, [combatEntry.result]);
+  }, [combatEntry.roll_entry.result]);
 
-  // const RollEntryColor = getAdjustedColor(EntryColor(), combatEntry.roll);
+  // const RollEntryColor = getAdjustedColor(EntryColor(), combatEntry.roll_entry.roll);
 
   const FumbledPerfect = () => {
-    if (combatEntry.roll === 1) {
-      if (combatEntry.active === "Damage" || combatEntry.active === "Armor") {
+    if (combatEntry.roll_entry.roll === 1) {
+      if (
+        combatEntry.roll_type === "damage" ||
+        combatEntry.roll_type === "armor"
+      ) {
         return 1; // Fumbled
       }
       return 0; // Perfect
-    } else if (combatEntry.roll === 20) {
+    } else if (combatEntry.roll_entry.roll === 20) {
       return 1; // Fumbled
     } else {
       return 2; // Normal
@@ -193,30 +198,30 @@ function CombatEntryItem({
 
   const FumbledPerfectText = () => {
     if (FumbledPerfect() === 0) {
-      if (combatEntry.active === "attack") {
+      if (combatEntry.roll_type === "attack") {
         return "+1d6 damage.";
-      } else if (combatEntry.active === "defense") {
+      } else if (combatEntry.roll_type === "defense") {
         return "Free attack against the enemy.";
-      } else if (combatEntry.active === "casting") {
+      } else if (combatEntry.roll_type === "casting") {
         return "Double the spell effect.";
-      } else if (combatEntry.active === "sneaking") {
+      } else if (combatEntry.roll_type === "sneaking") {
         return "No detection for the entire group.";
       } else {
         return "";
       }
     } else if (FumbledPerfect() === 1) {
-      if (combatEntry.active === "attack") {
+      if (combatEntry.roll_type === "attack") {
         return "Free attack against you.";
       } else if (
-        combatEntry.active === "Damage" ||
-        combatEntry.active === "Armor"
+        combatEntry.roll_type === "damage" ||
+        combatEntry.roll_type === "armor"
       ) {
         return "Durability Loss";
-      } else if (combatEntry.active === "defense") {
+      } else if (combatEntry.roll_type === "defense") {
         return "+3 Damage taken.";
-      } else if (combatEntry.active === "casting") {
+      } else if (combatEntry.roll_type === "casting") {
         return "Your spell hit a random foe/friend.";
-      } else if (combatEntry.active === "sneaking") {
+      } else if (combatEntry.roll_type === "sneaking") {
         return "Conflict is inevitable! If attacked, you are surprised!";
       } else {
         return "";
@@ -227,15 +232,18 @@ function CombatEntryItem({
   };
 
   return (
-    <Container src={CharacterPortraits[combatEntry.portrait]}>
-      <ColorBlock $rgb={EntryColor()} $issuccess={combatEntry.success} />
+    <Container src={CharacterPortraits[combatEntry.character.portrait]}>
+      <ColorBlock
+        $rgb={EntryColor()}
+        $issuccess={combatEntry.roll_entry.success}
+      />
       <ResultContainer>
-        {combatEntry.active === "Resting" ? (
+        {combatEntry.roll_type === "resting" ? (
           <>
             <Result
               title={title}
               $rgb={EntryColor()}
-              $issuccess={combatEntry.success}
+              $issuccess={combatEntry.roll_entry.success}
             >
               <FontAwesomeIcon icon={faMoon} />
             </Result>
@@ -244,33 +252,41 @@ function CombatEntryItem({
           <Result
             title={title}
             $rgb={EntryColor()}
-            $issuccess={combatEntry.success}
+            $issuccess={combatEntry.roll_entry.success}
             className={isRolling ? "rolling" : ""}
           >
             {currentDisplay}
           </Result>
         )}
 
-        {combatEntry.source === "Skill Test" ? (
-          <Active $rgb={EntryColor()} $issuccess={combatEntry.success}>
-            {modifierText} {UpperFirstLetter(combatEntry.active)}{" "}
+        {combatEntry.roll_source === "Skill Test" ? (
+          <Active
+            $rgb={EntryColor()}
+            $issuccess={combatEntry.roll_entry.success}
+          >
+            {modifierText} {UpperFirstLetter(combatEntry.roll_source)}{" "}
           </Active>
         ) : (
-          <Active $rgb={EntryColor()} $issuccess={combatEntry.success}>
-            {UpperFirstLetter(combatEntry.active)}
+          <Active
+            $rgb={EntryColor()}
+            $issuccess={combatEntry.roll_entry.success}
+          >
+            {UpperFirstLetter(combatEntry.roll_source)}
           </Active>
         )}
         <FumbledSubText>{FumbledPerfectText()}</FumbledSubText>
-        <Source $rgb={EntryColor()} $issuccess={combatEntry.success}>
-          {combatEntry.active === "Resting" ? (
+        <Source $rgb={EntryColor()} $issuccess={combatEntry.roll_entry.success}>
+          {combatEntry.roll_source === "Resting" ? (
             <span>
               {toTitleCase(session.travel.weather)} Morning - Day{" "}
               {session.travel.day}
             </span>
-          ) : combatEntry.source === "Skill Test" ? (
-            combatEntry.roll === 1 ? (
+          ) : combatEntry.roll_source === "Skill Test" ? (
+            combatEntry.roll_entry.roll === 1 ? (
               <>
-                <span>{"Perfect " + UpperFirstLetter(combatEntry.source)}</span>
+                <span>
+                  {"Perfect " + UpperFirstLetter(combatEntry.roll_source)}
+                </span>
                 <FontAwesomeIcon
                   icon={faAngleDoubleUp}
                   color="#5cb57c"
@@ -282,9 +298,11 @@ function CombatEntryItem({
                   }}
                 />
               </>
-            ) : combatEntry.roll === 20 ? (
+            ) : combatEntry.roll_entry.roll === 20 ? (
               <>
-                <span>{"Fumbled " + UpperFirstLetter(combatEntry.source)}</span>
+                <span>
+                  {"Fumbled " + UpperFirstLetter(combatEntry.roll_source)}
+                </span>
                 <FontAwesomeIcon
                   icon={faAngleDoubleDown}
                   color="#b55c5c"
@@ -298,8 +316,8 @@ function CombatEntryItem({
               </>
             ) : (
               <>
-                <span>{UpperFirstLetter(combatEntry.source)}</span>
-                {combatEntry.success ? (
+                <span>{UpperFirstLetter(combatEntry.roll_source)}</span>
+                {combatEntry.roll_entry.success ? (
                   <FontAwesomeIcon
                     icon={faCheck}
                     color="#5cb57c"
@@ -324,9 +342,10 @@ function CombatEntryItem({
                 )}
               </>
             )
-          ) : combatEntry.active !== "Custom" && combatEntry.roll === 1 ? (
+          ) : combatEntry.roll_source !== "Custom" &&
+            combatEntry.roll_entry.roll === 1 ? (
             <span>
-              {UpperFirstLetter(combatEntry.source)}
+              {UpperFirstLetter(combatEntry.roll_source)}
               <FontAwesomeIcon
                 icon={faAngleDoubleDown}
                 color="#b55c5c"
@@ -339,7 +358,7 @@ function CombatEntryItem({
               />
             </span>
           ) : (
-            <span>{UpperFirstLetter(combatEntry.source)}</span>
+            <span>{UpperFirstLetter(combatEntry.roll_source)}</span>
           )}
         </Source>
       </ResultContainer>

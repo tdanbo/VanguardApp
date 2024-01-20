@@ -5,6 +5,14 @@ import InventoryEntry from "../components/Entries/InventoryEntry";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 import { GetMaxSlots } from "../functions/RulesFunctions";
 import styled from "styled-components";
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-basis: 0;
+  gap: ${Constants.WIDGET_GAB};
+  max-width: 100%;
+  background-color: ${Constants.BACKGROUND};
+`;
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -20,7 +28,7 @@ function sortInventory(a: ItemEntry, b: ItemEntry): number {
   );
 }
 
-function InventorySection({
+function EquipmentSection({
   character,
   session,
   websocket,
@@ -32,10 +40,10 @@ function InventorySection({
   const totalSlots = GetMaxSlots(character) * 2;
 
   return (
-    <>
+    <Column>
       {Array.from({ length: totalSlots }).map((_, index) => {
         const item = sortedInventory[index];
-        if (item !== undefined && !item.equip.equipped) {
+        if (item !== undefined && item.equip.equipped) {
           return (
             <InventoryEntry
               session={session}
@@ -53,11 +61,8 @@ function InventorySection({
           );
         }
       })}
-      {Array.from({ length: 20 }).map((_, index) => {
-        return <InventoryEntryEmpty key={`EmptyEntry${index}`} />;
-      })}
-    </>
+    </Column>
   );
 }
 
-export default InventorySection;
+export default EquipmentSection;

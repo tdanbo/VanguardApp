@@ -204,6 +204,11 @@ const EquipButton = styled.button<StyledButtonProps>`
   border-top-left-radius: ${Constants.BORDER_RADIUS};
   width: 20px;
   height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
 `;
 
 type NoEquipButtonProps = {
@@ -424,16 +429,17 @@ function InventoryEntry({
     <MasterContainer>
       <Container className="button-hover">
         <EquipContainer>
-          {[1, 2].includes(item.equip.slot) ? (
+          {[1, 2, 3].includes(item.equip.slot) ? (
             <EquipButton
-              className={"button-hover"}
               color={COLOR}
               key={"2H"}
               onClick={() => {
                 equipHandler(item, "2H");
               }}
               $isequipped={item.equip.equipped}
-            />
+            >
+              {item.equip.slot === 1 ? "I" : item.equip.slot === 2 ? "II" : "o"}
+            </EquipButton>
           ) : (
             <NoEquipBox key={"unequip"} color={COLOR} />
           )}
@@ -484,27 +490,28 @@ function InventoryEntry({
             <FontAwesomeIcon icon={faSkull} style={{ fontSize: "20px" }} />
           )}
         </CorruptionContainer>
-        {[1, 2].includes(item.equip.slot) &&
-        item.category !== "ammunition" &&
-        item.equip.equipped ? (
-          <DurabilityBox
-            active={true}
-            item={item}
-            session={session}
-            character={character}
-            websocket={websocket}
-            isCreature={isCreature}
-          />
-        ) : (
-          <DurabilityBox
-            active={false}
-            item={item}
-            session={session}
-            character={character}
-            websocket={websocket}
-            isCreature={isCreature}
-          />
-        )}
+        {[1, 2, 3].includes(item.equip.slot) &&
+        item.category !== "ammunition" ? (
+          item.equip.equipped ? (
+            <DurabilityBox
+              active={true}
+              item={item}
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+            />
+          ) : (
+            <DurabilityBox
+              active={false}
+              item={item}
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+            />
+          )
+        ) : null}
         <RollContainer>
           {item.roll.roll === true && (
             // <RollBox color={COLOR} onClick={handleRoll}>
@@ -514,6 +521,18 @@ function InventoryEntry({
             // </RollBox>
             <RollBox color={COLOR}>
               <RollComponent
+                session={session}
+                character={character}
+                websocket={websocket}
+                roll_type={
+                  item.category === "weapon"
+                    ? "damage"
+                    : item.category === "armor"
+                    ? "armor"
+                    : "custom"
+                }
+                roll_source={item.name}
+                isCreature={isCreature}
                 dice={GetDice()}
                 dice_mod={item.roll.mod}
                 color={COLOR}
