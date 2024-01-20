@@ -1,105 +1,65 @@
-import { cloneDeep } from "lodash";
-import { CharacterEntry } from "../Types";
+import { ActivesEntry, CharacterEntry } from "../Types";
 import { GetMaxSlots, GetUsedSlots } from "./RulesFunctions";
-import { Armored } from "./rules/Armored";
-import { ArmoredMystic } from "./rules/ArmoredMystic";
-import { Berserker } from "./rules/Berserker";
-import { IronFist } from "./rules/IronFist";
-import { ManAtArms } from "./rules/ManAtArms";
-import { Marksman } from "./rules/Marksman";
-import { NaturalWarrior } from "./rules/NaturalWarrior";
-import { NaturalWeapon } from "./rules/NaturalWeapon";
-import { PolearmMastery } from "./rules/PolearmMastery";
-import { Robust } from "./rules/Robust";
-import { ShieldFighter } from "./rules/ShieldFighter";
-import { SteelThrow } from "./rules/SteelThrow";
-import { TwinAttack } from "./rules/TwinAttack";
-import { TwohandedForce } from "./rules/TwohandedForce";
-import { ItemRules } from "./rules/ItemRules";
+import { ArmoredMystic_active } from "./rules/ArmoredMystic";
+import { Berserker_active } from "./rules/Berserker";
+import { ManAtArms_active } from "./rules/ManAtArms";
+import { Robust_active } from "./rules/Robust";
+import { ShieldFighter_active } from "./rules/ShieldFighter";
+import { TwinAttack_active } from "./rules/TwinAttack";
 
-export const UpdateActives = (character: CharacterEntry) => {
-  const characterClone = cloneDeep(character);
+export const GetActives = (character: CharacterEntry) => {
+  console.log("GetActives");
+  const character_actives: ActivesEntry = {
+    attack: { value: 0, stat: "" },
+    defense: { value: 0, stat: "" },
+    casting: { value: 0, stat: "" },
+    sneaking: { value: 0, stat: "" },
+  };
 
-  if (characterClone.id === "") {
-    return characterClone.actives;
+  for (const [_key, value] of Object.entries(character.stats)) {
+    if (value.active === "attack") {
+      character_actives.attack.value = value.value;
+      character_actives.attack.stat = value.active;
+    } else if (value.active === "defense") {
+      character_actives.defense.value = value.value;
+      character_actives.defense.stat = value.active;
+    } else if (value.active === "casting") {
+      character_actives.casting.value = value.value;
+      character_actives.casting.stat = value.active;
+    } else if (value.active === "sneaking") {
+      character_actives.sneaking.value = value.value;
+      character_actives.sneaking.stat = value.active;
+    }
   }
 
-  characterClone.actives.attack.value =
-    characterClone.stats[characterClone.actives.attack.stat].value;
-  characterClone.actives.defense.value =
-    characterClone.stats[characterClone.actives.defense.stat].value;
-  characterClone.actives.casting.value =
-    characterClone.stats[characterClone.actives.casting.stat].value;
-  characterClone.actives.sneaking.value =
-    characterClone.stats[characterClone.actives.sneaking.stat].value;
-
-  characterClone.actives.attack.dice1 = characterClone.equipment.main.roll.dice;
-  characterClone.actives.attack.dice2 = characterClone.equipment.off.roll.dice;
-  characterClone.actives.defense.dice =
-    characterClone.equipment.armor.roll.dice;
-
-  characterClone.actives.attack.dice1_name = characterClone.equipment.main.name;
-  characterClone.actives.attack.dice2_name = characterClone.equipment.off.name;
-  characterClone.actives.defense.dice_name =
-    characterClone.equipment.armor.name;
-
-  UpdateQualities(characterClone);
-  Overburden(characterClone);
-  ItemRules(characterClone, characterClone.actives);
-  NaturalWeapon(characterClone, characterClone.actives);
-  NaturalWarrior(characterClone, characterClone.actives);
-  Berserker(characterClone, characterClone.actives);
-  SteelThrow(characterClone, characterClone.actives);
-  ManAtArms(characterClone, characterClone.actives);
-  PolearmMastery(characterClone, characterClone.actives);
-  ShieldFighter(characterClone, characterClone.actives);
-  ArmoredMystic(characterClone, characterClone.actives);
-  Marksman(characterClone, characterClone.actives);
-  TwohandedForce(characterClone, characterClone.actives);
-  Armored(characterClone, characterClone.actives);
-  IronFist(characterClone, characterClone.actives);
-  Robust(characterClone, characterClone.actives);
-  TwinAttack(characterClone, characterClone.actives);
-
-  // postSelectedCharacter(characterClone); # This can be removed in the future i think but keep it in case.
-
-  return characterClone.actives;
+  UpdateQualities(character, character_actives);
+  Overburden(character, character_actives);
+  Berserker_active(character, character_actives);
+  ManAtArms_active(character, character_actives);
+  ArmoredMystic_active(character, character_actives);
+  ShieldFighter_active(character, character_actives);
+  Robust_active(character, character_actives);
+  TwinAttack_active(character, character_actives);
+  return character_actives;
 };
 
-const Overburden = (character: CharacterEntry) => {
+const Overburden = (
+  character: CharacterEntry,
+  character_actives: ActivesEntry,
+) => {
   const used_slots = GetUsedSlots(character);
   const max_slots = GetMaxSlots(character);
 
   if (used_slots > max_slots) {
-    character.actives.defense.value -= used_slots - max_slots;
+    character_actives.defense.value -= used_slots - max_slots;
   }
 };
 
-const UpdateQualities = (character: CharacterEntry) => {
-  character.actives.attack.dice1_mod = 0;
-  character.actives.attack.dice2_mod = 0;
-  character.actives.defense.dice_mod = 0;
-
-  const equippedItems = [
-    character.equipment.main,
-    character.equipment.off,
-    character.equipment.armor,
-  ];
-
-  equippedItems.forEach((item) => {
-    if (item && item.quality && item.quality.includes("Reinforced")) {
-      character.actives.defense.dice_mod += 1;
-    }
-  });
-
-  if (character.equipment.main.quality.includes("Deep Impact")) {
-    character.actives.attack.dice1_mod += 1;
-  }
-
-  if (character.equipment.off.quality.includes("Deep Impact")) {
-    character.actives.attack.dice2_mod += 1;
-  }
-
+const UpdateQualities = (
+  character: CharacterEntry,
+  character_actives: ActivesEntry,
+) => {
+  console.log("Updating Qualities");
   const qualityModifiers = {
     "Impeding 1": { sneaking: -1, defense: -1, casting: -1 },
     "Impeding 2": { sneaking: -2, defense: -2, casting: -2 },
@@ -111,14 +71,14 @@ const UpdateQualities = (character: CharacterEntry) => {
     Precise: { attack: 1 },
   };
 
-  equippedItems.forEach((item) => {
-    if (!item || !item.quality) return;
+  character.inventory.forEach((item) => {
+    if (!item || !item.quality || !item.equip.equipped) return;
 
     item.quality.forEach((quality) => {
       Object.entries(qualityModifiers).forEach(([key, modifiers]) => {
         if (quality.includes(key)) {
           Object.entries(modifiers).forEach(([action, value]) => {
-            character.actives[action as keyof typeof character.actives].value +=
+            character_actives[action as keyof typeof character_actives].value +=
               value;
           });
         }

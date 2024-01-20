@@ -1,31 +1,36 @@
 import {
-  faChevronRight,
-  faXmark,
   faBars,
+  faChevronRight,
   faSkull,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import cloneDeep from "lodash/cloneDeep";
+import React, { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
-import React from "react";
-import {
-  CharacterEntry,
-  EmptyArmor,
-  EmptyWeapon,
-  ItemEntry,
-  SessionEntry,
-} from "../../Types";
-import { useRoll } from "../../functions/CombatFunctions";
+import { CharacterEntry, ItemEntry, SessionEntry } from "../../Types";
+import DurabilityBox from "../../component/DurabilityBox";
+import RollComponent from "../../component/RollComponent";
+import { DeleteInventorySlot } from "../../functions/CharacterFunctions";
 import { GetMaxSlots } from "../../functions/RulesFunctions";
 import { update_session } from "../../functions/SessionsFunctions";
-import { Qualities } from "../../functions/rules/Qualities";
-import { SetFlexibleEquip } from "../../functions/CharacterFunctions";
 import { StyledText } from "../../functions/UtilityFunctions";
-import { useState } from "react";
-import { DeleteInventorySlot } from "../../functions/CharacterFunctions";
-import DurabilityBox from "../../component/DurabilityBox";
+import { Qualities } from "../../functions/rules/Qualities";
+import { ManAtArms_dice } from "../../functions/rules/ManAtArms";
+import { NaturalWeapon_dice } from "../../functions/rules/NaturalWeapon";
+import { NaturalWarrior_dice } from "../../functions/rules/NaturalWarrior";
+import { Berserker_dice } from "../../functions/rules/Berserker";
+import { SteelThrow_dice } from "../../functions/rules/SteelThrow";
+import { PolearmMastery_dice } from "../../functions/rules/PolearmMastery";
+import { ShieldFighter_dice } from "../../functions/rules/ShieldFighter";
+import { ArmoredMystic_dice } from "../../functions/rules/ArmoredMystic";
+import { Marksman_dice } from "../../functions/rules/Marksman";
+import { TwohandedForce_dice } from "../../functions/rules/TwohandedForce";
+import { Armored_dice } from "../../functions/rules/Armored";
+import { IronFist_dice } from "../../functions/rules/IronFist";
+import { Robust_dice } from "../../functions/rules/Robust";
+import { TwinAttack_dice } from "../../functions/rules/TwinAttack";
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -138,9 +143,6 @@ const RollBox = styled.div<RollBoxProps>`
   display: flex;
   flex-grow: 1;
   color: ${(props) => props.color};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
   margin-left: 2px;
   justify-content: center;
   align-items: center;
@@ -163,32 +165,6 @@ type StyledButtonProps = {
   color: string;
 };
 
-const EquipButtonTop = styled.button<StyledButtonProps>`
-  display: flex;
-  flex-grow: 1;
-  background-color: ${(props) =>
-    props.$isequipped ? props.color : Constants.WIDGET_BACKGROUND};
-  margin: 1px 0px 1px 1px;
-  width: 20px;
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-top-left-radius: ${Constants.BORDER_RADIUS};
-  width: 20px;
-  height: 100%;
-`;
-
-const EquipButtonBottom = styled.button<StyledButtonProps>`
-  display: flex;
-  flex-grow: 1;
-  background-color: ${(props) =>
-    props.$isequipped ? props.color : Constants.WIDGET_BACKGROUND};
-  margin: 1px 0px 1px 1px;
-  width: 20px;
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
-  width: 20px;
-  height: 100%;
-`;
-
 const EquipButton = styled.button<StyledButtonProps>`
   display: flex;
   flex-grow: 1;
@@ -201,6 +177,11 @@ const EquipButton = styled.button<StyledButtonProps>`
   border-top-left-radius: ${Constants.BORDER_RADIUS};
   width: 20px;
   height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
 `;
 
 type NoEquipButtonProps = {
@@ -299,70 +280,19 @@ function InventoryEntry({
   isCreature,
 }: InventoryEntryProps) {
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
-
   const generateRandomId = (length = 10) => {
     return Math.random()
       .toString(36)
       .substring(2, 2 + length);
   };
 
-  const HandleEquip = (item: ItemEntry, position: string) => {
-    const equipment = character.equipment;
-    const equip_item = cloneDeep(item);
-
-    const isItemInMainHand =
-      "id" in equipment.main && equipment.main.id === item.id;
-    const isItemInOffHand =
-      "id" in equipment.off && equipment.off.id === item.id;
-    const isMainHand2H =
-      "id" in equipment.main && equipment.main.equip === "2H";
-
-    // Check if the same item is already equipped in the Main Hand (MH)
-    if (position === "OH" && (isItemInMainHand || isMainHand2H)) {
-      equipment.main = EmptyWeapon;
-    }
-
-    if (position === "MH") {
-      equipment.main = equip_item;
-      if (isItemInOffHand) {
-        equipment.off = EmptyWeapon;
-      }
-    } else if (position === "OH") {
-      equipment.off = equip_item;
-    } else if (position === "2H") {
-      equipment.main = equip_item;
-      equipment.off = EmptyWeapon;
-    } else if (position === "AR") {
-      equipment.armor = equip_item;
-    }
-
-    character.actives.attack.equip1_id = equipment.main.id;
-    character.actives.attack.equip2_id = equipment.off.id;
-    character.actives.defense.equip_id = equipment.armor.id;
-
-    SetFlexibleEquip(character);
+  const HandleEquip = (item: ItemEntry) => {
+    item.equip.equipped = true;
     update_session(session, character, isCreature, websocket);
   };
 
-  const HandleUnequip = (position: string) => {
-    const equipment = character.equipment;
-
-    if (position === "MH") {
-      equipment.main = EmptyWeapon;
-    } else if (position === "OH") {
-      equipment.off = EmptyWeapon;
-    } else if (position === "2H") {
-      equipment.main = EmptyWeapon;
-      equipment.off = EmptyWeapon;
-    } else if (position === "AR") {
-      equipment.armor = EmptyArmor;
-    }
-
-    character.actives.attack.equip1_id = equipment.main.id;
-    character.actives.attack.equip2_id = equipment.off.id;
-    character.actives.defense.equip_id = equipment.armor.id;
-
-    SetFlexibleEquip(character);
+  const HandleUnequip = () => {
+    item.equip.equipped = false;
     update_session(session, character, isCreature, websocket);
   };
 
@@ -378,7 +308,6 @@ function InventoryEntry({
       };
       inventory.push(itemWithId);
     }
-    SetFlexibleEquip(character);
     update_session(session, character, isCreature, websocket);
     if (setInventoryState) {
       setInventoryState(1);
@@ -390,101 +319,21 @@ function InventoryEntry({
     update_session(session, character, isCreature, websocket);
   };
 
-  const onRollDice = useRoll();
-
-  const handleRoll = () => {
-    onRollDice({
-      websocket,
-      dice: item.roll.dice,
-      modifier: item.roll.mod,
-      count: 1,
-      target: 0,
-      source: item.name,
-      active: "Inventory Item",
-      add_mod: true,
-      character,
-      session,
-      isCreature,
-    });
-  };
-
-  const isItemEquipped = (item: ItemEntry, position: string) => {
-    switch (position) {
-      case "MH":
-        return (
-          "id" in character.equipment.main &&
-          item.id === character.equipment.main.id
-        );
-      case "OH":
-        return (
-          "id" in character.equipment.off &&
-          item.id === character.equipment.off.id
-        );
-      case "2H":
-        return (
-          "id" in character.equipment.main &&
-          item.id === character.equipment.main.id
-        );
-      case "AR":
-        return (
-          "id" in character.equipment.armor &&
-          item.id === character.equipment.armor.id
-        );
-      default:
-        return false;
-    }
-  };
-
-  const equipHandler = (item: ItemEntry, position: string) => {
-    if (isItemEquipped(item, position)) {
-      HandleUnequip(position);
+  const equipHandler = (item: ItemEntry) => {
+    if (item.equip.equipped) {
+      HandleUnequip();
     } else {
-      HandleEquip(item, position);
+      HandleEquip(item);
     }
   };
 
   const handlePlusClick = () => {
-    const count = item.quantity.count + 1;
-    const inventory = character.inventory;
-    const equipment = character.equipment;
-
-    inventory.forEach((item) => {
-      if (item.id === id) {
-        item.quantity.count = count;
-      }
-    });
-
-    if (equipment.main.id === id) {
-      equipment.main.quantity.count = count;
-    } else if (equipment.off.id === id) {
-      equipment.off.quantity.count = count;
-    } else if (equipment.armor.id === id) {
-      equipment.armor.quantity.count = count;
-    }
-
+    item.quantity.count += 1;
     update_session(session, character, isCreature, websocket);
   };
 
   const handleMinusClick = () => {
-    const count = item.quantity.count - 1;
-
-    const inventory = character.inventory;
-    const equipment = character.equipment;
-
-    inventory.forEach((item) => {
-      if (item.id === id) {
-        item.quantity.count = count;
-      }
-    });
-
-    if (equipment.main.id === id) {
-      equipment.main.quantity.count = count;
-    } else if (equipment.off.id === id) {
-      equipment.off.quantity.count = count;
-    } else if (equipment.armor.id === id) {
-      equipment.armor.quantity.count = count;
-    }
-
+    item.quantity.count -= 1;
     update_session(session, character, isCreature, websocket);
   };
 
@@ -512,55 +361,41 @@ function InventoryEntry({
 
   const [expanded, setExpanded] = useState<boolean>(false);
 
+  function GetDice() {
+    let dice = item.roll.dice;
+    dice += NaturalWeapon_dice(character, item);
+    dice += NaturalWarrior_dice(character, item);
+    dice += Berserker_dice(character, item);
+    dice += ManAtArms_dice(character, item);
+    dice += SteelThrow_dice(character, item);
+    dice += PolearmMastery_dice(character, item);
+    dice += ShieldFighter_dice(character, item);
+    dice += ArmoredMystic_dice(character, item);
+    dice += Marksman_dice(character, item);
+    dice += TwohandedForce_dice(character, item);
+    dice += Armored_dice(character, item);
+    dice += IronFist_dice(character, item);
+    dice += Robust_dice(character);
+    dice += TwinAttack_dice(character, item);
+    return dice;
+  }
+
   return (
     <MasterContainer>
       <Container className="button-hover">
         <EquipContainer>
-          {item.equip === "1H" && (
-            <>
-              <EquipButtonTop
-                className={"button-hover"}
-                color={COLOR}
-                key={"MH"}
-                onClick={() => {
-                  equipHandler(item, "MH");
-                }}
-                $isequipped={isItemEquipped(item, "MH")}
-              />
-              <EquipButtonBottom
-                className={"button-hover"}
-                color={COLOR}
-                key={"OH"}
-                onClick={() => {
-                  equipHandler(item, "OH");
-                }}
-                $isequipped={isItemEquipped(item, "OH")}
-              />
-            </>
-          )}
-          {item.equip === "2H" && (
+          {[1, 2, 3].includes(item.equip.slot) ? (
             <EquipButton
-              className={"button-hover"}
               color={COLOR}
               key={"2H"}
               onClick={() => {
-                equipHandler(item, "2H");
+                equipHandler(item);
               }}
-              $isequipped={isItemEquipped(item, "2H")}
-            />
-          )}
-          {item.equip === "AR" && (
-            <EquipButton
-              className={"button-hover"}
-              color={COLOR}
-              key={"AR"}
-              onClick={() => {
-                equipHandler(item, "AR");
-              }}
-              $isequipped={isItemEquipped(item, "AR")}
-            />
-          )}
-          {!["1H", "2H", "AR"].includes(item.equip) && (
+              $isequipped={item.equip.equipped}
+            >
+              {item.equip.slot === 1 ? "I" : item.equip.slot === 2 ? "II" : "o"}
+            </EquipButton>
+          ) : (
             <NoEquipBox key={"unequip"} color={COLOR} />
           )}
         </EquipContainer>
@@ -610,13 +445,9 @@ function InventoryEntry({
             <FontAwesomeIcon icon={faSkull} style={{ fontSize: "20px" }} />
           )}
         </CorruptionContainer>
-        {["1H", "2H", "AR"].includes(item.equip) &&
+        {[1, 2, 3].includes(item.equip.slot) &&
         item.category !== "ammunition" ? (
-          [
-            character.equipment.main.id,
-            character.equipment.off.id,
-            character.equipment.armor.id,
-          ].includes(item.id) ? (
+          item.equip.equipped ? (
             <DurabilityBox
               active={true}
               item={item}
@@ -638,11 +469,32 @@ function InventoryEntry({
         ) : null}
         <RollContainer>
           {item.roll.roll === true && (
-            <RollBox color={COLOR} onClick={handleRoll}>
-              d{item.roll.dice}
-              {item.roll.mod > 0 ? `+${item.roll.mod}` : null}
+            // <RollBox color={COLOR} onClick={handleRoll}>
+            //    d{item.roll.dice}
+            //    {item.roll.mod > 0 ? `+${item.roll.mod}` : null}
+
+            // </RollBox>
+            <RollBox color={COLOR}>
+              <RollComponent
+                session={session}
+                character={character}
+                websocket={websocket}
+                roll_type={
+                  item.category === "weapon"
+                    ? "damage"
+                    : item.category === "armor"
+                    ? "armor"
+                    : "custom"
+                }
+                roll_source={item.name}
+                isCreature={isCreature}
+                dice={GetDice()}
+                dice_mod={item.roll.mod}
+                color={COLOR}
+              />
             </RollBox>
           )}
+
           {item.quantity.bulk === true && (
             <QuantityBox
               color={COLOR}

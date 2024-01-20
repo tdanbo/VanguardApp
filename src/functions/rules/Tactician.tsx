@@ -1,7 +1,7 @@
-import { CharacterEntry, Actives } from "../../Types";
+import { CharacterEntry, ActivesEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
-export function Tactician(character: CharacterEntry, actives: Actives) {
+export function Tactician(character: CharacterEntry, actives: ActivesEntry) {
   const ability_name = "Tactician";
   const ability = CheckAbility(character, ability_name, "novice");
   const ability_adept = CheckAbility(character, ability_name, "adept");

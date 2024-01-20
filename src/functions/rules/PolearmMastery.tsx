@@ -1,15 +1,14 @@
-import { CharacterEntry, Actives } from "../../Types";
+import { CharacterEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
-export function PolearmMastery(character: CharacterEntry, actives: Actives) {
+export function PolearmMastery_dice(
+  character: CharacterEntry,
+  item: ItemEntry,
+) {
   const ability = CheckAbility(character, "polearm mastery", "novice");
-
-  if (ability) {
-    character.equipment.main.type === "Long Weapon" &&
-      (actives.attack.dice1 += 2);
-
-    character.equipment.off.type === "Long Weapon" &&
-      (actives.attack.dice2 += 2);
+  let mod = 0;
+  if (ability && item.type === "Long Weapon") {
+    mod += 2;
   }
-  return actives;
+  return mod;
 }

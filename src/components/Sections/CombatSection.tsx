@@ -63,6 +63,7 @@ interface CombatSectionProps {
   session: SessionEntry;
   character: CharacterEntry;
   websocket: Socket;
+  isCreature: boolean;
 }
 
 function deepCompareCombatEntries(
@@ -92,6 +93,7 @@ function CombatSection({
   session,
   character,
   websocket,
+  isCreature,
 }: CombatSectionProps) {
   // const { combatlogResponse } = useWebSocket();
 
@@ -136,16 +138,22 @@ function CombatSection({
       const last_roll = session.combatlog.at(-1);
       if (!last_roll) return;
 
-      if (last_roll.source === "Skill Test" && last_roll.roll === 1) {
+      if (
+        last_roll.roll_source === "Skill Test" &&
+        last_roll.roll_entry.roll === 1
+      ) {
         playRandomSound(CriticalSuccessSounds);
-      } else if (last_roll.source === "Skill Test" && last_roll.roll === 20) {
-        playRandomSound(CriticalFailureSounds);
       } else if (
-        (last_roll.active === "Damage" && last_roll.roll === 1) ||
-        (last_roll.active === "Armor" && last_roll.roll === 1)
+        last_roll.roll_source === "Skill Test" &&
+        last_roll.roll_entry.roll === 20
       ) {
         playRandomSound(CriticalFailureSounds);
-      } else if (last_roll.active === "Resting") {
+      } else if (
+        (last_roll.roll_type === "damage" && last_roll.roll_entry.roll === 1) ||
+        (last_roll.roll_type === "armor" && last_roll.roll_entry.roll === 1)
+      ) {
+        playRandomSound(CriticalFailureSounds);
+      } else if (last_roll.roll_type === "resting") {
         playRandomSound(RestingSounds);
       } else {
         playRandomSound(RollSounds);
@@ -180,6 +188,7 @@ function CombatSection({
             character={character}
             session={session}
             websocket={websocket}
+            isCreature={isCreature}
           />
         </Row>
       </Container>

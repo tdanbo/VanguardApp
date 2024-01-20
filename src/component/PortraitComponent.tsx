@@ -1,16 +1,16 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { CharacterEntry } from "../Types";
-import SmallStatComponent from "./SmallStatComponent";
-import InfoComponent from "./InfoComponent";
+import { ActivesEntry, CharacterEntry } from "../Types";
 import {
-  GetMovementSpeed,
-  GetPainThreshold,
   GetBurnRate,
   GetMaxSlots,
+  GetMovementSpeed,
+  GetPainThreshold,
   GetUsedSlots,
 } from "../functions/RulesFunctions";
+import InfoComponent from "./InfoComponent";
+import SmallStatComponent from "./SmallStatComponent";
 
 import {
   faCarrot,
@@ -43,9 +43,10 @@ const Column = styled.div`
 
 interface HealthBoxProps {
   character: CharacterEntry;
+  actives: ActivesEntry;
 }
 
-function PortraitComponent({ character }: HealthBoxProps) {
+function PortraitComponent({ character, actives }: HealthBoxProps) {
   const speed = GetMovementSpeed(character);
   const pain = GetPainThreshold(character);
   const capacity = GetMaxSlots(character) - GetUsedSlots(character);
@@ -75,7 +76,7 @@ function PortraitComponent({ character }: HealthBoxProps) {
           icon={faCarrot}
         />
       </Column>
-      <InfoComponent character={character} />
+      <InfoComponent character={character} actives={actives} />
     </Container>
   );
 }

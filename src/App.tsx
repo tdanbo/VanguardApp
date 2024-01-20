@@ -180,6 +180,7 @@ function App() {
           session={session}
           character={character}
           websocket={websocket}
+          isCreature={isCreature}
         />
       </SideColumn>
     </Row>

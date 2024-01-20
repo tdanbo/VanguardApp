@@ -8,6 +8,7 @@ interface CharacterDetails {
 export interface Stat {
   value: number;
   mod: number;
+  active: ActiveKey;
 }
 
 export type StatName =
@@ -28,52 +29,11 @@ export type CreatureStats = {
   [key in StatName]: number;
 };
 
-export type ActiveKey = "attack" | "defense" | "casting" | "sneaking";
-
-export type AttackActive = {
-  stat: StatName;
-  value: number;
-  dice1: number;
-  dice1_mod: number;
-  dice1_name: string;
-  dice2: number;
-  dice2_mod: number;
-  dice2_name: string;
-  attacks: number;
-  equip1_id: string;
-  equip2_id: string;
-};
-
-export type DefenseActive = {
-  stat: StatName;
-  value: number;
-  dice: number;
-  dice_mod: number;
-  dice_name: string;
-  equip_id: string;
-};
-
-export type SimpleActive = {
-  stat: StatName;
-  value: number;
-};
-
-export interface Actives {
-  attack: AttackActive;
-  defense: DefenseActive;
-  casting: SimpleActive;
-  sneaking: SimpleActive;
-}
+export type ActiveKey = "attack" | "defense" | "casting" | "sneaking" | "";
 
 interface Rations {
   food: number;
   water: number;
-}
-
-interface EquipmentEntry {
-  main: ItemEntry;
-  off: ItemEntry;
-  armor: ItemEntry;
 }
 
 type health = {
@@ -89,10 +49,8 @@ export interface CharacterEntry {
   details: CharacterDetails;
   health: health;
   stats: Stats;
-  actives: Actives;
   abilities: AbilityEntry[];
   inventory: ItemEntry[];
-  equipment: EquipmentEntry;
   rations: Rations;
   money: number;
   entry: "CharacterEntry";
@@ -127,10 +85,15 @@ export interface CreatureEntry {
   entry: "CreatureEntry";
 }
 
+type EquipEntry = {
+  slot: number;
+  equipped: boolean;
+};
+
 export interface ItemEntry {
   roll: Roll;
   quality: string[];
-  equip: string;
+  equip: EquipEntry;
   durability: number;
   quantity: Quantity;
   type: string;
@@ -144,18 +107,11 @@ export interface ItemEntry {
 }
 
 export type CombatEntry = {
+  character: CharacterEntry;
+  roll_type: RollTypeEntry;
+  roll_source: string;
+  roll_entry: RollEntry;
   uuid: string;
-  id: string;
-  character: string;
-  portrait: string;
-  source: string;
-  active: string;
-  dice: number;
-  result: number;
-  success: boolean;
-  roll: number;
-  modifier: number;
-  target: number;
   entry: "CombatEntry";
 };
 
@@ -200,6 +156,34 @@ export interface Ability {
   roll: AbilityRoll[];
 }
 
+export type RollTypeEntry =
+  | "damage"
+  | "armor"
+  | "attack"
+  | "defense"
+  | "casting"
+  | "sneaking"
+  | "corruption"
+  | "cunning"
+  | "discreet"
+  | "persuasive"
+  | "quick"
+  | "resolute"
+  | "strong"
+  | "vigilant"
+  | "accurate"
+  | "custom"
+  | "resting";
+
+export type RollEntry = {
+  result: number;
+  roll: number;
+  mod: number;
+  target: number;
+  success: boolean;
+  dice: number;
+};
+
 export type AbilityEntry = {
   name: string;
   requirement: string;
@@ -215,6 +199,13 @@ export type AbilityEntry = {
   entry: "AbilityEntry";
 };
 
+export type ActivesEntry = {
+  attack: { value: number; stat: string };
+  defense: { value: number; stat: string };
+  casting: { value: number; stat: string };
+  sneaking: { value: number; stat: string };
+};
+
 export type TownsEntry = {
   name: string;
   cost: number;
@@ -224,7 +215,7 @@ export type TownsEntry = {
 export const EmptyWeapon: ItemEntry = {
   roll: { roll: true, dice: 4, mod: 0, type: "damage" },
   quality: [],
-  equip: "1H",
+  equip: { slot: 1, equipped: false },
   quantity: { count: 0, bulk: false },
   type: "Hand Weapon",
   cost: 0,
@@ -240,7 +231,7 @@ export const EmptyWeapon: ItemEntry = {
 export const GeneralItem: ItemEntry = {
   roll: { roll: false, dice: 0, mod: 0, type: "" },
   quality: [],
-  equip: "",
+  equip: { slot: 0, equipped: false },
   quantity: { count: 0, bulk: false },
   type: "General Good",
   cost: 0,
@@ -256,7 +247,7 @@ export const GeneralItem: ItemEntry = {
 export const EmptyArmor: ItemEntry = {
   roll: { roll: true, dice: 4, mod: 0, type: "armor" },
   quality: [],
-  equip: "AR",
+  equip: { slot: 0, equipped: false },
   quantity: { count: 0, bulk: false },
   type: "Light Armor",
   cost: 0,
@@ -301,48 +292,18 @@ export const EmptyCharacter: CharacterEntry = {
     shield: 0,
   },
   stats: {
-    cunning: { value: 0, mod: 0 },
-    discreet: { value: 0, mod: 0 },
-    persuasive: { value: 0, mod: 0 },
-    quick: { value: 0, mod: 0 },
-    resolute: { value: 10, mod: 0 },
-    strong: { value: 0, mod: 0 },
-    vigilant: { value: 0, mod: 0 },
-    accurate: { value: 0, mod: 0 },
-  },
-  actives: {
-    attack: {
-      stat: "accurate",
-      value: 0,
-      dice1: 0,
-      dice1_mod: 0,
-      dice1_name: "damage",
-      dice2: 0,
-      dice2_mod: 0,
-      dice2_name: "damage",
-      attacks: 1,
-      equip1_id: "",
-      equip2_id: "",
-    },
-    defense: {
-      stat: "quick",
-      value: 0,
-      dice: 0,
-      dice_mod: 0,
-      dice_name: "armor",
-      equip_id: "",
-    },
-    casting: { stat: "resolute", value: 0 },
-    sneaking: { stat: "discreet", value: 0 },
+    cunning: { value: 0, mod: 0, active: "" },
+    discreet: { value: 0, mod: 0, active: "sneaking" },
+    persuasive: { value: 0, mod: 0, active: "" },
+    quick: { value: 0, mod: 0, active: "defense" },
+    resolute: { value: 10, mod: 0, active: "casting" },
+    strong: { value: 0, mod: 0, active: "" },
+    vigilant: { value: 0, mod: 0, active: "" },
+    accurate: { value: 0, mod: 0, active: "attack" },
   },
   money: 0,
   abilities: [],
   inventory: [],
-  equipment: {
-    main: EmptyWeapon,
-    off: EmptyWeapon,
-    armor: EmptyArmor,
-  },
   rations: { food: 0, water: 0 },
   entry: "CharacterEntry",
 };

@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
-import { update_session } from "../functions/SessionsFunctions";
 import {
-  GetEquipmentCorruption,
   GetAbilityCorruption,
+  GetEquipmentCorruption,
 } from "../functions/RulesFunctions";
+import { update_session } from "../functions/SessionsFunctions";
 interface ColumnProps {
   width: string;
 }
@@ -18,17 +18,15 @@ const Column = styled.div<ColumnProps>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  flex-basis: 0;
   gap: 2px;
-  max-width: ${(props) => props.width};
   overflow: scroll;
   scrollbar-width: none !important;
+  width: ${(props) => props.width};
 `;
 
 const Row = styled.div<DivProps>`
   display: flex;
   flex-grow: 1;
-  flex-basis: 0;
   flex-direction: row;
   border 1px solid ${Constants.WIDGET_BORDER};
   border-radius: ${Constants.BORDER_RADIUS};
@@ -145,9 +143,9 @@ const Minus = styled.button`
   max-width: 30px;
 `;
 
-import { Socket } from "socket.io-client";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Socket } from "socket.io-client";
 
 interface HealthBoxProps {
   character: CharacterEntry;
@@ -230,7 +228,7 @@ function CorruptionStatComponent({
 
   return (
     <Column width={"100%"}>
-      <Row height={browser ? "50%" : "70%"}>
+      <Row height={browser ? "50%" : "75%"}>
         <div style={{ display: "flex", minWidth: "50%" }}>
           {[...Array(remaining_corruption)].map((_, index, array) => (
             <TickBar
@@ -280,7 +278,7 @@ function CorruptionStatComponent({
           ))}
         </div>
       </Row>
-      <Row height={browser ? "50%" : "30%"}>
+      <Row height={browser ? "50%" : "25%"}>
         <Minus className="button-hover" onClick={handleTempAddCorruption}>
           <FontAwesomeIcon icon={faMinus} />
         </Minus>

@@ -11,7 +11,12 @@ import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { EmptyCharacter, SessionEntry, TravelEntry } from "../Types";
+import {
+  EmptyCharacter,
+  SessionEntry,
+  TravelEntry,
+  CombatEntry,
+} from "../Types";
 import {
   ButtonContainer,
   CenterContainer,
@@ -20,8 +25,8 @@ import {
   Title,
 } from "../components/SelectorPage/SelectorStyles";
 import { GetBurnRate } from "../functions/RulesFunctions";
-import { useRoll } from "../functions/CombatFunctions";
 import { update_session } from "../functions/SessionsFunctions";
+import { v4 as uuidv4 } from "uuid";
 export const ModalContainer = styled.div`
   background-color: ${Constants.BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -419,29 +424,25 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
       }
     });
 
-    update_session(session, EmptyCharacter, false, websocket);
-
-    const onRollDice = useRoll(); // Moved this outside the HandleRest function
-
-    // Using the handleRoll function here doesn't make much sense unless you are planning to call this function somewhere else.
-    // Otherwise, you can directly call onRollDice with the required parameters.
-    const handleRoll = () => {
-      onRollDice({
-        websocket,
-        session,
-        character: EmptyCharacter,
-        dice: 20,
-        modifier: 20,
-        count: 0,
+    const resting_combat: CombatEntry = {
+      character: EmptyCharacter,
+      roll_type: "resting",
+      roll_source: "Resting",
+      roll_entry: {
+        result: 0,
+        roll: 0,
+        mod: 0,
         target: 0,
-        source: EmptyCharacter.name,
-        active: "Resting",
-        add_mod: false,
-        isCreature: false,
-      });
+        success: true,
+        dice: 0,
+      },
+      uuid: uuidv4(),
+      entry: "CombatEntry",
     };
 
-    handleRoll(); // If you wish to execute the roll immediately after updating the character
+    session.combatlog.push(resting_combat);
+
+    update_session(session, EmptyCharacter, false, websocket);
     handleClose();
   };
 

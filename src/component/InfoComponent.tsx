@@ -1,7 +1,5 @@
-import styled from "styled-components";
-import * as Constants from "../Constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faAngleLeft,
   faCarrot,
   faCrosshairs,
   faEye,
@@ -12,18 +10,20 @@ import {
   faUser,
   faWeightHanging,
 } from "@fortawesome/free-solid-svg-icons";
-import { CharacterEntry } from "../Types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
-import { toTitleCase } from "../functions/UtilityFunctions";
+import styled from "styled-components";
+import * as Constants from "../Constants";
+import { ActivesEntry, CharacterEntry } from "../Types";
 import {
-  GetImpedingValue,
-  OverburdenValue,
-  GetStorageValue,
-  GetPreciseValue,
-  GetEquipmentCorruption,
   GetAbilityCorruption,
+  GetEquipmentCorruption,
+  GetImpedingValue,
+  GetPreciseValue,
+  GetStorageValue,
+  OverburdenValue,
 } from "../functions/RulesFunctions";
+import { toTitleCase } from "../functions/UtilityFunctions";
 const InfoBox = styled.div`
   display: flex;
   flex-direction: row;
@@ -124,9 +124,10 @@ const RightValue = styled.div`
 
 interface InfoComponentProps {
   character: CharacterEntry;
+  actives: ActivesEntry;
 }
 
-function InfoComponent({ character }: InfoComponentProps) {
+function InfoComponent({ character, actives }: InfoComponentProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpen = () => {
@@ -255,14 +256,14 @@ function InfoComponent({ character }: InfoComponentProps) {
                   </Row>
                   <Row>
                     <LeftValue>
-                      {toTitleCase(character.actives.attack.stat)} Stat +
+                      {toTitleCase(actives.attack.stat)} Stat +
                       Precise Qualities = Attack
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {character.stats[character.actives.attack.stat].value} +{" "}
+                      {actives.attack.value} +{" "}
                       {GetPreciseValue(character)} ={" "}
-                      {character.stats[character.actives.attack.stat].value +
+                      {actives.attack.value +
                         GetPreciseValue(character)}
                     </RightValue>
                   </Row>
@@ -278,14 +279,14 @@ function InfoComponent({ character }: InfoComponentProps) {
                   </Row>
                   <Row>
                     <LeftValue>
-                      {toTitleCase(character.actives.defense.stat)} Stat -
+                      {toTitleCase(actives.defense.stat)} Stat -
                       Impeding Value = Defense
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {character.stats[character.actives.defense.stat].value} -{" "}
+                      {actives.defense.value} -{" "}
                       {GetImpedingValue(character)} ={" "}
-                      {character.stats[character.actives.defense.stat].value -
+                      {actives.defense.value -
                         GetImpedingValue(character)}
                     </RightValue>
                   </Row>
@@ -301,14 +302,14 @@ function InfoComponent({ character }: InfoComponentProps) {
                   </Row>
                   <Row>
                     <LeftValue>
-                      {toTitleCase(character.actives.sneaking.stat)} Stat -
+                      {toTitleCase(actives.sneaking.stat)} Stat -
                       Impeding Value = Sneaking
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {character.stats[character.actives.sneaking.stat].value} -{" "}
+                      {actives.sneaking.value} -{" "}
                       {GetImpedingValue(character)} ={" "}
-                      {character.stats[character.actives.sneaking.stat].value -
+                      {actives.sneaking.value -
                         GetImpedingValue(character)}
                     </RightValue>
                   </Row>
@@ -324,14 +325,14 @@ function InfoComponent({ character }: InfoComponentProps) {
                   </Row>
                   <Row>
                     <LeftValue>
-                      {toTitleCase(character.actives.casting.stat)} Stat -
+                      {toTitleCase(actives.casting.stat)} Stat -
                       Impeding Value = Casting
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {character.stats[character.actives.casting.stat].value} -{" "}
+                      {actives.casting.value} -{" "}
                       {GetImpedingValue(character)} ={" "}
-                      {character.stats[character.actives.casting.stat].value -
+                      {actives.casting.value -
                         GetImpedingValue(character)}
                     </RightValue>
                   </Row>

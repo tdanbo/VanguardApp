@@ -1,15 +1,11 @@
-import { CharacterEntry, Actives } from "../../Types";
+import { CharacterEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
-export function Marksman(character: CharacterEntry, actives: Actives) {
+export function Marksman_dice(character: CharacterEntry, item: ItemEntry) {
   const ability = CheckAbility(character, "marksman", "novice");
-
-  if (ability) {
-    character.equipment.main.type === "Ranged Weapon" &&
-      (actives.attack.dice1 += 2);
-
-    character.equipment.off.type === "Ranged Weapon" &&
-      (actives.attack.dice2 += 2);
+  let mod = 0;
+  if (ability && item.type === "Ranged Weapon") {
+    mod += 2;
   }
-  return actives;
+  return mod;
 }
