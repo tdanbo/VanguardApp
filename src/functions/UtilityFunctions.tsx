@@ -1,5 +1,4 @@
 import * as Constants from "../Constants";
-import styled from "styled-components";
 import {
   ItemEntry,
   AbilityEntry,
@@ -7,7 +6,7 @@ import {
   SessionEntry,
 } from "../Types";
 import { Socket } from "socket.io-client";
-import { useRoll } from "../functions/CombatFunctions";
+import RollComponent from "../component/RollComponent";
 
 export function UpperFirstLetter(input: string): string {
   if (!input || typeof input !== "string") {
@@ -87,30 +86,13 @@ interface StyledTextProps {
   isCreature: boolean;
 }
 
-interface DiceButtonProps {
-  color: string;
-}
-
-const DiceButton = styled.button<DiceButtonProps>`
-  border-radius: ${Constants.BORDER_RADIUS};
-  cursor: pointer;
-  font-weight: bold;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-
-  color: ${(props) => props.color};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-`;
-
 export const StyledText: React.FC<StyledTextProps> = ({
-  entry,
   effect,
   websocket,
   character,
   session,
   isCreature,
 }) => {
-  const onRollDice = useRoll();
-
   const style = { color: Constants.WIDGET_PRIMARY_FONT, fontWeight: "bold" }; // Example style
   // Updated escapeRegExp function
 
@@ -132,23 +114,6 @@ export const StyledText: React.FC<StyledTextProps> = ({
       return fragment;
     }
 
-    const handleRoll = (part: string) => {
-      const dice = parseInt(part.substring(1));
-      onRollDice({
-        websocket,
-        dice: dice,
-        modifier: 0,
-        count: 1,
-        target: 0,
-        source: entry.name,
-        active: entry.type,
-        add_mod: true,
-        character,
-        session,
-        isCreature,
-      });
-    };
-
     return fragment.split(regex).map((part, partIndex) => {
       const key = `${part}-${partIndex}`;
       const isSpecialWord = Constants.SPECIAL_WORDS.includes(part);
@@ -156,14 +121,17 @@ export const StyledText: React.FC<StyledTextProps> = ({
 
       if (isDiceWord) {
         return (
-          <DiceButton
-            color={Constants.TYPE_COLORS[entry.type.toLowerCase()]}
+          <RollComponent
+            session={session}
+            character={character}
+            websocket={websocket}
+            roll_type={"custom"}
+            roll_source={part}
+            isCreature={isCreature}
+            dice={parseInt(part.substring(1))}
+            color={Constants.TYPE_COLORS["custom"]}
             key={key}
-            onClick={() => handleRoll(part)}
-            className="button-hover"
-          >
-            {part}
-          </DiceButton>
+          />
         );
       }
 

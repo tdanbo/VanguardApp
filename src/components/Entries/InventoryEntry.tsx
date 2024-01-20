@@ -13,7 +13,6 @@ import { CharacterEntry, ItemEntry, SessionEntry } from "../../Types";
 import DurabilityBox from "../../component/DurabilityBox";
 import RollComponent from "../../component/RollComponent";
 import { DeleteInventorySlot } from "../../functions/CharacterFunctions";
-import { useRoll } from "../../functions/CombatFunctions";
 import { GetMaxSlots } from "../../functions/RulesFunctions";
 import { update_session } from "../../functions/SessionsFunctions";
 import { StyledText } from "../../functions/UtilityFunctions";
@@ -166,32 +165,6 @@ type StyledButtonProps = {
   color: string;
 };
 
-const EquipButtonTop = styled.button<StyledButtonProps>`
-  display: flex;
-  flex-grow: 1;
-  background-color: ${(props) =>
-    props.$isequipped ? props.color : Constants.WIDGET_BACKGROUND};
-  margin: 1px 0px 1px 1px;
-  width: 20px;
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-top-left-radius: ${Constants.BORDER_RADIUS};
-  width: 20px;
-  height: 100%;
-`;
-
-const EquipButtonBottom = styled.button<StyledButtonProps>`
-  display: flex;
-  flex-grow: 1;
-  background-color: ${(props) =>
-    props.$isequipped ? props.color : Constants.WIDGET_BACKGROUND};
-  margin: 1px 0px 1px 1px;
-  width: 20px;
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
-  width: 20px;
-  height: 100%;
-`;
-
 const EquipButton = styled.button<StyledButtonProps>`
   display: flex;
   flex-grow: 1;
@@ -313,12 +286,12 @@ function InventoryEntry({
       .substring(2, 2 + length);
   };
 
-  const HandleEquip = (item: ItemEntry, position: string) => {
+  const HandleEquip = (item: ItemEntry) => {
     item.equip.equipped = true;
     update_session(session, character, isCreature, websocket);
   };
 
-  const HandleUnequip = (position: string) => {
+  const HandleUnequip = () => {
     item.equip.equipped = false;
     update_session(session, character, isCreature, websocket);
   };
@@ -346,29 +319,11 @@ function InventoryEntry({
     update_session(session, character, isCreature, websocket);
   };
 
-  const onRollDice = useRoll();
-
-  const handleRoll = () => {
-    onRollDice({
-      websocket,
-      dice: item.roll.dice,
-      modifier: item.roll.mod,
-      count: 1,
-      target: 0,
-      source: item.name,
-      active: "Inventory Item",
-      add_mod: true,
-      character,
-      session,
-      isCreature,
-    });
-  };
-
-  const equipHandler = (item: ItemEntry, position: string) => {
+  const equipHandler = (item: ItemEntry) => {
     if (item.equip.equipped) {
-      HandleUnequip(position);
+      HandleUnequip();
     } else {
-      HandleEquip(item, position);
+      HandleEquip(item);
     }
   };
 
@@ -420,7 +375,7 @@ function InventoryEntry({
     dice += TwohandedForce_dice(character, item);
     dice += Armored_dice(character, item);
     dice += IronFist_dice(character, item);
-    dice += Robust_dice(character, item);
+    dice += Robust_dice(character);
     dice += TwinAttack_dice(character, item);
     return dice;
   }
@@ -434,7 +389,7 @@ function InventoryEntry({
               color={COLOR}
               key={"2H"}
               onClick={() => {
-                equipHandler(item, "2H");
+                equipHandler(item);
               }}
               $isequipped={item.equip.equipped}
             >

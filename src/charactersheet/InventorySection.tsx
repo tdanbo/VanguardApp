@@ -4,7 +4,6 @@ import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import InventoryEntry from "../components/Entries/InventoryEntry";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 import { GetMaxSlots } from "../functions/RulesFunctions";
-import styled from "styled-components";
 
 interface NavigationProps {
   character: CharacterEntry;

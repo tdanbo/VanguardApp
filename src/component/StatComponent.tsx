@@ -4,9 +4,11 @@ import { useState } from "react";
 import styled from "styled-components";
 import "../App.css";
 import * as Constants from "../Constants";
-import { useRoll } from "../functions/CombatFunctions";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import RollComponent from "./RollComponent";
+import { Socket } from "socket.io-client";
+import { CharacterEntry, RollTypeEntry, SessionEntry } from "../Types";
+
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
@@ -42,7 +44,7 @@ const BottomRow = styled.div<DivProps>`
   border-radius: ${Constants.BORDER_RADIUS};
   max-height: ${(props) => props.height};
   min-height: ${(props) => props.height};
-  display: ${(props) => props.active ? "flex" : "none"};
+  display: ${(props) => (props.active ? "flex" : "none")};
   margin-top: 2px;
 `;
 
@@ -66,7 +68,6 @@ const Value = styled.button`
     color: ${Constants.WIDGET_BACKGROUND};
   }
   width: 50%;
-
 `;
 
 type ActiveProps = {
@@ -90,7 +91,7 @@ const ActiveValue = styled.div<ActiveProps>`
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   border-left: 1px solid ${Constants.WIDGET_BORDER};
   border-right: 1px solid ${Constants.WIDGET_BORDER};
-  height: ${(props) => props.active ? "20%" : "50%"};
+  height: ${(props) => (props.active ? "20%" : "50%")};
 `;
 
 const Modifier = styled.button`
@@ -104,7 +105,7 @@ const Modifier = styled.button`
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
   width: 50%;
-  `;
+`;
 
 const DiceContainerLeft = styled.button`
   display: flex;
@@ -143,10 +144,6 @@ const DiceContainerRight = styled.button`
   min-width: 35px;
   padding-top: 5px;
 `;
-
-type DiceProps = {
-  color: string;
-};
 
 const Plus = styled.button`
   display: flex;
@@ -187,17 +184,19 @@ const Minus = styled.button`
 `;
 
 const DiceContainer = styled.div<DivProps>`
-  display: ${(props) => props.active ? "flex" : "none"};
-  
-  `;
-
+  display: ${(props) => (props.active ? "flex" : "none")};
+`;
 
 interface Props {
-  stat_name: string;
+  stat_name: RollTypeEntry;
   stat_value: number;
   active?: boolean;
   stat_icon: any;
   stat_color: string;
+  session: SessionEntry;
+  character: CharacterEntry;
+  websocket: Socket;
+  isCreature: boolean;
 }
 
 function StatComponent({
@@ -206,6 +205,10 @@ function StatComponent({
   stat_icon,
   stat_color,
   active = false,
+  session,
+  character,
+  websocket,
+  isCreature,
 }: Props) {
   const [modValue, setModvalue] = useState<number>(0);
 
@@ -219,41 +222,38 @@ function StatComponent({
     setModvalue(newValue);
   };
 
-  const onRollDice = useRoll();
-  let roll_color = stat_color;
-  if (["cunning",
-  "discreet",
-  "persuasive",
-  "quick",
-  "resolute",
-  "strong",
-  "vigilant",
-  "accurate"].includes(stat_name)) {
-    roll_color = Constants.WIDGET_SECONDARY_FONT;
-  }
   return (
     <Container>
       <Row height={"100%"} className="first-row">
         <DiceContainerLeft>
           {stat_icon !== faNotEqual && (
-            <FontAwesomeIcon
-              icon={stat_icon}
-              color={stat_color}
-            />
+            <FontAwesomeIcon icon={stat_icon} color={stat_color} />
           )}
-
         </DiceContainerLeft>
 
         <Value className="dice-icon-hover">
           {Math.max(stat_value + modValue, 1)}
         </Value>
         <DiceContainerRight>
-        <DiceContainer className="second-row" active={active}>
-            <RollComponent dice={20} color={roll_color}/>
+          <DiceContainer className="second-row" active={active}>
+            <RollComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              roll_type={stat_name}
+              roll_source={"Skill Test"}
+              isCreature={isCreature}
+              dice={20}
+              dice_mod={modValue}
+              color={Constants.TYPE_COLORS[stat_name]}
+              target={stat_value + modValue}
+            />
           </DiceContainer>
-          </DiceContainerRight>
+        </DiceContainerRight>
       </Row>
-      <ActiveValue className="value-row" active={active}>{toTitleCase(stat_name)}</ActiveValue>
+      <ActiveValue className="value-row" active={active}>
+        {toTitleCase(stat_name)}
+      </ActiveValue>
       <BottomRow height={"25%"} className="second-row" active={active}>
         <Minus className="button-hover" onClick={handleSubValue}>
           <FontAwesomeIcon
@@ -271,7 +271,6 @@ function StatComponent({
             color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
           />
         </Plus>
-        
       </BottomRow>
     </Container>
   );

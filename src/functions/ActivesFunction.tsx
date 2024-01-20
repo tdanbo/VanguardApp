@@ -1,4 +1,4 @@
-import { ActivesEntry, CharacterEntry, ItemEntry } from "../Types";
+import { ActivesEntry, CharacterEntry } from "../Types";
 import { GetMaxSlots, GetUsedSlots } from "./RulesFunctions";
 import { ArmoredMystic_active } from "./rules/ArmoredMystic";
 import { Berserker_active } from "./rules/Berserker";
@@ -41,28 +41,6 @@ export const GetActives = (character: CharacterEntry) => {
   Robust_active(character, character_actives);
   TwinAttack_active(character, character_actives);
   return character_actives;
-};
-
-export const ApplyRules = (
-  character: CharacterEntry,
-  character_inventory: ItemEntry[],
-  character_actives: ActivesEntry,
-) => {
-  // ItemRules(characterClone, characterClone.actives);
-  // NaturalWeapon(characterClone, characterClone.actives);
-  // NaturalWarrior(characterClone, characterClone.actives);
-  // Berserker(characterClone, characterClone.actives);
-  // SteelThrow(characterClone, characterClone.actives);
-  // PolearmMastery(characterClone, characterClone.actives);
-  // ShieldFighter(characterClone, characterClone.actives);
-  // ArmoredMystic(characterClone, characterClone.actives);
-  // Marksman(character, character_actives);
-  // TwohandedForce(characterClone, characterClone.actives);
-  // Armored(characterClone, characterClone.actives);
-  // IronFist(characterClone, characterClone.actives);
-  // Robust(characterClone, characterClone.actives);
-  // TwinAttack(characterClone, characterClone.actives);
-  // postSelectedCharacter(characterClone); # This can be removed in the future i think but keep it in case.
 };
 
 const Overburden = (

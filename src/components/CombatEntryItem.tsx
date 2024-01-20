@@ -122,7 +122,7 @@ function CombatEntryItem({
 }: CombatEntryItemProps) {
   const EntryColor = () => {
     return (
-      Constants.TYPE_COLORS[combatEntry.roll_source.toLowerCase()] ||
+      Constants.TYPE_COLORS[combatEntry.roll_type.toLowerCase()] ||
       Constants.WIDGET_SECONDARY_FONT
     );
   };
@@ -134,7 +134,7 @@ function CombatEntryItem({
     modifierText = `${combatEntry.roll_entry.mod}`;
   }
 
-  let title = `Dice: d${combatEntry.roll_entry.dice}${modifierText}\nRoll: ${combatEntry.roll_entry.roll}\n`;
+  let title = `Dice: d${combatEntry.roll_entry.dice}${modifierText}\nResult: ${combatEntry.roll_entry.result}\n`;
 
   if (combatEntry.roll_source !== "Skill Test") {
     title += `Modifier: ${combatEntry.roll_entry.mod}\n`;
@@ -264,14 +264,14 @@ function CombatEntryItem({
             $rgb={EntryColor()}
             $issuccess={combatEntry.roll_entry.success}
           >
-            {modifierText} {UpperFirstLetter(combatEntry.roll_source)}{" "}
+            {modifierText} {UpperFirstLetter(combatEntry.roll_type)}{" "}
           </Active>
         ) : (
           <Active
             $rgb={EntryColor()}
             $issuccess={combatEntry.roll_entry.success}
           >
-            {UpperFirstLetter(combatEntry.roll_source)}
+            {UpperFirstLetter(combatEntry.roll_type)}
           </Active>
         )}
         <FumbledSubText>{FumbledPerfectText()}</FumbledSubText>

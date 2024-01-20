@@ -1,4 +1,4 @@
-import { CharacterEntry, ItemEntry, ActivesEntry } from "../../Types";
+import { CharacterEntry, ActivesEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
 export function Robust_active(
@@ -18,7 +18,7 @@ export function Robust_active(
   }
 }
 
-export function Robust_dice(character: CharacterEntry, item: ItemEntry) {
+export function Robust_dice(character: CharacterEntry) {
   const ability = CheckAbility(character, "Robust", "novice");
   const ability_adept = CheckAbility(character, "Robust", "adept");
   const ability_master = CheckAbility(character, "Robust", "master");

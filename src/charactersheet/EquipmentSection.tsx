@@ -2,7 +2,6 @@ import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
 import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import InventoryEntry from "../components/Entries/InventoryEntry";
-import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 import { GetMaxSlots } from "../functions/RulesFunctions";
 import styled from "styled-components";
 const Column = styled.div`

@@ -21,7 +21,6 @@ import { v4 as uuidv4 } from "uuid";
 import { SetDurability } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import { Socket } from "socket.io-client";
-import { set } from "lodash";
 
 type RollComponentProps = {
   session: SessionEntry;
@@ -94,8 +93,11 @@ function RollComponent({
   }
 
   const RollDIce = () => {
-    let result = Math.floor(Math.random() * dice) + 1;
-    result += dice_mod;
+    let roll = Math.floor(Math.random() * dice) + 1;
+    let result = roll;
+    if (roll_source !== "Skill Test") {
+      result += dice_mod;
+    }
 
     let success = true;
     if (target !== 0 && result > target) {
@@ -104,7 +106,7 @@ function RollComponent({
 
     const roll_entry: RollEntry = {
       result: result,
-      roll: dice,
+      roll: roll,
       mod: dice_mod,
       target: target,
       success: success,
@@ -119,6 +121,10 @@ function RollComponent({
       uuid: uuidv4(),
       entry: "CombatEntry",
     };
+
+    console.log("COMBAT LOG");
+    console.log(session);
+    console.log(session.combatlog);
 
     session.combatlog.push(NewCombatEntry);
     session.combatlog = session.combatlog.slice(-20);

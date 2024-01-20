@@ -13,7 +13,7 @@ import { memo, useEffect, useState } from "react";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { CharacterEntry, SessionEntry } from "../Types";
+import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import { GetActives } from "../functions/ActivesFunction";
 import AbilityEntryItem from "./Entries/AbilityEntryItem";
 
@@ -207,6 +207,49 @@ const ActiveDamageSub = styled.div`
   text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
 `;
 
+function GetWeapons(creature: CharacterEntry) {
+  let weapons: ItemEntry[] = [];
+  creature.inventory.forEach((item) => {
+    if (
+      (item.category === "weapon" || item.category === "ranged") &&
+      item.equip.equipped
+    ) {
+      weapons.push(item);
+    }
+  });
+  return weapons;
+}
+
+function GetArmor(creature: CharacterEntry) {
+  let armor: ItemEntry[] = [];
+  creature.inventory.forEach((item) => {
+    if (item.category === "armor" && item.equip.equipped) {
+      armor.push(item);
+    }
+  });
+  return armor;
+}
+
+function GetAttacks(creature: CharacterEntry) {
+  let attacks = 1;
+  creature.abilities.forEach((ability) => {
+    if (ability.name === "Twin Attack") {
+      attacks = 2;
+    } else if (
+      ability.name === "Two-handed Force" &&
+      (ability.level === "Adept" || ability.level === "Master")
+    ) {
+      attacks = 2;
+    } else if (
+      ability.name === "Natural Warrior" &&
+      (ability.level === "Adept" || ability.level === "Master")
+    ) {
+      attacks = 2;
+    }
+  });
+  return attacks;
+}
+
 const ModifierConverter: Record<number, number> = {
   20: -10,
   19: -9,
@@ -256,10 +299,10 @@ function EncounterCreatureEntry({
   setIsCreature,
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
-  const actives = GetActives(creatureClone);
+  const character_actives = GetActives(creatureClone);
   const pain = Math.ceil(creatureClone.stats.strong.value / 2);
-  const attack = ModifierConverter[actives.attack.value];
-  const defense = ModifierConverter[actives.defense.value];
+  const attack = ModifierConverter[character_actives.attack.value];
+  const defense = ModifierConverter[character_actives.defense.value];
   const hp = Math.max(creatureClone.stats.strong.value, 10);
   const [currentDamage, setCurrentDamage] = useState<number>(
     creature.health.damage!,
@@ -372,19 +415,21 @@ function EncounterCreatureEntry({
             HP
           </ActiveSub>
         </ActiveBox>
-        <ActiveBox>
-          <ActiveStat
-            title={`When this creature is being attacked ${formatNumber(
-              defense,
-            )} to targets attack`}
-          >
-            {formatNumber(defense)}
-          </ActiveStat>
-          <ActiveArmorSub>
-            <FontAwesomeIcon icon={faShield} />
-            {Math.ceil(actives.defense.dice / 2) + actives.defense.dice_mod}
-          </ActiveArmorSub>
-        </ActiveBox>
+        {GetArmor(creatureClone).map((armor, index) => (
+          <ActiveBox key={index}>
+            <ActiveStat
+              title={`When this creature is being attacked ${formatNumber(
+                defense,
+              )} to targets attack`}
+            >
+              {formatNumber(defense)}
+            </ActiveStat>
+            <ActiveArmorSub>
+              <FontAwesomeIcon icon={faShield} />
+              {Math.ceil(armor.roll.dice / 2) + armor.roll.mod}
+            </ActiveArmorSub>
+          </ActiveBox>
+        ))}
         <NameContainer onClick={GoToSheet}>
           <NameBox title={title}>{creature.name}</NameBox>
           <ActiveSub>
@@ -392,90 +437,47 @@ function EncounterCreatureEntry({
             <FontAwesomeIcon icon={faCoins} title={loot} />
           </ActiveSub>
         </NameContainer>
-        {actives.attack.dice1_name !== "Knuckles" ? (
-          <ActiveBox key={`active-box-1`}>
-            <ActiveStat
-              title={`When this creature is attacking ${formatNumber(
-                attack, // If alt attack is not a thing yet, this is sufficient
-              )} to targets defense`}
-            >
-              {formatNumber(attack)}
-            </ActiveStat>
-            <ActiveDamageSub>
-              <>
-                {actives.attack.attacks > 1 ? (
-                  <>
-                    <AttacksStat>2 x</AttacksStat>
-                    <Icon
-                      path={mdiSword}
-                      size={0.75}
-                      title={actives.attack.dice1_name} // Adjusted to display the type of the weapon
-                      color={Constants.BRIGHT_RED}
-                    />
-                    {Math.ceil(actives.attack.dice1 / 2) +
-                      actives.attack.dice1_mod}
-                    {" / " +
-                      (Math.ceil(actives.attack.dice1 / 2) +
-                        actives.attack.dice1_mod)}
-                  </>
-                ) : (
-                  <>
-                    <Icon
-                      path={mdiSword}
-                      size={0.75}
-                      title={actives.attack.dice1_name} // Adjusted to display the type of the weapon
-                      color={Constants.BRIGHT_RED}
-                    />
-                    {Math.ceil(actives.attack.dice1 / 2) +
-                      actives.attack.dice1_mod}
-                  </>
-                )}
-              </>
-            </ActiveDamageSub>
-          </ActiveBox>
-        ) : null}
-        {actives.attack.dice2_name !== "Knuckles" ? (
-          <ActiveBox key={`active-box-2`}>
-            <ActiveStat
-              title={`When this creature is attacking ${formatNumber(
-                attack, // If alt attack is not a thing yet, this is sufficient
-              )} to targets defense`}
-            >
-              {formatNumber(attack)}
-            </ActiveStat>
-            <ActiveDamageSub>
-              <>
-                {actives.attack.attacks > 1 ? (
-                  <>
-                    <AttacksStat>2 x</AttacksStat>
-                    <Icon
-                      path={mdiSword}
-                      size={0.75}
-                      title={actives.attack.dice2_name} // Adjusted to display the type of the weapon
-                      color={Constants.BRIGHT_RED}
-                    />
-                    {Math.ceil(actives.attack.dice2 / 2) +
-                      actives.attack.dice2_mod}
-                    {" / " +
-                      (Math.ceil(actives.attack.dice2 / 2) +
-                        actives.attack.dice2_mod)}
-                  </>
-                ) : (
-                  <>
-                    <Icon
-                      path={mdiSword}
-                      size={0.75}
-                      title={actives.attack.dice2_name} // Adjusted to display the type of the weapon
-                      color={Constants.BRIGHT_RED}
-                    />
-                    {Math.ceil(actives.attack.dice2 / 2) +
-                      actives.attack.dice2_mod}
-                  </>
-                )}
-              </>
-            </ActiveDamageSub>
-          </ActiveBox>
-        ) : null}
+        {GetWeapons(creatureClone).map((weapon, index) => {
+          return (
+            <ActiveBox key={`active-box-${index}`}>
+              <ActiveStat
+                title={`When this creature is attacking ${formatNumber(
+                  attack,
+                )} to targets defense`}
+              >
+                {formatNumber(attack)}
+              </ActiveStat>
+              <ActiveDamageSub>
+                <>
+                  {GetAttacks(creature) > 1 && weapon.category !== "ranged" ? (
+                    <>
+                      <AttacksStat>2 x</AttacksStat>
+                      <Icon
+                        path={mdiSword}
+                        size={0.75}
+                        title={weapon.name}
+                        color={Constants.BRIGHT_RED}
+                      />
+                      {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
+                      {" / " +
+                        (Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod)}
+                    </>
+                  ) : (
+                    <>
+                      <Icon
+                        path={mdiSword}
+                        size={0.75}
+                        title={weapon.name}
+                        color={Constants.BRIGHT_RED}
+                      />
+                      {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
+                    </>
+                  )}
+                </>
+              </ActiveDamageSub>
+            </ActiveBox>
+          );
+        })}
         <DeleteBlock onClick={() => onDeleteCreature(creature)}>
           <FontAwesomeIcon icon={faXmark} />
         </DeleteBlock>

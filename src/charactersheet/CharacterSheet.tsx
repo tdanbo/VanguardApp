@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { ActiveKey, CharacterEntry, SessionEntry } from "../Types";
 import AbilitySection from "../charactersheet/AbilitySection";
@@ -134,7 +133,6 @@ function CharacterSheet({
   isCreature,
 }: CharacterSheetProps) {
   const character_actives = GetActives(character);
-  const [swapSource, setSwapSource] = useState<null | string>(null);
 
   character.stats["resolute"].active;
   return (
@@ -162,6 +160,10 @@ function CharacterSheet({
         <Column width={"50%"}>
           <Row width={"100%"}>
             <StatComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
               stat_name={"cunning"}
               stat_value={character.stats.cunning.value}
               stat_color={
@@ -170,6 +172,10 @@ function CharacterSheet({
               stat_icon={GetActiveIcon(character.stats["cunning"].active)}
             />
             <StatComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
               stat_name={"discreet"}
               stat_value={character.stats.discreet.value}
               stat_color={
@@ -178,6 +184,10 @@ function CharacterSheet({
               stat_icon={GetActiveIcon(character.stats["discreet"].active)}
             />
             <StatComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
               stat_name={"persuasive"}
               stat_value={character.stats.persuasive.value}
               stat_color={
@@ -186,6 +196,10 @@ function CharacterSheet({
               stat_icon={GetActiveIcon(character.stats["persuasive"].active)}
             />
             <StatComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
               stat_name={"quick"}
               stat_value={character.stats.quick.value}
               stat_color={
@@ -196,6 +210,10 @@ function CharacterSheet({
           </Row>
           <Row width={"100%"}>
             <StatComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
               stat_name={"resolute"}
               stat_value={character.stats.resolute.value}
               stat_color={
@@ -204,6 +222,10 @@ function CharacterSheet({
               stat_icon={GetActiveIcon(character.stats["resolute"].active)}
             />
             <StatComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
               stat_name={"strong"}
               stat_value={character.stats.strong.value}
               stat_color={
@@ -212,6 +234,10 @@ function CharacterSheet({
               stat_icon={GetActiveIcon(character.stats["strong"].active)}
             />
             <StatComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
               stat_name={"vigilant"}
               stat_value={character.stats.vigilant.value}
               stat_color={
@@ -220,6 +246,10 @@ function CharacterSheet({
               stat_icon={GetActiveIcon(character.stats["vigilant"].active)}
             />
             <StatComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
               stat_name={"accurate"}
               stat_value={character.stats.accurate.value}
               stat_color={
@@ -233,6 +263,10 @@ function CharacterSheet({
       <Container height={"130px"}>
         <Row width={"50%"}>
           <StatComponent
+            session={session}
+            character={character}
+            websocket={websocket}
+            isCreature={isCreature}
             stat_name={"attack"}
             stat_value={character_actives.attack.value}
             stat_icon={faCrosshairs}
@@ -240,6 +274,10 @@ function CharacterSheet({
             active={true}
           />
           <StatComponent
+            session={session}
+            character={character}
+            websocket={websocket}
+            isCreature={isCreature}
             stat_name={"defense"}
             stat_value={character_actives.defense.value}
             stat_icon={faShield}
@@ -263,6 +301,10 @@ function CharacterSheet({
             browser={false}
           />
           <StatComponent
+            session={session}
+            character={character}
+            websocket={websocket}
+            isCreature={isCreature}
             stat_name={"casting"}
             stat_value={character_actives.casting.value}
             stat_icon={faSkull}
@@ -270,6 +312,10 @@ function CharacterSheet({
             active={true}
           />
           <StatComponent
+            session={session}
+            character={character}
+            websocket={websocket}
+            isCreature={isCreature}
             stat_name={"sneaking"}
             stat_value={character_actives.sneaking.value}
             stat_icon={faEye}

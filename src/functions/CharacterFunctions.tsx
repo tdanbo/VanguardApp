@@ -1,7 +1,6 @@
 import axios from "axios";
 import { API } from "../Constants";
 import { CharacterEntry, modifiedCreature } from "../Types";
-import { EmptyArmor, EmptyWeapon } from "../Types";
 export const getCreatureMovement = (creature: modifiedCreature) => {
   const movement: { [key: number]: number } = {
     5: -10,
