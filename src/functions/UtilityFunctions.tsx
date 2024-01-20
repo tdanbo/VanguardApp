@@ -1,4 +1,5 @@
 import * as Constants from "../Constants";
+import styled from "styled-components";
 import {
   ItemEntry,
   AbilityEntry,
@@ -86,6 +87,13 @@ interface StyledTextProps {
   isCreature: boolean;
 }
 
+const DiceButton = styled.button`
+  cursor: pointer;
+  font-weight: bold;
+  background-color: transparent;
+  border: 0px solid ${Constants.WIDGET_BORDER};
+`;
+
 export const StyledText: React.FC<StyledTextProps> = ({
   effect,
   websocket,
@@ -121,17 +129,19 @@ export const StyledText: React.FC<StyledTextProps> = ({
 
       if (isDiceWord) {
         return (
-          <RollComponent
-            session={session}
-            character={character}
-            websocket={websocket}
-            roll_type={"custom"}
-            roll_source={part}
-            isCreature={isCreature}
-            dice={parseInt(part.substring(1))}
-            color={Constants.TYPE_COLORS["custom"]}
-            key={key}
-          />
+          <DiceButton>
+            <RollComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              roll_type={"custom"}
+              roll_source={part}
+              isCreature={isCreature}
+              dice={parseInt(part.substring(1))}
+              color={Constants.TYPE_COLORS["custom"]}
+              key={key}
+            />
+          </DiceButton>
         );
       }
 
