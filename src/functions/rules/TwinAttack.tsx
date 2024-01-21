@@ -6,7 +6,7 @@ function dualWielding(character: CharacterEntry) {
   for (const item of character.inventory) {
     if (
       item.equip.equipped &&
-      ["Short Weapon", "One-hand Weapon"].includes(item.type)
+      ["short weapon", "one-hand weapon"].includes(item.category)
     ) {
       count += 1;
     }
@@ -61,13 +61,16 @@ export function TwinAttack_dice(character: CharacterEntry, item: ItemEntry) {
 
   if (ability_master) {
     for (const [index, equip_item] of equipment_list.entries()) {
-      if (equip_item.id === item.id && item.type === "One-hand Weapon") {
+      if (equip_item.id === item.id && item.category === "one-hand weapon") {
         if (index === 0) {
           mod += 2;
         } else {
           mod += 0;
         }
-      } else if (equip_item.id === item.id && item.type === "Short Weapon") {
+      } else if (
+        equip_item.id === item.id &&
+        item.category === "short weapon"
+      ) {
         if (index === 0) {
           mod += 4;
         } else {
@@ -77,13 +80,16 @@ export function TwinAttack_dice(character: CharacterEntry, item: ItemEntry) {
     }
   } else if (ability_adept) {
     for (const [index, equip_item] of equipment_list.entries()) {
-      if (equip_item.id === item.id && item.type === "One-hand Weapon") {
+      if (equip_item.id === item.id && item.category === "one-hand weapon") {
         if (index === 0) {
           mod += 0;
         } else {
           mod += 0;
         }
-      } else if (equip_item.id === item.id && item.type === "Short Weapon") {
+      } else if (
+        equip_item.id === item.id &&
+        item.category === "short weapon"
+      ) {
         if (index === 0) {
           mod += 2;
         } else {
@@ -93,13 +99,16 @@ export function TwinAttack_dice(character: CharacterEntry, item: ItemEntry) {
     }
   } else if (ability) {
     for (const [index, equip_item] of equipment_list.entries()) {
-      if (equip_item.id === item.id && item.type === "One-hand Weapon") {
+      if (equip_item.id === item.id && item.category === "one-hand weapon") {
         if (index === 0) {
           mod += 0;
         } else {
           mod -= 2;
         }
-      } else if (equip_item.id === item.id && item.type === "Short Weapon") {
+      } else if (
+        equip_item.id === item.id &&
+        item.category === "short weapon"
+      ) {
         if (index === 0) {
           mod += 2;
         } else {

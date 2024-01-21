@@ -28,9 +28,9 @@ export type ColorType = string;
 export const PURPLE = "#60495c";
 export const DESAT_PURPLE = "#4f2f4b";
 export const RED = "#925833";
-export const BLUE = "#495C60";
+export const BLUE = "#445c61";
 export const BLUE_VAR = "#60b4bf";
-export const GREEN = "#5c6049";
+export const GREEN = "#616647";
 export const YELLOW = "#926f2b";
 export const BRIGHT_YELLOW = "#BF8C2F";
 export const WHITE = "#bfb6ac";
@@ -45,11 +45,12 @@ export const ORANGE = "rgba(205, 112, 57, 0.7)";
 
 // Original Palette
 export const COLOR_1 = "#923333";
-export const COLOR_2 = "#495C60";
+export const COLOR_2 = "#445c61";
 export const COLOR_3 = "#60495c";
-export const COLOR_4 = "#5c6049";
+export const COLOR_4 = "#616647";
 export const COLOR_5 = "#926933";
 export const COLOR_6 = "#924933";
+export const COLOR_7 = "#808080";
 
 // Original Palette
 // export const COLOR_1 = "#604949";
@@ -58,19 +59,28 @@ export const COLOR_6 = "#924933";
 // export const COLOR_4 = WIDGET_SECONDARY_FONT;
 // export const COLOR_5 = WIDGET_SECONDARY_FONT;
 
+export const ARMOR = "armor";
+
 export const TYPE_COLORS: Record<ColorType, string> = {
-  artifact_weapon: COLOR_1,
-  "artifact weapon": COLOR_1,
+  "natural weapon": COLOR_1,
+  "short weapon": COLOR_1,
+  "one-hand weapon": COLOR_1,
+  "long weapon": COLOR_1,
+  "heavy weapon": COLOR_1,
+  "ranged weapon": COLOR_1,
+  "throwing weapon": COLOR_1,
+  shield: COLOR_1,
+  projectile: COLOR_1,
   health: COLOR_1,
   attack: COLOR_1,
   damage: COLOR_1,
   ammunition: COLOR_1,
-  weapon: COLOR_1,
-  ranged: COLOR_1,
   ability: COLOR_1,
 
-  artifact_armor: COLOR_2,
-  "artifact cloak": COLOR_2,
+  "natural armor": COLOR_2,
+  "light armor": COLOR_2,
+  "medium armor": COLOR_2,
+  "heavy armor": COLOR_2,
   armor: COLOR_2,
   defense: COLOR_2,
   resting: COLOR_2,
@@ -79,19 +89,17 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   "mystical power": COLOR_3,
   corruption: COLOR_3,
   temporary_corruption: COLOR_3,
-  elixirs: COLOR_3,
   elixir: COLOR_3,
 
+  accessory: COLOR_4,
+  container: COLOR_4,
   sneaking: COLOR_4,
+  tool: COLOR_4,
 
+  treasure: COLOR_5,
   boon: COLOR_5,
-  mystical_treasure: COLOR_5,
-  artifact: COLOR_5,
-  curiosities: COLOR_5,
-  lesser_artifact: COLOR_5,
   test: COLOR_5,
   skill_test: COLOR_5,
-  treasure: COLOR_5,
   vigilant: COLOR_5,
   strong: COLOR_5,
   resolute: COLOR_5,
@@ -100,33 +108,40 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   discreet: COLOR_5,
   cunning: COLOR_5,
   accurate: COLOR_5,
-  general_good: COLOR_5,
   ritual: COLOR_5,
   trait: COLOR_5,
   burden: COLOR_5,
   monsterous_trait: COLOR_5,
   "monsterous trait": COLOR_5,
-  tool: COLOR_5,
-  container: COLOR_5,
 
   permanent_corruption: DESAT_PURPLE,
+
+  "general good": COLOR_7,
 };
 
 export const CATEGORY_FILTER = [
-  "artifact_weapon",
-  "weapon",
-  "ranged",
-  "ammunition",
-  "artifact_armor",
-  "armor",
-  "elixirs",
-  "tool",
-  "artifact",
-  "mystical_treasure",
-  "lesser_artifact",
-  "curiosities",
-  "general_good",
+  "natural weapon",
+  "short weapon",
+  "one-hand weapon",
+  "shield",
+  "long weapon",
+  "heavy weapon",
+  "ranged weapon",
+  "throwing weapon",
+  "projectile",
+
+  "natural armor",
+  "light armor",
+  "medium armor",
+  "heavy armor",
+
+  "accessory",
   "container",
+  "elixir",
+
+  "treasure",
+  "tool",
+  "general good",
 ];
 
 export const TYPE_FILTER = [

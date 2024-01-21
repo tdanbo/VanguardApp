@@ -8,7 +8,7 @@ export function Armored_dice(character: CharacterEntry, item: ItemEntry) {
   const ability_master = CheckAbility(character, ability_name, "master");
 
   let mod = 0;
-  if (item.type !== "Natural Armor") {
+  if (item.category !== "natural armor") {
     return mod;
   }
 

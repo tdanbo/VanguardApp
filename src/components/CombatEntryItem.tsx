@@ -59,23 +59,32 @@ const ColorBlock = styled.div<ColorTypeProps>`
   border-radius: ${Constants.BORDER_RADIUS} 0px 0px ${Constants.BORDER_RADIUS};
 `;
 
+const RightBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 20px;
+  max-width: 20px;
+  margin: 1px 1px 1px 1px;
+  padding-right: 8px;
+  padding-top: 5px;
+`;
+
 const ResultContainer = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 const Result = styled.div<ColorTypeProps>`
   display: flex;
   flex-grow: 1;
-  flex: 2;
   justify-content: center;
-  align-items: flex-end;
-  width: 100px;
-  height: 100%;
+  align-items: center;
   font-size: 3.5rem;
   font-weight: bold;
   color: ${(props) =>
@@ -84,35 +93,83 @@ const Result = styled.div<ColorTypeProps>`
       : Constants.WIDGET_PRIMARY_FONT};
 
   opacity: ${(props) => (props.$issuccess ? 1 : 1.0)};
-
   text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
+`;
+
+const FumbledSubText = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  min-height: 20px;
+  max-height: 20px;
+  width: 100%;
+`;
+
+const Breakdown = styled.div`
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  min-height: 20px;
+  max-height: 20px;
+`;
+
+const SourceContainer = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-size: 14px;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
 `;
 
 const Active = styled.div<ColorTypeProps>`
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  font-size: 1.5rem;
+  flex-grow: 1;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  font-size: 20px;
   font-weight: bold;
   color: ${(props) => props.$rgb};
   text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
+  width: 50%;
 `;
 
 const Source = styled.div<ColorTypeProps>`
-  justify-content: center;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
   align-items: center;
-  font-size: 12px;
+  justify-content: start;
+  font-size: 20px;
   font-weight: bold;
-  height: 50px;
   color: ${Constants.WIDGET_SECONDARY_FONT};
+  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
+  width: 50%;
 `;
 
-const FumbledSubText = styled.div`
-  justify-content: center;
+const Divider = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
   align-items: center;
-  font-size: 14px;
+  justify-content: center;
+  font-size: 20px;
   font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
+  background-color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
+  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
+  width: 1px;
+  height: 100%;
+  margin: 0px 10px 0px 10px;
 `;
 
 function CombatEntryItem({
@@ -182,12 +239,6 @@ function CombatEntryItem({
 
   const FumbledPerfect = () => {
     if (combatEntry.roll_entry.roll === 1) {
-      if (
-        combatEntry.roll_type === "damage" ||
-        combatEntry.roll_type === "armor"
-      ) {
-        return 1; // Fumbled
-      }
       return 0; // Perfect
     } else if (combatEntry.roll_entry.roll === 20) {
       return 1; // Fumbled
@@ -249,119 +300,90 @@ function CombatEntryItem({
             </Result>
           </>
         ) : (
-          <Result
-            title={title}
-            $rgb={EntryColor()}
-            $issuccess={combatEntry.roll_entry.success}
-            className={isRolling ? "rolling" : ""}
-          >
-            {currentDisplay}
-          </Result>
+          <>
+            <Breakdown>1d{combatEntry.roll_entry.dice}</Breakdown>
+            <Result
+              title={title}
+              $rgb={EntryColor()}
+              $issuccess={combatEntry.roll_entry.success}
+              className={isRolling ? "rolling" : ""}
+            >
+              {currentDisplay}
+            </Result>
+          </>
         )}
-
-        {combatEntry.roll_source === "Skill Test" ? (
-          <Active
+        <SourceContainer>
+          {combatEntry.roll_source === "Skill Test" ? (
+            <Active
+              $rgb={EntryColor()}
+              $issuccess={combatEntry.roll_entry.success}
+            >
+              {modifierText} {UpperFirstLetter(combatEntry.roll_type)}{" "}
+            </Active>
+          ) : (
+            <Active
+              $rgb={EntryColor()}
+              $issuccess={combatEntry.roll_entry.success}
+            >
+              {UpperFirstLetter(combatEntry.roll_type)}
+            </Active>
+          )}
+          <Divider />
+          <Source
             $rgb={EntryColor()}
             $issuccess={combatEntry.roll_entry.success}
           >
-            {modifierText} {UpperFirstLetter(combatEntry.roll_type)}{" "}
-          </Active>
-        ) : (
-          <Active
-            $rgb={EntryColor()}
-            $issuccess={combatEntry.roll_entry.success}
-          >
-            {UpperFirstLetter(combatEntry.roll_type)}
-          </Active>
-        )}
-        <FumbledSubText>{FumbledPerfectText()}</FumbledSubText>
-        <Source $rgb={EntryColor()} $issuccess={combatEntry.roll_entry.success}>
-          {combatEntry.roll_source === "Resting" ? (
-            <span>
-              {toTitleCase(session.travel.weather)} Morning - Day{" "}
-              {session.travel.day}
-            </span>
-          ) : combatEntry.roll_source === "Skill Test" ? (
-            combatEntry.roll_entry.roll === 1 ? (
-              <>
-                <span>
-                  {"Perfect " + UpperFirstLetter(combatEntry.roll_source)}
-                </span>
-                <FontAwesomeIcon
-                  icon={faAngleDoubleUp}
-                  color="#5cb57c"
-                  style={{
-                    fontSize: "20px",
-                    position: "relative",
-                    top: "4px",
-                    left: "5px",
-                  }}
-                />
-              </>
-            ) : combatEntry.roll_entry.roll === 20 ? (
-              <>
-                <span>
-                  {"Fumbled " + UpperFirstLetter(combatEntry.roll_source)}
-                </span>
-                <FontAwesomeIcon
-                  icon={faAngleDoubleDown}
-                  color="#b55c5c"
-                  style={{
-                    fontSize: "20px",
-                    position: "relative",
-                    top: "4px",
-                    left: "5px",
-                  }}
-                />
-              </>
+            {combatEntry.roll_source === "Resting" ? (
+              <span>
+                {toTitleCase(session.travel.weather)} Morning - Day{" "}
+                {session.travel.day}
+              </span>
             ) : (
               <>
                 <span>{UpperFirstLetter(combatEntry.roll_source)}</span>
-                {combatEntry.roll_entry.success ? (
-                  <FontAwesomeIcon
-                    icon={faCheck}
-                    color="#5cb57c"
-                    style={{
-                      fontSize: "20px",
-                      position: "relative",
-                      top: "4px",
-                      left: "5px",
-                    }}
-                  />
-                ) : (
-                  <FontAwesomeIcon
-                    icon={faXmark}
-                    color="#b55c5c"
-                    style={{
-                      fontSize: "20px",
-                      position: "relative",
-                      top: "4px",
-                      left: "5px",
-                    }}
-                  />
-                )}
               </>
-            )
-          ) : combatEntry.roll_source !== "Custom" &&
-            combatEntry.roll_entry.roll === 1 ? (
-            <span>
-              {UpperFirstLetter(combatEntry.roll_source)}
-              <FontAwesomeIcon
-                icon={faAngleDoubleDown}
-                color="#b55c5c"
-                style={{
-                  fontSize: "20px",
-                  position: "relative",
-                  top: "4px",
-                  left: "5px",
-                }}
-              />
-            </span>
-          ) : (
-            <span>{UpperFirstLetter(combatEntry.roll_source)}</span>
-          )}
-        </Source>
+            )}
+          </Source>
+        </SourceContainer>
+        <FumbledSubText>{FumbledPerfectText()}</FumbledSubText>
       </ResultContainer>
+      <RightBlock>
+        {combatEntry.roll_source === "Skill Test" ? (
+          combatEntry.roll_entry.roll === 1 ? (
+            <FontAwesomeIcon
+              icon={faAngleDoubleUp}
+              color="#5cb57c"
+              style={{
+                fontSize: "25px",
+              }}
+            />
+          ) : combatEntry.roll_entry.roll === 20 ? (
+            <FontAwesomeIcon
+              icon={faAngleDoubleDown}
+              color="#b55c5c"
+              style={{
+                fontSize: "25px",
+              }}
+            />
+          ) : combatEntry.roll_entry.success ? (
+            <FontAwesomeIcon
+              icon={faCheck}
+              color="#5cb57c"
+              style={{
+                fontSize: "25px",
+              }}
+            />
+          ) : (
+            <FontAwesomeIcon
+              icon={faXmark}
+              color="#b55c5c"
+              style={{
+                fontSize: "25px",
+              }}
+            />
+          )
+        ) : null}
+      </RightBlock>
     </Container>
   );
 }

@@ -10,12 +10,16 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
 import { CharacterEntry, ItemEntry, SessionEntry } from "../../Types";
-import DurabilityBox from "../../component/DurabilityBox";
+
 import RollComponent from "../../component/RollComponent";
 import { DeleteInventorySlot } from "../../functions/CharacterFunctions";
 import { GetMaxSlots } from "../../functions/RulesFunctions";
 import { update_session } from "../../functions/SessionsFunctions";
-import { StyledText } from "../../functions/UtilityFunctions";
+import {
+  StyledText,
+  IsArmor,
+  IsWeapon,
+} from "../../functions/UtilityFunctions";
 import { Qualities } from "../../functions/rules/Qualities";
 import { ManAtArms_dice } from "../../functions/rules/ManAtArms";
 import { NaturalWeapon_dice } from "../../functions/rules/NaturalWeapon";
@@ -31,6 +35,10 @@ import { Armored_dice } from "../../functions/rules/Armored";
 import { IronFist_dice } from "../../functions/rules/IronFist";
 import { Robust_dice } from "../../functions/rules/Robust";
 import { TwinAttack_dice } from "../../functions/rules/TwinAttack";
+import { ItemRulesDice } from "../../functions/rules/ItemRulesDice";
+import { toTitleCase } from "../../functions/UtilityFunctions";
+import DurabilityComponent from "../../component/DurabilityComponent";
+
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -249,8 +257,9 @@ const CorruptionContainer = styled.div`
   flex-basis: 0;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.05);
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
   gap: 2px;
+  margin-left: 5px;
 `;
 
 interface InventoryEntryProps {
@@ -377,6 +386,7 @@ function InventoryEntry({
     dice += IronFist_dice(character, item);
     dice += Robust_dice(character);
     dice += TwinAttack_dice(character, item);
+    dice += ItemRulesDice(character, item);
     return dice;
   }
 
@@ -402,13 +412,21 @@ function InventoryEntry({
         <NameContainer
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >
-          <NameBox color={COLOR}>{item.name}</NameBox>
+          <NameBox color={COLOR}>
+            {item.name}{" "}
+            <CorruptionContainer>
+              {item.type === "artifact" ? (
+                <FontAwesomeIcon icon={faSkull} style={{ fontSize: "14px" }} />
+              ) : null}
+            </CorruptionContainer>
+          </NameBox>
           <Row>
             <TypeBox>
               {gmMode === true && (
                 <CostBox>{ConvertCurrency(item.cost)}</CostBox>
               )}
-              {item.type}
+              {item.type !== "normal" ? toTitleCase(item.type) : null}{" "}
+              {toTitleCase(item.category)}
               {item.quality.length > 0 && ","}
               {item.quality.map((quality, index) => {
                 let description = "";
@@ -438,53 +456,16 @@ function InventoryEntry({
         {/* {item.description !== "" && (
           <Description color={COLOR}> — {item.description}</Description>
         )} */}
-        <CorruptionContainer>
-          {(item.category === "artifact" ||
-            item.category === "artifact_armor" ||
-            item.category === "artifact_weapon") && (
-            <FontAwesomeIcon icon={faSkull} style={{ fontSize: "20px" }} />
-          )}
-        </CorruptionContainer>
-        {[1, 2, 3].includes(item.equip.slot) &&
-        item.category !== "ammunition" ? (
-          item.equip.equipped ? (
-            <DurabilityBox
-              active={true}
-              item={item}
-              session={session}
-              character={character}
-              websocket={websocket}
-              isCreature={isCreature}
-            />
-          ) : (
-            <DurabilityBox
-              active={false}
-              item={item}
-              session={session}
-              character={character}
-              websocket={websocket}
-              isCreature={isCreature}
-            />
-          )
-        ) : null}
+
         <RollContainer>
           {item.roll.roll === true && (
-            // <RollBox color={COLOR} onClick={handleRoll}>
-            //    d{item.roll.dice}
-            //    {item.roll.mod > 0 ? `+${item.roll.mod}` : null}
-
-            // </RollBox>
             <RollBox color={COLOR}>
               <RollComponent
                 session={session}
                 character={character}
                 websocket={websocket}
                 roll_type={
-                  item.category === "weapon"
-                    ? "damage"
-                    : item.category === "armor"
-                    ? "armor"
-                    : "custom"
+                  IsWeapon(item) ? "damage" : IsArmor(item) ? "armor" : "custom"
                 }
                 roll_source={item.name}
                 isCreature={isCreature}
@@ -492,10 +473,24 @@ function InventoryEntry({
                 dice_mod={item.roll.mod}
                 color={COLOR}
                 item={item}
+                inactive={item.equip.equipped}
               />
             </RollBox>
           )}
 
+          {[1, 2, 3].includes(item.equip.slot) &&
+          item.category !== "projectile" ? (
+            <RollBox color={COLOR}>
+              <DurabilityComponent
+                item={item}
+                session={session}
+                character={character}
+                websocket={websocket}
+                isCreature={isCreature}
+                inactive={item.equip.equipped}
+              />
+            </RollBox>
+          ) : null}
           {item.quantity.bulk === true && (
             <QuantityBox
               color={COLOR}
@@ -510,6 +505,7 @@ function InventoryEntry({
             </QuantityBox>
           )}
         </RollContainer>
+
         <Column>
           {browser ? (
             <>

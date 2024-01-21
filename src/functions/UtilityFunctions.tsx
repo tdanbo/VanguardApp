@@ -49,6 +49,63 @@ function hexToRgb(hex: string): RGB | null {
     : null;
 }
 
+export function IsArmor(item: ItemEntry): boolean {
+  const armor_categories = [
+    "natural armor",
+    "light armor",
+    "medium armor",
+    "heavy armor",
+  ];
+  if (armor_categories.includes(item.category)) {
+    return true;
+  }
+  return false;
+}
+
+export function IsWeapon(item: ItemEntry): boolean {
+  const weapon_categories = [
+    "natural weapon",
+    "short weapon",
+    "one-hand weapon",
+    "long weapon",
+    "heavy weapon",
+    "ranged weapon",
+    "throwing weapon",
+  ];
+  if (weapon_categories.includes(item.category)) {
+    return true;
+  }
+  return false;
+}
+
+export function IsMeleeWeapon(item: ItemEntry): boolean {
+  const weapon_categories = [
+    "natural weapon",
+    "short weapon",
+    "one-hand weapon",
+    "long weapon",
+    "heavy weapon",
+  ];
+  if (weapon_categories.includes(item.category)) {
+    return true;
+  }
+  return false;
+}
+
+export function IsRangedWeapon(item: ItemEntry): boolean {
+  const weapon_categories = [
+    "natural weapon",
+    "short weapon",
+    "one-hand weapon",
+    "long weapon",
+    "heavy weapon",
+  ];
+  if (weapon_categories.includes(item.category)) {
+    return true;
+  }
+  return false;
+}
+
 function adjustBrightness(color: string, amount: number): string {
   const rgb = hexToRgb(color);
   if (!rgb) {
