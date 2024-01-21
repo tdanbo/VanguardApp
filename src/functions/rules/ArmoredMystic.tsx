@@ -1,6 +1,6 @@
 import { ActivesEntry, CharacterEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
-
+import { IsArmor } from "../UtilityFunctions";
 export function ArmoredMystic_active(
   character: CharacterEntry,
   character_actives: ActivesEntry,
@@ -16,7 +16,11 @@ export function ArmoredMystic_active(
   };
 
   for (const armor of character.inventory) {
-    if (abilityAdept && armor.equip.equipped && armor.type === "Heavy Armor") {
+    if (
+      abilityAdept &&
+      armor.equip.equipped &&
+      armor.category === "heavy armor"
+    ) {
       armor.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
@@ -27,7 +31,7 @@ export function ArmoredMystic_active(
     } else if (
       abilityNovice &&
       armor.equip.equipped &&
-      ["Medium Armor", "Light Armor"].includes(armor.type)
+      ["medium armor", "light armor"].includes(armor.category)
     ) {
       armor.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
@@ -44,7 +48,7 @@ export function ArmoredMystic_dice(character: CharacterEntry, item: ItemEntry) {
   const abilityMaster = CheckAbility(character, "armored mystic", "master");
 
   let mod = 0;
-  if (abilityMaster && item.category === "armor") {
+  if (abilityMaster && IsArmor(item)) {
     mod += 4;
   }
   return mod;

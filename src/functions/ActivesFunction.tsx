@@ -2,6 +2,7 @@ import { ActivesEntry, CharacterEntry } from "../Types";
 import { GetMaxSlots, GetUsedSlots } from "./RulesFunctions";
 import { ArmoredMystic_active } from "./rules/ArmoredMystic";
 import { Berserker_active } from "./rules/Berserker";
+import { ItemRulesActives } from "./rules/ItemRulesActives";
 import { ManAtArms_active } from "./rules/ManAtArms";
 import { Robust_active } from "./rules/Robust";
 import { ShieldFighter_active } from "./rules/ShieldFighter";
@@ -81,6 +82,7 @@ export const GetActives = (character: CharacterEntry) => {
   ShieldFighter_active(character, character_actives);
   Robust_active(character, character_actives);
   TwinAttack_active(character, character_actives);
+  ItemRulesActives(character, character_actives);
   return character_actives;
 };
 

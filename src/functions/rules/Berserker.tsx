@@ -1,6 +1,6 @@
 import { CharacterEntry, ActivesEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
-
+import { IsWeapon } from "../UtilityFunctions";
 export function Berserker_active(
   character: CharacterEntry,
   actives: ActivesEntry,
@@ -27,20 +27,22 @@ export function Berserker_dice(character: CharacterEntry, item: ItemEntry) {
 
   let mod = 0;
 
+  const is_weapon = IsWeapon(item);
+
   if (ability_master) {
-    if (item.category === "weapon") {
+    if (is_weapon) {
       mod += 6; // Berserker adds 4 to armor dice on armor
     } else {
       mod += 4; // Berserker adds 6 to attack dice on weapons
     }
   } else if (ability_adept) {
-    if (item.category === "weapon") {
+    if (is_weapon) {
       mod += 6; // Berserker adds 4 to armor dice on armor
     } else {
       mod += 4; // Berserker adds 6 to attack dice on weapons
     }
   } else if (ability) {
-    if (item.category === "weapon") {
+    if (is_weapon) {
       mod += 6;
     }
   }

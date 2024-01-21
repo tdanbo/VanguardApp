@@ -143,6 +143,8 @@ import Dice10Fill from "./assets/icons/dice-d10.png";
 import Dice12Fill from "./assets/icons/dice-d12.png";
 import Dice20Fill from "./assets/icons/dice-d20.png";
 
+import Anvil from "./assets/icons/durability.png";
+
 export const Dice6Icon = Dice6;
 export const Dice4Icon = Dice4;
 export const Dice8Icon = Dice8;
@@ -156,6 +158,8 @@ export const Dice8FillIcon = Dice8Fill;
 export const Dice10FillIcon = Dice10Fill;
 export const Dice12FillIcon = Dice12Fill;
 export const Dice20FillIcon = Dice20Fill;
+
+export const AnvilIcon = Anvil;
 
 export const RestingSounds = [Resting, Resting, Resting, Resting, Resting];
 export const RollSounds = [RollA, RollB, RollC, RollD, RollE, RollF, RollG];

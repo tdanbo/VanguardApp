@@ -7,7 +7,7 @@ export function PolearmMastery_dice(
 ) {
   const ability = CheckAbility(character, "polearm mastery", "novice");
   let mod = 0;
-  if (ability && item.type === "Long Weapon") {
+  if (ability && item.category === "long weapon") {
     mod += 2;
   }
   return mod;

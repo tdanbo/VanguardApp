@@ -3,10 +3,7 @@ import { CheckAbility } from "../ActivesFunction";
 
 function hasShield(character: CharacterEntry) {
   for (const item of character.inventory) {
-    if (
-      item.equip.equipped &&
-      ["Steel Shield", "Buckler", "Shield"].includes(item.name)
-    ) {
+    if (item.equip.equipped && item.category === "shield") {
       return true;
     }
   }
@@ -32,7 +29,7 @@ export function ShieldFighter_dice(character: CharacterEntry, item: ItemEntry) {
   if (ability) {
     if (
       hasShield(character) &&
-      ["Short Weapon", "One-hand Weapon"].includes(item.type)
+      ["short weapon", "one-hand weapon"].includes(item.category)
     ) {
       mod += 2;
     }

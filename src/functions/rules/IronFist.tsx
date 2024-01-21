@@ -1,6 +1,6 @@
 import { CharacterEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
-
+import { IsMeleeWeapon } from "../UtilityFunctions";
 export function IronFist_dice(character: CharacterEntry, item: ItemEntry) {
   const ability_name = "Iron Fist";
   const ability = CheckAbility(character, ability_name, "novice");
@@ -8,7 +8,7 @@ export function IronFist_dice(character: CharacterEntry, item: ItemEntry) {
   const ability_master = CheckAbility(character, ability_name, "master");
 
   let mod = 0;
-  if (item.category !== "weapon") {
+  if (!IsMeleeWeapon(item)) {
     return mod;
   }
 

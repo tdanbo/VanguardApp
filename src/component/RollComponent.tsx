@@ -34,33 +34,76 @@ type RollComponentProps = {
   target?: number;
   item?: ItemEntry;
   isCreature: boolean;
+  inactive?: boolean;
 };
+
+const dice_size = "25px";
 
 type RollContainerProps = {
   dice_icon: string;
   dice_size: string;
   color: string;
+  inactive: boolean;
 };
-
-const dice_size = "25px";
 
 const RollContainer = styled.div<RollContainerProps>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: ${dice_size};
-  height: ${dice_size};
+  width: ${(props) => props.dice_size}; // Use props.dice_size
+  height: ${(props) => props.dice_size}; // Use props.dice_size
   font-weight: bold;
   font-size: 16px;
-  color: ${(props) => props.color};
-  text-align: center; /* Center text horizontally */
+  color: ${(props) =>
+    props.inactive ? props.color : Constants.WIDGET_SECONDARY_FONT_INACTIVE};
+  text-align: center;
   background-image: url(${(props) => props.dice_icon});
   background-repeat: no-repeat;
   background-position: center;
-  background-size: ${dice_size};
-  text-shadow: 1px 1px 2px black;
+  background-size: ${(props) => props.dice_size}; // Use props.dice_size once
+  text-shadow: ${(props) =>
+    props.inactive ? "1px 1px 2px black" : "0px 0px 0px transparent;"};
 `;
+
+function Durability(
+  character: CharacterEntry,
+  item: ItemEntry,
+  combat_entry: CombatEntry,
+) {
+  if (
+    (combat_entry.roll_type === "damage" ||
+      combat_entry.roll_type === "armor") &&
+    combat_entry.roll_entry.roll === 1
+  )
+    SetDurability(character, item.id);
+}
+
+function HasAmmunition(character: CharacterEntry) {
+  for (const i of character.inventory) {
+    if (
+      i.category === "ammunition" &&
+      i.equip.equipped &&
+      i.quantity.count > 0
+    ) {
+      i.quantity.count -= 1;
+      return true;
+    }
+  }
+  return false;
+}
+
+function Ammunition(character: CharacterEntry, item: ItemEntry) {
+  if (item.category === "ranged") {
+    if (HasAmmunition(character)) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return true;
+  }
+}
 
 function RollComponent({
   roll_type,
@@ -74,6 +117,7 @@ function RollComponent({
   websocket,
   isCreature,
   item,
+  inactive = true,
 }: RollComponentProps) {
   let dice_icon = Dice20FillIcon;
   if (dice === 4) {
@@ -104,6 +148,12 @@ function RollComponent({
       success = false;
     }
 
+    if (item) {
+      if (!Ammunition(character, item)) {
+        return;
+      }
+    }
+
     const roll_entry: RollEntry = {
       result: result,
       roll: roll,
@@ -122,17 +172,13 @@ function RollComponent({
       entry: "CombatEntry",
     };
 
+    if (item) {
+      Durability(character, item, NewCombatEntry);
+    }
+
     session.combatlog.push(NewCombatEntry);
     session.combatlog = session.combatlog.slice(-20);
 
-    console.log(item);
-    if (
-      item &&
-      (roll_type === "damage" || roll_type === "armor") &&
-      roll_entry.roll == 1
-    ) {
-      SetDurability(character, item.id);
-    }
     update_session(session, character, isCreature, websocket);
   };
 
@@ -143,6 +189,7 @@ function RollComponent({
       color={color}
       title={`Roll d${dice}`}
       onClick={() => RollDIce()}
+      inactive={inactive}
     >
       d{dice}
       {dice_mod > 0 ? `+${dice_mod}` : null}
