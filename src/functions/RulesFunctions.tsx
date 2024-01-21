@@ -184,11 +184,7 @@ export function GetEquipmentCorruption(character: CharacterEntry) {
   let value_adjustment = 0;
 
   for (const item of character.inventory) {
-    if (
-      item.category === "artifact" ||
-      item.category === "artifact_armor" ||
-      item.category === "artifact_weapon"
-    ) {
+    if (item.type === "artifact") {
       value_adjustment += 1;
     }
   }
