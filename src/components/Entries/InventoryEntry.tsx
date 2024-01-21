@@ -491,6 +491,7 @@ function InventoryEntry({
                 dice={GetDice()}
                 dice_mod={item.roll.mod}
                 color={COLOR}
+                item={item}
               />
             </RollBox>
           )}

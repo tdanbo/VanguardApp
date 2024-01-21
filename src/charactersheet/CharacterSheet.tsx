@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ActiveKey, CharacterEntry, SessionEntry } from "../Types";
+import { CharacterEntry, SessionEntry } from "../Types";
 import AbilitySection from "../charactersheet/AbilitySection";
 import CharacterNameBox from "../charactersheet/CharacterNameBox";
 import InventorySection from "../charactersheet/InventorySection";
@@ -112,7 +112,7 @@ type CharacterSheetProps = {
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
 };
 
-function GetActiveIcon(active: ActiveKey) {
+function GetActiveIcon(active: string) {
   if (active == "attack") {
     return faCrosshairs;
   } else if (active == "defense") {
@@ -134,7 +134,17 @@ function CharacterSheet({
 }: CharacterSheetProps) {
   const character_actives = GetActives(character);
 
-  character.stats["resolute"].active;
+  function FindActive(stat: string) {
+    for (const [key, value] of Object.entries(character_actives)) {
+      if (value.stat == stat) {
+        return key;
+      } else {
+        continue;
+      }
+    }
+    return "";
+  }
+
   return (
     <>
       <Container height={"40px"}>
@@ -166,10 +176,8 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"cunning"}
               stat_value={character.stats.cunning.value}
-              stat_color={
-                Constants.TYPE_COLORS[character.stats["cunning"].active]
-              }
-              stat_icon={GetActiveIcon(character.stats["cunning"].active)}
+              stat_color={Constants.TYPE_COLORS[FindActive("cunning")]}
+              stat_icon={GetActiveIcon(FindActive("cunning"))}
             />
             <StatComponent
               session={session}
@@ -178,10 +186,8 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"discreet"}
               stat_value={character.stats.discreet.value}
-              stat_color={
-                Constants.TYPE_COLORS[character.stats["discreet"].active]
-              }
-              stat_icon={GetActiveIcon(character.stats["discreet"].active)}
+              stat_color={Constants.TYPE_COLORS[FindActive("discreet")]}
+              stat_icon={GetActiveIcon(FindActive("discreet"))}
             />
             <StatComponent
               session={session}
@@ -190,10 +196,8 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"persuasive"}
               stat_value={character.stats.persuasive.value}
-              stat_color={
-                Constants.TYPE_COLORS[character.stats["persuasive"].active]
-              }
-              stat_icon={GetActiveIcon(character.stats["persuasive"].active)}
+              stat_color={Constants.TYPE_COLORS[FindActive("persuasive")]}
+              stat_icon={GetActiveIcon(FindActive("persuasive"))}
             />
             <StatComponent
               session={session}
@@ -202,10 +206,8 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"quick"}
               stat_value={character.stats.quick.value}
-              stat_color={
-                Constants.TYPE_COLORS[character.stats["quick"].active]
-              }
-              stat_icon={GetActiveIcon(character.stats["quick"].active)}
+              stat_color={Constants.TYPE_COLORS[FindActive("quick")]}
+              stat_icon={GetActiveIcon(FindActive("quick"))}
             />
           </Row>
           <Row width={"100%"}>
@@ -216,10 +218,8 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"resolute"}
               stat_value={character.stats.resolute.value}
-              stat_color={
-                Constants.TYPE_COLORS[character.stats["resolute"].active]
-              }
-              stat_icon={GetActiveIcon(character.stats["resolute"].active)}
+              stat_color={Constants.TYPE_COLORS[FindActive("resolute")]}
+              stat_icon={GetActiveIcon(FindActive("resolute"))}
             />
             <StatComponent
               session={session}
@@ -228,10 +228,8 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"strong"}
               stat_value={character.stats.strong.value}
-              stat_color={
-                Constants.TYPE_COLORS[character.stats["strong"].active]
-              }
-              stat_icon={GetActiveIcon(character.stats["strong"].active)}
+              stat_color={Constants.TYPE_COLORS[FindActive("strong")]}
+              stat_icon={GetActiveIcon(FindActive("strong"))}
             />
             <StatComponent
               session={session}
@@ -240,10 +238,8 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"vigilant"}
               stat_value={character.stats.vigilant.value}
-              stat_color={
-                Constants.TYPE_COLORS[character.stats["vigilant"].active]
-              }
-              stat_icon={GetActiveIcon(character.stats["vigilant"].active)}
+              stat_color={Constants.TYPE_COLORS[FindActive("vigilant")]}
+              stat_icon={GetActiveIcon(FindActive("vigilant"))}
             />
             <StatComponent
               session={session}
@@ -252,10 +248,8 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"accurate"}
               stat_value={character.stats.accurate.value}
-              stat_color={
-                Constants.TYPE_COLORS[character.stats["accurate"].active]
-              }
-              stat_icon={GetActiveIcon(character.stats["accurate"].active)}
+              stat_color={Constants.TYPE_COLORS[FindActive("accurate")]}
+              stat_icon={GetActiveIcon(FindActive("accurate"))}
             />
           </Row>
         </Column>
