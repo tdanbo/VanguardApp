@@ -122,13 +122,10 @@ function RollComponent({
       entry: "CombatEntry",
     };
 
-    console.log("COMBAT LOG");
-    console.log(session);
-    console.log(session.combatlog);
-
     session.combatlog.push(NewCombatEntry);
     session.combatlog = session.combatlog.slice(-20);
 
+    console.log(item);
     if (
       item &&
       (roll_type === "damage" || roll_type === "armor") &&

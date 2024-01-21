@@ -3,10 +3,7 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../../Constants";
-import {
-  CharacterEntry,
-  SessionEntry
-} from "../../Types";
+import { CharacterEntry, SessionEntry } from "../../Types";
 import { addNewCreature } from "../../functions/CharacterFunctions";
 import { update_session } from "../../functions/SessionsFunctions";
 import {
@@ -289,14 +286,14 @@ function CreateCharacterComponent({
       shield: 0,
     },
     stats: {
-      cunning: { value: stats[1].value, mod: 0, active: "" },
-      discreet: { value: stats[2].value, mod: 0, active: "sneaking" },
-      persuasive: { value: stats[3].value, mod: 0, active: "" },
-      quick: { value: stats[4].value, mod: 0, active: "defense" },
-      resolute: { value: stats[5].value, mod: 0, active: "casting" },
-      strong: { value: stats[6].value, mod: 0, active: "" },
-      vigilant: { value: stats[7].value, mod: 0, active: "" },
-      accurate: { value: stats[0].value, mod: 0, active: "attack" },
+      cunning: { value: stats[1].value, mod: 0 },
+      discreet: { value: stats[2].value, mod: 0 },
+      persuasive: { value: stats[3].value, mod: 0 },
+      quick: { value: stats[4].value, mod: 0 },
+      resolute: { value: stats[5].value, mod: 0 },
+      strong: { value: stats[6].value, mod: 0 },
+      vigilant: { value: stats[7].value, mod: 0 },
+      accurate: { value: stats[0].value, mod: 0 },
     },
     abilities: [],
     inventory: [],

@@ -8,7 +8,6 @@ interface CharacterDetails {
 export interface Stat {
   value: number;
   mod: number;
-  active: ActiveKey;
 }
 
 export type StatName =
@@ -204,6 +203,7 @@ export type ActivesEntry = {
   defense: { value: number; stat: string };
   casting: { value: number; stat: string };
   sneaking: { value: number; stat: string };
+  initiative: { value: number; stat: string };
 };
 
 export type TownsEntry = {
@@ -292,14 +292,14 @@ export const EmptyCharacter: CharacterEntry = {
     shield: 0,
   },
   stats: {
-    cunning: { value: 0, mod: 0, active: "" },
-    discreet: { value: 0, mod: 0, active: "sneaking" },
-    persuasive: { value: 0, mod: 0, active: "" },
-    quick: { value: 0, mod: 0, active: "defense" },
-    resolute: { value: 10, mod: 0, active: "casting" },
-    strong: { value: 0, mod: 0, active: "" },
-    vigilant: { value: 0, mod: 0, active: "" },
-    accurate: { value: 0, mod: 0, active: "attack" },
+    cunning: { value: 0, mod: 0 },
+    discreet: { value: 0, mod: 0 },
+    persuasive: { value: 0, mod: 0 },
+    quick: { value: 0, mod: 0 },
+    resolute: { value: 10, mod: 0 },
+    strong: { value: 0, mod: 0 },
+    vigilant: { value: 0, mod: 0 },
+    accurate: { value: 0, mod: 0 },
   },
   money: 0,
   abilities: [],
