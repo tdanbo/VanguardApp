@@ -227,7 +227,7 @@ function CorruptionStatComponent({
   const clean_corruption = corruptionThreshold - temporary_corruption;
 
   return (
-    <Column width={"100%"}>
+    <Column width={browser ? "50%" : "100%"}>
       <Row height={browser ? "50%" : "75%"}>
         <div style={{ display: "flex", minWidth: "50%" }}>
           {[...Array(remaining_corruption)].map((_, index, array) => (

@@ -67,7 +67,8 @@ const Value = styled.button`
     font-weight: bold;
     color: ${Constants.WIDGET_BACKGROUND};
   }
-  width: 50%;
+
+  width: 26px;
 `;
 
 type ActiveProps = {

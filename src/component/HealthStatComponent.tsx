@@ -188,7 +188,7 @@ function HealthStatComponent({
   const remaining_toughness = maxToughness - character.health.damage;
 
   return (
-    <Column width={"100%"}>
+    <Column width={browser ? "50%" : "100%"}>
       <Row height={browser ? "50%" : "75%"}>
         {Array.from({ length: remaining_toughness }).map((_, index, array) => {
           return (

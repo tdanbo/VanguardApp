@@ -9,11 +9,11 @@ export function GetMaxSlots(character: CharacterEntry) {
   );
 
   const storageModifiers = {
-    "Storage 2": 2,
-    "Storage 4": 4,
-    "Storage 6": 6,
-    "Storage 8": 8,
-    "Storage 10": 10,
+    "Storage 3": 4,
+    "Storage 6": 7,
+    "Storage 9": 10,
+    "Storage 12": 13,
+    "Storage 15": 16,
   };
 
   character.inventory.forEach((item) => {

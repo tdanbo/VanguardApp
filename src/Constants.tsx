@@ -140,12 +140,13 @@ export const CATEGORY_FILTER = [
   "armor accessory",
 
   "accessory",
-  "container",
+
   "elixir",
 
   "treasure",
   "tool",
   "general good",
+  "container",
 ];
 
 export const TYPE_FILTER = [
