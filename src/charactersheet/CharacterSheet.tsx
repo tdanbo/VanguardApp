@@ -167,7 +167,7 @@ function CharacterSheet({
             actives={character_actives}
           />
         </Row>
-        <Column width={"50%"}>
+        <Column width={"100%"}>
           <Row width={"100%"}>
             <StatComponent
               session={session}
