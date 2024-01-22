@@ -99,7 +99,7 @@ function PickRandomArmor(character: CharacterEntry) {
 function HasAmmunition(character: CharacterEntry) {
   for (const i of character.inventory) {
     if (
-      i.category === "ammunition" &&
+      i.category === "projectile" &&
       i.equip.equipped &&
       i.quantity.count > 0
     ) {
@@ -110,15 +110,20 @@ function HasAmmunition(character: CharacterEntry) {
   return false;
 }
 
-function Ammunition(character: CharacterEntry, item: ItemEntry) {
-  if (item.category === "ranged") {
-    if (HasAmmunition(character)) {
+function HasRangedWeapon(character: CharacterEntry) {
+  for (const i of character.inventory) {
+    if (i.category === "ranged weapon" && i.equip.equipped) {
       return true;
-    } else {
-      return false;
     }
-  } else {
+  }
+  return false;
+}
+
+function Ammunition(character: CharacterEntry) {
+  if (HasAmmunition(character)) {
     return true;
+  } else {
+    return false;
   }
 }
 
@@ -133,7 +138,6 @@ function RollComponent({
   character,
   websocket,
   isCreature,
-  item,
   inactive = true,
 }: RollComponentProps) {
   let dice_icon = Dice20FillIcon;
@@ -165,8 +169,10 @@ function RollComponent({
       success = false;
     }
 
-    if (item) {
-      if (!Ammunition(character, item)) {
+    console.log(roll_source);
+
+    if (roll_type === "attack" && HasRangedWeapon(character)) {
+      if (!Ammunition(character)) {
         return;
       }
     }
