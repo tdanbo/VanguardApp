@@ -192,6 +192,7 @@ function CombatEntryItem({
   }
 
   let title = `Dice: d${combatEntry.roll_entry.dice}${modifierText}\nResult: ${combatEntry.roll_entry.result}\n`;
+  let durability_title = `Dice: d4\nResult: ${combatEntry.durability.check}\nTarget: 3`;
 
   if (combatEntry.roll_source !== "Skill Test") {
     title += `Modifier: ${combatEntry.roll_entry.mod}\n`;
@@ -262,14 +263,9 @@ function CombatEntryItem({
       }
     } else if (FumbledPerfect() === 1) {
       if (combatEntry.roll_type === "attack") {
-        return "Free attack against you.";
-      } else if (
-        combatEntry.roll_type === "damage" ||
-        combatEntry.roll_type === "armor"
-      ) {
-        return "Durability Loss";
+        return `Free attack against you.`;
       } else if (combatEntry.roll_type === "defense") {
-        return "+3 Damage taken.";
+        return `+3 Damage taken.`;
       } else if (combatEntry.roll_type === "casting") {
         return "Your spell hit a random foe/friend.";
       } else if (combatEntry.roll_type === "sneaking") {
@@ -277,6 +273,11 @@ function CombatEntryItem({
       } else {
         return "";
       }
+    } else if (
+      combatEntry.durability.name !== "" &&
+      combatEntry.durability.check === 4
+    ) {
+      return `Durability check failed. ${combatEntry.durability.name} lost durability.`;
     } else {
       return "";
     }
@@ -345,7 +346,9 @@ function CombatEntryItem({
             )}
           </Source>
         </SourceContainer>
-        <FumbledSubText>{FumbledPerfectText()}</FumbledSubText>
+        <FumbledSubText title={durability_title}>
+          {FumbledPerfectText()}
+        </FumbledSubText>
       </ResultContainer>
       <RightBlock>
         {combatEntry.roll_source === "Skill Test" ? (

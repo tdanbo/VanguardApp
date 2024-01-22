@@ -403,7 +403,7 @@ function InventoryEntry({
               }}
               $isequipped={item.equip.equipped}
             >
-              {item.equip.slot === 1 ? "I" : item.equip.slot === 2 ? "II" : "o"}
+              {item.equip.slot === 1 ? "I" : item.equip.slot === 2 ? "II" : ""}
             </EquipButton>
           ) : (
             <NoEquipBox key={"unequip"} color={COLOR} />

@@ -105,12 +105,18 @@ export interface ItemEntry {
   entry: "ItemEntry";
 }
 
+export type DurabilityEntry = {
+  name: string;
+  check: number;
+};
+
 export type CombatEntry = {
   character: CharacterEntry;
   roll_type: RollTypeEntry;
   roll_source: string;
   roll_entry: RollEntry;
   uuid: string;
+  durability: DurabilityEntry;
   entry: "CombatEntry";
 };
 

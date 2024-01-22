@@ -76,6 +76,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   damage: COLOR_1,
   ammunition: COLOR_1,
   ability: COLOR_1,
+  "weapon accessory": COLOR_1,
 
   "natural armor": COLOR_2,
   "light armor": COLOR_2,
@@ -84,6 +85,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   armor: COLOR_2,
   defense: COLOR_2,
   resting: COLOR_2,
+  "armor accessory": COLOR_2,
 
   casting: COLOR_3,
   "mystical power": COLOR_3,
@@ -129,11 +131,13 @@ export const CATEGORY_FILTER = [
   "ranged weapon",
   "throwing weapon",
   "projectile",
+  "weapon accessory",
 
   "natural armor",
   "light armor",
   "medium armor",
   "heavy armor",
+  "armor accessory",
 
   "accessory",
   "container",

@@ -222,6 +222,11 @@ function StatComponent({
     setModvalue(newValue);
   };
 
+  let color = Constants.WIDGET_SECONDARY_FONT;
+  if (["attack", "defense", "casting", "sneaking"].includes(stat_name)) {
+    color = Constants.TYPE_COLORS[stat_name];
+  }
+
   return (
     <Container>
       <Row height={"100%"} className="first-row">
@@ -245,7 +250,7 @@ function StatComponent({
               isCreature={isCreature}
               dice={20}
               dice_mod={modValue}
-              color={Constants.TYPE_COLORS[stat_name]}
+              color={color}
               target={stat_value + modValue}
             />
           </DiceContainer>
