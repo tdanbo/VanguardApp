@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
 import {
   Dice10FillIcon,
   Dice12FillIcon,
@@ -16,11 +17,13 @@ import {
   SessionEntry,
   CharacterEntry,
   ItemEntry,
+  DurabilityEntry,
 } from "../Types";
 import { v4 as uuidv4 } from "uuid";
 import { SetDurability } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import { Socket } from "socket.io-client";
+import { random } from "lodash";
 
 type RollComponentProps = {
   session: SessionEntry;
@@ -66,17 +69,31 @@ const RollContainer = styled.div<RollContainerProps>`
     props.inactive ? "1px 1px 2px black" : "0px 0px 0px transparent;"};
 `;
 
-function Durability(
-  character: CharacterEntry,
-  item: ItemEntry,
-  combat_entry: CombatEntry,
-) {
-  if (
-    (combat_entry.roll_type === "damage" ||
-      combat_entry.roll_type === "armor") &&
-    combat_entry.roll_entry.roll === 1
-  )
-    SetDurability(character, item.id);
+function PickRandomWeapon(character: CharacterEntry) {
+  const weapon_list = character.inventory.filter(
+    (item) =>
+      (IsWeapon(item) || item.category === "shield") && item.equip.equipped,
+  );
+
+  if (weapon_list.length === 0) {
+    return null;
+  }
+  const randomIndex = Math.floor(Math.random() * weapon_list.length);
+
+  return weapon_list[randomIndex];
+}
+
+function PickRandomArmor(character: CharacterEntry) {
+  const armor_list = character.inventory.filter(
+    (armor) => IsArmor(armor) && armor.equip.equipped,
+  );
+
+  if (armor_list.length === 0) {
+    return null;
+  }
+  const randomIndex = Math.floor(Math.random() * armor_list.length);
+
+  return armor_list[randomIndex];
 }
 
 function HasAmmunition(character: CharacterEntry) {
@@ -163,6 +180,27 @@ function RollComponent({
       dice: dice,
     };
 
+    const durability_item: DurabilityEntry = {
+      name: "",
+      check: random(1, 4),
+    };
+
+    let random_item: null | ItemEntry = null;
+    if (roll_type === "attack" && !success && durability_item.check === 4) {
+      random_item = PickRandomWeapon(character);
+    } else if (
+      roll_type === "defense" &&
+      !success &&
+      durability_item.check === 4
+    ) {
+      random_item = PickRandomArmor(character);
+    }
+
+    if (random_item) {
+      SetDurability(character, random_item.id);
+      durability_item.name = random_item.name;
+    }
+
     const NewCombatEntry: CombatEntry = {
       character,
       roll_type, // Damage, Armor, Accurate etc
@@ -170,11 +208,8 @@ function RollComponent({
       roll_entry,
       uuid: uuidv4(),
       entry: "CombatEntry",
+      durability: durability_item,
     };
-
-    if (item) {
-      Durability(character, item, NewCombatEntry);
-    }
 
     session.combatlog.push(NewCombatEntry);
     session.combatlog = session.combatlog.slice(-20);

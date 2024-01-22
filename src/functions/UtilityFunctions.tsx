@@ -55,6 +55,7 @@ export function IsArmor(item: ItemEntry): boolean {
     "light armor",
     "medium armor",
     "heavy armor",
+    "armor accessory",
   ];
   if (armor_categories.includes(item.category)) {
     return true;
@@ -71,6 +72,7 @@ export function IsWeapon(item: ItemEntry): boolean {
     "heavy weapon",
     "ranged weapon",
     "throwing weapon",
+    "weapon accessory",
   ];
   if (weapon_categories.includes(item.category)) {
     return true;

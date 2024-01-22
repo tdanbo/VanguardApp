@@ -52,7 +52,15 @@ function DurabilityBox({
   websocket,
 }: DurabilityBoxProps) {
   const handleAddDurability = () => {
+    // if (
+    //   item.category === "weapon accessory" ||
+    //   item.category === "armor accessory"
+    // ) {
+    //   return;
+    // }
+    console.log("Adding durability");
     const max_durability = item.roll.dice + item.roll.mod;
+    console.log(max_durability);
     if (item.durability >= max_durability) {
       return;
     }

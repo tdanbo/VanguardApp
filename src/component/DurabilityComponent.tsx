@@ -4,6 +4,7 @@ import * as Constants from "../Constants";
 import { update_session } from "../functions/SessionsFunctions";
 import { Socket } from "socket.io-client";
 import { AnvilIcon } from "../Images";
+import { max } from "lodash";
 type DurabilityBoxProps = {
   item: ItemEntry;
   session: SessionEntry;
@@ -38,6 +39,7 @@ const DurabilityContainer = styled.div<DurabilityRContainerProps>`
   background-size: ${(props) => props.size}; // Use props.dice_size once
   text-shadow: ${(props) =>
     props.inactive ? "1px 1px 2px black" : "0px 0px 0px transparent;"};
+  user-select: none;
 `;
 
 function DurabilityComponent({
@@ -49,7 +51,15 @@ function DurabilityComponent({
   inactive = true,
 }: DurabilityBoxProps) {
   const handleAddDurability = () => {
-    const max_durability = item.roll.dice + item.roll.mod;
+    let max_durability = 0;
+    if (
+      item.category === "weapon accessory" ||
+      item.category === "armor accessory"
+    ) {
+      max_durability = 4;
+    } else {
+      max_durability = item.roll.dice + item.roll.mod;
+    }
     if (item.durability >= max_durability) {
       return;
     }
