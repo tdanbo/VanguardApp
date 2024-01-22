@@ -233,7 +233,7 @@ function RollComponent({
       inactive={inactive}
     >
       d{dice}
-      {dice_mod > 0 ? `+${dice_mod}` : null}
+      {dice_mod > 0 && roll_source !== "Skill Test" ? `+${dice_mod}` : null}
     </RollContainer>
   );
 }
