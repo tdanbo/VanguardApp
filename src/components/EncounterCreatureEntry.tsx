@@ -16,6 +16,22 @@ import { CharacterPortraits } from "../Images";
 import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import { GetActives } from "../functions/ActivesFunction";
 import AbilityEntryItem from "./Entries/AbilityEntryItem";
+import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
+import { NaturalWeapon_dice } from "../functions/rules/NaturalWeapon";
+import { NaturalWarrior_dice } from "../functions/rules/NaturalWarrior";
+import { Berserker_dice } from "../functions/rules/Berserker";
+import { ManAtArms_dice } from "../functions/rules/ManAtArms";
+import { SteelThrow_dice } from "../functions/rules/SteelThrow";
+import { PolearmMastery_dice } from "../functions/rules/PolearmMastery";
+import { ShieldFighter_dice } from "../functions/rules/ShieldFighter";
+import { ArmoredMystic_dice } from "../functions/rules/ArmoredMystic";
+import { Marksman_dice } from "../functions/rules/Marksman";
+import { TwohandedForce_dice } from "../functions/rules/TwohandedForce";
+import { Armored_dice } from "../functions/rules/Armored";
+import { IronFist_dice } from "../functions/rules/IronFist";
+import { Robust_dice } from "../functions/rules/Robust";
+import { TwinAttack_dice } from "../functions/rules/TwinAttack";
+import { ItemRulesDice } from "../functions/rules/ItemRulesDice";
 
 import { Socket } from "socket.io-client";
 
@@ -210,10 +226,7 @@ const ActiveDamageSub = styled.div`
 function GetWeapons(creature: CharacterEntry) {
   let weapons: ItemEntry[] = [];
   creature.inventory.forEach((item) => {
-    if (
-      (item.category === "weapon" || item.category === "ranged") &&
-      item.equip.equipped
-    ) {
+    if (IsWeapon(item) && item.equip.equipped) {
       weapons.push(item);
     }
   });
@@ -223,7 +236,7 @@ function GetWeapons(creature: CharacterEntry) {
 function GetArmor(creature: CharacterEntry) {
   let armor: ItemEntry[] = [];
   creature.inventory.forEach((item) => {
-    if (item.category === "armor" && item.equip.equipped) {
+    if (IsArmor(item) && item.equip.equipped) {
       armor.push(item);
     }
   });
@@ -284,6 +297,26 @@ interface EncounterBoxProps {
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function GetDice(creature: CharacterEntry, item: ItemEntry) {
+  let dice = item.roll.dice;
+  dice += NaturalWeapon_dice(creature, item);
+  dice += NaturalWarrior_dice(creature, item);
+  dice += Berserker_dice(creature, item);
+  dice += ManAtArms_dice(creature, item);
+  dice += SteelThrow_dice(creature, item);
+  dice += PolearmMastery_dice(creature, item);
+  dice += ShieldFighter_dice(creature, item);
+  dice += ArmoredMystic_dice(creature, item);
+  dice += Marksman_dice(creature, item);
+  dice += TwohandedForce_dice(creature, item);
+  dice += Armored_dice(creature, item);
+  dice += IronFist_dice(creature, item);
+  dice += Robust_dice(creature);
+  dice += TwinAttack_dice(creature, item);
+  dice += ItemRulesDice(creature, item);
+  return dice;
 }
 
 function EncounterCreatureEntry({
@@ -426,7 +459,7 @@ function EncounterCreatureEntry({
             </ActiveStat>
             <ActiveArmorSub>
               <FontAwesomeIcon icon={faShield} />
-              {Math.ceil(armor.roll.dice / 2) + armor.roll.mod}
+              {Math.ceil(GetDice(creature, armor) / 2) + armor.roll.mod}
             </ActiveArmorSub>
           </ActiveBox>
         ))}
@@ -437,7 +470,7 @@ function EncounterCreatureEntry({
             <FontAwesomeIcon icon={faCoins} title={loot} />
           </ActiveSub>
         </NameContainer>
-        {GetWeapons(creatureClone).map((weapon, index) => {
+        {GetWeapons(creatureClone).map((item, index) => {
           return (
             <ActiveBox key={`active-box-${index}`}>
               <ActiveStat
@@ -449,28 +482,30 @@ function EncounterCreatureEntry({
               </ActiveStat>
               <ActiveDamageSub>
                 <>
-                  {GetAttacks(creature) > 1 && weapon.category !== "ranged" ? (
+                  {GetAttacks(creature) > 1 &&
+                  item.category !== "ranged weapon" ? (
                     <>
                       <AttacksStat>2 x</AttacksStat>
                       <Icon
                         path={mdiSword}
                         size={0.75}
-                        title={weapon.name}
+                        title={item.name}
                         color={Constants.BRIGHT_RED}
                       />
-                      {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
+                      {Math.ceil(GetDice(creature, item) / 2) + item.roll.mod}
                       {" / " +
-                        (Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod)}
+                        (Math.ceil(GetDice(creature, item) / 2) +
+                          item.roll.mod)}
                     </>
                   ) : (
                     <>
                       <Icon
                         path={mdiSword}
                         size={0.75}
-                        title={weapon.name}
+                        title={item.name}
                         color={Constants.BRIGHT_RED}
                       />
-                      {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
+                      {Math.ceil(GetDice(creature, item) / 2) + item.roll.mod}
                     </>
                   )}
                 </>
