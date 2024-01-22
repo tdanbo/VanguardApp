@@ -4,7 +4,6 @@ import * as Constants from "../Constants";
 import { update_session } from "../functions/SessionsFunctions";
 import { Socket } from "socket.io-client";
 import { AnvilIcon } from "../Images";
-import { max } from "lodash";
 type DurabilityBoxProps = {
   item: ItemEntry;
   session: SessionEntry;

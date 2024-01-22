@@ -436,6 +436,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
         success: true,
         dice: 0,
       },
+      durability: { name: "", check: 0 },
       uuid: uuidv4(),
       entry: "CombatEntry",
     };
