@@ -178,7 +178,9 @@ export type RollTypeEntry =
   | "vigilant"
   | "accurate"
   | "custom"
-  | "resting";
+  | "resting"
+  | "ability"
+  | "mystical power";
 
 export type RollEntry = {
   result: number;

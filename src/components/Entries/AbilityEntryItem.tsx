@@ -3,7 +3,12 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
 import Icon from "@mdi/react";
-import { AbilityEntry, CharacterEntry, SessionEntry } from "../../Types";
+import {
+  AbilityEntry,
+  CharacterEntry,
+  RollTypeEntry,
+  SessionEntry,
+} from "../../Types";
 import { CheckAbility } from "../../functions/ActivesFunction";
 import {
   faBars,
@@ -16,7 +21,7 @@ import { update_session } from "../../functions/SessionsFunctions";
 import { ExceptionalStats } from "../../functions/rules/ExceptionalStats";
 import { StyledText } from "../../functions/UtilityFunctions";
 import { mdiRomanNumeral1, mdiRomanNumeral2, mdiRomanNumeral3 } from "@mdi/js";
-
+import RollComponent from "../../component/RollComponent";
 const EntryColor = (type: string) => {
   return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.WIDGET_BORDER;
 };
@@ -83,7 +88,6 @@ const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  flex: 1;
   margin-left: 5px;
   &:hover {
     ${ExpandedContainer} {
@@ -166,10 +170,9 @@ interface LevelProps {
 }
 
 const AbilityName = styled.div<LevelProps>`
-  align-items: flex-end;
+  align-items: flex;
   display: flex;
   flex-grow: 1;
-  flex: 1;
   color: ${(props) =>
     props.$active ? EntryColor(props.type) : Constants.WIDGET_SECONDARY_FONT};
   font-size: 15px;
@@ -179,7 +182,6 @@ const AbilityName = styled.div<LevelProps>`
 const AbilityDetail = styled.div`
   display: flex;
   flex-grow: 1;
-  flex: 1;
   color: rgba(255, 255, 255, 0.2);
   font-size: 10px;
 `;
@@ -218,8 +220,25 @@ const CorruptionContainer = styled.div`
   flex-basis: 0;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.05);
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
   gap: 2px;
+  margin-left: 5px;
+`;
+
+interface RollBoxProps {
+  color: string;
+}
+
+const RollBox = styled.div<RollBoxProps>`
+  display: flex;
+  color: ${(props) => props.color};
+  margin-left: 2px;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 14px;
+  gap: 15px;
+  margin-right: 15px;
 `;
 
 interface AbilityEntryItemProps {
@@ -230,6 +249,16 @@ interface AbilityEntryItemProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
+}
+
+function GetCurrentLevel(ability: AbilityEntry) {
+  if (ability.level === "Master") {
+    return ability.master;
+  } else if (ability.level === "Adept") {
+    return ability.adept;
+  } else {
+    return ability.novice;
+  }
 }
 
 function AbilityEntryItem({
@@ -413,6 +442,8 @@ function AbilityEntryItem({
   const has_wizardry_adept = CheckAbility(character, "Wizardry", "adept");
   const has_wizardry_master = CheckAbility(character, "Wizardry", "master");
 
+  const current_level = GetCurrentLevel(ability);
+
   return (
     <BaseContainer className="button-hover">
       <Container>
@@ -422,6 +453,55 @@ function AbilityEntryItem({
         >
           <AbilityName type={ability.type} $active={true}>
             {ability.name}
+            <CorruptionContainer>
+              {ability.type === "Mystical Power" && (
+                <>
+                  {(ability.level === "Novice" ||
+                    ability.level === "Adept" ||
+                    ability.level === "Master") &&
+                    !(
+                      ability.tradition.includes("Theurgy") &&
+                      has_theurgy_novice
+                    ) &&
+                    !(
+                      ability.tradition.includes("Wizardry") &&
+                      has_wizardry_novice
+                    ) && (
+                      <FontAwesomeIcon
+                        icon={faSkull}
+                        style={{ fontSize: "14px" }}
+                      />
+                    )}
+                  {(ability.level === "Adept" || ability.level === "Master") &&
+                    !(
+                      ability.tradition.includes("Theurgy") && has_theurgy_adept
+                    ) &&
+                    !(
+                      ability.tradition.includes("Wizardry") &&
+                      has_wizardry_adept
+                    ) && (
+                      <FontAwesomeIcon
+                        icon={faSkull}
+                        style={{ fontSize: "14px" }}
+                      />
+                    )}
+                  {ability.level === "Master" &&
+                    !(
+                      ability.tradition.includes("Theurgy") &&
+                      has_theurgy_master
+                    ) &&
+                    !(
+                      ability.tradition.includes("Wizardry") &&
+                      has_wizardry_master
+                    ) && (
+                      <FontAwesomeIcon
+                        icon={faSkull}
+                        style={{ fontSize: "14px" }}
+                      />
+                    )}
+                </>
+              )}
+            </CorruptionContainer>
           </AbilityName>
           <AbilityDetail>
             {ability.tradition === ""
@@ -429,48 +509,23 @@ function AbilityEntryItem({
               : `${ability.type}, ${ability.tradition}`}
           </AbilityDetail>
         </NameContainer>
-        <CorruptionContainer>
-          {ability.type === "Mystical Power" && (
-            <>
-              {(ability.level === "Novice" ||
-                ability.level === "Adept" ||
-                ability.level === "Master") &&
-                !(
-                  ability.tradition.includes("Theurgy") && has_theurgy_novice
-                ) &&
-                !(
-                  ability.tradition.includes("Wizardry") && has_wizardry_novice
-                ) && (
-                  <FontAwesomeIcon
-                    icon={faSkull}
-                    style={{ fontSize: "20px" }}
-                  />
-                )}
-              {(ability.level === "Adept" || ability.level === "Master") &&
-                !(ability.tradition.includes("Theurgy") && has_theurgy_adept) &&
-                !(
-                  ability.tradition.includes("Wizardry") && has_wizardry_adept
-                ) && (
-                  <FontAwesomeIcon
-                    icon={faSkull}
-                    style={{ fontSize: "20px" }}
-                  />
-                )}
-              {ability.level === "Master" &&
-                !(
-                  ability.tradition.includes("Theurgy") && has_theurgy_master
-                ) &&
-                !(
-                  ability.tradition.includes("Wizardry") && has_wizardry_master
-                ) && (
-                  <FontAwesomeIcon
-                    icon={faSkull}
-                    style={{ fontSize: "20px" }}
-                  />
-                )}
-            </>
-          )}
-        </CorruptionContainer>
+
+        <RollBox color={Constants.BRIGHT_RED}>
+          {current_level.roll.map((i, index) => (
+            <RollComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              roll_type={ability.type.toLocaleLowerCase() as RollTypeEntry}
+              roll_source={ability.name}
+              isCreature={isCreature}
+              dice={i.dice}
+              dice_mod={i.mod}
+              color={EntryColor(i.type)}
+              key={index}
+            />
+          ))}
+        </RollBox>
         <LevelSelectionContainer>
           {ability.adept.description !== "" &&
           ability.master.description !== "" ? (
@@ -518,12 +573,13 @@ function AbilityEntryItem({
       </Container>
       <LevelContainer $expanded={expanded}>
         {ability.novice.description !== "" && abilityLevel === "Novice" && (
-          <LevelComponent
-            effect={ability.novice.description}
-            radius={Constants.BORDER_RADIUS}
-          />
+          <>
+            <LevelComponent
+              effect={ability.novice.description}
+              radius={Constants.BORDER_RADIUS}
+            />
+          </>
         )}
-
         {ability.adept.description !== "" && abilityLevel === "Adept" && (
           <>
             <LevelComponent
@@ -536,7 +592,6 @@ function AbilityEntryItem({
             />
           </>
         )}
-
         {ability.master.description !== "" && abilityLevel === "Master" && (
           <>
             <LevelComponent
