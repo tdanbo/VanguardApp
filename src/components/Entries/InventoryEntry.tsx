@@ -114,12 +114,9 @@ const NameBox = styled.div`
 `;
 
 const CostBox = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex: 1;
   color: rgba(255, 255, 255, 0.4);
   font-size: 10px;
-  margin-left: 5px;
+  color: ${Constants.WIDGET_PRIMARY_FONT};
 `;
 
 const RollContainer = styled.div`
