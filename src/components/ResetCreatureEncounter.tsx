@@ -1,12 +1,11 @@
 import * as Constants from "../Constants";
-import { SetStateAction } from "react";
 import styled from "styled-components";
 import "../App.css";
-
+import { Socket } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { CharacterEntry } from "../Types";
-
+import { SessionEntry } from "../Types";
+import { update_session } from "../functions/SessionsFunctions";
 const Navigator = styled.button`
   cursor: pointer;
   display: flex;
@@ -28,12 +27,14 @@ const Navigator = styled.button`
 `;
 
 interface ResetEncounterProps {
-  setCreatureEncounter: React.Dispatch<SetStateAction<CharacterEntry[]>>;
+  session: SessionEntry;
+  websocket: Socket;
 }
 
-function ResetCreatureEncounter({ setCreatureEncounter }: ResetEncounterProps) {
+function ResetCreatureEncounter({ session, websocket }: ResetEncounterProps) {
   const handleResetEncounter = () => {
-    setCreatureEncounter([]);
+    session.encounter = [];
+    update_session(session, websocket);
   };
 
   return (

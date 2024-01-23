@@ -111,6 +111,8 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
     },
     characters: [],
     combatlog: [],
+    encounter: [],
+    loot: [],
     state: uuidv4(),
   };
 

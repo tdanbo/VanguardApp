@@ -1,6 +1,7 @@
 import {
   faBars,
   faChevronRight,
+  faCoins,
   faSkull,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +11,7 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
 import { CharacterEntry, ItemEntry, SessionEntry } from "../../Types";
-
+import { RulesDiceAdjust } from "../../functions/RulesFunctions";
 import RollComponent from "../../component/RollComponent";
 import { DeleteInventorySlot } from "../../functions/CharacterFunctions";
 import { GetMaxSlots } from "../../functions/RulesFunctions";
@@ -21,24 +22,10 @@ import {
   IsWeapon,
 } from "../../functions/UtilityFunctions";
 import { Qualities } from "../../functions/rules/Qualities";
-import { ManAtArms_dice } from "../../functions/rules/ManAtArms";
-import { NaturalWeapon_dice } from "../../functions/rules/NaturalWeapon";
-import { NaturalWarrior_dice } from "../../functions/rules/NaturalWarrior";
-import { Berserker_dice } from "../../functions/rules/Berserker";
-import { SteelThrow_dice } from "../../functions/rules/SteelThrow";
-import { PolearmMastery_dice } from "../../functions/rules/PolearmMastery";
-import { ShieldFighter_dice } from "../../functions/rules/ShieldFighter";
-import { ArmoredMystic_dice } from "../../functions/rules/ArmoredMystic";
-import { Marksman_dice } from "../../functions/rules/Marksman";
-import { TwohandedForce_dice } from "../../functions/rules/TwohandedForce";
-import { Armored_dice } from "../../functions/rules/Armored";
-import { IronFist_dice } from "../../functions/rules/IronFist";
-import { Robust_dice } from "../../functions/rules/Robust";
-import { TwinAttack_dice } from "../../functions/rules/TwinAttack";
-import { ItemRulesDice } from "../../functions/rules/ItemRulesDice";
+
 import { toTitleCase } from "../../functions/UtilityFunctions";
 import DurabilityComponent from "../../component/DurabilityComponent";
-
+import { cloneDeep } from "lodash";
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -206,6 +193,7 @@ const NoEquipBox = styled.div<NoEquipButtonProps>`
   height: 100%;
   align-items: center;
   justify-content: center;
+  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
 `;
 
 const QuantityBox = styled.button<RollBoxProps>`
@@ -297,12 +285,25 @@ function InventoryEntry({
 
   const HandleEquip = (item: ItemEntry) => {
     item.equip.equipped = true;
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
 
   const HandleUnequip = () => {
     item.equip.equipped = false;
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
+  };
+
+  const AddToLoot = () => {
+    const new_item = cloneDeep(item);
+    new_item.id = generateRandomId();
+    session.loot.push(new_item);
+    update_session(session, websocket, character, isCreature);
+  };
+
+  const RemoveLootItem = (item: ItemEntry) => {
+    const updatedLoot = session.loot.filter((loot) => loot.id !== item.id);
+    session.loot = updatedLoot;
+    console.log(session.loot);
   };
 
   const AddInventorySlot = () => {
@@ -311,13 +312,12 @@ function InventoryEntry({
     if (inventory.length === GetMaxSlots(character) * 2) {
       console.log("You can't carry any more items!");
     } else {
-      const itemWithId: ItemEntry = {
-        ...item,
-        id: generateRandomId(),
-      };
-      inventory.push(itemWithId);
+      RemoveLootItem(item);
+      const new_item = cloneDeep(item);
+      new_item.id = generateRandomId();
+      inventory.push(new_item);
     }
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
     if (setInventoryState) {
       setInventoryState(1);
     }
@@ -325,7 +325,7 @@ function InventoryEntry({
 
   const RemoveInventorySlot = (item_id: string) => {
     DeleteInventorySlot(character, item_id);
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
 
   const equipHandler = (item: ItemEntry) => {
@@ -338,12 +338,12 @@ function InventoryEntry({
 
   const handlePlusClick = () => {
     item.quantity.count += 1;
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
 
   const handleMinusClick = () => {
     item.quantity.count -= 1;
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
 
   function ConvertCurrency(cost: number) {
@@ -370,25 +370,8 @@ function InventoryEntry({
 
   const [expanded, setExpanded] = useState<boolean>(false);
 
-  function GetDice() {
-    let dice = item.roll.dice;
-    dice += NaturalWeapon_dice(character, item);
-    dice += NaturalWarrior_dice(character, item);
-    dice += Berserker_dice(character, item);
-    dice += ManAtArms_dice(character, item);
-    dice += SteelThrow_dice(character, item);
-    dice += PolearmMastery_dice(character, item);
-    dice += ShieldFighter_dice(character, item);
-    dice += ArmoredMystic_dice(character, item);
-    dice += Marksman_dice(character, item);
-    dice += TwohandedForce_dice(character, item);
-    dice += Armored_dice(character, item);
-    dice += IronFist_dice(character, item);
-    dice += Robust_dice(character);
-    dice += TwinAttack_dice(character, item);
-    dice += ItemRulesDice(character, item);
-    return dice;
-  }
+  // This is a big function that correct all dice rolls based on the character's abilities
+  const dice = RulesDiceAdjust(character, item);
 
   return (
     <MasterContainer>
@@ -399,14 +382,32 @@ function InventoryEntry({
               color={COLOR}
               key={"2H"}
               onClick={() => {
-                equipHandler(item);
+                browser && gmMode ? AddToLoot() : equipHandler(item);
               }}
               $isequipped={item.equip.equipped}
             >
-              {item.equip.slot === 1 ? "I" : item.equip.slot === 2 ? "II" : ""}
+              {browser && gmMode ? (
+                <FontAwesomeIcon icon={faCoins} style={{ fontSize: "12px" }} />
+              ) : item.equip.slot === 1 ? (
+                "I"
+              ) : item.equip.slot === 2 ? (
+                "II"
+              ) : (
+                ""
+              )}
             </EquipButton>
           ) : (
-            <NoEquipBox key={"unequip"} color={COLOR} />
+            <NoEquipBox
+              key={"unequip"}
+              color={COLOR}
+              onClick={() => {
+                browser && gmMode ? AddToLoot() : null;
+              }}
+            >
+              {browser && gmMode ? (
+                <FontAwesomeIcon icon={faCoins} style={{ fontSize: "12px" }} />
+              ) : null}{" "}
+            </NoEquipBox>
           )}
         </EquipContainer>
         <NameContainer
@@ -465,11 +466,17 @@ function InventoryEntry({
                 character={character}
                 websocket={websocket}
                 roll_type={
-                  IsWeapon(item) ? "damage" : IsArmor(item) ? "armor" : "custom"
+                  IsWeapon(item)
+                    ? "damage"
+                    : item.category === "shield"
+                    ? "damage"
+                    : IsArmor(item)
+                    ? "armor"
+                    : "custom"
                 }
                 roll_source={item.name}
                 isCreature={isCreature}
-                dice={GetDice()}
+                dice={dice}
                 dice_mod={item.roll.mod}
                 color={COLOR}
                 item={item}

@@ -119,6 +119,21 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   permanent_corruption: DESAT_PURPLE,
 
   "general good": COLOR_7,
+
+  Ambrian: COLOR_2,
+  Barbarian: COLOR_2,
+  Elf: COLOR_2,
+  Goblin: COLOR_1,
+  Ogre: COLOR_1,
+  Troll: COLOR_1,
+  Bear: COLOR_4,
+  Boar: COLOR_4,
+  Cat: COLOR_4,
+  Reptile: COLOR_4,
+  Spider: COLOR_3,
+  Spirit: COLOR_3,
+  Undead: COLOR_3,
+  Abomination: COLOR_3,
 };
 
 export const CATEGORY_FILTER = [
@@ -169,15 +184,20 @@ export const DIFFICULTY_FILTER = [
 ];
 
 export const RACE_FILTER = [
-  "Elf",
-  "Troll",
   "Ambrian",
-  "Spider",
-  "Predator",
+  "Barbarian",
+  "Elf",
+  "Goblin",
+  "Ogre",
+  "Troll",
+  "Bear",
+  "Boar",
+  "Cat",
   "Reptile",
-  "Winged Creature",
-  "Abomination",
+  "Spider",
+  "Spirit",
   "Undead",
+  "Abomination",
 ];
 
 export const SPECIAL_WORDS = [
@@ -187,6 +207,12 @@ export const SPECIAL_WORDS = [
   "d6",
   "+d8",
   "d8",
+  "+d10",
+  "d10",
+  "+d12",
+  "d12",
+  "+d20",
+  "d20",
   "corruption",
   "resolute",
   "Quick",

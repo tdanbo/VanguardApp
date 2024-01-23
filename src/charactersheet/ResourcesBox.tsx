@@ -376,7 +376,7 @@ function ResourcesBox({
     character.rations.water = water;
     character.money = money;
 
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
     setIsModalOpen(false);
   };
   return (

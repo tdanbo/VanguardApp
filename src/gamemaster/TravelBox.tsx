@@ -101,10 +101,11 @@ const TravelRightButton = styled.div`
   display: flex;
   flex: 1;
   flex-grow: 1;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  min-width: 50%;
+  max-width: 50%;
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   border-top: 1px solid ${Constants.WIDGET_BORDER};
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
@@ -112,10 +113,7 @@ const TravelRightButton = styled.div`
   border-top-right-radius: ${Constants.BORDER_RADIUS};
   border-bottom-right-radius: ${Constants.BORDER_RADIUS};
   color: ${Constants.WIDGET_SECONDARY_FONT};
-  padding: 10px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
 `;
 
 const TravelLeftButton = styled.div`
@@ -239,6 +237,50 @@ const TooltipButton = styled.div`
   gap: 5px;
   color: ${Constants.WIDGET_SECONDARY_FONT};
   font-size: 11px;
+`;
+
+type DifficultyProps = {
+  color: string;
+  opacity: number;
+};
+
+const EmptyDifficulty = styled.div<DifficultyProps>`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  border-right: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${(props) => props.color};
+  opacity: ${(props) => props.opacity};
+  height: 100%;
+`;
+
+const FilledDifficulty = styled.div<DifficultyProps>`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  border-right: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${(props) => props.color};
+  opacity: ${(props) => props.opacity};
+  height: 100%;
+`;
+
+const DifficultyRatio = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  bordert: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  height: 100%;
+  width: 20px;
 `;
 
 interface TravelBoxProps {
@@ -443,7 +485,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
 
     session.combatlog.push(resting_combat);
 
-    update_session(session, EmptyCharacter, false, websocket);
+    update_session(session, websocket, EmptyCharacter, false);
     handleClose();
   };
 
@@ -452,9 +494,39 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
   const handleChangeDestination = async () => {
     session.travel.distance = newDestination * 20;
 
-    update_session(session, EmptyCharacter, false, websocket);
+    update_session(session, websocket, EmptyCharacter, false);
     handleClose();
   };
+
+  const FightDifficulty = (): number => {
+    let group_xp = 0;
+    let enemy_xp = 0;
+
+    for (const character of session.characters) {
+      group_xp += character.details.xp_earned;
+    }
+
+    for (const creature of session.encounter) {
+      enemy_xp += creature.details.xp_earned;
+    }
+
+    const ratio = (group_xp > 0 ? enemy_xp / group_xp : Infinity) * 12;
+    return Math.round(ratio);
+  };
+
+  const DifficultyColor = (index: number): string => {
+    if (index <= 9) {
+      return Constants.COLOR_4;
+    } else if (index < 20) {
+      return Constants.COLOR_5;
+    } else {
+      return Constants.COLOR_1;
+    }
+  };
+
+  const difficulty = FightDifficulty();
+
+  console.log("Difficulty: " + difficulty);
 
   return (
     <>
@@ -463,12 +535,32 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
           {session.travel.weather.toUpperCase()} {timeOfDay}
         </TravelLeftButton>
         <Divider />
-        <TravelButton>{session.travel.time}:00</TravelButton>
+        <TravelButton>
+          {session.travel.time}:00 DAY {session.travel.day}
+        </TravelButton>
         <Divider />
 
-        <TravelButton>DAY {session.travel.day}</TravelButton>
-        <Divider />
-        <TravelRightButton>ETA {session.travel.distance} KM</TravelRightButton>
+        <TravelButton>ETA {session.travel.distance} KM</TravelButton>
+        <TravelRightButton>
+          {Array.from({ length: 30 }).map((_, index) => {
+            if (index < difficulty) {
+              return (
+                <FilledDifficulty
+                  key={index}
+                  color={DifficultyColor(index)}
+                  opacity={1.0}
+                ></FilledDifficulty>
+              );
+            } else
+              return (
+                <EmptyDifficulty
+                  color={DifficultyColor(index)}
+                  opacity={0.25}
+                ></EmptyDifficulty>
+              );
+          })}
+          <DifficultyRatio>{Math.round(difficulty)}</DifficultyRatio>
+        </TravelRightButton>
       </Container>
       {isModalOpen && (
         <Overlay onClick={handleClose}>

@@ -65,12 +65,12 @@ function DurabilityBox({
       return;
     }
     item.durability = item.durability + 1;
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
 
   const handleSubDurability = () => {
     item.durability = item.durability - 1;
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
   return (
     <Container

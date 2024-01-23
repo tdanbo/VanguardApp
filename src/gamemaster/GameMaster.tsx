@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import { CharacterEntry, SessionEntry } from "../Types";
+import { SessionEntry } from "../Types";
 import ResetCreatureEncounter from "../components/ResetCreatureEncounter";
 import CreatureEncounterSection from "../components/Sections/CreatureEncounterSection";
 import TimeTrackBox from "../gamemaster/TimeTrackBox";
@@ -56,9 +56,6 @@ interface GameMasterProps {
   browserState: number;
   setBrowserState: (value: number) => void;
   gmMode: boolean;
-  creatureEncounter: CharacterEntry[];
-  setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
-  onDeleteCreature: (id: string) => void;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   websocket: Socket;
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
@@ -71,14 +68,8 @@ interface GameMasterProps {
 
 function GameMaster({
   session,
-
-  creatureEncounter,
-
-  setCreatureEncounter,
-  onDeleteCreature,
   setGmMode,
   websocket,
-
   isCreature,
   setIsCreature,
   setCharacterName,
@@ -93,9 +84,6 @@ function GameMaster({
       <DynamicContainer key="container">
         <ScrollColumn width="100%">
           <CreatureEncounterSection
-            encounter={creatureEncounter}
-            setCreatureEncounter={setCreatureEncounter}
-            onDeleteCreature={onDeleteCreature}
             session={session}
             websocket={websocket}
             isCreature={isCreature}
@@ -106,7 +94,7 @@ function GameMaster({
         </ScrollColumn>
       </DynamicContainer>
       <Container height={"30px"}>
-        <ResetCreatureEncounter setCreatureEncounter={setCreatureEncounter} />
+        <ResetCreatureEncounter session={session} websocket={websocket} />
         <TimeTrackBox session={session} websocket={websocket} />
       </Container>
     </>

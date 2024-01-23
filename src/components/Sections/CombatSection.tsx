@@ -70,6 +70,7 @@ function deepCompareCombatEntries(
   array1: CombatEntry[],
   array2: CombatEntry[],
 ) {
+  if (array2.length === 0) return true;
   if (array1 === array2) return true;
   if (array1 == null || array2 == null) return false;
   if (array1.length !== array2.length) return false;
@@ -146,11 +147,6 @@ function CombatSection({
       } else if (
         last_roll.roll_source === "Skill Test" &&
         last_roll.roll_entry.roll === 20
-      ) {
-        playRandomSound(CriticalFailureSounds);
-      } else if (
-        (last_roll.roll_type === "damage" && last_roll.roll_entry.roll === 1) ||
-        (last_roll.roll_type === "armor" && last_roll.roll_entry.roll === 1)
       ) {
         playRandomSound(CriticalFailureSounds);
       } else if (last_roll.roll_type === "resting") {

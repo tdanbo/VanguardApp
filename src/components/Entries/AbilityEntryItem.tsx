@@ -336,7 +336,7 @@ function AbilityEntryItem({
     });
 
     character.stats = update_stats.stats;
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
     if (setInventoryState) {
       setInventoryState(2);
     }
@@ -360,7 +360,7 @@ function AbilityEntryItem({
 
     character.stats = update_stats.stats;
 
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
 
   interface LevelSelectorProps {
@@ -403,7 +403,7 @@ function AbilityEntryItem({
 
       character.stats = update_stats.stats;
 
-      update_session(session, character, isCreature, websocket);
+      update_session(session, websocket, character, isCreature);
     };
 
     const levelIcons: Record<Level, any> = {

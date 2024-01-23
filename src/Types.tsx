@@ -148,6 +148,8 @@ export type SessionEntry = {
   travel: TravelEntry;
   characters: CharacterEntry[];
   combatlog: CombatEntry[];
+  encounter: CharacterEntry[];
+  loot: ItemEntry[];
 };
 
 export interface AbilityRoll {
@@ -282,6 +284,8 @@ export const EmptySession: SessionEntry = {
   },
   characters: [],
   combatlog: [],
+  encounter: [],
+  loot: [],
 };
 
 export const EmptyCharacter: CharacterEntry = {
