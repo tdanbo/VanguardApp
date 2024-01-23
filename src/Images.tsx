@@ -145,6 +145,10 @@ import Dice20Fill from "./assets/icons/dice-d20.png";
 
 import Anvil from "./assets/icons/durability.png";
 
+import Loot from "./assets/icons/loot.png";
+
+export const LootIcon = Loot;
+
 export const Dice6Icon = Dice6;
 export const Dice4Icon = Dice4;
 export const Dice8Icon = Dice8;

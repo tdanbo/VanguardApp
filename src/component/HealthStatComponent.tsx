@@ -165,7 +165,7 @@ function HealthStatComponent({
     if (character.health.damage > 0) {
       character.health.damage -= 1;
     }
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
 
   const handleSubToughness = () => {
@@ -179,7 +179,7 @@ function HealthStatComponent({
     } else {
       character.health.damage += value_step;
     }
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
 
   const maxToughness = GetMaxToughness(character);

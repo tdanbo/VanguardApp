@@ -253,12 +253,15 @@ function StatComponent({
               dice_mod={modValue}
               color={color}
               target={stat_value + modValue}
+              setModValue={setModvalue}
             />
           </DiceContainer>
         </DiceContainerRight>
       </Row>
       <ActiveValue className="value-row" active={active}>
+        {modValue !== 0 ? "* " : ""}
         {toTitleCase(stat_name)}
+        {modValue !== 0 ? " *" : ""}
       </ActiveValue>
       <BottomRow height={"25%"} className="second-row" active={active}>
         <Minus className="button-hover" onClick={handleSubValue}>

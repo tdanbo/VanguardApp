@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { CharacterEntry, SessionEntry, Stat } from "../../Types";
 import EncounterCharacterEntry from "../EncounterCharacterEntry";
 import EncounterCreatureEntry from "../EncounterCreatureEntry";
+import { update_session } from "../../functions/SessionsFunctions";
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
@@ -13,9 +14,6 @@ const Container = styled.div`
 `;
 
 interface EncounterSectionProps {
-  encounter: CharacterEntry[];
-  setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
-  onDeleteCreature: (id: string) => void;
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
@@ -25,9 +23,6 @@ interface EncounterSectionProps {
 }
 
 function CreatureEncounterSection({
-  encounter,
-  setCreatureEncounter,
-  onDeleteCreature,
   session,
   websocket,
   isCreature,
@@ -42,14 +37,14 @@ function CreatureEncounterSection({
   >([]);
 
   useEffect(() => {
-    setCharacterLog(session.characters);
-  }, [encounter, session]);
+    const combined_creatures = [...session.characters, ...session.encounter];
+    setCharacterLog(combined_creatures);
+  }, [session]);
 
   useEffect(() => {
     // Assuming combinedList is already declared and available in this scope
-    const combinedList = [...characterLog, ...encounter];
 
-    const sortedEncounter = combinedList.sort((a, b) => {
+    const sortedEncounter = characterLog.sort((a, b) => {
       // Define a type guard to check if the stats are in the expected format
       const isStatObject = (stat: number | Stat): stat is Stat => {
         return (stat as Stat).value !== undefined;
@@ -81,7 +76,13 @@ function CreatureEncounterSection({
     });
 
     setSortedEncounter(sortedEncounter); // Update the state with the sorted list
-  }, [characterLog, encounter]);
+  }, [characterLog]);
+
+  const onCreatureDelete = (id: string) => {
+    const newEncounter = session.encounter.filter((entry) => entry.id !== id);
+    session.encounter = newEncounter;
+    update_session(session, websocket);
+  };
 
   return (
     <Container>
@@ -98,11 +99,9 @@ function CreatureEncounterSection({
             <EncounterCreatureEntry
               key={entry.name + index}
               creature={entry}
-              onDeleteCreature={() => {
-                onDeleteCreature(entry.id);
+              onCreatureDelete={() => {
+                onCreatureDelete(entry.id);
               }}
-              setCreatureEncounter={setCreatureEncounter}
-              encounter={encounter}
               session={session}
               websocket={websocket}
               isCreature={isCreature}

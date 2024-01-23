@@ -61,7 +61,7 @@ function StorageBox({
       (i) => i.id !== item.id,
     );
     character.inventory = filter_inventory;
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
 
   return (

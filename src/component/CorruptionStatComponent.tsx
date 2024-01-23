@@ -172,7 +172,7 @@ function CorruptionStatComponent({
     } else {
       character.health.corruption += value_step;
     }
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
 
   const handleSubCorruption = () => {
@@ -183,7 +183,7 @@ function CorruptionStatComponent({
     } else {
       character.health.corruption -= value_step;
     }
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
 
   const handleTempAddCorruption = () => {
@@ -200,7 +200,7 @@ function CorruptionStatComponent({
         character.health.shield += 1;
       }
     }
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
 
   const handleTempSubCorruption = () => {
@@ -211,7 +211,7 @@ function CorruptionStatComponent({
     if (character.health.shield < 0) {
       character.health.shield = 0;
     }
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
 
   const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);

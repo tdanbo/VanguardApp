@@ -67,12 +67,16 @@ const ExpandButten = styled.div`
   font-size: 12px;
 `;
 
-const CreatureName = styled.div`
+type CreatureNameColor = {
+  color: string;
+};
+
+const CreatureName = styled.div<CreatureNameColor>`
   align-items: flex-end;
   display: flex;
   flex-grow: 1;
   flex: 1;
-  color: ${Constants.BRIGHT_RED};
+  color: ${(props) => props.color};
   font-size: 15px;
   font-weight: bold;
 `;
@@ -86,15 +90,14 @@ const AbilityDetail = styled.div`
 `;
 
 import { Socket } from "socket.io-client";
-
+import { update_session } from "../../functions/SessionsFunctions";
+import { cloneDeep } from "lodash";
 interface AbilityEntryItemProps {
   session: SessionEntry;
   character: CharacterEntry;
   creature: CharacterEntry;
   browser: boolean;
   setInventoryState?: (inventoryState: number) => void;
-  encounter: CharacterEntry[];
-  setEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   gmMode: boolean;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
@@ -107,8 +110,6 @@ function CreatureEntryItem({
   session,
   character,
   creature,
-  encounter,
-  setEncounter,
   setCharacterName,
   setIsCreature,
   websocket,
@@ -121,7 +122,9 @@ function CreatureEntryItem({
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     for (let i = 0; i < alphabet.length; i++) {
       const candidateName = creature.name + " " + alphabet[i];
-      const exists = encounter.some((enc) => enc.name === candidateName);
+      const exists = session.encounter.some(
+        (enc) => enc.name === candidateName,
+      );
       if (!exists) {
         // If candidateName is unique, return it
         return candidateName;
@@ -132,15 +135,15 @@ function CreatureEntryItem({
   };
 
   const AddEncounterCreature = async () => {
-    const newEncounterCreature: CharacterEntry = {
-      ...creature,
-      name: suffixLetter(),
-      id: uuidv4(),
-    };
+    const new_encounter_creature = cloneDeep(creature);
+    new_encounter_creature.name = suffixLetter();
+    new_encounter_creature.id = uuidv4();
+    new_encounter_creature.health.damage = 0;
 
-    newEncounterCreature.health.damage = 0;
+    console.log("Adding creature to encounter: " + new_encounter_creature.name);
 
-    setEncounter([...encounter, newEncounterCreature]);
+    session.encounter.push(new_encounter_creature);
+    update_session(session, websocket);
     setGmMode(true);
   };
 
@@ -174,6 +177,8 @@ function CreatureEntryItem({
     }
   }, []);
 
+  const color = Constants.TYPE_COLORS[creature.details.race];
+
   return (
     <BaseContainer>
       <Container>
@@ -185,7 +190,7 @@ function CreatureEntryItem({
           />
         </ExpandButten>
         <NameContainer onClick={() => selectCreature()}>
-          <CreatureName>{creature.name}</CreatureName>
+          <CreatureName color={color}>{creature.name}</CreatureName>
           <AbilityDetail>
             {resistance} {creature.details.race}
           </AbilityDetail>

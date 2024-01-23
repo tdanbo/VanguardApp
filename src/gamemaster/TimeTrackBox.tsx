@@ -65,7 +65,7 @@ function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {
     setActiveHour(time); // Set the active hour
     session.travel.time = time;
 
-    update_session(session, EmptyCharacter, false, websocket);
+    update_session(session, websocket, EmptyCharacter, false);
   };
 
   return (

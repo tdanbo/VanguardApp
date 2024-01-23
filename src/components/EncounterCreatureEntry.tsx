@@ -6,7 +6,7 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { mdiSword } from "@mdi/js";
+import { mdiBowArrow, mdiKnife, mdiSpear, mdiSword } from "@mdi/js";
 import Icon from "@mdi/react";
 import { cloneDeep } from "lodash";
 import { memo, useEffect, useState } from "react";
@@ -17,23 +17,10 @@ import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import { GetActives } from "../functions/ActivesFunction";
 import AbilityEntryItem from "./Entries/AbilityEntryItem";
 import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
-import { NaturalWeapon_dice } from "../functions/rules/NaturalWeapon";
-import { NaturalWarrior_dice } from "../functions/rules/NaturalWarrior";
-import { Berserker_dice } from "../functions/rules/Berserker";
-import { ManAtArms_dice } from "../functions/rules/ManAtArms";
-import { SteelThrow_dice } from "../functions/rules/SteelThrow";
-import { PolearmMastery_dice } from "../functions/rules/PolearmMastery";
-import { ShieldFighter_dice } from "../functions/rules/ShieldFighter";
-import { ArmoredMystic_dice } from "../functions/rules/ArmoredMystic";
-import { Marksman_dice } from "../functions/rules/Marksman";
-import { TwohandedForce_dice } from "../functions/rules/TwohandedForce";
-import { Armored_dice } from "../functions/rules/Armored";
-import { IronFist_dice } from "../functions/rules/IronFist";
-import { Robust_dice } from "../functions/rules/Robust";
-import { TwinAttack_dice } from "../functions/rules/TwinAttack";
-import { ItemRulesDice } from "../functions/rules/ItemRulesDice";
-
+import { RulesDiceAdjust } from "../functions/RulesFunctions";
+import { v4 as uuidv4 } from "uuid";
 import { Socket } from "socket.io-client";
+import { update_session } from "../functions/SessionsFunctions";
 
 interface ColorTypeProps {
   $rgb: string;
@@ -111,7 +98,7 @@ const ColorBlock = styled.div<ColorTypeProps>`
   border-radius: ${Constants.BORDER_RADIUS} 0px 0px ${Constants.BORDER_RADIUS};
 `;
 
-const DeleteBlock = styled.div`
+const ControlBlock = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -125,6 +112,18 @@ const DeleteBlock = styled.div`
   justify-content: center;
   align-items: center;
   color: ${Constants.WIDGET_BACKGROUND};
+`;
+
+const DeleteBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 20px;
+  max-width: 20px;
+  height: 100%;
+  margin: 1px 1px 1px 1px;
+  justify-content: center;
+  align-items: center;
 `;
 
 const NameContainer = styled.div`
@@ -288,48 +287,24 @@ const ModifierConverter: Record<number, number> = {
 
 interface EncounterBoxProps {
   creature: CharacterEntry;
-  onDeleteCreature: (creature: CharacterEntry) => void;
-  encounter: CharacterEntry[];
-  setCreatureEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function GetDice(creature: CharacterEntry, item: ItemEntry) {
-  let dice = item.roll.dice;
-  dice += NaturalWeapon_dice(creature, item);
-  dice += NaturalWarrior_dice(creature, item);
-  dice += Berserker_dice(creature, item);
-  dice += ManAtArms_dice(creature, item);
-  dice += SteelThrow_dice(creature, item);
-  dice += PolearmMastery_dice(creature, item);
-  dice += ShieldFighter_dice(creature, item);
-  dice += ArmoredMystic_dice(creature, item);
-  dice += Marksman_dice(creature, item);
-  dice += TwohandedForce_dice(creature, item);
-  dice += Armored_dice(creature, item);
-  dice += IronFist_dice(creature, item);
-  dice += Robust_dice(creature);
-  dice += TwinAttack_dice(creature, item);
-  dice += ItemRulesDice(creature, item);
-  return dice;
+  onCreatureDelete: (id: string) => void;
 }
 
 function EncounterCreatureEntry({
   creature,
-  onDeleteCreature,
-  encounter,
-  setCreatureEncounter,
   session,
   websocket,
   isCreature,
   setGmMode,
   setCharacterName,
   setIsCreature,
+  onCreatureDelete,
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
   const character_actives = GetActives(creatureClone);
@@ -346,19 +321,12 @@ function EncounterCreatureEntry({
 
     // Determine the damage adjustment
     const damageAdjustment = event.button === 0 ? 1 : -1;
-
-    const encounter_clone = [...encounter];
-
     const damage_calc = Math.max(0, currentDamage + damageAdjustment);
 
-    encounter_clone.forEach((encounterCreature) => {
-      if (encounterCreature.id === creature.id) {
-        encounterCreature.health.damage = damage_calc;
-      }
-    });
+    creature.health.damage = currentDamage + damageAdjustment;
 
     setCurrentDamage(damage_calc);
-    setCreatureEncounter(encounter_clone);
+    update_session(session, websocket);
   };
 
   const formatNumber = (num: number): string => {
@@ -426,6 +394,20 @@ function EncounterCreatureEntry({
     "Accurate " +
     ModifierConverter[creatureClone.stats.accurate.value];
 
+  for (const item of creatureClone.inventory) {
+    const dice = RulesDiceAdjust(creatureClone, item);
+    item.roll.dice = dice;
+  }
+
+  const AddItemLoot = () => {
+    for (const item of creature.inventory) {
+      const new_loot_item = cloneDeep(item);
+      new_loot_item.id = uuidv4();
+      session.loot.push(new_loot_item);
+    }
+    update_session(session, websocket);
+  };
+
   return (
     <MainContainer>
       {hp - currentDamage <= 0 && (
@@ -459,7 +441,7 @@ function EncounterCreatureEntry({
             </ActiveStat>
             <ActiveArmorSub>
               <FontAwesomeIcon icon={faShield} />
-              {Math.ceil(GetDice(creature, armor) / 2) + armor.roll.mod}
+              {Math.ceil(armor.roll.dice / 2) + armor.roll.mod}
             </ActiveArmorSub>
           </ActiveBox>
         ))}
@@ -470,7 +452,7 @@ function EncounterCreatureEntry({
             <FontAwesomeIcon icon={faCoins} title={loot} />
           </ActiveSub>
         </NameContainer>
-        {GetWeapons(creatureClone).map((item, index) => {
+        {GetWeapons(creatureClone).map((weapon, index) => {
           return (
             <ActiveBox key={`active-box-${index}`}>
               <ActiveStat
@@ -483,29 +465,44 @@ function EncounterCreatureEntry({
               <ActiveDamageSub>
                 <>
                   {GetAttacks(creature) > 1 &&
-                  item.category !== "ranged weapon" ? (
+                  weapon.category !== "ranged weapon" ? (
                     <>
                       <AttacksStat>2 x</AttacksStat>
                       <Icon
-                        path={mdiSword}
+                        path={
+                          weapon.category === "ranged weapon"
+                            ? mdiBowArrow
+                            : weapon.category === "long weapon"
+                            ? mdiSpear
+                            : weapon.category === "short weapon"
+                            ? mdiKnife
+                            : mdiSword
+                        }
                         size={0.75}
-                        title={item.name}
+                        title={weapon.name}
                         color={Constants.BRIGHT_RED}
                       />
-                      {Math.ceil(GetDice(creature, item) / 2) + item.roll.mod}
+                      {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
                       {" / " +
-                        (Math.ceil(GetDice(creature, item) / 2) +
-                          item.roll.mod)}
+                        (Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod)}
                     </>
                   ) : (
                     <>
                       <Icon
-                        path={mdiSword}
+                        path={
+                          weapon.category === "ranged weapon"
+                            ? mdiBowArrow
+                            : weapon.category === "long weapon"
+                            ? mdiSpear
+                            : weapon.category === "short weapon"
+                            ? mdiKnife
+                            : mdiSword
+                        }
                         size={0.75}
-                        title={item.name}
+                        title={weapon.name}
                         color={Constants.BRIGHT_RED}
                       />
-                      {Math.ceil(GetDice(creature, item) / 2) + item.roll.mod}
+                      {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
                     </>
                   )}
                 </>
@@ -513,9 +510,17 @@ function EncounterCreatureEntry({
             </ActiveBox>
           );
         })}
-        <DeleteBlock onClick={() => onDeleteCreature(creature)}>
-          <FontAwesomeIcon icon={faXmark} />
-        </DeleteBlock>
+        <ControlBlock>
+          <DeleteBlock
+            className={"button-hover"}
+            onClick={() => onCreatureDelete(creatureClone.id)}
+          >
+            <FontAwesomeIcon icon={faXmark} />
+          </DeleteBlock>
+          <DeleteBlock className={"button-hover"} onClick={() => AddItemLoot()}>
+            <FontAwesomeIcon icon={faCoins} />
+          </DeleteBlock>
+        </ControlBlock>
       </Container>
       <AbilityContainer>
         {creatureClone.abilities.map((ability, index) => {

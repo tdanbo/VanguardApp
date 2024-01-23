@@ -38,6 +38,7 @@ type RollComponentProps = {
   item?: ItemEntry;
   isCreature: boolean;
   inactive?: boolean;
+  setModValue?: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const dice_size = "25px";
@@ -139,6 +140,7 @@ function RollComponent({
   websocket,
   isCreature,
   inactive = true,
+  setModValue,
 }: RollComponentProps) {
   let dice_icon = Dice20FillIcon;
   if (dice === 4) {
@@ -220,7 +222,12 @@ function RollComponent({
     session.combatlog.push(NewCombatEntry);
     session.combatlog = session.combatlog.slice(-20);
 
-    update_session(session, character, isCreature, websocket);
+    if (setModValue) {
+      if (!["attack", "defense", "casting", "sneaking"].includes(roll_type))
+        setModValue(0);
+    }
+
+    update_session(session, websocket, character, isCreature);
   };
 
   return (

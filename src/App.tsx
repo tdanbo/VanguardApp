@@ -70,16 +70,6 @@ function App() {
   const [browserState, setBrowserState] = useState(0);
   const [inventoryState, setInventoryState] = useState(1);
 
-  const [creatureEncounter, setCreatureEncounter] = useState<CharacterEntry[]>(
-    [],
-  );
-
-  const onDeleteCreature = (id: string) => {
-    setCreatureEncounter((currentEncounter) =>
-      currentEncounter.filter((creature) => creature.id !== id),
-    );
-  };
-
   useEffect(() => {
     setGmMode(false);
   }, [characterName]);
@@ -112,8 +102,6 @@ function App() {
           websocket={websocket}
           setInventoryState={setInventoryState}
           gmMode={gmMode}
-          encounter={creatureEncounter}
-          setEncounter={setCreatureEncounter}
           setCharacterName={setCharacterName}
           creaturesList={creaturesList}
           setCreaturesList={setCreaturesList}
@@ -133,9 +121,6 @@ function App() {
             browserState={browserState}
             setBrowserState={setBrowserState}
             gmMode={gmMode}
-            creatureEncounter={creatureEncounter}
-            setCreatureEncounter={setCreatureEncounter}
-            onDeleteCreature={onDeleteCreature}
             setGmMode={setGmMode}
             websocket={websocket}
             setSession={setSession}

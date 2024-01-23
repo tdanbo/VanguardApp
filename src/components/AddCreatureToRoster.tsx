@@ -113,7 +113,7 @@ function AddCreatureToRoster({
     character_template.portrait = characterPortrait;
     character_template.id = session.id;
     session.characters.push(character_template);
-    update_session(session, character_template, false, websocket);
+    update_session(session, websocket, character_template, false);
     setIsModalOpen(false);
   };
 

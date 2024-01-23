@@ -1,5 +1,41 @@
 import { CharacterEntry, ItemEntry } from "../Types";
 import { CheckAbility } from "./ActivesFunction";
+import { ItemRulesDice } from "./rules/ItemRulesDice";
+import { NaturalWeapon_dice } from "./rules/NaturalWeapon";
+import { NaturalWarrior_dice } from "./rules/NaturalWarrior";
+import { Berserker_dice } from "./rules/Berserker";
+import { ManAtArms_dice } from "./rules/ManAtArms";
+import { SteelThrow_dice } from "./rules/SteelThrow";
+import { PolearmMastery_dice } from "./rules/PolearmMastery";
+import { ShieldFighter_dice } from "./rules/ShieldFighter";
+import { ArmoredMystic_dice } from "./rules/ArmoredMystic";
+import { Marksman_dice } from "./rules/Marksman";
+import { TwohandedForce_dice } from "./rules/TwohandedForce";
+import { Armored_dice } from "./rules/Armored";
+import { IronFist_dice } from "./rules/IronFist";
+import { Robust_dice } from "./rules/Robust";
+import { TwinAttack_dice } from "./rules/TwinAttack";
+
+export function RulesDiceAdjust(character: CharacterEntry, item: ItemEntry) {
+  let dice = item.roll.dice;
+  dice += NaturalWeapon_dice(character, item);
+  dice += NaturalWarrior_dice(character, item);
+  dice += Berserker_dice(character, item);
+  dice += ManAtArms_dice(character, item);
+  dice += SteelThrow_dice(character, item);
+  dice += PolearmMastery_dice(character, item);
+  dice += ShieldFighter_dice(character, item);
+  dice += ArmoredMystic_dice(character, item);
+  dice += Marksman_dice(character, item);
+  dice += TwohandedForce_dice(character, item);
+  dice += Armored_dice(character, item);
+  dice += IronFist_dice(character, item);
+  dice += Robust_dice(character);
+  dice += TwinAttack_dice(character, item);
+  dice += ItemRulesDice(character, item);
+  return dice;
+}
+
 export function GetMaxSlots(character: CharacterEntry) {
   let max_slots = Math.max(
     Math.ceil(

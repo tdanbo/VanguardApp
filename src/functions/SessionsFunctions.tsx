@@ -10,9 +10,9 @@ export async function get_session(id: string): Promise<SessionEntry> {
 
 export async function update_session(
   session: SessionEntry,
-  character: CharacterEntry,
-  isCreature: boolean,
   websocket: Socket,
+  character?: CharacterEntry,
+  isCreature?: boolean,
 ) {
   // This function is called when the session is updated, and it will proc the broadcast to all users
   console.log("Updating session / Sending Updates To Clients");

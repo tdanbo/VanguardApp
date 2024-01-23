@@ -234,7 +234,7 @@ function CombatEntryItem({
       clearTimeout(timer);
       clearInterval(rollInterval);
     };
-  }, [combatEntry.roll_entry.result]);
+  }, [combatEntry.uuid]);
 
   // const RollEntryColor = getAdjustedColor(EntryColor(), combatEntry.roll_entry.roll);
 

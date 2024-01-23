@@ -111,7 +111,7 @@ function CharacterBox({
       (c: CharacterEntry) => character.name !== c.name,
     );
     session.characters = updated_characters;
-    update_session(session, character, isCreature, websocket);
+    update_session(session, websocket, character, isCreature);
   };
 
   const maxToughness = GetMaxToughness(character);

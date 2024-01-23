@@ -6,6 +6,7 @@ import { API } from "../Constants";
 import BackgroundImage from "../assets/icons/background.jpeg";
 import CreateCharacterComponent from "../components/SelectorPage/CreateCharacterComponent";
 import AbilityFooter from "./AbilityFooter";
+import LootFooter from "./LootFooter";
 import CreatureFooter from "./CreatureFooter";
 import EquipmentFooter from "./EquipmentFooter";
 import { GeneralItem } from "../Types";
@@ -34,6 +35,8 @@ import AbilityEntryItem from "../components/Entries/AbilityEntryItem";
 import CreatureEntryItem from "../components/Entries/CreatureEntryItem";
 import InventoryEntry from "../components/Entries/InventoryEntry";
 import { toTitleCase } from "../functions/UtilityFunctions";
+import { useRef } from "react";
+import { LootIcon } from "../Images";
 
 interface ContainerProps {
   height: string;
@@ -104,6 +107,29 @@ const Button = styled.button<ButtonProps>`
   opacity: ${(props) => (props.$isactive === "true" ? 1 : 0.5)};
 `;
 
+const LootButton = styled.button<ButtonProps>`
+  display: flex;
+  flex-grow: 1;
+  flex: 1;
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: 5px;
+  color: ${(props) =>
+    props.$isactive === "true" ? "white" : Constants.WIDGET_PRIMARY_FONT};
+  cursor: pointer;
+  font-size: 16px;
+  max-width: 40px;
+  justify-content: center;
+  align-items: center;
+  opacity: ${(props) => (props.$isactive === "true" ? 1 : 0.5)};
+  background-image: url(${LootIcon});
+  background-size: 25px;
+  background-position: top 4px center;
+  background-repeat: no-repeat;
+  font-weight: bold;
+  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
+`;
+
 const OverlayStyles = styled.div`
   position: fixed;
   top: 0;
@@ -138,8 +164,6 @@ interface BrowserSectionProps {
   websocket: Socket;
   setInventoryState: (state: number) => void;
   gmMode: boolean;
-  encounter: CharacterEntry[];
-  setEncounter: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   isGm: boolean;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
@@ -161,8 +185,6 @@ function BrowserSection({
   websocket,
   setInventoryState,
   gmMode,
-  encounter,
-  setEncounter,
   setCharacterName,
   isGm,
   setIsCreature,
@@ -264,10 +286,17 @@ function BrowserSection({
         Constants.TYPE_FILTER.indexOf(b.type);
       return categoryComparison;
     } else if (a.entry === "CharacterEntry" && b.entry === "CharacterEntry") {
+      // First, compare by race
       const categoryComparison =
         Constants.RACE_FILTER.indexOf(a.details.race) -
         Constants.RACE_FILTER.indexOf(b.details.race);
 
+      // If races are the same, then compare by xp_earned
+      if (categoryComparison === 0) {
+        return b.details.xp_earned - a.details.xp_earned;
+      }
+
+      // If races are different, return the race comparison
       return categoryComparison;
     }
     // Return a default value in case none of the conditions match.
@@ -298,6 +327,12 @@ function BrowserSection({
   if (categorySelect === "equipment") {
     sortedItemList = filterAndSortItems(
       entryList,
+      "ItemEntry",
+      search,
+    ) as ItemEntry[];
+  } else if (categorySelect === "loot") {
+    sortedItemList = filterAndSortItems(
+      session.loot,
       "ItemEntry",
       search,
     ) as ItemEntry[];
@@ -393,6 +428,14 @@ function BrowserSection({
   };
 
   const [HideBrowser, setHideBrowser] = useState<boolean>(false);
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      const scrollableElement = scrollRef.current as unknown as HTMLElement;
+      scrollableElement.scrollTop = 0;
+    }
+  }, [search, categorySelect, filterType]);
 
   return (
     <>
@@ -434,6 +477,14 @@ function BrowserSection({
                 className="flex-grow"
                 onChange={(e) => setSearch(e.target.value)}
               />
+              {session.loot.length > 0 ? (
+                <LootButton
+                  $isactive={(categorySelect === "loot").toString()}
+                  onClick={() => HandleCategoryChange("loot")}
+                >
+                  {session.loot.length}
+                </LootButton>
+              ) : null}
               <Button
                 $isactive={(categorySelect === "abilities").toString()}
                 onClick={() => HandleCategoryChange("abilities")}
@@ -461,7 +512,7 @@ function BrowserSection({
       {HideBrowser ? (
         <>
           <DynamicContainer>
-            <ScrollColumn width="100%">
+            <ScrollColumn ref={scrollRef} width="100%">
               {sortedItemList.length === 0 ? (
                 categorySelect === "equipment" ? (
                   <InventoryEntry
@@ -524,8 +575,6 @@ function BrowserSection({
                         character={character}
                         creature={entry}
                         browser={true}
-                        encounter={encounter}
-                        setEncounter={setEncounter}
                         gmMode={gmMode}
                         setCharacterName={setCharacterName}
                         setIsCreature={setIsCreature}
@@ -539,7 +588,7 @@ function BrowserSection({
                     return null; // Add a default case if needed
                   }
                 })}
-              {Array.from({ length: 20 }).map((_, index) => {
+              {Array.from({ length: 30 }).map((_, index) => {
                 return <InventoryEntryEmpty key={index} />;
               })}
             </ScrollColumn>
@@ -549,6 +598,12 @@ function BrowserSection({
               <EquipmentFooter setTypeFilter={setFilterType} />
             ) : categorySelect === "abilities" ? (
               <AbilityFooter setTypeFilter={setFilterType} />
+            ) : categorySelect === "loot" ? (
+              <LootFooter
+                gmMode={gmMode}
+                session={session}
+                websocket={websocket}
+              />
             ) : categorySelect == "creatures" ? (
               <CreatureFooter setTypeFilter={setFilterType} />
             ) : null}

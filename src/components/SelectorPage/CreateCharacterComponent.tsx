@@ -305,7 +305,7 @@ function CreateCharacterComponent({
   const handlePostCharacter = async () => {
     if (source === "characterSelect") {
       session.characters.push(NewCharacterEntry);
-      update_session(session, NewCharacterEntry, isCreature, websocket);
+      update_session(session, websocket, NewCharacterEntry, isCreature);
       setCharacterName(NewCharacterEntry.name);
     } else {
       await addNewCreature(NewCharacterEntry);
