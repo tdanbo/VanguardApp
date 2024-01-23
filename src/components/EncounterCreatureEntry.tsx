@@ -21,6 +21,7 @@ import { RulesDiceAdjust } from "../functions/RulesFunctions";
 import { v4 as uuidv4 } from "uuid";
 import { Socket } from "socket.io-client";
 import { update_session } from "../functions/SessionsFunctions";
+import { random } from "lodash";
 
 interface ColorTypeProps {
   $rgb: string;
@@ -401,7 +402,12 @@ function EncounterCreatureEntry({
 
   const AddItemLoot = () => {
     for (const item of creature.inventory) {
+      const did_it_drop = random(1, 2);
+      if (did_it_drop === 1) {
+        continue;
+      }
       const new_loot_item = cloneDeep(item);
+      new_loot_item.equip.equipped = false;
       new_loot_item.id = uuidv4();
       session.loot.push(new_loot_item);
     }
