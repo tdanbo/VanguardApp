@@ -18,8 +18,10 @@ import CharacterSheet from "./charactersheet/CharacterSheet";
 import GameMaster from "./gamemaster/GameMaster";
 
 import BrowserSection from "./BrowserSection/BrowserSection";
+import BrowserHeader from "./BrowserSection/BrowserHeader";
 import JoinComponent from "./components/JoinComponent";
 import useSocketIO from "./socketio";
+import DropsBrowser from "./BrowserSection/DropsBrowser";
 const Row = styled.div`
   display: flex;
   flex-direction: row;
@@ -50,7 +52,7 @@ const SideColumn = styled.div`
 
 function App() {
   // This function is the main function for setting the session.
-
+  const [search, setSearch] = useState("");
   const [session, setSession] = useState<SessionEntry>(EmptySession);
   const [characterName, setCharacterName] = useState<string>("");
   const [creaturesList, setCreaturesList] = useState<CharacterEntry[]>([]);
@@ -83,7 +85,7 @@ function App() {
   // const websocket = useWebSocket(url, setSession);
   const [isConnected, setIsConnected] = useState(false);
   const websocket = useSocketIO(Constants.API, setSession, setIsConnected);
-
+  console.log(categorySelect);
   return (
     <Row>
       {isJoinOpen ? (
@@ -95,7 +97,37 @@ function App() {
         />
       ) : null}
       <SideColumn>
-        <BrowserSection
+        <BrowserHeader
+          session={session}
+          websocket={websocket}
+          setCharacterName={setCharacterName}
+          isGm={isGm}
+          categorySelect={categorySelect}
+          setCategorySelect={setCategorySelect}
+          setSearch={setSearch}
+          // Add the other missing props here
+        />
+        {categorySelect === "drops" ? (
+          <DropsBrowser
+            isGm={isGm}
+            session={session}
+            character={character}
+            websocket={websocket}
+            setInventoryState={setInventoryState}
+            gmMode={gmMode}
+            setCharacterName={setCharacterName}
+            creaturesList={creaturesList}
+            setCreaturesList={setCreaturesList}
+            setIsCreature={setIsCreature}
+            isCreature={isCreature}
+            setGmMode={setGmMode}
+            isConnected={isConnected}
+            categorySelect={categorySelect}
+            setCategorySelect={setCategorySelect}
+            search={search}
+          />
+        ) : null}
+        {/* <BrowserSection
           isGm={isGm}
           session={session}
           character={character}
@@ -111,7 +143,7 @@ function App() {
           isConnected={isConnected}
           categorySelect={categorySelect}
           setCategorySelect={setCategorySelect}
-        />
+        /> */}
       </SideColumn>
       <Column>
         {gmMode ? (

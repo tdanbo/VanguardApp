@@ -10,7 +10,12 @@ import React, { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
-import { CharacterEntry, ItemEntry, SessionEntry } from "../../Types";
+import {
+  CharacterEntry,
+  ItemEntry,
+  LootCategory,
+  SessionEntry,
+} from "../../Types";
 import { RulesDiceAdjust } from "../../functions/RulesFunctions";
 import RollComponent from "../../component/RollComponent";
 import { DeleteInventorySlot } from "../../functions/CharacterFunctions";
@@ -293,14 +298,41 @@ function InventoryEntry({
   const AddToLoot = () => {
     const new_item = cloneDeep(item);
     new_item.id = generateRandomId();
-    session.loot.push(new_item);
+    session.loot.drops.push(new_item);
     update_session(session, websocket, character, isCreature);
   };
 
   const RemoveLootItem = (item: ItemEntry) => {
-    const updatedLoot = session.loot.filter((loot) => loot.id !== item.id);
-    session.loot = updatedLoot;
-    console.log(session.loot);
+    const filtered_drops = session.loot.drops.filter(
+      (loot) => loot.id !== item.id,
+    );
+    const filtered_general = session.loot.general.filter(
+      (loot) => loot.id !== item.id,
+    );
+
+    const filtered_armory = session.loot.armory.filter(
+      (loot) => loot.id !== item.id,
+    );
+
+    const filtered_alchemy = session.loot.alchemy.filter(
+      (loot) => loot.id !== item.id,
+    );
+
+    const filtered_novelty = session.loot.novelty.filter(
+      (loot) => loot.id !== item.id,
+    );
+
+    console.log(filtered_drops);
+    console.log(filtered_general);
+    console.log(filtered_armory);
+    console.log(filtered_alchemy);
+    console.log(filtered_novelty);
+
+    session.loot.drops = filtered_drops;
+    session.loot.general = filtered_general;
+    session.loot.armory = filtered_armory;
+    session.loot.alchemy = filtered_alchemy;
+    session.loot.novelty = filtered_novelty;
   };
 
   const AddInventorySlot = () => {

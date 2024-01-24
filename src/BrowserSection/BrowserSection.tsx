@@ -332,7 +332,7 @@ function BrowserSection({
     ) as ItemEntry[];
   } else if (categorySelect === "loot") {
     sortedItemList = filterAndSortItems(
-      session.loot,
+      session.loot.drops,
       "ItemEntry",
       search,
     ) as ItemEntry[];
@@ -477,12 +477,12 @@ function BrowserSection({
                 className="flex-grow"
                 onChange={(e) => setSearch(e.target.value)}
               />
-              {session.loot.length > 0 ? (
+              {session.loot.drops.length > 0 ? (
                 <LootButton
                   $isactive={(categorySelect === "loot").toString()}
                   onClick={() => HandleCategoryChange("loot")}
                 >
-                  {session.loot.length}
+                  {session.loot.drops.length}
                 </LootButton>
               ) : null}
               <Button

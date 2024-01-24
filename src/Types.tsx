@@ -139,6 +139,17 @@ export type TravelEntry = {
   distance: number;
 };
 
+export type LootCategory =
+  | "drops"
+  | "general"
+  | "armory"
+  | "alchemy"
+  | "novelty";
+
+type Loot = {
+  [key in LootCategory]: ItemEntry[];
+};
+
 export type SessionEntry = {
   name: string;
   id: string;
@@ -149,7 +160,7 @@ export type SessionEntry = {
   characters: CharacterEntry[];
   combatlog: CombatEntry[];
   encounter: CharacterEntry[];
-  loot: ItemEntry[];
+  loot: Loot;
 };
 
 export interface AbilityRoll {
@@ -285,7 +296,7 @@ export const EmptySession: SessionEntry = {
   characters: [],
   combatlog: [],
   encounter: [],
-  loot: [],
+  loot: { drops: [], general: [], armory: [], alchemy: [], novelty: [] },
 };
 
 export const EmptyCharacter: CharacterEntry = {
