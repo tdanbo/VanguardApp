@@ -3,6 +3,7 @@ import {
   faChevronRight,
   faCoins,
   faSkull,
+  faUsers,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,6 +19,7 @@ import { update_session } from "../../functions/SessionsFunctions";
 import {
   IsArmor,
   IsWeapon,
+  ShuffleArray,
   StyledText,
 } from "../../functions/UtilityFunctions";
 import { Qualities } from "../../functions/rules/Qualities";
@@ -206,20 +208,6 @@ const QuantityBox = styled.button<RollBoxProps>`
   width: 40px;
 `;
 
-const BuyBox = styled.button`
-  display: flex;
-  flex-grow: 1;
-  color: #d4ae48;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  margin-left: 2px;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  width: 40px;
-`;
-
 const TypeBox = styled.div`
   display: flex;
   flex-grow: 1;
@@ -272,7 +260,7 @@ interface InventoryEntryProps {
   setInventoryState?: (inventoryState: number) => void;
   gmMode: boolean;
   isCreature: boolean;
-  canBuy?: boolean;
+  canBuy: boolean;
 }
 
 function InventoryEntry({
@@ -313,6 +301,24 @@ function InventoryEntry({
   };
 
   const RemoveLootItem = (item: ItemEntry) => {
+    session.loot.drops = session.loot.drops.filter(
+      (loot) => loot.id !== item.id,
+    );
+    session.loot.general = session.loot.general.filter(
+      (loot) => loot.id !== item.id,
+    );
+    session.loot.armory = session.loot.armory.filter(
+      (loot) => loot.id !== item.id,
+    );
+    session.loot.alchemy = session.loot.alchemy.filter(
+      (loot) => loot.id !== item.id,
+    );
+    session.loot.novelty = session.loot.novelty.filter(
+      (loot) => loot.id !== item.id,
+    );
+  };
+
+  const RemoveBulk = (item: ItemEntry) => {
     const decrementCount = (lootArray: ItemEntry[]) => {
       return lootArray.map((loot) => {
         if (loot.id === item.id && loot.quantity.count > 0) {
@@ -331,28 +337,42 @@ function InventoryEntry({
       session.loot.armory = decrementCount(session.loot.armory);
       session.loot.alchemy = decrementCount(session.loot.alchemy);
       session.loot.novelty = decrementCount(session.loot.novelty);
-    } else {
-      session.loot.drops = session.loot.drops.filter(
-        (loot) => loot.id !== item.id,
-      );
-      session.loot.general = session.loot.general.filter(
-        (loot) => loot.id !== item.id,
-      );
-      session.loot.armory = session.loot.armory.filter(
-        (loot) => loot.id !== item.id,
-      );
-      session.loot.alchemy = session.loot.alchemy.filter(
-        (loot) => loot.id !== item.id,
-      );
-      session.loot.novelty = session.loot.novelty.filter(
-        (loot) => loot.id !== item.id,
-      );
     }
   };
 
+  const createArray = (number: number) => {
+    return Array.from({ length: number }, (_, index) => index);
+  };
+
+  const ShareResource = (item: ItemEntry) => {
+    let bulk = item.quantity.count;
+    let character_index = ShuffleArray(createArray(session.characters.length));
+    console.log(character_index);
+    while (bulk > 0) {
+      for (const index of character_index) {
+        if (bulk <= 0) break; // Stop if no more items to distribute
+        if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
+          session.characters[index].money += item.cost;
+          bulk -= 1;
+        } else if (item.name === "Food") {
+          session.characters[index].rations.food += 1;
+          bulk -= 1;
+        } else if (item.name === "Water") {
+          session.characters[index].rations.water += 1;
+          bulk -= 1;
+        }
+      }
+    }
+    RemoveLootItem(item);
+  };
+
   const AddingBulkItem = (item: ItemEntry) => {
+    if (item.quantity.bulk === false) return false;
     for (const inventory_item of character.inventory) {
-      if (inventory_item.name === item.name) {
+      if (
+        inventory_item.name === item.name &&
+        inventory_item.quantity.count > 0
+      ) {
         inventory_item.quantity.count += 1;
         return true;
       }
@@ -360,7 +380,7 @@ function InventoryEntry({
     return false;
   };
 
-  const AddInventorySlot = (buy: boolean) => {
+  const AddInventorySlot = (buy: boolean, shareItems: boolean) => {
     console.log("Adding Item");
     const inventory = character.inventory;
     if (
@@ -374,7 +394,17 @@ function InventoryEntry({
       if (buy) {
         character.money -= item.cost;
       }
-      RemoveLootItem(item);
+
+      if (item.quantity.bulk === true) {
+        if (shareItems) {
+          ShareResource(item);
+        } else {
+          RemoveBulk(item);
+        }
+      } else {
+        RemoveLootItem(item);
+      }
+
       if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
         character.money += item.cost;
       } else if (item.name === "Food") {
@@ -584,11 +614,6 @@ function InventoryEntry({
               {item.quantity.count}x
             </QuantityBox>
           )}
-          {canBuy && (
-            <BuyBox color={COLOR} onClick={() => AddInventorySlot(true)}>
-              <FontAwesomeIcon icon={faCoins} style={{ fontSize: "12px" }} />
-            </BuyBox>
-          )}
         </RollContainer>
 
         <Column>
@@ -596,14 +621,27 @@ function InventoryEntry({
             <>
               <AddButton
                 className={"button-hover"}
-                onClick={() => AddInventorySlot(false)}
+                onClick={() => AddInventorySlot(canBuy, false)}
               >
                 <FontAwesomeIcon
-                  icon={faChevronRight}
+                  icon={canBuy ? faCoins : faChevronRight}
                   style={{ fontSize: "12px" }}
+                  color={canBuy ? "#f5c542" : Constants.WIDGET_SECONDARY_FONT}
+                  title={canBuy ? "Buy One" : "Add One"}
                 />
               </AddButton>
-              {Array.isArray(item.effect) && item.effect.length > 0 ? (
+              {item.category === "resource" ? (
+                <AddButton
+                  className={"button-hover"}
+                  title={"Distribute to group"}
+                  onClick={() => AddInventorySlot(false, true)}
+                >
+                  <FontAwesomeIcon
+                    icon={faUsers}
+                    style={{ fontSize: "12px" }}
+                  />
+                </AddButton>
+              ) : Array.isArray(item.effect) && item.effect.length > 0 ? (
                 expanded ? (
                   <AddButton className={"button-hover"}>
                     <FontAwesomeIcon

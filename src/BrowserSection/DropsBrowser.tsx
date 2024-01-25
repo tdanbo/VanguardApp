@@ -388,7 +388,7 @@ function DropsBrowser({
                   setInventoryState={setInventoryState}
                   gmMode={gmMode}
                   isCreature={isCreature}
-                  canBuy={true}
+                  canBuy={LootCategory === "town" ? true : false}
                 />
               );
             }

@@ -48,6 +48,7 @@ function InventorySection({
               equipped={""}
               gmMode={false}
               isCreature={isCreature}
+              canBuy={false}
             />
           );
         }

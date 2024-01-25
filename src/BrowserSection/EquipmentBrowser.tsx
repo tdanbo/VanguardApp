@@ -178,6 +178,7 @@ function EquipmentBrowser({
                   setInventoryState={setInventoryState}
                   gmMode={gmMode}
                   isCreature={isCreature}
+                  canBuy={false}
                 />
               );
             }
