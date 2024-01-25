@@ -1,12 +1,12 @@
-import * as Constants from "../Constants";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
+import * as Constants from "../Constants";
 import {
-  ItemEntry,
   AbilityEntry,
   CharacterEntry,
+  ItemEntry,
   SessionEntry,
 } from "../Types";
-import { Socket } from "socket.io-client";
 import RollComponent from "../component/RollComponent";
 
 export function UpperFirstLetter(input: string): string {
@@ -69,6 +69,38 @@ export function ShuffleArray(array: ItemEntry[]) {
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
+}
+
+export function IsAmbrian(item: CharacterEntry): boolean {
+  const categories = ["Ambrian", "Barbarian", "Elf"];
+  if (categories.includes(item.details.race)) {
+    return true;
+  }
+  return false;
+}
+
+export function IsTroll(item: CharacterEntry): boolean {
+  const categories = ["Goblin", "Ogre", "Troll"];
+  if (categories.includes(item.details.race)) {
+    return true;
+  }
+  return false;
+}
+
+export function IsBeast(item: CharacterEntry): boolean {
+  const categories = ["Bear", "Boar", "Cat", "Reptile", "Spider"];
+  if (categories.includes(item.details.race)) {
+    return true;
+  }
+  return false;
+}
+
+export function IsUndead(item: CharacterEntry): boolean {
+  const categories = ["Spirit", "Undead"];
+  if (categories.includes(item.details.race)) {
+    return true;
+  }
+  return false;
 }
 
 export function IsWeapon(item: ItemEntry): boolean {

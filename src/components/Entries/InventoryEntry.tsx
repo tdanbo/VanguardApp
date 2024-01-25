@@ -10,27 +10,21 @@ import React, { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
-import {
-  CharacterEntry,
-  ItemEntry,
-  LootCategory,
-  SessionEntry,
-} from "../../Types";
-import { RulesDiceAdjust } from "../../functions/RulesFunctions";
+import { CharacterEntry, ItemEntry, SessionEntry } from "../../Types";
 import RollComponent from "../../component/RollComponent";
 import { DeleteInventorySlot } from "../../functions/CharacterFunctions";
-import { GetMaxSlots } from "../../functions/RulesFunctions";
+import { GetMaxSlots, RulesDiceAdjust } from "../../functions/RulesFunctions";
 import { update_session } from "../../functions/SessionsFunctions";
 import {
-  StyledText,
   IsArmor,
   IsWeapon,
+  StyledText,
 } from "../../functions/UtilityFunctions";
 import { Qualities } from "../../functions/rules/Qualities";
 
-import { toTitleCase } from "../../functions/UtilityFunctions";
-import DurabilityComponent from "../../component/DurabilityComponent";
 import { cloneDeep } from "lodash";
+import DurabilityComponent from "../../component/DurabilityComponent";
+import { toTitleCase } from "../../functions/UtilityFunctions";
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -212,6 +206,20 @@ const QuantityBox = styled.button<RollBoxProps>`
   width: 40px;
 `;
 
+const BuyBox = styled.button`
+  display: flex;
+  flex-grow: 1;
+  color: #d4ae48;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  margin-left: 2px;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  width: 40px;
+`;
+
 const TypeBox = styled.div`
   display: flex;
   flex-grow: 1;
@@ -264,6 +272,7 @@ interface InventoryEntryProps {
   setInventoryState?: (inventoryState: number) => void;
   gmMode: boolean;
   isCreature: boolean;
+  canBuy?: boolean;
 }
 
 function InventoryEntry({
@@ -277,6 +286,7 @@ function InventoryEntry({
   setInventoryState,
   gmMode,
   isCreature,
+  canBuy,
 }: InventoryEntryProps) {
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
   const generateRandomId = (length = 10) => {
@@ -303,48 +313,82 @@ function InventoryEntry({
   };
 
   const RemoveLootItem = (item: ItemEntry) => {
-    const filtered_drops = session.loot.drops.filter(
-      (loot) => loot.id !== item.id,
-    );
-    const filtered_general = session.loot.general.filter(
-      (loot) => loot.id !== item.id,
-    );
+    const decrementCount = (lootArray: ItemEntry[]) => {
+      return lootArray.map((loot) => {
+        if (loot.id === item.id && loot.quantity.count > 0) {
+          return {
+            ...loot,
+            quantity: { ...loot.quantity, count: loot.quantity.count - 1 },
+          };
+        }
+        return loot;
+      });
+    };
 
-    const filtered_armory = session.loot.armory.filter(
-      (loot) => loot.id !== item.id,
-    );
-
-    const filtered_alchemy = session.loot.alchemy.filter(
-      (loot) => loot.id !== item.id,
-    );
-
-    const filtered_novelty = session.loot.novelty.filter(
-      (loot) => loot.id !== item.id,
-    );
-
-    console.log(filtered_drops);
-    console.log(filtered_general);
-    console.log(filtered_armory);
-    console.log(filtered_alchemy);
-    console.log(filtered_novelty);
-
-    session.loot.drops = filtered_drops;
-    session.loot.general = filtered_general;
-    session.loot.armory = filtered_armory;
-    session.loot.alchemy = filtered_alchemy;
-    session.loot.novelty = filtered_novelty;
+    if (item.quantity.bulk === true && item.quantity.count > 1) {
+      item.quantity.count -= 1;
+      session.loot.general = decrementCount(session.loot.general);
+      session.loot.armory = decrementCount(session.loot.armory);
+      session.loot.alchemy = decrementCount(session.loot.alchemy);
+      session.loot.novelty = decrementCount(session.loot.novelty);
+    } else {
+      session.loot.drops = session.loot.drops.filter(
+        (loot) => loot.id !== item.id,
+      );
+      session.loot.general = session.loot.general.filter(
+        (loot) => loot.id !== item.id,
+      );
+      session.loot.armory = session.loot.armory.filter(
+        (loot) => loot.id !== item.id,
+      );
+      session.loot.alchemy = session.loot.alchemy.filter(
+        (loot) => loot.id !== item.id,
+      );
+      session.loot.novelty = session.loot.novelty.filter(
+        (loot) => loot.id !== item.id,
+      );
+    }
   };
 
-  const AddInventorySlot = () => {
+  const AddingBulkItem = (item: ItemEntry) => {
+    for (const inventory_item of character.inventory) {
+      if (inventory_item.name === item.name) {
+        inventory_item.quantity.count += 1;
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const AddInventorySlot = (buy: boolean) => {
     console.log("Adding Item");
     const inventory = character.inventory;
-    if (inventory.length === GetMaxSlots(character) * 2) {
-      console.log("You can't carry any more items!");
+    if (
+      inventory.length === GetMaxSlots(character) * 2 ||
+      (buy && character.money < item.cost)
+    ) {
+      console.log(
+        "You can't carry any more items! Or you don't have enough money!",
+      );
     } else {
+      if (buy) {
+        character.money -= item.cost;
+      }
       RemoveLootItem(item);
-      const new_item = cloneDeep(item);
-      new_item.id = generateRandomId();
-      inventory.push(new_item);
+      if (["Thaler", "Shilling", "Ortheg"].includes(item.name)) {
+        character.money += item.cost;
+      } else if (item.name === "Food") {
+        character.rations.food += 1;
+      } else if (item.name === "Water") {
+        character.rations.water += 1;
+      } else {
+        if (!AddingBulkItem(item)) {
+          const new_item = cloneDeep(item);
+          new_item.id = generateRandomId();
+          new_item.quantity.count = 1;
+          inventory.push(new_item);
+        }
+      }
     }
     update_session(session, websocket, character, isCreature);
     if (setInventoryState) {
@@ -540,6 +584,11 @@ function InventoryEntry({
               {item.quantity.count}x
             </QuantityBox>
           )}
+          {canBuy && (
+            <BuyBox color={COLOR} onClick={() => AddInventorySlot(true)}>
+              <FontAwesomeIcon icon={faCoins} style={{ fontSize: "12px" }} />
+            </BuyBox>
+          )}
         </RollContainer>
 
         <Column>
@@ -547,7 +596,7 @@ function InventoryEntry({
             <>
               <AddButton
                 className={"button-hover"}
-                onClick={() => AddInventorySlot()}
+                onClick={() => AddInventorySlot(false)}
               >
                 <FontAwesomeIcon
                   icon={faChevronRight}

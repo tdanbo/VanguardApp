@@ -1,37 +1,25 @@
 import styled from "styled-components";
 
-import BrowserHeader from "./BrowserHeader";
-import axios from "axios";
-import { Socket } from "socket.io-client";
-import { API } from "../Constants";
-import BackgroundImage from "../assets/icons/background.jpeg";
-import { random } from "lodash";
-import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 import {
   faChessRook,
   faCoins,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import { random } from "lodash";
 import { useEffect } from "react";
+import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import {
-  AbilityEntry,
-  CharacterEntry,
-  CreatureEntry,
-  ItemEntry,
-  SessionEntry,
-} from "../Types";
+import { API } from "../Constants";
+import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
+import BackgroundImage from "../assets/icons/background.jpeg";
+import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 
-import { useState } from "react";
-import AbilityEntryItem from "../components/Entries/AbilityEntryItem";
-import CreatureEntryItem from "../components/Entries/CreatureEntryItem";
-import InventoryEntry from "../components/Entries/InventoryEntry";
-import { toTitleCase } from "../functions/UtilityFunctions";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { LootIcon } from "../Images";
+import InventoryEntry from "../components/Entries/InventoryEntry";
 import { update_session } from "../functions/SessionsFunctions";
-import { ShuffleArray } from "../functions/UtilityFunctions";
 
 interface ContainerProps {
   height: string;
@@ -250,21 +238,13 @@ const CategoryInput = styled.div`
 `;
 
 interface BrowserSectionProps {
-  session: SessionEntry;
   character: CharacterEntry;
+  session: SessionEntry;
   websocket: Socket;
   setInventoryState: (state: number) => void;
   gmMode: boolean;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   isGm: boolean;
-  setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
-  creaturesList: CharacterEntry[];
-  setCreaturesList: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   isCreature: boolean;
-  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
-  isConnected: boolean;
-  categorySelect: string;
-  setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
   search: string;
 }
 
@@ -390,8 +370,8 @@ function DropsBrowser({
       let drop = false;
       let drop_chance = 0;
       const drop_roll = random(1, 100);
-      if (item.category === "resource") {
-        drop_chance = 0;
+      if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
+        drop_chance = 75;
       } else if (item.type === "normal") {
         drop_chance = 0.625 * rarity;
       } else if (item.type === "quality") {
@@ -511,6 +491,7 @@ function DropsBrowser({
                   setInventoryState={setInventoryState}
                   gmMode={gmMode}
                   isCreature={isCreature}
+                  canBuy={true}
                 />
               );
             }

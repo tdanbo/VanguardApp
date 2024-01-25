@@ -15,10 +15,10 @@ import * as Constants from "../Constants";
 
 import { LootIcon } from "../Images";
 
-import { CharacterEntry, SessionEntry } from "../Types";
 import { Socket } from "socket.io-client";
+import { SessionEntry } from "../Types";
 
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 
 interface ContainerProps {
   height: string;
@@ -148,6 +148,8 @@ interface BrowserHeaderProps {
   categorySelect: string;
   setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
+  HideBrowser: boolean;
+  setHideBrowser: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function BrowserHeader({
@@ -158,6 +160,8 @@ function BrowserHeader({
   categorySelect,
   setCategorySelect,
   setSearch,
+  HideBrowser,
+  setHideBrowser,
 }: BrowserHeaderProps) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -169,7 +173,6 @@ function BrowserHeader({
     setIsModalOpen(false);
   };
 
-  const [HideBrowser, setHideBrowser] = useState<boolean>(false);
   const scrollRef = useRef(null);
   const [addAdjust, setAddAdjust] = useState(0);
   const [deleteAdjust, setDeleteAdjust] = useState(0);

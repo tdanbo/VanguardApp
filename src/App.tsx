@@ -6,22 +6,24 @@ import * as Constants from "./Constants";
 
 import { useEffect, useRef, useState } from "react";
 
+import PartySection from "./BrowserSection/PartySection";
 import {
   CharacterEntry,
   EmptyCharacter,
   EmptySession,
   SessionEntry,
 } from "./Types";
-import CombatSection from "./components/Sections/CombatSection";
-import PartySection from "./BrowserSection/PartySection";
 import CharacterSheet from "./charactersheet/CharacterSheet";
+import CombatSection from "./components/Sections/CombatSection";
 import GameMaster from "./gamemaster/GameMaster";
 
-import BrowserSection from "./BrowserSection/BrowserSection";
+import AbilityBrowser from "./BrowserSection/AbilityBrowser";
 import BrowserHeader from "./BrowserSection/BrowserHeader";
+import CreatureBrowser from "./BrowserSection/CreatureBrowser";
+import DropsBrowser from "./BrowserSection/DropsBrowser";
+import EquipmentBrowser from "./BrowserSection/EquipmentBrowser";
 import JoinComponent from "./components/JoinComponent";
 import useSocketIO from "./socketio";
-import DropsBrowser from "./BrowserSection/DropsBrowser";
 const Row = styled.div`
   display: flex;
   flex-direction: row;
@@ -61,6 +63,7 @@ function App() {
   const [gmMode, setGmMode] = useState<boolean>(false);
   const [isJoinOpen, setisJoinOpen] = useState<boolean>(true);
   const [categorySelect, setCategorySelect] = useState<string>("equipment");
+  const [HideBrowser, setHideBrowser] = useState<boolean>(false);
   const url = Constants.WEBSOCKET + session.id;
 
   const character = isCreature
@@ -105,9 +108,11 @@ function App() {
           categorySelect={categorySelect}
           setCategorySelect={setCategorySelect}
           setSearch={setSearch}
+          HideBrowser={HideBrowser}
+          setHideBrowser={setHideBrowser}
           // Add the other missing props here
         />
-        {categorySelect === "drops" ? (
+        {categorySelect === "drops" && HideBrowser ? (
           <DropsBrowser
             isGm={isGm}
             session={session}
@@ -115,16 +120,38 @@ function App() {
             websocket={websocket}
             setInventoryState={setInventoryState}
             gmMode={gmMode}
-            setCharacterName={setCharacterName}
-            creaturesList={creaturesList}
-            setCreaturesList={setCreaturesList}
-            setIsCreature={setIsCreature}
             isCreature={isCreature}
-            setGmMode={setGmMode}
-            isConnected={isConnected}
-            categorySelect={categorySelect}
-            setCategorySelect={setCategorySelect}
             search={search}
+          />
+        ) : categorySelect === "equipment" && HideBrowser ? (
+          <EquipmentBrowser
+            session={session}
+            character={character}
+            websocket={websocket}
+            setInventoryState={setInventoryState}
+            gmMode={gmMode}
+            isCreature={isCreature}
+            search={search}
+          />
+        ) : categorySelect === "abilities" && HideBrowser ? (
+          <AbilityBrowser
+            session={session}
+            character={character}
+            websocket={websocket}
+            setInventoryState={setInventoryState}
+            isCreature={isCreature}
+            search={search}
+          />
+        ) : categorySelect === "creatures" && HideBrowser ? (
+          <CreatureBrowser
+            session={session}
+            character={character}
+            websocket={websocket}
+            search={search}
+            gmMode={gmMode}
+            setGmMode={setGmMode}
+            setCharacterName={setCharacterName}
+            setIsCreature={setIsCreature}
           />
         ) : null}
         {/* <BrowserSection
