@@ -375,7 +375,7 @@ function InventoryEntry({
         character.money -= item.cost;
       }
       RemoveLootItem(item);
-      if (["Thaler", "Shilling", "Ortheg"].includes(item.name)) {
+      if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
         character.money += item.cost;
       } else if (item.name === "Food") {
         character.rations.food += 1;
