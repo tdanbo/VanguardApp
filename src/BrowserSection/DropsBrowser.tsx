@@ -13,11 +13,9 @@ import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
 import { API } from "../Constants";
 import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
-import BackgroundImage from "../assets/icons/background.jpeg";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 
 import { useRef, useState } from "react";
-import { LootIcon } from "../Images";
 import InventoryEntry from "../components/Entries/InventoryEntry";
 import { update_session } from "../functions/SessionsFunctions";
 
@@ -34,28 +32,9 @@ const FooterContainer = styled.div<ContainerProps>`
   max-height: ${(props) => props.height};
 `;
 
-const Container = styled.div<ContainerProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: ${(props) => props.height};
-  max-height: ${(props) => props.height};
-  justify-content: flex-end;
-`;
-
 interface DivProps {
   width: string;
 }
-
-const ExpandRow = styled.div<DivProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-`;
 
 const DynamicContainer = styled.div`
   display: flex;
@@ -63,81 +42,6 @@ const DynamicContainer = styled.div`
   flex-grow: 1;
   gap: ${Constants.WIDGET_GAB};
   height: 0px; /* or another fixed value */
-`;
-
-const Input = styled.input`
-  display: flex;
-  flex-grow: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: ${Constants.BORDER_RADIUS};
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  font-weight: bold;
-  text-align: center;
-`;
-
-interface ButtonProps {
-  $isactive: string;
-}
-
-const Button = styled.button<ButtonProps>`
-  display: flex;
-  flex-grow: 1;
-  flex: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: 5px;
-  color: ${(props) =>
-    props.$isactive === "true"
-      ? Constants.WIDGET_SECONDARY_FONT
-      : Constants.WIDGET_PRIMARY_FONT};
-  cursor: pointer;
-  font-size: 16px;
-  max-width: 40px;
-  justify-content: center;
-  align-items: center;
-  opacity: ${(props) => (props.$isactive === "true" ? 1 : 0.5)};
-`;
-
-const LootButton = styled.button<ButtonProps>`
-  display: flex;
-  flex-grow: 1;
-  flex: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: 5px;
-  color: ${(props) =>
-    props.$isactive === "true" ? "white" : Constants.WIDGET_PRIMARY_FONT};
-  cursor: pointer;
-  font-size: 16px;
-  max-width: 40px;
-  justify-content: center;
-  align-items: center;
-  opacity: ${(props) => (props.$isactive === "true" ? 1 : 0.5)};
-  background-image: url(${LootIcon});
-  background-size: 25px;
-  background-position: top 4px center;
-  background-repeat: no-repeat;
-  font-weight: bold;
-  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
-`;
-
-const OverlayStyles = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: linear-gradient(rgba(7, 9, 11, 0.95), rgba(7, 9, 11, 0.95)),
-    url(${BackgroundImage});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 999;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 const ScrollColumn = styled.div<DivProps>`
@@ -183,12 +87,6 @@ const CategoryButton = styled.button`
 const Row = styled.div`
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
-`;
-
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
   flex-grow: 1;
 `;
 
@@ -279,7 +177,6 @@ function CategoryButtonComponent({
   const AddItemToDrops = () => {
     const sorted_items = [...items].sort(sortShoppingList);
     session.loot.drops = sorted_items;
-    // session.loot.drops.push(...sorted_items);
     update_session(session, websocket);
   };
 

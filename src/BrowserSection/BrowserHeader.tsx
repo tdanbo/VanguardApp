@@ -18,7 +18,7 @@ import { LootIcon } from "../Images";
 import { Socket } from "socket.io-client";
 import { SessionEntry } from "../Types";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 interface ContainerProps {
   height: string;
@@ -45,14 +45,6 @@ const ExpandRow = styled.div<DivProps>`
   flex-basis: 0;
   gap: ${Constants.WIDGET_GAB};
   max-width: ${(props) => props.width};
-`;
-
-const DynamicContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: 0px; /* or another fixed value */
 `;
 
 const Input = styled.input`
@@ -130,16 +122,6 @@ const OverlayStyles = styled.div`
   align-items: center;
 `;
 
-const ScrollColumn = styled.div<DivProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-  overflow-y: scroll;
-`;
-
 interface BrowserHeaderProps {
   session: SessionEntry;
   websocket: Socket;
@@ -173,11 +155,9 @@ function BrowserHeader({
     setIsModalOpen(false);
   };
 
-  const scrollRef = useRef(null);
-  const [addAdjust, setAddAdjust] = useState(0);
-  const [deleteAdjust, setDeleteAdjust] = useState(0);
+  const [_addAdjust, setAddAdjust] = useState(0);
 
-  const [filterType, setFilterType] = useState("all");
+  const [_filterType, setFilterType] = useState("all");
 
   const HandleCategoryChange = (category: string) => {
     setCategorySelect(category);

@@ -95,7 +95,7 @@ function CreatureBrowser({
   const [entryList, setEntryList] = useState<CharacterEntry[]>([]);
   const [filteredEntry, setFilteredEntry] = useState<CharacterEntry[]>([]);
   const [LootCategory, setLootCategory] = useState<LootCategoryType>("all");
-  const [deleteAdjust, setDeleteAdjust] = useState(0);
+  const [_deleteAdjust, setDeleteAdjust] = useState(0);
   const sortList = (a: CharacterEntry, b: CharacterEntry) => {
     const categoryComparison =
       Constants.RACE_FILTER.indexOf(a.details.race) -

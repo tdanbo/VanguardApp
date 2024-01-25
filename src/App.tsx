@@ -57,7 +57,7 @@ function App() {
   const [search, setSearch] = useState("");
   const [session, setSession] = useState<SessionEntry>(EmptySession);
   const [characterName, setCharacterName] = useState<string>("");
-  const [creaturesList, setCreaturesList] = useState<CharacterEntry[]>([]);
+  const [creaturesList] = useState<CharacterEntry[]>([]);
   const [isCreature, setIsCreature] = useState<boolean>(false);
   const [isGm, setIsGm] = useState<boolean>(false);
   const [gmMode, setGmMode] = useState<boolean>(false);
