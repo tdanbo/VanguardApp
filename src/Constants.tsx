@@ -98,6 +98,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   sneaking: COLOR_4,
   tool: COLOR_4,
 
+  resource: COLOR_5,
   treasure: COLOR_5,
   boon: COLOR_5,
   test: COLOR_5,
@@ -162,6 +163,7 @@ export const CATEGORY_FILTER = [
   "tool",
   "general good",
   "container",
+  "resource",
 ];
 
 export const TYPE_FILTER = [

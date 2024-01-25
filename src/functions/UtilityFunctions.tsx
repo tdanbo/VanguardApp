@@ -1,12 +1,12 @@
-import * as Constants from "../Constants";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
+import * as Constants from "../Constants";
 import {
-  ItemEntry,
   AbilityEntry,
   CharacterEntry,
+  ItemEntry,
   SessionEntry,
 } from "../Types";
-import { Socket } from "socket.io-client";
 import RollComponent from "../component/RollComponent";
 
 export function UpperFirstLetter(input: string): string {
@@ -58,6 +58,46 @@ export function IsArmor(item: ItemEntry): boolean {
     "armor accessory",
   ];
   if (armor_categories.includes(item.category)) {
+    return true;
+  }
+  return false;
+}
+
+export function ShuffleArray(array: ItemEntry[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+export function IsAmbrian(item: CharacterEntry): boolean {
+  const categories = ["Ambrian", "Barbarian", "Elf"];
+  if (categories.includes(item.details.race)) {
+    return true;
+  }
+  return false;
+}
+
+export function IsTroll(item: CharacterEntry): boolean {
+  const categories = ["Goblin", "Ogre", "Troll"];
+  if (categories.includes(item.details.race)) {
+    return true;
+  }
+  return false;
+}
+
+export function IsBeast(item: CharacterEntry): boolean {
+  const categories = ["Bear", "Boar", "Cat", "Reptile", "Spider"];
+  if (categories.includes(item.details.race)) {
+    return true;
+  }
+  return false;
+}
+
+export function IsUndead(item: CharacterEntry): boolean {
+  const categories = ["Spirit", "Undead"];
+  if (categories.includes(item.details.race)) {
     return true;
   }
   return false;

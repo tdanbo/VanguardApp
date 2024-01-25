@@ -112,7 +112,7 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
     characters: [],
     combatlog: [],
     encounter: [],
-    loot: [],
+    loot: { drops: [], general: [], armory: [], alchemy: [], novelty: [] },
     state: uuidv4(),
   };
 

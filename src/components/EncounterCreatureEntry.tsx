@@ -409,7 +409,7 @@ function EncounterCreatureEntry({
       const new_loot_item = cloneDeep(item);
       new_loot_item.equip.equipped = false;
       new_loot_item.id = uuidv4();
-      session.loot.push(new_loot_item);
+      session.loot.drops.push(new_loot_item);
     }
     update_session(session, websocket);
   };

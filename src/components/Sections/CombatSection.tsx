@@ -8,9 +8,6 @@ import * as Constants from "../../Constants";
 type DivProps = {
   width: string;
 };
-interface ContainerProps {
-  height: string;
-}
 
 const DynamicContainer = styled.div`
   display: flex;
@@ -19,6 +16,10 @@ const DynamicContainer = styled.div`
   gap: ${Constants.WIDGET_GAB};
   height: 0px; /* or another fixed value */
 `;
+
+interface ContainerProps {
+  height: string;
+}
 
 const Container = styled.div<ContainerProps>`
   display: flex;
