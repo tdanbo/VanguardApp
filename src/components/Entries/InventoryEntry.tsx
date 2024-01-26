@@ -19,14 +19,13 @@ import { update_session } from "../../functions/SessionsFunctions";
 import {
   IsArmor,
   IsWeapon,
-  ShuffleArray,
   StyledText,
 } from "../../functions/UtilityFunctions";
 import { Qualities } from "../../functions/rules/Qualities";
 
 import { cloneDeep } from "lodash";
 import DurabilityComponent from "../../component/DurabilityComponent";
-import { toTitleCase } from "../../functions/UtilityFunctions";
+import { ShuffleArray, toTitleCase } from "../../functions/UtilityFunctions";
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -318,7 +317,7 @@ function InventoryEntry({
     );
   };
 
-  const RemoveBulk = (item: ItemEntry) => {
+  const RemoveBulkItem = (item: ItemEntry) => {
     const decrementCount = (lootArray: ItemEntry[]) => {
       return lootArray.map((loot) => {
         if (loot.id === item.id && loot.quantity.count > 0) {
@@ -337,6 +336,8 @@ function InventoryEntry({
       session.loot.armory = decrementCount(session.loot.armory);
       session.loot.alchemy = decrementCount(session.loot.alchemy);
       session.loot.novelty = decrementCount(session.loot.novelty);
+    } else {
+      RemoveLootItem(item);
     }
   };
 
@@ -344,43 +345,90 @@ function InventoryEntry({
     return Array.from({ length: number }, (_, index) => index);
   };
 
-  const ShareResource = (item: ItemEntry) => {
-    let bulk = item.quantity.count;
-    let character_index = ShuffleArray(createArray(session.characters.length));
-    console.log(character_index);
-    while (bulk > 0) {
-      for (const index of character_index) {
-        if (bulk <= 0) break; // Stop if no more items to distribute
-        if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
-          session.characters[index].money += item.cost;
-          bulk -= 1;
-        } else if (item.name === "Food") {
-          session.characters[index].rations.food += 1;
-          bulk -= 1;
-        } else if (item.name === "Water") {
-          session.characters[index].rations.water += 1;
-          bulk -= 1;
+  const AddResource = (item: ItemEntry, buy: boolean, share: boolean) => {
+    if (share) {
+      let bulk = item.quantity.count;
+      let character_index = ShuffleArray(
+        createArray(session.characters.length),
+      );
+      while (bulk > 0) {
+        for (const index of character_index) {
+          if (bulk <= 0) break; // Stop if no more items to distribute
+          if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
+            session.characters[index].money += item.cost;
+            bulk -= 1;
+          } else if (item.name === "Food") {
+            session.characters[index].rations.food += 1;
+            bulk -= 1;
+          } else if (item.name === "Water") {
+            session.characters[index].rations.water += 1;
+            bulk -= 1;
+          }
         }
       }
-    }
-    RemoveLootItem(item);
-  };
-
-  const AddingBulkItem = (item: ItemEntry) => {
-    if (item.quantity.bulk === false) return false;
-    for (const inventory_item of character.inventory) {
-      if (
-        inventory_item.name === item.name &&
-        inventory_item.quantity.count > 0
-      ) {
-        inventory_item.quantity.count += 1;
-        return true;
+      RemoveLootItem(item);
+    } else {
+      if (!CheckBuy(item, buy)) {
+        return;
+      }
+      RemoveBulkItem(item);
+      if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
+        character.money += item.cost;
+      } else if (item.name === "Food") {
+        character.rations.food += 1;
+      } else if (item.name === "Water") {
+        character.rations.water += 1;
       }
     }
-    return false;
   };
 
-  const AddInventorySlot = (buy: boolean, shareItems: boolean) => {
+  const AddBulkItem = (item: ItemEntry, buy: boolean) => {
+    if (!CheckBuy(item, buy)) {
+      return;
+    }
+
+    const inventoryItem = character.inventory.find(
+      (inventory_item) =>
+        inventory_item.name === item.name &&
+        inventory_item.quantity.bulk === true,
+    );
+
+    if (inventoryItem) {
+      RemoveBulkItem(item);
+      inventoryItem.quantity.count += 1;
+    } else {
+      RemoveBulkItem(item);
+      const new_item = cloneDeep(item);
+      new_item.id = generateRandomId();
+      new_item.quantity.count = 1;
+      character.inventory.push(new_item);
+    }
+  };
+
+  const CheckBuy = (item: ItemEntry, buy: boolean) => {
+    if (buy) {
+      if (character.money < item.cost) {
+        console.log("You don't have enough money!");
+        return false;
+      }
+      character.money -= item.cost;
+      return true;
+    }
+    return true;
+  };
+
+  const AddRegularItem = (item: ItemEntry, buy: boolean) => {
+    if (!CheckBuy(item, buy)) {
+      return;
+    }
+    RemoveLootItem(item);
+    const new_item = cloneDeep(item);
+    new_item.id = generateRandomId();
+    new_item.quantity.count = 1;
+    character.inventory.push(new_item);
+  };
+
+  const AddInventorySlot = (buy: boolean, share: boolean) => {
     console.log("Adding Item");
     const inventory = character.inventory;
     if (
@@ -390,36 +438,17 @@ function InventoryEntry({
       console.log(
         "You can't carry any more items! Or you don't have enough money!",
       );
-    } else {
-      if (buy) {
-        character.money -= item.cost;
-      }
-
-      if (item.quantity.bulk === true) {
-        if (shareItems) {
-          ShareResource(item);
-        } else {
-          RemoveBulk(item);
-        }
-      } else {
-        RemoveLootItem(item);
-      }
-
-      if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
-        character.money += item.cost;
-      } else if (item.name === "Food") {
-        character.rations.food += 1;
-      } else if (item.name === "Water") {
-        character.rations.water += 1;
-      } else {
-        if (!AddingBulkItem(item)) {
-          const new_item = cloneDeep(item);
-          new_item.id = generateRandomId();
-          new_item.quantity.count = 1;
-          inventory.push(new_item);
-        }
-      }
+      return;
     }
+
+    if (item.category === "resource") {
+      AddResource(item, buy, share);
+    } else if (item.quantity.bulk === true) {
+      AddBulkItem(item, buy);
+    } else {
+      AddRegularItem(item, buy);
+    }
+
     update_session(session, websocket, character, isCreature);
     if (setInventoryState) {
       setInventoryState(1);

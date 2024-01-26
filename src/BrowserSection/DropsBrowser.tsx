@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import {
-  faChessRook,
+  faChevronRight,
   faCoins,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
@@ -469,8 +469,13 @@ function DropsBrowser({
                 }}
               >
                 <FontAwesomeIcon
-                  icon={LootCategory === "town" ? faChessRook : faCoins}
+                  icon={LootCategory === "town" ? faCoins : faChevronRight}
                   size={"lg"}
+                  color={
+                    LootCategory === "town"
+                      ? "#f5c542"
+                      : Constants.WIDGET_SECONDARY_FONT
+                  }
                 />
               </CategoryInput>
             </Row>
