@@ -7,18 +7,18 @@ const Container = styled.div`
   flex-grow: 1;
   flex-direction: row;
   align-items: center;
+  justify-content: right;
   font-size: clamp(1px, ${Constants.VW}, 30px);
   font-weight: bold;
   color: ${Constants.WIDGET_PRIMARY_FONT};
-  width: 50%;
 `;
 
-interface CharacterNameBoxProps {
+interface CharacterRaceBoxProps {
   character: CharacterEntry;
 }
 
-function CharacterNameBox({ character }: CharacterNameBoxProps) {
-  return <Container>{character.name}</Container>;
+function CharacterRaceBox({ character }: CharacterRaceBoxProps) {
+  return <Container>{character.details.race}</Container>;
 }
 
-export default CharacterNameBox;
+export default CharacterRaceBox;

@@ -51,6 +51,7 @@ export const COLOR_4 = "#616647";
 export const COLOR_5 = "#926933";
 export const COLOR_6 = "#924933";
 export const COLOR_7 = "#808080";
+export const COLOR_8 = "#aba698";
 
 // Original Palette
 // export const COLOR_1 = "#604949";
@@ -97,10 +98,12 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   container: COLOR_4,
   sneaking: COLOR_4,
   tool: COLOR_4,
+  "monsterous trait": COLOR_4,
+  poison: COLOR_4,
 
   resource: COLOR_5,
   treasure: COLOR_5,
-  boon: COLOR_5,
+  utility: COLOR_5,
   test: COLOR_5,
   skill_test: COLOR_5,
   vigilant: COLOR_5,
@@ -114,8 +117,6 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   ritual: COLOR_5,
   trait: COLOR_5,
   burden: COLOR_5,
-  monsterous_trait: COLOR_5,
-  "monsterous trait": COLOR_5,
 
   permanent_corruption: DESAT_PURPLE,
 
@@ -135,6 +136,15 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   Spirit: COLOR_3,
   Undead: COLOR_3,
   Abomination: COLOR_3,
+
+  "bushcraft crafting material": COLOR_8,
+  "alchemy crafting material": COLOR_8,
+  "blacksmith crafting material": COLOR_8,
+  "ritual crafting material": COLOR_8,
+  "artifact crafting material": COLOR_8,
+  "siege expert crafting material": COLOR_8,
+  "poisoner crafting material": COLOR_8,
+  "ritual scroll": COLOR_8,
 };
 
 export const CATEGORY_FILTER = [
@@ -157,7 +167,18 @@ export const CATEGORY_FILTER = [
 
   "accessory",
 
+  "ritual scroll",
+
   "elixir",
+  "poison",
+
+  "bushcraft crafting material",
+  "alchemy crafting material",
+  "blacksmith crafting material",
+  "ritual crafting material",
+  "artifact crafting material",
+  "siege expert crafting material",
+  "poisoner crafting material",
 
   "treasure",
   "tool",
@@ -169,10 +190,9 @@ export const CATEGORY_FILTER = [
 export const TYPE_FILTER = [
   "ability",
   "mystical power",
-  "monsterous trait",
   "ritual",
-  "trait",
-  "boon",
+  "utility",
+  "monsterous trait",
   "burden",
 ];
 

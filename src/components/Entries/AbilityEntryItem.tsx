@@ -3,6 +3,7 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
 import Icon from "@mdi/react";
+import { toTitleCase } from "../../functions/UtilityFunctions";
 import {
   AbilityEntry,
   CharacterEntry,
@@ -454,7 +455,7 @@ function AbilityEntryItem({
           <AbilityName type={ability.type} $active={true}>
             {ability.name}
             <CorruptionContainer>
-              {ability.type === "Mystical Power" && (
+              {ability.type === "mystical power" && (
                 <>
                   {(ability.level === "Novice" ||
                     ability.level === "Adept" ||
@@ -505,8 +506,8 @@ function AbilityEntryItem({
           </AbilityName>
           <AbilityDetail>
             {ability.tradition === ""
-              ? ability.type
-              : `${ability.type}, ${ability.tradition}`}
+              ? toTitleCase(ability.type)
+              : `${toTitleCase(ability.type)}, ${ability.tradition}`}
           </AbilityDetail>
         </NameContainer>
 
@@ -516,7 +517,7 @@ function AbilityEntryItem({
               session={session}
               character={character}
               websocket={websocket}
-              roll_type={ability.type.toLocaleLowerCase() as RollTypeEntry}
+              roll_type={ability.type as RollTypeEntry}
               roll_source={ability.name}
               isCreature={isCreature}
               dice={i.dice}

@@ -240,7 +240,7 @@ export function GetAbilityCorruption(character: CharacterEntry) {
   const has_wizardry_master = CheckAbility(character, "Wizardry", "master");
 
   for (const ability of character.abilities) {
-    if (ability.type === "Mystical Power") {
+    if (ability.type === "mystical power") {
       if (
         ability.level === "Novice" ||
         ability.level === "Adept" ||

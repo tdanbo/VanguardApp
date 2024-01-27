@@ -449,7 +449,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
 
     forEach(session.characters, (character) => {
       if (distanceTraveled > 0) {
-        character.details.xp_earned += 1;
+        character.details.xp_earned += 5;
       }
 
       const burnrate = GetBurnRate(character);

@@ -230,7 +230,18 @@ function DropsBrowser({
   };
 
   const gatherEquipment = (rarity: number) => () => {
-    const general = ["container", "tool", "projectile", "resource"];
+    const general = [
+      "container",
+      "tool",
+      "projectile",
+      "resource",
+      "alchemy crafting material",
+      "blacksmith crafting material",
+      "ritual crafting material",
+      "artifact crafting material",
+      "siege expert crafting material",
+      "poisoner crafting material",
+    ];
 
     const armory = [
       // "natural armor",
@@ -246,7 +257,13 @@ function DropsBrowser({
       "heavy armor",
     ];
 
-    const alchemy = ["elixir", "armor accessory", "weapon accessory"];
+    const alchemy = [
+      "elixir",
+      "poison",
+      "ritual scroll",
+      "armor accessory",
+      "weapon accessory",
+    ];
     const novelty = ["treasure"];
 
     const SetBulk = (item: ItemEntry) => {
@@ -255,6 +272,19 @@ function DropsBrowser({
           item.quantity.count = random(1, 8 * rarity);
         } else if (item.category === "projectile") {
           item.quantity.count = random(1, 4 * rarity);
+        } else if (
+          [
+            "alchemy crafting material",
+            "blacksmith crafting material",
+            "ritual crafting material",
+            "artifact crafting material",
+            "siege expert crafting material",
+            "poisoner crafting material",
+          ].includes(item.category)
+        ) {
+          item.quantity.count = random(1, 2 * rarity);
+        } else if (item.category === "poison") {
+          item.quantity.count = random(1, 2 * rarity);
         } else if (item.category === "elixir") {
           item.quantity.count = random(1, 2 * rarity);
         } else if (item.category === "tool") {

@@ -36,6 +36,7 @@ const Container = styled.div`
   flex-grow: 1;
   gap: 20px;
   justify-content: right;
+  width: 50%;
 `;
 
 const CurrencyContainer = styled.button`
