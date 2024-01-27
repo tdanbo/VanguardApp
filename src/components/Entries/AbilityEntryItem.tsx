@@ -455,53 +455,56 @@ function AbilityEntryItem({
           <AbilityName type={ability.type} $active={true}>
             {ability.name}
             <CorruptionContainer>
-              {ability.type === "mystical power" && (
-                <>
-                  {(ability.level === "Novice" ||
-                    ability.level === "Adept" ||
-                    ability.level === "Master") &&
-                    !(
-                      ability.tradition.includes("Theurgy") &&
-                      has_theurgy_novice
-                    ) &&
-                    !(
-                      ability.tradition.includes("Wizardry") &&
-                      has_wizardry_novice
-                    ) && (
-                      <FontAwesomeIcon
-                        icon={faSkull}
-                        style={{ fontSize: "14px" }}
-                      />
-                    )}
-                  {(ability.level === "Adept" || ability.level === "Master") &&
-                    !(
-                      ability.tradition.includes("Theurgy") && has_theurgy_adept
-                    ) &&
-                    !(
-                      ability.tradition.includes("Wizardry") &&
-                      has_wizardry_adept
-                    ) && (
-                      <FontAwesomeIcon
-                        icon={faSkull}
-                        style={{ fontSize: "14px" }}
-                      />
-                    )}
-                  {ability.level === "Master" &&
-                    !(
-                      ability.tradition.includes("Theurgy") &&
-                      has_theurgy_master
-                    ) &&
-                    !(
-                      ability.tradition.includes("Wizardry") &&
-                      has_wizardry_master
-                    ) && (
-                      <FontAwesomeIcon
-                        icon={faSkull}
-                        style={{ fontSize: "14px" }}
-                      />
-                    )}
-                </>
-              )}
+              {ability.type === "mystical power" ||
+                (ability.type === "ritual" && (
+                  <>
+                    {(ability.level === "Novice" ||
+                      ability.level === "Adept" ||
+                      ability.level === "Master") &&
+                      !(
+                        ability.tradition.includes("Theurgy") &&
+                        has_theurgy_novice
+                      ) &&
+                      !(
+                        ability.tradition.includes("Wizardry") &&
+                        has_wizardry_novice
+                      ) && (
+                        <FontAwesomeIcon
+                          icon={faSkull}
+                          style={{ fontSize: "14px" }}
+                        />
+                      )}
+                    {(ability.level === "Adept" ||
+                      ability.level === "Master") &&
+                      !(
+                        ability.tradition.includes("Theurgy") &&
+                        has_theurgy_adept
+                      ) &&
+                      !(
+                        ability.tradition.includes("Wizardry") &&
+                        has_wizardry_adept
+                      ) && (
+                        <FontAwesomeIcon
+                          icon={faSkull}
+                          style={{ fontSize: "14px" }}
+                        />
+                      )}
+                    {ability.level === "Master" &&
+                      !(
+                        ability.tradition.includes("Theurgy") &&
+                        has_theurgy_master
+                      ) &&
+                      !(
+                        ability.tradition.includes("Wizardry") &&
+                        has_wizardry_master
+                      ) && (
+                        <FontAwesomeIcon
+                          icon={faSkull}
+                          style={{ fontSize: "14px" }}
+                        />
+                      )}
+                  </>
+                ))}
             </CorruptionContainer>
           </AbilityName>
           <AbilityDetail>

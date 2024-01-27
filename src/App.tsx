@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 
 import PartySection from "./BrowserSection/PartySection";
 import {
+  AbilityEntry,
   CharacterEntry,
   EmptyCharacter,
   EmptySession,
@@ -24,6 +25,9 @@ import DropsBrowser from "./BrowserSection/DropsBrowser";
 import EquipmentBrowser from "./BrowserSection/EquipmentBrowser";
 import JoinComponent from "./components/JoinComponent";
 import useSocketIO from "./socketio";
+import { ItemEntry } from "./Types";
+import axios from "axios";
+import { API } from "./Constants";
 const Row = styled.div`
   display: flex;
   flex-direction: row;
@@ -57,13 +61,13 @@ function App() {
   const [search, setSearch] = useState("");
   const [session, setSession] = useState<SessionEntry>(EmptySession);
   const [characterName, setCharacterName] = useState<string>("");
-  const [creaturesList] = useState<CharacterEntry[]>([]);
+  const [creaturesList, setCreaturesList] = useState<CharacterEntry[]>([]);
   const [isCreature, setIsCreature] = useState<boolean>(false);
   const [isGm, setIsGm] = useState<boolean>(false);
   const [gmMode, setGmMode] = useState<boolean>(false);
   const [isJoinOpen, setisJoinOpen] = useState<boolean>(true);
-  const [categorySelect, setCategorySelect] = useState<string>("equipment");
-  const [HideBrowser, setHideBrowser] = useState<boolean>(false);
+  const [categorySelect, setCategorySelect] = useState<string>("");
+  const [HideBrowser, setHideBrowser] = useState<boolean>(true);
   const url = Constants.WEBSOCKET + session.id;
 
   const character = isCreature
@@ -89,6 +93,26 @@ function App() {
   const [isConnected, setIsConnected] = useState(false);
   const websocket = useSocketIO(Constants.API, setSession, setIsConnected);
   console.log(categorySelect);
+
+  const [equipment, setEquipment] = useState<ItemEntry[]>([]);
+  const [abilities, setAbilities] = useState<AbilityEntry[]>([]);
+
+  useEffect(() => {
+    const fetchEquipment = async () => {
+      const equipmentResponse = await axios.get(`${API}/api/equipment`);
+      const abilitiesResponse = await axios.get(`${API}/api/abilities`);
+
+      const filteredAbilities = abilitiesResponse.data.filter(
+        (item: AbilityEntry) =>
+          item.type !== "monsterous trait" && item.type !== "burden",
+      );
+
+      setEquipment(equipmentResponse.data);
+      setAbilities(filteredAbilities);
+    };
+    fetchEquipment();
+  }, []); // Empty dependency array to ensure it runs only once
+
   return (
     <Row>
       {isJoinOpen ? (
@@ -132,6 +156,7 @@ function App() {
             gmMode={gmMode}
             isCreature={isCreature}
             search={search}
+            equipment={equipment}
           />
         ) : categorySelect === "abilities" && HideBrowser ? (
           <AbilityBrowser
@@ -141,6 +166,8 @@ function App() {
             setInventoryState={setInventoryState}
             isCreature={isCreature}
             search={search}
+            abilities={abilities}
+            isGm={isGm}
           />
         ) : categorySelect === "creatures" && HideBrowser ? (
           <CreatureBrowser
@@ -152,25 +179,10 @@ function App() {
             setGmMode={setGmMode}
             setCharacterName={setCharacterName}
             setIsCreature={setIsCreature}
+            setCreaturesList={setCreaturesList}
+            creaturesList={creaturesList}
           />
         ) : null}
-        {/* <BrowserSection
-          isGm={isGm}
-          session={session}
-          character={character}
-          websocket={websocket}
-          setInventoryState={setInventoryState}
-          gmMode={gmMode}
-          setCharacterName={setCharacterName}
-          creaturesList={creaturesList}
-          setCreaturesList={setCreaturesList}
-          setIsCreature={setIsCreature}
-          isCreature={isCreature}
-          setGmMode={setGmMode}
-          isConnected={isConnected}
-          categorySelect={categorySelect}
-          setCategorySelect={setCategorySelect}
-        /> */}
       </SideColumn>
       <Column>
         {gmMode ? (

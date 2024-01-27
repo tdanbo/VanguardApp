@@ -137,9 +137,13 @@ export const GetPermanentCorruption = (character: CharacterEntry) => {
 };
 
 export function GetBurnRate(character: CharacterEntry) {
-  const burn_rate =
+  let burn_rate =
     Math.ceil(character.details.xp_earned / 50) +
     GetStorageValue(character) / 3;
+
+  if (CheckAbility(character, "Bushcraft", "novice")) {
+    burn_rate -= 1;
+  }
 
   return burn_rate;
 }
@@ -240,7 +244,7 @@ export function GetAbilityCorruption(character: CharacterEntry) {
   const has_wizardry_master = CheckAbility(character, "Wizardry", "master");
 
   for (const ability of character.abilities) {
-    if (ability.type === "mystical power") {
+    if (ability.type === "mystical power" || ability.type === "ritual") {
       if (
         ability.level === "Novice" ||
         ability.level === "Adept" ||

@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { CharacterEntry, SessionEntry } from "../Types";
 import AbilitySection from "../charactersheet/AbilitySection";
 import CharacterNameBox from "../charactersheet/CharacterNameBox";
-import CharacterRaceBox from "../charactersheet/CharacterRaceBox";
 import InventorySection from "../charactersheet/InventorySection";
 import ResourcesBox from "../charactersheet/ResourcesBox";
 import XpBox from "../charactersheet/XpBox";
@@ -96,7 +95,6 @@ import PortraitComponent from "../component/PortraitComponent";
 import StatComponent from "../component/StatComponent";
 import { GetActives } from "../functions/ActivesFunction";
 import EquipmentSection from "./EquipmentSection";
-import LevelComponent from "./LevelComponent";
 type CharacterSheetProps = {
   websocket: Socket;
   session: SessionEntry;
@@ -150,19 +148,16 @@ function CharacterSheet({
   return (
     <>
       <Container height={"40px"}>
-        <Row width={"30%"}>
+        <Row width={"50%"}>
           <CharacterNameBox character={character} />
         </Row>
-        <Row width={"40%"}>
+        <Row width={"50%"}>
           <XpBox
             websocket={websocket}
             session={session}
             character={character}
             isCreature={isCreature}
           />
-        </Row>
-        <Row width={"30%"}>
-          <CharacterRaceBox character={character} />
         </Row>
       </Container>
       <Container height={"260px"}>

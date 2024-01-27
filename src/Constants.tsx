@@ -1,4 +1,5 @@
 // export const API = "http://localhost:8000";
+
 // export const WEBSOCKET = "ws://localhost:8000";
 export const API = "https://vanguard-api.onrender.com";
 export const WEBSOCKET = "wss://vanguard-api.onrender.com/session/";
@@ -51,7 +52,7 @@ export const COLOR_4 = "#616647";
 export const COLOR_5 = "#926933";
 export const COLOR_6 = "#924933";
 export const COLOR_7 = "#808080";
-export const COLOR_8 = "#aba698";
+export const COLOR_8 = "#999588";
 
 // Original Palette
 // export const COLOR_1 = "#604949";
@@ -78,6 +79,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   ammunition: COLOR_1,
   ability: COLOR_1,
   "weapon accessory": COLOR_1,
+  "alchemical weapon": COLOR_1,
 
   "natural armor": COLOR_2,
   "light armor": COLOR_2,
@@ -100,6 +102,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   tool: COLOR_4,
   "monsterous trait": COLOR_4,
   poison: COLOR_4,
+  "adventuring gear": COLOR_4,
 
   resource: COLOR_5,
   treasure: COLOR_5,
@@ -114,7 +117,6 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   discreet: COLOR_5,
   cunning: COLOR_5,
   accurate: COLOR_5,
-  ritual: COLOR_5,
   trait: COLOR_5,
   burden: COLOR_5,
 
@@ -145,6 +147,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   "siege expert crafting material": COLOR_8,
   "poisoner crafting material": COLOR_8,
   "ritual scroll": COLOR_8,
+  ritual: COLOR_8,
 };
 
 export const CATEGORY_FILTER = [
@@ -155,6 +158,7 @@ export const CATEGORY_FILTER = [
   "long weapon",
   "heavy weapon",
   "ranged weapon",
+  "alchemical weapon",
   "throwing weapon",
   "projectile",
   "weapon accessory",
@@ -181,6 +185,7 @@ export const CATEGORY_FILTER = [
   "poisoner crafting material",
 
   "treasure",
+  "adventuring gear",
   "tool",
   "general good",
   "container",

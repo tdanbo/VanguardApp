@@ -148,6 +148,7 @@ function CreatureEntryItem({
   };
 
   const selectCreature = () => {
+    console.log("Selecting creature: " + creature.name);
     setIsCreature(true);
     setCharacterName(creature.name);
     setGmMode(false);

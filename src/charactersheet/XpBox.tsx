@@ -13,15 +13,15 @@ const Container = styled.div`
   cursor: pointer;
   gap: 10px;
   h1 {
-    font-size: clamp(1px, ${Constants.VW}, 20px);
+    font-size: clamp(1px, ${Constants.VW}, 18px);
     color: ${Constants.WIDGET_PRIMARY_FONT};
   }
   h2 {
-    margin-top: 15px;
-    font-size: 15px;
+    margin-top: 12px;
+    font-size: 12px;
     color: ${Constants.WIDGET_SECONDARY_FONT};
   }
-  max-height: 25px;
+
   user-select: none;
 `;
 
@@ -33,8 +33,7 @@ const CategoryContainerLeft = styled.div`
   gap: 20px;
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-radius: 5px;
-  padding: 10px;
-  height: 20px;
+  height: 100%;
   width: 100%;
   user-select: none;
 `;
@@ -46,8 +45,7 @@ const CategoryContainerRight = styled.div`
   gap: 20px;
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-radius: 5px;
-  padding: 10px;
-  height: 20px;
+  height: 100%;
   width: 100%;
   user-select: none;
 `;
@@ -81,14 +79,16 @@ function XpBox({ session, character, websocket, isCreature }: XpBoxProps) {
           e.preventDefault();
           handleAddXp();
         }}
+        title={"Combat XP"}
       >
         <h2>COMBAT XP</h2>
+
         <h1>
           {getCharacterXp(character)} / {character.details.xp_earned}
         </h1>
       </CategoryContainerLeft>
-      <CategoryContainerRight>
-        <h2>UTILITY XP</h2>
+      <CategoryContainerRight title={"Utility XP"}>
+        <h2 className={".hide-div"}>UTILITY XP</h2>
         <h1>
           {getUtilityXp(character)} /{" "}
           {Math.round(character.details.xp_earned / 5)}

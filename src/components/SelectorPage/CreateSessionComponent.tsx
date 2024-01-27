@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { SessionEntry } from "../../Types";
-import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../../Constants";
 import styled from "styled-components";
 import {
@@ -113,7 +112,7 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
     combatlog: [],
     encounter: [],
     loot: { drops: [], general: [], armory: [], alchemy: [], novelty: [] },
-    state: uuidv4(),
+    state: "take",
   };
 
   const handlePostSession = async () => {

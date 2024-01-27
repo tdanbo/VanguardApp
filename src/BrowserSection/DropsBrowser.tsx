@@ -67,7 +67,6 @@ const ClearButton = styled.button`
   justify-content: center;
   align-items: center;
   max-width: 30px;
-  margin-right: 20px;
 `;
 
 const CategoryButton = styled.button`
@@ -199,9 +198,7 @@ function DropsBrowser({
   search,
 }: BrowserSectionProps) {
   const [equipmentList, setEquipmentList] = useState<ItemEntry[]>([]);
-  const [LootCategory, setLootCategory] = useState<LootCategoryType>("town");
   const scrollRef = useRef(null);
-  type LootCategoryType = "treasure" | "town";
 
   useEffect(() => {
     const fetchEquipment = async () => {
@@ -215,6 +212,7 @@ function DropsBrowser({
     };
 
     fetchEquipment();
+    console.log("GETTING DROPS !!!!!!!!!!!!!!!");
   }, []); // Empty dependency array to ensure it runs only once
 
   useEffect(() => {
@@ -233,8 +231,8 @@ function DropsBrowser({
     const general = [
       "container",
       "tool",
-      "projectile",
       "resource",
+      "adventuring gear",
       "alchemy crafting material",
       "blacksmith crafting material",
       "ritual crafting material",
@@ -252,6 +250,7 @@ function DropsBrowser({
       "heavy weapon",
       "ranged weapon",
       "throwing weapon",
+      "projectile",
       "light armor",
       "medium armor",
       "heavy armor",
@@ -303,9 +302,9 @@ function DropsBrowser({
         drop_chance = 0.625 * rarity;
       } else if (item.type === "quality") {
         drop_chance = 0.418 * rarity;
-      } else if (item.type === "lesser artifact") {
-        drop_chance = 0.28 * rarity;
       } else if (item.type === "mystical") {
+        drop_chance = 0.28 * rarity;
+      } else if (item.type === "lesser artifact") {
         drop_chance = 0.187 * rarity;
       } else if (item.type === "artifact") {
         drop_chance = 0.125 * rarity;
@@ -331,9 +330,9 @@ function DropsBrowser({
         drop_chance = 5 * rarity;
       } else if (item.type === "quality") {
         drop_chance = 2.36 * rarity;
-      } else if (item.type === "lesser artifact") {
-        drop_chance = 1.12 * rarity;
       } else if (item.type === "mystical") {
+        drop_chance = 1.12 * rarity;
+      } else if (item.type === "lesser artifact") {
         drop_chance = 0.53 * rarity;
       } else if (item.type === "artifact") {
         drop_chance = 0.25 * rarity;
@@ -360,7 +359,7 @@ function DropsBrowser({
       id: generateRandomId(),
     });
 
-    if (LootCategory === "town") {
+    if (session.state === "buy") {
       session.loot.general = equipmentList
         .filter(
           (item) =>
@@ -398,6 +397,16 @@ function DropsBrowser({
     update_session(session, websocket);
   };
 
+  const HandleCategoryChange = () => {
+    console.log("Changing category");
+    if (session.state === "buy") {
+      session.state = "take";
+    } else {
+      session.state = "buy";
+    }
+    update_session(session, websocket);
+  };
+
   return (
     <>
       <DynamicContainer>
@@ -418,7 +427,7 @@ function DropsBrowser({
                   setInventoryState={setInventoryState}
                   gmMode={gmMode}
                   isCreature={isCreature}
-                  canBuy={LootCategory === "town" ? true : false}
+                  canBuy={session.state === "buy" ? true : false}
                 />
               );
             }
@@ -493,16 +502,14 @@ function DropsBrowser({
               <CategoryInput
                 className={"button-hover"}
                 onClick={() => {
-                  LootCategory === "town"
-                    ? setLootCategory("treasure")
-                    : setLootCategory("town");
+                  HandleCategoryChange();
                 }}
               >
                 <FontAwesomeIcon
-                  icon={LootCategory === "town" ? faCoins : faChevronRight}
+                  icon={session.state === "buy" ? faCoins : faChevronRight}
                   size={"lg"}
                   color={
-                    LootCategory === "town"
+                    session.state === "buy"
                       ? "#f5c542"
                       : Constants.WIDGET_SECONDARY_FONT
                   }

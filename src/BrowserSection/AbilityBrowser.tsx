@@ -1,10 +1,8 @@
 import styled from "styled-components";
 
-import axios from "axios";
 import { useEffect } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import { API } from "../Constants";
 import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
 import AbilityEntryItem from "../components/Entries/AbilityEntryItem";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
@@ -42,9 +40,9 @@ const Button = styled.button`
   background-color: ${Constants.WIDGET_BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-radius: 5px;
-  color: ${Constants.WIDGET_PRIMARY_FONT};
+  color: ${Constants.WIDGET_SECONDARY_FONT};
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   justify-content: center;
   align-items: center;
 `;
@@ -66,6 +64,8 @@ interface AbilityBrowserProps {
   setInventoryState: (state: number) => void;
   isCreature: boolean;
   search: string;
+  abilities: AbilityEntry[];
+  isGm: boolean;
 }
 
 function AbilityBrowser({
@@ -75,17 +75,18 @@ function AbilityBrowser({
   setInventoryState,
   isCreature,
   search,
+  abilities,
+  isGm,
 }: AbilityBrowserProps) {
   type LootCategoryType =
     | "all"
     | "abilities"
     | "mystical powers"
     | "rituals"
-    | "boon"
+    | "utility"
     | "monstrous traits"
     | "burden";
   const scrollRef = useRef(null);
-  const [entryList, setEntryList] = useState<AbilityEntry[]>([]);
   const [filteredEntry, setFilteredEntry] = useState<AbilityEntry[]>([]);
   const [LootCategory, setLootCategory] = useState<LootCategoryType>("all");
 
@@ -102,62 +103,68 @@ function AbilityBrowser({
   };
 
   useEffect(() => {
-    const fetchEquipment = async () => {
-      try {
-        const entryResponse = await axios.get(`${API}/api/abilities`);
-        setEntryList(entryResponse.data);
-      } catch (error) {
-        console.error("Failed to fetch equipment:", error);
-        // Handle the error appropriately
-      }
-    };
-
-    fetchEquipment();
-  }, []); // Empty dependency array to ensure it runs only once
-
-  useEffect(() => {
     if (scrollRef.current) {
       const scrollableElement = scrollRef.current as unknown as HTMLElement;
       scrollableElement.scrollTop = 0;
     }
-  }, [search, session, LootCategory]);
+  }, [search, LootCategory]);
 
   useEffect(() => {
-    let filtered_equipment = entryList;
+    let filtered_abilities = abilities;
 
     switch (LootCategory) {
       case "abilities":
-        filtered_equipment = entryList.filter(
-          (item) => item.type === "Ability",
+        filtered_abilities = abilities.filter(
+          (item) => item.type === "ability",
         );
         break;
       case "mystical powers":
-        filtered_equipment = entryList.filter(
-          (item) => item.type === "Mystical Power",
+        filtered_abilities = abilities.filter(
+          (item) => item.type === "mystical power",
         );
         break;
       case "rituals":
-        filtered_equipment = entryList.filter((item) => item.type === "Ritual");
+        filtered_abilities = abilities.filter((item) => item.type === "ritual");
         break;
-      case "boon":
-        filtered_equipment = entryList.filter((item) => item.type === "Boon");
+      case "utility":
+        filtered_abilities = abilities.filter(
+          (item) => item.type === "utility",
+        );
         break;
       case "monstrous traits":
-        filtered_equipment = entryList.filter(
-          (item) => item.type === "Monsterous Trait",
+        filtered_abilities = abilities.filter(
+          (item) => item.type === "monsterous trait",
         );
         break;
       case "burden":
-        filtered_equipment = entryList.filter((item) => item.type === "Burden");
+        filtered_abilities = abilities.filter((item) => item.type === "burden");
         break;
       default:
         // Keep the original list if no category matches
         break;
     }
 
-    const sorted_items = [...filtered_equipment].sort(sortList);
-    setFilteredEntry(sorted_items); // Assuming you have a separate state for filtered and sorted items
-  }, [LootCategory, entryList]);
+    const sorted_items = [...filtered_abilities].sort(sortList);
+
+    if (search.length > 2) {
+      const searched_item = sorted_items.filter((item) =>
+        (
+          item.name.toLowerCase() +
+          " " +
+          item.type.toLowerCase() +
+          " " +
+          item.novice.description.toLowerCase() +
+          " " +
+          item.adept.description.toLowerCase() +
+          " " +
+          item.master.description.toLowerCase()
+        ).includes(search.toLowerCase()),
+      );
+      setFilteredEntry(searched_item);
+    } else {
+      setFilteredEntry(sorted_items);
+    }
+  }, [LootCategory, search]);
 
   return (
     <>
@@ -189,12 +196,17 @@ function AbilityBrowser({
         <Button onClick={() => setLootCategory("mystical powers")}>
           Mystical Powers
         </Button>
-        <Button onClick={() => setLootCategory("rituals")}>Rituals</Button>
-        <Button onClick={() => setLootCategory("boon")}>Boon</Button>
-        <Button onClick={() => setLootCategory("burden")}>Burden</Button>
-        <Button onClick={() => setLootCategory("monstrous traits")}>
-          Monstrous Traits
-        </Button>
+        <Button onClick={() => setLootCategory("utility")}>Utility</Button>
+
+        {isGm ? (
+          <>
+            <Button onClick={() => setLootCategory("rituals")}>Rituals</Button>
+            <Button onClick={() => setLootCategory("burden")}>Burden</Button>
+            <Button onClick={() => setLootCategory("monstrous traits")}>
+              Monstrous Traits
+            </Button>
+          </>
+        ) : null}
       </FooterContainer>
     </>
   );
