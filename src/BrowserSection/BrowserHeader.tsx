@@ -214,19 +214,22 @@ function BrowserHeader({
             >
               <FontAwesomeIcon icon={faBolt} />
             </Button>
-            <Button
-              $isactive={(categorySelect === "equipment").toString()}
-              onClick={() => HandleCategoryChange("equipment")}
-            >
-              <FontAwesomeIcon icon={faShield} />
-            </Button>
+
             {isGm ? (
-              <Button
-                $isactive={(categorySelect === "creatures").toString()}
-                onClick={() => HandleCategoryChange("creatures")}
-              >
-                <FontAwesomeIcon icon={faGhost} />
-              </Button>
+              <>
+                <Button
+                  $isactive={(categorySelect === "equipment").toString()}
+                  onClick={() => HandleCategoryChange("equipment")}
+                >
+                  <FontAwesomeIcon icon={faShield} />
+                </Button>
+                <Button
+                  $isactive={(categorySelect === "creatures").toString()}
+                  onClick={() => HandleCategoryChange("creatures")}
+                >
+                  <FontAwesomeIcon icon={faGhost} />
+                </Button>
+              </>
             ) : null}
           </>
         ) : null}

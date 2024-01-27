@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Socket } from "socket.io-client";
-import { v4 as uuidv4 } from "uuid";
 import { API } from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
 export async function get_session(id: string): Promise<SessionEntry> {
@@ -16,7 +15,6 @@ export async function update_session(
 ) {
   // This function is called when the session is updated, and it will proc the broadcast to all users
   console.log("Updating session / Sending Updates To Clients");
-  session.state = uuidv4();
   websocket.emit("update", session);
   try {
     if (isCreature) {

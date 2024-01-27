@@ -49,11 +49,7 @@ export const getCharacterXp = (character: CharacterEntry) => {
   let xp_spent = 0;
 
   character.abilities.forEach((ability) => {
-    if (ability.type.toLocaleLowerCase() === "trait") {
-      return;
-    } else if (ability.type.toLocaleLowerCase() === "burden") {
-      return;
-    } else if (ability.type.toLocaleLowerCase() === "ritual") {
+    if (["burden", "ritual", "utility"].includes(ability.type)) {
       return;
     }
 
@@ -64,6 +60,17 @@ export const getCharacterXp = (character: CharacterEntry) => {
     } else if (ability.level === "Master") {
       xp_spent += 60;
     }
+  });
+  return xp_spent;
+};
+
+export const getUtilityXp = (character: CharacterEntry) => {
+  let xp_spent = 0;
+  character.abilities.forEach((ability) => {
+    if (ability.type !== "utility") {
+      return;
+    }
+    xp_spent += 10;
   });
   return xp_spent;
 };

@@ -56,6 +56,7 @@ function EquipmentSection({
               equipped={""}
               gmMode={false}
               isCreature={isCreature}
+              canBuy={false}
             />
           );
         }

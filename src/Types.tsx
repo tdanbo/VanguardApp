@@ -150,10 +150,12 @@ type Loot = {
   [key in LootCategory]: ItemEntry[];
 };
 
+export type state = "take" | "buy";
+
 export type SessionEntry = {
   name: string;
   id: string;
-  state: string;
+  state: state;
   date: string;
   owner: string;
   travel: TravelEntry;
@@ -284,7 +286,7 @@ export const EmptyArmor: ItemEntry = {
 export const EmptySession: SessionEntry = {
   name: "",
   id: "1b1b1b1b1b",
-  state: "",
+  state: "take",
   date: "",
   owner: "",
   travel: {

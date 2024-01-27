@@ -3,27 +3,51 @@ import styled from "styled-components";
 import "../App.css";
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
-import { getCharacterXp } from "../functions/CharacterFunctions";
+import { getCharacterXp, getUtilityXp } from "../functions/CharacterFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 const Container = styled.div`
-  margin-right: 20px;
-  cursor: pointer;
   display: flex;
-  flex: 1;
+  flex-grow: 1;
   flex-direction: row;
-  align-items: center;
-  justify-content: right;
-  font-weight: bold;
+
+  cursor: pointer;
+  gap: 10px;
   h1 {
-    font-size: clamp(1px, ${Constants.VW}, 30px);
+    font-size: clamp(1px, ${Constants.VW}, 18px);
     color: ${Constants.WIDGET_PRIMARY_FONT};
   }
   h2 {
-    font-size: 0.75em;
-    margin-right: 10px;
-    margin-top: 18px;
+    margin-top: 12px;
+    font-size: 12px;
     color: ${Constants.WIDGET_SECONDARY_FONT};
   }
+
+  user-select: none;
+`;
+
+const CategoryContainerLeft = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+  user-select: none;
+`;
+const CategoryContainerRight = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+  user-select: none;
 `;
 
 interface XpBoxProps {
@@ -48,18 +72,28 @@ function XpBox({ session, character, websocket, isCreature }: XpBoxProps) {
   };
 
   return (
-    <Container
-      className="mouse-icon-hover"
-      onClick={handleSubXp}
-      onContextMenu={(e) => {
-        e.preventDefault();
-        handleAddXp();
-      }}
-    >
-      <h2>XP</h2>
-      <h1>
-        {getCharacterXp(character)} / {character.details.xp_earned}
-      </h1>
+    <Container className="mouse-icon-hover">
+      <CategoryContainerLeft
+        onClick={handleSubXp}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          handleAddXp();
+        }}
+        title={"Combat XP"}
+      >
+        <h2>COMBAT XP</h2>
+
+        <h1>
+          {getCharacterXp(character)} / {character.details.xp_earned}
+        </h1>
+      </CategoryContainerLeft>
+      <CategoryContainerRight title={"Utility XP"}>
+        <h2 className={".hide-div"}>UTILITY XP</h2>
+        <h1>
+          {getUtilityXp(character)} /{" "}
+          {Math.round(character.details.xp_earned / 5)}
+        </h1>
+      </CategoryContainerRight>
     </Container>
   );
 }

@@ -1,10 +1,7 @@
 import styled from "styled-components";
-
-import axios from "axios";
 import { useEffect } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import { API } from "../Constants";
 import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 
@@ -43,9 +40,9 @@ const Button = styled.button`
   background-color: ${Constants.WIDGET_BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-radius: 5px;
-  color: ${Constants.WIDGET_PRIMARY_FONT};
+  color: ${Constants.WIDGET_SECONDARY_FONT};
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   justify-content: center;
   align-items: center;
 `;
@@ -68,6 +65,7 @@ interface EquipmentBrowserProps {
   gmMode: boolean;
   isCreature: boolean;
   search: string;
+  equipment: ItemEntry[];
 }
 
 function EquipmentBrowser({
@@ -78,6 +76,7 @@ function EquipmentBrowser({
   gmMode,
   isCreature,
   search,
+  equipment,
 }: EquipmentBrowserProps) {
   type LootCategoryType =
     | "all"
@@ -87,7 +86,6 @@ function EquipmentBrowser({
     | "elixirs"
     | "tools";
   const scrollRef = useRef(null);
-  const [equipmentList, setEquipmentList] = useState<ItemEntry[]>([]);
   const [filteredEquipment, setFilteredEquipment] = useState<ItemEntry[]>([]);
   const [LootCategory, setLootCategory] = useState<LootCategoryType>("all");
 
@@ -104,48 +102,34 @@ function EquipmentBrowser({
   };
 
   useEffect(() => {
-    const fetchEquipment = async () => {
-      try {
-        const equipmentResponse = await axios.get(`${API}/api/equipment`);
-        setEquipmentList(equipmentResponse.data);
-      } catch (error) {
-        console.error("Failed to fetch equipment:", error);
-        // Handle the error appropriately
-      }
-    };
-
-    fetchEquipment();
-  }, []); // Empty dependency array to ensure it runs only once
-
-  useEffect(() => {
     if (scrollRef.current) {
       const scrollableElement = scrollRef.current as unknown as HTMLElement;
       scrollableElement.scrollTop = 0;
     }
-  }, [search, session, LootCategory]);
+  }, [search, LootCategory]);
 
   useEffect(() => {
-    let filtered_equipment = equipmentList;
+    let filtered_equipment = equipment;
 
     switch (LootCategory) {
       case "weapon":
-        filtered_equipment = equipmentList.filter((item) => IsWeapon(item));
+        filtered_equipment = equipment.filter((item) => IsWeapon(item));
         break;
       case "armor":
-        filtered_equipment = equipmentList.filter((item) => IsArmor(item));
+        filtered_equipment = equipment.filter((item) => IsArmor(item));
         break;
       case "projectile":
-        filtered_equipment = equipmentList.filter(
+        filtered_equipment = equipment.filter(
           (item) => item.category === "projectile",
         );
         break;
       case "elixirs":
-        filtered_equipment = equipmentList.filter(
+        filtered_equipment = equipment.filter(
           (item) => item.category === "elixir",
         );
         break;
       case "tools":
-        filtered_equipment = equipmentList.filter(
+        filtered_equipment = equipment.filter(
           (item) => item.category === "tool",
         );
         break;
@@ -155,8 +139,26 @@ function EquipmentBrowser({
     }
 
     const sorted_items = [...filtered_equipment].sort(sortList);
-    setFilteredEquipment(sorted_items); // Assuming you have a separate state for filtered and sorted items
-  }, [LootCategory, equipmentList]);
+
+    if (search.length > 2) {
+      const searched_item = sorted_items.filter((item) =>
+        (item.name.toLowerCase() + " " + item.category.toLowerCase()).includes(
+          search.toLowerCase(),
+        ),
+      );
+
+      setFilteredEquipment(searched_item);
+    } else {
+      setFilteredEquipment(sorted_items);
+    }
+  }, [LootCategory, equipment, search]);
+
+  // useEffect(() => {
+  //   const searched_sorted_items = filteredEquipment.filter((item) =>
+  //     item.name.toLowerCase().includes(search.toLowerCase()),
+  //   );
+  //   setFilteredEquipment(searched_sorted_items);
+  // }, [search, LootCategory]);
 
   return (
     <>
@@ -178,6 +180,7 @@ function EquipmentBrowser({
                   setInventoryState={setInventoryState}
                   gmMode={gmMode}
                   isCreature={isCreature}
+                  canBuy={false}
                 />
               );
             }
