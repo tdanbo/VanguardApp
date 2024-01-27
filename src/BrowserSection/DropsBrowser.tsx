@@ -428,6 +428,7 @@ function DropsBrowser({
                   gmMode={gmMode}
                   isCreature={isCreature}
                   canBuy={session.state === "buy" ? true : false}
+                  isGm={isGm}
                 />
               );
             }

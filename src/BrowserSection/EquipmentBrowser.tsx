@@ -66,6 +66,7 @@ interface EquipmentBrowserProps {
   isCreature: boolean;
   search: string;
   equipment: ItemEntry[];
+  isGm: boolean;
 }
 
 function EquipmentBrowser({
@@ -77,6 +78,7 @@ function EquipmentBrowser({
   isCreature,
   search,
   equipment,
+  isGm,
 }: EquipmentBrowserProps) {
   type LootCategoryType =
     | "all"
@@ -181,6 +183,7 @@ function EquipmentBrowser({
                   gmMode={gmMode}
                   isCreature={isCreature}
                   canBuy={false}
+                  isGm={isGm}
                 />
               );
             }

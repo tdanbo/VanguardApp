@@ -260,6 +260,7 @@ interface InventoryEntryProps {
   gmMode: boolean;
   isCreature: boolean;
   canBuy: boolean;
+  isGm: boolean;
 }
 
 function InventoryEntry({
@@ -274,6 +275,7 @@ function InventoryEntry({
   gmMode,
   isCreature,
   canBuy,
+  isGm,
 }: InventoryEntryProps) {
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
   const generateRandomId = (length = 10) => {
@@ -555,9 +557,9 @@ function InventoryEntry({
           </NameBox>
           <Row>
             <TypeBox>
-              {gmMode === true && (
+              {browser && isGm ? (
                 <CostBox>{ConvertCurrency(item.cost)}</CostBox>
-              )}
+              ) : null}
               {item.type !== "normal" ? toTitleCase(item.type) : null}{" "}
               {toTitleCase(item.category)}
               {item.quality.length > 0 && ","}
