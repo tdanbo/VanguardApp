@@ -49,6 +49,7 @@ function InventorySection({
               gmMode={false}
               isCreature={isCreature}
               canBuy={false}
+              isGm={false}
             />
           );
         }

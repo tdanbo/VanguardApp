@@ -256,11 +256,11 @@ interface InventoryEntryProps {
   equipped: string;
   item: ItemEntry;
   id: string;
+  isGm: boolean;
   setInventoryState?: (inventoryState: number) => void;
   gmMode: boolean;
   isCreature: boolean;
   canBuy: boolean;
-  isGm: boolean;
 }
 
 function InventoryEntry({
