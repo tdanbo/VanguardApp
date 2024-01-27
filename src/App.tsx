@@ -157,6 +157,7 @@ function App() {
             isCreature={isCreature}
             search={search}
             equipment={equipment}
+            isGm={isGm}
           />
         ) : categorySelect === "abilities" && HideBrowser ? (
           <AbilityBrowser
