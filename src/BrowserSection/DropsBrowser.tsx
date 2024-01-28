@@ -274,9 +274,9 @@ function DropsBrowser({
         drop_chance = 0.418 * rarity;
       } else if (item.type === "mystical") {
         drop_chance = 0.28 * rarity;
-      } else if (item.type === "lesser artifact") {
-        drop_chance = 0.187 * rarity;
       } else if (item.type === "artifact") {
+        drop_chance = 0.187 * rarity;
+      } else if (item.type === "unique") {
         drop_chance = 0.125 * rarity;
       } else {
         drop_chance = 0.625 * rarity;
@@ -302,10 +302,10 @@ function DropsBrowser({
         drop_chance = 2.36 * rarity;
       } else if (item.type === "mystical") {
         drop_chance = 1.12 * rarity;
-      } else if (item.type === "lesser artifact") {
-        drop_chance = 0.53 * rarity;
       } else if (item.type === "artifact") {
-        drop_chance = 0.25 * rarity;
+        drop_chance = 0.53 * rarity;
+      } else if (item.type === "unique") {
+        drop_chance = 0; // 0.25 * rarity; uniques cant be bought
       } else {
         drop_chance = 5 * rarity;
       }

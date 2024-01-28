@@ -16,6 +16,7 @@ import RollComponent from "../../component/RollComponent";
 import { DeleteInventorySlot } from "../../functions/CharacterFunctions";
 import { GetMaxSlots, RulesDiceAdjust } from "../../functions/RulesFunctions";
 import { update_session } from "../../functions/SessionsFunctions";
+import { CheckAbility } from "../../functions/ActivesFunction";
 import {
   IsArmor,
   IsWeapon,
@@ -516,11 +517,11 @@ function InventoryEntry({
               color={COLOR}
               key={"2H"}
               onClick={() => {
-                browser && gmMode ? AddToLoot() : equipHandler(item);
+                browser && isGm ? AddToLoot() : equipHandler(item);
               }}
               $isequipped={item.equip.equipped}
             >
-              {browser && gmMode ? (
+              {browser && isGm ? (
                 <FontAwesomeIcon icon={faCoins} style={{ fontSize: "12px" }} />
               ) : item.equip.slot === 1 ? (
                 "I"
@@ -535,10 +536,10 @@ function InventoryEntry({
               key={"unequip"}
               color={COLOR}
               onClick={() => {
-                browser && gmMode ? AddToLoot() : null;
+                browser && isGm ? AddToLoot() : null;
               }}
             >
-              {browser && gmMode ? (
+              {browser && isGm ? (
                 <FontAwesomeIcon icon={faCoins} style={{ fontSize: "12px" }} />
               ) : null}{" "}
             </NoEquipBox>
@@ -550,7 +551,8 @@ function InventoryEntry({
           <NameBox color={COLOR}>
             {item.name}{" "}
             <CorruptionContainer>
-              {item.type === "artifact" ? (
+              {item.type === "unique" &&
+              !CheckAbility(character, "Artifact Crafting", "novice") ? (
                 <FontAwesomeIcon icon={faSkull} style={{ fontSize: "14px" }} />
               ) : null}
             </CorruptionContainer>
