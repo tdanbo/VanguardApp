@@ -491,10 +491,10 @@ function InventoryEntry({
       value += `${thaler} Thaler `;
     }
     if (shillings > 0) {
-      value += `${shillings} Shillings `;
+      value += `${shillings} Shilling `;
     }
     if (orthegs > 0) {
-      value += `${orthegs} Orthegs`;
+      value += `${orthegs} Orteg `;
     }
 
     // Trim to remove any trailing whitespace

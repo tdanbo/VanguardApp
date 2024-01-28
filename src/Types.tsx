@@ -332,3 +332,19 @@ export const EmptyCharacter: CharacterEntry = {
   rations: { food: 0, water: 0 },
   entry: "CharacterEntry",
 };
+
+export const RESOURCE: ItemEntry = {
+  name: "resource",
+  category: "resource",
+  description: "",
+  quantity: { count: 0, bulk: true },
+  cost: 0,
+  type: "normal",
+  quality: [],
+  equip: { slot: 0, equipped: false },
+  roll: { roll: false, dice: 0, mod: 0, type: "damage" },
+  id: "",
+  durability: 0,
+  effect: [],
+  entry: "ItemEntry",
+};
