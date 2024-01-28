@@ -256,15 +256,13 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                   </Row>
                   <Row>
                     <LeftValue>
-                      {toTitleCase(actives.attack.stat)} Stat +
-                      Precise Qualities = Attack
+                      {toTitleCase(actives.attack.stat)} Stat + Precise
+                      Qualities = Attack
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {actives.attack.value} +{" "}
-                      {GetPreciseValue(character)} ={" "}
-                      {actives.attack.value +
-                        GetPreciseValue(character)}
+                      {actives.attack.value} + {GetPreciseValue(character)} ={" "}
+                      {actives.attack.value + GetPreciseValue(character)}
                     </RightValue>
                   </Row>
                 </Column>
@@ -279,15 +277,13 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                   </Row>
                   <Row>
                     <LeftValue>
-                      {toTitleCase(actives.defense.stat)} Stat -
-                      Impeding Value = Defense
+                      {toTitleCase(actives.defense.stat)} Stat - Impeding Value
+                      = Defense
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {actives.defense.value} -{" "}
-                      {GetImpedingValue(character)} ={" "}
-                      {actives.defense.value -
-                        GetImpedingValue(character)}
+                      {actives.defense.value} - {GetImpedingValue(character)} ={" "}
+                      {actives.defense.value - GetImpedingValue(character)}
                     </RightValue>
                   </Row>
                 </Column>
@@ -302,15 +298,13 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                   </Row>
                   <Row>
                     <LeftValue>
-                      {toTitleCase(actives.sneaking.stat)} Stat -
-                      Impeding Value = Sneaking
+                      {toTitleCase(actives.sneaking.stat)} Stat - Impeding Value
+                      = Sneaking
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {actives.sneaking.value} -{" "}
-                      {GetImpedingValue(character)} ={" "}
-                      {actives.sneaking.value -
-                        GetImpedingValue(character)}
+                      {actives.sneaking.value} - {GetImpedingValue(character)} ={" "}
+                      {actives.sneaking.value - GetImpedingValue(character)}
                     </RightValue>
                   </Row>
                 </Column>
@@ -325,15 +319,13 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                   </Row>
                   <Row>
                     <LeftValue>
-                      {toTitleCase(actives.casting.stat)} Stat -
-                      Impeding Value = Casting
+                      {toTitleCase(actives.casting.stat)} Stat - Impeding Value
+                      = Casting
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {actives.casting.value} -{" "}
-                      {GetImpedingValue(character)} ={" "}
-                      {actives.casting.value -
-                        GetImpedingValue(character)}
+                      {actives.casting.value} - {GetImpedingValue(character)} ={" "}
+                      {actives.casting.value - GetImpedingValue(character)}
                     </RightValue>
                   </Row>
                 </Column>
@@ -368,8 +360,8 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                   </Row>
                   <Row>
                     <LeftValue>
-                      ( Temporary Corruption * 3 ) - Artifacts - Mystical Powers
-                      = Permanent Corruption
+                      ( Temporary Corruption * 3 ) - Uniques - Mystical Powers =
+                      Permanent Corruption
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>

@@ -224,7 +224,10 @@ export function GetEquipmentCorruption(character: CharacterEntry) {
   let value_adjustment = 0;
 
   for (const item of character.inventory) {
-    if (item.type === "artifact") {
+    if (
+      item.type === "unique" &&
+      !CheckAbility(character, "Artifact Crafting", "novice")
+    ) {
       value_adjustment += 1;
     }
   }

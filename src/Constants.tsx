@@ -192,6 +192,14 @@ export const CATEGORY_FILTER = [
   "resource",
 ];
 
+export const RARITY_FILTER = [
+  "unique",
+  "artifact",
+  "mystical",
+  "quality",
+  "normal",
+];
+
 export const TYPE_FILTER = [
   "ability",
   "mystical power",

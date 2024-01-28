@@ -109,7 +109,12 @@ function EquipmentBrowser({
       return categoryComparison;
     }
 
-    return 0;
+    // // If categories are the same, then compare by rarity
+    // const rarityComparison =
+    //   Constants.RARITY_FILTER.indexOf(a.type) -
+    //   Constants.RARITY_FILTER.indexOf(b.type);
+
+    // return rarityComparison;
   };
 
   useEffect(() => {
