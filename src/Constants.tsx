@@ -263,6 +263,10 @@ export const SPECIAL_WORDS = [
   "Armor",
   "active",
   "damage",
+  "Night Cap",
+  "Night Caps",
+  "Iron Fragment",
+  "Darkland Yield",
   "1",
   "+1",
   "2",
@@ -283,4 +287,6 @@ export const SPECIAL_WORDS = [
   "+9",
   "10",
   "+10",
+  "15",
+  "+15",
 ];
