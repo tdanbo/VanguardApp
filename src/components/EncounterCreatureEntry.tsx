@@ -455,7 +455,7 @@ function EncounterCreatureEntry({
         const thaler_item = cloneDeep(RESOURCE);
         thaler_item.name = "Thaler";
         thaler_item.quantity.count = random(1, thaler);
-        thaler_item.cost = 10;
+        thaler_item.cost = 100;
         thaler_item.id = uuidv4();
         session.loot.drops.push(thaler_item);
       }
@@ -487,7 +487,7 @@ function EncounterCreatureEntry({
         const ortheg_item = cloneDeep(RESOURCE);
         ortheg_item.name = "Ortheg";
         ortheg_item.quantity.count = random(1, orthegs);
-        ortheg_item.cost = 10;
+        ortheg_item.cost = 1;
         ortheg_item.id = uuidv4();
         session.loot.drops.push(ortheg_item);
       }
