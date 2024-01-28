@@ -199,7 +199,6 @@ function DropsBrowser({
   session,
   websocket,
   setInventoryState,
-  gmMode,
   isGm,
   isCreature,
   search,
@@ -397,7 +396,6 @@ function DropsBrowser({
                   equipped={""}
                   id={""}
                   setInventoryState={setInventoryState}
-                  gmMode={gmMode}
                   isCreature={isCreature}
                   canBuy={session.state === "buy" ? true : false}
                   isGm={isGm}

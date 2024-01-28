@@ -259,7 +259,6 @@ interface InventoryEntryProps {
   id: string;
   isGm: boolean;
   setInventoryState?: (inventoryState: number) => void;
-  gmMode: boolean;
   isCreature: boolean;
   canBuy: boolean;
 }
@@ -273,7 +272,6 @@ function InventoryEntry({
   equipped,
   id,
   setInventoryState,
-  gmMode,
   isCreature,
   canBuy,
   isGm,

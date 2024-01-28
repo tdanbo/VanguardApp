@@ -80,7 +80,6 @@ function EquipmentBrowser({
   session,
   websocket,
   setInventoryState,
-  gmMode,
   isCreature,
   search,
   equipment,
@@ -115,6 +114,7 @@ function EquipmentBrowser({
     //   Constants.RARITY_FILTER.indexOf(b.type);
 
     // return rarityComparison;
+    return 0;
   };
 
   useEffect(() => {
@@ -193,7 +193,6 @@ function EquipmentBrowser({
                   equipped={""}
                   id={""}
                   setInventoryState={setInventoryState}
-                  gmMode={gmMode}
                   isCreature={isCreature}
                   canBuy={false}
                   isGm={isGm}

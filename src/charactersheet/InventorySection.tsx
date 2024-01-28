@@ -46,7 +46,6 @@ function InventorySection({
               item={item}
               id={item.id}
               equipped={""}
-              gmMode={false}
               isCreature={isCreature}
               canBuy={false}
               isGm={false}
