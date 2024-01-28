@@ -362,7 +362,7 @@ function DropsBrowser({
       const chest_item_list = equipmentList
         .filter((item) => item.cost > 0 && DidItDropChest(item))
         .map(addItemId);
-      session.loot.drops = [...chest_item_list].sort(sortShoppingList);
+      session.loot.drops = [...chest_item_list];
     }
 
     update_session(session, websocket);
@@ -382,7 +382,7 @@ function DropsBrowser({
     <>
       <DynamicContainer>
         <ScrollColumn ref={scrollRef} width="100%">
-          {session.loot.drops.map((entry, index) => {
+          {session.loot.drops.sort(sortShoppingList).map((entry, index) => {
             if (entry.entry === "ItemEntry") {
               return (
                 <InventoryEntry

@@ -104,7 +104,6 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   poison: COLOR_4,
   "adventuring gear": COLOR_4,
 
-  resource: COLOR_5,
   treasure: COLOR_5,
   utility: COLOR_5,
   test: COLOR_5,
@@ -148,6 +147,8 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   "poisoner crafting material": COLOR_8,
   "ritual scroll": COLOR_8,
   ritual: COLOR_8,
+
+  resource: "#bd8b02",
 };
 
 export const CATEGORY_FILTER = [

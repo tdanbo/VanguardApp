@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
+import { CharacterEntry, ItemEntry, SessionEntry, GeneralItem } from "../Types";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
-
+import { toTitleCase } from "../functions/UtilityFunctions";
 import { useRef, useState } from "react";
 import InventoryEntry from "../components/Entries/InventoryEntry";
 import {
@@ -14,6 +14,7 @@ import {
   IsGeneralGood,
   IsTreasure,
 } from "../functions/UtilityFunctions";
+import { cloneDeep } from "lodash";
 
 interface ContainerProps {
   height: string;
@@ -162,7 +163,13 @@ function EquipmentBrowser({
         ),
       );
 
-      setFilteredEquipment(searched_item);
+      if (searched_item.length === 0) {
+        const new_item = cloneDeep(GeneralItem);
+        new_item.name = toTitleCase(search);
+        setFilteredEquipment([new_item]);
+      } else {
+        setFilteredEquipment(searched_item);
+      }
     } else {
       setFilteredEquipment(sorted_items);
     }

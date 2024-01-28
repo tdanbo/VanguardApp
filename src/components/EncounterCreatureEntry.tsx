@@ -13,7 +13,7 @@ import { memo, useEffect, useState } from "react";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
+import { CharacterEntry, ItemEntry, SessionEntry, RESOURCE } from "../Types";
 import { GetActives } from "../functions/ActivesFunction";
 import AbilityEntryItem from "./Entries/AbilityEntryItem";
 import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
@@ -411,6 +411,88 @@ function EncounterCreatureEntry({
       new_loot_item.id = uuidv4();
       session.loot.drops.push(new_loot_item);
     }
+
+    if (creature.rations.food > 0) {
+      const DropsFood = session.loot.drops.find((item) => item.name === "Food");
+      if (DropsFood) {
+        DropsFood.quantity.count += creature.rations.food;
+      } else {
+        const food = cloneDeep(RESOURCE);
+        food.name = "Food";
+        food.quantity.count = creature.rations.food;
+        food.id = uuidv4();
+        session.loot.drops.push(food);
+      }
+    }
+
+    if (creature.rations.water > 0) {
+      const DropsWater = session.loot.drops.find(
+        (item) => item.name === "Water",
+      );
+      if (DropsWater) {
+        DropsWater.quantity.count += creature.rations.water;
+      } else {
+        const water = cloneDeep(RESOURCE);
+        water.name = "Water";
+        water.quantity.count = creature.rations.water;
+        water.id = uuidv4();
+        session.loot.drops.push(water);
+      }
+    }
+
+    const thaler = Math.floor(creature.money / 100);
+    const remainingAfterThaler = creature.money - thaler * 100;
+    const shillings = Math.floor(remainingAfterThaler / 10);
+    const orthegs = remainingAfterThaler - shillings * 10;
+
+    if (thaler > 0) {
+      const DropsThaler = session.loot.drops.find(
+        (item) => item.name === "Thaler",
+      );
+      if (DropsThaler) {
+        DropsThaler.quantity.count += thaler;
+      } else {
+        const thaler_item = cloneDeep(RESOURCE);
+        thaler_item.name = "Thaler";
+        thaler_item.quantity.count = random(1, thaler);
+        thaler_item.cost = 10;
+        thaler_item.id = uuidv4();
+        session.loot.drops.push(thaler_item);
+      }
+    }
+
+    if (shillings > 0) {
+      const DropsShilling = session.loot.drops.find(
+        (item) => item.name === "Shilling",
+      );
+      if (DropsShilling) {
+        DropsShilling.quantity.count += shillings;
+      } else {
+        const shillings_item = cloneDeep(RESOURCE);
+        shillings_item.name = "Shilling";
+        shillings_item.quantity.count = random(1, shillings);
+        shillings_item.cost = 10;
+        shillings_item.id = uuidv4();
+        session.loot.drops.push(shillings_item);
+      }
+    }
+
+    if (orthegs > 0) {
+      const DropsOrtheg = session.loot.drops.find(
+        (item) => item.name === "Orteg",
+      );
+      if (DropsOrtheg) {
+        DropsOrtheg.quantity.count += orthegs;
+      } else {
+        const ortheg_item = cloneDeep(RESOURCE);
+        ortheg_item.name = "Ortheg";
+        ortheg_item.quantity.count = random(1, orthegs);
+        ortheg_item.cost = 10;
+        ortheg_item.id = uuidv4();
+        session.loot.drops.push(ortheg_item);
+      }
+    }
+
     update_session(session, websocket);
   };
 
