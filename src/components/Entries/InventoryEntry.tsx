@@ -197,7 +197,7 @@ const NoEquipBox = styled.div<NoEquipButtonProps>`
 const QuantityBox = styled.button<RollBoxProps>`
   display: flex;
   flex-grow: 1;
-  color: ${(props) => props.color};
+  color: ${Constants.WIDGET_SECONDARY_FONT};
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   border-radius: ${Constants.BORDER_RADIUS};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -206,6 +206,7 @@ const QuantityBox = styled.button<RollBoxProps>`
   align-items: center;
   font-weight: bold;
   width: 40px;
+  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
 `;
 
 const TypeBox = styled.div`
@@ -294,9 +295,18 @@ function InventoryEntry({
   };
 
   const AddToLoot = () => {
-    const new_item = cloneDeep(item);
-    new_item.id = generateRandomId();
-    session.loot.drops.push(new_item);
+    const drop_item = session.loot.drops.find(
+      (drop_item) =>
+        drop_item.name === item.name && item.quantity.bulk === true,
+    );
+
+    if (drop_item) {
+      drop_item.quantity.count += 1;
+    } else {
+      const new_item = cloneDeep(item);
+      new_item.id = generateRandomId();
+      session.loot.drops.push(new_item);
+    }
     update_session(session, websocket, character, isCreature);
   };
 
