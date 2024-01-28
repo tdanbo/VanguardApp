@@ -103,6 +103,33 @@ export function IsUndead(item: CharacterEntry): boolean {
   return false;
 }
 
+export function IsGeneralGood(item: ItemEntry): boolean {
+  const general_categories = [
+    "bushcraft crafting material",
+    "alchemy crafting material",
+    "blacksmith crafting material",
+    "ritual crafting material",
+    "artifact crafting material",
+    "siege expert crafting material",
+    "poisoner crafting material",
+    "adventuring gear",
+    "tool",
+    "container",
+  ];
+  if (general_categories.includes(item.category)) {
+    return true;
+  }
+  return false;
+}
+
+export function IsConsumable(item: ItemEntry): boolean {
+  const general_categories = ["elixir", "poison"];
+  if (general_categories.includes(item.category)) {
+    return true;
+  }
+  return false;
+}
+
 export function IsWeapon(item: ItemEntry): boolean {
   const weapon_categories = [
     "natural weapon",
@@ -113,7 +140,16 @@ export function IsWeapon(item: ItemEntry): boolean {
     "ranged weapon",
     "throwing weapon",
     "weapon accessory",
+    "alchemical weapon",
   ];
+  if (weapon_categories.includes(item.category)) {
+    return true;
+  }
+  return false;
+}
+
+export function IsTreasure(item: ItemEntry): boolean {
+  const weapon_categories = ["treasure", "weapon accessory", "armor accessory"];
   if (weapon_categories.includes(item.category)) {
     return true;
   }

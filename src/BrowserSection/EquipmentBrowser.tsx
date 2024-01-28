@@ -7,7 +7,13 @@ import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 
 import { useRef, useState } from "react";
 import InventoryEntry from "../components/Entries/InventoryEntry";
-import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
+import {
+  IsArmor,
+  IsWeapon,
+  IsConsumable,
+  IsGeneralGood,
+  IsTreasure,
+} from "../functions/UtilityFunctions";
 
 interface ContainerProps {
   height: string;
@@ -86,7 +92,10 @@ function EquipmentBrowser({
     | "projectile"
     | "armor"
     | "elixirs"
-    | "tools";
+    | "general goods"
+    | "consumables"
+    | "treasure";
+
   const scrollRef = useRef(null);
   const [filteredEquipment, setFilteredEquipment] = useState<ItemEntry[]>([]);
   const [LootCategory, setLootCategory] = useState<LootCategoryType>("all");
@@ -125,15 +134,14 @@ function EquipmentBrowser({
           (item) => item.category === "projectile",
         );
         break;
-      case "elixirs":
-        filtered_equipment = equipment.filter(
-          (item) => item.category === "elixir",
-        );
+      case "consumables":
+        filtered_equipment = equipment.filter((item) => IsConsumable(item));
         break;
-      case "tools":
-        filtered_equipment = equipment.filter(
-          (item) => item.category === "tool",
-        );
+      case "general goods":
+        filtered_equipment = equipment.filter((item) => IsGeneralGood(item));
+        break;
+      case "treasure":
+        filtered_equipment = equipment.filter((item) => IsTreasure(item));
         break;
       default:
         // Keep the original list if no category matches
@@ -195,10 +203,17 @@ function EquipmentBrowser({
       </DynamicContainer>
       <FooterContainer height={"30px"}>
         <Button onClick={() => setLootCategory("weapon")}>Weapons</Button>
-        <Button onClick={() => setLootCategory("armor")}>Ammunition</Button>
-        <Button onClick={() => setLootCategory("projectile")}>Armor</Button>
-        <Button onClick={() => setLootCategory("elixirs")}>Elixirs</Button>
-        <Button onClick={() => setLootCategory("tools")}>Tools</Button>
+        <Button onClick={() => setLootCategory("armor")}>Armor</Button>
+        <Button onClick={() => setLootCategory("projectile")}>
+          Projectile
+        </Button>
+        <Button onClick={() => setLootCategory("general goods")}>
+          General Goods
+        </Button>
+        <Button onClick={() => setLootCategory("consumables")}>
+          Consumables
+        </Button>
+        <Button onClick={() => setLootCategory("treasure")}>Treasure</Button>
       </FooterContainer>
     </>
   );

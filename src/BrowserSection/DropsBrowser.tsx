@@ -18,6 +18,13 @@ import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 import { useRef, useState } from "react";
 import InventoryEntry from "../components/Entries/InventoryEntry";
 import { update_session } from "../functions/SessionsFunctions";
+import {
+  IsArmor,
+  IsConsumable,
+  IsGeneralGood,
+  IsTreasure,
+  IsWeapon,
+} from "../functions/UtilityFunctions";
 
 interface ContainerProps {
   height: string;
@@ -228,43 +235,6 @@ function DropsBrowser({
   };
 
   const gatherEquipment = (rarity: number) => () => {
-    const general = [
-      "container",
-      "tool",
-      "resource",
-      "adventuring gear",
-      "alchemy crafting material",
-      "blacksmith crafting material",
-      "ritual crafting material",
-      "artifact crafting material",
-      "siege expert crafting material",
-      "poisoner crafting material",
-    ];
-
-    const armory = [
-      // "natural armor",
-      // "natural weapon",
-      "short weapon",
-      "one-hand weapon",
-      "long weapon",
-      "heavy weapon",
-      "ranged weapon",
-      "throwing weapon",
-      "projectile",
-      "light armor",
-      "medium armor",
-      "heavy armor",
-    ];
-
-    const alchemy = [
-      "elixir",
-      "poison",
-      "ritual scroll",
-      "armor accessory",
-      "weapon accessory",
-    ];
-    const novelty = ["treasure"];
-
     const SetBulk = (item: ItemEntry) => {
       if (item.quantity.bulk) {
         if (item.category === "resource") {
@@ -362,30 +332,32 @@ function DropsBrowser({
     if (session.state === "buy") {
       session.loot.general = equipmentList
         .filter(
-          (item) =>
-            general.includes(item.category) && item.cost > 0 && DidItDrop(item),
+          (item) => IsGeneralGood(item) && item.cost > 0 && DidItDrop(item),
         )
         .map(addItemId);
 
       session.loot.armory = equipmentList
         .filter(
           (item) =>
-            armory.includes(item.category) && item.cost > 0 && DidItDrop(item),
+            (IsArmor(item) ||
+              IsWeapon(item) ||
+              item.category === "projectile") &&
+            item.cost > 0 &&
+            DidItDrop(item),
         )
         .map(addItemId);
 
       session.loot.alchemy = equipmentList
         .filter(
           (item) =>
-            alchemy.includes(item.category) && item.cost > 0 && DidItDrop(item),
+            (IsConsumable(item) || item.category === "ritual scroll") &&
+            item.cost > 0 &&
+            DidItDrop(item),
         )
         .map(addItemId);
 
       session.loot.novelty = equipmentList
-        .filter(
-          (item) =>
-            novelty.includes(item.category) && item.cost > 0 && DidItDrop(item),
-        )
+        .filter((item) => IsTreasure(item) && item.cost > 0 && DidItDrop(item))
         .map(addItemId);
     } else {
       const chest_item_list = equipmentList
