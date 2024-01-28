@@ -421,6 +421,7 @@ function EncounterCreatureEntry({
         food.name = "Food";
         food.quantity.count = creature.rations.food;
         food.id = uuidv4();
+        food.cost = 10;
         session.loot.drops.push(food);
       }
     }
@@ -436,6 +437,7 @@ function EncounterCreatureEntry({
         water.name = "Water";
         water.quantity.count = creature.rations.water;
         water.id = uuidv4();
+        water.cost = 10;
         session.loot.drops.push(water);
       }
     }
