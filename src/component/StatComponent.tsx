@@ -257,7 +257,7 @@ function StatComponent({
               setModValue={setModvalue}
             />
           </DiceContainer>
-          <div>FO</div>
+          {/* <div>FO</div> */}
         </DiceContainerRight>
       </Row>
       <ActiveValue className="value-row" active={active}>
