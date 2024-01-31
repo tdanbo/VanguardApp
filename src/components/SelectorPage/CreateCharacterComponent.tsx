@@ -279,6 +279,7 @@ function CreateCharacterComponent({
       movement: 0,
       xp_earned: characterXp,
       modifier: 0,
+      initiative: 0,
     },
     health: {
       damage: 0,

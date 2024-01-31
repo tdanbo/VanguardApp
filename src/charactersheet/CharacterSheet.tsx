@@ -62,6 +62,7 @@ const ScrollColumn = styled.div<DivProps>`
   border-top: 1px solid ${Constants.WIDGET_BORDER};
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.BACKGROUND};
+  scrollbar-width: none;
 `;
 
 const DividerVertical = styled.div`

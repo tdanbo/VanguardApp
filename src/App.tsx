@@ -18,16 +18,16 @@ import CharacterSheet from "./charactersheet/CharacterSheet";
 import CombatSection from "./components/Sections/CombatSection";
 import GameMaster from "./gamemaster/GameMaster";
 
+import axios from "axios";
 import AbilityBrowser from "./BrowserSection/AbilityBrowser";
 import BrowserHeader from "./BrowserSection/BrowserHeader";
 import CreatureBrowser from "./BrowserSection/CreatureBrowser";
 import DropsBrowser from "./BrowserSection/DropsBrowser";
 import EquipmentBrowser from "./BrowserSection/EquipmentBrowser";
+import { API } from "./Constants";
+import { ItemEntry } from "./Types";
 import JoinComponent from "./components/JoinComponent";
 import useSocketIO from "./socketio";
-import { ItemEntry } from "./Types";
-import axios from "axios";
-import { API } from "./Constants";
 const Row = styled.div`
   display: flex;
   flex-direction: row;
@@ -104,7 +104,8 @@ function App() {
 
       const filteredAbilities = abilitiesResponse.data.filter(
         (item: AbilityEntry) =>
-          item.type !== "monsterous trait" && item.type !== "burden",
+          (isGm && item.type !== "monsterous trait") ||
+          (isGm && item.type !== "burden"),
       );
 
       setEquipment(equipmentResponse.data);

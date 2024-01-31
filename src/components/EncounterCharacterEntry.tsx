@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { CharacterEntry } from "../Types";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
+import { CharacterEntry } from "../Types";
 
 interface ColorTypeProps {
   $rgb: string;
@@ -61,7 +61,9 @@ function EncounterCharacterEntry({ character }: EncounterBoxProps) {
   return (
     <Container src={CharacterPortraits[character.portrait]}>
       <ColorBlock $rgb={Constants.BLUE} />
-      <NameBox>{character.name}</NameBox>
+      <NameBox title={`Initiative: ${character.details.initiative}`}>
+        {character.name}
+      </NameBox>
     </Container>
   );
 }

@@ -3,6 +3,7 @@ interface CharacterDetails {
   xp_earned: number;
   movement: number;
   modifier: number;
+  initiative: number;
 }
 
 export interface Stat {
@@ -310,6 +311,7 @@ export const EmptyCharacter: CharacterEntry = {
     xp_earned: 0,
     movement: 0,
     modifier: 0,
+    initiative: 0,
   },
   health: {
     damage: 0,

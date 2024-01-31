@@ -1,20 +1,19 @@
-import styled from "styled-components";
-import { useEffect } from "react";
+import { cloneDeep } from "lodash";
+import { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
+import styled from "styled-components";
 import * as Constants from "../Constants";
-import { CharacterEntry, ItemEntry, SessionEntry, GeneralItem } from "../Types";
-import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
-import { toTitleCase } from "../functions/UtilityFunctions";
-import { useRef, useState } from "react";
+import { CharacterEntry, GeneralItem, ItemEntry, SessionEntry } from "../Types";
 import InventoryEntry from "../components/Entries/InventoryEntry";
+import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 import {
   IsArmor,
-  IsWeapon,
   IsConsumable,
   IsGeneralGood,
   IsTreasure,
+  IsWeapon,
+  toTitleCase,
 } from "../functions/UtilityFunctions";
-import { cloneDeep } from "lodash";
 
 interface ContainerProps {
   height: string;
@@ -62,6 +61,7 @@ const ScrollColumn = styled.div<DivProps>`
   gap: ${Constants.WIDGET_GAB};
   max-width: ${(props) => props.width};
   overflow-y: scroll;
+  scrollbar-width: none;
 `;
 
 interface EquipmentBrowserProps {

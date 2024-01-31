@@ -8,20 +8,19 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { mdiBowArrow, mdiKnife, mdiSpear, mdiSword } from "@mdi/js";
 import Icon from "@mdi/react";
-import { cloneDeep } from "lodash";
+import { cloneDeep, random } from "lodash";
 import { memo, useEffect, useState } from "react";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { CharacterEntry, ItemEntry, SessionEntry, RESOURCE } from "../Types";
+import { CharacterEntry, ItemEntry, RESOURCE, SessionEntry } from "../Types";
 import { GetActives } from "../functions/ActivesFunction";
-import AbilityEntryItem from "./Entries/AbilityEntryItem";
-import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
-import { RulesDiceAdjust } from "../functions/RulesFunctions";
-import { v4 as uuidv4 } from "uuid";
-import { Socket } from "socket.io-client";
+import { GetMovementSpeed, RulesDiceAdjust } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-import { random } from "lodash";
+import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
+import AbilityEntryItem from "./Entries/AbilityEntryItem";
 
 interface ColorTypeProps {
   $rgb: string;
@@ -371,28 +370,35 @@ function EncounterCreatureEntry({
   };
 
   const title =
-    "Cunning " +
+    "Initiative: " +
+    character_actives.initiative.value +
+    "\n" +
+    "Movement: " +
+    GetMovementSpeed(creatureClone) +
+    "\n" +
+    "\n" +
+    "Cunning: " +
     ModifierConverter[creatureClone.stats.cunning.value] +
     "\n" +
-    "Discreet " +
+    "Discreet: " +
     ModifierConverter[creatureClone.stats.discreet.value] +
     "\n" +
-    "Persuasive " +
+    "Persuasive: " +
     ModifierConverter[creatureClone.stats.persuasive.value] +
     "\n" +
-    "Quick " +
+    "Quick: " +
     ModifierConverter[creatureClone.stats.quick.value] +
     "\n" +
-    "Resolute " +
+    "Resolute: " +
     ModifierConverter[creatureClone.stats.resolute.value] +
     "\n" +
-    "Strong " +
+    "Strong: " +
     ModifierConverter[creatureClone.stats.strong.value] +
     "\n" +
-    "Vigilant " +
+    "Vigilant: " +
     ModifierConverter[creatureClone.stats.vigilant.value] +
     "\n" +
-    "Accurate " +
+    "Accurate: " +
     ModifierConverter[creatureClone.stats.accurate.value];
 
   for (const item of creatureClone.inventory) {
