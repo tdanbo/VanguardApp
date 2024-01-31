@@ -59,6 +59,7 @@ const ScrollColumn = styled.div<DivProps>`
   gap: ${Constants.WIDGET_GAB};
   max-width: ${(props) => props.width};
   overflow-y: scroll;
+  scrollbar-width: none;
 `;
 
 const ClearButton = styled.button`

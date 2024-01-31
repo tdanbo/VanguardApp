@@ -1,10 +1,15 @@
-import * as Constants from "../Constants";
+import {
+  faArrowDownShortWide,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { random } from "lodash";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import "../App.css";
-import { Socket } from "socket.io-client";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import * as Constants from "../Constants";
 import { SessionEntry } from "../Types";
+import { GetActives } from "../functions/ActivesFunction";
 import { update_session } from "../functions/SessionsFunctions";
 const Navigator = styled.button`
   cursor: pointer;
@@ -33,17 +38,42 @@ interface ResetEncounterProps {
 
 function ResetCreatureEncounter({ session, websocket }: ResetEncounterProps) {
   const handleResetEncounter = () => {
+    for (const character of session.characters) {
+      character.details.initiative = 0;
+    }
+
     session.encounter = [];
     update_session(session, websocket);
   };
 
+  const RollInitiative = () => {
+    for (const character of session.characters) {
+      character.details.initiative =
+        GetActives(character).initiative.value + random(1, 10);
+    }
+
+    for (const creature of session.encounter) {
+      creature.details.initiative =
+        GetActives(creature).initiative.value + random(1, 10);
+    }
+    update_session(session, websocket);
+  };
+
   return (
-    <Navigator
-      className="mouse-icon-hover button-hover"
-      onClick={handleResetEncounter}
-    >
-      <FontAwesomeIcon icon={faXmark} />
-    </Navigator>
+    <>
+      <Navigator
+        className="mouse-icon-hover button-hover"
+        onClick={handleResetEncounter}
+      >
+        <FontAwesomeIcon icon={faXmark} />
+      </Navigator>
+      <Navigator
+        className="mouse-icon-hover button-hover"
+        onClick={RollInitiative}
+      >
+        <FontAwesomeIcon icon={faArrowDownShortWide} />
+      </Navigator>
+    </>
   );
 }
 

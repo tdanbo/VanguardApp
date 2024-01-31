@@ -1,11 +1,12 @@
+import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import { SessionEntry } from "../Types";
+import * as Constants from "../Constants";
+import { CharacterEntry, SessionEntry } from "../Types";
 import ResetCreatureEncounter from "../components/ResetCreatureEncounter";
 import CreatureEncounterSection from "../components/Sections/CreatureEncounterSection";
 import TimeTrackBox from "../gamemaster/TimeTrackBox";
 import TravelBox from "../gamemaster/TravelBox";
-import * as Constants from "../Constants";
 
 interface ContainerProps {
   height: string;
@@ -74,6 +75,22 @@ function GameMaster({
   setIsCreature,
   setCharacterName,
 }: GameMasterProps) {
+  const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
+
+  useEffect(() => {
+    const combined_creatures = [...session.characters, ...session.encounter];
+    combined_creatures.sort((a, b) => {
+      if (a.details.initiative > b.details.initiative) {
+        return -1;
+      } else if (a.details.initiative < b.details.initiative) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    setCharacterLog(combined_creatures);
+  }, [session]);
+
   return (
     <>
       <Container height={"40px"}>
@@ -90,6 +107,7 @@ function GameMaster({
             setIsCreature={setIsCreature}
             setGmMode={setGmMode}
             setCharacterName={setCharacterName}
+            characterLog={characterLog}
           />
         </ScrollColumn>
       </DynamicContainer>
