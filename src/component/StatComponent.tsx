@@ -129,9 +129,10 @@ const DiceContainerLeft = styled.button`
 
 const DiceContainerRight = styled.button`
   display: flex;
+  flex-direction: column;
   flex-grow: 1;
-  align-items: top;
-  justify-content: center;
+  align-items: center;
+  justify-content: top;
   border-top-right-radius: ${Constants.BORDER_RADIUS};
   color: ${(props) => props.color};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -256,6 +257,7 @@ function StatComponent({
               setModValue={setModvalue}
             />
           </DiceContainer>
+          <div>FO</div>
         </DiceContainerRight>
       </Row>
       <ActiveValue className="value-row" active={active}>
