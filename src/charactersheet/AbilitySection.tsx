@@ -1,6 +1,11 @@
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
+import {
+  AbilityEntry,
+  ActiveStateType,
+  CharacterEntry,
+  SessionEntry,
+} from "../Types";
 import AbilityEntryItem from "../components/Entries/AbilityEntryItem";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 
@@ -9,6 +14,8 @@ interface NavigationProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
+  activeState: ActiveStateType;
+  advantage: boolean;
 }
 
 function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
@@ -23,6 +30,8 @@ function AbilitySection({
   session,
   websocket,
   isCreature,
+  activeState,
+  advantage,
 }: NavigationProps) {
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
 
@@ -38,6 +47,8 @@ function AbilitySection({
             character={character}
             websocket={websocket}
             isCreature={isCreature}
+            activeState={activeState}
+            advantage={advantage}
           />
         );
       })}

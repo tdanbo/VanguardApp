@@ -18,6 +18,8 @@ import {
   CharacterEntry,
   ItemEntry,
   DurabilityEntry,
+  ActiveStateType,
+  AdvantageType,
 } from "../Types";
 import { v4 as uuidv4 } from "uuid";
 import { SetDurability } from "../functions/RulesFunctions";
@@ -39,6 +41,8 @@ type RollComponentProps = {
   isCreature: boolean;
   inactive?: boolean;
   setModValue?: React.Dispatch<React.SetStateAction<number>>;
+  advantage: boolean;
+  activeState: ActiveStateType;
 };
 
 const dice_size = "25px";
@@ -141,6 +145,8 @@ function RollComponent({
   isCreature,
   inactive = true,
   setModValue,
+  advantage,
+  activeState,
 }: RollComponentProps) {
   let dice_icon = Dice20FillIcon;
   if (dice === 4) {
@@ -160,16 +166,57 @@ function RollComponent({
   }
 
   const RollDIce = () => {
-    let roll = Math.floor(Math.random() * dice) + 1;
-    let result = roll;
+    // let roll = Math.floor(Math.random() * dice) + 1;
+
+    let roll1 = random(1, dice);
+    let roll2 = random(1, dice);
+    const advantage_type: AdvantageType = {
+      state: advantage,
+      result: random(1, 4),
+    };
+
+    let result1 = roll1;
+    let result2 = roll2;
+
+    let roll_state = activeState;
+
     if (roll_source !== "Skill Test") {
-      result += dice_mod;
+      result1 += dice_mod;
+      result2 += dice_mod;
     }
 
-    let success = true;
-    if (target !== 0 && result > target) {
+    let success = false;
+
+    if (
+      (activeState === "full offense" || activeState === "careful aim") &&
+      roll_type === "attack" &&
+      (result1 <= target || result2 <= target)
+    ) {
+      success = true;
+    } else if (
+      activeState === "full offense" &&
+      roll_type === "defense" &&
+      (result1 > target || result2 > target)
+    ) {
+      success = false;
+    } else if (
+      activeState === "full defense" &&
+      roll_type === "defense" &&
+      (result1 <= target || result2 <= target)
+    ) {
+      success = true;
+    } else if (result1 <= target) {
+      console.log("NORMAL SUCCESS");
+      success = true;
+    } else {
+      console.log("NORMAL FAILURE");
       success = false;
     }
+
+    // let success = true;
+    // if (target !== 0 && result > target) {
+    //   success = false;
+    // }
 
     console.log(roll_source);
 
@@ -180,8 +227,11 @@ function RollComponent({
     }
 
     const roll_entry: RollEntry = {
-      result: result,
-      roll: roll,
+      result1: result1,
+      result2: result2,
+      roll1: roll1,
+      roll2: roll2,
+      advantage: advantage_type,
       mod: dice_mod,
       target: target,
       success: success,
@@ -213,6 +263,7 @@ function RollComponent({
       character,
       roll_type, // Damage, Armor, Accurate etc
       roll_source, // Short Sword, Medium Armor, Skill Test,
+      roll_state,
       roll_entry,
       uuid: uuidv4(),
       entry: "CombatEntry",

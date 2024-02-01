@@ -12,7 +12,12 @@ import { useEffect } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
 import { API } from "../Constants";
-import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
+import {
+  ActiveStateType,
+  CharacterEntry,
+  ItemEntry,
+  SessionEntry,
+} from "../Types";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 
 import { useRef, useState } from "react";
@@ -151,6 +156,8 @@ interface BrowserSectionProps {
   isGm: boolean;
   isCreature: boolean;
   search: string;
+  advantage: boolean;
+  activeState: ActiveStateType;
 }
 
 let creatureList: CharacterEntry[] = [];
@@ -203,6 +210,8 @@ function DropsBrowser({
   isGm,
   isCreature,
   search,
+  advantage,
+  activeState,
 }: BrowserSectionProps) {
   const [equipmentList, setEquipmentList] = useState<ItemEntry[]>([]);
   const scrollRef = useRef(null);
@@ -400,6 +409,8 @@ function DropsBrowser({
                   isCreature={isCreature}
                   canBuy={session.state === "buy" ? true : false}
                   isGm={isGm}
+                  advantage={advantage}
+                  activeState={activeState}
                 />
               );
             }

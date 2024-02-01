@@ -115,6 +115,7 @@ export type CombatEntry = {
   character: CharacterEntry;
   roll_type: RollTypeEntry;
   roll_source: string;
+  roll_state: ActiveStateType;
   roll_entry: RollEntry;
   uuid: string;
   durability: DurabilityEntry;
@@ -204,9 +205,17 @@ export type RollTypeEntry =
   | "ability"
   | "mystical power";
 
-export type RollEntry = {
+export type AdvantageType = {
+  state: boolean;
   result: number;
-  roll: number;
+};
+
+export type RollEntry = {
+  result1: number;
+  result2: number;
+  roll1: number;
+  roll2: number;
+  advantage: AdvantageType;
   mod: number;
   target: number;
   success: boolean;

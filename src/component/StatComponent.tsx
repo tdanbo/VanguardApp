@@ -1,11 +1,16 @@
 import { faMinus, faNotEqual, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import "../App.css";
 import * as Constants from "../Constants";
-import { CharacterEntry, RollTypeEntry, SessionEntry } from "../Types";
+import {
+  ActiveStateType,
+  CharacterEntry,
+  RollTypeEntry,
+  SessionEntry,
+} from "../Types";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import RollComponent from "./RollComponent";
 
@@ -185,21 +190,6 @@ const Minus = styled.button`
   min-width: 35px;
 `;
 
-const DiceStats = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  align-items: center;
-  justify-content: top;
-  font-size: 12px;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  width: 50%;
-`;
-
 const DiceContainer = styled.div<DivProps>`
   display: ${(props) => (props.active ? "flex" : "none")};
 `;
@@ -214,6 +204,8 @@ interface Props {
   character: CharacterEntry;
   websocket: Socket;
   isCreature: boolean;
+  advantage: boolean;
+  activeState: ActiveStateType;
 }
 
 function StatComponent({
@@ -226,6 +218,8 @@ function StatComponent({
   character,
   websocket,
   isCreature,
+  advantage,
+  activeState,
 }: Props) {
   const [modValue, setModvalue] = useState<number>(0);
   const handleAddValue = () => {
@@ -237,6 +231,16 @@ function StatComponent({
     const newValue = modValue - 1;
     setModvalue(newValue);
   };
+
+  useEffect(() => {
+    if (advantage && stat_name === "attack") {
+      setModvalue(modValue + 2);
+    } else if (advantage && stat_name === "defense") {
+      setModvalue(modValue - 2);
+    } else {
+      setModvalue(0);
+    }
+  }, [advantage]);
 
   let color = Constants.WIDGET_SECONDARY_FONT;
   if (["attack", "defense", "casting", "sneaking"].includes(stat_name)) {
@@ -269,6 +273,8 @@ function StatComponent({
               color={color}
               target={stat_value + modValue}
               setModValue={setModvalue}
+              advantage={advantage}
+              activeState={activeState}
             />
           </DiceContainer>
         </DiceContainerRight>

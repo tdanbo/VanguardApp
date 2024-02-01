@@ -11,7 +11,12 @@ import React, { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
-import { CharacterEntry, ItemEntry, SessionEntry } from "../../Types";
+import {
+  ActiveStateType,
+  CharacterEntry,
+  ItemEntry,
+  SessionEntry,
+} from "../../Types";
 import RollComponent from "../../component/RollComponent";
 import { DeleteInventorySlot } from "../../functions/CharacterFunctions";
 import { GetMaxSlots, RulesDiceAdjust } from "../../functions/RulesFunctions";
@@ -126,6 +131,12 @@ const RollContainer = styled.div`
   margin-top: 5px;
   margin-bottom: 5px;
   margin-right: 5px;
+`;
+
+const PlusDiv = styled.div`
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  font-weight: bold;
+  margin-right: -3px;
 `;
 
 interface RollBoxProps {
@@ -262,6 +273,8 @@ interface InventoryEntryProps {
   setInventoryState?: (inventoryState: number) => void;
   isCreature: boolean;
   canBuy: boolean;
+  advantage: boolean;
+  activeState: ActiveStateType;
 }
 
 function InventoryEntry({
@@ -276,6 +289,8 @@ function InventoryEntry({
   isCreature,
   canBuy,
   isGm,
+  advantage,
+  activeState,
 }: InventoryEntryProps) {
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
   const generateRandomId = (length = 10) => {
@@ -604,29 +619,63 @@ function InventoryEntry({
 
         <RollContainer>
           {item.roll.roll === true && (
-            <RollBox color={COLOR}>
-              <RollComponent
-                session={session}
-                character={character}
-                websocket={websocket}
-                roll_type={
-                  IsWeapon(item)
-                    ? "damage"
-                    : item.category === "shield"
-                    ? "damage"
-                    : IsArmor(item)
-                    ? "armor"
-                    : "custom"
-                }
-                roll_source={item.name}
-                isCreature={isCreature}
-                dice={dice}
-                dice_mod={item.roll.mod}
-                color={COLOR}
-                item={item}
-                inactive={item.equip.equipped}
-              />
-            </RollBox>
+            <>
+              <RollBox color={COLOR}>
+                <RollComponent
+                  session={session}
+                  character={character}
+                  websocket={websocket}
+                  roll_type={
+                    IsWeapon(item)
+                      ? "damage"
+                      : item.category === "shield"
+                      ? "damage"
+                      : IsArmor(item)
+                      ? "armor"
+                      : "custom"
+                  }
+                  roll_source={item.name}
+                  isCreature={isCreature}
+                  dice={dice}
+                  dice_mod={item.roll.mod}
+                  color={COLOR}
+                  item={item}
+                  inactive={item.equip.equipped}
+                  advantage={advantage}
+                  activeState={activeState}
+                />
+              </RollBox>
+              {advantage && IsWeapon(item) ? (
+                <>
+                  <PlusDiv>+</PlusDiv>
+                  <RollBox color={COLOR}>
+                    <RollComponent
+                      session={session}
+                      character={character}
+                      websocket={websocket}
+                      roll_type={
+                        IsWeapon(item)
+                          ? "damage"
+                          : item.category === "shield"
+                          ? "damage"
+                          : IsArmor(item)
+                          ? "armor"
+                          : "custom"
+                      }
+                      roll_source={item.name}
+                      isCreature={isCreature}
+                      dice={4}
+                      dice_mod={0}
+                      color={COLOR}
+                      item={item}
+                      inactive={item.equip.equipped}
+                      advantage={advantage}
+                      activeState={activeState}
+                    />
+                  </RollBox>
+                </>
+              ) : null}
+            </>
           )}
 
           {[1, 2, 3].includes(item.equip.slot) &&
@@ -751,6 +800,8 @@ function InventoryEntry({
                 character={character}
                 session={session}
                 isCreature={isCreature}
+                activeState={activeState}
+                advantage={advantage}
               />
             </React.Fragment>
           ))}

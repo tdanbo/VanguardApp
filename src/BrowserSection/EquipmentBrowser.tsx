@@ -3,7 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { CharacterEntry, GeneralItem, ItemEntry, SessionEntry } from "../Types";
+import {
+  ActiveStateType,
+  CharacterEntry,
+  GeneralItem,
+  ItemEntry,
+  SessionEntry,
+} from "../Types";
 import InventoryEntry from "../components/Entries/InventoryEntry";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 import {
@@ -74,6 +80,8 @@ interface EquipmentBrowserProps {
   search: string;
   equipment: ItemEntry[];
   isGm: boolean;
+  advantage: boolean;
+  activeState: ActiveStateType;
 }
 
 function EquipmentBrowser({
@@ -85,6 +93,8 @@ function EquipmentBrowser({
   search,
   equipment,
   isGm,
+  advantage,
+  activeState,
 }: EquipmentBrowserProps) {
   type LootCategoryType =
     | "all"
@@ -203,6 +213,8 @@ function EquipmentBrowser({
                   isCreature={isCreature}
                   canBuy={false}
                   isGm={isGm}
+                  advantage={advantage}
+                  activeState={activeState}
                 />
               );
             }

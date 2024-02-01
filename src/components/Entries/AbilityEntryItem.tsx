@@ -6,6 +6,7 @@ import Icon from "@mdi/react";
 import { toTitleCase } from "../../functions/UtilityFunctions";
 import {
   AbilityEntry,
+  ActiveStateType,
   CharacterEntry,
   RollTypeEntry,
   SessionEntry,
@@ -250,6 +251,8 @@ interface AbilityEntryItemProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
+  activeState: ActiveStateType;
+  advantage: boolean;
 }
 
 function GetCurrentLevel(ability: AbilityEntry) {
@@ -270,6 +273,8 @@ function AbilityEntryItem({
   session,
   websocket,
   isCreature,
+  activeState,
+  advantage,
 }: AbilityEntryItemProps) {
   const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
   useEffect(() => {
@@ -292,6 +297,8 @@ function AbilityEntryItem({
             character={character}
             session={session}
             isCreature={isCreature}
+            activeState={activeState}
+            advantage={advantage}
           />
         </AbilityDescription>
       </LevelBaseContainer>
@@ -525,6 +532,8 @@ function AbilityEntryItem({
               dice_mod={i.mod}
               color={EntryColor(i.type)}
               key={index}
+              activeState={activeState}
+              advantage={advantage}
             />
           ))}
         </RollBox>

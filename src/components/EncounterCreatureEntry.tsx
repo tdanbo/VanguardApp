@@ -15,7 +15,13 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { CharacterEntry, ItemEntry, RESOURCE, SessionEntry } from "../Types";
+import {
+  ActiveStateType,
+  CharacterEntry,
+  ItemEntry,
+  RESOURCE,
+  SessionEntry,
+} from "../Types";
 import { GetActives } from "../functions/ActivesFunction";
 import { GetMovementSpeed, RulesDiceAdjust } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
@@ -294,6 +300,8 @@ interface EncounterBoxProps {
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   onCreatureDelete: (id: string) => void;
+  activeState: ActiveStateType;
+  advantage: boolean;
 }
 
 function EncounterCreatureEntry({
@@ -305,6 +313,8 @@ function EncounterCreatureEntry({
   setCharacterName,
   setIsCreature,
   onCreatureDelete,
+  activeState,
+  advantage,
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
   const character_actives = GetActives(creatureClone);
@@ -629,6 +639,8 @@ function EncounterCreatureEntry({
               ability={ability}
               browser={false}
               isCreature={isCreature}
+              activeState={activeState}
+              advantage={advantage}
             />
           );
         })}

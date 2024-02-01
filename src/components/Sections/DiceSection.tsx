@@ -51,6 +51,8 @@ function DiceSection({
           isCreature={isCreature}
           dice={4}
           color={Constants.TYPE_COLORS["custom"]}
+          activeState="normal"
+          advantage={false}
         />
       </DiceContainer>
       <DiceContainer>
@@ -63,6 +65,8 @@ function DiceSection({
           isCreature={isCreature}
           dice={6}
           color={Constants.TYPE_COLORS["custom"]}
+          activeState="normal"
+          advantage={false}
         />
       </DiceContainer>
       <DiceContainer>
@@ -75,6 +79,8 @@ function DiceSection({
           isCreature={isCreature}
           dice={8}
           color={Constants.TYPE_COLORS["custom"]}
+          activeState="normal"
+          advantage={false}
         />
       </DiceContainer>
       <DiceContainer>
@@ -87,6 +93,8 @@ function DiceSection({
           isCreature={isCreature}
           dice={10}
           color={Constants.TYPE_COLORS["custom"]}
+          activeState="normal"
+          advantage={false}
         />
       </DiceContainer>
       <DiceContainer>
@@ -99,6 +107,8 @@ function DiceSection({
           isCreature={isCreature}
           dice={12}
           color={Constants.TYPE_COLORS["custom"]}
+          activeState="normal"
+          advantage={false}
         />
       </DiceContainer>
       <DiceContainer>
@@ -111,6 +121,8 @@ function DiceSection({
           isCreature={isCreature}
           dice={20}
           color={Constants.TYPE_COLORS["custom"]}
+          activeState="normal"
+          advantage={false}
         />
       </DiceContainer>
       <DiceContainer>
@@ -123,6 +135,8 @@ function DiceSection({
           isCreature={isCreature}
           dice={100}
           color={Constants.TYPE_COLORS["custom"]}
+          activeState="normal"
+          advantage={false}
         />
       </DiceContainer>
       {/* <DiceBox

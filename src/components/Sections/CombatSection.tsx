@@ -142,12 +142,12 @@ function CombatSection({
 
       if (
         last_roll.roll_source === "Skill Test" &&
-        last_roll.roll_entry.roll === 1
+        last_roll.roll_entry.roll1 === 1
       ) {
         playRandomSound(CriticalSuccessSounds);
       } else if (
         last_roll.roll_source === "Skill Test" &&
-        last_roll.roll_entry.roll === 20
+        last_roll.roll_entry.roll1 === 20
       ) {
         playRandomSound(CriticalFailureSounds);
       } else if (last_roll.roll_type === "resting") {

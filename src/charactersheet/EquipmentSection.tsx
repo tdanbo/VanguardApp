@@ -1,6 +1,11 @@
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
+import {
+  ActiveStateType,
+  CharacterEntry,
+  ItemEntry,
+  SessionEntry,
+} from "../Types";
 import InventoryEntry from "../components/Entries/InventoryEntry";
 import { GetMaxSlots } from "../functions/RulesFunctions";
 import styled from "styled-components";
@@ -18,6 +23,8 @@ interface NavigationProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
+  activeState: ActiveStateType;
+  advantage: boolean;
 }
 
 function sortInventory(a: ItemEntry, b: ItemEntry): number {
@@ -32,6 +39,8 @@ function EquipmentSection({
   session,
   websocket,
   isCreature,
+  activeState,
+  advantage,
 }: NavigationProps) {
   character.inventory.sort(sortInventory);
   const sortedInventory = [...character.inventory].sort(sortInventory);
@@ -57,6 +66,8 @@ function EquipmentSection({
               isCreature={isCreature}
               canBuy={false}
               isGm={false}
+              activeState={activeState}
+              advantage={advantage}
             />
           );
         }

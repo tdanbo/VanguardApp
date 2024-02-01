@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { ActivesEntry, CharacterEntry } from "../Types";
+import { ActiveStateType, ActivesEntry, CharacterEntry } from "../Types";
 import {
   GetBurnRate,
   GetMaxSlots,
@@ -53,9 +53,20 @@ const RightColumn = styled.div`
 interface HealthBoxProps {
   character: CharacterEntry;
   actives: ActivesEntry;
+  activeState: ActiveStateType;
+  setActiveState: (state: ActiveStateType) => void;
+  advantage: boolean;
+  setAdvantage: (state: boolean) => void;
 }
 
-function PortraitComponent({ character, actives }: HealthBoxProps) {
+function PortraitComponent({
+  character,
+  actives,
+  activeState,
+  setActiveState,
+  advantage,
+  setAdvantage,
+}: HealthBoxProps) {
   const speed = GetMovementSpeed(character);
   const pain = GetPainThreshold(character);
   const capacity = GetMaxSlots(character) - GetUsedSlots(character);
@@ -87,7 +98,12 @@ function PortraitComponent({ character, actives }: HealthBoxProps) {
       </Column>
       <RightColumn>
         <InfoComponent character={character} actives={actives} />
-        <ActiveStateComponent />
+        <ActiveStateComponent
+          activeState={activeState}
+          setActiveState={setActiveState}
+          advantage={advantage}
+          setAdvantage={setAdvantage}
+        />
       </RightColumn>
     </Container>
   );

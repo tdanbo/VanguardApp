@@ -1,6 +1,10 @@
-import { mdiBullseye, mdiShield, mdiStar, mdiSwordCross } from "@mdi/js";
+import {
+  mdiBullseye,
+  mdiShield,
+  mdiArrowCollapse,
+  mdiSwordCross,
+} from "@mdi/js";
 import Icon from "@mdi/react";
-import { useState } from "react";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { ActiveStateType } from "../Types";
@@ -36,10 +40,19 @@ const Container = styled.div`
   flex-grow: 1;
 `;
 
-function ActiveStateComponent() {
-  const [activeState, setActiveState] = useState<ActiveStateType>("normal");
-  const [advantage, setAdvantage] = useState<boolean>(false);
+interface ActiveStateProps {
+  activeState: ActiveStateType;
+  setActiveState: (state: ActiveStateType) => void;
+  advantage: boolean;
+  setAdvantage: (state: boolean) => void;
+}
 
+function ActiveStateComponent({
+  activeState,
+  setActiveState,
+  advantage,
+  setAdvantage,
+}: ActiveStateProps) {
   const HandleActive = (state: ActiveStateType) => {
     if (activeState === state) {
       setActiveState("normal");
@@ -80,11 +93,11 @@ function ActiveStateComponent() {
         <Icon path={mdiBullseye} size={0.75} />
       </InfoBox>
       <InfoBox
-        title={"Advantage"}
+        title={"Flanking / Flanked"}
         onClick={() => HandleAdvantage(true)}
         active={advantage === true}
       >
-        <Icon path={mdiStar} size={0.75} />
+        <Icon path={mdiArrowCollapse} size={0.8} />
       </InfoBox>
     </Container>
   );
