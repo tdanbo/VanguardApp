@@ -1,13 +1,13 @@
 import { faMinus, faNotEqual, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import "../App.css";
 import * as Constants from "../Constants";
+import { CharacterEntry, RollTypeEntry, SessionEntry } from "../Types";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import RollComponent from "./RollComponent";
-import { Socket } from "socket.io-client";
-import { CharacterEntry, RollTypeEntry, SessionEntry } from "../Types";
 
 const Container = styled.div`
   display: flex;
@@ -185,6 +185,21 @@ const Minus = styled.button`
   min-width: 35px;
 `;
 
+const DiceStats = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: top;
+  font-size: 12px;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.WIDGET_BACKGROUND};
+  width: 50%;
+`;
+
 const DiceContainer = styled.div<DivProps>`
   display: ${(props) => (props.active ? "flex" : "none")};
 `;
@@ -213,7 +228,6 @@ function StatComponent({
   isCreature,
 }: Props) {
   const [modValue, setModvalue] = useState<number>(0);
-
   const handleAddValue = () => {
     const newValue = modValue + 1;
     setModvalue(newValue);
@@ -257,7 +271,6 @@ function StatComponent({
               setModValue={setModvalue}
             />
           </DiceContainer>
-          {/* <div>FO</div> */}
         </DiceContainerRight>
       </Row>
       <ActiveValue className="value-row" active={active}>

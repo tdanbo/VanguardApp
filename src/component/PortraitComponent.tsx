@@ -18,6 +18,7 @@ import {
   faPersonRunning,
   faWeightHanging,
 } from "@fortawesome/free-solid-svg-icons";
+import ActiveStateComponent from "./ActiveStateComponent";
 interface PortraitProps {
   src: string;
 }
@@ -37,6 +38,14 @@ const Column = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+`;
+
+const RightColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: flex-end;
 `;
 
 // background-image: url("/dist/assets/portrait1.jpeg");
@@ -76,7 +85,10 @@ function PortraitComponent({ character, actives }: HealthBoxProps) {
           icon={faCarrot}
         />
       </Column>
-      <InfoComponent character={character} actives={actives} />
+      <RightColumn>
+        <InfoComponent character={character} actives={actives} />
+        <ActiveStateComponent />
+      </RightColumn>
     </Container>
   );
 }
