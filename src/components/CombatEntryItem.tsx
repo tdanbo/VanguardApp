@@ -1,8 +1,3 @@
-import * as Constants from "../Constants";
-import { CombatEntry, SessionEntry } from "../Types";
-import "../App.css";
-import styled from "styled-components";
-import { UpperFirstLetter } from "../functions/UtilityFunctions";
 import {
   faAngleDoubleDown,
   faAngleDoubleUp,
@@ -10,9 +5,13 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import "../App.css";
+import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { useState, useEffect } from "react";
-import { toTitleCase } from "../functions/UtilityFunctions";
+import { CombatEntry, SessionEntry } from "../Types";
+import { UpperFirstLetter, toTitleCase } from "../functions/UtilityFunctions";
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
   index: number;
@@ -273,18 +272,8 @@ function CombatEntryItem({
 
   // const RollEntryColor = getAdjustedColor(EntryColor(), combatEntry.roll_entry.roll);
 
-  const FumbledPerfect = () => {
-    if (combatEntry.roll_entry.roll1 === 1) {
-      return 0; // Perfect
-    } else if (combatEntry.roll_entry.roll1 === 20) {
-      return 1; // Fumbled
-    } else {
-      return 2; // Normal
-    }
-  };
-
   const FumbledPerfectText = () => {
-    if (FumbledPerfect() === 0) {
+    if (combatEntry.roll_entry.critical.state === 2) {
       if (combatEntry.roll_type === "attack") {
         return "+1d6 damage.";
       } else if (combatEntry.roll_type === "defense") {
@@ -296,7 +285,7 @@ function CombatEntryItem({
       } else {
         return "";
       }
-    } else if (FumbledPerfect() === 1) {
+    } else if (combatEntry.roll_entry.critical.state === 0) {
       if (combatEntry.roll_type === "attack") {
         return `Free attack against you.`;
       } else if (combatEntry.roll_type === "defense") {
@@ -400,7 +389,7 @@ function CombatEntryItem({
       </RollContainer>
       <RightBlock>
         {combatEntry.roll_source === "Skill Test" ? (
-          combatEntry.roll_entry.roll1 === 1 ? (
+          combatEntry.roll_entry.critical.state === 2 ? (
             <FontAwesomeIcon
               icon={faAngleDoubleUp}
               color="#5cb57c"
@@ -408,7 +397,7 @@ function CombatEntryItem({
                 fontSize: "25px",
               }}
             />
-          ) : combatEntry.roll_entry.roll1 === 20 ? (
+          ) : combatEntry.roll_entry.critical.state === 0 ? (
             <FontAwesomeIcon
               icon={faAngleDoubleDown}
               color="#b55c5c"

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
 import {
   Dice10FillIcon,
   Dice12FillIcon,
@@ -8,24 +7,26 @@ import {
   Dice6FillIcon,
   Dice8FillIcon,
 } from "../Images";
+import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
 
+import { random } from "lodash";
+import { Socket } from "socket.io-client";
+import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import {
-  RollEntry,
-  RollTypeEntry,
-  CombatEntry,
-  SessionEntry,
-  CharacterEntry,
-  ItemEntry,
-  DurabilityEntry,
   ActiveStateType,
   AdvantageType,
+  CharacterEntry,
+  CombatEntry,
+  CriticalType,
+  DurabilityEntry,
+  ItemEntry,
+  RollEntry,
+  RollTypeEntry,
+  SessionEntry,
 } from "../Types";
-import { v4 as uuidv4 } from "uuid";
 import { SetDurability } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-import { Socket } from "socket.io-client";
-import { random } from "lodash";
 
 type RollComponentProps = {
   session: SessionEntry;
@@ -175,6 +176,11 @@ function RollComponent({
       result: random(1, 4),
     };
 
+    const critical_type: CriticalType = {
+      state: 1,
+      result: random(1, 6),
+    };
+
     let result1 = roll1;
     let result2 = roll2;
 
@@ -193,24 +199,39 @@ function RollComponent({
       (result1 <= target || result2 <= target)
     ) {
       success = true;
+      if (roll1 === 1 || roll2 === 1) {
+        critical_type.state = 2;
+      }
     } else if (
       activeState === "full offense" &&
       roll_type === "defense" &&
       (result1 > target || result2 > target)
     ) {
       success = false;
+      if (roll1 === 20 || roll2 === 20) {
+        critical_type.state = 0;
+      }
     } else if (
       activeState === "full defense" &&
       roll_type === "defense" &&
       (result1 <= target || result2 <= target)
     ) {
       success = true;
+      if (roll1 === 1 || roll2 === 1) {
+        critical_type.state = 2;
+      }
     } else if (result1 <= target) {
       console.log("NORMAL SUCCESS");
       success = true;
+      if (roll1 === 1) {
+        critical_type.state = 2;
+      }
     } else {
       console.log("NORMAL FAILURE");
       success = false;
+      if (roll1 === 20) {
+        critical_type.state = 0;
+      }
     }
 
     // let success = true;
@@ -231,6 +252,7 @@ function RollComponent({
       result2: result2,
       roll1: roll1,
       roll2: roll2,
+      critical: critical_type,
       advantage: advantage_type,
       mod: dice_mod,
       target: target,

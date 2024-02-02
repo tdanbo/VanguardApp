@@ -210,11 +210,17 @@ export type AdvantageType = {
   result: number;
 };
 
+export type CriticalType = {
+  state: 0 | 1 | 2;
+  result: number;
+};
+
 export type RollEntry = {
   result1: number;
   result2: number;
   roll1: number;
   roll2: number;
+  critical: CriticalType;
   advantage: AdvantageType;
   mod: number;
   target: number;
