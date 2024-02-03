@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { ActiveStateType, CharacterEntry, SessionEntry } from "../Types";
+import {
+  ActiveStateType,
+  AdvantageType,
+  CharacterEntry,
+  SessionEntry,
+} from "../Types";
 import ResetCreatureEncounter from "../components/ResetCreatureEncounter";
 import CreatureEncounterSection from "../components/Sections/CreatureEncounterSection";
 import TimeTrackBox from "../gamemaster/TimeTrackBox";
@@ -65,7 +70,7 @@ interface GameMasterProps {
   isCreature: boolean;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
-  advantage: boolean;
+  advantage: AdvantageType;
   activeState: ActiveStateType;
 }
 

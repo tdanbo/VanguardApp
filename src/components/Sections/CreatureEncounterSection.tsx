@@ -1,6 +1,11 @@
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import { ActiveStateType, CharacterEntry, SessionEntry } from "../../Types";
+import {
+  ActiveStateType,
+  AdvantageType,
+  CharacterEntry,
+  SessionEntry,
+} from "../../Types";
 import { update_session } from "../../functions/SessionsFunctions";
 import EncounterCharacterEntry from "../EncounterCharacterEntry";
 import EncounterCreatureEntry from "../EncounterCreatureEntry";
@@ -20,7 +25,7 @@ interface EncounterSectionProps {
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   characterLog: CharacterEntry[];
-  advantage: boolean;
+  advantage: AdvantageType;
   activeState: ActiveStateType;
 }
 

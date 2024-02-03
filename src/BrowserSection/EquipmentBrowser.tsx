@@ -5,6 +5,7 @@ import styled from "styled-components";
 import * as Constants from "../Constants";
 import {
   ActiveStateType,
+  AdvantageType,
   CharacterEntry,
   GeneralItem,
   ItemEntry,
@@ -80,7 +81,7 @@ interface EquipmentBrowserProps {
   search: string;
   equipment: ItemEntry[];
   isGm: boolean;
-  advantage: boolean;
+  advantage: AdvantageType;
   activeState: ActiveStateType;
 }
 

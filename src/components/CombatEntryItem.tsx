@@ -11,7 +11,7 @@ import "../App.css";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { CombatEntry, SessionEntry } from "../Types";
-import { UpperFirstLetter, toTitleCase } from "../functions/UtilityFunctions";
+import { UpperFirstLetter } from "../functions/UtilityFunctions";
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
   index: number;
@@ -150,41 +150,13 @@ const Active = styled.div<ColorTypeProps>`
   display: flex;
   flex-grow: 1;
   flex-direction: row;
-  justify-content: end;
+  justify-content: center;
   align-items: center;
   font-size: 20px;
   font-weight: bold;
   color: ${(props) => props.$rgb};
   text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
   width: 50%;
-`;
-
-const Source = styled.div<ColorTypeProps>`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-  font-size: 20px;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
-  width: 50%;
-`;
-
-const Divider = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  font-weight: bold;
-  background-color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
-  width: 1px;
-  height: 75%;
-  margin: 0px 20px 0px 20px;
 `;
 
 const ResultDivider = styled.div`
@@ -196,15 +168,11 @@ const ResultDivider = styled.div`
   background-color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
   text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
   width: 1px;
-  height: 75%;
-  margin: 0px 0px 0px 0px;
+  height: 60%;
+  margin: 10px 0px 0px 0px;
 `;
 
-function CombatEntryItem({
-  combatEntry,
-  index,
-  session,
-}: CombatEntryItemProps) {
+function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   const EntryColor = () => {
     return (
       Constants.TYPE_COLORS[combatEntry.roll_type.toLowerCase()] ||
@@ -366,25 +334,13 @@ function CombatEntryItem({
               {UpperFirstLetter(combatEntry.roll_type)}
             </Active>
           )}
-          <Divider />
-          <Source
-            $rgb={EntryColor()}
-            $issuccess={combatEntry.roll_entry.success}
-          >
-            {combatEntry.roll_source === "Resting" ? (
-              <span>
-                {toTitleCase(session.travel.weather)} Morning - Day{" "}
-                {session.travel.day}
-              </span>
-            ) : (
-              <>
-                <span>{UpperFirstLetter(combatEntry.roll_source)}</span>
-              </>
-            )}
-          </Source>
         </SourceContainer>
         <FumbledSubText title={durability_title}>
-          {FumbledPerfectText()}
+          {combatEntry.roll_entry.critical.state === 1 ? (
+            <>{combatEntry.roll_source}</>
+          ) : (
+            <>{FumbledPerfectText()}</>
+          )}
         </FumbledSubText>
       </RollContainer>
       <RightBlock>

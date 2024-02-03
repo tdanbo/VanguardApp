@@ -4,6 +4,7 @@ import * as Constants from "../Constants";
 import {
   AbilityEntry,
   ActiveStateType,
+  AdvantageType,
   CharacterEntry,
   ItemEntry,
   SessionEntry,
@@ -222,7 +223,7 @@ interface StyledTextProps {
   session: SessionEntry;
   isCreature: boolean;
   activeState: ActiveStateType;
-  advantage: boolean;
+  advantage: AdvantageType;
 }
 
 const DiceButton = styled.button`

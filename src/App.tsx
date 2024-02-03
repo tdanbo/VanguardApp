@@ -10,6 +10,7 @@ import PartySection from "./BrowserSection/PartySection";
 import {
   AbilityEntry,
   ActiveStateType,
+  AdvantageType,
   CharacterEntry,
   EmptyCharacter,
   EmptySession,
@@ -60,7 +61,7 @@ const SideColumn = styled.div`
 function App() {
   // This function is the main function for setting the session.
   const [activeState, setActiveState] = useState<ActiveStateType>("normal");
-  const [advantage, setAdvantage] = useState<boolean>(false);
+  const [advantage, setAdvantage] = useState<AdvantageType>("normal");
   const [search, setSearch] = useState("");
   const [session, setSession] = useState<SessionEntry>(EmptySession);
   const [characterName, setCharacterName] = useState<string>("");

@@ -1,4 +1,4 @@
-import { CharacterEntry, ItemEntry } from "../Types";
+import { AdvantageType, CharacterEntry, ItemEntry } from "../Types";
 import { CheckAbility } from "./ActivesFunction";
 import { ItemRulesDice } from "./rules/ItemRulesDice";
 import { NaturalWeapon_dice } from "./rules/NaturalWeapon";
@@ -15,8 +15,13 @@ import { Armored_dice } from "./rules/Armored";
 import { IronFist_dice } from "./rules/IronFist";
 import { Robust_dice } from "./rules/Robust";
 import { TwinAttack_dice } from "./rules/TwinAttack";
+import { AdvantageDice } from "./rules/AdvantageDice";
 
-export function RulesDiceAdjust(character: CharacterEntry, item: ItemEntry) {
+export function RulesDiceAdjust(
+  character: CharacterEntry,
+  item: ItemEntry,
+  advantage: AdvantageType,
+) {
   let dice = item.roll.dice;
   dice += NaturalWeapon_dice(character, item);
   dice += NaturalWarrior_dice(character, item);
@@ -33,6 +38,7 @@ export function RulesDiceAdjust(character: CharacterEntry, item: ItemEntry) {
   dice += Robust_dice(character);
   dice += TwinAttack_dice(character, item);
   dice += ItemRulesDice(character, item);
+  dice += AdvantageDice(item, advantage);
   return dice;
 }
 

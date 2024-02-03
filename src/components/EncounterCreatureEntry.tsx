@@ -17,6 +17,7 @@ import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import {
   ActiveStateType,
+  AdvantageType,
   CharacterEntry,
   ItemEntry,
   RESOURCE,
@@ -301,7 +302,7 @@ interface EncounterBoxProps {
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   onCreatureDelete: (id: string) => void;
   activeState: ActiveStateType;
-  advantage: boolean;
+  advantage: AdvantageType;
 }
 
 function EncounterCreatureEntry({
@@ -412,7 +413,7 @@ function EncounterCreatureEntry({
     ModifierConverter[creatureClone.stats.accurate.value];
 
   for (const item of creatureClone.inventory) {
-    const dice = RulesDiceAdjust(creatureClone, item);
+    const dice = RulesDiceAdjust(creatureClone, item, advantage);
     item.roll.dice = dice;
   }
 

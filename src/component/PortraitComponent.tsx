@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { ActiveStateType, ActivesEntry, CharacterEntry } from "../Types";
+import {
+  ActiveStateType,
+  ActivesEntry,
+  AdvantageType,
+  CharacterEntry,
+} from "../Types";
 import {
   GetBurnRate,
   GetMaxSlots,
@@ -55,8 +60,8 @@ interface HealthBoxProps {
   actives: ActivesEntry;
   activeState: ActiveStateType;
   setActiveState: (state: ActiveStateType) => void;
-  advantage: boolean;
-  setAdvantage: (state: boolean) => void;
+  advantage: AdvantageType;
+  setAdvantage: (state: AdvantageType) => void;
 }
 
 function PortraitComponent({

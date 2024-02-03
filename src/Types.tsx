@@ -184,6 +184,8 @@ export type ActiveStateType =
   | "full defense"
   | "careful aim";
 
+export type AdvantageType = "normal" | "advantage" | "disadvantage";
+
 export type RollTypeEntry =
   | "damage"
   | "armor"
@@ -205,11 +207,6 @@ export type RollTypeEntry =
   | "ability"
   | "mystical power";
 
-export type AdvantageType = {
-  state: boolean;
-  result: number;
-};
-
 export type CriticalType = {
   state: 0 | 1 | 2;
   result: number;
@@ -220,8 +217,8 @@ export type RollEntry = {
   result2: number;
   roll1: number;
   roll2: number;
-  critical: CriticalType;
   advantage: AdvantageType;
+  critical: CriticalType;
   mod: number;
   target: number;
   success: boolean;

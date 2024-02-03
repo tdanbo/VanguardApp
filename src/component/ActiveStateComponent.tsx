@@ -1,13 +1,14 @@
 import {
   mdiBullseye,
   mdiShield,
-  mdiArrowCollapse,
   mdiSwordCross,
+  mdiArrowUpThick,
+  mdiArrowDownThick,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { ActiveStateType } from "../Types";
+import { ActiveStateType, AdvantageType } from "../Types";
 
 interface InfoProps {
   active: boolean;
@@ -43,8 +44,8 @@ const Container = styled.div`
 interface ActiveStateProps {
   activeState: ActiveStateType;
   setActiveState: (state: ActiveStateType) => void;
-  advantage: boolean;
-  setAdvantage: (state: boolean) => void;
+  advantage: AdvantageType;
+  setAdvantage: (state: AdvantageType) => void;
 }
 
 function ActiveStateComponent({
@@ -61,9 +62,9 @@ function ActiveStateComponent({
     }
   };
 
-  const HandleAdvantage = (state: boolean) => {
+  const HandleAdvantage = (state: AdvantageType) => {
     if (advantage === state) {
-      setAdvantage(false);
+      setAdvantage("normal");
     } else {
       setAdvantage(state);
     }
@@ -93,11 +94,18 @@ function ActiveStateComponent({
         <Icon path={mdiBullseye} size={0.75} />
       </InfoBox>
       <InfoBox
-        title={"Flanking / Flanked"}
-        onClick={() => HandleAdvantage(true)}
-        active={advantage === true}
+        title={"Flanking"}
+        onClick={() => HandleAdvantage("advantage")}
+        active={advantage === "advantage"}
       >
-        <Icon path={mdiArrowCollapse} size={0.8} />
+        <Icon path={mdiArrowUpThick} size={0.9} />
+      </InfoBox>
+      <InfoBox
+        title={"Flanked"}
+        onClick={() => HandleAdvantage("disadvantage")}
+        active={advantage === "disadvantage"}
+      >
+        <Icon path={mdiArrowDownThick} size={0.9} />
       </InfoBox>
     </Container>
   );

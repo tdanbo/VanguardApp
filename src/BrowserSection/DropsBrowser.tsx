@@ -14,6 +14,7 @@ import * as Constants from "../Constants";
 import { API } from "../Constants";
 import {
   ActiveStateType,
+  AdvantageType,
   CharacterEntry,
   ItemEntry,
   SessionEntry,
@@ -156,7 +157,7 @@ interface BrowserSectionProps {
   isGm: boolean;
   isCreature: boolean;
   search: string;
-  advantage: boolean;
+  advantage: AdvantageType;
   activeState: ActiveStateType;
 }
 

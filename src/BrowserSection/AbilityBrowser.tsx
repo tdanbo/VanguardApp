@@ -6,6 +6,7 @@ import * as Constants from "../Constants";
 import {
   AbilityEntry,
   ActiveStateType,
+  AdvantageType,
   CharacterEntry,
   SessionEntry,
 } from "../Types";
@@ -73,7 +74,7 @@ interface AbilityBrowserProps {
   abilities: AbilityEntry[];
   isGm: boolean;
   activeState: ActiveStateType;
-  advantage: boolean;
+  advantage: AdvantageType;
 }
 
 function AbilityBrowser({

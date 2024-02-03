@@ -7,6 +7,7 @@ import { toTitleCase } from "../../functions/UtilityFunctions";
 import {
   AbilityEntry,
   ActiveStateType,
+  AdvantageType,
   CharacterEntry,
   RollTypeEntry,
   SessionEntry,
@@ -252,7 +253,7 @@ interface AbilityEntryItemProps {
   websocket: Socket;
   isCreature: boolean;
   activeState: ActiveStateType;
-  advantage: boolean;
+  advantage: AdvantageType;
 }
 
 function GetCurrentLevel(ability: AbilityEntry) {

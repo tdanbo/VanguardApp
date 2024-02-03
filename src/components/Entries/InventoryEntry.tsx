@@ -13,6 +13,7 @@ import styled from "styled-components";
 import * as Constants from "../../Constants";
 import {
   ActiveStateType,
+  AdvantageType,
   CharacterEntry,
   ItemEntry,
   SessionEntry,
@@ -131,12 +132,6 @@ const RollContainer = styled.div`
   margin-top: 5px;
   margin-bottom: 5px;
   margin-right: 5px;
-`;
-
-const PlusDiv = styled.div`
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  font-weight: bold;
-  margin-right: -3px;
 `;
 
 interface RollBoxProps {
@@ -273,7 +268,7 @@ interface InventoryEntryProps {
   setInventoryState?: (inventoryState: number) => void;
   isCreature: boolean;
   canBuy: boolean;
-  advantage: boolean;
+  advantage: AdvantageType;
   activeState: ActiveStateType;
 }
 
@@ -529,7 +524,7 @@ function InventoryEntry({
   const [expanded, setExpanded] = useState<boolean>(false);
 
   // This is a big function that correct all dice rolls based on the character's abilities
-  const dice = RulesDiceAdjust(character, item);
+  const dice = RulesDiceAdjust(character, item, advantage);
 
   return (
     <MasterContainer>
@@ -619,63 +614,31 @@ function InventoryEntry({
 
         <RollContainer>
           {item.roll.roll === true && (
-            <>
-              <RollBox color={COLOR}>
-                <RollComponent
-                  session={session}
-                  character={character}
-                  websocket={websocket}
-                  roll_type={
-                    IsWeapon(item)
-                      ? "damage"
-                      : item.category === "shield"
-                      ? "damage"
-                      : IsArmor(item)
-                      ? "armor"
-                      : "custom"
-                  }
-                  roll_source={item.name}
-                  isCreature={isCreature}
-                  dice={dice}
-                  dice_mod={item.roll.mod}
-                  color={COLOR}
-                  item={item}
-                  inactive={item.equip.equipped}
-                  advantage={advantage}
-                  activeState={activeState}
-                />
-              </RollBox>
-              {advantage && IsWeapon(item) ? (
-                <>
-                  <PlusDiv>+</PlusDiv>
-                  <RollBox color={COLOR}>
-                    <RollComponent
-                      session={session}
-                      character={character}
-                      websocket={websocket}
-                      roll_type={
-                        IsWeapon(item)
-                          ? "damage"
-                          : item.category === "shield"
-                          ? "damage"
-                          : IsArmor(item)
-                          ? "armor"
-                          : "custom"
-                      }
-                      roll_source={item.name}
-                      isCreature={isCreature}
-                      dice={4}
-                      dice_mod={0}
-                      color={COLOR}
-                      item={item}
-                      inactive={item.equip.equipped}
-                      advantage={advantage}
-                      activeState={activeState}
-                    />
-                  </RollBox>
-                </>
-              ) : null}
-            </>
+            <RollBox color={COLOR}>
+              <RollComponent
+                session={session}
+                character={character}
+                websocket={websocket}
+                roll_type={
+                  IsWeapon(item)
+                    ? "damage"
+                    : item.category === "shield"
+                    ? "damage"
+                    : IsArmor(item)
+                    ? "armor"
+                    : "custom"
+                }
+                roll_source={item.name}
+                isCreature={isCreature}
+                dice={dice + (advantage && IsWeapon(item) ? 4 : 0)}
+                dice_mod={item.roll.mod}
+                color={COLOR}
+                item={item}
+                inactive={item.equip.equipped}
+                advantage={advantage}
+                activeState={activeState}
+              />
+            </RollBox>
           )}
 
           {[1, 2, 3].includes(item.equip.slot) &&

@@ -7,6 +7,7 @@ import "../App.css";
 import * as Constants from "../Constants";
 import {
   ActiveStateType,
+  AdvantageType,
   CharacterEntry,
   RollTypeEntry,
   SessionEntry,
@@ -204,7 +205,7 @@ interface Props {
   character: CharacterEntry;
   websocket: Socket;
   isCreature: boolean;
-  advantage: boolean;
+  advantage: AdvantageType;
   activeState: ActiveStateType;
 }
 
@@ -233,9 +234,9 @@ function StatComponent({
   };
 
   useEffect(() => {
-    if (advantage && stat_name === "attack") {
+    if (advantage === "advantage" && stat_name === "attack") {
       setModvalue(modValue + 2);
-    } else if (advantage && stat_name === "defense") {
+    } else if (advantage === "disadvantage" && stat_name === "defense") {
       setModvalue(modValue - 2);
     } else {
       setModvalue(0);
@@ -280,9 +281,20 @@ function StatComponent({
         </DiceContainerRight>
       </Row>
       <ActiveValue className="value-row" active={active}>
-        {modValue !== 0 ? "* " : ""}
-        {toTitleCase(stat_name)}
-        {modValue !== 0 ? " *" : ""}
+        {advantage === "advantage" && stat_name === "attack"
+          ? "Flanking "
+          : advantage === "disadvantage" && stat_name === "defense"
+          ? "Flanked "
+          : ""}
+        {activeState === "full offense" && stat_name === "attack"
+          ? toTitleCase("full offense")
+          : activeState === "full offense" && stat_name === "defense"
+          ? toTitleCase("weak defense")
+          : activeState === "full defense" && stat_name === "defense"
+          ? toTitleCase("full defense")
+          : activeState === "careful aim" && stat_name === "attack"
+          ? toTitleCase("careful aim")
+          : toTitleCase(stat_name)}
       </ActiveValue>
       <BottomRow height={"25%"} className="second-row" active={active}>
         <Minus className="button-hover" onClick={handleSubValue}>

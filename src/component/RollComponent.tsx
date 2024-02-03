@@ -42,7 +42,7 @@ type RollComponentProps = {
   isCreature: boolean;
   inactive?: boolean;
   setModValue?: React.Dispatch<React.SetStateAction<number>>;
-  advantage: boolean;
+  advantage: AdvantageType;
   activeState: ActiveStateType;
 };
 
@@ -171,10 +171,6 @@ function RollComponent({
 
     let roll1 = random(1, dice);
     let roll2 = random(1, dice);
-    const advantage_type: AdvantageType = {
-      state: advantage,
-      result: random(1, 4),
-    };
 
     const critical_type: CriticalType = {
       state: 1,
@@ -201,6 +197,15 @@ function RollComponent({
       success = true;
       if (roll1 === 1 || roll2 === 1) {
         critical_type.state = 2;
+      }
+    } else if (
+      (activeState === "full offense" || activeState === "careful aim") &&
+      roll_type === "attack" &&
+      (result1 > target || result2 > target)
+    ) {
+      success = false;
+      if (roll1 === 20 || roll2 === 20) {
+        critical_type.state = 0;
       }
     } else if (
       activeState === "full offense" &&
@@ -253,7 +258,7 @@ function RollComponent({
       roll1: roll1,
       roll2: roll2,
       critical: critical_type,
-      advantage: advantage_type,
+      advantage: advantage,
       mod: dice_mod,
       target: target,
       success: success,

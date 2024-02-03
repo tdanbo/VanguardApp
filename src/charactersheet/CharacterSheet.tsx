@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { CharacterEntry, SessionEntry } from "../Types";
+import { AdvantageType, CharacterEntry, SessionEntry } from "../Types";
 import AbilitySection from "../charactersheet/AbilitySection";
 import CharacterNameBox from "../charactersheet/CharacterNameBox";
 import InventorySection from "../charactersheet/InventorySection";
@@ -112,9 +112,9 @@ type CharacterSheetProps = {
   isGm: boolean;
   isCreature: boolean;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
-  advantage: boolean;
+  advantage: AdvantageType;
   activeState: ActiveStateType;
-  setAdvantage: React.Dispatch<React.SetStateAction<boolean>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
 };
 

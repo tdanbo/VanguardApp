@@ -2,6 +2,7 @@ import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
 import {
   ActiveStateType,
+  AdvantageType,
   CharacterEntry,
   ItemEntry,
   SessionEntry,
@@ -24,7 +25,7 @@ interface NavigationProps {
   websocket: Socket;
   isCreature: boolean;
   activeState: ActiveStateType;
-  advantage: boolean;
+  advantage: AdvantageType;
 }
 
 function sortInventory(a: ItemEntry, b: ItemEntry): number {

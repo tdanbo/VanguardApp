@@ -52,7 +52,7 @@ function DiceSection({
           dice={4}
           color={Constants.TYPE_COLORS["custom"]}
           activeState="normal"
-          advantage={false}
+          advantage="normal"
         />
       </DiceContainer>
       <DiceContainer>
@@ -66,7 +66,7 @@ function DiceSection({
           dice={6}
           color={Constants.TYPE_COLORS["custom"]}
           activeState="normal"
-          advantage={false}
+          advantage="normal"
         />
       </DiceContainer>
       <DiceContainer>
@@ -80,7 +80,7 @@ function DiceSection({
           dice={8}
           color={Constants.TYPE_COLORS["custom"]}
           activeState="normal"
-          advantage={false}
+          advantage="normal"
         />
       </DiceContainer>
       <DiceContainer>
@@ -94,7 +94,7 @@ function DiceSection({
           dice={10}
           color={Constants.TYPE_COLORS["custom"]}
           activeState="normal"
-          advantage={false}
+          advantage="normal"
         />
       </DiceContainer>
       <DiceContainer>
@@ -108,7 +108,7 @@ function DiceSection({
           dice={12}
           color={Constants.TYPE_COLORS["custom"]}
           activeState="normal"
-          advantage={false}
+          advantage="normal"
         />
       </DiceContainer>
       <DiceContainer>
@@ -122,7 +122,7 @@ function DiceSection({
           dice={20}
           color={Constants.TYPE_COLORS["custom"]}
           activeState="normal"
-          advantage={false}
+          advantage="normal"
         />
       </DiceContainer>
       <DiceContainer>
@@ -136,7 +136,7 @@ function DiceSection({
           dice={100}
           color={Constants.TYPE_COLORS["custom"]}
           activeState="normal"
-          advantage={false}
+          advantage="normal"
         />
       </DiceContainer>
       {/* <DiceBox
