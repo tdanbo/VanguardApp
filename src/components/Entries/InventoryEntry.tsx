@@ -270,6 +270,8 @@ interface InventoryEntryProps {
   canBuy: boolean;
   advantage: AdvantageType;
   activeState: ActiveStateType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 function InventoryEntry({
@@ -286,6 +288,8 @@ function InventoryEntry({
   isGm,
   advantage,
   activeState,
+  setActiveState,
+  setAdvantage,
 }: InventoryEntryProps) {
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
   const generateRandomId = (length = 10) => {
@@ -636,7 +640,9 @@ function InventoryEntry({
                 item={item}
                 inactive={item.equip.equipped}
                 advantage={advantage}
-                activeState={activeState}
+                activeState={""}
+                setActiveState={setActiveState}
+                setAdvantage={setAdvantage}
               />
             </RollBox>
           )}
@@ -765,6 +771,8 @@ function InventoryEntry({
                 isCreature={isCreature}
                 activeState={activeState}
                 advantage={advantage}
+                setActiveState={setActiveState}
+                setAdvantage={setAdvantage}
               />
             </React.Fragment>
           ))}

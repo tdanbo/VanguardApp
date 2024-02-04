@@ -178,13 +178,9 @@ export interface Ability {
   roll: AbilityRoll[];
 }
 
-export type ActiveStateType =
-  | "normal"
-  | "full offense"
-  | "full defense"
-  | "careful aim";
+export type ActiveStateType = "" | "full" | "weak";
 
-export type AdvantageType = "normal" | "advantage" | "disadvantage";
+export type AdvantageType = "" | "flanking" | "flanked";
 
 export type RollTypeEntry =
   | "damage"

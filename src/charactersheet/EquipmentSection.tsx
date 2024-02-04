@@ -26,6 +26,8 @@ interface NavigationProps {
   isCreature: boolean;
   activeState: ActiveStateType;
   advantage: AdvantageType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 function sortInventory(a: ItemEntry, b: ItemEntry): number {
@@ -42,6 +44,8 @@ function EquipmentSection({
   isCreature,
   activeState,
   advantage,
+  setActiveState,
+  setAdvantage,
 }: NavigationProps) {
   character.inventory.sort(sortInventory);
   const sortedInventory = [...character.inventory].sort(sortInventory);
@@ -69,6 +73,8 @@ function EquipmentSection({
               isGm={false}
               activeState={activeState}
               advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
           );
         }

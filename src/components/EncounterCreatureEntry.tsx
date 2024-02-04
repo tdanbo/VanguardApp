@@ -303,6 +303,8 @@ interface EncounterBoxProps {
   onCreatureDelete: (id: string) => void;
   activeState: ActiveStateType;
   advantage: AdvantageType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 function EncounterCreatureEntry({
@@ -316,6 +318,8 @@ function EncounterCreatureEntry({
   onCreatureDelete,
   activeState,
   advantage,
+  setActiveState,
+  setAdvantage,
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
   const character_actives = GetActives(creatureClone);
@@ -642,6 +646,8 @@ function EncounterCreatureEntry({
               isCreature={isCreature}
               activeState={activeState}
               advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
           );
         })}

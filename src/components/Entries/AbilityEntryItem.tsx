@@ -254,6 +254,8 @@ interface AbilityEntryItemProps {
   isCreature: boolean;
   activeState: ActiveStateType;
   advantage: AdvantageType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 function GetCurrentLevel(ability: AbilityEntry) {
@@ -276,6 +278,8 @@ function AbilityEntryItem({
   isCreature,
   activeState,
   advantage,
+  setActiveState,
+  setAdvantage,
 }: AbilityEntryItemProps) {
   const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
   useEffect(() => {
@@ -300,6 +304,8 @@ function AbilityEntryItem({
             isCreature={isCreature}
             activeState={activeState}
             advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
           />
         </AbilityDescription>
       </LevelBaseContainer>
@@ -533,8 +539,10 @@ function AbilityEntryItem({
               dice_mod={i.mod}
               color={EntryColor(i.type)}
               key={index}
-              activeState={activeState}
-              advantage={advantage}
+              activeState={""}
+              advantage={""}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
           ))}
         </RollBox>

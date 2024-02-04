@@ -192,8 +192,10 @@ function CharacterSheet({
               stat_value={character.stats.cunning.value}
               stat_color={Constants.TYPE_COLORS[FindActive("cunning")]}
               stat_icon={GetActiveIcon(FindActive("cunning"))}
-              activeState={"normal"}
+              activeState={activeState}
               advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
             <StatComponent
               session={session}
@@ -204,8 +206,10 @@ function CharacterSheet({
               stat_value={character.stats.discreet.value}
               stat_color={Constants.TYPE_COLORS[FindActive("discreet")]}
               stat_icon={GetActiveIcon(FindActive("discreet"))}
-              activeState={"normal"}
+              activeState={activeState}
               advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
             <StatComponent
               session={session}
@@ -216,8 +220,10 @@ function CharacterSheet({
               stat_value={character.stats.persuasive.value}
               stat_color={Constants.TYPE_COLORS[FindActive("persuasive")]}
               stat_icon={GetActiveIcon(FindActive("persuasive"))}
-              activeState={"normal"}
+              activeState={activeState}
               advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
             <StatComponent
               session={session}
@@ -228,8 +234,10 @@ function CharacterSheet({
               stat_value={character.stats.quick.value}
               stat_color={Constants.TYPE_COLORS[FindActive("quick")]}
               stat_icon={GetActiveIcon(FindActive("quick"))}
-              activeState={"normal"}
+              activeState={activeState}
               advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
           </Row>
           <Row width={"100%"}>
@@ -242,8 +250,10 @@ function CharacterSheet({
               stat_value={character.stats.resolute.value}
               stat_color={Constants.TYPE_COLORS[FindActive("resolute")]}
               stat_icon={GetActiveIcon(FindActive("resolute"))}
-              activeState={"normal"}
+              activeState={activeState}
               advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
             <StatComponent
               session={session}
@@ -254,8 +264,10 @@ function CharacterSheet({
               stat_value={character.stats.strong.value}
               stat_color={Constants.TYPE_COLORS[FindActive("strong")]}
               stat_icon={GetActiveIcon(FindActive("strong"))}
-              activeState={"normal"}
+              activeState={activeState}
               advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
             <StatComponent
               session={session}
@@ -266,8 +278,10 @@ function CharacterSheet({
               stat_value={character.stats.vigilant.value}
               stat_color={Constants.TYPE_COLORS[FindActive("vigilant")]}
               stat_icon={GetActiveIcon(FindActive("vigilant"))}
-              activeState={"normal"}
+              activeState={activeState}
               advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
             <StatComponent
               session={session}
@@ -278,8 +292,10 @@ function CharacterSheet({
               stat_value={character.stats.accurate.value}
               stat_color={Constants.TYPE_COLORS[FindActive("accurate")]}
               stat_icon={GetActiveIcon(FindActive("accurate"))}
-              activeState={"normal"}
+              activeState={activeState}
               advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
           </Row>
         </Column>
@@ -298,6 +314,8 @@ function CharacterSheet({
             active={true}
             activeState={activeState}
             advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
           />
           <StatComponent
             session={session}
@@ -311,6 +329,8 @@ function CharacterSheet({
             active={true}
             activeState={activeState}
             advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
           />
           <HealthStatComponent
             websocket={websocket}
@@ -340,6 +360,8 @@ function CharacterSheet({
             active={true}
             activeState={activeState}
             advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
           />
           <StatComponent
             session={session}
@@ -353,6 +375,8 @@ function CharacterSheet({
             active={true}
             activeState={activeState}
             advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
           />
         </Row>
       </Container>
@@ -365,6 +389,8 @@ function CharacterSheet({
             isCreature={isCreature}
             activeState={activeState}
             advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
           />
           <DividerHorizontal />
           <ScrollColumn width="100%">
@@ -375,6 +401,8 @@ function CharacterSheet({
               isCreature={isCreature}
               activeState={activeState}
               advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
           </ScrollColumn>
         </Column>
@@ -387,6 +415,8 @@ function CharacterSheet({
             isCreature={isCreature}
             activeState={activeState}
             advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
           />
         </ScrollColumn>
       </DynamicContainer>

@@ -1,9 +1,8 @@
 import {
-  mdiBullseye,
-  mdiShield,
-  mdiSwordCross,
-  mdiArrowUpThick,
-  mdiArrowDownThick,
+  mdiArrowCollapse,
+  mdiArrowExpand,
+  mdiChevronDoubleUp,
+  mdiChevronDoubleDown,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import styled from "styled-components";
@@ -19,11 +18,10 @@ const InfoBox = styled.div<InfoProps>`
   flex-direction: row;
   font-size: 12px;
   font-weight: bold;
-  color: ${(props) =>
-    props.active ? "#dfdfdf" : Constants.WIDGET_SECONDARY_FONT_INACTIVE};
+  color: ${(props) => (props.active ? "#dfdfdf" : "#333333")};
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => (props.active ? "#252827" : "#7a7a7a")};
+  background-color: ${(props) => (props.active ? "#2f3332" : "#131716")};
   border-radius: ${Constants.BORDER_RADIUS};
   width: 25px;
   height: 25px;
@@ -56,7 +54,7 @@ function ActiveStateComponent({
 }: ActiveStateProps) {
   const HandleActive = (state: ActiveStateType) => {
     if (activeState === state) {
-      setActiveState("normal");
+      setActiveState("");
     } else {
       setActiveState(state);
     }
@@ -64,7 +62,7 @@ function ActiveStateComponent({
 
   const HandleAdvantage = (state: AdvantageType) => {
     if (advantage === state) {
-      setAdvantage("normal");
+      setAdvantage("");
     } else {
       setAdvantage(state);
     }
@@ -73,39 +71,42 @@ function ActiveStateComponent({
   return (
     <Container>
       <InfoBox
-        title={"Full Offense"}
-        onClick={() => HandleActive("full offense")}
-        active={activeState === "full offense"}
+        title={"Enable Full Action"}
+        onClick={() => HandleActive("full")}
+        active={activeState === "full"}
       >
-        <Icon path={mdiSwordCross} size={0.75} />
+        <Icon path={mdiChevronDoubleUp} size={0.75} />
       </InfoBox>
       <InfoBox
-        title={"Full Defense"}
-        onClick={() => HandleActive("full defense")}
-        active={activeState === "full defense"}
+        title={"Enable Weak Action"}
+        onClick={() => HandleActive("weak")}
+        active={activeState === "weak"}
       >
-        <Icon path={mdiShield} size={0.75} />
+        <Icon path={mdiChevronDoubleDown} size={0.75} />
       </InfoBox>
-      <InfoBox
-        title={"Careful Aim"}
-        onClick={() => HandleActive("careful aim")}
-        active={activeState === "careful aim"}
-      >
-        <Icon path={mdiBullseye} size={0.75} />
-      </InfoBox>
+      <div
+        style={{
+          minHeight: "2px",
+          backgroundColor: Constants.BACKGROUND,
+          marginTop: "5px",
+          marginBottom: "5px",
+          marginLeft: "3px",
+          marginRight: "3px",
+        }}
+      ></div>
       <InfoBox
         title={"Flanking"}
-        onClick={() => HandleAdvantage("advantage")}
-        active={advantage === "advantage"}
+        onClick={() => HandleAdvantage("flanking")}
+        active={advantage === "flanking"}
       >
-        <Icon path={mdiArrowUpThick} size={0.9} />
+        <Icon path={mdiArrowCollapse} size={0.9} />
       </InfoBox>
       <InfoBox
         title={"Flanked"}
-        onClick={() => HandleAdvantage("disadvantage")}
-        active={advantage === "disadvantage"}
+        onClick={() => HandleAdvantage("flanked")}
+        active={advantage === "flanked"}
       >
-        <Icon path={mdiArrowDownThick} size={0.9} />
+        <Icon path={mdiArrowExpand} size={0.9} />
       </InfoBox>
     </Container>
   );

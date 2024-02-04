@@ -75,6 +75,8 @@ interface AbilityBrowserProps {
   isGm: boolean;
   activeState: ActiveStateType;
   advantage: AdvantageType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 function AbilityBrowser({
@@ -88,6 +90,8 @@ function AbilityBrowser({
   isGm,
   activeState,
   advantage,
+  setActiveState,
+  setAdvantage,
 }: AbilityBrowserProps) {
   type LootCategoryType =
     | "all"
@@ -195,6 +199,8 @@ function AbilityBrowser({
                   isCreature={isCreature}
                   activeState={activeState}
                   advantage={advantage}
+                  setActiveState={setActiveState}
+                  setAdvantage={setAdvantage}
                 />
               );
             }

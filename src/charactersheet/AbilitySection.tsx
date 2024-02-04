@@ -17,6 +17,8 @@ interface NavigationProps {
   isCreature: boolean;
   activeState: ActiveStateType;
   advantage: AdvantageType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
@@ -33,6 +35,8 @@ function AbilitySection({
   isCreature,
   activeState,
   advantage,
+  setActiveState,
+  setAdvantage,
 }: NavigationProps) {
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
 
@@ -50,6 +54,8 @@ function AbilitySection({
             isCreature={isCreature}
             activeState={activeState}
             advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
           />
         );
       })}

@@ -83,6 +83,8 @@ interface EquipmentBrowserProps {
   isGm: boolean;
   advantage: AdvantageType;
   activeState: ActiveStateType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 function EquipmentBrowser({
@@ -96,6 +98,8 @@ function EquipmentBrowser({
   isGm,
   advantage,
   activeState,
+  setActiveState,
+  setAdvantage,
 }: EquipmentBrowserProps) {
   type LootCategoryType =
     | "all"
@@ -216,6 +220,8 @@ function EquipmentBrowser({
                   isGm={isGm}
                   advantage={advantage}
                   activeState={activeState}
+                  setActiveState={setActiveState}
+                  setAdvantage={setAdvantage}
                 />
               );
             }

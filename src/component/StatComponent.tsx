@@ -1,6 +1,6 @@
 import { faMinus, faNotEqual, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { SetStateAction, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import "../App.css";
@@ -207,6 +207,8 @@ interface Props {
   isCreature: boolean;
   advantage: AdvantageType;
   activeState: ActiveStateType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<SetStateAction<AdvantageType>>;
 }
 
 function StatComponent({
@@ -221,6 +223,8 @@ function StatComponent({
   isCreature,
   advantage,
   activeState,
+  setActiveState,
+  setAdvantage,
 }: Props) {
   const [modValue, setModvalue] = useState<number>(0);
   const handleAddValue = () => {
@@ -233,15 +237,16 @@ function StatComponent({
     setModvalue(newValue);
   };
 
-  useEffect(() => {
-    if (advantage === "advantage" && stat_name === "attack") {
-      setModvalue(modValue + 2);
-    } else if (advantage === "disadvantage" && stat_name === "defense") {
-      setModvalue(modValue - 2);
-    } else {
-      setModvalue(0);
-    }
-  }, [advantage]);
+  let flanked = 0;
+  if (advantage === "flanking" && stat_name === "attack") {
+    flanked += 2;
+  } else if (advantage === "flanked" && stat_name === "defense") {
+    flanked -= 2;
+  } else {
+    flanked = 0;
+  }
+  console.log(stat_name);
+  console.log(flanked);
 
   let color = Constants.WIDGET_SECONDARY_FONT;
   if (["attack", "defense", "casting", "sneaking"].includes(stat_name)) {
@@ -258,7 +263,7 @@ function StatComponent({
         </DiceContainerLeft>
 
         <Value className="dice-icon-hover">
-          {Math.max(stat_value + modValue, 1)}
+          {Math.max(stat_value + modValue + flanked, 1)}
         </Value>
         <DiceContainerRight>
           <DiceContainer className="second-row" active={active}>
@@ -272,29 +277,26 @@ function StatComponent({
               dice={20}
               dice_mod={modValue}
               color={color}
-              target={stat_value + modValue}
+              target={stat_value + modValue + flanked}
               setModValue={setModvalue}
               advantage={advantage}
               activeState={activeState}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
           </DiceContainer>
         </DiceContainerRight>
       </Row>
       <ActiveValue className="value-row" active={active}>
-        {advantage === "advantage" && stat_name === "attack"
-          ? "Flanking "
-          : advantage === "disadvantage" && stat_name === "defense"
-          ? "Flanked "
-          : ""}
-        {activeState === "full offense" && stat_name === "attack"
-          ? toTitleCase("full offense")
-          : activeState === "full offense" && stat_name === "defense"
-          ? toTitleCase("weak defense")
-          : activeState === "full defense" && stat_name === "defense"
-          ? toTitleCase("full defense")
-          : activeState === "careful aim" && stat_name === "attack"
-          ? toTitleCase("careful aim")
-          : toTitleCase(stat_name)}
+        {(() => {
+          if (advantage === "flanking" && stat_name === "attack") {
+            return toTitleCase(`${advantage} ${stat_name}`);
+          } else if (advantage === "flanked" && stat_name === "defense") {
+            return toTitleCase(`${advantage} ${stat_name}`);
+          } else {
+            return toTitleCase(stat_name);
+          }
+        })()}
       </ActiveValue>
       <BottomRow height={"25%"} className="second-row" active={active}>
         <Minus className="button-hover" onClick={handleSubValue}>

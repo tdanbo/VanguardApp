@@ -11,7 +11,7 @@ import "../App.css";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { CombatEntry, SessionEntry } from "../Types";
-import { UpperFirstLetter } from "../functions/UtilityFunctions";
+import { toTitleCase } from "../functions/UtilityFunctions";
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
   index: number;
@@ -275,6 +275,8 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
     }
   };
 
+  const roll_text = `${combatEntry.roll_entry.advantage} ${combatEntry.roll_state} ${combatEntry.roll_type}`;
+
   return (
     <Container src={CharacterPortraits[combatEntry.character.portrait]}>
       <ColorBlock
@@ -284,12 +286,9 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
       <RollContainer>
         <Breakdown>1d{combatEntry.roll_entry.dice}</Breakdown>
         <ResultContainer>
-          {(combatEntry.roll_state === "full offense" &&
+          {(combatEntry.roll_state === "full" &&
             combatEntry.roll_source === "Skill Test") ||
-          (combatEntry.roll_state === "careful aim" &&
-            combatEntry.roll_source === "Skill Test" &&
-            combatEntry.roll_type !== "defense") ||
-          (combatEntry.roll_state === "full defense" &&
+          (combatEntry.roll_state === "weak" &&
             combatEntry.roll_source === "Skill Test") ? (
             <>
               <Result
@@ -324,14 +323,14 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
               $rgb={EntryColor()}
               $issuccess={combatEntry.roll_entry.success}
             >
-              {modifierText} {UpperFirstLetter(combatEntry.roll_type)}{" "}
+              {modifierText} {toTitleCase(roll_text)}
             </Active>
           ) : (
             <Active
               $rgb={EntryColor()}
               $issuccess={combatEntry.roll_entry.success}
             >
-              {UpperFirstLetter(combatEntry.roll_type)}
+              {toTitleCase(roll_text)}
             </Active>
           )}
         </SourceContainer>

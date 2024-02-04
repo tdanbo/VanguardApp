@@ -159,6 +159,8 @@ interface BrowserSectionProps {
   search: string;
   advantage: AdvantageType;
   activeState: ActiveStateType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 let creatureList: CharacterEntry[] = [];
@@ -213,6 +215,8 @@ function DropsBrowser({
   search,
   advantage,
   activeState,
+  setActiveState,
+  setAdvantage,
 }: BrowserSectionProps) {
   const [equipmentList, setEquipmentList] = useState<ItemEntry[]>([]);
   const scrollRef = useRef(null);
@@ -412,6 +416,8 @@ function DropsBrowser({
                   isGm={isGm}
                   advantage={advantage}
                   activeState={activeState}
+                  setActiveState={setActiveState}
+                  setAdvantage={setAdvantage}
                 />
               );
             }
