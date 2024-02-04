@@ -1,7 +1,12 @@
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
-import { CharacterEntry, SessionEntry } from "../../Types";
+import {
+  CharacterEntry,
+  SessionEntry,
+  ActiveStateType,
+  AdvantageType,
+} from "../../Types";
 import RollComponent from "../../component/RollComponent";
 const Container = styled.div`
   display: flex;
@@ -31,6 +36,8 @@ interface DiceBoxProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 function DiceSection({
@@ -38,6 +45,8 @@ function DiceSection({
   session,
   websocket,
   isCreature,
+  setActiveState,
+  setAdvantage,
 }: DiceBoxProps) {
   return (
     <Container>
@@ -51,6 +60,10 @@ function DiceSection({
           isCreature={isCreature}
           dice={4}
           color={Constants.TYPE_COLORS["custom"]}
+          activeState=""
+          advantage=""
+          setActiveState={setActiveState}
+          setAdvantage={setAdvantage}
         />
       </DiceContainer>
       <DiceContainer>
@@ -63,6 +76,10 @@ function DiceSection({
           isCreature={isCreature}
           dice={6}
           color={Constants.TYPE_COLORS["custom"]}
+          activeState=""
+          advantage=""
+          setActiveState={setActiveState}
+          setAdvantage={setAdvantage}
         />
       </DiceContainer>
       <DiceContainer>
@@ -75,6 +92,10 @@ function DiceSection({
           isCreature={isCreature}
           dice={8}
           color={Constants.TYPE_COLORS["custom"]}
+          activeState=""
+          advantage=""
+          setActiveState={setActiveState}
+          setAdvantage={setAdvantage}
         />
       </DiceContainer>
       <DiceContainer>
@@ -87,6 +108,10 @@ function DiceSection({
           isCreature={isCreature}
           dice={10}
           color={Constants.TYPE_COLORS["custom"]}
+          activeState=""
+          advantage=""
+          setActiveState={setActiveState}
+          setAdvantage={setAdvantage}
         />
       </DiceContainer>
       <DiceContainer>
@@ -99,6 +124,10 @@ function DiceSection({
           isCreature={isCreature}
           dice={12}
           color={Constants.TYPE_COLORS["custom"]}
+          activeState=""
+          advantage=""
+          setActiveState={setActiveState}
+          setAdvantage={setAdvantage}
         />
       </DiceContainer>
       <DiceContainer>
@@ -111,6 +140,10 @@ function DiceSection({
           isCreature={isCreature}
           dice={20}
           color={Constants.TYPE_COLORS["custom"]}
+          activeState=""
+          advantage=""
+          setActiveState={setActiveState}
+          setAdvantage={setAdvantage}
         />
       </DiceContainer>
       <DiceContainer>
@@ -123,6 +156,10 @@ function DiceSection({
           isCreature={isCreature}
           dice={100}
           color={Constants.TYPE_COLORS["custom"]}
+          activeState=""
+          advantage=""
+          setActiveState={setActiveState}
+          setAdvantage={setAdvantage}
         />
       </DiceContainer>
       {/* <DiceBox

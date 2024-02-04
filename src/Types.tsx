@@ -115,6 +115,7 @@ export type CombatEntry = {
   character: CharacterEntry;
   roll_type: RollTypeEntry;
   roll_source: string;
+  roll_state: ActiveStateType;
   roll_entry: RollEntry;
   uuid: string;
   durability: DurabilityEntry;
@@ -177,6 +178,10 @@ export interface Ability {
   roll: AbilityRoll[];
 }
 
+export type ActiveStateType = "" | "full" | "weak";
+
+export type AdvantageType = "" | "flanking" | "flanked";
+
 export type RollTypeEntry =
   | "damage"
   | "armor"
@@ -198,9 +203,18 @@ export type RollTypeEntry =
   | "ability"
   | "mystical power";
 
-export type RollEntry = {
+export type CriticalType = {
+  state: 0 | 1 | 2;
   result: number;
-  roll: number;
+};
+
+export type RollEntry = {
+  result1: number;
+  result2: number;
+  roll1: number;
+  roll2: number;
+  advantage: AdvantageType;
+  critical: CriticalType;
   mod: number;
   target: number;
   success: boolean;

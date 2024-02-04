@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
 import {
   Dice10FillIcon,
   Dice12FillIcon,
@@ -8,22 +7,28 @@ import {
   Dice6FillIcon,
   Dice8FillIcon,
 } from "../Images";
+import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
 
+import { random } from "lodash";
+import { Socket } from "socket.io-client";
+import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import {
+  ActiveStateType,
+  AdvantageType,
+  CharacterEntry,
+  CombatEntry,
+  CriticalType,
+  DurabilityEntry,
+  ItemEntry,
   RollEntry,
   RollTypeEntry,
-  CombatEntry,
   SessionEntry,
-  CharacterEntry,
-  ItemEntry,
-  DurabilityEntry,
 } from "../Types";
-import { v4 as uuidv4 } from "uuid";
 import { SetDurability } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-import { Socket } from "socket.io-client";
-import { random } from "lodash";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAnglesDown, faAnglesUp } from "@fortawesome/free-solid-svg-icons";
 
 type RollComponentProps = {
   session: SessionEntry;
@@ -39,6 +44,10 @@ type RollComponentProps = {
   isCreature: boolean;
   inactive?: boolean;
   setModValue?: React.Dispatch<React.SetStateAction<number>>;
+  advantage: AdvantageType;
+  activeState: ActiveStateType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 };
 
 const dice_size = "25px";
@@ -141,6 +150,10 @@ function RollComponent({
   isCreature,
   inactive = true,
   setModValue,
+  advantage,
+  activeState,
+  setActiveState,
+  setAdvantage,
 }: RollComponentProps) {
   let dice_icon = Dice20FillIcon;
   if (dice === 4) {
@@ -160,16 +173,59 @@ function RollComponent({
   }
 
   const RollDIce = () => {
-    let roll = Math.floor(Math.random() * dice) + 1;
-    let result = roll;
+    // let roll = Math.floor(Math.random() * dice) + 1;
+
+    let roll1 = random(1, dice);
+    let roll2 = random(1, dice);
+
+    const critical_type: CriticalType = {
+      state: 1,
+      result: random(1, 6),
+    };
+
+    let result1 = roll1;
+    let result2 = roll2;
+
+    let roll_state = activeState;
+
     if (roll_source !== "Skill Test") {
-      result += dice_mod;
+      result1 += dice_mod;
+      result2 += dice_mod;
     }
 
-    let success = true;
-    if (target !== 0 && result > target) {
+    let success = false;
+
+    if (activeState === "full" && (result1 <= target || result2 <= target)) {
+      success = true;
+      if (roll1 === 1 || roll2 === 1) {
+        critical_type.state = 2;
+      }
+    } else if (
+      activeState === "weak" &&
+      (result1 > target || result2 > target)
+    ) {
       success = false;
+      if (roll1 === 20 || roll2 === 20) {
+        critical_type.state = 0;
+      }
+    } else if (result1 <= target) {
+      console.log("NORMAL SUCCESS");
+      success = true;
+      if (roll1 === 1) {
+        critical_type.state = 2;
+      }
+    } else {
+      console.log("NORMAL FAILURE");
+      success = false;
+      if (roll1 === 20) {
+        critical_type.state = 0;
+      }
     }
+
+    // let success = true;
+    // if (target !== 0 && result > target) {
+    //   success = false;
+    // }
 
     console.log(roll_source);
 
@@ -180,8 +236,12 @@ function RollComponent({
     }
 
     const roll_entry: RollEntry = {
-      result: result,
-      roll: roll,
+      result1: result1,
+      result2: result2,
+      roll1: roll1,
+      roll2: roll2,
+      critical: critical_type,
+      advantage: advantage,
       mod: dice_mod,
       target: target,
       success: success,
@@ -211,8 +271,9 @@ function RollComponent({
 
     const NewCombatEntry: CombatEntry = {
       character,
-      roll_type, // Damage, Armor, Accurate etc
+      roll_type,
       roll_source, // Short Sword, Medium Armor, Skill Test,
+      roll_state,
       roll_entry,
       uuid: uuidv4(),
       entry: "CombatEntry",
@@ -227,8 +288,22 @@ function RollComponent({
         setModValue(0);
     }
 
+    setActiveState("");
+    setAdvantage("");
+
     update_session(session, websocket, character, isCreature);
   };
+
+  const is_possible =
+    (advantage === "flanked" &&
+      (roll_type === "defense" || roll_type === "armor")) ||
+    (advantage === "flanking" &&
+      (roll_type === "attack" || roll_type === "damage")) ||
+    advantage === "";
+
+  if (!is_possible) {
+    inactive = false;
+  }
 
   return (
     <RollContainer
@@ -236,11 +311,24 @@ function RollComponent({
       dice_size={dice_size}
       color={color}
       title={`Roll d${dice}`}
-      onClick={() => RollDIce()}
+      onClick={is_possible ? () => RollDIce() : () => {}}
       inactive={inactive}
     >
       d{dice}
       {dice_mod > 0 && roll_source !== "Skill Test" ? `+${dice_mod}` : null}
+      {activeState === "full" ? (
+        <FontAwesomeIcon
+          icon={faAnglesUp}
+          color={Constants.WIDGET_PRIMARY_FONT}
+          style={{ marginLeft: "5px", fontSize: "15px" }}
+        />
+      ) : activeState === "weak" ? (
+        <FontAwesomeIcon
+          icon={faAnglesDown}
+          color={Constants.WIDGET_PRIMARY_FONT}
+          style={{ marginLeft: "5px", fontSize: "15px" }}
+        />
+      ) : null}
     </RollContainer>
   );
 }

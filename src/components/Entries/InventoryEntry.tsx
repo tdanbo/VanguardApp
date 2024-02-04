@@ -11,7 +11,13 @@ import React, { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../../Constants";
-import { CharacterEntry, ItemEntry, SessionEntry } from "../../Types";
+import {
+  ActiveStateType,
+  AdvantageType,
+  CharacterEntry,
+  ItemEntry,
+  SessionEntry,
+} from "../../Types";
 import RollComponent from "../../component/RollComponent";
 import { DeleteInventorySlot } from "../../functions/CharacterFunctions";
 import { GetMaxSlots, RulesDiceAdjust } from "../../functions/RulesFunctions";
@@ -262,6 +268,10 @@ interface InventoryEntryProps {
   setInventoryState?: (inventoryState: number) => void;
   isCreature: boolean;
   canBuy: boolean;
+  advantage: AdvantageType;
+  activeState: ActiveStateType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 function InventoryEntry({
@@ -276,6 +286,10 @@ function InventoryEntry({
   isCreature,
   canBuy,
   isGm,
+  advantage,
+  activeState,
+  setActiveState,
+  setAdvantage,
 }: InventoryEntryProps) {
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
   const generateRandomId = (length = 10) => {
@@ -514,7 +528,7 @@ function InventoryEntry({
   const [expanded, setExpanded] = useState<boolean>(false);
 
   // This is a big function that correct all dice rolls based on the character's abilities
-  const dice = RulesDiceAdjust(character, item);
+  const dice = RulesDiceAdjust(character, item, advantage);
 
   return (
     <MasterContainer>
@@ -620,11 +634,15 @@ function InventoryEntry({
                 }
                 roll_source={item.name}
                 isCreature={isCreature}
-                dice={dice}
+                dice={dice + (advantage && IsWeapon(item) ? 4 : 0)}
                 dice_mod={item.roll.mod}
                 color={COLOR}
                 item={item}
                 inactive={item.equip.equipped}
+                advantage={advantage}
+                activeState={""}
+                setActiveState={setActiveState}
+                setAdvantage={setAdvantage}
               />
             </RollBox>
           )}
@@ -751,6 +769,10 @@ function InventoryEntry({
                 character={character}
                 session={session}
                 isCreature={isCreature}
+                activeState={activeState}
+                advantage={advantage}
+                setActiveState={setActiveState}
+                setAdvantage={setAdvantage}
               />
             </React.Fragment>
           ))}

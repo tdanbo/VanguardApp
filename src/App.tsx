@@ -9,6 +9,8 @@ import { useEffect, useRef, useState } from "react";
 import PartySection from "./BrowserSection/PartySection";
 import {
   AbilityEntry,
+  ActiveStateType,
+  AdvantageType,
   CharacterEntry,
   EmptyCharacter,
   EmptySession,
@@ -58,6 +60,8 @@ const SideColumn = styled.div`
 
 function App() {
   // This function is the main function for setting the session.
+  const [activeState, setActiveState] = useState<ActiveStateType>("");
+  const [advantage, setAdvantage] = useState<AdvantageType>("");
   const [search, setSearch] = useState("");
   const [session, setSession] = useState<SessionEntry>(EmptySession);
   const [characterName, setCharacterName] = useState<string>("");
@@ -146,6 +150,10 @@ function App() {
             gmMode={gmMode}
             isCreature={isCreature}
             search={search}
+            advantage={advantage}
+            activeState={activeState}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
           />
         ) : categorySelect === "equipment" && HideBrowser ? (
           <EquipmentBrowser
@@ -158,6 +166,10 @@ function App() {
             search={search}
             equipment={equipment}
             isGm={isGm}
+            advantage={advantage}
+            activeState={activeState}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
           />
         ) : categorySelect === "abilities" && HideBrowser ? (
           <AbilityBrowser
@@ -169,6 +181,10 @@ function App() {
             search={search}
             abilities={abilities}
             isGm={isGm}
+            activeState={activeState}
+            advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
           />
         ) : categorySelect === "creatures" && HideBrowser ? (
           <CreatureBrowser
@@ -200,6 +216,10 @@ function App() {
             isCreature={isCreature}
             setIsCreature={setIsCreature}
             setCharacterName={setCharacterName}
+            advantage={advantage}
+            activeState={activeState}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
           />
         ) : (
           <CharacterSheet
@@ -217,6 +237,10 @@ function App() {
             setIsJoinOpen={setisJoinOpen}
             isCreature={isCreature}
             setCharacterName={setCharacterName}
+            advantage={advantage}
+            setAdvantage={setAdvantage}
+            activeState={activeState}
+            setActiveState={setActiveState}
           />
         )}
       </Column>
@@ -238,6 +262,8 @@ function App() {
           character={character}
           websocket={websocket}
           isCreature={isCreature}
+          setActiveState={setActiveState}
+          setAdvantage={setAdvantage}
         />
       </SideColumn>
     </Row>

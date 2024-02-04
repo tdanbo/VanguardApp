@@ -3,7 +3,13 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
+import {
+  AbilityEntry,
+  ActiveStateType,
+  AdvantageType,
+  CharacterEntry,
+  SessionEntry,
+} from "../Types";
 import AbilityEntryItem from "../components/Entries/AbilityEntryItem";
 import InventoryEntryEmpty from "../components/InventoryEntryEmpty";
 
@@ -67,6 +73,10 @@ interface AbilityBrowserProps {
   search: string;
   abilities: AbilityEntry[];
   isGm: boolean;
+  activeState: ActiveStateType;
+  advantage: AdvantageType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 function AbilityBrowser({
@@ -78,6 +88,10 @@ function AbilityBrowser({
   search,
   abilities,
   isGm,
+  activeState,
+  advantage,
+  setActiveState,
+  setAdvantage,
 }: AbilityBrowserProps) {
   type LootCategoryType =
     | "all"
@@ -183,6 +197,10 @@ function AbilityBrowser({
                   session={session}
                   websocket={websocket}
                   isCreature={isCreature}
+                  activeState={activeState}
+                  advantage={advantage}
+                  setActiveState={setActiveState}
+                  setAdvantage={setAdvantage}
                 />
               );
             }

@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { ActivesEntry, CharacterEntry } from "../Types";
+import {
+  ActiveStateType,
+  ActivesEntry,
+  AdvantageType,
+  CharacterEntry,
+} from "../Types";
 import {
   GetBurnRate,
   GetMaxSlots,
@@ -18,6 +23,7 @@ import {
   faPersonRunning,
   faWeightHanging,
 } from "@fortawesome/free-solid-svg-icons";
+import ActiveStateComponent from "./ActiveStateComponent";
 interface PortraitProps {
   src: string;
 }
@@ -39,14 +45,33 @@ const Column = styled.div`
   flex-grow: 1;
 `;
 
+const RightColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: flex-end;
+`;
+
 // background-image: url("/dist/assets/portrait1.jpeg");
 
 interface HealthBoxProps {
   character: CharacterEntry;
   actives: ActivesEntry;
+  activeState: ActiveStateType;
+  setActiveState: (state: ActiveStateType) => void;
+  advantage: AdvantageType;
+  setAdvantage: (state: AdvantageType) => void;
 }
 
-function PortraitComponent({ character, actives }: HealthBoxProps) {
+function PortraitComponent({
+  character,
+  actives,
+  activeState,
+  setActiveState,
+  advantage,
+  setAdvantage,
+}: HealthBoxProps) {
   const speed = GetMovementSpeed(character);
   const pain = GetPainThreshold(character);
   const capacity = GetMaxSlots(character) - GetUsedSlots(character);
@@ -76,7 +101,15 @@ function PortraitComponent({ character, actives }: HealthBoxProps) {
           icon={faCarrot}
         />
       </Column>
-      <InfoComponent character={character} actives={actives} />
+      <RightColumn>
+        <InfoComponent character={character} actives={actives} />
+        <ActiveStateComponent
+          activeState={activeState}
+          setActiveState={setActiveState}
+          advantage={advantage}
+          setAdvantage={setAdvantage}
+        />
+      </RightColumn>
     </Container>
   );
 }

@@ -1,7 +1,13 @@
 import { RefObject, useEffect, useRef } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import { CharacterEntry, CombatEntry, SessionEntry } from "../../Types";
+import {
+  CharacterEntry,
+  CombatEntry,
+  SessionEntry,
+  ActiveStateType,
+  AdvantageType,
+} from "../../Types";
 import DiceSection from "../../components/Sections/DiceSection";
 import CombatEntryItem from "../CombatEntryItem";
 import * as Constants from "../../Constants";
@@ -65,6 +71,8 @@ interface CombatSectionProps {
   character: CharacterEntry;
   websocket: Socket;
   isCreature: boolean;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 function deepCompareCombatEntries(
@@ -96,6 +104,8 @@ function CombatSection({
   character,
   websocket,
   isCreature,
+  setActiveState,
+  setAdvantage,
 }: CombatSectionProps) {
   // const { combatlogResponse } = useWebSocket();
 
@@ -142,12 +152,12 @@ function CombatSection({
 
       if (
         last_roll.roll_source === "Skill Test" &&
-        last_roll.roll_entry.roll === 1
+        last_roll.roll_entry.critical.state === 2
       ) {
         playRandomSound(CriticalSuccessSounds);
       } else if (
         last_roll.roll_source === "Skill Test" &&
-        last_roll.roll_entry.roll === 20
+        last_roll.roll_entry.critical.state === 0
       ) {
         playRandomSound(CriticalFailureSounds);
       } else if (last_roll.roll_type === "resting") {
@@ -186,6 +196,8 @@ function CombatSection({
             session={session}
             websocket={websocket}
             isCreature={isCreature}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
           />
         </Row>
       </Container>

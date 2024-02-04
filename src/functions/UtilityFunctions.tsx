@@ -3,6 +3,8 @@ import styled from "styled-components";
 import * as Constants from "../Constants";
 import {
   AbilityEntry,
+  ActiveStateType,
+  AdvantageType,
   CharacterEntry,
   ItemEntry,
   SessionEntry,
@@ -220,6 +222,10 @@ interface StyledTextProps {
   character: CharacterEntry;
   session: SessionEntry;
   isCreature: boolean;
+  activeState: ActiveStateType;
+  advantage: AdvantageType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 const DiceButton = styled.button`
@@ -235,6 +241,10 @@ export const StyledText: React.FC<StyledTextProps> = ({
   character,
   session,
   isCreature,
+  activeState,
+  advantage,
+  setActiveState,
+  setAdvantage,
 }) => {
   const style = { color: Constants.WIDGET_PRIMARY_FONT, fontWeight: "bold" }; // Example style
   // Updated escapeRegExp function
@@ -275,6 +285,10 @@ export const StyledText: React.FC<StyledTextProps> = ({
               dice={parseInt(part.substring(1))}
               color={Constants.TYPE_COLORS["custom"]}
               key={key}
+              activeState={activeState}
+              advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
           </DiceButton>
         );

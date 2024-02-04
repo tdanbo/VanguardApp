@@ -1,6 +1,11 @@
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import { CharacterEntry, SessionEntry } from "../../Types";
+import {
+  ActiveStateType,
+  AdvantageType,
+  CharacterEntry,
+  SessionEntry,
+} from "../../Types";
 import { update_session } from "../../functions/SessionsFunctions";
 import EncounterCharacterEntry from "../EncounterCharacterEntry";
 import EncounterCreatureEntry from "../EncounterCreatureEntry";
@@ -20,6 +25,10 @@ interface EncounterSectionProps {
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   characterLog: CharacterEntry[];
+  advantage: AdvantageType;
+  activeState: ActiveStateType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 function CreatureEncounterSection({
@@ -30,6 +39,10 @@ function CreatureEncounterSection({
   setCharacterName,
   setGmMode,
   characterLog,
+  activeState,
+  advantage,
+  setActiveState,
+  setAdvantage,
 }: EncounterSectionProps) {
   // If setSortedEncounter is part of your useState declaration, it should look like this
 
@@ -63,6 +76,10 @@ function CreatureEncounterSection({
               setGmMode={setGmMode}
               setCharacterName={setCharacterName}
               setIsCreature={setIsCreature}
+              activeState={activeState}
+              advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
             />
           );
         }

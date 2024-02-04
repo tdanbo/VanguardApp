@@ -1,8 +1,3 @@
-import * as Constants from "../Constants";
-import { CombatEntry, SessionEntry } from "../Types";
-import "../App.css";
-import styled from "styled-components";
-import { UpperFirstLetter } from "../functions/UtilityFunctions";
 import {
   faAngleDoubleDown,
   faAngleDoubleUp,
@@ -10,9 +5,12 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import "../App.css";
+import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { useState, useEffect } from "react";
+import { CombatEntry, SessionEntry } from "../Types";
 import { toTitleCase } from "../functions/UtilityFunctions";
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
@@ -70,7 +68,7 @@ const RightBlock = styled.div`
   padding-top: 5px;
 `;
 
-const ResultContainer = styled.div`
+const RollContainer = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -80,19 +78,36 @@ const ResultContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-const Result = styled.div<ColorTypeProps>`
+const ResultContainer = styled.div`
   display: flex;
   flex-grow: 1;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  gap: 20px;
+  width: 100%;
+`;
+
+interface ResultProps {
+  $position: 0 | 1 | 2;
+}
+const Result = styled.div<ResultProps>`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  justify-content: ${(props) =>
+    props.$position === 0
+      ? "flex-end"
+      : props.$position === 1
+      ? "flex-start"
+      : "center"};
+
+
   font-size: 3.5rem;
   font-weight: bold;
-  color: ${(props) =>
-    props.$issuccess
-      ? Constants.WIDGET_PRIMARY_FONT
-      : Constants.WIDGET_PRIMARY_FONT};
+  width: 100%;
 
-  opacity: ${(props) => (props.$issuccess ? 1 : 1.0)};
+  color: ${Constants.WIDGET_PRIMARY_FONT}
   text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
 `;
 
@@ -135,7 +150,7 @@ const Active = styled.div<ColorTypeProps>`
   display: flex;
   flex-grow: 1;
   flex-direction: row;
-  justify-content: end;
+  justify-content: center;
   align-items: center;
   font-size: 20px;
   font-weight: bold;
@@ -144,39 +159,20 @@ const Active = styled.div<ColorTypeProps>`
   width: 50%;
 `;
 
-const Source = styled.div<ColorTypeProps>`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-  font-size: 20px;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
-  width: 50%;
-`;
-
-const Divider = styled.div`
+const ResultDivider = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
-  font-weight: bold;
   background-color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
   text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
   width: 1px;
-  height: 100%;
-  margin: 0px 10px 0px 10px;
+  height: 60%;
+  margin: 10px 0px 0px 0px;
 `;
 
-function CombatEntryItem({
-  combatEntry,
-  index,
-  session,
-}: CombatEntryItemProps) {
+function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   const EntryColor = () => {
     return (
       Constants.TYPE_COLORS[combatEntry.roll_type.toLowerCase()] ||
@@ -191,7 +187,7 @@ function CombatEntryItem({
     modifierText = `${combatEntry.roll_entry.mod}`;
   }
 
-  let title = `Dice: d${combatEntry.roll_entry.dice}${modifierText}\nResult: ${combatEntry.roll_entry.result}\n`;
+  let title = `Dice: d${combatEntry.roll_entry.dice}${modifierText}\nResult: ${combatEntry.roll_entry.result1}\n`;
   let durability_title = `Dice: d4\nResult: ${combatEntry.durability.check}\nTarget: 3`;
 
   if (combatEntry.roll_source !== "Skill Test") {
@@ -203,20 +199,25 @@ function CombatEntryItem({
   }
 
   const [isRolling, setIsRolling] = useState(false);
-  const [currentDisplay, setCurrentDisplay] = useState<number>(0);
+  const [currentDisplay1, setCurrentDisplay1] = useState<number>(0);
+  const [currentDisplay2, setCurrentDisplay2] = useState<number>(0);
   const [_rollCycles, setRollCycles] = useState<number>(0);
 
   useEffect(() => {
     if (index !== 19) {
       // Only allow the animation effect on the first item
-      setCurrentDisplay(combatEntry.roll_entry.result);
+      setCurrentDisplay1(combatEntry.roll_entry.result1);
+      setCurrentDisplay2(combatEntry.roll_entry.result2);
       return;
     }
     setIsRolling(true);
 
     // Rapidly change the displayed roll result
     const rollInterval = setInterval(() => {
-      setCurrentDisplay(
+      setCurrentDisplay1(
+        Math.floor(Math.random() * combatEntry.roll_entry.dice) + 1,
+      ); // assuming dice values start from 1
+      setCurrentDisplay2(
         Math.floor(Math.random() * combatEntry.roll_entry.dice) + 1,
       ); // assuming dice values start from 1
       setRollCycles((prev) => prev + 1);
@@ -226,7 +227,8 @@ function CombatEntryItem({
     const timer = setTimeout(() => {
       setIsRolling(false);
       clearInterval(rollInterval);
-      setCurrentDisplay(combatEntry.roll_entry.result);
+      setCurrentDisplay1(combatEntry.roll_entry.result1);
+      setCurrentDisplay2(combatEntry.roll_entry.result2);
       setRollCycles(0);
     }, 300); // Total duration of the roll animation
 
@@ -238,18 +240,8 @@ function CombatEntryItem({
 
   // const RollEntryColor = getAdjustedColor(EntryColor(), combatEntry.roll_entry.roll);
 
-  const FumbledPerfect = () => {
-    if (combatEntry.roll_entry.roll === 1) {
-      return 0; // Perfect
-    } else if (combatEntry.roll_entry.roll === 20) {
-      return 1; // Fumbled
-    } else {
-      return 2; // Normal
-    }
-  };
-
   const FumbledPerfectText = () => {
-    if (FumbledPerfect() === 0) {
+    if (combatEntry.roll_entry.critical.state === 2) {
       if (combatEntry.roll_type === "attack") {
         return "+1d6 damage.";
       } else if (combatEntry.roll_type === "defense") {
@@ -261,7 +253,7 @@ function CombatEntryItem({
       } else {
         return "";
       }
-    } else if (FumbledPerfect() === 1) {
+    } else if (combatEntry.roll_entry.critical.state === 0) {
       if (combatEntry.roll_type === "attack") {
         return `Free attack against you.`;
       } else if (combatEntry.roll_type === "defense") {
@@ -283,76 +275,76 @@ function CombatEntryItem({
     }
   };
 
+  const roll_text = `${combatEntry.roll_entry.advantage} ${combatEntry.roll_state} ${combatEntry.roll_type}`;
+
   return (
     <Container src={CharacterPortraits[combatEntry.character.portrait]}>
       <ColorBlock
         $rgb={EntryColor()}
         $issuccess={combatEntry.roll_entry.success}
       />
-      <ResultContainer>
-        {combatEntry.roll_type === "resting" ? (
-          <>
+      <RollContainer>
+        <Breakdown>1d{combatEntry.roll_entry.dice}</Breakdown>
+        <ResultContainer>
+          {(combatEntry.roll_state === "full" &&
+            combatEntry.roll_source === "Skill Test") ||
+          (combatEntry.roll_state === "weak" &&
+            combatEntry.roll_source === "Skill Test") ? (
+            <>
+              <Result
+                title={title}
+                $position={0}
+                className={isRolling ? "rolling" : ""}
+              >
+                {currentDisplay1}
+              </Result>
+              <ResultDivider />
+              <Result
+                title={title}
+                $position={1}
+                className={isRolling ? "rolling" : ""}
+              >
+                {currentDisplay2}
+              </Result>
+            </>
+          ) : (
             <Result
               title={title}
-              $rgb={EntryColor()}
-              $issuccess={combatEntry.roll_entry.success}
-            >
-              <FontAwesomeIcon icon={faMoon} />
-            </Result>
-          </>
-        ) : (
-          <>
-            <Breakdown>1d{combatEntry.roll_entry.dice}</Breakdown>
-            <Result
-              title={title}
-              $rgb={EntryColor()}
-              $issuccess={combatEntry.roll_entry.success}
+              $position={2}
               className={isRolling ? "rolling" : ""}
             >
-              {currentDisplay}
+              {currentDisplay1}
             </Result>
-          </>
-        )}
+          )}
+        </ResultContainer>
         <SourceContainer>
           {combatEntry.roll_source === "Skill Test" ? (
             <Active
               $rgb={EntryColor()}
               $issuccess={combatEntry.roll_entry.success}
             >
-              {modifierText} {UpperFirstLetter(combatEntry.roll_type)}{" "}
+              {modifierText} {toTitleCase(roll_text)}
             </Active>
           ) : (
             <Active
               $rgb={EntryColor()}
               $issuccess={combatEntry.roll_entry.success}
             >
-              {UpperFirstLetter(combatEntry.roll_type)}
+              {toTitleCase(roll_text)}
             </Active>
           )}
-          <Divider />
-          <Source
-            $rgb={EntryColor()}
-            $issuccess={combatEntry.roll_entry.success}
-          >
-            {combatEntry.roll_source === "Resting" ? (
-              <span>
-                {toTitleCase(session.travel.weather)} Morning - Day{" "}
-                {session.travel.day}
-              </span>
-            ) : (
-              <>
-                <span>{UpperFirstLetter(combatEntry.roll_source)}</span>
-              </>
-            )}
-          </Source>
         </SourceContainer>
         <FumbledSubText title={durability_title}>
-          {FumbledPerfectText()}
+          {combatEntry.roll_entry.critical.state === 1 ? (
+            <>{combatEntry.roll_source}</>
+          ) : (
+            <>{FumbledPerfectText()}</>
+          )}
         </FumbledSubText>
-      </ResultContainer>
+      </RollContainer>
       <RightBlock>
         {combatEntry.roll_source === "Skill Test" ? (
-          combatEntry.roll_entry.roll === 1 ? (
+          combatEntry.roll_entry.critical.state === 2 ? (
             <FontAwesomeIcon
               icon={faAngleDoubleUp}
               color="#5cb57c"
@@ -360,7 +352,7 @@ function CombatEntryItem({
                 fontSize: "25px",
               }}
             />
-          ) : combatEntry.roll_entry.roll === 20 ? (
+          ) : combatEntry.roll_entry.critical.state === 0 ? (
             <FontAwesomeIcon
               icon={faAngleDoubleDown}
               color="#b55c5c"

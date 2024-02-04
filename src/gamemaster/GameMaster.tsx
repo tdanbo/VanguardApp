@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { CharacterEntry, SessionEntry } from "../Types";
+import {
+  ActiveStateType,
+  AdvantageType,
+  CharacterEntry,
+  SessionEntry,
+} from "../Types";
 import ResetCreatureEncounter from "../components/ResetCreatureEncounter";
 import CreatureEncounterSection from "../components/Sections/CreatureEncounterSection";
 import TimeTrackBox from "../gamemaster/TimeTrackBox";
@@ -65,6 +70,10 @@ interface GameMasterProps {
   isCreature: boolean;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
+  advantage: AdvantageType;
+  activeState: ActiveStateType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
 function GameMaster({
@@ -74,6 +83,10 @@ function GameMaster({
   isCreature,
   setIsCreature,
   setCharacterName,
+  advantage,
+  activeState,
+  setActiveState,
+  setAdvantage,
 }: GameMasterProps) {
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
 
@@ -108,6 +121,10 @@ function GameMaster({
             setGmMode={setGmMode}
             setCharacterName={setCharacterName}
             characterLog={characterLog}
+            advantage={advantage}
+            activeState={activeState}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
           />
         </ScrollColumn>
       </DynamicContainer>

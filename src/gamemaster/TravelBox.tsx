@@ -10,12 +10,13 @@ import { forEach } from "lodash";
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import {
+  CombatEntry,
   EmptyCharacter,
   SessionEntry,
   TravelEntry,
-  CombatEntry,
 } from "../Types";
 import {
   ButtonContainer,
@@ -26,7 +27,6 @@ import {
 } from "../components/SelectorPage/SelectorStyles";
 import { GetBurnRate } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-import { v4 as uuidv4 } from "uuid";
 export const ModalContainer = styled.div`
   background-color: ${Constants.BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -470,9 +470,14 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
       character: EmptyCharacter,
       roll_type: "resting",
       roll_source: "Resting",
+      roll_state: "",
       roll_entry: {
-        result: 0,
-        roll: 0,
+        result1: 0,
+        result2: 0,
+        roll1: 0,
+        roll2: 0,
+        advantage: "",
+        critical: { state: 1, result: 0 },
         mod: 0,
         target: 0,
         success: true,
