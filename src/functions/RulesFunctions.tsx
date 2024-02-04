@@ -16,6 +16,7 @@ import { IronFist_dice } from "./rules/IronFist";
 import { Robust_dice } from "./rules/Robust";
 import { TwinAttack_dice } from "./rules/TwinAttack";
 import { AdvantageDice } from "./rules/AdvantageDice";
+import { FeatOfStrength_dice } from "./rules/FeatOfStrength";
 
 export function RulesDiceAdjust(
   character: CharacterEntry,
@@ -37,6 +38,7 @@ export function RulesDiceAdjust(
   dice += IronFist_dice(character, item);
   dice += Robust_dice(character);
   dice += TwinAttack_dice(character, item);
+  dice += FeatOfStrength_dice(character, item);
   dice += ItemRulesDice(character, item);
   dice += AdvantageDice(item, advantage);
   return dice;
@@ -74,7 +76,13 @@ export function GetMaxSlots(character: CharacterEntry) {
 }
 
 export function GetMaxToughness(character: CharacterEntry) {
-  return character.stats.strong.value < 10 ? 10 : character.stats.strong.value;
+  const FeatOfStrength = CheckAbility(character, "Feat of Strength", "novice")
+    ? 5
+    : 0;
+
+  const max_toughness =
+    character.stats.strong.value < 10 ? 10 : character.stats.strong.value;
+  return max_toughness + FeatOfStrength;
 }
 
 export function GetPainThreshold(character: CharacterEntry) {

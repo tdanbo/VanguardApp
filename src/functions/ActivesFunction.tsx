@@ -49,6 +49,9 @@ export const GetActives = (character: CharacterEntry) => {
   } else if (CheckAbility(character, "Sixth Sense", "adept")) {
     character_actives.defense.stat = "vigilant";
     character_actives.defense.value = character.stats.vigilant.value;
+  } else if (CheckAbility(character, "feint", "adept")) {
+    character_actives.defense.stat = "discreet";
+    character_actives.defense.value = character.stats.discreet.value;
   } else {
     character_actives.defense.stat = "quick";
     character_actives.defense.value = character.stats.quick.value;
