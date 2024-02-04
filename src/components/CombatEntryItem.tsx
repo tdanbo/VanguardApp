@@ -12,6 +12,8 @@ import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { CombatEntry, SessionEntry } from "../Types";
 import { toTitleCase } from "../functions/UtilityFunctions";
+import Icon from "@mdi/react";
+import { mdiShieldOff } from "@mdi/js";
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
   index: number;
@@ -66,6 +68,7 @@ const RightBlock = styled.div`
   margin: 1px 1px 1px 1px;
   padding-right: 8px;
   padding-top: 5px;
+  gap: 5px;
 `;
 
 const RollContainer = styled.div`
@@ -241,38 +244,42 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   // const RollEntryColor = getAdjustedColor(EntryColor(), combatEntry.roll_entry.roll);
 
   const FumbledPerfectText = () => {
+    let message = "";
+
     if (combatEntry.roll_entry.critical.state === 2) {
       if (combatEntry.roll_type === "attack") {
-        return "+1d6 damage.";
+        message = "+1d6 damage.";
       } else if (combatEntry.roll_type === "defense") {
-        return "Free attack against the enemy.";
+        message = "Free attack against the enemy.";
       } else if (combatEntry.roll_type === "casting") {
-        return "Double the spell effect.";
+        message = "Double the spell effect.";
       } else if (combatEntry.roll_type === "sneaking") {
-        return "No detection for the entire group.";
+        message = "No detection for the entire group.";
       } else {
-        return "";
+        message = "";
       }
     } else if (combatEntry.roll_entry.critical.state === 0) {
       if (combatEntry.roll_type === "attack") {
-        return `Free attack against you.`;
+        message += "Free attack against you. ";
       } else if (combatEntry.roll_type === "defense") {
-        return `+3 Damage taken.`;
+        message += "+3 Damage taken. ";
       } else if (combatEntry.roll_type === "casting") {
-        return "Your spell hit a random foe/friend.";
+        message += "Your spell hit a random foe/friend.";
       } else if (combatEntry.roll_type === "sneaking") {
-        return "Conflict is inevitable! If attacked, you are surprised!";
+        message += "Conflict is inevitable! If attacked, you are surprised!";
       } else {
-        return "";
+        message += "";
       }
-    } else if (
+    }
+    if (
       combatEntry.durability.name !== "" &&
       combatEntry.durability.check === 4
     ) {
-      return `Durability check failed. ${combatEntry.durability.name} lost durability.`;
+      message += `Durability check failed, ${combatEntry.durability.name} lost durability.`;
     } else {
-      return "";
+      message += "";
     }
+    return message;
   };
 
   const roll_text = `${combatEntry.roll_entry.advantage} ${combatEntry.roll_state} ${combatEntry.roll_type}`;
@@ -335,11 +342,9 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
           )}
         </SourceContainer>
         <FumbledSubText title={durability_title}>
-          {combatEntry.roll_entry.critical.state === 1 ? (
-            <>{combatEntry.roll_source}</>
-          ) : (
-            <>{FumbledPerfectText()}</>
-          )}
+          {FumbledPerfectText() !== ""
+            ? FumbledPerfectText()
+            : combatEntry.roll_source}
         </FumbledSubText>
       </RollContainer>
       <RightBlock>
@@ -377,6 +382,12 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
               }}
             />
           )
+        ) : null}
+        {combatEntry.durability.check === 4 &&
+        !combatEntry.roll_entry.success &&
+        (combatEntry.roll_type === "attack" ||
+          combatEntry.roll_type === "defense") ? (
+          <Icon path={mdiShieldOff} size={0.9} color={"#b55c5c"} />
         ) : null}
       </RightBlock>
     </Container>

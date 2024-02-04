@@ -199,6 +199,8 @@ function RollComponent({
       success = true;
       if (roll1 === 1 || roll2 === 1) {
         critical_type.state = 2;
+      } else if (roll1 === 20 && roll2 === 20) {
+        critical_type.state = 0;
       }
     } else if (
       activeState === "weak" &&
@@ -207,6 +209,8 @@ function RollComponent({
       success = false;
       if (roll1 === 20 || roll2 === 20) {
         critical_type.state = 0;
+      } else if (roll1 === 1 && roll2 === 1) {
+        critical_type.state = 2;
       }
     } else if (result1 <= target) {
       console.log("NORMAL SUCCESS");
