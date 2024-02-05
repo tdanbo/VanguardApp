@@ -112,7 +112,6 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   tool: COLOR_4,
   "monsterous trait": COLOR_4,
   poison: COLOR_4,
-  "adventuring gear": COLOR_4,
 
   treasure: COLOR_5,
   utility: COLOR_5,
@@ -131,6 +130,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
 
   permanent_corruption: DESAT_PURPLE,
 
+  "adventuring gear": COLOR_7,
   "general good": COLOR_7,
 
   Ambrian: COLOR_2,
@@ -299,4 +299,11 @@ export const SPECIAL_WORDS = [
   "+10",
   "15",
   "+15",
+];
+
+export const INTEGRATED_ABILITIES = [
+  "tactician",
+  "man-at-arms",
+  "exceptionally strong",
+  "iron fist",
 ];

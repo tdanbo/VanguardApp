@@ -163,15 +163,15 @@ function CreatureEntryItem({
   const [resistance, setResistance] = useState<string>("Weak");
 
   useEffect(() => {
-    if (creature.details.xp_earned === 0) {
+    if (creature.details.xp_earned < 50) {
       setResistance("Weak");
-    } else if (creature.details.xp_earned <= 50) {
+    } else if (creature.details.xp_earned < 150) {
       setResistance("Ordinary");
-    } else if (creature.details.xp_earned <= 150) {
+    } else if (creature.details.xp_earned < 300) {
       setResistance("Challenging");
-    } else if (creature.details.xp_earned <= 300) {
-      setResistance("Strong");
     } else if (creature.details.xp_earned <= 600) {
+      setResistance("Strong");
+    } else if (creature.details.xp_earned <= 1200) {
       setResistance("Mighty");
     } else {
       setResistance("Legendary");

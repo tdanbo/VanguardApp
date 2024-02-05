@@ -45,10 +45,12 @@ export function RulesDiceAdjust(
 }
 
 export function GetMaxSlots(character: CharacterEntry) {
+  const strong_capacity = CheckAbility(character, "Pack-mule", "novice")
+    ? character.stats.strong.value * 1.5
+    : character.stats.strong.value;
+
   let max_slots = Math.max(
-    Math.ceil(
-      (character.stats.strong.value + character.stats.resolute.value) / 2,
-    ),
+    Math.ceil((strong_capacity + character.stats.resolute.value) / 2),
     10,
   );
 
@@ -214,6 +216,7 @@ export function GetUsedSlots(character: CharacterEntry) {
   let used_slots = character.inventory.length;
 
   const storageModifiers = [
+    "Light",
     "Storage 2",
     "Storage 4",
     "Storage 6",
