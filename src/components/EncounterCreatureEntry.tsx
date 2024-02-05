@@ -22,9 +22,14 @@ import {
   ItemEntry,
   RESOURCE,
   SessionEntry,
+  AbilityEntry,
 } from "../Types";
 import { GetActives } from "../functions/ActivesFunction";
-import { GetMovementSpeed, RulesDiceAdjust } from "../functions/RulesFunctions";
+import {
+  GetMaxToughness,
+  GetMovementSpeed,
+  RulesDiceAdjust,
+} from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
 import AbilityEntryItem from "./Entries/AbilityEntryItem";
@@ -326,7 +331,7 @@ function EncounterCreatureEntry({
   const pain = Math.ceil(creatureClone.stats.strong.value / 2);
   const attack = ModifierConverter[character_actives.attack.value];
   const defense = ModifierConverter[character_actives.defense.value];
-  const hp = Math.max(creatureClone.stats.strong.value, 10);
+  const hp = GetMaxToughness(creatureClone);
   const [currentDamage, setCurrentDamage] = useState<number>(
     creature.health.damage!,
   );
@@ -352,15 +357,15 @@ function EncounterCreatureEntry({
   const [resistance, setResistance] = useState<string>("Weak");
 
   useEffect(() => {
-    if (creatureClone.details.xp_earned === 0) {
+    if (creatureClone.details.xp_earned < 50) {
       setResistance("Weak");
-    } else if (creatureClone.details.xp_earned <= 50) {
+    } else if (creatureClone.details.xp_earned < 150) {
       setResistance("Ordinary");
-    } else if (creatureClone.details.xp_earned <= 150) {
+    } else if (creatureClone.details.xp_earned < 300) {
       setResistance("Challenging");
-    } else if (creatureClone.details.xp_earned <= 300) {
-      setResistance("Strong");
     } else if (creatureClone.details.xp_earned <= 600) {
+      setResistance("Strong");
+    } else if (creatureClone.details.xp_earned <= 1200) {
       setResistance("Mighty");
     } else {
       setResistance("Legendary");
@@ -519,6 +524,20 @@ function EncounterCreatureEntry({
     update_session(session, websocket);
   };
 
+  const sortList = (a: AbilityEntry, b: AbilityEntry) => {
+    const categoryComparison =
+      Constants.TYPE_FILTER.indexOf(a.type) -
+      Constants.TYPE_FILTER.indexOf(b.type);
+
+    if (categoryComparison !== 0) {
+      return categoryComparison;
+    }
+
+    return 0;
+  };
+
+  const sorted_abilities = [...creatureClone.abilities].sort(sortList);
+
   return (
     <MainContainer>
       {hp - currentDamage <= 0 && (
@@ -634,8 +653,16 @@ function EncounterCreatureEntry({
         </ControlBlock>
       </Container>
       <AbilityContainer>
-        {creatureClone.abilities.map((ability, index) => {
-          return (
+        {sorted_abilities.map((ability, index) => {
+          // Ensure both conditions are correctly evaluated together
+          const isNotIntegratedOrUtility =
+            !Constants.INTEGRATED_ABILITIES.includes(
+              ability.name.toLowerCase(),
+            ) &&
+            ability.type.toLowerCase() !== "utility" &&
+            ability.type.toLowerCase() !== "ritual";
+
+          return isNotIntegratedOrUtility ? (
             <AbilityEntryItem
               websocket={websocket}
               character={creature}
@@ -649,7 +676,7 @@ function EncounterCreatureEntry({
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
             />
-          );
+          ) : null;
         })}
       </AbilityContainer>
     </MainContainer>

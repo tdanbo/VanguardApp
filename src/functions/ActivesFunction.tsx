@@ -58,8 +58,13 @@ export const GetActives = (character: CharacterEntry) => {
   }
 
   // CASTING STAT
-  character_actives.casting.stat = "resolute";
-  character_actives.casting.value = character.stats.resolute.value;
+  if (CheckAbility(character, "leader", "novice")) {
+    character_actives.casting.stat = "persuasive";
+    character_actives.casting.value = character.stats.persuasive.value;
+  } else {
+    character_actives.casting.stat = "resolute";
+    character_actives.casting.value = character.stats.resolute.value;
+  }
 
   // SNEAKING STAT
   character_actives.sneaking.stat = "discreet";

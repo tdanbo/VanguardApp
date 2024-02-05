@@ -2,6 +2,7 @@ import {
   faBars,
   faChevronRight,
   faCoins,
+  faFeather,
   faSkull,
   faUsers,
   faXmark,
@@ -291,6 +292,7 @@ function InventoryEntry({
   setActiveState,
   setAdvantage,
 }: InventoryEntryProps) {
+  const [_light, setLight] = useState<boolean>(false);
   const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
   const generateRandomId = (length = 10) => {
     return Math.random()
@@ -530,6 +532,12 @@ function InventoryEntry({
   // This is a big function that correct all dice rolls based on the character's abilities
   const dice = RulesDiceAdjust(character, item, advantage);
 
+  const HandleLightSetting = () => {
+    item.quality.includes("Light")
+      ? item.quality.pop() && setLight(false)
+      : item.quality.push("Light") && setLight(true);
+  };
+
   return (
     <MasterContainer>
       <Container className="button-hover">
@@ -722,6 +730,22 @@ function InventoryEntry({
               ) : (
                 <AddButton />
               )}
+              {item.category === "general good" &&
+              browser &&
+              isGm &&
+              !item.quality.includes("Light") ? (
+                <AddButton
+                  className={"button-hover"}
+                  onClick={() => HandleLightSetting()}
+                >
+                  <FontAwesomeIcon
+                    icon={faFeather}
+                    style={{ fontSize: "12px" }}
+                    color={canBuy ? "#f5c542" : Constants.WIDGET_SECONDARY_FONT}
+                    title={canBuy ? "Buy One" : "Add One"}
+                  />
+                </AddButton>
+              ) : null}
             </>
           ) : equipped === "" ? (
             <>

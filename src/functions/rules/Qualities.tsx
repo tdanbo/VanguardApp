@@ -213,4 +213,9 @@ export const Qualities: {
     description:
       "Increases the total number of items your character can carry by 10. Increases your daily food/water requirement by 5.",
   },
+  Light: {
+    name: "Light",
+    description:
+      "The item is so light that it doesn't affect your inventory capacity.",
+  },
 };

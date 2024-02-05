@@ -91,7 +91,7 @@ function XpBox({ session, character, websocket, isCreature }: XpBoxProps) {
         <h2 className={".hide-div"}>UTILITY XP</h2>
         <h1>
           {getUtilityXp(character)} /{" "}
-          {Math.round(character.details.xp_earned / 5)}
+          {Math.max(Math.round(character.details.xp_earned / 5), 10)}
         </h1>
       </CategoryContainerRight>
     </Container>
