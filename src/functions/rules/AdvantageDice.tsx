@@ -8,5 +8,6 @@ export function AdvantageDice(item: ItemEntry, advantage: AdvantageType) {
   } else if (advantage === "flanked" && IsArmor(item)) {
     mod -= 4;
   }
+  console.log("AdvantageDice", mod);
   return mod;
 }

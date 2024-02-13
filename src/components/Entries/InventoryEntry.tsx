@@ -642,7 +642,7 @@ function InventoryEntry({
                 }
                 roll_source={item.name}
                 isCreature={isCreature}
-                dice={dice + (advantage && IsWeapon(item) ? 4 : 0)}
+                dice={dice}
                 dice_mod={item.roll.mod}
                 color={COLOR}
                 item={item}
