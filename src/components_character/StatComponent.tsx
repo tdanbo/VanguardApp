@@ -253,6 +253,32 @@ function StatComponent({
     color = Constants.TYPE_COLORS[stat_name];
   }
 
+  const ModifierConverter: Record<number, number> = {
+    20: -10,
+    19: -9,
+    18: -8,
+    17: -7,
+    16: -6,
+    15: -5,
+    14: -4,
+    13: -3,
+    12: -2,
+    11: -1,
+    10: 0,
+    9: 1,
+    8: 2,
+    7: 3,
+    6: 4,
+    5: 5,
+    4: 6,
+    3: 7,
+    2: 8,
+    1: 9,
+  };
+
+  const valueTitle: string =
+    ModifierConverter[Math.max(stat_value + modValue + flanked, 1)].toString();
+
   return (
     <Container>
       <Row height={"100%"} className="first-row">
@@ -262,7 +288,7 @@ function StatComponent({
           )}
         </DiceContainerLeft>
 
-        <Value className="dice-icon-hover">
+        <Value className="dice-icon-hover" title={isCreature ? valueTitle : ""}>
           {Math.max(stat_value + modValue + flanked, 1)}
         </Value>
         <DiceContainerRight>
