@@ -397,6 +397,19 @@ function EncounterCreatureEntry({
     GetMovementSpeed(creatureClone) +
     "\n" +
     "\n" +
+    "Attack: " +
+    ModifierConverter[character_actives.attack.value] +
+    "\n" +
+    "Defense: " +
+    ModifierConverter[character_actives.defense.value] +
+    "\n" +
+    "Casting: " +
+    ModifierConverter[character_actives.casting.value] +
+    "\n" +
+    "Sneaking: " +
+    ModifierConverter[character_actives.sneaking.value] +
+    "\n" +
+    "\n" +
     "Cunning: " +
     ModifierConverter[creatureClone.stats.cunning.value] +
     "\n" +
