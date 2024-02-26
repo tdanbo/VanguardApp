@@ -5,7 +5,6 @@ import * as Constants from "../Constants";
 
 import { useEffect, useRef, useState } from "react";
 
-import PartySection from "../components_combatlog/PartySection";
 import {
   AbilityEntry,
   ActiveStateType,
@@ -25,7 +24,7 @@ import { ItemEntry } from "../Types";
 import JoinComponent from "../components_general/JoinComponent";
 import useSocketIO from "../socketio";
 import CombatSection from "./CombatSection";
-import Browser from "./browser";
+import Browser from "./Browser";
 
 const Row = styled.div`
   display: flex;
