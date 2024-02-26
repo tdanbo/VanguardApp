@@ -2,6 +2,7 @@ import axios from "axios";
 import { Socket } from "socket.io-client";
 import { API } from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
+
 export async function get_session(id: string): Promise<SessionEntry> {
   const response = await axios.get<SessionEntry>(`${API}/api/session/${id}`);
   return response.data;

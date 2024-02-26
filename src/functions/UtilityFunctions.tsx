@@ -9,7 +9,7 @@ import {
   ItemEntry,
   SessionEntry,
 } from "../Types";
-import RollComponent from "../component/RollComponent";
+import RollComponent from "../components_general/RollComponent";
 
 export function UpperFirstLetter(input: string): string {
   if (!input || typeof input !== "string") {

@@ -299,6 +299,10 @@ export const SPECIAL_WORDS = [
   "+10",
   "15",
   "+15",
+  "Casting",
+  "Defense",
+  "Attack",
+  "Sneaking",
 ];
 
 export const INTEGRATED_ABILITIES = [
