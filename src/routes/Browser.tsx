@@ -19,12 +19,7 @@ const SideColumn = styled.div`
 `;
 
 import { Socket } from "socket.io-client";
-import {
-  CharacterEntry,
-  SessionEntry,
-  AbilityEntry,
-  CreatureEntry,
-} from "../Types";
+import { CharacterEntry, SessionEntry, AbilityEntry } from "../Types";
 
 type BrowserProps = {
   session: SessionEntry;
