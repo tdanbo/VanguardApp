@@ -22,9 +22,6 @@ export const GetActives = (character: CharacterEntry) => {
   if (CheckAbility(character, "Iron Fist", "novice")) {
     character_actives.attack.stat = "strong";
     character_actives.attack.value = character.stats.strong.value;
-  } else if (CheckAbility(character, "Staff Projectile", "novice")) {
-    character_actives.attack.stat = "resolute";
-    character_actives.attack.value = character.stats.resolute.value;
   } else if (CheckAbility(character, "Tactician", "master")) {
     character_actives.attack.stat = "cunning";
     character_actives.attack.value = character.stats.cunning.value;
