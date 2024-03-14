@@ -60,13 +60,23 @@ const Column = styled.div<DivProps>`
 
 const SideColumn = styled.div`
   display: flex;
-  flex: 1;
+  flex: 0.5; /* Default flex value for resolutions below 1080p */
   flex-direction: column;
   background-color: ${Constants.BACKGROUND};
   height: 100%;
   gap: 25px;
-  padding: 25px 25px 25px 25px;
+  padding: 25px;
   box-sizing: border-box;
+
+  /* Media query for 1080p resolution and above */
+  @media (min-width: 1920px) {
+    flex: 0.5; /* Keep flex as 0.5 for 1080p resolution */
+  }
+
+  /* Media query for 1440p resolution and above */
+  @media (min-width: 2560px) {
+    flex: 1; /* Change flex to 1 for 1440p resolution */
+  }
 `;
 
 import {

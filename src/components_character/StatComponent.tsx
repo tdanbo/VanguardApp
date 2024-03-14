@@ -61,7 +61,7 @@ const Value = styled.button`
   flex-direction: column;
   align-items: center;
   justify-content: end;
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   font-weight: bold;
   color: ${Constants.WIDGET_PRIMARY_FONT};
   border-top: 1px solid ${Constants.WIDGET_BORDER};

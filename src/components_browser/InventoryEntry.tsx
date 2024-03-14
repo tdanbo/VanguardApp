@@ -113,7 +113,7 @@ const NameBox = styled.div`
   display: flex;
   flex: 1;
   color: ${(props) => props.color};
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
 `;
 
