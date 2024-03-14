@@ -9,6 +9,7 @@ import {
 } from "../Types";
 import InventoryEntry from "../components_browser/InventoryEntry";
 import { GetMaxSlots } from "../functions/RulesFunctions";
+import { UpdateStaticItem } from "../functions/UtilityFunctions";
 import styled from "styled-components";
 const Column = styled.div`
   display: flex;
@@ -28,6 +29,7 @@ interface NavigationProps {
   advantage: AdvantageType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  equipment: ItemEntry[];
 }
 
 function sortInventory(a: ItemEntry, b: ItemEntry): number {
@@ -46,6 +48,7 @@ function EquipmentSection({
   advantage,
   setActiveState,
   setAdvantage,
+  equipment,
 }: NavigationProps) {
   character.inventory.sort(sortInventory);
   const sortedInventory = [...character.inventory].sort(sortInventory);
@@ -57,6 +60,7 @@ function EquipmentSection({
       {Array.from({ length: totalSlots }).map((_, index) => {
         const item = sortedInventory[index];
         if (item !== undefined && item.equipped) {
+          UpdateStaticItem(item, equipment);
           return (
             <InventoryEntry
               session={session}

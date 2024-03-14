@@ -168,6 +168,8 @@ function App() {
           setAdvantage={setAdvantage}
           activeState={activeState}
           setActiveState={setActiveState}
+          equipment={equipment}
+          abilities={abilities}
         />
       )}
       <CombatSection

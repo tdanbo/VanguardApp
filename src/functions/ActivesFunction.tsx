@@ -109,10 +109,10 @@ const UpdateQualities = (
 ) => {
   console.log("Updating Qualities");
   const qualityModifiers = {
-    "Impeding 1": { sneaking: -1, defense: -1, casting: -1 },
-    "Impeding 2": { sneaking: -2, defense: -2, casting: -2 },
-    "Impeding 3": { sneaking: -3, defense: -3, casting: -3 },
-    "Impeding 4": { sneaking: -4, defense: -4, casting: -4 },
+    "Imp 1": { sneaking: -1, defense: -1, casting: -1 },
+    "Imp 2": { sneaking: -2, defense: -2, casting: -2 },
+    "Imp 3": { sneaking: -3, defense: -3, casting: -3 },
+    "Imp 4": { sneaking: -4, defense: -4, casting: -4 },
     "Balanced 1": { defense: 1 },
     "Balanced 2": { defense: 2 },
     "Balanced 3": { defense: 3 },

@@ -9,6 +9,7 @@ import {
 } from "../Types";
 import AbilityEntryItem from "../components_browser/AbilityEntryItem";
 import InventoryEntryEmpty from "./InventoryEntryEmpty";
+import { UpdateStaticAbility } from "../functions/UtilityFunctions";
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -19,6 +20,7 @@ interface NavigationProps {
   advantage: AdvantageType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  abilities: AbilityEntry[];
 }
 
 function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
@@ -37,12 +39,14 @@ function AbilitySection({
   advantage,
   setActiveState,
   setAdvantage,
+  abilities,
 }: NavigationProps) {
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
 
   return (
     <>
       {sortedAbilities.map((ability, index) => {
+        UpdateStaticAbility(ability, abilities);
         return (
           <AbilityEntryItem
             session={session}

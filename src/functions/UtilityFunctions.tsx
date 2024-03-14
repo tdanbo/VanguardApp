@@ -309,3 +309,22 @@ export const StyledText: React.FC<StyledTextProps> = ({
 
   return <div>{words}</div>;
 };
+
+export function UpdateStaticItem(item: ItemEntry, equipment: ItemEntry[]) {
+  // Update the static item
+  const static_item = equipment.find((entry) => entry.name === item.name);
+  if (static_item) {
+    item.static = static_item.static;
+  }
+}
+
+export function UpdateStaticAbility(
+  ability: AbilityEntry,
+  abilities: AbilityEntry[],
+) {
+  // Update the static item
+  const static_ability = abilities.find((entry) => entry.name === ability.name);
+  if (static_ability) {
+    ability.static = static_ability.static;
+  }
+}
