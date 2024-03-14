@@ -10,6 +10,7 @@ import {
   GeneralItem,
   ItemEntry,
   SessionEntry,
+  ItemTemplate,
 } from "../Types";
 import InventoryEntry from "./InventoryEntry";
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
@@ -202,6 +203,14 @@ function EquipmentBrowser({
       <DynamicContainer>
         <ScrollColumn ref={scrollRef} width="100%">
           {filteredEquipment.map((entry, index) => {
+            let itemTemplate: ItemTemplate = {
+              name: entry.name,
+              durability: entry.roll.dice,
+              equipped: false,
+              quantity: 1,
+              id: "",
+            };
+
             if (entry.entry === "ItemEntry") {
               return (
                 <InventoryEntry
@@ -212,8 +221,9 @@ function EquipmentBrowser({
                   browser={true}
                   index={index}
                   item={entry}
+                  itemTemplate={itemTemplate}
                   equipped={""}
-                  id={""}
+                  id={itemTemplate.id}
                   setInventoryState={setInventoryState}
                   isCreature={isCreature}
                   canBuy={false}

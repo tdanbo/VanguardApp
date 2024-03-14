@@ -178,7 +178,7 @@ const AbilityName = styled.div<LevelProps>`
   flex-grow: 1;
   color: ${(props) =>
     props.$active ? EntryColor(props.type) : Constants.WIDGET_SECONDARY_FONT};
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
 `;
 

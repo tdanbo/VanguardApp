@@ -17,6 +17,7 @@ import {
   AdvantageType,
   CharacterEntry,
   ItemEntry,
+  ItemTemplate,
   SessionEntry,
 } from "../Types";
 import RollComponent from "../components_general/RollComponent";
@@ -113,7 +114,7 @@ const NameBox = styled.div`
   display: flex;
   flex: 1;
   color: ${(props) => props.color};
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
 `;
 
@@ -260,6 +261,7 @@ interface InventoryEntryProps {
   browser: boolean;
   equipped: string;
   item: ItemEntry;
+  itemTemplate: ItemTemplate;
   id: string;
   isGm: boolean;
   setInventoryState?: (inventoryState: number) => void;
@@ -276,6 +278,7 @@ function InventoryEntry({
   session,
   websocket,
   item,
+  itemTemplate,
   browser,
   equipped,
   id,
@@ -296,71 +299,70 @@ function InventoryEntry({
       .substring(2, 2 + length);
   };
 
-  const HandleEquip = (item: ItemEntry) => {
-    item.equip.equipped = true;
+  const HandleEquip = () => {
+    itemTemplate.equipped = true;
     update_session(session, websocket, character, isCreature);
   };
 
   const HandleUnequip = () => {
-    item.equip.equipped = false;
+    itemTemplate.equipped = false;
     update_session(session, websocket, character, isCreature);
   };
 
   const AddToLoot = () => {
     const drop_item = session.loot.drops.find(
-      (drop_item) =>
-        drop_item.name === item.name && item.quantity.bulk === true,
+      (drop_item) => drop_item.name === itemTemplate.name && item.bulk === true,
     );
 
     if (drop_item) {
-      drop_item.quantity.count += 1;
+      drop_item.quantity += 1;
     } else {
-      const new_item = cloneDeep(item);
+      const new_item = cloneDeep(itemTemplate);
       new_item.id = generateRandomId();
       session.loot.drops.push(new_item);
     }
     update_session(session, websocket, character, isCreature);
   };
 
-  const RemoveLootItem = (item: ItemEntry) => {
+  const RemoveLootItem = () => {
     session.loot.drops = session.loot.drops.filter(
-      (loot) => loot.id !== item.id,
+      (loot) => loot.id !== itemTemplate.id,
     );
     session.loot.general = session.loot.general.filter(
-      (loot) => loot.id !== item.id,
+      (loot) => loot.id !== itemTemplate.id,
     );
     session.loot.armory = session.loot.armory.filter(
-      (loot) => loot.id !== item.id,
+      (loot) => loot.id !== itemTemplate.id,
     );
     session.loot.alchemy = session.loot.alchemy.filter(
-      (loot) => loot.id !== item.id,
+      (loot) => loot.id !== itemTemplate.id,
     );
     session.loot.novelty = session.loot.novelty.filter(
-      (loot) => loot.id !== item.id,
+      (loot) => loot.id !== itemTemplate.id,
     );
   };
 
-  const RemoveBulkItem = (item: ItemEntry) => {
-    const decrementCount = (lootArray: ItemEntry[]) => {
+  const RemoveBulkItem = () => {
+    const decrementCount = (lootArray: ItemTemplate[]) => {
       return lootArray.map((loot) => {
-        if (loot.id === item.id && loot.quantity.count > 0) {
+        if (loot.id === itemTemplate.id && itemTemplate.quantity > 0) {
           return {
             ...loot,
-            quantity: { ...loot.quantity, count: loot.quantity.count - 1 },
+            quantity: loot.quantity - 1,
           };
         }
         return loot;
       });
     };
 
-    if (item.quantity.bulk === true && item.quantity.count > 1) {
-      item.quantity.count -= 1;
+    if (item.bulk === true && itemTemplate.quantity > 1) {
+      itemTemplate.quantity -= 1;
       session.loot.general = decrementCount(session.loot.general);
       session.loot.armory = decrementCount(session.loot.armory);
       session.loot.alchemy = decrementCount(session.loot.alchemy);
       session.loot.novelty = decrementCount(session.loot.novelty);
     } else {
-      RemoveLootItem(item);
+      RemoveLootItem();
     }
   };
 
@@ -370,7 +372,7 @@ function InventoryEntry({
 
   const AddResource = (item: ItemEntry, buy: boolean, share: boolean) => {
     if (share) {
-      let bulk = item.quantity.count;
+      let bulk = itemTemplate.quantity;
       let character_index = ShuffleArray(
         createArray(session.characters.length),
       );
@@ -389,12 +391,12 @@ function InventoryEntry({
           }
         }
       }
-      RemoveLootItem(item);
+      RemoveLootItem();
     } else {
-      if (!CheckBuy(item, buy)) {
+      if (!CheckBuy(buy)) {
         return;
       }
-      RemoveBulkItem(item);
+      RemoveBulkItem();
       if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
         character.money += item.cost;
       } else if (item.name === "Food") {
@@ -405,30 +407,28 @@ function InventoryEntry({
     }
   };
 
-  const AddBulkItem = (item: ItemEntry, buy: boolean) => {
-    if (!CheckBuy(item, buy)) {
+  const AddBulkItem = (buy: boolean) => {
+    if (!CheckBuy(buy)) {
       return;
     }
 
     const inventoryItem = character.inventory.find(
-      (inventory_item) =>
-        inventory_item.name === item.name &&
-        inventory_item.quantity.bulk === true,
+      (inventory_item) => inventory_item.name === itemTemplate.name,
     );
 
     if (inventoryItem) {
-      RemoveBulkItem(item);
-      inventoryItem.quantity.count += 1;
+      RemoveBulkItem();
+      inventoryItem.quantity += 1;
     } else {
-      RemoveBulkItem(item);
-      const new_item = cloneDeep(item);
+      RemoveBulkItem();
+      const new_item = cloneDeep(itemTemplate);
       new_item.id = generateRandomId();
-      new_item.quantity.count = 1;
+      new_item.quantity = 1;
       character.inventory.push(new_item);
     }
   };
 
-  const CheckBuy = (item: ItemEntry, buy: boolean) => {
+  const CheckBuy = (buy: boolean) => {
     if (buy) {
       if (character.money < item.cost) {
         console.log("You don't have enough money!");
@@ -440,14 +440,14 @@ function InventoryEntry({
     return true;
   };
 
-  const AddRegularItem = (item: ItemEntry, buy: boolean) => {
-    if (!CheckBuy(item, buy)) {
+  const AddRegularItem = (buy: boolean) => {
+    if (!CheckBuy(buy)) {
       return;
     }
-    RemoveLootItem(item);
-    const new_item = cloneDeep(item);
+    RemoveLootItem();
+    const new_item = cloneDeep(itemTemplate);
     new_item.id = generateRandomId();
-    new_item.quantity.count = 1;
+    new_item.quantity = 1;
     character.inventory.push(new_item);
   };
 
@@ -466,10 +466,10 @@ function InventoryEntry({
 
     if (item.category === "resource") {
       AddResource(item, buy, share);
-    } else if (item.quantity.bulk === true) {
-      AddBulkItem(item, buy);
+    } else if (item.bulk === true) {
+      AddBulkItem(buy);
     } else {
-      AddRegularItem(item, buy);
+      AddRegularItem(buy);
     }
 
     update_session(session, websocket, character, isCreature);
@@ -483,21 +483,21 @@ function InventoryEntry({
     update_session(session, websocket, character, isCreature);
   };
 
-  const equipHandler = (item: ItemEntry) => {
-    if (item.equip.equipped) {
+  const equipHandler = () => {
+    if (itemTemplate.equipped) {
       HandleUnequip();
     } else {
-      HandleEquip(item);
+      HandleEquip();
     }
   };
 
   const handlePlusClick = () => {
-    item.quantity.count += 1;
+    itemTemplate.quantity += 1;
     update_session(session, websocket, character, isCreature);
   };
 
   const handleMinusClick = () => {
-    item.quantity.count -= 1;
+    itemTemplate.quantity -= 1;
     update_session(session, websocket, character, isCreature);
   };
 
@@ -538,20 +538,20 @@ function InventoryEntry({
     <MasterContainer>
       <Container className="button-hover">
         <EquipContainer>
-          {[1, 2, 3].includes(item.equip.slot) ? (
+          {[1, 2, 3].includes(item.slot) ? (
             <EquipButton
               color={COLOR}
               key={"2H"}
               onClick={() => {
-                browser && isGm ? AddToLoot() : equipHandler(item);
+                browser && isGm ? AddToLoot() : equipHandler();
               }}
-              $isequipped={item.equip.equipped}
+              $isequipped={itemTemplate.equipped}
             >
               {browser && isGm ? (
                 <FontAwesomeIcon icon={faCoins} style={{ fontSize: "12px" }} />
-              ) : item.equip.slot === 1 ? (
+              ) : item.slot === 1 ? (
                 "I"
-              ) : item.equip.slot === 2 ? (
+              ) : item.slot === 2 ? (
                 "II"
               ) : (
                 ""
@@ -603,7 +603,7 @@ function InventoryEntry({
                   return null; // Skip rendering this item if the quality is missing
                 }
 
-                const titleContent = `${quality}\n\n${description}`;
+                const titleContent = `${Qualities[quality].name}\n\n${description}`;
                 const isLastItem = index === item.quality.length - 1; // Check if it's the last item
 
                 return (
@@ -642,7 +642,7 @@ function InventoryEntry({
                 dice_mod={item.roll.mod}
                 color={COLOR}
                 item={item}
-                inactive={item.equip.equipped}
+                inactive={itemTemplate.equipped}
                 advantage={advantage}
                 activeState={""}
                 setActiveState={setActiveState}
@@ -651,8 +651,7 @@ function InventoryEntry({
             </RollBox>
           )}
 
-          {[1, 2, 3].includes(item.equip.slot) &&
-          item.category !== "projectile" ? (
+          {[1, 2, 3].includes(item.slot) && item.category !== "projectile" ? (
             <RollBox color={COLOR}>
               <DurabilityComponent
                 item={item}
@@ -660,11 +659,11 @@ function InventoryEntry({
                 character={character}
                 websocket={websocket}
                 isCreature={isCreature}
-                inactive={item.equip.equipped}
+                inactive={itemTemplate.equipped}
               />
             </RollBox>
           ) : null}
-          {item.quantity.bulk === true && (
+          {item.bulk === true && (
             <QuantityBox
               color={COLOR}
               onClick={handleMinusClick}
@@ -674,7 +673,7 @@ function InventoryEntry({
               }}
               className="mouse-icon-hover"
             >
-              {item.quantity.count}x
+              {itemTemplate.quantity}x
             </QuantityBox>
           )}
         </RollContainer>

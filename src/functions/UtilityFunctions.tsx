@@ -8,6 +8,8 @@ import {
   CharacterEntry,
   ItemEntry,
   SessionEntry,
+  GeneralItem,
+  ItemTemplate,
 } from "../Types";
 import RollComponent from "../components_general/RollComponent";
 
@@ -309,3 +311,18 @@ export const StyledText: React.FC<StyledTextProps> = ({
 
   return <div>{words}</div>;
 };
+
+export function GetItemEntry(
+  itemTemplate: ItemTemplate,
+  equipment: ItemEntry[],
+): ItemEntry {
+  const found_item = equipment.find(
+    (database_item) => database_item.name === itemTemplate.name,
+  );
+
+  if (found_item) {
+    return found_item;
+  } else {
+    return GeneralItem;
+  }
+}

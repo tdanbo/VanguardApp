@@ -91,6 +91,8 @@ function App() {
     fetchEquipment();
   }, []); // Empty dependency array to ensure it runs only once
 
+  console.log(equipment);
+
   return (
     <Row>
       {isJoinOpen ? (
@@ -166,6 +168,8 @@ function App() {
           setAdvantage={setAdvantage}
           activeState={activeState}
           setActiveState={setActiveState}
+          equipment={equipment}
+          abilities={abilities}
         />
       )}
       <CombatSection

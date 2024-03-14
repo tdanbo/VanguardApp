@@ -8,7 +8,7 @@ import {
   SessionEntry,
 } from "../Types";
 import InventoryEntry from "../components_browser/InventoryEntry";
-import { GetMaxSlots } from "../functions/RulesFunctions";
+import { GetItemEntry } from "../functions/UtilityFunctions";
 import styled from "styled-components";
 const Column = styled.div`
   display: flex;
@@ -28,6 +28,7 @@ interface NavigationProps {
   advantage: AdvantageType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  equipment: ItemEntry[];
 }
 
 function sortInventory(a: ItemEntry, b: ItemEntry): number {
@@ -46,17 +47,16 @@ function EquipmentSection({
   advantage,
   setActiveState,
   setAdvantage,
+  equipment,
 }: NavigationProps) {
-  character.inventory.sort(sortInventory);
-  const sortedInventory = [...character.inventory].sort(sortInventory);
-
-  const totalSlots = GetMaxSlots(character) * 2;
+  // character.inventory.sort(sortInventory);
+  // const sortedInventory = [...character.inventory].sort(sortInventory);
 
   return (
     <Column>
-      {Array.from({ length: totalSlots }).map((_, index) => {
-        const item = sortedInventory[index];
-        if (item !== undefined && item.equip.equipped) {
+      {character.inventory.map((template, index) => {
+        const item = GetItemEntry(template, equipment);
+        if (item !== undefined && template.equipped) {
           return (
             <InventoryEntry
               session={session}
@@ -66,7 +66,8 @@ function EquipmentSection({
               browser={false}
               index={index}
               item={item}
-              id={item.id}
+              itemTemplate={template}
+              id={template.id}
               equipped={""}
               isCreature={isCreature}
               canBuy={false}
