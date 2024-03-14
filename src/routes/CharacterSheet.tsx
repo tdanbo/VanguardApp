@@ -1,11 +1,5 @@
 import styled from "styled-components";
-import {
-  AdvantageType,
-  CharacterEntry,
-  SessionEntry,
-  ItemEntry,
-  AbilityEntry,
-} from "../Types";
+import { AdvantageType, CharacterEntry, SessionEntry } from "../Types";
 import AbilitySection from "../components_character/AbilitySection";
 import CharacterNameBox from "../components_character/CharacterNameBox";
 import InventorySection from "../components_character/InventorySection";
@@ -133,8 +127,6 @@ type CharacterSheetProps = {
   activeState: ActiveStateType;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  equipment: ItemEntry[];
-  abilities: AbilityEntry[];
 };
 
 function GetActiveIcon(active: string) {
@@ -160,8 +152,6 @@ function CharacterSheet({
   activeState,
   setAdvantage,
   setActiveState,
-  equipment,
-  abilities,
 }: CharacterSheetProps) {
   const character_actives = GetActives(character);
 
@@ -412,7 +402,6 @@ function CharacterSheet({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
-            equipment={equipment}
           />
           <DividerHorizontal />
           <ScrollColumn width="100%">
@@ -425,7 +414,6 @@ function CharacterSheet({
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
-              equipment={equipment}
             />
           </ScrollColumn>
         </Column>
@@ -440,7 +428,6 @@ function CharacterSheet({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
-            abilities={abilities}
           />
         </ScrollColumn>
       </DynamicContainer>

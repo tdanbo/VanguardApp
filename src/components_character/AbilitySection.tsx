@@ -19,7 +19,6 @@ interface NavigationProps {
   advantage: AdvantageType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  abilities: AbilityEntry[];
 }
 
 function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
@@ -38,7 +37,6 @@ function AbilitySection({
   advantage,
   setActiveState,
   setAdvantage,
-  abilities,
 }: NavigationProps) {
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
 
