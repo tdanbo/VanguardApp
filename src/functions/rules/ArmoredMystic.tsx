@@ -18,10 +18,10 @@ export function ArmoredMystic_active(
   for (const armor of character.inventory) {
     if (
       abilityAdept &&
-      armor.equip.equipped &&
-      armor.category === "heavy armor"
+      armor.equipped &&
+      armor.static.category === "heavy armor"
     ) {
-      armor.quality.forEach((quality: string) => {
+      armor.static.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
           character_actives.casting.value +=
@@ -30,10 +30,10 @@ export function ArmoredMystic_active(
       });
     } else if (
       abilityNovice &&
-      armor.equip.equipped &&
-      ["medium armor", "light armor"].includes(armor.category)
+      armor.equipped &&
+      ["medium armor", "light armor"].includes(armor.static.category)
     ) {
-      armor.quality.forEach((quality: string) => {
+      armor.static.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
           character_actives.casting.value +=

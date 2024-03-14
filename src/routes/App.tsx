@@ -82,7 +82,9 @@ function App() {
 
       const filteredAbilities = abilitiesResponse.data.filter(
         (item: AbilityEntry) =>
-          !isGm || (item.type !== "monsterous trait" && item.type !== "burden"),
+          !isGm ||
+          (item.static.type !== "monsterous trait" &&
+            item.static.type !== "burden"),
       );
 
       setEquipment(equipmentResponse.data);

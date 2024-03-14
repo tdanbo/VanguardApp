@@ -24,8 +24,8 @@ interface NavigationProps {
 
 function sortInventory(a: ItemEntry, b: ItemEntry): number {
   return (
-    Constants.CATEGORY_FILTER.indexOf(a.category) -
-    Constants.CATEGORY_FILTER.indexOf(b.category)
+    Constants.CATEGORY_FILTER.indexOf(a.static.category) -
+    Constants.CATEGORY_FILTER.indexOf(b.static.category)
   );
 }
 
@@ -48,7 +48,7 @@ function InventorySection({
     <>
       {Array.from({ length: totalSlots }).map((_, index) => {
         const item = sortedInventory[index];
-        if (item !== undefined && !item.equip.equipped) {
+        if (item !== undefined && !item.equipped) {
           return (
             <InventoryEntry
               session={session}

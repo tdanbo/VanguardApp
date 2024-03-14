@@ -7,14 +7,14 @@ export function ManAtArms_active(
 ) {
   const abilityAdept = CheckAbility(character, "man-at-arms", "adept");
   for (const item of character.inventory) {
-    if (IsArmor(item) && abilityAdept && item.equip.equipped) {
+    if (IsArmor(item) && abilityAdept && item.equipped) {
       const negativeQualities: { [key: string]: number } = {
         "Impeding 1": 1,
         "Impeding 2": 2,
         "Impeding 3": 3,
         "Impeding 4": 4,
       };
-      item.quality.forEach((quality: string) => {
+      item.static.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
           character_actives.defense.value +=

@@ -175,8 +175,8 @@ interface CategoryButtonProps {
 
 const sortShoppingList = (a: ItemEntry, b: ItemEntry) => {
   const categoryComparison =
-    Constants.CATEGORY_FILTER.indexOf(a.category) -
-    Constants.CATEGORY_FILTER.indexOf(b.category);
+    Constants.CATEGORY_FILTER.indexOf(a.static.category) -
+    Constants.CATEGORY_FILTER.indexOf(b.static.category);
 
   if (categoryComparison !== 0) {
     return categoryComparison;
@@ -250,11 +250,11 @@ function DropsBrowser({
 
   const gatherEquipment = (rarity: number) => () => {
     const SetBulk = (item: ItemEntry) => {
-      if (item.quantity.bulk) {
-        if (item.category === "resource") {
-          item.quantity.count = random(1, 8 * rarity);
-        } else if (item.category === "projectile") {
-          item.quantity.count = random(1, 4 * rarity);
+      if (item.static.bulk) {
+        if (item.static.category === "resource") {
+          item.quantity = random(1, 8 * rarity);
+        } else if (item.static.category === "projectile") {
+          item.quantity = random(1, 4 * rarity);
         } else if (
           [
             "alchemy crafting material",
@@ -263,15 +263,15 @@ function DropsBrowser({
             "artifact crafting material",
             "siege expert crafting material",
             "poisoner crafting material",
-          ].includes(item.category)
+          ].includes(item.static.category)
         ) {
-          item.quantity.count = random(1, 2 * rarity);
-        } else if (item.category === "poison") {
-          item.quantity.count = random(1, 2 * rarity);
-        } else if (item.category === "elixir") {
-          item.quantity.count = random(1, 2 * rarity);
-        } else if (item.category === "tool") {
-          item.quantity.count = random(1, 1 * rarity);
+          item.quantity = random(1, 2 * rarity);
+        } else if (item.static.category === "poison") {
+          item.quantity = random(1, 2 * rarity);
+        } else if (item.static.category === "elixir") {
+          item.quantity = random(1, 2 * rarity);
+        } else if (item.static.category === "tool") {
+          item.quantity = random(1, 1 * rarity);
         }
       }
     };
@@ -282,15 +282,15 @@ function DropsBrowser({
       const drop_roll = random(1, 100);
       if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
         drop_chance = 75;
-      } else if (item.type === "normal") {
+      } else if (item.static.type === "normal") {
         drop_chance = 0.625 * rarity;
-      } else if (item.type === "quality") {
+      } else if (item.static.type === "quality") {
         drop_chance = 0.418 * rarity;
-      } else if (item.type === "mystical") {
+      } else if (item.static.type === "mystical") {
         drop_chance = 0.28 * rarity;
-      } else if (item.type === "artifact") {
+      } else if (item.static.type === "artifact") {
         drop_chance = 0.187 * rarity;
-      } else if (item.type === "unique") {
+      } else if (item.static.type === "unique") {
         drop_chance = 0.125 * rarity;
       } else {
         drop_chance = 0.625 * rarity;
@@ -308,17 +308,17 @@ function DropsBrowser({
       let drop = false;
       let drop_chance = 0;
       const drop_roll = random(1, 100);
-      if (item.category === "resource") {
+      if (item.static.category === "resource") {
         drop_chance = 75;
-      } else if (item.type === "normal") {
+      } else if (item.static.type === "normal") {
         drop_chance = 5 * rarity;
-      } else if (item.type === "quality") {
+      } else if (item.static.type === "quality") {
         drop_chance = 2.36 * rarity;
-      } else if (item.type === "mystical") {
+      } else if (item.static.type === "mystical") {
         drop_chance = 1.12 * rarity;
-      } else if (item.type === "artifact") {
+      } else if (item.static.type === "artifact") {
         drop_chance = 0.53 * rarity;
-      } else if (item.type === "unique") {
+      } else if (item.static.type === "unique") {
         drop_chance = 0; // 0.25 * rarity; uniques cant be bought
       } else {
         drop_chance = 5 * rarity;
@@ -346,7 +346,8 @@ function DropsBrowser({
     if (session.state === "buy") {
       session.loot.general = equipmentList
         .filter(
-          (item) => IsGeneralGood(item) && item.cost > 0 && DidItDrop(item),
+          (item) =>
+            IsGeneralGood(item) && item.static.cost > 0 && DidItDrop(item),
         )
         .map(addItemId);
 
@@ -355,8 +356,8 @@ function DropsBrowser({
           (item) =>
             (IsArmor(item) ||
               IsWeapon(item) ||
-              item.category === "projectile") &&
-            item.cost > 0 &&
+              item.static.category === "projectile") &&
+            item.static.cost > 0 &&
             DidItDrop(item),
         )
         .map(addItemId);
@@ -364,18 +365,20 @@ function DropsBrowser({
       session.loot.alchemy = equipmentList
         .filter(
           (item) =>
-            (IsConsumable(item) || item.category === "ritual scroll") &&
-            item.cost > 0 &&
+            (IsConsumable(item) || item.static.category === "ritual scroll") &&
+            item.static.cost > 0 &&
             DidItDrop(item),
         )
         .map(addItemId);
 
       session.loot.novelty = equipmentList
-        .filter((item) => IsTreasure(item) && item.cost > 0 && DidItDrop(item))
+        .filter(
+          (item) => IsTreasure(item) && item.static.cost > 0 && DidItDrop(item),
+        )
         .map(addItemId);
     } else {
       const chest_item_list = equipmentList
-        .filter((item) => item.cost > 0 && DidItDropChest(item))
+        .filter((item) => item.static.cost > 0 && DidItDropChest(item))
         .map(addItemId);
       session.loot.drops = [...chest_item_list];
     }
@@ -398,7 +401,7 @@ function DropsBrowser({
       <DynamicContainer>
         <ScrollColumn ref={scrollRef} width="100%">
           {session.loot.drops.sort(sortShoppingList).map((entry, index) => {
-            if (entry.entry === "ItemEntry") {
+            if (entry.static.entry === "ItemEntry") {
               return (
                 <InventoryEntry
                   session={session}

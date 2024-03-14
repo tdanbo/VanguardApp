@@ -120,9 +120,9 @@ const UpdateQualities = (
   };
 
   character.inventory.forEach((item) => {
-    if (!item || !item.quality || !item.equip.equipped) return;
+    if (!item || !item.static.quality || !item.equipped) return;
 
-    item.quality.forEach((quality) => {
+    item.static.quality.forEach((quality) => {
       Object.entries(qualityModifiers).forEach(([key, modifiers]) => {
         if (quality.includes(key)) {
           Object.entries(modifiers).forEach(([action, value]) => {

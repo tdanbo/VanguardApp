@@ -74,12 +74,12 @@ function DurabilityComponent({
 }: DurabilityBoxProps) {
   let max_durability = 0;
   if (
-    item.category === "weapon accessory" ||
-    item.category === "armor accessory"
+    item.static.category === "weapon accessory" ||
+    item.static.category === "armor accessory"
   ) {
     max_durability = 4;
   } else {
-    max_durability = item.roll.dice + item.roll.mod;
+    max_durability = item.static.roll.dice + item.static.roll.mod;
   }
 
   const handleAddDurability = () => {

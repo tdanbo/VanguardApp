@@ -23,8 +23,8 @@ interface NavigationProps {
 
 function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
   return (
-    Constants.TYPE_FILTER.indexOf(a.type.toLowerCase()) -
-    Constants.TYPE_FILTER.indexOf(b.type.toLowerCase())
+    Constants.TYPE_FILTER.indexOf(a.static.type.toLowerCase()) -
+    Constants.TYPE_FILTER.indexOf(b.static.type.toLowerCase())
   );
 }
 

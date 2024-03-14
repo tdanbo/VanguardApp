@@ -289,7 +289,7 @@ function InventoryEntry({
   setAdvantage,
 }: InventoryEntryProps) {
   const [_light, setLight] = useState<boolean>(false);
-  const COLOR = Constants.TYPE_COLORS[item.category] || "defaultColor";
+  const COLOR = Constants.TYPE_COLORS[item.static.category] || "defaultColor";
   const generateRandomId = (length = 10) => {
     return Math.random()
       .toString(36)
@@ -297,23 +297,22 @@ function InventoryEntry({
   };
 
   const HandleEquip = (item: ItemEntry) => {
-    item.equip.equipped = true;
+    item.equipped = true;
     update_session(session, websocket, character, isCreature);
   };
 
   const HandleUnequip = () => {
-    item.equip.equipped = false;
+    item.equipped = false;
     update_session(session, websocket, character, isCreature);
   };
 
   const AddToLoot = () => {
     const drop_item = session.loot.drops.find(
-      (drop_item) =>
-        drop_item.name === item.name && item.quantity.bulk === true,
+      (drop_item) => drop_item.name === item.name && item.static.bulk === true,
     );
 
     if (drop_item) {
-      drop_item.quantity.count += 1;
+      drop_item.quantity += 1;
     } else {
       const new_item = cloneDeep(item);
       new_item.id = generateRandomId();
@@ -343,18 +342,18 @@ function InventoryEntry({
   const RemoveBulkItem = (item: ItemEntry) => {
     const decrementCount = (lootArray: ItemEntry[]) => {
       return lootArray.map((loot) => {
-        if (loot.id === item.id && loot.quantity.count > 0) {
+        if (loot.id === item.id && loot.quantity > 0) {
           return {
             ...loot,
-            quantity: { ...loot.quantity, count: loot.quantity.count - 1 },
+            quantity: loot.quantity - 1,
           };
         }
         return loot;
       });
     };
 
-    if (item.quantity.bulk === true && item.quantity.count > 1) {
-      item.quantity.count -= 1;
+    if (item.static.bulk === true && item.quantity > 1) {
+      item.quantity -= 1;
       session.loot.general = decrementCount(session.loot.general);
       session.loot.armory = decrementCount(session.loot.armory);
       session.loot.alchemy = decrementCount(session.loot.alchemy);
@@ -370,7 +369,7 @@ function InventoryEntry({
 
   const AddResource = (item: ItemEntry, buy: boolean, share: boolean) => {
     if (share) {
-      let bulk = item.quantity.count;
+      let bulk = item.quantity;
       let character_index = ShuffleArray(
         createArray(session.characters.length),
       );
@@ -378,7 +377,7 @@ function InventoryEntry({
         for (const index of character_index) {
           if (bulk <= 0) break; // Stop if no more items to distribute
           if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
-            session.characters[index].money += item.cost;
+            session.characters[index].money += item.static.cost;
             bulk -= 1;
           } else if (item.name === "Food") {
             session.characters[index].rations.food += 1;
@@ -396,7 +395,7 @@ function InventoryEntry({
       }
       RemoveBulkItem(item);
       if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
-        character.money += item.cost;
+        character.money += item.static.cost;
       } else if (item.name === "Food") {
         character.rations.food += 1;
       } else if (item.name === "Water") {
@@ -413,28 +412,28 @@ function InventoryEntry({
     const inventoryItem = character.inventory.find(
       (inventory_item) =>
         inventory_item.name === item.name &&
-        inventory_item.quantity.bulk === true,
+        inventory_item.static.bulk === true,
     );
 
     if (inventoryItem) {
       RemoveBulkItem(item);
-      inventoryItem.quantity.count += 1;
+      inventoryItem.quantity += 1;
     } else {
       RemoveBulkItem(item);
       const new_item = cloneDeep(item);
       new_item.id = generateRandomId();
-      new_item.quantity.count = 1;
+      new_item.quantity = 1;
       character.inventory.push(new_item);
     }
   };
 
   const CheckBuy = (item: ItemEntry, buy: boolean) => {
     if (buy) {
-      if (character.money < item.cost) {
+      if (character.money < item.static.cost) {
         console.log("You don't have enough money!");
         return false;
       }
-      character.money -= item.cost;
+      character.money -= item.static.cost;
       return true;
     }
     return true;
@@ -447,7 +446,7 @@ function InventoryEntry({
     RemoveLootItem(item);
     const new_item = cloneDeep(item);
     new_item.id = generateRandomId();
-    new_item.quantity.count = 1;
+    new_item.quantity = 1;
     character.inventory.push(new_item);
   };
 
@@ -456,7 +455,7 @@ function InventoryEntry({
     const inventory = character.inventory;
     if (
       inventory.length === GetMaxSlots(character) * 2 ||
-      (buy && character.money < item.cost)
+      (buy && character.money < item.static.cost)
     ) {
       console.log(
         "You can't carry any more items! Or you don't have enough money!",
@@ -464,9 +463,9 @@ function InventoryEntry({
       return;
     }
 
-    if (item.category === "resource") {
+    if (item.static.category === "resource") {
       AddResource(item, buy, share);
-    } else if (item.quantity.bulk === true) {
+    } else if (item.static.bulk === true) {
       AddBulkItem(item, buy);
     } else {
       AddRegularItem(item, buy);
@@ -484,7 +483,7 @@ function InventoryEntry({
   };
 
   const equipHandler = (item: ItemEntry) => {
-    if (item.equip.equipped) {
+    if (item.equipped) {
       HandleUnequip();
     } else {
       HandleEquip(item);
@@ -492,12 +491,12 @@ function InventoryEntry({
   };
 
   const handlePlusClick = () => {
-    item.quantity.count += 1;
+    item.quantity += 1;
     update_session(session, websocket, character, isCreature);
   };
 
   const handleMinusClick = () => {
-    item.quantity.count -= 1;
+    item.quantity -= 1;
     update_session(session, websocket, character, isCreature);
   };
 
@@ -529,29 +528,29 @@ function InventoryEntry({
   const dice = RulesDiceAdjust(character, item, advantage);
 
   const HandleLightSetting = () => {
-    item.quality.includes("Light")
-      ? item.quality.pop() && setLight(false)
-      : item.quality.push("Light") && setLight(true);
+    item.static.quality.includes("Light")
+      ? item.static.quality.pop() && setLight(false)
+      : item.static.quality.push("Light") && setLight(true);
   };
 
   return (
     <MasterContainer>
       <Container className="button-hover">
         <EquipContainer>
-          {[1, 2, 3].includes(item.equip.slot) ? (
+          {[1, 2, 3].includes(item.static.slot) ? (
             <EquipButton
               color={COLOR}
               key={"2H"}
               onClick={() => {
                 browser && isGm ? AddToLoot() : equipHandler(item);
               }}
-              $isequipped={item.equip.equipped}
+              $isequipped={item.equipped}
             >
               {browser && isGm ? (
                 <FontAwesomeIcon icon={faCoins} style={{ fontSize: "12px" }} />
-              ) : item.equip.slot === 1 ? (
+              ) : item.static.slot === 1 ? (
                 "I"
-              ) : item.equip.slot === 2 ? (
+              ) : item.static.slot === 2 ? (
                 "II"
               ) : (
                 ""
@@ -577,7 +576,7 @@ function InventoryEntry({
           <NameBox color={COLOR}>
             {item.name}{" "}
             <CorruptionContainer>
-              {item.type === "unique" &&
+              {item.static.type === "unique" &&
               !CheckAbility(character, "Artifact Crafting", "novice") ? (
                 <FontAwesomeIcon icon={faSkull} style={{ fontSize: "14px" }} />
               ) : null}
@@ -586,16 +585,18 @@ function InventoryEntry({
           <Row>
             <TypeBox>
               {browser && isGm ? (
-                <CostBox>{ConvertCurrency(item.cost)}</CostBox>
+                <CostBox>{ConvertCurrency(item.static.cost)}</CostBox>
               ) : null}
-              {item.type !== "normal" ? toTitleCase(item.type) : null}{" "}
-              {toTitleCase(item.category)}
-              {item.quality.length > 0 && ","}
-              {item.quality.map((quality, index) => {
+              {item.static.type !== "normal"
+                ? toTitleCase(item.static.type)
+                : null}{" "}
+              {toTitleCase(item.static.category)}
+              {item.static.quality.length > 0 && ","}
+              {item.static.quality.map((quality, index) => {
                 let description = "";
 
                 if (quality === "Effect") {
-                  description = item.description;
+                  description = item.static.description;
                 } else if (Qualities[quality]) {
                   description = Qualities[quality].description;
                 } else {
@@ -604,7 +605,7 @@ function InventoryEntry({
                 }
 
                 const titleContent = `${quality}\n\n${description}`;
-                const isLastItem = index === item.quality.length - 1; // Check if it's the last item
+                const isLastItem = index === item.static.quality.length - 1; // Check if it's the last item
 
                 return (
                   <QualityBox key={index} title={titleContent}>
@@ -621,7 +622,7 @@ function InventoryEntry({
         )} */}
 
         <RollContainer>
-          {item.roll.roll === true && (
+          {item.static.roll.roll === true && (
             <RollBox color={COLOR}>
               <RollComponent
                 session={session}
@@ -630,7 +631,7 @@ function InventoryEntry({
                 roll_type={
                   IsWeapon(item)
                     ? "damage"
-                    : item.category === "shield"
+                    : item.static.category === "shield"
                     ? "damage"
                     : IsArmor(item)
                     ? "armor"
@@ -639,10 +640,10 @@ function InventoryEntry({
                 roll_source={item.name}
                 isCreature={isCreature}
                 dice={dice}
-                dice_mod={item.roll.mod}
+                dice_mod={item.static.roll.mod}
                 color={COLOR}
                 item={item}
-                inactive={item.equip.equipped}
+                inactive={item.equipped}
                 advantage={advantage}
                 activeState={""}
                 setActiveState={setActiveState}
@@ -651,8 +652,8 @@ function InventoryEntry({
             </RollBox>
           )}
 
-          {[1, 2, 3].includes(item.equip.slot) &&
-          item.category !== "projectile" ? (
+          {[1, 2, 3].includes(item.static.slot) &&
+          item.static.category !== "projectile" ? (
             <RollBox color={COLOR}>
               <DurabilityComponent
                 item={item}
@@ -660,11 +661,11 @@ function InventoryEntry({
                 character={character}
                 websocket={websocket}
                 isCreature={isCreature}
-                inactive={item.equip.equipped}
+                inactive={item.equipped}
               />
             </RollBox>
           ) : null}
-          {item.quantity.bulk === true && (
+          {item.static.bulk === true && (
             <QuantityBox
               color={COLOR}
               onClick={handleMinusClick}
@@ -674,7 +675,7 @@ function InventoryEntry({
               }}
               className="mouse-icon-hover"
             >
-              {item.quantity.count}x
+              {item.quantity}x
             </QuantityBox>
           )}
         </RollContainer>
@@ -693,7 +694,7 @@ function InventoryEntry({
                   title={canBuy ? "Buy One" : "Add One"}
                 />
               </AddButton>
-              {item.category === "resource" ? (
+              {item.static.category === "resource" ? (
                 <AddButton
                   className={"button-hover"}
                   title={"Distribute to group"}
@@ -704,7 +705,8 @@ function InventoryEntry({
                     style={{ fontSize: "12px" }}
                   />
                 </AddButton>
-              ) : Array.isArray(item.effect) && item.effect.length > 0 ? (
+              ) : Array.isArray(item.static.effect) &&
+                item.static.effect.length > 0 ? (
                 expanded ? (
                   <AddButton className={"button-hover"}>
                     <FontAwesomeIcon
@@ -726,10 +728,10 @@ function InventoryEntry({
               ) : (
                 <AddButton />
               )}
-              {item.category === "general good" &&
+              {item.static.category === "general good" &&
               browser &&
               isGm &&
-              !item.quality.includes("Light") ? (
+              !item.static.quality.includes("Light") ? (
                 <AddButton
                   className={"button-hover"}
                   onClick={() => HandleLightSetting()}
@@ -751,7 +753,8 @@ function InventoryEntry({
               >
                 <FontAwesomeIcon icon={faXmark} style={{ fontSize: "12px" }} />
               </DeleteButton>
-              {Array.isArray(item.effect) && item.effect.length > 0 ? (
+              {Array.isArray(item.static.effect) &&
+              item.static.effect.length > 0 ? (
                 expanded ? (
                   <AddButton className={"button-hover"}>
                     <FontAwesomeIcon
@@ -777,9 +780,9 @@ function InventoryEntry({
           ) : null}
         </Column>
       </Container>
-      {Array.isArray(item.effect) && item.effect.length > 0 && (
+      {Array.isArray(item.static.effect) && item.static.effect.length > 0 && (
         <EffectContainer $expanded={expanded}>
-          {item.effect.map((effect, effectIndex) => (
+          {item.static.effect.map((effect, effectIndex) => (
             <React.Fragment key={effectIndex}>
               {effectIndex > 0 && <RowDivider />}
               <StyledText
