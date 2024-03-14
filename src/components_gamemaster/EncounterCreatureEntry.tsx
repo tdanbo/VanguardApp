@@ -237,7 +237,7 @@ const ActiveDamageSub = styled.div`
 function GetWeapons(creature: CharacterEntry) {
   let weapons: ItemEntry[] = [];
   creature.inventory.forEach((item) => {
-    if (IsWeapon(item) && item.equip.equipped) {
+    if (IsWeapon(item) && item.equipped) {
       weapons.push(item);
     }
   });
@@ -247,7 +247,7 @@ function GetWeapons(creature: CharacterEntry) {
 function GetArmor(creature: CharacterEntry) {
   let armor: ItemEntry[] = [];
   creature.inventory.forEach((item) => {
-    if (IsArmor(item) && item.equip.equipped) {
+    if (IsArmor(item) && item.equipped) {
       armor.push(item);
     }
   });
@@ -436,7 +436,7 @@ function EncounterCreatureEntry({
 
   for (const item of creatureClone.inventory) {
     const dice = RulesDiceAdjust(creatureClone, item, advantage);
-    item.roll.dice = dice;
+    item.static.roll.dice = dice;
   }
 
   const AddItemLoot = () => {
@@ -446,7 +446,7 @@ function EncounterCreatureEntry({
         continue;
       }
       const new_loot_item = cloneDeep(item);
-      new_loot_item.equip.equipped = false;
+      new_loot_item.equipped = false;
       new_loot_item.id = uuidv4();
       session.loot.drops.push(new_loot_item);
     }
@@ -454,13 +454,13 @@ function EncounterCreatureEntry({
     if (creature.rations.food > 0) {
       const DropsFood = session.loot.drops.find((item) => item.name === "Food");
       if (DropsFood) {
-        DropsFood.quantity.count += creature.rations.food;
+        DropsFood.quantity += creature.rations.food;
       } else {
         const food = cloneDeep(RESOURCE);
         food.name = "Food";
-        food.quantity.count = creature.rations.food;
+        food.quantity = creature.rations.food;
         food.id = uuidv4();
-        food.cost = 10;
+        food.static.cost = 10;
         session.loot.drops.push(food);
       }
     }
@@ -470,13 +470,13 @@ function EncounterCreatureEntry({
         (item) => item.name === "Water",
       );
       if (DropsWater) {
-        DropsWater.quantity.count += creature.rations.water;
+        DropsWater.quantity += creature.rations.water;
       } else {
         const water = cloneDeep(RESOURCE);
         water.name = "Water";
-        water.quantity.count = creature.rations.water;
+        water.quantity = creature.rations.water;
         water.id = uuidv4();
-        water.cost = 10;
+        water.static.cost = 10;
         session.loot.drops.push(water);
       }
     }
@@ -491,12 +491,12 @@ function EncounterCreatureEntry({
         (item) => item.name === "Thaler",
       );
       if (DropsThaler) {
-        DropsThaler.quantity.count += thaler;
+        DropsThaler.quantity += thaler;
       } else {
         const thaler_item = cloneDeep(RESOURCE);
         thaler_item.name = "Thaler";
-        thaler_item.quantity.count = random(1, thaler);
-        thaler_item.cost = 100;
+        thaler_item.quantity = random(1, thaler);
+        thaler_item.static.cost = 100;
         thaler_item.id = uuidv4();
         session.loot.drops.push(thaler_item);
       }
@@ -507,12 +507,12 @@ function EncounterCreatureEntry({
         (item) => item.name === "Shilling",
       );
       if (DropsShilling) {
-        DropsShilling.quantity.count += shillings;
+        DropsShilling.quantity += shillings;
       } else {
         const shillings_item = cloneDeep(RESOURCE);
         shillings_item.name = "Shilling";
-        shillings_item.quantity.count = random(1, shillings);
-        shillings_item.cost = 10;
+        shillings_item.quantity = random(1, shillings);
+        shillings_item.static.cost = 10;
         shillings_item.id = uuidv4();
         session.loot.drops.push(shillings_item);
       }
@@ -523,12 +523,12 @@ function EncounterCreatureEntry({
         (item) => item.name === "Orteg",
       );
       if (DropsOrtheg) {
-        DropsOrtheg.quantity.count += orthegs;
+        DropsOrtheg.quantity += orthegs;
       } else {
         const ortheg_item = cloneDeep(RESOURCE);
         ortheg_item.name = "Ortheg";
-        ortheg_item.quantity.count = random(1, orthegs);
-        ortheg_item.cost = 1;
+        ortheg_item.quantity = random(1, orthegs);
+        ortheg_item.static.cost = 1;
         ortheg_item.id = uuidv4();
         session.loot.drops.push(ortheg_item);
       }
@@ -539,8 +539,8 @@ function EncounterCreatureEntry({
 
   const sortList = (a: AbilityEntry, b: AbilityEntry) => {
     const categoryComparison =
-      Constants.TYPE_FILTER.indexOf(a.type) -
-      Constants.TYPE_FILTER.indexOf(b.type);
+      Constants.TYPE_FILTER.indexOf(a.static.type) -
+      Constants.TYPE_FILTER.indexOf(b.static.type);
 
     if (categoryComparison !== 0) {
       return categoryComparison;
@@ -584,7 +584,7 @@ function EncounterCreatureEntry({
             </ActiveStat>
             <ActiveArmorSub>
               <FontAwesomeIcon icon={faShield} />
-              {Math.ceil(armor.roll.dice / 2) + armor.roll.mod}
+              {Math.ceil(armor.static.roll.dice / 2) + armor.static.roll.mod}
             </ActiveArmorSub>
           </ActiveBox>
         ))}
@@ -608,16 +608,16 @@ function EncounterCreatureEntry({
               <ActiveDamageSub>
                 <>
                   {GetAttacks(creature) > 1 &&
-                  weapon.category !== "ranged weapon" ? (
+                  weapon.static.category !== "ranged weapon" ? (
                     <>
                       <AttacksStat>2 x</AttacksStat>
                       <Icon
                         path={
-                          weapon.category === "ranged weapon"
+                          weapon.static.category === "ranged weapon"
                             ? mdiBowArrow
-                            : weapon.category === "long weapon"
+                            : weapon.static.category === "long weapon"
                             ? mdiSpear
-                            : weapon.category === "short weapon"
+                            : weapon.static.category === "short weapon"
                             ? mdiKnife
                             : mdiSword
                         }
@@ -625,19 +625,21 @@ function EncounterCreatureEntry({
                         title={weapon.name}
                         color={Constants.BRIGHT_RED}
                       />
-                      {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
+                      {Math.ceil(weapon.static.roll.dice / 2) +
+                        weapon.static.roll.mod}
                       {" / " +
-                        (Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod)}
+                        (Math.ceil(weapon.static.roll.dice / 2) +
+                          weapon.static.roll.mod)}
                     </>
                   ) : (
                     <>
                       <Icon
                         path={
-                          weapon.category === "ranged weapon"
+                          weapon.static.category === "ranged weapon"
                             ? mdiBowArrow
-                            : weapon.category === "long weapon"
+                            : weapon.static.category === "long weapon"
                             ? mdiSpear
-                            : weapon.category === "short weapon"
+                            : weapon.static.category === "short weapon"
                             ? mdiKnife
                             : mdiSword
                         }
@@ -645,7 +647,8 @@ function EncounterCreatureEntry({
                         title={weapon.name}
                         color={Constants.BRIGHT_RED}
                       />
-                      {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
+                      {Math.ceil(weapon.static.roll.dice / 2) +
+                        weapon.static.roll.mod}
                     </>
                   )}
                 </>
@@ -672,8 +675,8 @@ function EncounterCreatureEntry({
             !Constants.INTEGRATED_ABILITIES.includes(
               ability.name.toLowerCase(),
             ) &&
-            ability.type.toLowerCase() !== "utility" &&
-            ability.type.toLowerCase() !== "ritual";
+            ability.static.type.toLowerCase() !== "utility" &&
+            ability.static.type.toLowerCase() !== "ritual";
 
           return isNotIntegratedOrUtility ? (
             <AbilityEntryItem

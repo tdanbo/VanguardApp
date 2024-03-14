@@ -2,7 +2,7 @@ import { CharacterEntry, ItemEntry } from "../../Types";
 import { IsArmor } from "../UtilityFunctions";
 function HasItem(character: CharacterEntry, item: string) {
   for (const i of character.inventory) {
-    if (i.name === item && i.equip.equipped) {
+    if (i.name === item && i.equipped) {
       return true;
     }
   }

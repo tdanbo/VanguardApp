@@ -1,27 +1,27 @@
 export const Qualities: {
   [key: string]: { name: string; description: string };
 } = {
-  "Impeding 0": {
+  "Imp 0": {
     name: "Impeding 0",
     description:
       "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
   },
-  "Impeding 1": {
+  "Imp 1": {
     name: "Impeding 1",
     description:
       "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
   },
-  "Impeding 2": {
+  "Imp 2": {
     name: "Impeding 2",
     description:
       "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
   },
-  "Impeding 3": {
+  "Imp 3": {
     name: "Impeding 3",
     description:
       "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
   },
-  "Impeding 4": {
+  "Imp 4": {
     name: "Impeding 4",
     description:
       "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
@@ -56,12 +56,12 @@ export const Qualities: {
     description:
       "It is difficult to move around in this armor, and its impeding effect is therefore one point higher than usual. A Cumbersome light armor has a penalty of (-3), a medium of (-4), and a heavy of (-5).",
   },
-  "Deep Impact": {
+  Impact: {
     name: "Deep Impact",
     description:
       "The weapon has qualities that make it even more deadly. Maybe its blade can pierce armor more easily or the weapon itself is so massive that it gets extra crushing power. Either way, the weapon deals +1 extra damage.",
   },
-  Impeding: {
+  Imp: {
     name: "Impeding",
     description:
       "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking, and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3), or heavy (-4).",
@@ -159,7 +159,7 @@ export const Qualities: {
     description:
       "The weapon causes wounds, open or internal, that bleed at a rate of 1 Toughness per turn. The bleeding starts on the turn after a damaging hit and the effect is cumulative: additional damaging hits increase the blood-letting effect by +1. First aid or other kinds of healing will stop the bleeding.",
   },
-  "Bastard Weapon": {
+  Bastard: {
     name: "Bastard Weapon",
     description:
       "The weapon can be wielded as One-hand or Two-hand, even if it only comes into its own when both hands are resting on the grip. The bastard weapon loses one or all of its qualities when used as One-hand, but can instead be combined with a shield, which may be preferable at times. Another upside is that it can be used while on horseback, wielded in one hand until the rider dismounts and can grip it in two.",
@@ -174,13 +174,13 @@ export const Qualities: {
     description:
       "As a free action, the master can recall the weapon, which will return it to its wielder's hand.",
   },
-  "Area Effect (cone)": {
-    name: "Area Effect (cone)",
+  "Area Cone": {
+    name: "Area Cone",
     description:
       "The effect of the weapon affects an area and damages all who happen to be inside it. One test is made for each creature in the area; those who are hit suffer full damage while those who pass the Defense test suffer half damage. Ongoing secondary effects only affect those who suffer full damage from the initial effect. There are two types of Area Effects, radius and cone, and the former exist in two versions: Melee Range and Short.Melee Range Radius: 1–2 meters, meaning one creature and all others in its direct vicinity – those who are in melee combat with the target or who could be without having to spend a movement action.Short Radius: 10 meters, meaning all who are within a movement action from the targeted spot on the ground.Cone: Anyone present in front of the weapon is at risk of being hit when the weapon is fired. If movement by scale is used on a grid, the cone is as wide as the distance from the weapon. At melee range it is 1–2 meters wide, at short range it is approximately 10 meters wide, and at the maximum medium range it is about 20 meters wide.",
   },
-  "Area Effect (radius)": {
-    name: "Area Effect (cone)",
+  "Area Radius": {
+    name: "Area Radius",
     description:
       "The effect of the weapon affects an area and damages all who happen to be inside it. One test is made for each creature in the area; those who are hit suffer full damage while those who pass the Defense test suffer half damage. Ongoing secondary effects only affect those who suffer full damage from the initial effect. There are two types of Area Effects, radius and cone, and the former exist in two versions: Melee Range and Short.Melee Range Radius: 1–2 meters, meaning one creature and all others in its direct vicinity – those who are in melee combat with the target or who could be without having to spend a movement action.Short Radius: 10 meters, meaning all who are within a movement action from the targeted spot on the ground.Cone: Anyone present in front of the weapon is at risk of being hit when the weapon is fired. If movement by scale is used on a grid, the cone is as wide as the distance from the weapon. At melee range it is 1–2 meters wide, at short range it is approximately 10 meters wide, and at the maximum medium range it is about 20 meters wide.",
   },

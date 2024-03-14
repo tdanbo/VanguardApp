@@ -82,7 +82,7 @@ const RollContainer = styled.div<RollContainerProps>`
 function PickRandomWeapon(character: CharacterEntry) {
   const weapon_list = character.inventory.filter(
     (item) =>
-      (IsWeapon(item) || item.category === "shield") && item.equip.equipped,
+      (IsWeapon(item) || item.static.category === "shield") && item.equipped,
   );
 
   if (weapon_list.length === 0) {
@@ -95,7 +95,7 @@ function PickRandomWeapon(character: CharacterEntry) {
 
 function PickRandomArmor(character: CharacterEntry) {
   const armor_list = character.inventory.filter(
-    (armor) => IsArmor(armor) && armor.equip.equipped,
+    (armor) => IsArmor(armor) && armor.equipped,
   );
 
   if (armor_list.length === 0) {
@@ -108,12 +108,8 @@ function PickRandomArmor(character: CharacterEntry) {
 
 function HasAmmunition(character: CharacterEntry) {
   for (const i of character.inventory) {
-    if (
-      i.category === "projectile" &&
-      i.equip.equipped &&
-      i.quantity.count > 0
-    ) {
-      i.quantity.count -= 1;
+    if (i.static.category === "projectile" && i.equipped && i.quantity > 0) {
+      i.quantity -= 1;
       return true;
     }
   }
@@ -122,7 +118,7 @@ function HasAmmunition(character: CharacterEntry) {
 
 function HasRangedWeapon(character: CharacterEntry) {
   for (const i of character.inventory) {
-    if (i.category === "ranged weapon" && i.equip.equipped) {
+    if (i.static.category === "ranged weapon" && i.equipped) {
       return true;
     }
   }

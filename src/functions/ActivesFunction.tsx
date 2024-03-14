@@ -22,9 +22,6 @@ export const GetActives = (character: CharacterEntry) => {
   if (CheckAbility(character, "Iron Fist", "novice")) {
     character_actives.attack.stat = "strong";
     character_actives.attack.value = character.stats.strong.value;
-  } else if (CheckAbility(character, "Staff Projectile", "novice")) {
-    character_actives.attack.stat = "resolute";
-    character_actives.attack.value = character.stats.resolute.value;
   } else if (CheckAbility(character, "Tactician", "master")) {
     character_actives.attack.stat = "cunning";
     character_actives.attack.value = character.stats.cunning.value;
@@ -112,10 +109,10 @@ const UpdateQualities = (
 ) => {
   console.log("Updating Qualities");
   const qualityModifiers = {
-    "Impeding 1": { sneaking: -1, defense: -1, casting: -1 },
-    "Impeding 2": { sneaking: -2, defense: -2, casting: -2 },
-    "Impeding 3": { sneaking: -3, defense: -3, casting: -3 },
-    "Impeding 4": { sneaking: -4, defense: -4, casting: -4 },
+    "Imp 1": { sneaking: -1, defense: -1, casting: -1 },
+    "Imp 2": { sneaking: -2, defense: -2, casting: -2 },
+    "Imp 3": { sneaking: -3, defense: -3, casting: -3 },
+    "Imp 4": { sneaking: -4, defense: -4, casting: -4 },
     "Balanced 1": { defense: 1 },
     "Balanced 2": { defense: 2 },
     "Balanced 3": { defense: 3 },
@@ -123,9 +120,9 @@ const UpdateQualities = (
   };
 
   character.inventory.forEach((item) => {
-    if (!item || !item.quality || !item.equip.equipped) return;
+    if (!item || !item.static.quality || !item.equipped) return;
 
-    item.quality.forEach((quality) => {
+    item.static.quality.forEach((quality) => {
       Object.entries(qualityModifiers).forEach(([key, modifiers]) => {
         if (quality.includes(key)) {
           Object.entries(modifiers).forEach(([action, value]) => {

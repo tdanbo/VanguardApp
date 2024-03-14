@@ -59,7 +59,7 @@ export function IsArmor(item: ItemEntry): boolean {
     "heavy armor",
     "armor accessory",
   ];
-  if (armor_categories.includes(item.category)) {
+  if (armor_categories.includes(item.static.category)) {
     return true;
   }
   return false;
@@ -118,7 +118,7 @@ export function IsGeneralGood(item: ItemEntry): boolean {
     "tool",
     "container",
   ];
-  if (general_categories.includes(item.category)) {
+  if (general_categories.includes(item.static.category)) {
     return true;
   }
   return false;
@@ -126,7 +126,7 @@ export function IsGeneralGood(item: ItemEntry): boolean {
 
 export function IsConsumable(item: ItemEntry): boolean {
   const general_categories = ["elixir", "poison"];
-  if (general_categories.includes(item.category)) {
+  if (general_categories.includes(item.static.category)) {
     return true;
   }
   return false;
@@ -144,7 +144,7 @@ export function IsWeapon(item: ItemEntry): boolean {
     "weapon accessory",
     "alchemical weapon",
   ];
-  if (weapon_categories.includes(item.category)) {
+  if (weapon_categories.includes(item.static.category)) {
     return true;
   }
   return false;
@@ -152,7 +152,7 @@ export function IsWeapon(item: ItemEntry): boolean {
 
 export function IsTreasure(item: ItemEntry): boolean {
   const weapon_categories = ["treasure", "weapon accessory", "armor accessory"];
-  if (weapon_categories.includes(item.category)) {
+  if (weapon_categories.includes(item.static.category)) {
     return true;
   }
   return false;
@@ -166,7 +166,7 @@ export function IsMeleeWeapon(item: ItemEntry): boolean {
     "long weapon",
     "heavy weapon",
   ];
-  if (weapon_categories.includes(item.category)) {
+  if (weapon_categories.includes(item.static.category)) {
     return true;
   }
   return false;
@@ -180,7 +180,7 @@ export function IsRangedWeapon(item: ItemEntry): boolean {
     "long weapon",
     "heavy weapon",
   ];
-  if (weapon_categories.includes(item.category)) {
+  if (weapon_categories.includes(item.static.category)) {
     return true;
   }
   return false;
@@ -309,3 +309,22 @@ export const StyledText: React.FC<StyledTextProps> = ({
 
   return <div>{words}</div>;
 };
+
+export function UpdateStaticItem(item: ItemEntry, equipment: ItemEntry[]) {
+  // Update the static item
+  const static_item = equipment.find((entry) => entry.name === item.name);
+  if (static_item) {
+    item.static = static_item.static;
+  }
+}
+
+export function UpdateStaticAbility(
+  ability: AbilityEntry,
+  abilities: AbilityEntry[],
+) {
+  // Update the static item
+  const static_ability = abilities.find((entry) => entry.name === ability.name);
+  if (static_ability) {
+    ability.static = static_ability.static;
+  }
+}

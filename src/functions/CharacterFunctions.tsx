@@ -27,7 +27,7 @@ export const getCreatureMovement = (creature: modifiedCreature) => {
   }
 
   let sneaking_mod = 0;
-  for (const armor of creature.armor.quality) {
+  for (const armor of creature.armor.static.quality) {
     if (armor === "Impeding 1") {
       sneaking_mod += -1;
     } else if (armor === "Impeding 2") {
@@ -49,7 +49,7 @@ export const getCharacterXp = (character: CharacterEntry) => {
   let xp_spent = 0;
 
   character.abilities.forEach((ability) => {
-    if (["burden", "ritual", "utility"].includes(ability.type)) {
+    if (["burden", "ritual", "utility"].includes(ability.static.type)) {
       return;
     }
 
@@ -67,7 +67,7 @@ export const getCharacterXp = (character: CharacterEntry) => {
 export const getUtilityXp = (character: CharacterEntry) => {
   let xp_spent = 0;
   character.abilities.forEach((ability) => {
-    if (ability.type !== "utility") {
+    if (ability.static.type !== "utility") {
       return;
     }
     xp_spent += 10;

@@ -260,11 +260,11 @@ interface AbilityEntryItemProps {
 
 function GetCurrentLevel(ability: AbilityEntry) {
   if (ability.level === "Master") {
-    return ability.master;
+    return ability.static.master;
   } else if (ability.level === "Adept") {
-    return ability.adept;
+    return ability.static.adept;
   } else {
-    return ability.novice;
+    return ability.static.novice;
   }
 }
 
@@ -320,11 +320,11 @@ function AbilityEntryItem({
 
   useEffect(() => {
     if (browser) {
-      if (ability.master.description !== "") {
+      if (ability.static.master.description !== "") {
         setAbilityLevel("Master");
-      } else if (ability.adept.description !== "") {
+      } else if (ability.static.adept.description !== "") {
         setAbilityLevel("Adept");
-      } else if (ability.novice.description !== "") {
+      } else if (ability.static.novice.description !== "") {
         setAbilityLevel("Novice");
       } else {
         setAbilityLevel("Novice");
@@ -436,7 +436,7 @@ function AbilityEntryItem({
     return (
       <LevelSelection
         className={"button-hover"}
-        type={ability.type}
+        type={ability.static.type}
         $active={isActive(abilityLevel as Level)}
         onClick={handleLevelChange}
       >
@@ -466,21 +466,21 @@ function AbilityEntryItem({
         <NameContainer
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >
-          <AbilityName type={ability.type} $active={true}>
+          <AbilityName type={ability.static.type} $active={true}>
             {ability.name}
             <CorruptionContainer>
-              {(ability.type === "mystical power" ||
-                ability.type === "ritual") && (
+              {(ability.static.type === "mystical power" ||
+                ability.static.type === "ritual") && (
                 <>
                   {(ability.level === "Novice" ||
                     ability.level === "Adept" ||
                     ability.level === "Master") &&
                     !(
-                      ability.tradition.includes("Theurgy") &&
+                      ability.static.tradition.includes("Theurgy") &&
                       has_theurgy_novice
                     ) &&
                     !(
-                      ability.tradition.includes("Wizardry") &&
+                      ability.static.tradition.includes("Wizardry") &&
                       has_wizardry_novice
                     ) && (
                       <FontAwesomeIcon
@@ -490,10 +490,11 @@ function AbilityEntryItem({
                     )}
                   {(ability.level === "Adept" || ability.level === "Master") &&
                     !(
-                      ability.tradition.includes("Theurgy") && has_theurgy_adept
+                      ability.static.tradition.includes("Theurgy") &&
+                      has_theurgy_adept
                     ) &&
                     !(
-                      ability.tradition.includes("Wizardry") &&
+                      ability.static.tradition.includes("Wizardry") &&
                       has_wizardry_adept
                     ) && (
                       <FontAwesomeIcon
@@ -503,11 +504,11 @@ function AbilityEntryItem({
                     )}
                   {ability.level === "Master" &&
                     !(
-                      ability.tradition.includes("Theurgy") &&
+                      ability.static.tradition.includes("Theurgy") &&
                       has_theurgy_master
                     ) &&
                     !(
-                      ability.tradition.includes("Wizardry") &&
+                      ability.static.tradition.includes("Wizardry") &&
                       has_wizardry_master
                     ) && (
                       <FontAwesomeIcon
@@ -520,9 +521,11 @@ function AbilityEntryItem({
             </CorruptionContainer>
           </AbilityName>
           <AbilityDetail>
-            {ability.tradition === ""
-              ? toTitleCase(ability.type)
-              : `${toTitleCase(ability.type)}, ${ability.tradition}`}
+            {ability.static.tradition === ""
+              ? toTitleCase(ability.static.type)
+              : `${toTitleCase(ability.static.type)}, ${
+                  ability.static.tradition
+                }`}
           </AbilityDetail>
         </NameContainer>
 
@@ -532,7 +535,7 @@ function AbilityEntryItem({
               session={session}
               character={character}
               websocket={websocket}
-              roll_type={ability.type as RollTypeEntry}
+              roll_type={ability.static.type as RollTypeEntry}
               roll_source={ability.name}
               isCreature={isCreature}
               dice={i.dice}
@@ -547,8 +550,8 @@ function AbilityEntryItem({
           ))}
         </RollBox>
         <LevelSelectionContainer>
-          {ability.adept.description !== "" &&
-          ability.master.description !== "" ? (
+          {ability.static.adept.description !== "" &&
+          ability.static.master.description !== "" ? (
             <LevelSelector ability={ability} />
           ) : null}
         </LevelSelectionContainer>
@@ -592,39 +595,45 @@ function AbilityEntryItem({
         )}
       </Container>
       <LevelContainer $expanded={expanded}>
-        {ability.novice.description !== "" && abilityLevel === "Novice" && (
-          <>
-            <LevelComponent
-              effect={ability.novice.description}
-              radius={Constants.BORDER_RADIUS}
-            />
-          </>
-        )}
-        {ability.adept.description !== "" && abilityLevel === "Adept" && (
-          <>
-            <LevelComponent
-              effect={ability.novice.description}
-              radius={"0px"}
-            />
-            <LevelComponent
-              effect={ability.adept.description}
-              radius={Constants.BORDER_RADIUS}
-            />
-          </>
-        )}
-        {ability.master.description !== "" && abilityLevel === "Master" && (
-          <>
-            <LevelComponent
-              effect={ability.novice.description}
-              radius={"0px"}
-            />
-            <LevelComponent effect={ability.adept.description} radius={"0px"} />
-            <LevelComponent
-              effect={ability.master.description}
-              radius={Constants.BORDER_RADIUS}
-            />
-          </>
-        )}
+        {ability.static.novice.description !== "" &&
+          abilityLevel === "Novice" && (
+            <>
+              <LevelComponent
+                effect={ability.static.novice.description}
+                radius={Constants.BORDER_RADIUS}
+              />
+            </>
+          )}
+        {ability.static.adept.description !== "" &&
+          abilityLevel === "Adept" && (
+            <>
+              <LevelComponent
+                effect={ability.static.novice.description}
+                radius={"0px"}
+              />
+              <LevelComponent
+                effect={ability.static.adept.description}
+                radius={Constants.BORDER_RADIUS}
+              />
+            </>
+          )}
+        {ability.static.master.description !== "" &&
+          abilityLevel === "Master" && (
+            <>
+              <LevelComponent
+                effect={ability.static.novice.description}
+                radius={"0px"}
+              />
+              <LevelComponent
+                effect={ability.static.adept.description}
+                radius={"0px"}
+              />
+              <LevelComponent
+                effect={ability.static.master.description}
+                radius={Constants.BORDER_RADIUS}
+              />
+            </>
+          )}
       </LevelContainer>
     </BaseContainer>
   );

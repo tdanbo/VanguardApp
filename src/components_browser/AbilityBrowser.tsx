@@ -107,8 +107,8 @@ function AbilityBrowser({
 
   const sortList = (a: AbilityEntry, b: AbilityEntry) => {
     const categoryComparison =
-      Constants.TYPE_FILTER.indexOf(a.type) -
-      Constants.TYPE_FILTER.indexOf(b.type);
+      Constants.TYPE_FILTER.indexOf(a.static.type) -
+      Constants.TYPE_FILTER.indexOf(b.static.type);
 
     if (categoryComparison !== 0) {
       return categoryComparison;
@@ -130,29 +130,33 @@ function AbilityBrowser({
     switch (LootCategory) {
       case "abilities":
         filtered_abilities = abilities.filter(
-          (item) => item.type === "ability",
+          (item) => item.static.type === "ability",
         );
         break;
       case "mystical powers":
         filtered_abilities = abilities.filter(
-          (item) => item.type === "mystical power",
+          (item) => item.static.type === "mystical power",
         );
         break;
       case "rituals":
-        filtered_abilities = abilities.filter((item) => item.type === "ritual");
+        filtered_abilities = abilities.filter(
+          (item) => item.static.type === "ritual",
+        );
         break;
       case "utility":
         filtered_abilities = abilities.filter(
-          (item) => item.type === "utility",
+          (item) => item.static.type === "utility",
         );
         break;
       case "monstrous traits":
         filtered_abilities = abilities.filter(
-          (item) => item.type === "monsterous trait",
+          (item) => item.static.type === "monsterous trait",
         );
         break;
       case "burden":
-        filtered_abilities = abilities.filter((item) => item.type === "burden");
+        filtered_abilities = abilities.filter(
+          (item) => item.static.type === "burden",
+        );
         break;
       default:
         // Keep the original list if no category matches
@@ -166,13 +170,13 @@ function AbilityBrowser({
         (
           item.name.toLowerCase() +
           " " +
-          item.type.toLowerCase() +
+          item.static.type.toLowerCase() +
           " " +
-          item.novice.description.toLowerCase() +
+          item.static.novice.description.toLowerCase() +
           " " +
-          item.adept.description.toLowerCase() +
+          item.static.adept.description.toLowerCase() +
           " " +
-          item.master.description.toLowerCase()
+          item.static.master.description.toLowerCase()
         ).includes(search.toLowerCase()),
       );
       setFilteredEntry(searched_item);
@@ -186,7 +190,7 @@ function AbilityBrowser({
       <DynamicContainer>
         <ScrollColumn ref={scrollRef} width="100%">
           {filteredEntry.map((entry, index) => {
-            if (entry.entry === "AbilityEntry") {
+            if (entry.static.entry === "AbilityEntry") {
               return (
                 <AbilityEntryItem
                   key={index}

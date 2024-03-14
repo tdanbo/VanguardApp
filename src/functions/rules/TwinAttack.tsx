@@ -5,8 +5,8 @@ function dualWielding(character: CharacterEntry) {
   let count = 0;
   for (const item of character.inventory) {
     if (
-      item.equip.equipped &&
-      ["short weapon", "one-hand weapon"].includes(item.category)
+      item.equipped &&
+      ["short weapon", "one-hand weapon"].includes(item.static.category)
     ) {
       count += 1;
     }
@@ -19,7 +19,7 @@ function dualWielding(character: CharacterEntry) {
 function equipList(character: CharacterEntry) {
   let equipList: ItemEntry[] = [];
   for (const item of character.inventory) {
-    if (item.equip.equipped) {
+    if (item.equipped) {
       equipList.push(item);
     }
   }
@@ -53,7 +53,7 @@ export function TwinAttack_dice(character: CharacterEntry, item: ItemEntry) {
     return mod;
   }
 
-  if (!item.equip.equipped) {
+  if (!item.equipped) {
     return mod;
   }
 
@@ -61,7 +61,10 @@ export function TwinAttack_dice(character: CharacterEntry, item: ItemEntry) {
 
   if (ability_master) {
     for (const [index, equip_item] of equipment_list.entries()) {
-      if (equip_item.id === item.id && item.category === "one-hand weapon") {
+      if (
+        equip_item.id === item.id &&
+        item.static.category === "one-hand weapon"
+      ) {
         if (index === 0) {
           mod += 2;
         } else {
@@ -69,7 +72,7 @@ export function TwinAttack_dice(character: CharacterEntry, item: ItemEntry) {
         }
       } else if (
         equip_item.id === item.id &&
-        item.category === "short weapon"
+        item.static.category === "short weapon"
       ) {
         if (index === 0) {
           mod += 4;
@@ -80,7 +83,10 @@ export function TwinAttack_dice(character: CharacterEntry, item: ItemEntry) {
     }
   } else if (ability_adept) {
     for (const [index, equip_item] of equipment_list.entries()) {
-      if (equip_item.id === item.id && item.category === "one-hand weapon") {
+      if (
+        equip_item.id === item.id &&
+        item.static.category === "one-hand weapon"
+      ) {
         if (index === 0) {
           mod += 0;
         } else {
@@ -88,7 +94,7 @@ export function TwinAttack_dice(character: CharacterEntry, item: ItemEntry) {
         }
       } else if (
         equip_item.id === item.id &&
-        item.category === "short weapon"
+        item.static.category === "short weapon"
       ) {
         if (index === 0) {
           mod += 2;
@@ -99,7 +105,10 @@ export function TwinAttack_dice(character: CharacterEntry, item: ItemEntry) {
     }
   } else if (ability) {
     for (const [index, equip_item] of equipment_list.entries()) {
-      if (equip_item.id === item.id && item.category === "one-hand weapon") {
+      if (
+        equip_item.id === item.id &&
+        item.static.category === "one-hand weapon"
+      ) {
         if (index === 0) {
           mod += 0;
         } else {
@@ -107,7 +116,7 @@ export function TwinAttack_dice(character: CharacterEntry, item: ItemEntry) {
         }
       } else if (
         equip_item.id === item.id &&
-        item.category === "short weapon"
+        item.static.category === "short weapon"
       ) {
         if (index === 0) {
           mod += 2;

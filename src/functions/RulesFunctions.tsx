@@ -23,7 +23,7 @@ export function RulesDiceAdjust(
   item: ItemEntry,
   advantage: AdvantageType,
 ) {
-  let dice = item.roll.dice;
+  let dice = item.static.roll.dice;
   dice += NaturalWeapon_dice(character, item);
   dice += NaturalWarrior_dice(character, item);
   dice += Berserker_dice(character, item);
@@ -63,9 +63,9 @@ export function GetMaxSlots(character: CharacterEntry) {
   };
 
   character.inventory.forEach((item) => {
-    if (!item || !item.quality) return;
+    if (!item || !item.static.quality) return;
 
-    item.quality.forEach((quality) => {
+    item.static.quality.forEach((quality) => {
       Object.entries(storageModifiers).forEach(([key, modifiers]) => {
         if (quality.includes(key)) {
           max_slots += modifiers;
@@ -114,8 +114,8 @@ export const GetImpedingValue = (character: CharacterEntry): number => {
     };
 
     character.inventory.forEach((item: ItemEntry) => {
-      if (item.category === "armor" && item.equip.equipped) {
-        item.quality.forEach((quality: string) => {
+      if (item.static.category === "armor" && item.equipped) {
+        item.static.quality.forEach((quality: string) => {
           if (quality in negativeQualities) {
             impeding += negativeQualities[quality];
           }
@@ -172,9 +172,9 @@ export function GetPreciseValue(character: CharacterEntry) {
   };
 
   character.inventory.forEach((item) => {
-    if (!item || !item.quality) return;
+    if (!item || !item.static.quality) return;
 
-    item.quality.forEach((quality) => {
+    item.static.quality.forEach((quality) => {
       Object.entries(preciseModifiers).forEach(([key, modifiers]) => {
         if (quality.includes(key)) {
           precise_value += modifiers;
@@ -198,9 +198,9 @@ export function GetStorageValue(character: CharacterEntry) {
   };
 
   character.inventory.forEach((item) => {
-    if (!item || !item.quality) return;
+    if (!item || !item.static.quality) return;
 
-    item.quality.forEach((quality) => {
+    item.static.quality.forEach((quality) => {
       Object.entries(storageModifiers).forEach(([key, modifiers]) => {
         if (quality.includes(key)) {
           storage_value += modifiers;
@@ -225,9 +225,9 @@ export function GetUsedSlots(character: CharacterEntry) {
   ];
 
   character.inventory.forEach((item) => {
-    if (!item || !item.quality) return;
+    if (!item || !item.static.quality) return;
 
-    item.quality.forEach((quality) => {
+    item.static.quality.forEach((quality) => {
       if (storageModifiers.includes(quality)) {
         used_slots -= 1;
       }
@@ -242,7 +242,7 @@ export function GetEquipmentCorruption(character: CharacterEntry) {
 
   for (const item of character.inventory) {
     if (
-      item.type === "unique" &&
+      item.static.type === "unique" &&
       !CheckAbility(character, "Artifact Crafting", "novice")
     ) {
       value_adjustment += 1;
@@ -264,16 +264,22 @@ export function GetAbilityCorruption(character: CharacterEntry) {
   const has_wizardry_master = CheckAbility(character, "Wizardry", "master");
 
   for (const ability of character.abilities) {
-    if (ability.type === "mystical power" || ability.type === "ritual") {
+    if (
+      ability.static.type === "mystical power" ||
+      ability.static.type === "ritual"
+    ) {
       if (
         ability.level === "Novice" ||
         ability.level === "Adept" ||
         ability.level === "Master"
       ) {
-        if (ability.tradition.includes("Theurgy") && has_theurgy_novice) {
+        if (
+          ability.static.tradition.includes("Theurgy") &&
+          has_theurgy_novice
+        ) {
           value_adjustment -= 1;
         } else if (
-          ability.tradition.includes("Wizardry") &&
+          ability.static.tradition.includes("Wizardry") &&
           has_wizardry_novice
         ) {
           value_adjustment -= 1;
@@ -281,10 +287,10 @@ export function GetAbilityCorruption(character: CharacterEntry) {
         value_adjustment += 1;
       }
       if (ability.level === "Adept" || ability.level === "Master") {
-        if (ability.tradition.includes("Theurgy") && has_theurgy_adept) {
+        if (ability.static.tradition.includes("Theurgy") && has_theurgy_adept) {
           value_adjustment -= 1;
         } else if (
-          ability.tradition.includes("Wizardry") &&
+          ability.static.tradition.includes("Wizardry") &&
           has_wizardry_adept
         ) {
           value_adjustment -= 1;
@@ -293,10 +299,13 @@ export function GetAbilityCorruption(character: CharacterEntry) {
       }
 
       if (ability.level === "Master") {
-        if (ability.tradition.includes("Theurgy") && has_theurgy_master) {
+        if (
+          ability.static.tradition.includes("Theurgy") &&
+          has_theurgy_master
+        ) {
           value_adjustment -= 1;
         } else if (
-          ability.tradition.includes("Wizardry") &&
+          ability.static.tradition.includes("Wizardry") &&
           has_wizardry_master
         ) {
           value_adjustment -= 1;

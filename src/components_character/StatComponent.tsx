@@ -5,6 +5,7 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import "../App.css";
 import * as Constants from "../Constants";
+import "../Styles.css";
 import {
   ActiveStateType,
   AdvantageType,
@@ -254,6 +255,16 @@ function StatComponent({
   }
 
   const ModifierConverter: Record<number, number> = {
+    30: -20,
+    29: -19,
+    28: -18,
+    27: -17,
+    26: -16,
+    25: -15,
+    24: -14,
+    23: -13,
+    22: -12,
+    21: -11,
     20: -10,
     19: -9,
     18: -8,

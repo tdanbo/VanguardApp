@@ -85,25 +85,45 @@ export interface CreatureEntry {
   entry: "CreatureEntry";
 }
 
-type EquipEntry = {
-  slot: number;
-  equipped: boolean;
-};
-
 export interface ItemEntry {
+  name: string;
+  durability: number;
+  quantity: number;
+  equipped: boolean;
+  id: string;
+  static: ItemStatic;
+}
+
+interface ItemStatic {
   roll: Roll;
   quality: string[];
-  equip: EquipEntry;
-  durability: number;
-  quantity: Quantity;
   type: string;
   cost: number;
-  name: string;
   category: string;
-  id: string;
   description: string;
   effect: string[];
+  bulk: boolean;
+  slot: number;
   entry: "ItemEntry";
+}
+
+export interface AbilityEntry {
+  name: string;
+  level: string;
+  id: string;
+  static: AbilityStatic;
+}
+
+interface AbilityStatic {
+  requirement: string;
+  tradition: string;
+  description: string;
+  novice: Ability;
+  adept: Ability;
+  master: Ability;
+  type: string;
+  tag: string;
+  entry: "AbilityEntry";
 }
 
 export type DurabilityEntry = {
@@ -127,11 +147,6 @@ interface Roll {
   mod: number;
   dice: number;
   type: string;
-}
-
-interface Quantity {
-  count: number;
-  bulk: boolean;
 }
 
 export type TravelEntry = {
@@ -221,21 +236,6 @@ export type RollEntry = {
   dice: number;
 };
 
-export type AbilityEntry = {
-  name: string;
-  requirement: string;
-  tradition: string;
-  description: string;
-  novice: Ability;
-  adept: Ability;
-  master: Ability;
-  type: string;
-  tag: string;
-  id: string;
-  level: string;
-  entry: "AbilityEntry";
-};
-
 export type ActivesEntry = {
   attack: { value: number; stat: string };
   defense: { value: number; stat: string };
@@ -251,51 +251,63 @@ export type TownsEntry = {
 };
 
 export const EmptyWeapon: ItemEntry = {
-  roll: { roll: true, dice: 4, mod: 0, type: "damage" },
-  quality: [],
-  equip: { slot: 1, equipped: false },
-  quantity: { count: 0, bulk: false },
-  type: "normal",
-  cost: 0,
   name: "Knuckles",
-  category: "natural weapon",
-  id: "aaaaaaaaaa",
-  description: "Fight with your bare hands.",
-  entry: "ItemEntry",
-  effect: [],
+  equipped: false,
+  quantity: 0,
   durability: 0,
+  id: "aaaaaaaaaa",
+  static: {
+    roll: { roll: true, dice: 4, mod: 0, type: "damage" },
+    quality: [],
+    slot: 1,
+    bulk: false,
+    type: "normal",
+    cost: 0,
+    category: "natural weapon",
+    description: "Fight with your bare hands.",
+    entry: "ItemEntry",
+    effect: [],
+  },
 };
 
 export const GeneralItem: ItemEntry = {
-  roll: { roll: false, dice: 0, mod: 0, type: "" },
-  quality: [],
-  equip: { slot: 0, equipped: false },
-  quantity: { count: 0, bulk: false },
-  type: "normal",
-  cost: 0,
   name: "",
-  category: "general good",
-  id: "",
-  description: "",
-  entry: "ItemEntry",
-  effect: [],
+  equipped: false,
+  quantity: 0,
   durability: 0,
+  id: "",
+  static: {
+    roll: { roll: false, dice: 0, mod: 0, type: "" },
+    quality: [],
+    slot: 0,
+    bulk: false,
+    type: "normal",
+    cost: 0,
+    category: "general good",
+    description: "",
+    entry: "ItemEntry",
+    effect: [],
+  },
 };
 
 export const EmptyArmor: ItemEntry = {
-  roll: { roll: true, dice: 4, mod: 0, type: "armor" },
-  quality: [],
-  equip: { slot: 0, equipped: false },
-  quantity: { count: 0, bulk: false },
-  type: "normal",
-  cost: 0,
   name: "Simple Clothes",
-  category: "light armor",
-  id: "bbbbbbbbbb",
-  description: "You feel robbed of your dignity.",
-  entry: "ItemEntry",
-  effect: [],
+  equipped: false,
+  quantity: 0,
   durability: 0,
+  id: "bbbbbbbbbb",
+  static: {
+    roll: { roll: true, dice: 4, mod: 0, type: "armor" },
+    quality: [],
+    slot: 0,
+    bulk: false,
+    type: "normal",
+    cost: 0,
+    category: "light armor",
+    description: "You feel robbed of your dignity.",
+    entry: "ItemEntry",
+    effect: [],
+  },
 };
 
 export const EmptySession: SessionEntry = {
@@ -350,17 +362,21 @@ export const EmptyCharacter: CharacterEntry = {
 };
 
 export const RESOURCE: ItemEntry = {
-  name: "resource",
-  category: "resource",
-  description: "",
-  quantity: { count: 0, bulk: true },
-  cost: 0,
-  type: "normal",
-  quality: [],
-  equip: { slot: 0, equipped: false },
-  roll: { roll: false, dice: 0, mod: 0, type: "damage" },
-  id: "",
+  name: "Resource",
+  equipped: false,
+  quantity: 0,
   durability: 0,
-  effect: [],
-  entry: "ItemEntry",
+  id: "cccccccccc",
+  static: {
+    category: "resource",
+    description: "",
+    bulk: true,
+    slot: 0,
+    cost: 0,
+    type: "normal",
+    quality: [],
+    roll: { roll: false, dice: 0, mod: 0, type: "damage" },
+    effect: [],
+    entry: "ItemEntry",
+  },
 };

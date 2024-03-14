@@ -117,8 +117,8 @@ function EquipmentBrowser({
 
   const sortList = (a: ItemEntry, b: ItemEntry) => {
     const categoryComparison =
-      Constants.CATEGORY_FILTER.indexOf(a.category) -
-      Constants.CATEGORY_FILTER.indexOf(b.category);
+      Constants.CATEGORY_FILTER.indexOf(a.static.category) -
+      Constants.CATEGORY_FILTER.indexOf(b.static.category);
 
     if (categoryComparison !== 0) {
       return categoryComparison;
@@ -152,7 +152,7 @@ function EquipmentBrowser({
         break;
       case "projectile":
         filtered_equipment = equipment.filter(
-          (item) => item.category === "projectile",
+          (item) => item.static.category === "projectile",
         );
         break;
       case "consumables":
@@ -173,9 +173,11 @@ function EquipmentBrowser({
 
     if (search.length > 2) {
       const searched_item = sorted_items.filter((item) =>
-        (item.name.toLowerCase() + " " + item.category.toLowerCase()).includes(
-          search.toLowerCase(),
-        ),
+        (
+          item.name.toLowerCase() +
+          " " +
+          item.static.category.toLowerCase()
+        ).includes(search.toLowerCase()),
       );
 
       if (searched_item.length === 0) {
@@ -202,7 +204,7 @@ function EquipmentBrowser({
       <DynamicContainer>
         <ScrollColumn ref={scrollRef} width="100%">
           {filteredEquipment.map((entry, index) => {
-            if (entry.entry === "ItemEntry") {
+            if (entry.static.entry === "ItemEntry") {
               return (
                 <InventoryEntry
                   session={session}
