@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import BackgroundImage from "../assets/icons/background.jpeg";
-import CreateCharacterComponent from "../components_character/EditCharacterComponent";
+import { NewCharacterEntry } from "../Types";
+import { v4 as uuidv4 } from "uuid";
+import { update_session } from "../functions/SessionsFunctions";
 
 import {
   faBolt,
@@ -147,27 +149,27 @@ function BrowserHeader({
 }: BrowserHeaderProps) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const handleOpen = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsModalOpen(false);
-  };
-
   const [_addAdjust, setAddAdjust] = useState(0);
 
   const [_filterType, setFilterType] = useState("all");
+
+  const handlePostCreature = async () => {
+    NewCharacterEntry.id = uuidv4();
+    NewCharacterEntry.name = "Creature Character";
+    update_session(session, websocket, NewCharacterEntry, true);
+    setCharacterName(NewCharacterEntry.id);
+  };
 
   const HandleCategoryChange = (category: string) => {
     setCategorySelect(category);
     setFilterType("all");
   };
+
   return (
     <Container height={"40px"}>
       <ExpandRow width={"100%"}>
         {categorySelect === "creatures" ? (
-          <Button $isactive={"false"} onClick={handleOpen}>
+          <Button $isactive={"false"} onClick={handlePostCreature}>
             <FontAwesomeIcon icon={faPlus} />
           </Button>
         ) : (

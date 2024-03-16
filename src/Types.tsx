@@ -340,14 +340,14 @@ export const EmptySession: SessionEntry = {
   loot: { drops: [], general: [], armory: [], alchemy: [], novelty: [] },
 };
 
-export const EmptyCharacter: CharacterEntry = {
-  name: "Default Character",
-  id: "1b1b1b1b1b",
+export const NewCharacterEntry: CharacterEntry = {
+  name: "Player Character",
+  id: "",
   portrait: "Ambrian",
   details: {
-    race: "",
-    xp_earned: 0,
+    race: "Ambrian",
     movement: 0,
+    xp_earned: 50,
     modifier: 0,
     initiative: 0,
   },
@@ -357,20 +357,20 @@ export const EmptyCharacter: CharacterEntry = {
     shield: 0,
   },
   stats: {
-    cunning: { value: 0, mod: 0 },
-    discreet: { value: 0, mod: 0 },
-    persuasive: { value: 0, mod: 0 },
-    quick: { value: 0, mod: 0 },
+    cunning: { value: 15, mod: 0 },
+    discreet: { value: 13, mod: 0 },
+    persuasive: { value: 11, mod: 0 },
+    quick: { value: 10, mod: 0 },
     resolute: { value: 10, mod: 0 },
-    strong: { value: 0, mod: 0 },
-    vigilant: { value: 0, mod: 0 },
-    accurate: { value: 0, mod: 0 },
+    strong: { value: 9, mod: 0 },
+    vigilant: { value: 7, mod: 0 },
+    accurate: { value: 5, mod: 0 },
   },
-  money: 0,
   abilities: [],
   inventory: [],
   effects: [],
   rations: { food: 0, water: 0 },
+  money: 0,
   entry: "CharacterEntry",
 };
 

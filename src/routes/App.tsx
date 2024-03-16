@@ -10,7 +10,7 @@ import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
-  EmptyCharacter,
+  NewCharacterEntry,
   EmptySession,
   SessionEntry,
   EffectEntry,
@@ -51,9 +51,9 @@ function App() {
 
   const character = isCreature
     ? creaturesList.find((entry) => entry.id === characterName) ||
-      EmptyCharacter
+      NewCharacterEntry
     : session.characters.find((entry) => entry.id === characterName) ||
-      EmptyCharacter;
+      NewCharacterEntry;
 
   const [browserState, setBrowserState] = useState(0);
   const [inventoryState, setInventoryState] = useState(1);

@@ -1,6 +1,6 @@
 import CharacterBox from "./CharacterBox";
 import { Socket } from "socket.io-client";
-import { SessionEntry, CharacterEntry } from "../Types";
+import { SessionEntry, NewCharacterEntry } from "../Types";
 import * as Constants from "../Constants";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -117,52 +117,10 @@ function PartySection({
   gmMode,
   setGmMode,
 }: PartySectionProps) {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [_addAdjust, setAddAdjust] = useState(0);
 
-  const handleOpen = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsModalOpen(false);
-  };
-
-  const NewCharacterEntry: CharacterEntry = {
-    name: "Player Character",
-    id: uuidv4(),
-    portrait: "Ambrian",
-    details: {
-      race: "Ambrian",
-      movement: 0,
-      xp_earned: 50,
-      modifier: 0,
-      initiative: 0,
-    },
-    health: {
-      damage: 0,
-      corruption: 0,
-      shield: 0,
-    },
-    stats: {
-      cunning: { value: 15, mod: 0 },
-      discreet: { value: 13, mod: 0 },
-      persuasive: { value: 11, mod: 0 },
-      quick: { value: 10, mod: 0 },
-      resolute: { value: 10, mod: 0 },
-      strong: { value: 9, mod: 0 },
-      vigilant: { value: 7, mod: 0 },
-      accurate: { value: 5, mod: 0 },
-    },
-    abilities: [],
-    inventory: [],
-    effects: [],
-    rations: { food: 0, water: 0 },
-    money: 0,
-    entry: "CharacterEntry",
-  };
-
   const handlePostCharacter = async () => {
+    NewCharacterEntry.id = uuidv4();
     session.characters.push(NewCharacterEntry);
     update_session(session, websocket, NewCharacterEntry, isCreature);
     setCharacterName(NewCharacterEntry.id);

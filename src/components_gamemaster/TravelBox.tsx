@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import {
   CombatEntry,
-  EmptyCharacter,
+  NewCharacterEntry,
   SessionEntry,
   TravelEntry,
 } from "../Types";
@@ -467,7 +467,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
     });
 
     const resting_combat: CombatEntry = {
-      character: EmptyCharacter,
+      character: NewCharacterEntry,
       roll_type: "resting",
       roll_source: "Resting",
       roll_state: "",
@@ -490,7 +490,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
 
     session.combatlog.push(resting_combat);
 
-    update_session(session, websocket, EmptyCharacter, false);
+    update_session(session, websocket, NewCharacterEntry, false);
     handleClose();
   };
 
@@ -499,7 +499,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
   const handleChangeDestination = async () => {
     session.travel.distance = newDestination * 20;
 
-    update_session(session, websocket, EmptyCharacter, false);
+    update_session(session, websocket, NewCharacterEntry, false);
     handleClose();
   };
 
