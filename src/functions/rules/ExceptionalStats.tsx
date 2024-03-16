@@ -44,7 +44,7 @@ export function ExceptionalStats({
   }
 
   const applyValue = (statKey: keyof typeof clonedStats) => {
-    clonedStats[statKey].value += abilityValue;
+    clonedStats[statKey].mod += abilityValue;
   };
 
   const abilityMapping: Record<string, keyof typeof clonedStats> = {

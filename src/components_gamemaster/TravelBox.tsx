@@ -531,8 +531,6 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
 
   const difficulty = FightDifficulty();
 
-  console.log("Difficulty: " + difficulty);
-
   return (
     <>
       <Container onClick={handleOpen}>

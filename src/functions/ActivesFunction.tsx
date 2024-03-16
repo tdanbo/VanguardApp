@@ -9,7 +9,6 @@ import { ShieldFighter_active } from "./rules/ShieldFighter";
 import { TwinAttack_active } from "./rules/TwinAttack";
 
 export const GetActives = (character: CharacterEntry) => {
-  console.log("GetActives");
   const character_actives: ActivesEntry = {
     attack: { value: 0, stat: "" },
     defense: { value: 0, stat: "" },
@@ -21,62 +20,78 @@ export const GetActives = (character: CharacterEntry) => {
   // ATTACK STAT
   if (CheckAbility(character, "Iron Fist", "novice")) {
     character_actives.attack.stat = "strong";
-    character_actives.attack.value = character.stats.strong.value;
+    character_actives.attack.value =
+      character.stats.strong.value + character.stats.strong.mod;
   } else if (CheckAbility(character, "Tactician", "master")) {
     character_actives.attack.stat = "cunning";
-    character_actives.attack.value = character.stats.cunning.value;
+    character_actives.attack.value =
+      character.stats.cunning.value + character.stats.cunning.mod;
   } else if (CheckAbility(character, "Dominate", "novice")) {
     character_actives.attack.stat = "persuasive";
-    character_actives.attack.value = character.stats.persuasive.value;
+    character_actives.attack.value =
+      character.stats.persuasive.value + character.stats.persuasive.mod;
   } else if (CheckAbility(character, "Feint", "novice")) {
     character_actives.attack.stat = "discreet";
-    character_actives.attack.value = character.stats.discreet.value;
+    character_actives.attack.value =
+      character.stats.discreet.value + character.stats.discreet.mod;
   } else if (CheckAbility(character, "Sixth Sense", "novice")) {
     character_actives.attack.stat = "vigilant";
-    character_actives.attack.value = character.stats.vigilant.value;
+    character_actives.attack.value =
+      character.stats.vigilant.value + character.stats.vigilant.mod;
   } else {
     character_actives.attack.stat = "accurate";
-    character_actives.attack.value = character.stats.accurate.value;
+    character_actives.attack.value =
+      character.stats.accurate.value + character.stats.accurate.mod;
   }
 
   // DEFENSE STAT
   if (CheckAbility(character, "Tactician", "adept")) {
     character_actives.defense.stat = "cunning";
-    character_actives.defense.value = character.stats.cunning.value;
+    character_actives.defense.value =
+      character.stats.cunning.value + character.stats.cunning.mod;
   } else if (CheckAbility(character, "Sixth Sense", "adept")) {
     character_actives.defense.stat = "vigilant";
-    character_actives.defense.value = character.stats.vigilant.value;
+    character_actives.defense.value =
+      character.stats.vigilant.value + character.stats.vigilant.mod;
   } else if (CheckAbility(character, "feint", "adept")) {
     character_actives.defense.stat = "discreet";
-    character_actives.defense.value = character.stats.discreet.value;
+    character_actives.defense.value =
+      character.stats.discreet.value + character.stats.discreet.mod;
   } else {
     character_actives.defense.stat = "quick";
-    character_actives.defense.value = character.stats.quick.value;
+    character_actives.defense.value =
+      character.stats.quick.value + character.stats.quick.mod;
   }
 
   // CASTING STAT
   if (CheckAbility(character, "leader", "novice")) {
     character_actives.casting.stat = "persuasive";
-    character_actives.casting.value = character.stats.persuasive.value;
+    character_actives.casting.value =
+      character.stats.persuasive.value + character.stats.persuasive.mod;
   } else {
     character_actives.casting.stat = "resolute";
-    character_actives.casting.value = character.stats.resolute.value;
+    character_actives.casting.value =
+      character.stats.resolute.value + character.stats.resolute.mod;
   }
 
   // SNEAKING STAT
   character_actives.sneaking.stat = "discreet";
-  character_actives.sneaking.value = character.stats.discreet.value;
+  character_actives.sneaking.value =
+    character.stats.discreet.value + character.stats.discreet.mod;
 
   // INITIATIVE STAT
   if (CheckAbility(character, "Tactician", "novice")) {
     character_actives.initiative.stat = "cunning";
-    character_actives.initiative.value = character.stats.cunning.value;
+    character_actives.initiative.value =
+      character.stats.cunning.value + character.stats.cunning.mod;
   } else if (CheckAbility(character, "Sixth Sense", "adept")) {
     character_actives.initiative.stat = "vigilant";
-    character_actives.initiative.value = character.stats.vigilant.value;
+    character_actives.initiative.value =
+      character.stats.vigilant.value + character.stats.vigilant.mod;
   } else {
     character_actives.initiative.stat = "quick";
-    character_actives.initiative.value = character.stats.quick.value;
+    character_actives.initiative.value =
+      character.stats.quick.value + character.stats.quick.mod;
   }
 
   UpdateQualities(character, character_actives);
@@ -88,6 +103,7 @@ export const GetActives = (character: CharacterEntry) => {
   Robust_active(character, character_actives);
   TwinAttack_active(character, character_actives);
   ItemRulesActives(character, character_actives);
+
   return character_actives;
 };
 

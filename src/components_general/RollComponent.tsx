@@ -209,13 +209,11 @@ function RollComponent({
         critical_type.state = 2;
       }
     } else if (result1 <= target) {
-      console.log("NORMAL SUCCESS");
       success = true;
       if (roll1 === 1) {
         critical_type.state = 2;
       }
     } else {
-      console.log("NORMAL FAILURE");
       success = false;
       if (roll1 === 20) {
         critical_type.state = 0;
@@ -226,8 +224,6 @@ function RollComponent({
     // if (target !== 0 && result > target) {
     //   success = false;
     // }
-
-    console.log(roll_source);
 
     if (roll_type === "attack" && HasRangedWeapon(character)) {
       if (!Ammunition(character)) {

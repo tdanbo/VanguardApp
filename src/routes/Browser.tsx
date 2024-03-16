@@ -1,4 +1,9 @@
-import { ActiveStateType, AdvantageType, ItemEntry } from "../Types";
+import {
+  ActiveStateType,
+  AdvantageType,
+  EffectEntry,
+  ItemEntry,
+} from "../Types";
 import AbilityBrowser from "../components_browser/AbilityBrowser";
 import BrowserHeader from "../components_browser/BrowserHeader";
 import CreatureBrowser from "../components_browser/CreatureBrowser";
@@ -46,6 +51,7 @@ type BrowserProps = {
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
+  effects: EffectEntry[];
 };
 
 function Browser({
@@ -73,6 +79,7 @@ function Browser({
   setActiveState,
   setIsCreature,
   setAdvantage,
+  effects,
 }: BrowserProps) {
   return (
     <SideColumn>
@@ -128,6 +135,7 @@ function Browser({
           isCreature={isCreature}
           search={search}
           abilities={abilities}
+          effects={effects}
           isGm={isGm}
           activeState={activeState}
           advantage={advantage}

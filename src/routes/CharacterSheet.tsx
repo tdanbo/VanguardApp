@@ -5,6 +5,7 @@ import {
   SessionEntry,
   ItemEntry,
   AbilityEntry,
+  EffectEntry,
 } from "../Types";
 import AbilitySection from "../components_character/AbilitySection";
 import CharacterNameBox from "../components_character/CharacterNameBox";
@@ -112,6 +113,7 @@ import HealthStatComponent from "../components_character/HealthStatComponent";
 import PortraitComponent from "../components_character/PortraitComponent";
 import StatComponent from "../components_character/StatComponent";
 import { GetActives } from "../functions/ActivesFunction";
+import UpdateAbilityStats from "../functions/rules/UpdateAbilityStats";
 import EquipmentSection from "../components_character/EquipmentSection";
 import { ActiveStateType } from "../Types";
 type CharacterSheetProps = {
@@ -135,6 +137,7 @@ type CharacterSheetProps = {
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   equipment: ItemEntry[];
   abilities: AbilityEntry[];
+  effects: EffectEntry[];
 };
 
 function GetActiveIcon(active: string) {
@@ -162,7 +165,10 @@ function CharacterSheet({
   setActiveState,
   equipment,
   abilities,
+  setCharacterName,
+  effects,
 }: CharacterSheetProps) {
+  UpdateAbilityStats(character);
   const character_actives = GetActives(character);
 
   function FindActive(stat: string) {
@@ -200,6 +206,10 @@ function CharacterSheet({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
+            session={session}
+            websocket={websocket}
+            setCharacterName={setCharacterName}
+            isCreature={isCreature}
           />
         </Row>
         <Column width={"100%"}>
@@ -210,7 +220,9 @@ function CharacterSheet({
               websocket={websocket}
               isCreature={isCreature}
               stat_name={"cunning"}
-              stat_value={character.stats.cunning.value}
+              stat_value={
+                character.stats.cunning.value + character.stats.cunning.mod
+              }
               stat_color={Constants.TYPE_COLORS[FindActive("cunning")]}
               stat_icon={GetActiveIcon(FindActive("cunning"))}
               activeState={activeState}
@@ -224,7 +236,9 @@ function CharacterSheet({
               websocket={websocket}
               isCreature={isCreature}
               stat_name={"discreet"}
-              stat_value={character.stats.discreet.value}
+              stat_value={
+                character.stats.discreet.value + character.stats.discreet.mod
+              }
               stat_color={Constants.TYPE_COLORS[FindActive("discreet")]}
               stat_icon={GetActiveIcon(FindActive("discreet"))}
               activeState={activeState}
@@ -238,7 +252,10 @@ function CharacterSheet({
               websocket={websocket}
               isCreature={isCreature}
               stat_name={"persuasive"}
-              stat_value={character.stats.persuasive.value}
+              stat_value={
+                character.stats.persuasive.value +
+                character.stats.persuasive.mod
+              }
               stat_color={Constants.TYPE_COLORS[FindActive("persuasive")]}
               stat_icon={GetActiveIcon(FindActive("persuasive"))}
               activeState={activeState}
@@ -252,7 +269,9 @@ function CharacterSheet({
               websocket={websocket}
               isCreature={isCreature}
               stat_name={"quick"}
-              stat_value={character.stats.quick.value}
+              stat_value={
+                character.stats.quick.value + character.stats.quick.mod
+              }
               stat_color={Constants.TYPE_COLORS[FindActive("quick")]}
               stat_icon={GetActiveIcon(FindActive("quick"))}
               activeState={activeState}
@@ -268,7 +287,9 @@ function CharacterSheet({
               websocket={websocket}
               isCreature={isCreature}
               stat_name={"resolute"}
-              stat_value={character.stats.resolute.value}
+              stat_value={
+                character.stats.resolute.value + character.stats.resolute.mod
+              }
               stat_color={Constants.TYPE_COLORS[FindActive("resolute")]}
               stat_icon={GetActiveIcon(FindActive("resolute"))}
               activeState={activeState}
@@ -282,7 +303,9 @@ function CharacterSheet({
               websocket={websocket}
               isCreature={isCreature}
               stat_name={"strong"}
-              stat_value={character.stats.strong.value}
+              stat_value={
+                character.stats.strong.value + character.stats.strong.mod
+              }
               stat_color={Constants.TYPE_COLORS[FindActive("strong")]}
               stat_icon={GetActiveIcon(FindActive("strong"))}
               activeState={activeState}
@@ -296,7 +319,9 @@ function CharacterSheet({
               websocket={websocket}
               isCreature={isCreature}
               stat_name={"vigilant"}
-              stat_value={character.stats.vigilant.value}
+              stat_value={
+                character.stats.vigilant.value + character.stats.vigilant.mod
+              }
               stat_color={Constants.TYPE_COLORS[FindActive("vigilant")]}
               stat_icon={GetActiveIcon(FindActive("vigilant"))}
               activeState={activeState}
@@ -310,7 +335,9 @@ function CharacterSheet({
               websocket={websocket}
               isCreature={isCreature}
               stat_name={"accurate"}
-              stat_value={character.stats.accurate.value}
+              stat_value={
+                character.stats.accurate.value + character.stats.accurate.mod
+              }
               stat_color={Constants.TYPE_COLORS[FindActive("accurate")]}
               stat_icon={GetActiveIcon(FindActive("accurate"))}
               activeState={activeState}
@@ -441,6 +468,7 @@ function CharacterSheet({
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
             abilities={abilities}
+            effects={effects}
           />
         </ScrollColumn>
       </DynamicContainer>

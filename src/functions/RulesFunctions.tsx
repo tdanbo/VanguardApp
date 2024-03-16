@@ -46,11 +46,16 @@ export function RulesDiceAdjust(
 
 export function GetMaxSlots(character: CharacterEntry) {
   const strong_capacity = CheckAbility(character, "Pack-mule", "novice")
-    ? character.stats.strong.value * 1.5
-    : character.stats.strong.value;
+    ? character.stats.strong.value + character.stats.strong.mod * 1.5
+    : character.stats.strong.value + character.stats.strong.mod;
 
   let max_slots = Math.max(
-    Math.ceil((strong_capacity + character.stats.resolute.value) / 2),
+    Math.ceil(
+      (strong_capacity +
+        character.stats.resolute.value +
+        character.stats.resolute.mod) /
+        2,
+    ),
     10,
   );
 
@@ -83,18 +88,23 @@ export function GetMaxToughness(character: CharacterEntry) {
     : 0;
 
   const max_toughness =
-    character.stats.strong.value < 10 ? 10 : character.stats.strong.value;
+    character.stats.strong.value + character.stats.strong.mod < 10
+      ? 10
+      : character.stats.strong.value + character.stats.strong.mod;
   return max_toughness + FeatOfStrength;
 }
 
 export function GetPainThreshold(character: CharacterEntry) {
-  return Math.ceil(character.stats.strong.value / 2);
+  return Math.ceil(
+    character.stats.strong.value + character.stats.strong.mod / 2,
+  );
 }
 
 export const GetMovementSpeed = (character: CharacterEntry) => {
   const total_speed = Math.ceil(
     (5 +
-      character.stats.quick.value -
+      character.stats.quick.value +
+      character.stats.quick.mod -
       GetImpedingValue(character) -
       OverburdenValue(character)) /
       2,
@@ -107,10 +117,10 @@ export const GetImpedingValue = (character: CharacterEntry): number => {
 
   if (!CheckAbility(character, "Man-at-Arms", "adept")) {
     const negativeQualities: { [key: string]: number } = {
-      "Impeding 1": 1,
-      "Impeding 2": 2,
-      "Impeding 3": 3,
-      "Impeding 4": 4,
+      "Imp 1": 1,
+      "Imp 2": 2,
+      "Imp 3": 3,
+      "Imp 4": 4,
     };
 
     character.inventory.forEach((item: ItemEntry) => {
@@ -320,7 +330,6 @@ export function GetAbilityCorruption(character: CharacterEntry) {
 
 export function SetDurability(character: CharacterEntry, id: string) {
   let durability = 0;
-  console.log("SetDurability");
 
   character.inventory.forEach((item) => {
     if (item.id === id) {

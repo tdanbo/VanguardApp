@@ -42,6 +42,17 @@ type health = {
   shield: number;
 };
 
+export interface EffectEntry {
+  name: string;
+  level: number;
+  id: string;
+  static: {
+    description: string;
+    type: string;
+    entry: "EffectEntry";
+  };
+}
+
 export interface CharacterEntry {
   name: string;
   id: string;
@@ -49,6 +60,7 @@ export interface CharacterEntry {
   details: CharacterDetails;
   health: health;
   stats: Stats;
+  effects: EffectEntry[];
   abilities: AbilityEntry[];
   inventory: ItemEntry[];
   rations: Rations;
@@ -357,6 +369,7 @@ export const EmptyCharacter: CharacterEntry = {
   money: 0,
   abilities: [],
   inventory: [],
+  effects: [],
   rations: { food: 0, water: 0 },
   entry: "CharacterEntry",
 };

@@ -140,22 +140,18 @@ function CreatureEntryItem({
     new_encounter_creature.id = uuidv4();
     new_encounter_creature.health.damage = 0;
 
-    console.log("Adding creature to encounter: " + new_encounter_creature.name);
-
     session.encounter.push(new_encounter_creature);
     update_session(session, websocket);
     setGmMode(true);
   };
 
   const selectCreature = () => {
-    console.log("Selecting creature: " + creature.name);
     setIsCreature(true);
-    setCharacterName(creature.name);
+    setCharacterName(creature.id);
     setGmMode(false);
   };
 
   const HandleDeleteCreature = async () => {
-    console.log("Deleting creature: " + creature.name);
     await delete_creature(creature.name);
     setDeleteAdjust((prevCount) => prevCount + 1);
   };

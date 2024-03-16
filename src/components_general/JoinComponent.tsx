@@ -73,7 +73,6 @@ function JoinComponent({ setSession, setIsJoinOpen, setIsGm }: LoginProps) {
   const joinGm = () => {
     handleJoinSession();
     setIsGm(true);
-    console.log("Joining as GM");
     setIsJoinOpen(false);
   };
 

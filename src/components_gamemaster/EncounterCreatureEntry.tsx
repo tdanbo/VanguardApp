@@ -383,9 +383,8 @@ function EncounterCreatureEntry({
 
   const GoToSheet = () => {
     setIsCreature(true);
-    console.log(creature.name);
     // This is a little dodgy removing the last two letter to get rid of the A,B,C on the creatures.
-    setCharacterName(creature.name.slice(0, -2));
+    setCharacterName(creature.id);
     setGmMode(false);
   };
 
@@ -411,28 +410,44 @@ function EncounterCreatureEntry({
     "\n" +
     "\n" +
     "Cunning: " +
-    ModifierConverter[creatureClone.stats.cunning.value] +
+    ModifierConverter[
+      creatureClone.stats.cunning.value + creatureClone.stats.cunning.mod
+    ] +
     "\n" +
     "Discreet: " +
-    ModifierConverter[creatureClone.stats.discreet.value] +
+    ModifierConverter[
+      creatureClone.stats.discreet.value + creatureClone.stats.discreet.mod
+    ] +
     "\n" +
     "Persuasive: " +
-    ModifierConverter[creatureClone.stats.persuasive.value] +
+    ModifierConverter[
+      creatureClone.stats.persuasive.value + creatureClone.stats.persuasive.mod
+    ] +
     "\n" +
     "Quick: " +
-    ModifierConverter[creatureClone.stats.quick.value] +
+    ModifierConverter[
+      creatureClone.stats.quick.value + creatureClone.stats.quick.mod
+    ] +
     "\n" +
     "Resolute: " +
-    ModifierConverter[creatureClone.stats.resolute.value] +
+    ModifierConverter[
+      creatureClone.stats.resolute.value + creatureClone.stats.resolute.mod
+    ] +
     "\n" +
     "Strong: " +
-    ModifierConverter[creatureClone.stats.strong.value] +
+    ModifierConverter[
+      creatureClone.stats.strong.value + creatureClone.stats.strong.mod
+    ] +
     "\n" +
     "Vigilant: " +
-    ModifierConverter[creatureClone.stats.vigilant.value] +
+    ModifierConverter[
+      creatureClone.stats.vigilant.value + creatureClone.stats.vigilant.mod
+    ] +
     "\n" +
     "Accurate: " +
-    ModifierConverter[creatureClone.stats.accurate.value];
+    ModifierConverter[
+      creatureClone.stats.accurate.value + creatureClone.stats.accurate.mod
+    ];
 
   for (const item of creatureClone.inventory) {
     const dice = RulesDiceAdjust(creatureClone, item, advantage);

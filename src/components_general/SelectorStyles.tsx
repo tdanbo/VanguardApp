@@ -121,27 +121,16 @@ export const SmallCircleButton = styled.div`
   color: ${Constants.WIDGET_PRIMARY_FONT};
 `;
 
-interface ControlButtonProps {
-  disabled?: boolean;
-}
-
-export const ControlButton = styled.div<ControlButtonProps>`
+export const ControlButton = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
+  flex: 1;
   height: 25px;
   min-height: 50px;
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-radius: ${Constants.BORDER_RADIUS};
   color: ${Constants.WIDGET_SECONDARY_FONT};
-
-  ${({ disabled }) =>
-    disabled &&
-    `
-      opacity: 0.5;
-      cursor: not-allowed;
-  `}
 `;

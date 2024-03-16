@@ -246,9 +246,6 @@ function StatComponent({
   } else {
     flanked = 0;
   }
-  console.log(stat_name);
-  console.log(flanked);
-
   let color = Constants.WIDGET_SECONDARY_FONT;
   if (["attack", "defense", "casting", "sneaking"].includes(stat_name)) {
     color = Constants.TYPE_COLORS[stat_name];

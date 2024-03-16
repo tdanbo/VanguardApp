@@ -163,9 +163,7 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
         <ControlButton onClick={() => setSelector("joinSession")}>
           Go Back
         </ControlButton>
-        <ControlButton disabled={!isAcceptable()} onClick={handlePostSession}>
-          Accept
-        </ControlButton>
+        <ControlButton onClick={handlePostSession}>Accept</ControlButton>
       </ButtonContainer>
     </MainContainer>
   );

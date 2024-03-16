@@ -187,7 +187,6 @@ function CorruptionStatComponent({
   };
 
   const handleTempAddCorruption = () => {
-    console.log("Adding corruption");
     const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
     let value = 1;
     for (let i = 0; i < value; i++) {
@@ -204,7 +203,6 @@ function CorruptionStatComponent({
   };
 
   const handleTempSubCorruption = () => {
-    console.log("Subtracting corruption");
     let value = 1;
     character.health.shield -= value;
 

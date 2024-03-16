@@ -1,9 +1,8 @@
 import CharacterBox from "./CharacterBox";
 import { Socket } from "socket.io-client";
-import { SessionEntry } from "../Types";
+import { SessionEntry, CharacterEntry } from "../Types";
 import * as Constants from "../Constants";
 import styled from "styled-components";
-import CreateCharacterComponent from "./CreateCharacterComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHatWizard,
@@ -13,6 +12,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import BackgroundImage from "../assets/icons/background.jpeg";
+import { update_session } from "../functions/SessionsFunctions";
+import { v4 as uuidv4 } from "uuid";
 type DivProps = {
   width: string;
 };
@@ -45,24 +46,6 @@ const Column = styled.div<DivProps>`
   flex-basis: 0;
   gap: ${Constants.WIDGET_GAB};
   max-width: ${(props) => props.width};
-`;
-
-const OverlayStyles = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: linear-gradient(rgba(7, 9, 11, 0.95), rgba(7, 9, 11, 0.95)),
-    url(${BackgroundImage});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 999;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 const AddButton = styled.button`
@@ -144,6 +127,47 @@ function PartySection({
   const handleClose = () => {
     setIsModalOpen(false);
   };
+
+  const NewCharacterEntry: CharacterEntry = {
+    name: "Player Character",
+    id: uuidv4(),
+    portrait: "Ambrian",
+    details: {
+      race: "Ambrian",
+      movement: 0,
+      xp_earned: 50,
+      modifier: 0,
+      initiative: 0,
+    },
+    health: {
+      damage: 0,
+      corruption: 0,
+      shield: 0,
+    },
+    stats: {
+      cunning: { value: 15, mod: 0 },
+      discreet: { value: 13, mod: 0 },
+      persuasive: { value: 11, mod: 0 },
+      quick: { value: 10, mod: 0 },
+      resolute: { value: 10, mod: 0 },
+      strong: { value: 9, mod: 0 },
+      vigilant: { value: 7, mod: 0 },
+      accurate: { value: 5, mod: 0 },
+    },
+    abilities: [],
+    inventory: [],
+    effects: [],
+    rations: { food: 0, water: 0 },
+    money: 0,
+    entry: "CharacterEntry",
+  };
+
+  const handlePostCharacter = async () => {
+    session.characters.push(NewCharacterEntry);
+    update_session(session, websocket, NewCharacterEntry, isCreature);
+    setCharacterName(NewCharacterEntry.id);
+  };
+
   return (
     <>
       <Container height="40px">
@@ -156,42 +180,27 @@ function PartySection({
               <FontAwesomeIcon icon={gmMode ? faHatWizard : faUser} />
             </Navigator>
           ) : null}
-          {isModalOpen ? (
-            <OverlayStyles>
-              <CreateCharacterComponent
-                setCharacterName={setCharacterName}
-                characterName={""}
-                characterRace={"Ambrian"}
-                closeModal={handleClose}
-                session={session}
-                websocket={websocket}
-                source={"characterSelect"}
-                isCreature={isCreature}
-                setAddAdjust={setAddAdjust}
-              />
-            </OverlayStyles>
-          ) : (
-            <>
-              <AddButton onClick={handleOpen}>
-                <FontAwesomeIcon icon={faPlus} />
-              </AddButton>
-              <WebsocketStatus>
-                {isConnected ? (
-                  <FontAwesomeIcon
-                    icon={faWifi}
-                    color={Constants.BRIGHT_GREEN}
-                    title={"Connected"}
-                  />
-                ) : (
-                  <FontAwesomeIcon
-                    icon={faWifi}
-                    color={Constants.BRIGHT_RED}
-                    title={"Disconnected"}
-                  />
-                )}
-              </WebsocketStatus>
-            </>
-          )}
+
+          <>
+            <AddButton onClick={handlePostCharacter}>
+              <FontAwesomeIcon icon={faPlus} />
+            </AddButton>
+            <WebsocketStatus>
+              {isConnected ? (
+                <FontAwesomeIcon
+                  icon={faWifi}
+                  color={Constants.BRIGHT_GREEN}
+                  title={"Connected"}
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faWifi}
+                  color={Constants.BRIGHT_RED}
+                  title={"Disconnected"}
+                />
+              )}
+            </WebsocketStatus>
+          </>
         </Row>
       </Container>
       <Container height="260px">

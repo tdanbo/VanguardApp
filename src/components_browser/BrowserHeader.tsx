@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import BackgroundImage from "../assets/icons/background.jpeg";
-import CreateCharacterComponent from "../components_combatlog/CreateCharacterComponent";
+import CreateCharacterComponent from "../components_character/EditCharacterComponent";
 
 import {
   faBolt,
@@ -167,25 +167,9 @@ function BrowserHeader({
     <Container height={"40px"}>
       <ExpandRow width={"100%"}>
         {categorySelect === "creatures" ? (
-          isModalOpen ? (
-            <OverlayStyles>
-              <CreateCharacterComponent
-                setCharacterName={setCharacterName}
-                characterName={""}
-                characterRace={"Ambrian"}
-                closeModal={handleClose}
-                session={session}
-                websocket={websocket}
-                source={""}
-                isCreature={false}
-                setAddAdjust={setAddAdjust}
-              />
-            </OverlayStyles>
-          ) : (
-            <Button $isactive={"false"} onClick={handleOpen}>
-              <FontAwesomeIcon icon={faPlus} />
-            </Button>
-          )
+          <Button $isactive={"false"} onClick={handleOpen}>
+            <FontAwesomeIcon icon={faPlus} />
+          </Button>
         ) : (
           <Button
             $isactive={"false"}

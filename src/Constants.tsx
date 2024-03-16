@@ -132,6 +132,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
 
   "adventuring gear": COLOR_7,
   "general good": COLOR_7,
+  effect: COLOR_7,
 
   Ambrian: COLOR_2,
   Barbarian: COLOR_2,
