@@ -342,7 +342,7 @@ export const EmptySession: SessionEntry = {
 };
 
 export const NewCharacterEntry: CharacterEntry = {
-  name: "No Character Selected",
+  name: "No Character Selected!",
   id: "",
   portrait: "Ambrian",
   details: {
