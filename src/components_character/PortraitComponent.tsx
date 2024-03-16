@@ -115,11 +115,9 @@ function PortraitComponent({
         <InfoComponent character={character} actives={actives} />
         <EditCharacterComponent
           characterName={""}
-          characterRace={"Ambrian"}
           setCharacterName={setCharacterName}
           session={session}
           websocket={websocket}
-          source={"characterSelect"}
           isCreature={isCreature}
           character={character}
         />

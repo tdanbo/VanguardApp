@@ -10,8 +10,6 @@ import {
   faUser,
   faWifi,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import BackgroundImage from "../assets/icons/background.jpeg";
 import { update_session } from "../functions/SessionsFunctions";
 import { v4 as uuidv4 } from "uuid";
 type DivProps = {
@@ -117,9 +115,8 @@ function PartySection({
   gmMode,
   setGmMode,
 }: PartySectionProps) {
-  const [_addAdjust, setAddAdjust] = useState(0);
-
   const handlePostCharacter = async () => {
+    NewCharacterEntry.name = "Player Character";
     NewCharacterEntry.id = uuidv4();
     session.characters.push(NewCharacterEntry);
     update_session(session, websocket, NewCharacterEntry, isCreature);

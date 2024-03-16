@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import BackgroundImage from "../assets/icons/background.jpeg";
 import { NewCharacterEntry } from "../Types";
 import { v4 as uuidv4 } from "uuid";
-import { update_session } from "../functions/SessionsFunctions";
+import { addNewCreature } from "../functions/CharacterFunctions";
 
 import {
   faBolt,
@@ -21,6 +20,7 @@ import { Socket } from "socket.io-client";
 import { SessionEntry } from "../Types";
 
 import { useState } from "react";
+import { cloneDeep } from "lodash";
 
 interface ContainerProps {
   height: string;
@@ -106,24 +106,6 @@ const LootButton = styled.button<ButtonProps>`
   text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
 `;
 
-const OverlayStyles = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: linear-gradient(rgba(7, 9, 11, 0.95), rgba(7, 9, 11, 0.95)),
-    url(${BackgroundImage});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 999;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
 interface BrowserHeaderProps {
   session: SessionEntry;
   websocket: Socket;
@@ -134,11 +116,11 @@ interface BrowserHeaderProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   HideBrowser: boolean;
   setHideBrowser: React.Dispatch<React.SetStateAction<boolean>>;
+  setRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function BrowserHeader({
   session,
-  websocket,
   setCharacterName,
   isGm,
   categorySelect,
@@ -146,18 +128,17 @@ function BrowserHeader({
   setSearch,
   HideBrowser,
   setHideBrowser,
+  setRefetch,
 }: BrowserHeaderProps) {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const [_addAdjust, setAddAdjust] = useState(0);
-
   const [_filterType, setFilterType] = useState("all");
 
   const handlePostCreature = async () => {
-    NewCharacterEntry.id = uuidv4();
-    NewCharacterEntry.name = "Creature Character";
-    update_session(session, websocket, NewCharacterEntry, true);
-    setCharacterName(NewCharacterEntry.id);
+    const NewCreature = cloneDeep(NewCharacterEntry);
+    NewCreature.id = uuidv4();
+    NewCreature.name = "Creature Character";
+    await addNewCreature(NewCreature);
+    setRefetch((prev) => prev + 1);
+    setCharacterName(NewCreature.id);
   };
 
   const HandleCategoryChange = (category: string) => {

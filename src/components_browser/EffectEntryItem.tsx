@@ -2,29 +2,25 @@ import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import Icon from "@mdi/react";
+
 import { toTitleCase } from "../functions/UtilityFunctions";
 import {
   EffectEntry,
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
-  RollTypeEntry,
   SessionEntry,
 } from "../Types";
-import { CheckAbility } from "../functions/ActivesFunction";
+
 import {
   faBars,
   faChevronRight,
   faXmark,
-  faSkull,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../functions/SessionsFunctions";
-import { ExceptionalStats } from "../functions/rules/ExceptionalStats";
 import { StyledText } from "../functions/UtilityFunctions";
-import { mdiRomanNumeral1, mdiRomanNumeral2, mdiRomanNumeral3 } from "@mdi/js";
-import RollComponent from "../components_general/RollComponent";
+
 const EntryColor = (type: string) => {
   return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.WIDGET_BORDER;
 };
@@ -207,6 +203,7 @@ const LevelSelection = styled.div<LevelSelectionProps>`
   font-weight: bold;
   text-shadow: 1px 1px 1px ${Constants.BACKGROUND};
   font-size: 14px;
+  user-select: none;
 `;
 
 const AbilityDescription = styled.div`
@@ -221,33 +218,6 @@ const Column = styled.div`
   display: flex;
   flex-direction: column;
   flex-basis: 0;
-`;
-
-const CorruptionContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-basis: 0;
-  align-items: center;
-  justify-content: center;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-  gap: 2px;
-  margin-left: 5px;
-`;
-
-interface RollBoxProps {
-  color: string;
-}
-
-const RollBox = styled.div<RollBoxProps>`
-  display: flex;
-  color: ${(props) => props.color};
-  margin-left: 2px;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: 14px;
-  gap: 15px;
-  margin-right: 15px;
 `;
 
 interface EffectEntryItemProps {
@@ -348,8 +318,13 @@ function EffectEntryItem({
   }
 
   const LevelSelector = ({ ability }: LevelSelectorProps) => {
-    const handleLevelChange = () => {
-      const nextLevel = ability.level + 1;
+    const handleLevelChange = (add: boolean) => {
+      let nextLevel = ability.level;
+      if (add) {
+        nextLevel = ability.level + 1;
+      } else {
+        nextLevel = ability.level - 1;
+      }
 
       setAbilityLevel(nextLevel);
 
@@ -377,7 +352,14 @@ function EffectEntryItem({
       <LevelSelection
         className={"button-hover"}
         type={ability.static.type}
-        onClick={handleLevelChange}
+        onClick={(e) => {
+          e.preventDefault(); // Prevents the default action of the click event
+          handleLevelChange(true);
+        }}
+        onContextMenu={(e) => {
+          e.preventDefault(); // Prevents the browser's context menu from opening
+          handleLevelChange(false);
+        }}
       >
         {abilityLevel}
       </LevelSelection>

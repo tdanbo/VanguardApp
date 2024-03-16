@@ -68,6 +68,7 @@ function App() {
   console.log("Rendering Application");
   console.log("Session: " + url);
   console.log("Character: " + character.name);
+  console.log("Character ID: " + character.id);
   // const websocket = useWebSocket(url, setSession);
   const [isConnected, setIsConnected] = useState(false);
   const websocket = useSocketIO(Constants.API, setSession, setIsConnected);

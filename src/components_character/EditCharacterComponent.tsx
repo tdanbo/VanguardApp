@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
-import { addNewCreature } from "../functions/CharacterFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import { UpperFirstLetter, toTitleCase } from "../functions/UtilityFunctions";
 import AddCreaturePortrait from "../components_general/AddCreaturePortrait";
 import RaceDropdownBox from "../components_general/RaceDropdownBox";
 import BackgroundImage from "../assets/icons/background.jpeg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 import {
   ButtonContainer,
   CenterContainer,
@@ -49,9 +47,30 @@ const NameInput = styled.input`
   font-size: 16px;
 `;
 
+const XpInput = styled.input`
+  display: flex;
+  flex-direction: row;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border-radius: ${Constants.BORDER_RADIUS};
+  text-align: center;
+  color: ${Constants.WIDGET_PRIMARY_FONT};
+  outline: none;
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  min-height: 35px;
+  font-size: 16px;
+`;
+
 const InputtContainer = styled.div`
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  flex: 1;
+  gap: 5px;
+`;
+
+const InputtRowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
   flex-grow: 1;
   flex: 1;
   gap: 5px;
@@ -143,9 +162,7 @@ const InfoBox = styled.div`
 
 interface EditCharacterProps {
   characterName: string;
-  characterRace: string;
   setCharacterName: React.Dispatch<React.SetStateAction<string>>;
-  source: string;
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
@@ -154,9 +171,7 @@ interface EditCharacterProps {
 
 function EditCharacterComponent({
   characterName,
-  characterRace,
   setCharacterName,
-  source,
   session,
   websocket,
   isCreature,
@@ -192,6 +207,24 @@ function EditCharacterComponent({
     setName(toTitleCase(e.target.value));
   };
 
+  const handleXpChange = (e: any) => {
+    if (e.target.value === "Weak") {
+      setCharacterXp(0);
+    } else if (e.target.value === "Ordinary") {
+      setCharacterXp(50);
+    } else if (e.target.value === "Challenging") {
+      setCharacterXp(150);
+    } else if (e.target.value === "Strong") {
+      setCharacterXp(300);
+    } else if (e.target.value === "Mighty") {
+      setCharacterXp(600);
+    } else if (e.target.value === "Legendary") {
+      setCharacterXp(1200);
+    } else {
+      setCharacterXp(e.target.value);
+    }
+  };
+
   const [stats, setStats] = useState<Stats[]>([
     { id: 8, label: "Accurate", value: 0 },
     { id: 1, label: "Cunning", value: 0 },
@@ -207,7 +240,7 @@ function EditCharacterComponent({
   const [characterDifficulty, setCharacterDifficulty] =
     useState<string>("Ordinary");
   const [characterXp, setCharacterXp] = useState<number>(0);
-  const [race, setRace] = useState<string>(character.details.race);
+  const [race, setRace] = useState<string>("");
   const handleButtonClick = (id: number) => {
     if (!selectedButton) {
       setSelectedButton(id);
@@ -257,32 +290,51 @@ function EditCharacterComponent({
   ];
 
   const handleDropdownChange = (selectedOption: string) => {
-    if (source !== "characterSelect") {
+    if (isCreature) {
       setCharacterPortrait(UpperFirstLetter(selectedOption));
     }
     setRace(UpperFirstLetter(selectedOption));
   };
 
-  const difficulty: Record<string, number> = {
-    Weak: 0,
-    Ordinary: 50,
-    Challenging: 150,
-    Strong: 300,
-    Mighty: 600,
-    Legendary: 1200,
+  const handleDifficultyDropdownChange = (selectedOption: string) => {
+    if (selectedOption === "Weak") {
+      setCharacterXp(0);
+    } else if (selectedOption === "Ordinary") {
+      setCharacterXp(50);
+    } else if (selectedOption === "Challenging") {
+      setCharacterXp(150);
+    } else if (selectedOption === "Strong") {
+      setCharacterXp(300);
+    } else if (selectedOption === "Mighty") {
+      setCharacterXp(600);
+    } else if (selectedOption === "Legendary") {
+      setCharacterXp(1200);
+    }
   };
 
   useEffect(() => {
-    setCharacterXp(difficulty[characterDifficulty]);
-  }, [characterDifficulty]);
-
-  const handleDifficultyDropdownChange = (selectedDifficulty: string) => {
-    setCharacterDifficulty(selectedDifficulty);
-  };
+    console.log("Character XP: ", characterXp);
+    if (characterXp < 50) {
+      setCharacterDifficulty("Weak");
+    } else if (characterXp < 150) {
+      setCharacterDifficulty("Ordinary");
+    } else if (characterXp < 300) {
+      setCharacterDifficulty("Challenging");
+    } else if (characterXp <= 600) {
+      setCharacterDifficulty("Strong");
+    } else if (characterXp <= 1200) {
+      setCharacterDifficulty("Mighty");
+    } else {
+      setCharacterDifficulty("Legendary");
+    }
+  }, [characterXp]);
 
   const handlePostCharacter = async () => {
+    console.log(isCreature);
     character.name = name;
+    character.details.race = race;
     character.portrait = characterPortrait;
+    character.details.xp_earned = characterXp;
 
     character.stats.accurate.value = stats[0].value;
     character.stats.cunning.value = stats[1].value;
@@ -323,6 +375,8 @@ function EditCharacterComponent({
     console.log(character);
     setName(character.name);
     setCharacterPortrait(character.portrait);
+    setRace(character.details.race);
+    setCharacterXp(character.details.xp_earned);
     setStats([
       { id: 8, label: "Accurate", value: character.stats.accurate.value },
       { id: 1, label: "Cunning", value: character.stats.cunning.value },
@@ -362,16 +416,17 @@ function EditCharacterComponent({
                   />
                   <RaceDropdownBox
                     onChange={handleDropdownChange}
-                    options={
-                      source === "characterSelect" ? options : creature_options
-                    }
+                    options={!isCreature ? options : creature_options}
                     value={race}
                   />
-                  <RaceDropdownBox
-                    onChange={handleDifficultyDropdownChange}
-                    options={difficulty_options}
-                    value={characterDifficulty}
-                  />
+                  <InputtRowContainer>
+                    <XpInput value={characterXp} onChange={handleXpChange} />
+                    <RaceDropdownBox
+                      onChange={handleDifficultyDropdownChange}
+                      options={difficulty_options}
+                      value={characterDifficulty}
+                    />
+                  </InputtRowContainer>
                 </InputtContainer>
               </Container>
               {stats.map((button) => (
@@ -411,7 +466,7 @@ function EditCharacterComponent({
                             }
                       }
                     >
-                      {source === "characterSelect"
+                      {!isCreature
                         ? CharacterModiferScore[button.value]
                         : ModiferScore[button.value]}
                     </ModifierBox>
@@ -429,7 +484,7 @@ function EditCharacterComponent({
     </>
   ) : (
     <InfoBox onClick={handleOpen} title={"Edit Character"}>
-      <FontAwesomeIcon icon={faPenToSquare} />
+      <FontAwesomeIcon icon={faPen} />
     </InfoBox>
   );
 }

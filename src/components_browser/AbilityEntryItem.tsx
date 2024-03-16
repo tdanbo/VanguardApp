@@ -21,7 +21,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../functions/SessionsFunctions";
-import { ExceptionalStats } from "../functions/rules/ExceptionalStats";
 import { StyledText } from "../functions/UtilityFunctions";
 import { mdiRomanNumeral1, mdiRomanNumeral2, mdiRomanNumeral3 } from "@mdi/js";
 import RollComponent from "../components_general/RollComponent";
@@ -342,15 +341,6 @@ function AbilityEntryItem({
 
     character.abilities.push(abilityWithId);
 
-    const update_stats = ExceptionalStats({
-      character: character,
-      state: "add",
-      ability: abilityWithId,
-      level: abilityWithId.level,
-      originalLevel: ability.level,
-    });
-
-    character.stats = update_stats.stats;
     update_session(session, websocket, character, isCreature);
     if (setInventoryState) {
       setInventoryState(2);
@@ -364,16 +354,6 @@ function AbilityEntryItem({
     );
 
     character.abilities = new_abilities;
-
-    const update_stats = ExceptionalStats({
-      character: character,
-      state: "sub",
-      ability: ability,
-      level: ability.level,
-      originalLevel: ability.level,
-    });
-
-    character.stats = update_stats.stats;
 
     update_session(session, websocket, character, isCreature);
   };
@@ -407,16 +387,6 @@ function AbilityEntryItem({
         }
       });
       character.abilities = abilities;
-
-      const update_stats = ExceptionalStats({
-        character: character,
-        state: "change",
-        ability: ability,
-        level: nextLevel,
-        originalLevel: ability.level,
-      });
-
-      character.stats = update_stats.stats;
 
       update_session(session, websocket, character, isCreature);
     };

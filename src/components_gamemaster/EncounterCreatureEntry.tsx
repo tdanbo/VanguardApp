@@ -674,7 +674,7 @@ function EncounterCreatureEntry({
         <ControlBlock>
           <DeleteBlock
             className={"button-hover"}
-            onClick={() => onCreatureDelete(creatureClone.id)}
+            onClick={() => onCreatureDelete(creatureClone.name)}
           >
             <FontAwesomeIcon icon={faXmark} />
           </DeleteBlock>

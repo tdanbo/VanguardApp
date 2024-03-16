@@ -311,7 +311,7 @@ function StatComponent({
               dice={20}
               dice_mod={modValue}
               color={color}
-              target={stat_value + modValue + flanked}
+              target={Math.max(stat_value + modValue + flanked, 1)}
               setModValue={setModvalue}
               advantage={advantage}
               activeState={activeState}

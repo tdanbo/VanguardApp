@@ -65,6 +65,7 @@ export interface CharacterEntry {
   inventory: ItemEntry[];
   rations: Rations;
   money: number;
+  creature?: boolean;
   entry: "CharacterEntry";
 }
 
@@ -341,7 +342,7 @@ export const EmptySession: SessionEntry = {
 };
 
 export const NewCharacterEntry: CharacterEntry = {
-  name: "Player Character",
+  name: "No Character Selected",
   id: "",
   portrait: "Ambrian",
   details: {

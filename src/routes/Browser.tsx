@@ -11,6 +11,7 @@ import DropsBrowser from "../components_browser/DropsBrowser";
 import EquipmentBrowser from "../components_browser/EquipmentBrowser";
 import * as Constants from "../Constants";
 import styled from "styled-components";
+import { useState } from "react";
 
 const SideColumn = styled.div`
   display: flex;
@@ -81,6 +82,7 @@ function Browser({
   setAdvantage,
   effects,
 }: BrowserProps) {
+  const [refetch, setRefetch] = useState(0);
   return (
     <SideColumn>
       <BrowserHeader
@@ -93,6 +95,7 @@ function Browser({
         setSearch={setSearch}
         HideBrowser={HideBrowser}
         setHideBrowser={setHideBrowser}
+        setRefetch={setRefetch}
         // Add the other missing props here
       />
       {categorySelect === "drops" && HideBrowser ? (
@@ -154,6 +157,8 @@ function Browser({
           setIsCreature={setIsCreature}
           setCreaturesList={setCreaturesList}
           creaturesList={creaturesList}
+          refetch={refetch}
+          setRefetch={setRefetch}
         />
       ) : null}
     </SideColumn>

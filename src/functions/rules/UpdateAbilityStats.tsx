@@ -1,5 +1,4 @@
-import { CharacterEntry, EffectEntry } from "../../Types";
-import { cloneDeep } from "lodash";
+import { AbilityEntry, CharacterEntry, EffectEntry } from "../../Types";
 
 function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
   character.stats.strong.mod = 0;
@@ -12,6 +11,17 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
   character.stats.cunning.mod = 0;
 
   console.log("Updating Ability Stats");
+
+  const LevelValue = (ability: AbilityEntry) => {
+    if (ability.level === "Novice") {
+      return 1;
+    } else if (ability.level === "Adept") {
+      return 2;
+    } else if (ability.level === "Master") {
+      return 3;
+    }
+    return 0;
+  };
 
   character.effects.forEach((effect: EffectEntry) => {
     if (effect.name === "Weakened Strong") {
@@ -30,6 +40,26 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
       character.stats.accurate.mod -= effect.level;
     } else if (effect.name === "Weakened Cunning") {
       character.stats.cunning.mod -= effect.level;
+    }
+  });
+
+  character.abilities.forEach((ability: AbilityEntry) => {
+    if (ability.name === "Exceptionally Strong") {
+      character.stats.strong.mod += LevelValue(ability);
+    } else if (ability.name === "Exceptionally Resolute") {
+      character.stats.resolute.mod += LevelValue(ability);
+    } else if (ability.name === "Exceptionally Quick") {
+      character.stats.quick.mod += LevelValue(ability);
+    } else if (ability.name === "Exceptionally Discreet") {
+      character.stats.discreet.mod += LevelValue(ability);
+    } else if (ability.name === "Exceptionally Vigilant") {
+      character.stats.vigilant.mod += LevelValue(ability);
+    } else if (ability.name === "Exceptionally Persuasive") {
+      character.stats.persuasive.mod += LevelValue(ability);
+    } else if (ability.name === "Exceptionally Accurate") {
+      character.stats.accurate.mod += LevelValue(ability);
+    } else if (ability.name === "Exceptionally Cunning") {
+      character.stats.cunning.mod += LevelValue(ability);
     }
   });
 

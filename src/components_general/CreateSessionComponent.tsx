@@ -86,15 +86,6 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail);
   };
 
-  const isAcceptable = () => {
-    return (
-      sessionName !== "" &&
-      email === confirmEmail &&
-      isValidEmail(email) &&
-      isValidEmail(confirmEmail)
-    );
-  };
-
   const currentDate = new Date();
 
   const NewSessionEntry: SessionEntry = {

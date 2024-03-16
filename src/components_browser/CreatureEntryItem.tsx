@@ -2,7 +2,6 @@ import { faPlus, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
 import AddCreatureToRoster from "./AddCreatureToRoster";
@@ -103,7 +102,7 @@ interface AbilityEntryItemProps {
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   websocket: Socket;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
-  setDeleteAdjust: React.Dispatch<React.SetStateAction<number>>;
+  setRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function CreatureEntryItem({
@@ -114,7 +113,7 @@ function CreatureEntryItem({
   setIsCreature,
   websocket,
   setGmMode,
-  setDeleteAdjust,
+  setRefetch,
 }: AbilityEntryItemProps) {
   const [_expanded] = useState<boolean>(false);
 
@@ -137,9 +136,8 @@ function CreatureEntryItem({
   const AddEncounterCreature = async () => {
     const new_encounter_creature = cloneDeep(creature);
     new_encounter_creature.name = suffixLetter();
-    new_encounter_creature.id = uuidv4();
     new_encounter_creature.health.damage = 0;
-
+    new_encounter_creature.creature = true;
     session.encounter.push(new_encounter_creature);
     update_session(session, websocket);
     setGmMode(true);
@@ -152,8 +150,8 @@ function CreatureEntryItem({
   };
 
   const HandleDeleteCreature = async () => {
-    await delete_creature(creature.name);
-    setDeleteAdjust((prevCount) => prevCount + 1);
+    await delete_creature(creature.id);
+    setRefetch((prevCount) => prevCount + 1);
   };
 
   const [resistance, setResistance] = useState<string>("Weak");
