@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { EmptyCharacter, SessionEntry } from "../Types";
+import { NewCharacterEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
 const Container = styled.div`
   display: flex;
@@ -65,7 +65,7 @@ function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {
     setActiveHour(time); // Set the active hour
     session.travel.time = time;
 
-    update_session(session, websocket, EmptyCharacter, false);
+    update_session(session, websocket, NewCharacterEntry, false);
   };
 
   return (

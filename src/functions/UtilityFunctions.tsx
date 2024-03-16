@@ -8,6 +8,7 @@ import {
   CharacterEntry,
   ItemEntry,
   SessionEntry,
+  EffectEntry,
 } from "../Types";
 import RollComponent from "../components_general/RollComponent";
 
@@ -216,7 +217,7 @@ export function getAdjustedColor(color: string, roll: number): string {
 }
 
 interface StyledTextProps {
-  entry: ItemEntry | AbilityEntry;
+  entry: ItemEntry | AbilityEntry | EffectEntry;
   effect: string;
   websocket: Socket;
   character: CharacterEntry;
@@ -326,5 +327,16 @@ export function UpdateStaticAbility(
   const static_ability = abilities.find((entry) => entry.name === ability.name);
   if (static_ability) {
     ability.static = static_ability.static;
+  }
+}
+
+export function UpdateStaticEffects(
+  effect: EffectEntry,
+  effects: EffectEntry[],
+) {
+  // Update the static item
+  const static_ability = effects.find((entry) => entry.name === effect.name);
+  if (static_ability) {
+    effect.static = static_ability.static;
   }
 }

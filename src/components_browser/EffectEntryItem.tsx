@@ -2,28 +2,25 @@ import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import Icon from "@mdi/react";
+
 import { toTitleCase } from "../functions/UtilityFunctions";
 import {
-  AbilityEntry,
+  EffectEntry,
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
-  RollTypeEntry,
   SessionEntry,
 } from "../Types";
-import { CheckAbility } from "../functions/ActivesFunction";
+
 import {
   faBars,
   faChevronRight,
   faXmark,
-  faSkull,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../functions/SessionsFunctions";
 import { StyledText } from "../functions/UtilityFunctions";
-import { mdiRomanNumeral1, mdiRomanNumeral2, mdiRomanNumeral3 } from "@mdi/js";
-import RollComponent from "../components_general/RollComponent";
+
 const EntryColor = (type: string) => {
   return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.WIDGET_BORDER;
 };
@@ -188,18 +185,25 @@ const AbilityDetail = styled.div`
   font-size: 10px;
 `;
 
-const LevelSelection = styled.div<LevelProps>`
+interface LevelSelectionProps {
+  type: string;
+}
+
+const LevelSelection = styled.div<LevelSelectionProps>`
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 3px;
-  background-color: ${(props) =>
-    props.$active ? EntryColor(props.type) : Constants.WIDGET_BACKGROUND_EMPTY};
+  background-color: ${(props) => EntryColor(props.type)};
   border: 1px solid #3d3d3c;
   color: ${Constants.WIDGET_PRIMARY_FONT};
   font-size: 12px;
   width: 40px;
   cursor: pointer;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px ${Constants.BACKGROUND};
+  font-size: 14px;
+  user-select: none;
 `;
 
 const AbilityDescription = styled.div`
@@ -216,35 +220,8 @@ const Column = styled.div`
   flex-basis: 0;
 `;
 
-const CorruptionContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-basis: 0;
-  align-items: center;
-  justify-content: center;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-  gap: 2px;
-  margin-left: 5px;
-`;
-
-interface RollBoxProps {
-  color: string;
-}
-
-const RollBox = styled.div<RollBoxProps>`
-  display: flex;
-  color: ${(props) => props.color};
-  margin-left: 2px;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: 14px;
-  gap: 15px;
-  margin-right: 15px;
-`;
-
-interface AbilityEntryItemProps {
-  ability: AbilityEntry;
+interface EffectEntryItemProps {
+  ability: EffectEntry;
   browser: boolean;
   setInventoryState?: (inventoryState: number) => void;
   character: CharacterEntry;
@@ -257,17 +234,7 @@ interface AbilityEntryItemProps {
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
-function GetCurrentLevel(ability: AbilityEntry) {
-  if (ability.level === "Master") {
-    return ability.static.master;
-  } else if (ability.level === "Adept") {
-    return ability.static.adept;
-  } else {
-    return ability.static.novice;
-  }
-}
-
-function AbilityEntryItem({
+function EffectEntryItem({
   ability,
   browser,
   setInventoryState,
@@ -279,8 +246,8 @@ function AbilityEntryItem({
   advantage,
   setActiveState,
   setAdvantage,
-}: AbilityEntryItemProps) {
-  const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
+}: EffectEntryItemProps) {
+  const [abilityLevel, setAbilityLevel] = useState<number>(1);
   useEffect(() => {
     setAbilityLevel(ability.level);
   });
@@ -317,20 +284,6 @@ function AbilityEntryItem({
       .substring(2, 2 + length);
   };
 
-  useEffect(() => {
-    if (browser) {
-      if (ability.static.master.description !== "") {
-        setAbilityLevel("Master");
-      } else if (ability.static.adept.description !== "") {
-        setAbilityLevel("Adept");
-      } else if (ability.static.novice.description !== "") {
-        setAbilityLevel("Novice");
-      } else {
-        setAbilityLevel("Novice");
-      }
-    }
-  });
-
   const [expanded, setExpanded] = useState<boolean>(false);
 
   const AddAbilitySlot = () => {
@@ -339,7 +292,7 @@ function AbilityEntryItem({
       id: generateRandomId(),
     };
 
-    character.abilities.push(abilityWithId);
+    character.effects.push(abilityWithId);
 
     update_session(session, websocket, character, isCreature);
     if (setInventoryState) {
@@ -347,36 +300,37 @@ function AbilityEntryItem({
     }
   };
 
-  const DeleteAbilitySlot = (ability: AbilityEntry) => {
+  const DeleteAbilitySlot = (ability: EffectEntry) => {
     const ability_id = ability.id;
-    const new_abilities = character.abilities.filter(
+    const new_effects = character.effects.filter(
       (item) => item.id !== ability_id,
     );
 
-    character.abilities = new_abilities;
+    character.effects = new_effects;
+
+    // TODO: There used to be a sub traction functions for exceptional stats. But i dont think it is used.
 
     update_session(session, websocket, character, isCreature);
   };
 
   interface LevelSelectorProps {
-    ability: AbilityEntry;
+    ability: EffectEntry;
   }
 
   const LevelSelector = ({ ability }: LevelSelectorProps) => {
-    type Level = "Novice" | "Adept" | "Master";
-
-    const levels: Level[] = ["Novice", "Adept", "Master"];
-
-    const handleLevelChange = () => {
-      const currentIndex = levels.indexOf(abilityLevel as Level);
-      const nextIndex = (currentIndex + 1) % levels.length;
-      const nextLevel = levels[nextIndex];
+    const handleLevelChange = (add: boolean) => {
+      let nextLevel = ability.level;
+      if (add) {
+        nextLevel = ability.level + 1;
+      } else {
+        nextLevel = ability.level - 1;
+      }
 
       setAbilityLevel(nextLevel);
 
       const id = ability.id;
 
-      const abilities = character.abilities.map((ability) => {
+      const effects = character.effects.map((ability) => {
         if (ability.id === id) {
           return {
             ...ability,
@@ -386,48 +340,31 @@ function AbilityEntryItem({
           return ability;
         }
       });
-      character.abilities = abilities;
+
+      character.effects = effects;
+
+      // TODO: There used to be a sub traction functions for exceptional stats. But i dont think it is used.
 
       update_session(session, websocket, character, isCreature);
-    };
-
-    const levelIcons: Record<Level, any> = {
-      Novice: mdiRomanNumeral1,
-      Adept: mdiRomanNumeral2,
-      Master: mdiRomanNumeral3,
-    };
-
-    const isActive = (level: Level) => {
-      const currentIndex = levels.indexOf(abilityLevel as Level);
-      const levelIndex = levels.indexOf(level);
-      return levelIndex <= currentIndex;
     };
 
     return (
       <LevelSelection
         className={"button-hover"}
         type={ability.static.type}
-        $active={isActive(abilityLevel as Level)}
-        onClick={handleLevelChange}
+        onClick={(e) => {
+          e.preventDefault(); // Prevents the default action of the click event
+          handleLevelChange(true);
+        }}
+        onContextMenu={(e) => {
+          e.preventDefault(); // Prevents the browser's context menu from opening
+          handleLevelChange(false);
+        }}
       >
-        <Icon
-          path={levelIcons[abilityLevel as Level]}
-          size={1.0}
-          color={Constants.WIDGET_PRIMARY_FONT}
-        />
+        {abilityLevel}
       </LevelSelection>
     );
   };
-
-  const has_theurgy_novice = CheckAbility(character, "Theurgy", "novice");
-  const has_theurgy_adept = CheckAbility(character, "Theurgy", "adept");
-  const has_theurgy_master = CheckAbility(character, "Theurgy", "master");
-
-  const has_wizardry_novice = CheckAbility(character, "Wizardry", "novice");
-  const has_wizardry_adept = CheckAbility(character, "Wizardry", "adept");
-  const has_wizardry_master = CheckAbility(character, "Wizardry", "master");
-
-  const current_level = GetCurrentLevel(ability);
 
   return (
     <BaseContainer className="button-hover">
@@ -438,94 +375,12 @@ function AbilityEntryItem({
         >
           <AbilityName type={ability.static.type} $active={true}>
             {ability.name}
-            <CorruptionContainer>
-              {(ability.static.type === "mystical power" ||
-                ability.static.type === "ritual") && (
-                <>
-                  {(ability.level === "Novice" ||
-                    ability.level === "Adept" ||
-                    ability.level === "Master") &&
-                    !(
-                      ability.static.tradition.includes("Theurgy") &&
-                      has_theurgy_novice
-                    ) &&
-                    !(
-                      ability.static.tradition.includes("Wizardry") &&
-                      has_wizardry_novice
-                    ) && (
-                      <FontAwesomeIcon
-                        icon={faSkull}
-                        style={{ fontSize: "14px" }}
-                      />
-                    )}
-                  {(ability.level === "Adept" || ability.level === "Master") &&
-                    !(
-                      ability.static.tradition.includes("Theurgy") &&
-                      has_theurgy_adept
-                    ) &&
-                    !(
-                      ability.static.tradition.includes("Wizardry") &&
-                      has_wizardry_adept
-                    ) && (
-                      <FontAwesomeIcon
-                        icon={faSkull}
-                        style={{ fontSize: "14px" }}
-                      />
-                    )}
-                  {ability.level === "Master" &&
-                    !(
-                      ability.static.tradition.includes("Theurgy") &&
-                      has_theurgy_master
-                    ) &&
-                    !(
-                      ability.static.tradition.includes("Wizardry") &&
-                      has_wizardry_master
-                    ) && (
-                      <FontAwesomeIcon
-                        icon={faSkull}
-                        style={{ fontSize: "14px" }}
-                      />
-                    )}
-                </>
-              )}
-            </CorruptionContainer>
           </AbilityName>
-          <AbilityDetail>
-            {ability.static.tradition === ""
-              ? toTitleCase(ability.static.type)
-              : `${toTitleCase(ability.static.type)}, ${
-                  ability.static.tradition
-                }`}
-          </AbilityDetail>
+          <AbilityDetail>{toTitleCase(ability.static.type)}</AbilityDetail>
         </NameContainer>
-
-        <RollBox color={Constants.BRIGHT_RED}>
-          {current_level.roll.map((i, index) => (
-            <RollComponent
-              session={session}
-              character={character}
-              websocket={websocket}
-              roll_type={ability.static.type as RollTypeEntry}
-              roll_source={ability.name}
-              isCreature={isCreature}
-              dice={i.dice}
-              dice_mod={i.mod}
-              color={EntryColor(i.type)}
-              key={index}
-              activeState={""}
-              advantage={""}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-            />
-          ))}
-        </RollBox>
         <LevelSelectionContainer>
-          {ability.static.adept.description !== "" &&
-          ability.static.master.description !== "" ? (
-            <LevelSelector ability={ability} />
-          ) : null}
+          <LevelSelector ability={ability} />
         </LevelSelectionContainer>
-
         {browser ? (
           <AddButton className={"button-hover"} onClick={AddAbilitySlot}>
             <FontAwesomeIcon
@@ -565,48 +420,13 @@ function AbilityEntryItem({
         )}
       </Container>
       <LevelContainer $expanded={expanded}>
-        {ability.static.novice.description !== "" &&
-          abilityLevel === "Novice" && (
-            <>
-              <LevelComponent
-                effect={ability.static.novice.description}
-                radius={Constants.BORDER_RADIUS}
-              />
-            </>
-          )}
-        {ability.static.adept.description !== "" &&
-          abilityLevel === "Adept" && (
-            <>
-              <LevelComponent
-                effect={ability.static.novice.description}
-                radius={"0px"}
-              />
-              <LevelComponent
-                effect={ability.static.adept.description}
-                radius={Constants.BORDER_RADIUS}
-              />
-            </>
-          )}
-        {ability.static.master.description !== "" &&
-          abilityLevel === "Master" && (
-            <>
-              <LevelComponent
-                effect={ability.static.novice.description}
-                radius={"0px"}
-              />
-              <LevelComponent
-                effect={ability.static.adept.description}
-                radius={"0px"}
-              />
-              <LevelComponent
-                effect={ability.static.master.description}
-                radius={Constants.BORDER_RADIUS}
-              />
-            </>
-          )}
+        <LevelComponent
+          effect={ability.static.description}
+          radius={Constants.BORDER_RADIUS}
+        />
       </LevelContainer>
     </BaseContainer>
   );
 }
 
-export default AbilityEntryItem;
+export default EffectEntryItem;

@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
+
 import {
   ActiveStateType,
   ActivesEntry,
   AdvantageType,
   CharacterEntry,
+  SessionEntry,
 } from "../Types";
 import {
   GetBurnRate,
@@ -16,7 +18,6 @@ import {
 } from "../functions/RulesFunctions";
 import InfoComponent from "./InfoComponent";
 import SmallStatComponent from "./SmallStatComponent";
-
 import {
   faCarrot,
   faHeartCrack,
@@ -27,7 +28,8 @@ import ActiveStateComponent from "./ActiveStateComponent";
 interface PortraitProps {
   src: string;
 }
-
+import EditCharacterComponent from "./EditCharacterComponent";
+import { Socket } from "socket.io-client";
 const Container = styled.div<PortraitProps>`
   display: flex;
   flex-direction: row;
@@ -62,6 +64,10 @@ interface HealthBoxProps {
   setActiveState: (state: ActiveStateType) => void;
   advantage: AdvantageType;
   setAdvantage: (state: AdvantageType) => void;
+  session: SessionEntry;
+  websocket: Socket;
+  isCreature: boolean;
+  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function PortraitComponent({
@@ -71,6 +77,10 @@ function PortraitComponent({
   setActiveState,
   advantage,
   setAdvantage,
+  session,
+  websocket,
+  setCharacterName,
+  isCreature,
 }: HealthBoxProps) {
   const speed = GetMovementSpeed(character);
   const pain = GetPainThreshold(character);
@@ -103,6 +113,14 @@ function PortraitComponent({
       </Column>
       <RightColumn>
         <InfoComponent character={character} actives={actives} />
+        <EditCharacterComponent
+          characterName={""}
+          setCharacterName={setCharacterName}
+          session={session}
+          websocket={websocket}
+          isCreature={isCreature}
+          character={character}
+        />
         <ActiveStateComponent
           activeState={activeState}
           setActiveState={setActiveState}

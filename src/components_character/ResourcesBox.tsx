@@ -263,8 +263,7 @@ function ResourceChanger({
     }
   };
 
-  const calcValue = (operation: string, mode: string, input: number) => {
-    console.log(operation);
+  const calcValue = (_operation: string, mode: string, input: number) => {
     let newValue = value;
 
     let multiplier = 1;

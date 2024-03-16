@@ -1,4 +1,9 @@
-import { ActiveStateType, AdvantageType, ItemEntry } from "../Types";
+import {
+  ActiveStateType,
+  AdvantageType,
+  EffectEntry,
+  ItemEntry,
+} from "../Types";
 import AbilityBrowser from "../components_browser/AbilityBrowser";
 import BrowserHeader from "../components_browser/BrowserHeader";
 import CreatureBrowser from "../components_browser/CreatureBrowser";
@@ -6,6 +11,7 @@ import DropsBrowser from "../components_browser/DropsBrowser";
 import EquipmentBrowser from "../components_browser/EquipmentBrowser";
 import * as Constants from "../Constants";
 import styled from "styled-components";
+import { useState } from "react";
 
 const SideColumn = styled.div`
   display: flex;
@@ -46,6 +52,7 @@ type BrowserProps = {
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
+  effects: EffectEntry[];
 };
 
 function Browser({
@@ -73,7 +80,9 @@ function Browser({
   setActiveState,
   setIsCreature,
   setAdvantage,
+  effects,
 }: BrowserProps) {
+  const [refetch, setRefetch] = useState(0);
   return (
     <SideColumn>
       <BrowserHeader
@@ -86,6 +95,7 @@ function Browser({
         setSearch={setSearch}
         HideBrowser={HideBrowser}
         setHideBrowser={setHideBrowser}
+        setRefetch={setRefetch}
         // Add the other missing props here
       />
       {categorySelect === "drops" && HideBrowser ? (
@@ -128,6 +138,7 @@ function Browser({
           isCreature={isCreature}
           search={search}
           abilities={abilities}
+          effects={effects}
           isGm={isGm}
           activeState={activeState}
           advantage={advantage}
@@ -146,6 +157,8 @@ function Browser({
           setIsCreature={setIsCreature}
           setCreaturesList={setCreaturesList}
           creaturesList={creaturesList}
+          refetch={refetch}
+          setRefetch={setRefetch}
         />
       ) : null}
     </SideColumn>

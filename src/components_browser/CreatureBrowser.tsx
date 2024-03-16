@@ -75,6 +75,8 @@ interface CreatureBrowserProps {
   search: string;
   creaturesList: CharacterEntry[];
   setCreaturesList: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
+  refetch: number;
+  setRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function CreatureBrowser({
@@ -88,6 +90,8 @@ function CreatureBrowser({
   search,
   creaturesList,
   setCreaturesList,
+  refetch,
+  setRefetch,
 }: CreatureBrowserProps) {
   type LootCategoryType =
     | "all"
@@ -99,7 +103,6 @@ function CreatureBrowser({
   const scrollRef = useRef(null);
   const [filteredEntry, setFilteredEntry] = useState<CharacterEntry[]>([]);
   const [LootCategory, setLootCategory] = useState<LootCategoryType>("all");
-  const [_deleteAdjust, setDeleteAdjust] = useState(0);
   const sortList = (a: CharacterEntry, b: CharacterEntry) => {
     const categoryComparison =
       Constants.RACE_FILTER.indexOf(a.details.race) -
@@ -118,13 +121,13 @@ function CreatureBrowser({
         const entryResponse = await axios.get(`${API}/api/creatures`);
         setCreaturesList(entryResponse.data);
       } catch (error) {
-        console.error("Failed to fetch equipment:", error);
+        console.error("Failed to fetch creatures:", error);
         // Handle the error appropriately
       }
     };
 
     fetchEquipment();
-  }, []); // Empty dependency array to ensure it runs only once
+  }, [refetch]); // Empty dependency array to ensure it runs only once
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -181,7 +184,7 @@ function CreatureBrowser({
                   setIsCreature={setIsCreature}
                   websocket={websocket}
                   setGmMode={setGmMode}
-                  setDeleteAdjust={setDeleteAdjust}
+                  setRefetch={setRefetch}
                 />
               );
             }

@@ -6,10 +6,15 @@ import {
   AdvantageType,
   CharacterEntry,
   SessionEntry,
+  EffectEntry,
 } from "../Types";
 import AbilityEntryItem from "../components_browser/AbilityEntryItem";
 import InventoryEntryEmpty from "./InventoryEntryEmpty";
-import { UpdateStaticAbility } from "../functions/UtilityFunctions";
+import {
+  UpdateStaticAbility,
+  UpdateStaticEffects,
+} from "../functions/UtilityFunctions";
+import EffectEntryItem from "../components_browser/EffectEntryItem";
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -21,6 +26,7 @@ interface NavigationProps {
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   abilities: AbilityEntry[];
+  effects: EffectEntry[];
 }
 
 function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
@@ -40,11 +46,30 @@ function AbilitySection({
   setActiveState,
   setAdvantage,
   abilities,
+  effects,
 }: NavigationProps) {
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
 
   return (
     <>
+      {character.effects.map((effect, index) => {
+        UpdateStaticEffects(effect, effects);
+        return (
+          <EffectEntryItem
+            session={session}
+            key={index}
+            ability={effect}
+            browser={false}
+            character={character}
+            websocket={websocket}
+            isCreature={isCreature}
+            activeState={activeState}
+            advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
+          />
+        );
+      })}
       {sortedAbilities.map((ability, index) => {
         UpdateStaticAbility(ability, abilities);
         return (

@@ -86,15 +86,6 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail);
   };
 
-  const isAcceptable = () => {
-    return (
-      sessionName !== "" &&
-      email === confirmEmail &&
-      isValidEmail(email) &&
-      isValidEmail(confirmEmail)
-    );
-  };
-
   const currentDate = new Date();
 
   const NewSessionEntry: SessionEntry = {
@@ -163,9 +154,7 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
         <ControlButton onClick={() => setSelector("joinSession")}>
           Go Back
         </ControlButton>
-        <ControlButton disabled={!isAcceptable()} onClick={handlePostSession}>
-          Accept
-        </ControlButton>
+        <ControlButton onClick={handlePostSession}>Accept</ControlButton>
       </ButtonContainer>
     </MainContainer>
   );

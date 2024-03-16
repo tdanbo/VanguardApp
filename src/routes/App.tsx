@@ -10,9 +10,10 @@ import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
-  EmptyCharacter,
+  NewCharacterEntry,
   EmptySession,
   SessionEntry,
+  EffectEntry,
 } from "../Types";
 import CharacterSheet from "./CharacterSheet";
 import GameMaster from "../components_gamemaster/GameMaster";
@@ -49,10 +50,10 @@ function App() {
   const url = Constants.WEBSOCKET + session.id;
 
   const character = isCreature
-    ? creaturesList.find((entry) => entry.name === characterName) ||
-      EmptyCharacter
-    : session.characters.find((entry) => entry.name === characterName) ||
-      EmptyCharacter;
+    ? creaturesList.find((entry) => entry.id === characterName) ||
+      NewCharacterEntry
+    : session.characters.find((entry) => entry.id === characterName) ||
+      NewCharacterEntry;
 
   const [browserState, setBrowserState] = useState(0);
   const [inventoryState, setInventoryState] = useState(1);
@@ -66,7 +67,8 @@ function App() {
   console.log("-------------------");
   console.log("Rendering Application");
   console.log("Session: " + url);
-
+  console.log("Character: " + character.name);
+  console.log("Character ID: " + character.id);
   // const websocket = useWebSocket(url, setSession);
   const [isConnected, setIsConnected] = useState(false);
   const websocket = useSocketIO(Constants.API, setSession, setIsConnected);
@@ -74,11 +76,13 @@ function App() {
 
   const [equipment, setEquipment] = useState<ItemEntry[]>([]);
   const [abilities, setAbilities] = useState<AbilityEntry[]>([]);
+  const [effects, setEffects] = useState<EffectEntry[]>([]);
 
   useEffect(() => {
     const fetchEquipment = async () => {
       const equipmentResponse = await axios.get(`${API}/api/equipment`);
       const abilitiesResponse = await axios.get(`${API}/api/abilities`);
+      const effectsResponse = await axios.get(`${API}/api/effects`);
 
       const filteredAbilities = abilitiesResponse.data.filter(
         (item: AbilityEntry) =>
@@ -87,6 +91,7 @@ function App() {
             item.static.type !== "burden"),
       );
 
+      setEffects(effectsResponse.data);
       setEquipment(equipmentResponse.data);
       setAbilities(filteredAbilities);
     };
@@ -121,6 +126,7 @@ function App() {
         search={search}
         equipment={equipment}
         abilities={abilities}
+        effects={effects}
         creaturesList={creaturesList}
         setCreaturesList={setCreaturesList}
         advantage={advantage}
@@ -170,6 +176,7 @@ function App() {
           setActiveState={setActiveState}
           equipment={equipment}
           abilities={abilities}
+          effects={effects}
         />
       )}
       <CombatSection

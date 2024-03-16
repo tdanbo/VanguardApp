@@ -28,13 +28,13 @@ export const getCreatureMovement = (creature: modifiedCreature) => {
 
   let sneaking_mod = 0;
   for (const armor of creature.armor.static.quality) {
-    if (armor === "Impeding 1") {
+    if (armor === "Imp 1") {
       sneaking_mod += -1;
-    } else if (armor === "Impeding 2") {
+    } else if (armor === "Imp 2") {
       sneaking_mod += -2;
-    } else if (armor === "Impeding 3") {
+    } else if (armor === "Imp 3") {
       sneaking_mod += -3;
-    } else if (armor === "Impeding 4") {
+    } else if (armor === "Imp 4") {
       sneaking_mod += -4;
     }
   }

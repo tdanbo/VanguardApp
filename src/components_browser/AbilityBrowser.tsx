@@ -8,12 +8,14 @@ import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
+  EffectEntry,
   SessionEntry,
 } from "../Types";
 import AbilityEntryItem from "./AbilityEntryItem";
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
 
 import { useRef, useState } from "react";
+import EffectEntryItem from "./EffectEntryItem";
 
 interface ContainerProps {
   height: string;
@@ -77,6 +79,7 @@ interface AbilityBrowserProps {
   advantage: AdvantageType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  effects: EffectEntry[];
 }
 
 function AbilityBrowser({
@@ -92,6 +95,7 @@ function AbilityBrowser({
   advantage,
   setActiveState,
   setAdvantage,
+  effects,
 }: AbilityBrowserProps) {
   type LootCategoryType =
     | "all"
@@ -193,6 +197,26 @@ function AbilityBrowser({
             if (entry.static.entry === "AbilityEntry") {
               return (
                 <AbilityEntryItem
+                  key={index}
+                  ability={entry}
+                  browser={true}
+                  setInventoryState={setInventoryState}
+                  character={character}
+                  session={session}
+                  websocket={websocket}
+                  isCreature={isCreature}
+                  activeState={activeState}
+                  advantage={advantage}
+                  setActiveState={setActiveState}
+                  setAdvantage={setAdvantage}
+                />
+              );
+            }
+          })}
+          {effects.map((entry, index) => {
+            if (entry.static.entry === "EffectEntry") {
+              return (
+                <EffectEntryItem
                   key={index}
                   ability={entry}
                   browser={true}

@@ -61,7 +61,7 @@ const Value = styled.button`
   flex-direction: column;
   align-items: center;
   justify-content: end;
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   font-weight: bold;
   color: ${Constants.WIDGET_PRIMARY_FONT};
   border-top: 1px solid ${Constants.WIDGET_BORDER};
@@ -246,9 +246,6 @@ function StatComponent({
   } else {
     flanked = 0;
   }
-  console.log(stat_name);
-  console.log(flanked);
-
   let color = Constants.WIDGET_SECONDARY_FONT;
   if (["attack", "defense", "casting", "sneaking"].includes(stat_name)) {
     color = Constants.TYPE_COLORS[stat_name];
@@ -314,7 +311,7 @@ function StatComponent({
               dice={20}
               dice_mod={modValue}
               color={color}
-              target={stat_value + modValue + flanked}
+              target={Math.max(stat_value + modValue + flanked, 1)}
               setModValue={setModvalue}
               advantage={advantage}
               activeState={activeState}

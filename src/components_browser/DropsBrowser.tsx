@@ -233,7 +233,6 @@ function DropsBrowser({
     };
 
     fetchEquipment();
-    console.log("GETTING DROPS !!!!!!!!!!!!!!!");
   }, []); // Empty dependency array to ensure it runs only once
 
   useEffect(() => {
@@ -387,7 +386,6 @@ function DropsBrowser({
   };
 
   const HandleCategoryChange = () => {
-    console.log("Changing category");
     if (session.state === "buy") {
       session.state = "take";
     } else {

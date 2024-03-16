@@ -113,7 +113,7 @@ const NameBox = styled.div`
   display: flex;
   flex: 1;
   color: ${(props) => props.color};
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
 `;
 
@@ -430,7 +430,6 @@ function InventoryEntry({
   const CheckBuy = (item: ItemEntry, buy: boolean) => {
     if (buy) {
       if (character.money < item.static.cost) {
-        console.log("You don't have enough money!");
         return false;
       }
       character.money -= item.static.cost;
@@ -451,15 +450,11 @@ function InventoryEntry({
   };
 
   const AddInventorySlot = (buy: boolean, share: boolean) => {
-    console.log("Adding Item");
     const inventory = character.inventory;
     if (
       inventory.length === GetMaxSlots(character) * 2 ||
       (buy && character.money < item.static.cost)
     ) {
-      console.log(
-        "You can't carry any more items! Or you don't have enough money!",
-      );
       return;
     }
 

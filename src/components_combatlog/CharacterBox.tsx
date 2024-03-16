@@ -102,13 +102,13 @@ function CharacterBox({
 
   const handleOnClick = () => {
     setIsCreature(false);
-    setCharacterName(character.name);
+    setCharacterName(character.id);
   };
 
   const handleDeleteCharacter = async () => {
     setKillCharacter(false);
     const updated_characters = session.characters.filter(
-      (c: CharacterEntry) => character.name !== c.name,
+      (c: CharacterEntry) => character.id !== c.id,
     );
     session.characters = updated_characters;
     update_session(session, websocket, character, isCreature);

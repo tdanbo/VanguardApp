@@ -9,10 +9,10 @@ export function ArmoredMystic_active(
   const abilityAdept = CheckAbility(character, "armored mystic", "adept");
 
   const negativeQualities: { [key: string]: number } = {
-    "Impeding 1": 1,
-    "Impeding 2": 2,
-    "Impeding 3": 3,
-    "Impeding 4": 4,
+    "Imp 1": 1,
+    "Imp 2": 2,
+    "Imp 3": 3,
+    "Imp 4": 4,
   };
 
   for (const armor of character.inventory) {

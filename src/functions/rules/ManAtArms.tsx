@@ -9,10 +9,10 @@ export function ManAtArms_active(
   for (const item of character.inventory) {
     if (IsArmor(item) && abilityAdept && item.equipped) {
       const negativeQualities: { [key: string]: number } = {
-        "Impeding 1": 1,
-        "Impeding 2": 2,
-        "Impeding 3": 3,
-        "Impeding 4": 4,
+        "Imp 1": 1,
+        "Imp 2": 2,
+        "Imp 3": 3,
+        "Imp 4": 4,
       };
       item.static.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;

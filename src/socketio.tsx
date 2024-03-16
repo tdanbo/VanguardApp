@@ -15,26 +15,24 @@ function useSocketIO(
       path: "/sessions",
     });
 
-    socketRef.current.on('connect', () => {
+    socketRef.current.on("connect", () => {
       setIsConnected(true);
     });
 
-    socketRef.current.on('disconnect', () => {
+    socketRef.current.on("disconnect", () => {
       setIsConnected(false);
     });
 
-    socketRef.current.on('join', (data: SessionEntry) => {
-      console.log(data);
+    socketRef.current.on("join", (data: SessionEntry) => {
       setSession(data);
     });
 
-    socketRef.current.on('update', (data: SessionEntry) => { // Replace 'any' with an appropriate type
-        
-        console.log('Update response:', data);
-        
-        setSession(data)
-        
-        // Additional logic based on the response
+    socketRef.current.on("update", (data: SessionEntry) => {
+      // Replace 'any' with an appropriate type
+
+      setSession(data);
+
+      // Additional logic based on the response
     });
 
     // Cleanup function
