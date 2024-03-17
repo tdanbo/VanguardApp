@@ -36,7 +36,7 @@ type BrowserProps = {
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
-  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
+  setCharacterId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 function Browser({
@@ -53,7 +53,7 @@ function Browser({
   setActiveState,
   setIsCreature,
   setAdvantage,
-  setCharacter,
+  setCharacterId,
 }: BrowserProps) {
   const [refetch, setRefetch] = useState(0);
   const [search, setSearch] = useState("");
@@ -71,7 +71,7 @@ function Browser({
         HideBrowser={HideBrowser}
         setHideBrowser={setHideBrowser}
         setRefetch={setRefetch}
-        setCharacter={setCharacter}
+        setCharacterId={setCharacterId}
         // Add the other missing props here
       />
       {categorySelect === "drops" && HideBrowser ? (
@@ -129,7 +129,7 @@ function Browser({
           setIsCreature={setIsCreature}
           refetch={refetch}
           setRefetch={setRefetch}
-          setCharacter={setCharacter}
+          setCharacterId={setCharacterId}
         />
       ) : null}
     </SideColumn>

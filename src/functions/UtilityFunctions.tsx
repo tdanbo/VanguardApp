@@ -270,6 +270,7 @@ export const StyledText: React.FC<StyledTextProps> = ({
 
     return fragment.split(regex).map((part, partIndex) => {
       const key = `${part}-${partIndex}`;
+      const keyB = `${part}-${partIndex}B`;
       const isSpecialWord = Constants.SPECIAL_WORDS.includes(part);
       const isDiceWord = ["d4", "d6", "d8", "d10", "d12", "d20"].includes(part);
 
@@ -296,7 +297,7 @@ export const StyledText: React.FC<StyledTextProps> = ({
       }
 
       return (
-        <span key={key} style={isSpecialWord ? style : undefined}>
+        <span key={keyB} style={isSpecialWord ? style : undefined}>
           {part}
         </span>
       );

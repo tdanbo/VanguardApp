@@ -1,6 +1,6 @@
 import CharacterBox from "./CharacterBox";
 import { Socket } from "socket.io-client";
-import { SessionEntry, NewCharacterEntry, CharacterEntry } from "../Types";
+import { SessionEntry, NewCharacterEntry } from "../Types";
 import * as Constants from "../Constants";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,7 +14,6 @@ import {
 import { update_session } from "../functions/SessionsFunctions";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
-import { FindCharacter } from "../functions/CharacterFunctions";
 type DivProps = {
   width: string;
 };
@@ -93,7 +92,7 @@ const SessionInput = styled.input`
 interface PartySectionProps {
   session: SessionEntry;
   websocket: Socket;
-  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
+  setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   isCreature: boolean;
   isGm: boolean;
@@ -106,7 +105,7 @@ interface PartySectionProps {
 function PartySection({
   session,
   websocket,
-  setCharacter,
+  setCharacterId,
   setIsCreature,
   isCreature,
   isGm,
@@ -121,7 +120,7 @@ function PartySection({
     NewCharacterEntry.id = uuidv4();
     session.characters.push(NewCharacterEntry);
     await update_session(session, websocket, NewCharacterEntry, isCreature);
-    setCharacter(FindCharacter(NewCharacterEntry.id, session, isCreature));
+    setCharacterId(NewCharacterEntry.id);
   };
 
   const handleJoinSession = () => {
@@ -202,7 +201,7 @@ function PartySection({
                 websocket={websocket}
                 setIsCreature={setIsCreature}
                 isCreature={false}
-                setCharacter={setCharacter}
+                setCharacterId={setCharacterId}
               />
             );
           })}

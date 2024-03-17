@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { CharacterEntry, NewCharacterEntry } from "../Types";
+import { NewCharacterEntry } from "../Types";
 import { v4 as uuidv4 } from "uuid";
-import { FindCharacter, addNewCreature } from "../functions/CharacterFunctions";
+import { addNewCreature } from "../functions/CharacterFunctions";
 
 import {
   faBolt,
@@ -116,7 +116,7 @@ interface BrowserHeaderProps {
   HideBrowser: boolean;
   setHideBrowser: React.Dispatch<React.SetStateAction<boolean>>;
   setRefetch: React.Dispatch<React.SetStateAction<number>>;
-  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
+  setCharacterId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function BrowserHeader({
@@ -128,7 +128,7 @@ function BrowserHeader({
   HideBrowser,
   setHideBrowser,
   setRefetch,
-  setCharacter,
+  setCharacterId,
 }: BrowserHeaderProps) {
   const [_filterType, setFilterType] = useState("all");
   const [tempSearch, setTempSearch] = useState("");
@@ -138,7 +138,7 @@ function BrowserHeader({
     NewCreature.name = "Creature Character";
     await addNewCreature(NewCreature);
     setRefetch((prev) => prev + 1);
-    setCharacter(FindCharacter(NewCreature.id, session, true));
+    setCharacterId(NewCreature.id);
   };
 
   const HandleCategoryChange = (category: string) => {

@@ -33,7 +33,6 @@ import {
 import { update_session } from "../functions/SessionsFunctions";
 import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
 import AbilityEntryItem from "../components_browser/AbilityEntryItem";
-import { FindCharacter } from "../functions/CharacterFunctions";
 
 interface ColorTypeProps {
   $rgb: string;
@@ -310,7 +309,7 @@ interface EncounterBoxProps {
   advantage: AdvantageType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
+  setCharacterId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function EncounterCreatureEntry({
@@ -325,7 +324,7 @@ function EncounterCreatureEntry({
   advantage,
   setActiveState,
   setAdvantage,
-  setCharacter,
+  setCharacterId,
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
   const character_actives = GetActives(creatureClone);
@@ -385,7 +384,7 @@ function EncounterCreatureEntry({
   const GoToSheet = () => {
     setIsCreature(true);
     setGmMode(false);
-    setCharacter(FindCharacter(creatureClone.id, session, isCreature));
+    setCharacterId(creatureClone.id);
   };
 
   const title =

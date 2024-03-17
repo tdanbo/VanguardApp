@@ -5,10 +5,7 @@ import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
 import AddCreatureToRoster from "./AddCreatureToRoster";
-import {
-  FindCharacter,
-  delete_creature,
-} from "../functions/CharacterFunctions";
+import { delete_creature } from "../functions/CharacterFunctions";
 const BaseContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -105,7 +102,7 @@ interface AbilityEntryItemProps {
   websocket: Socket;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setRefetch: React.Dispatch<React.SetStateAction<number>>;
-  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
+  setCharacterId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function CreatureEntryItem({
@@ -116,7 +113,7 @@ function CreatureEntryItem({
   websocket,
   setGmMode,
   setRefetch,
-  setCharacter,
+  setCharacterId,
 }: AbilityEntryItemProps) {
   const [_expanded] = useState<boolean>(false);
 
@@ -149,7 +146,7 @@ function CreatureEntryItem({
   const selectCreature = () => {
     setIsCreature(true);
     setGmMode(false);
-    setCharacter(FindCharacter(creature.id, session, true));
+    setCharacterId(creature.id);
   };
 
   const HandleDeleteCreature = async () => {

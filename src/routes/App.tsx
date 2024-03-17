@@ -8,7 +8,6 @@ import { useRef, useState } from "react";
 import {
   ActiveStateType,
   AdvantageType,
-  CharacterEntry,
   NewCharacterEntry,
   EmptySession,
   SessionEntry,
@@ -20,6 +19,8 @@ import useSocketIO from "../socketio";
 import CombatSection from "./CombatSection";
 import Browser from "./Browser";
 
+import { GetGameData } from "../contexts/GameContent";
+
 const Row = styled.div`
   display: flex;
   flex-direction: row;
@@ -29,20 +30,26 @@ const Row = styled.div`
 function App() {
   console.log("-------------------");
   console.log("RERENDERING APP");
+  const { creatures } = GetGameData();
   // This function is the main function for setting the session.
   const [activeState, setActiveState] = useState<ActiveStateType>("");
   const [advantage, setAdvantage] = useState<AdvantageType>("");
   const [session, setSession] = useState<SessionEntry>(EmptySession);
-  const [character, setCharacter] = useState<CharacterEntry>(NewCharacterEntry);
   const [isCreature, setIsCreature] = useState<boolean>(false);
   const [isGm, setIsGm] = useState<boolean>(false);
   const [gmMode, setGmMode] = useState<boolean>(false);
-
   const [browserState, setBrowserState] = useState(0);
   const [inventoryState, setInventoryState] = useState(1);
 
+  const [characterId, setCharacterId] = useState<string>("");
+
   const scrollableRef = useRef(null);
   const websocket = useSocketIO(Constants.API, setSession);
+
+  const character = isCreature
+    ? creatures.find((entry) => entry.id === characterId) || NewCharacterEntry
+    : session.characters.find((entry) => entry.id === characterId) ||
+      NewCharacterEntry;
 
   return (
     <Row>
@@ -60,7 +67,7 @@ function App() {
         setActiveState={setActiveState}
         setIsCreature={setIsCreature}
         setAdvantage={setAdvantage}
-        setCharacter={setCharacter}
+        setCharacterId={setCharacterId}
       />
       {gmMode ? (
         <GameMaster
@@ -78,7 +85,7 @@ function App() {
           activeState={activeState}
           setActiveState={setActiveState}
           setAdvantage={setAdvantage}
-          setCharacter={setCharacter}
+          setCharacterId={setCharacterId}
         />
       ) : (
         <CharacterSheet
@@ -98,7 +105,7 @@ function App() {
           setAdvantage={setAdvantage}
           activeState={activeState}
           setActiveState={setActiveState}
-          setCharacter={setCharacter}
+          setCharacterId={setCharacterId}
         />
       )}
       <CombatSection
@@ -106,7 +113,7 @@ function App() {
         scrollRef={scrollableRef}
         session={session}
         websocket={websocket}
-        setCharacter={setCharacter}
+        setCharacterId={setCharacterId}
         setIsCreature={setIsCreature}
         isCreature={isCreature}
         isGm={isGm}

@@ -95,7 +95,7 @@ interface CombatSectionProps {
   isCreature: boolean;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
+  setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   isGm: boolean;
   gmMode: boolean;
@@ -133,7 +133,7 @@ function CombatSection({
   character,
   websocket,
   setActiveState,
-  setCharacter,
+  setCharacterId,
   setIsCreature,
   setAdvantage,
   isCreature,
@@ -217,7 +217,7 @@ function CombatSection({
         <PartySection
           session={session}
           websocket={websocket}
-          setCharacter={setCharacter}
+          setCharacterId={setCharacterId}
           setIsCreature={setIsCreature}
           isCreature={isCreature}
           isGm={isGm}
