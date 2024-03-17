@@ -58,7 +58,7 @@ function Browser({
   const [refetch, setRefetch] = useState(0);
   const [search, setSearch] = useState("");
   const [categorySelect, setCategorySelect] = useState<string>("");
-  const [HideBrowser, setHideBrowser] = useState<boolean>(true);
+  const [HideBrowser, setHideBrowser] = useState<boolean>(false);
   return (
     <SideColumn>
       <BrowserHeader
