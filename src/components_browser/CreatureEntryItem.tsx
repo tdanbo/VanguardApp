@@ -113,7 +113,6 @@ function CreatureEntryItem({
   setIsCreature,
   websocket,
   setGmMode,
-  setRefetch,
   setCharacterId,
 }: AbilityEntryItemProps) {
   const [_expanded] = useState<boolean>(false);

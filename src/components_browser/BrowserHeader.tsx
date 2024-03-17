@@ -129,7 +129,6 @@ function BrowserHeader({
   setSearch,
   HideBrowser,
   setHideBrowser,
-  setRefetch,
   setCharacterId,
 }: BrowserHeaderProps) {
   const { updateCreatureData } = GetGameData();
