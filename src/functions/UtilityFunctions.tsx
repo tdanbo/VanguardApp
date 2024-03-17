@@ -11,6 +11,7 @@ import {
   EffectEntry,
 } from "../Types";
 import RollComponent from "../components_general/RollComponent";
+import { uniqueId } from "lodash";
 
 export function UpperFirstLetter(input: string): string {
   if (!input || typeof input !== "string") {
@@ -276,7 +277,7 @@ export const StyledText: React.FC<StyledTextProps> = ({
 
       if (isDiceWord) {
         return (
-          <DiceButton>
+          <DiceButton key={uniqueId()}>
             <RollComponent
               session={session}
               character={character}

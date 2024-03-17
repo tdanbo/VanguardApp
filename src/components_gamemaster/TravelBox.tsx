@@ -511,11 +511,17 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
       group_xp += character.details.xp_earned;
     }
 
+    console.log("ENCOUNTER");
+    console.log(session.encounter);
+
     for (const creature of session.encounter) {
+      console.log(creature);
       enemy_xp += creature.details.xp_earned;
     }
 
     const ratio = (group_xp > 0 ? enemy_xp / group_xp : Infinity) * 12;
+    console.log(group_xp);
+    console.log(enemy_xp);
     return Math.round(ratio);
   };
 
@@ -530,6 +536,9 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
   };
 
   const difficulty = FightDifficulty();
+
+  console.log("RERENDERING TRAVELBOX");
+  console.log(difficulty);
 
   return (
     <>

@@ -91,6 +91,7 @@ const AbilityDetail = styled.div`
 import { Socket } from "socket.io-client";
 import { update_session } from "../functions/SessionsFunctions";
 import { cloneDeep } from "lodash";
+import { GetGameData } from "../contexts/GameContent";
 interface AbilityEntryItemProps {
   session: SessionEntry;
   character: CharacterEntry;
@@ -116,7 +117,7 @@ function CreatureEntryItem({
   setCharacterId,
 }: AbilityEntryItemProps) {
   const [_expanded] = useState<boolean>(false);
-
+  const { updateCreatureData } = GetGameData();
   const suffixLetter = () => {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     for (let i = 0; i < alphabet.length; i++) {
@@ -151,7 +152,7 @@ function CreatureEntryItem({
 
   const HandleDeleteCreature = async () => {
     await delete_creature(creature.id);
-    setRefetch((prevCount) => prevCount + 1);
+    await updateCreatureData();
   };
 
   const [resistance, setResistance] = useState<string>("Weak");

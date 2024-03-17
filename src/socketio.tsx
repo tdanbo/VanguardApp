@@ -28,7 +28,6 @@ function useSocketIO(
 
     socketRef.current.on("update", (data: SessionEntry) => {
       // Replace 'any' with an appropriate type
-      console.log("Update Received", data);
       setSession(data);
 
       // Additional logic based on the response
