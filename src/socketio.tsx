@@ -14,22 +14,21 @@ function useSocketIO(
       path: "/sessions",
     });
 
-    // socketRef.current.on("connect", () => {
-    //   console.log("Connected to server");
-    //   setIsConnected(true);
-    // });
+    socketRef.current.on("connect", () => {
+      console.log("Connected to server");
+    });
 
-    // socketRef.current.on("disconnect", () => {
-    //   console.log("Disconnected from server");
-    //   setIsConnected(false);
-    // });
+    socketRef.current.on("disconnect", () => {
+      console.log("Disconnected from server");
+    });
 
-    // socketRef.current.on("join", (data: SessionEntry) => {
-    //   setSession(data);
-    // });
+    socketRef.current.on("join", (data: SessionEntry) => {
+      setSession(data);
+    });
 
     socketRef.current.on("update", (data: SessionEntry) => {
       // Replace 'any' with an appropriate type
+      console.log("Update Received", data);
       setSession(data);
 
       // Additional logic based on the response

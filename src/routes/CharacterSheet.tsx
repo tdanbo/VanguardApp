@@ -144,7 +144,7 @@ type CharacterSheetProps = {
   activeState: ActiveStateType;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
+  setCharacterId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 function GetActiveIcon(active: string) {
@@ -173,7 +173,7 @@ function CharacterSheet({
   isGm,
   setGmMode,
   gmMode,
-  setCharacter,
+  setCharacterId,
 }: CharacterSheetProps) {
   UpdateAbilityStats(character);
   const character_actives = GetActives(character);
@@ -224,7 +224,7 @@ function CharacterSheet({
             session={session}
             websocket={websocket}
             isCreature={isCreature}
-            setCharacter={setCharacter}
+            setCharacterId={setCharacterId}
           />
         </Row>
         <Column width={"100%"}>

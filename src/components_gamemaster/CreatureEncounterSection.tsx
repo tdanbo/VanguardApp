@@ -28,7 +28,7 @@ interface EncounterSectionProps {
   activeState: ActiveStateType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
+  setCharacterId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function CreatureEncounterSection({
@@ -42,7 +42,7 @@ function CreatureEncounterSection({
   advantage,
   setActiveState,
   setAdvantage,
-  setCharacter,
+  setCharacterId,
 }: EncounterSectionProps) {
   // If setSortedEncounter is part of your useState declaration, it should look like this
 
@@ -79,7 +79,7 @@ function CreatureEncounterSection({
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
-              setCharacter={setCharacter}
+              setCharacterId={setCharacterId}
             />
           );
         }

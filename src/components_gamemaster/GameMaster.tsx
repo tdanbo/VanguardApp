@@ -101,7 +101,7 @@ interface GameMasterProps {
   activeState: ActiveStateType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
+  setCharacterId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function GameMaster({
@@ -116,7 +116,7 @@ function GameMaster({
   setAdvantage,
   isGm,
   gmMode,
-  setCharacter,
+  setCharacterId,
 }: GameMasterProps) {
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
 
@@ -162,7 +162,7 @@ function GameMaster({
             activeState={activeState}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
-            setCharacter={setCharacter}
+            setCharacterId={setCharacterId}
           />
         </ScrollColumn>
       </DynamicContainer>

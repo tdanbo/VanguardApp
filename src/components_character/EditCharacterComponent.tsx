@@ -18,7 +18,6 @@ import {
   ModalContainer,
   Title,
 } from "../components_general/SelectorStyles";
-import { FindCharacter } from "../functions/CharacterFunctions";
 
 interface Stats {
   id: number;
@@ -166,7 +165,7 @@ interface EditCharacterProps {
   websocket: Socket;
   isCreature: boolean;
   character: CharacterEntry;
-  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
+  setCharacterId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function EditCharacterComponent({
@@ -174,7 +173,7 @@ function EditCharacterComponent({
   websocket,
   isCreature,
   character,
-  setCharacter,
+  setCharacterId,
 }: EditCharacterProps) {
   const creature_options = [
     "Abomination",
@@ -343,8 +342,11 @@ function EditCharacterComponent({
     character.stats.strong.value = stats[6].value;
     character.stats.vigilant.value = stats[7].value;
 
+    console.log(character);
+    console.log(session);
+
     update_session(session, websocket, character, isCreature);
-    setCharacter(FindCharacter(character.id, session, isCreature));
+    setCharacterId(character.id);
     handleBack();
   };
 

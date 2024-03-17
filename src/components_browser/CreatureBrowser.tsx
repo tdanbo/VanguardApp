@@ -73,7 +73,7 @@ interface CreatureBrowserProps {
   search: string;
   refetch: number;
   setRefetch: React.Dispatch<React.SetStateAction<number>>;
-  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
+  setCharacterId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function CreatureBrowser({
@@ -86,7 +86,7 @@ function CreatureBrowser({
   search,
   refetch,
   setRefetch,
-  setCharacter,
+  setCharacterId,
 }: CreatureBrowserProps) {
   const { creatures, updateCreatureData } = GetGameData();
   type LootCategoryType =
@@ -170,7 +170,7 @@ function CreatureBrowser({
                   websocket={websocket}
                   setGmMode={setGmMode}
                   setRefetch={setRefetch}
-                  setCharacter={setCharacter}
+                  setCharacterId={setCharacterId}
                 />
               );
             }
