@@ -113,7 +113,7 @@ function PartySection({
   setSession,
 }: PartySectionProps) {
   const [isJoined, setIsJoined] = useState(false);
-  const [sessionName, setSessionName] = useState("0nPFPbvRss"); // Default session name "0nPFPbvRss
+  const [sessionName, setSessionName] = useState(""); // 0nPFPbvRss Default session name "0nPFPbvRss
 
   const handlePostCharacter = async () => {
     NewCharacterEntry.name = "Player Character";
