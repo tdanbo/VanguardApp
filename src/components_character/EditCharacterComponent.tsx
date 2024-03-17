@@ -58,6 +58,15 @@ const XpInput = styled.input`
   border: 1px solid ${Constants.WIDGET_BORDER};
   min-height: 35px;
   font-size: 16px;
+  &[type="number"]::-webkit-inner-spin-button,
+  &[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
 `;
 
 const InputtContainer = styled.div`
@@ -205,21 +214,12 @@ function EditCharacterComponent({
     setName(toTitleCase(e.target.value));
   };
 
-  const handleXpChange = (e: any) => {
-    if (e.target.value === "Weak") {
-      setCharacterXp(0);
-    } else if (e.target.value === "Ordinary") {
-      setCharacterXp(50);
-    } else if (e.target.value === "Challenging") {
-      setCharacterXp(150);
-    } else if (e.target.value === "Strong") {
-      setCharacterXp(300);
-    } else if (e.target.value === "Mighty") {
-      setCharacterXp(600);
-    } else if (e.target.value === "Legendary") {
-      setCharacterXp(1200);
+  const handleXpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const xpValue = Number(e.target.value);
+    if (!isNaN(xpValue)) {
+      setCharacterXp(xpValue);
     } else {
-      setCharacterXp(e.target.value);
+      setCharacterXp(characterXp);
     }
   };
 
@@ -420,7 +420,11 @@ function EditCharacterComponent({
                     value={race}
                   />
                   <InputtRowContainer>
-                    <XpInput value={characterXp} onChange={handleXpChange} />
+                    <XpInput
+                      type="number"
+                      value={characterXp}
+                      onChange={handleXpChange}
+                    />
                     <RaceDropdownBox
                       onChange={handleDifficultyDropdownChange}
                       options={difficulty_options}

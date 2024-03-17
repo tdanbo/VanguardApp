@@ -275,7 +275,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
       combatEntry.durability.name !== "" &&
       combatEntry.durability.check === 4
     ) {
-      message += `Durability check failed, ${combatEntry.durability.name} lost durability.`;
+      message += `${combatEntry.durability.name} lost durability.`;
     } else {
       message += "";
     }

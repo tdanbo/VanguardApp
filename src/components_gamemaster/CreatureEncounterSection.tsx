@@ -47,7 +47,10 @@ function CreatureEncounterSection({
   // If setSortedEncounter is part of your useState declaration, it should look like this
 
   const onCreatureDelete = (name: string) => {
-    const newEncounter = session.encounter.filter((entry) => entry.id !== name);
+    console.log("Deleting creature: ", name);
+    const newEncounter = session.encounter.filter(
+      (entry) => entry.name !== name,
+    );
     session.encounter = newEncounter;
     update_session(session, websocket);
   };
@@ -68,7 +71,7 @@ function CreatureEncounterSection({
               key={entry.name + index}
               creature={entry}
               onCreatureDelete={() => {
-                onCreatureDelete(entry.id);
+                onCreatureDelete(entry.name);
               }}
               session={session}
               websocket={websocket}

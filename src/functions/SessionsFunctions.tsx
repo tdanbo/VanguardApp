@@ -21,9 +21,6 @@ export async function update_session(
     if (isCreature) {
       await axios.put(`${API}/api/creatures/`, character);
     } else {
-      console.log("Update Session");
-      console.log(character);
-      console.log(session);
       await axios.put(`${API}/api/session/`, session);
     }
   } catch (error) {

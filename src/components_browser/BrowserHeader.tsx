@@ -22,6 +22,8 @@ import { SessionEntry } from "../Types";
 import { useState } from "react";
 import { cloneDeep } from "lodash";
 
+import { GetGameData } from "../contexts/GameContent";
+
 interface ContainerProps {
   height: string;
 }
@@ -127,9 +129,9 @@ function BrowserHeader({
   setSearch,
   HideBrowser,
   setHideBrowser,
-  setRefetch,
   setCharacterId,
 }: BrowserHeaderProps) {
+  const { updateCreatureData } = GetGameData();
   const [_filterType, setFilterType] = useState("all");
   const [tempSearch, setTempSearch] = useState("");
   const handlePostCreature = async () => {
@@ -137,7 +139,8 @@ function BrowserHeader({
     NewCreature.id = uuidv4();
     NewCreature.name = "Creature Character";
     await addNewCreature(NewCreature);
-    setRefetch((prev) => prev + 1);
+    await updateCreatureData();
+    // setRefetch((prev) => prev + 1);
     setCharacterId(NewCreature.id);
   };
 
