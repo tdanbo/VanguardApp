@@ -22,6 +22,8 @@ import {
   toTitleCase,
 } from "../functions/UtilityFunctions";
 
+import { GetGameData } from "../contexts/GameContent";
+
 interface ContainerProps {
   height: string;
 }
@@ -79,7 +81,6 @@ interface EquipmentBrowserProps {
   gmMode: boolean;
   isCreature: boolean;
   search: string;
-  equipment: ItemEntry[];
   isGm: boolean;
   advantage: AdvantageType;
   activeState: ActiveStateType;
@@ -94,13 +95,14 @@ function EquipmentBrowser({
   setInventoryState,
   isCreature,
   search,
-  equipment,
   isGm,
   advantage,
   activeState,
   setActiveState,
   setAdvantage,
 }: EquipmentBrowserProps) {
+  const { equipment } = GetGameData();
+
   type LootCategoryType =
     | "all"
     | "weapon"

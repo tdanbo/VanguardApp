@@ -15,7 +15,7 @@ type DurabilityBoxProps = {
 
 type DurabilityRContainerProps = {
   size: string;
-  inactive: boolean;
+  $inactive: boolean;
 };
 
 const DurabilityContainer = styled.div<DurabilityRContainerProps>`
@@ -28,7 +28,7 @@ const DurabilityContainer = styled.div<DurabilityRContainerProps>`
   font-weight: bold;
   font-size: 16px;
   color: ${(props) =>
-    props.inactive
+    props.$inactive
       ? Constants.WIDGET_SECONDARY_FONT
       : Constants.WIDGET_SECONDARY_FONT_INACTIVE};
   text-align: center;
@@ -37,7 +37,7 @@ const DurabilityContainer = styled.div<DurabilityRContainerProps>`
   background-position: center;
   background-size: ${(props) => props.size}; // Use props.dice_size once
   text-shadow: ${(props) =>
-    props.inactive ? "1px 1px 2px black" : "0px 0px 0px transparent;"};
+    props.$inactive ? "1px 1px 2px black" : "0px 0px 0px transparent;"};
   user-select: none;
   h1,
   h2 {
@@ -103,7 +103,7 @@ function DurabilityComponent({
         handleAddDurability();
       }}
       size={"25px"}
-      inactive={inactive}
+      $inactive={inactive}
     >
       <h1>{item.durability}</h1>
       <h2>

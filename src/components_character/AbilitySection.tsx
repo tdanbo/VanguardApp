@@ -6,7 +6,6 @@ import {
   AdvantageType,
   CharacterEntry,
   SessionEntry,
-  EffectEntry,
 } from "../Types";
 import AbilityEntryItem from "../components_browser/AbilityEntryItem";
 import InventoryEntryEmpty from "./InventoryEntryEmpty";
@@ -15,6 +14,7 @@ import {
   UpdateStaticEffects,
 } from "../functions/UtilityFunctions";
 import EffectEntryItem from "../components_browser/EffectEntryItem";
+import { GetGameData } from "../contexts/GameContent";
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -25,8 +25,6 @@ interface NavigationProps {
   advantage: AdvantageType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  abilities: AbilityEntry[];
-  effects: EffectEntry[];
 }
 
 function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
@@ -45,11 +43,9 @@ function AbilitySection({
   advantage,
   setActiveState,
   setAdvantage,
-  abilities,
-  effects,
 }: NavigationProps) {
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
-
+  const { abilities, effects } = GetGameData();
   return (
     <>
       {character.effects.map((effect, index) => {

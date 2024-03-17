@@ -31,7 +31,7 @@ const Container = styled.div`
 
 interface DivProps {
   height?: string;
-  active?: boolean;
+  $active?: boolean;
 }
 
 const Row = styled.div<DivProps>`
@@ -51,7 +51,7 @@ const BottomRow = styled.div<DivProps>`
   border-radius: ${Constants.BORDER_RADIUS};
   max-height: ${(props) => props.height};
   min-height: ${(props) => props.height};
-  display: ${(props) => (props.active ? "flex" : "none")};
+  display: ${(props) => (props.$active ? "flex" : "none")};
   margin-top: 2px;
 `;
 
@@ -79,7 +79,7 @@ const Value = styled.button`
 `;
 
 type ActiveProps = {
-  active: boolean;
+  $active: boolean;
 };
 
 const ActiveValue = styled.div<ActiveProps>`
@@ -99,7 +99,7 @@ const ActiveValue = styled.div<ActiveProps>`
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   border-left: 1px solid ${Constants.WIDGET_BORDER};
   border-right: 1px solid ${Constants.WIDGET_BORDER};
-  height: ${(props) => (props.active ? "20%" : "50%")};
+  height: ${(props) => (props.$active ? "20%" : "50%")};
 `;
 
 const Modifier = styled.button`
@@ -193,7 +193,7 @@ const Minus = styled.button`
 `;
 
 const DiceContainer = styled.div<DivProps>`
-  display: ${(props) => (props.active ? "flex" : "none")};
+  display: ${(props) => (props.$active ? "flex" : "none")};
 `;
 
 interface Props {
@@ -300,7 +300,7 @@ function StatComponent({
           {Math.max(stat_value + modValue + flanked, 1)}
         </Value>
         <DiceContainerRight>
-          <DiceContainer className="second-row" active={active}>
+          <DiceContainer className="second-row" $active={active}>
             <RollComponent
               session={session}
               character={character}
@@ -321,7 +321,7 @@ function StatComponent({
           </DiceContainer>
         </DiceContainerRight>
       </Row>
-      <ActiveValue className="value-row" active={active}>
+      <ActiveValue className="value-row" $active={active}>
         {(() => {
           if (advantage === "flanking" && stat_name === "attack") {
             return toTitleCase(`${advantage} ${stat_name}`);
@@ -332,7 +332,7 @@ function StatComponent({
           }
         })()}
       </ActiveValue>
-      <BottomRow height={"25%"} className="second-row" active={active}>
+      <BottomRow height={"25%"} className="second-row" $active={active}>
         <Minus className="button-hover" onClick={handleSubValue}>
           <FontAwesomeIcon
             icon={faMinus}

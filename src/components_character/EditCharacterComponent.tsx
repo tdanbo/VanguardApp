@@ -18,6 +18,7 @@ import {
   ModalContainer,
   Title,
 } from "../components_general/SelectorStyles";
+import { FindCharacter } from "../functions/CharacterFunctions";
 
 interface Stats {
   id: number;
@@ -161,21 +162,19 @@ const InfoBox = styled.div`
 `;
 
 interface EditCharacterProps {
-  characterName: string;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
   character: CharacterEntry;
+  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
 }
 
 function EditCharacterComponent({
-  characterName,
-  setCharacterName,
   session,
   websocket,
   isCreature,
   character,
+  setCharacter,
 }: EditCharacterProps) {
   const creature_options = [
     "Abomination",
@@ -313,7 +312,6 @@ function EditCharacterComponent({
   };
 
   useEffect(() => {
-    console.log("Character XP: ", characterXp);
     if (characterXp < 50) {
       setCharacterDifficulty("Weak");
     } else if (characterXp < 150) {
@@ -346,7 +344,7 @@ function EditCharacterComponent({
     character.stats.vigilant.value = stats[7].value;
 
     update_session(session, websocket, character, isCreature);
-    setCharacterName(character.id);
+    setCharacter(FindCharacter(character.id, session, isCreature));
     handleBack();
   };
 
@@ -410,7 +408,7 @@ function EditCharacterComponent({
               <Container>
                 <InputtContainer>
                   <NameInput
-                    placeholder={characterName}
+                    placeholder={character.name}
                     onChange={handleNameChange}
                     value={name}
                   />

@@ -1,13 +1,12 @@
 import styled from "styled-components";
 
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import { API } from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
 import CreatureEntryItem from "./CreatureEntryItem";
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
+import { GetGameData } from "../contexts/GameContent";
 import {
   IsAmbrian,
   IsBeast,
@@ -69,14 +68,12 @@ interface CreatureBrowserProps {
   session: SessionEntry;
   websocket: Socket;
   gmMode: boolean;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   search: string;
-  creaturesList: CharacterEntry[];
-  setCreaturesList: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   refetch: number;
   setRefetch: React.Dispatch<React.SetStateAction<number>>;
+  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
 }
 
 function CreatureBrowser({
@@ -84,15 +81,14 @@ function CreatureBrowser({
   session,
   websocket,
   gmMode,
-  setCharacterName,
   setIsCreature,
   setGmMode,
   search,
-  creaturesList,
-  setCreaturesList,
   refetch,
   setRefetch,
+  setCharacter,
 }: CreatureBrowserProps) {
+  const { creatures, updateCreatureData } = GetGameData();
   type LootCategoryType =
     | "all"
     | "ambrian"
@@ -116,17 +112,7 @@ function CreatureBrowser({
   };
 
   useEffect(() => {
-    const fetchEquipment = async () => {
-      try {
-        const entryResponse = await axios.get(`${API}/api/creatures`);
-        setCreaturesList(entryResponse.data);
-      } catch (error) {
-        console.error("Failed to fetch creatures:", error);
-        // Handle the error appropriately
-      }
-    };
-
-    fetchEquipment();
+    updateCreatureData;
   }, [refetch]); // Empty dependency array to ensure it runs only once
 
   useEffect(() => {
@@ -137,23 +123,23 @@ function CreatureBrowser({
   }, [search, LootCategory]);
 
   useEffect(() => {
-    let filtered_equipment = creaturesList;
+    let filtered_equipment = creatures;
 
     switch (LootCategory) {
       case "ambrian":
-        filtered_equipment = creaturesList.filter((item) => IsAmbrian(item));
+        filtered_equipment = creatures.filter((item) => IsAmbrian(item));
         break;
       case "troll":
-        filtered_equipment = creaturesList.filter((item) => IsTroll(item));
+        filtered_equipment = creatures.filter((item) => IsTroll(item));
         break;
       case "beast":
-        filtered_equipment = creaturesList.filter((item) => IsBeast(item));
+        filtered_equipment = creatures.filter((item) => IsBeast(item));
         break;
       case "undead":
-        filtered_equipment = creaturesList.filter((item) => IsUndead(item));
+        filtered_equipment = creatures.filter((item) => IsUndead(item));
         break;
       case "abomination":
-        filtered_equipment = creaturesList.filter(
+        filtered_equipment = creatures.filter(
           (item) => item.details.race === "Abomination",
         );
         break;
@@ -164,7 +150,7 @@ function CreatureBrowser({
 
     const sorted_items = [...filtered_equipment].sort(sortList);
     setFilteredEntry(sorted_items); // Assuming you have a separate state for filtered and sorted items
-  }, [LootCategory, creaturesList]);
+  }, [LootCategory, creatures]);
 
   return (
     <>
@@ -180,11 +166,11 @@ function CreatureBrowser({
                   creature={entry}
                   browser={true}
                   gmMode={gmMode}
-                  setCharacterName={setCharacterName}
                   setIsCreature={setIsCreature}
                   websocket={websocket}
                   setGmMode={setGmMode}
                   setRefetch={setRefetch}
+                  setCharacter={setCharacter}
                 />
               );
             }

@@ -1,9 +1,4 @@
-import {
-  ActiveStateType,
-  AdvantageType,
-  EffectEntry,
-  ItemEntry,
-} from "../Types";
+import { ActiveStateType, AdvantageType } from "../Types";
 import AbilityBrowser from "../components_browser/AbilityBrowser";
 import BrowserHeader from "../components_browser/BrowserHeader";
 import CreatureBrowser from "../components_browser/CreatureBrowser";
@@ -25,70 +20,50 @@ const SideColumn = styled.div`
 `;
 
 import { Socket } from "socket.io-client";
-import { CharacterEntry, SessionEntry, AbilityEntry } from "../Types";
+import { CharacterEntry, SessionEntry } from "../Types";
 
 type BrowserProps = {
   session: SessionEntry;
   character: CharacterEntry;
   websocket: Socket;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   isGm: boolean;
-  categorySelect: string;
-  setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-  HideBrowser: boolean;
-  setHideBrowser: React.Dispatch<React.SetStateAction<boolean>>;
   setInventoryState: React.Dispatch<React.SetStateAction<number>>;
   gmMode: boolean;
   isCreature: boolean;
-  search: string;
-  equipment: ItemEntry[];
-  abilities: AbilityEntry[];
-  creaturesList: CharacterEntry[];
-  setCreaturesList: React.Dispatch<React.SetStateAction<CharacterEntry[]>>;
   advantage: AdvantageType;
   activeState: ActiveStateType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
-  effects: EffectEntry[];
+  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
 };
 
 function Browser({
   session,
   character,
   websocket,
-  setCharacterName,
   isGm,
   setGmMode,
-  categorySelect,
-  setCategorySelect,
-  setSearch,
-  HideBrowser,
-  setHideBrowser,
   setInventoryState,
   gmMode,
   isCreature,
-  search,
-  equipment,
-  abilities,
-  creaturesList,
-  setCreaturesList,
   advantage,
   activeState,
   setActiveState,
   setIsCreature,
   setAdvantage,
-  effects,
+  setCharacter,
 }: BrowserProps) {
   const [refetch, setRefetch] = useState(0);
+  const [search, setSearch] = useState("");
+  const [categorySelect, setCategorySelect] = useState<string>("");
+  const [HideBrowser, setHideBrowser] = useState<boolean>(true);
   return (
     <SideColumn>
       <BrowserHeader
         session={session}
         websocket={websocket}
-        setCharacterName={setCharacterName}
         isGm={isGm}
         categorySelect={categorySelect}
         setCategorySelect={setCategorySelect}
@@ -96,6 +71,7 @@ function Browser({
         HideBrowser={HideBrowser}
         setHideBrowser={setHideBrowser}
         setRefetch={setRefetch}
+        setCharacter={setCharacter}
         // Add the other missing props here
       />
       {categorySelect === "drops" && HideBrowser ? (
@@ -122,7 +98,6 @@ function Browser({
           gmMode={gmMode}
           isCreature={isCreature}
           search={search}
-          equipment={equipment}
           isGm={isGm}
           advantage={advantage}
           activeState={activeState}
@@ -137,8 +112,6 @@ function Browser({
           setInventoryState={setInventoryState}
           isCreature={isCreature}
           search={search}
-          abilities={abilities}
-          effects={effects}
           isGm={isGm}
           activeState={activeState}
           advantage={advantage}
@@ -153,12 +126,10 @@ function Browser({
           search={search}
           gmMode={gmMode}
           setGmMode={setGmMode}
-          setCharacterName={setCharacterName}
           setIsCreature={setIsCreature}
-          setCreaturesList={setCreaturesList}
-          creaturesList={creaturesList}
           refetch={refetch}
           setRefetch={setRefetch}
+          setCharacter={setCharacter}
         />
       ) : null}
     </SideColumn>

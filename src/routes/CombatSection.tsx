@@ -95,12 +95,13 @@ interface CombatSectionProps {
   isCreature: boolean;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
+  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
-  isConnected: boolean;
   isGm: boolean;
   gmMode: boolean;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
+  setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function deepCompareCombatEntries(
@@ -132,14 +133,15 @@ function CombatSection({
   character,
   websocket,
   setActiveState,
-  setCharacterName,
+  setCharacter,
   setIsCreature,
   setAdvantage,
   isCreature,
-  isConnected,
   isGm,
   gmMode,
   setGmMode,
+  setSession,
+  setIsGm,
 }: CombatSectionProps) {
   // const { combatlogResponse } = useWebSocket();
 
@@ -215,13 +217,14 @@ function CombatSection({
         <PartySection
           session={session}
           websocket={websocket}
-          setCharacterName={setCharacterName}
+          setCharacter={setCharacter}
           setIsCreature={setIsCreature}
           isCreature={isCreature}
-          isConnected={isConnected}
           isGm={isGm}
           gmMode={gmMode}
           setGmMode={setGmMode}
+          setSession={setSession}
+          setIsGm={setIsGm}
         />
         <DynamicContainer>
           <Column ref={scrollRef} width={"100%"}>

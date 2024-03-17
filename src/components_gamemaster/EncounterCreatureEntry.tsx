@@ -33,6 +33,7 @@ import {
 import { update_session } from "../functions/SessionsFunctions";
 import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
 import AbilityEntryItem from "../components_browser/AbilityEntryItem";
+import { FindCharacter } from "../functions/CharacterFunctions";
 
 interface ColorTypeProps {
   $rgb: string;
@@ -303,13 +304,13 @@ interface EncounterBoxProps {
   websocket: Socket;
   isCreature: boolean;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   onCreatureDelete: (id: string) => void;
   activeState: ActiveStateType;
   advantage: AdvantageType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
 }
 
 function EncounterCreatureEntry({
@@ -318,13 +319,13 @@ function EncounterCreatureEntry({
   websocket,
   isCreature,
   setGmMode,
-  setCharacterName,
   setIsCreature,
   onCreatureDelete,
   activeState,
   advantage,
   setActiveState,
   setAdvantage,
+  setCharacter,
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
   const character_actives = GetActives(creatureClone);
@@ -383,9 +384,8 @@ function EncounterCreatureEntry({
 
   const GoToSheet = () => {
     setIsCreature(true);
-    // This is a little dodgy removing the last two letter to get rid of the A,B,C on the creatures.
-    setCharacterName(creature.id);
     setGmMode(false);
+    setCharacter(FindCharacter(creatureClone.id, session, isCreature));
   };
 
   const title =

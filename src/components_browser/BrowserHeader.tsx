@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { NewCharacterEntry } from "../Types";
+import { CharacterEntry, NewCharacterEntry } from "../Types";
 import { v4 as uuidv4 } from "uuid";
-import { addNewCreature } from "../functions/CharacterFunctions";
+import { FindCharacter, addNewCreature } from "../functions/CharacterFunctions";
 
 import {
   faBolt,
@@ -109,7 +109,6 @@ const LootButton = styled.button<ButtonProps>`
 interface BrowserHeaderProps {
   session: SessionEntry;
   websocket: Socket;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   isGm: boolean;
   categorySelect: string;
   setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
@@ -117,11 +116,11 @@ interface BrowserHeaderProps {
   HideBrowser: boolean;
   setHideBrowser: React.Dispatch<React.SetStateAction<boolean>>;
   setRefetch: React.Dispatch<React.SetStateAction<number>>;
+  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
 }
 
 function BrowserHeader({
   session,
-  setCharacterName,
   isGm,
   categorySelect,
   setCategorySelect,
@@ -129,21 +128,37 @@ function BrowserHeader({
   HideBrowser,
   setHideBrowser,
   setRefetch,
+  setCharacter,
 }: BrowserHeaderProps) {
   const [_filterType, setFilterType] = useState("all");
-
+  const [tempSearch, setTempSearch] = useState("");
   const handlePostCreature = async () => {
     const NewCreature = cloneDeep(NewCharacterEntry);
     NewCreature.id = uuidv4();
     NewCreature.name = "Creature Character";
     await addNewCreature(NewCreature);
     setRefetch((prev) => prev + 1);
-    setCharacterName(NewCreature.id);
+    setCharacter(FindCharacter(NewCreature.id, session, true));
   };
 
   const HandleCategoryChange = (category: string) => {
     setCategorySelect(category);
     setFilterType("all");
+  };
+
+  const handleSetSearch = (value: string) => {
+    setSearch(value);
+  };
+
+  // Handle changes to the input field
+  const handleChange = (e: any) => {
+    setTempSearch(e.target.value);
+  };
+
+  const handleKeyDown = (e: any) => {
+    if (e.key === "Enter") {
+      handleSetSearch(tempSearch);
+    }
   };
 
   return (
@@ -165,7 +180,10 @@ function BrowserHeader({
           <>
             <Input
               className="flex-grow"
-              onChange={(e) => setSearch(e.target.value)}
+              value={tempSearch} // Use the temporary search state as the input value
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              title="Hit Enter to search"
             />
             {session.loot.drops.length > 0 || isGm ? (
               <LootButton

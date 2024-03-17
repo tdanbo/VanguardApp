@@ -10,7 +10,7 @@ import * as Constants from "../Constants";
 import { ActiveStateType, AdvantageType } from "../Types";
 
 interface InfoProps {
-  active: boolean;
+  $active: boolean;
 }
 
 const InfoBox = styled.div<InfoProps>`
@@ -18,10 +18,10 @@ const InfoBox = styled.div<InfoProps>`
   flex-direction: row;
   font-size: 12px;
   font-weight: bold;
-  color: ${(props) => (props.active ? "#dfdfdf" : "#333333")};
+  color: ${(props) => (props.$active ? "#dfdfdf" : "#333333")};
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => (props.active ? "#2f3332" : "#131716")};
+  background-color: ${(props) => (props.$active ? "#2f3332" : "#131716")};
   border-radius: ${Constants.BORDER_RADIUS};
   width: 25px;
   height: 25px;
@@ -73,14 +73,14 @@ function ActiveStateComponent({
       <InfoBox
         title={"Enable Full Action"}
         onClick={() => HandleActive("full")}
-        active={activeState === "full"}
+        $active={activeState === "full"}
       >
         <Icon path={mdiChevronDoubleUp} size={0.75} />
       </InfoBox>
       <InfoBox
         title={"Enable Weak Action"}
         onClick={() => HandleActive("weak")}
-        active={activeState === "weak"}
+        $active={activeState === "weak"}
       >
         <Icon path={mdiChevronDoubleDown} size={0.75} />
       </InfoBox>
@@ -97,14 +97,14 @@ function ActiveStateComponent({
       <InfoBox
         title={"Flanking"}
         onClick={() => HandleAdvantage("flanking")}
-        active={advantage === "flanking"}
+        $active={advantage === "flanking"}
       >
         <Icon path={mdiArrowCollapse} size={0.9} />
       </InfoBox>
       <InfoBox
         title={"Flanked"}
         onClick={() => HandleAdvantage("flanked")}
-        active={advantage === "flanked"}
+        $active={advantage === "flanked"}
       >
         <Icon path={mdiArrowExpand} size={0.9} />
       </InfoBox>

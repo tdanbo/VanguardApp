@@ -5,7 +5,10 @@ import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
 import AddCreatureToRoster from "./AddCreatureToRoster";
-import { delete_creature } from "../functions/CharacterFunctions";
+import {
+  FindCharacter,
+  delete_creature,
+} from "../functions/CharacterFunctions";
 const BaseContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -98,22 +101,22 @@ interface AbilityEntryItemProps {
   browser: boolean;
   setInventoryState?: (inventoryState: number) => void;
   gmMode: boolean;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   websocket: Socket;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setRefetch: React.Dispatch<React.SetStateAction<number>>;
+  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
 }
 
 function CreatureEntryItem({
   session,
   character,
   creature,
-  setCharacterName,
   setIsCreature,
   websocket,
   setGmMode,
   setRefetch,
+  setCharacter,
 }: AbilityEntryItemProps) {
   const [_expanded] = useState<boolean>(false);
 
@@ -145,8 +148,8 @@ function CreatureEntryItem({
 
   const selectCreature = () => {
     setIsCreature(true);
-    setCharacterName(creature.id);
     setGmMode(false);
+    setCharacter(FindCharacter(creature.id, session, true));
   };
 
   const HandleDeleteCreature = async () => {
