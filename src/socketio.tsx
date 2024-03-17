@@ -5,7 +5,6 @@ import { SessionEntry } from "./Types";
 function useSocketIO(
   api: string,
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>,
-  setIsConnected: React.Dispatch<React.SetStateAction<boolean>>,
 ): Socket {
   const socketRef = useRef<Socket | null>(null);
 
@@ -15,21 +14,22 @@ function useSocketIO(
       path: "/sessions",
     });
 
-    socketRef.current.on("connect", () => {
-      setIsConnected(true);
-    });
+    // socketRef.current.on("connect", () => {
+    //   console.log("Connected to server");
+    //   setIsConnected(true);
+    // });
 
-    socketRef.current.on("disconnect", () => {
-      setIsConnected(false);
-    });
+    // socketRef.current.on("disconnect", () => {
+    //   console.log("Disconnected from server");
+    //   setIsConnected(false);
+    // });
 
-    socketRef.current.on("join", (data: SessionEntry) => {
-      setSession(data);
-    });
+    // socketRef.current.on("join", (data: SessionEntry) => {
+    //   setSession(data);
+    // });
 
     socketRef.current.on("update", (data: SessionEntry) => {
       // Replace 'any' with an appropriate type
-
       setSession(data);
 
       // Additional logic based on the response
@@ -41,7 +41,7 @@ function useSocketIO(
         socketRef.current.disconnect();
       }
     };
-  }, [api, setIsConnected, setSession]); // Dependencies
+  }, [api, setSession]); // Dependencies
 
   return socketRef.current!;
 }

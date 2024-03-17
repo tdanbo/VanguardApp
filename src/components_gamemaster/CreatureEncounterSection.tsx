@@ -22,13 +22,13 @@ interface EncounterSectionProps {
   websocket: Socket;
   isCreature: boolean;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   characterLog: CharacterEntry[];
   advantage: AdvantageType;
   activeState: ActiveStateType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
 }
 
 function CreatureEncounterSection({
@@ -36,13 +36,13 @@ function CreatureEncounterSection({
   websocket,
   isCreature,
   setIsCreature,
-  setCharacterName,
   setGmMode,
   characterLog,
   activeState,
   advantage,
   setActiveState,
   setAdvantage,
+  setCharacter,
 }: EncounterSectionProps) {
   // If setSortedEncounter is part of your useState declaration, it should look like this
 
@@ -74,12 +74,12 @@ function CreatureEncounterSection({
               websocket={websocket}
               isCreature={isCreature}
               setGmMode={setGmMode}
-              setCharacterName={setCharacterName}
               setIsCreature={setIsCreature}
               activeState={activeState}
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
+              setCharacter={setCharacter}
             />
           );
         }

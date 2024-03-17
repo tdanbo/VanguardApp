@@ -1,17 +1,12 @@
 import styled from "styled-components";
-import {
-  AdvantageType,
-  CharacterEntry,
-  SessionEntry,
-  ItemEntry,
-  AbilityEntry,
-  EffectEntry,
-} from "../Types";
+import { AdvantageType, CharacterEntry, SessionEntry } from "../Types";
 import AbilitySection from "../components_character/AbilitySection";
 import CharacterNameBox from "../components_character/CharacterNameBox";
 import InventorySection from "../components_character/InventorySection";
 import ResourcesBox from "../components_character/ResourcesBox";
 import XpBox from "../components_character/XpBox";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faNoteSticky, faShieldAlt } from "@fortawesome/free-solid-svg-icons";
 
 import * as Constants from "../Constants";
 
@@ -99,6 +94,22 @@ const OuterColumn = styled.div`
   box-sizing: border-box;
 `;
 
+const Navigator = styled.button`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.BACKGROUND};
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  width: 40px;
+  max-width: 40px;
+  height: 40px;
+`;
+
 import { Socket } from "socket.io-client";
 
 import {
@@ -127,17 +138,13 @@ type CharacterSheetProps = {
   setInventoryState: (value: number) => void;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
-  setIsJoinOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isGm: boolean;
   isCreature: boolean;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   advantage: AdvantageType;
   activeState: ActiveStateType;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  equipment: ItemEntry[];
-  abilities: AbilityEntry[];
-  effects: EffectEntry[];
+  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
 };
 
 function GetActiveIcon(active: string) {
@@ -163,10 +170,10 @@ function CharacterSheet({
   activeState,
   setAdvantage,
   setActiveState,
-  equipment,
-  abilities,
-  setCharacterName,
-  effects,
+  isGm,
+  setGmMode,
+  gmMode,
+  setCharacter,
 }: CharacterSheetProps) {
   UpdateAbilityStats(character);
   const character_actives = GetActives(character);
@@ -186,6 +193,14 @@ function CharacterSheet({
     <OuterColumn>
       <Container height={"40px"}>
         <Row width={"50%"}>
+          {isGm && (
+            <Navigator
+              onClick={() => setGmMode((prevMode) => !prevMode)}
+              title={"GM Mode"}
+            >
+              <FontAwesomeIcon icon={gmMode ? faNoteSticky : faShieldAlt} />
+            </Navigator>
+          )}
           <CharacterNameBox character={character} />
         </Row>
         <Row width={"50%"}>
@@ -208,8 +223,8 @@ function CharacterSheet({
             setAdvantage={setAdvantage}
             session={session}
             websocket={websocket}
-            setCharacterName={setCharacterName}
             isCreature={isCreature}
+            setCharacter={setCharacter}
           />
         </Row>
         <Column width={"100%"}>
@@ -439,7 +454,6 @@ function CharacterSheet({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
-            equipment={equipment}
           />
           <DividerHorizontal />
           <ScrollColumn width="100%">
@@ -452,7 +466,6 @@ function CharacterSheet({
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
-              equipment={equipment}
             />
           </ScrollColumn>
         </Column>
@@ -467,8 +480,6 @@ function CharacterSheet({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
-            abilities={abilities}
-            effects={effects}
           />
         </ScrollColumn>
       </DynamicContainer>

@@ -78,23 +78,24 @@ const DeadControl = styled.div`
 
 import { Socket } from "socket.io-client";
 import CorruptionStatComponent from "../components_character/CorruptionStatComponent";
+import { FindCharacter } from "../functions/CharacterFunctions";
 
 interface SessionBoxProps {
   character: CharacterEntry;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   session: SessionEntry;
   websocket: Socket;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   isCreature: boolean;
+  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
 }
 
 function CharacterBox({
   character,
-  setCharacterName, // setCharacterLog,
   session,
   websocket,
   setIsCreature,
   isCreature,
+  setCharacter,
 }: SessionBoxProps) {
   // const { session } = useContext(SessionContext);
 
@@ -102,7 +103,7 @@ function CharacterBox({
 
   const handleOnClick = () => {
     setIsCreature(false);
-    setCharacterName(character.id);
+    setCharacter(FindCharacter(character.id, session, isCreature));
   };
 
   const handleDeleteCharacter = async () => {

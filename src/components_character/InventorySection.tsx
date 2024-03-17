@@ -11,6 +11,7 @@ import InventoryEntry from "../components_browser/InventoryEntry";
 import InventoryEntryEmpty from "./InventoryEntryEmpty";
 import { GetMaxSlots } from "../functions/RulesFunctions";
 import { UpdateStaticItem } from "../functions/UtilityFunctions";
+import { GetGameData } from "../contexts/GameContent";
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -21,7 +22,6 @@ interface NavigationProps {
   advantage: AdvantageType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  equipment: ItemEntry[];
 }
 
 function sortInventory(a: ItemEntry, b: ItemEntry): number {
@@ -40,9 +40,9 @@ function InventorySection({
   advantage,
   setActiveState,
   setAdvantage,
-  equipment,
 }: NavigationProps) {
   character.inventory.sort(sortInventory);
+  const { equipment } = GetGameData();
   const sortedInventory = [...character.inventory].sort(sortInventory);
 
   const totalSlots = GetMaxSlots(character) * 2;

@@ -8,7 +8,6 @@ import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
-  EffectEntry,
   SessionEntry,
 } from "../Types";
 import AbilityEntryItem from "./AbilityEntryItem";
@@ -16,6 +15,7 @@ import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
 
 import { useRef, useState } from "react";
 import EffectEntryItem from "./EffectEntryItem";
+import { GetGameData } from "../contexts/GameContent";
 
 interface ContainerProps {
   height: string;
@@ -73,13 +73,11 @@ interface AbilityBrowserProps {
   setInventoryState: (state: number) => void;
   isCreature: boolean;
   search: string;
-  abilities: AbilityEntry[];
   isGm: boolean;
   activeState: ActiveStateType;
   advantage: AdvantageType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  effects: EffectEntry[];
 }
 
 function AbilityBrowser({
@@ -89,13 +87,11 @@ function AbilityBrowser({
   setInventoryState,
   isCreature,
   search,
-  abilities,
   isGm,
   activeState,
   advantage,
   setActiveState,
   setAdvantage,
-  effects,
 }: AbilityBrowserProps) {
   type LootCategoryType =
     | "all"
@@ -105,6 +101,7 @@ function AbilityBrowser({
     | "utility"
     | "monstrous traits"
     | "burden";
+  const { abilities, effects } = GetGameData();
   const scrollRef = useRef(null);
   const [filteredEntry, setFilteredEntry] = useState<AbilityEntry[]>([]);
   const [LootCategory, setLootCategory] = useState<LootCategoryType>("all");

@@ -12,6 +12,8 @@ import ResetCreatureEncounter from "./ResetCreatureEncounter";
 import CreatureEncounterSection from "./CreatureEncounterSection";
 import TimeTrackBox from "../components_gamemaster/TimeTrackBox";
 import TravelBox from "../components_gamemaster/TravelBox";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faNoteSticky, faShieldAlt } from "@fortawesome/free-solid-svg-icons";
 
 interface ContainerProps {
   height: string;
@@ -68,6 +70,22 @@ const Column = styled.div`
   box-sizing: border-box;
 `;
 
+const Navigator = styled.button`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  border-radius: ${Constants.BORDER_RADIUS};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  background-color: ${Constants.BACKGROUND};
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  width: 40px;
+  max-width: 40px;
+  height: 40px;
+`;
+
 interface GameMasterProps {
   session: SessionEntry;
   browserState: number;
@@ -76,15 +94,14 @@ interface GameMasterProps {
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   websocket: Socket;
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
-  setIsJoinOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isGm: boolean;
   isCreature: boolean;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
   advantage: AdvantageType;
   activeState: ActiveStateType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
 }
 
 function GameMaster({
@@ -93,11 +110,13 @@ function GameMaster({
   websocket,
   isCreature,
   setIsCreature,
-  setCharacterName,
   advantage,
   activeState,
   setActiveState,
   setAdvantage,
+  isGm,
+  gmMode,
+  setCharacter,
 }: GameMasterProps) {
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
 
@@ -119,6 +138,14 @@ function GameMaster({
     <Column>
       <Container height={"40px"}>
         <Row width={"100%"}>
+          {isGm && (
+            <Navigator
+              onClick={() => setGmMode((prevMode) => !prevMode)}
+              title={"GM Mode"}
+            >
+              <FontAwesomeIcon icon={gmMode ? faNoteSticky : faShieldAlt} />
+            </Navigator>
+          )}
           <TravelBox session={session} websocket={websocket} />
         </Row>
       </Container>
@@ -130,12 +157,12 @@ function GameMaster({
             isCreature={isCreature}
             setIsCreature={setIsCreature}
             setGmMode={setGmMode}
-            setCharacterName={setCharacterName}
             characterLog={characterLog}
             advantage={advantage}
             activeState={activeState}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
+            setCharacter={setCharacter}
           />
         </ScrollColumn>
       </DynamicContainer>

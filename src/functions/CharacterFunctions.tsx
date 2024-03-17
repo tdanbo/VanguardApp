@@ -1,6 +1,12 @@
 import axios from "axios";
 import { API } from "../Constants";
-import { CharacterEntry, modifiedCreature } from "../Types";
+import {
+  CharacterEntry,
+  modifiedCreature,
+  NewCharacterEntry,
+  SessionEntry,
+} from "../Types";
+import { GetGameData } from "../contexts/GameContent";
 export const getCreatureMovement = (creature: modifiedCreature) => {
   const movement: { [key: number]: number } = {
     5: -10,
@@ -88,4 +94,15 @@ export async function delete_creature(name: string) {
 export const DeleteInventorySlot = (character: CharacterEntry, id: string) => {
   const inventory = character.inventory.filter((item) => item.id !== id);
   character.inventory = inventory;
+};
+
+export const FindCharacter = (
+  id: string,
+  session: SessionEntry,
+  is_creature: boolean,
+) => {
+  const character_list = is_creature
+    ? GetGameData().creatures
+    : session.characters;
+  return character_list.find((entry) => entry.id === id) || NewCharacterEntry;
 };

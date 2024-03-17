@@ -53,10 +53,10 @@ type RollComponentProps = {
 const dice_size = "25px";
 
 type RollContainerProps = {
-  dice_icon: string;
-  dice_size: string;
   color: string;
-  inactive: boolean;
+  $inactive: boolean;
+  $dice_icon: string;
+  $dice_size: string;
 };
 
 const RollContainer = styled.div<RollContainerProps>`
@@ -64,19 +64,19 @@ const RollContainer = styled.div<RollContainerProps>`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: ${(props) => props.dice_size}; // Use props.dice_size
-  height: ${(props) => props.dice_size}; // Use props.dice_size
+  width: ${(props) => props.$dice_size}; // Use props.dice_size
+  height: ${(props) => props.$dice_size}; // Use props.dice_size
   font-weight: bold;
   font-size: 16px;
   color: ${(props) =>
-    props.inactive ? props.color : Constants.WIDGET_SECONDARY_FONT_INACTIVE};
+    props.$inactive ? props.color : Constants.WIDGET_SECONDARY_FONT_INACTIVE};
   text-align: center;
-  background-image: url(${(props) => props.dice_icon});
+  background-image: url(${(props) => props.$dice_icon});
   background-repeat: no-repeat;
   background-position: center;
-  background-size: ${(props) => props.dice_size}; // Use props.dice_size once
+  background-size: ${(props) => props.$dice_size}; // Use props.dice_size once
   text-shadow: ${(props) =>
-    props.inactive ? "1px 1px 2px black" : "0px 0px 0px transparent;"};
+    props.$inactive ? "1px 1px 2px black" : "0px 0px 0px transparent;"};
 `;
 
 function PickRandomWeapon(character: CharacterEntry) {
@@ -303,12 +303,12 @@ function RollComponent({
 
   return (
     <RollContainer
-      dice_icon={dice_icon}
-      dice_size={dice_size}
+      $dice_icon={dice_icon}
+      $dice_size={dice_size}
       color={color}
       title={`Roll d${dice}`}
       onClick={is_possible ? () => RollDIce() : () => {}}
-      inactive={inactive}
+      $inactive={inactive}
     >
       d{dice}
       {dice_mod > 0 && roll_source !== "Skill Test" ? `+${dice_mod}` : null}

@@ -1,17 +1,20 @@
 import CharacterBox from "./CharacterBox";
 import { Socket } from "socket.io-client";
-import { SessionEntry, NewCharacterEntry } from "../Types";
+import { SessionEntry, NewCharacterEntry, CharacterEntry } from "../Types";
 import * as Constants from "../Constants";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { get_session } from "../functions/SessionsFunctions";
 import {
   faHatWizard,
   faPlus,
+  faRightToBracket,
   faUser,
-  faWifi,
 } from "@fortawesome/free-solid-svg-icons";
 import { update_session } from "../functions/SessionsFunctions";
 import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
+import { FindCharacter } from "../functions/CharacterFunctions";
 type DivProps = {
   width: string;
 };
@@ -60,22 +63,6 @@ const AddButton = styled.button`
   padding-left: 50px;
 `;
 
-const WebsocketStatus = styled.button`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  width: 40px;
-  max-width: 40px;
-  height: 40px;
-`;
-
 const Navigator = styled.button`
   display: flex;
   flex-direction: row;
@@ -92,70 +79,116 @@ const Navigator = styled.button`
   height: 40px;
 `;
 
+const SessionInput = styled.input`
+  display: flex;
+  flex-grow: 1;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: ${Constants.BORDER_RADIUS};
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  font-weight: bold;
+  text-align: center;
+`;
+
 interface PartySectionProps {
   session: SessionEntry;
   websocket: Socket;
-  setCharacterName: React.Dispatch<React.SetStateAction<string>>;
+  setCharacter: React.Dispatch<React.SetStateAction<CharacterEntry>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   isCreature: boolean;
-  isConnected: boolean;
   isGm: boolean;
   gmMode: boolean;
   setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
+  setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function PartySection({
   session,
   websocket,
-  setCharacterName,
+  setCharacter,
   setIsCreature,
   isCreature,
-  isConnected,
   isGm,
-  gmMode,
-  setGmMode,
+  setIsGm,
+  setSession,
 }: PartySectionProps) {
+  const [isJoined, setIsJoined] = useState(false);
+  const [sessionName, setSessionName] = useState("0nPFPbvRss"); // Default session name "0nPFPbvRss
+
   const handlePostCharacter = async () => {
     NewCharacterEntry.name = "Player Character";
     NewCharacterEntry.id = uuidv4();
     session.characters.push(NewCharacterEntry);
-    update_session(session, websocket, NewCharacterEntry, isCreature);
-    setCharacterName(NewCharacterEntry.id);
+    await update_session(session, websocket, NewCharacterEntry, isCreature);
+    setCharacter(FindCharacter(NewCharacterEntry.id, session, isCreature));
+  };
+
+  const handleJoinSession = () => {
+    get_session(sessionName).then((res) => {
+      if (res) {
+        setSession(res);
+        setIsJoined(true);
+      } else {
+        console.log("Session not found");
+      }
+    });
+  };
+
+  // const HandleLeaveSession = () => {
+  //   setSession(EmptySession);
+  //   setCharacterName("");
+  //   setIsJoined(false);
+  // };
+
+  const onSessionNameChange = (e: any) => {
+    setSessionName(e.target.value);
+  };
+
+  const onGmSwitch = () => {
+    setIsGm((prevMode) => !prevMode);
   };
 
   return (
     <>
       <Container height="40px">
         <Row width="100%">
-          {isGm ? (
-            <Navigator
-              onClick={() => setGmMode((prevMode) => !prevMode)} // Toggle gmMode when clicked
-              title={"GM Mode"}
-            >
-              <FontAwesomeIcon icon={gmMode ? faHatWizard : faUser} />
-            </Navigator>
-          ) : null}
-
-          <>
+          {isJoined ? (
             <AddButton onClick={handlePostCharacter}>
               <FontAwesomeIcon icon={faPlus} />
             </AddButton>
-            <WebsocketStatus>
-              {isConnected ? (
+          ) : (
+            <SessionInput
+              placeholder="Session ID"
+              value={sessionName}
+              onChange={onSessionNameChange}
+            ></SessionInput>
+          )}
+          {isJoined ? (
+            <Navigator onClick={onGmSwitch}>
+              {isGm ? (
                 <FontAwesomeIcon
-                  icon={faWifi}
-                  color={Constants.BRIGHT_GREEN}
-                  title={"Connected"}
+                  icon={faHatWizard}
+                  color={Constants.WIDGET_SECONDARY_FONT}
+                  title={"Player Mode"}
                 />
               ) : (
                 <FontAwesomeIcon
-                  icon={faWifi}
-                  color={Constants.BRIGHT_RED}
-                  title={"Disconnected"}
+                  icon={faUser}
+                  color={Constants.WIDGET_SECONDARY_FONT}
+                  title={"Game Master Mode"}
                 />
               )}
-            </WebsocketStatus>
-          </>
+            </Navigator>
+          ) : (
+            <Navigator onClick={handleJoinSession}>
+              <FontAwesomeIcon
+                icon={faRightToBracket}
+                color={Constants.WIDGET_SECONDARY_FONT}
+                title={"Disconnected"}
+              />
+            </Navigator>
+          )}
         </Row>
       </Container>
       <Container height="260px">
@@ -165,11 +198,11 @@ function PartySection({
               <CharacterBox
                 key={index}
                 character={entry}
-                setCharacterName={setCharacterName}
                 session={session}
                 websocket={websocket}
                 setIsCreature={setIsCreature}
                 isCreature={false}
+                setCharacter={setCharacter}
               />
             );
           })}
