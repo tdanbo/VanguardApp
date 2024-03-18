@@ -96,7 +96,7 @@ export function GetMaxToughness(character: CharacterEntry) {
 
 export function GetPainThreshold(character: CharacterEntry) {
   return Math.ceil(
-    character.stats.strong.value + character.stats.strong.mod / 2,
+    (character.stats.strong.value + character.stats.strong.mod) / 2,
   );
 }
 
