@@ -1,5 +1,13 @@
 import { AbilityEntry, CharacterEntry, EffectEntry } from "../../Types";
 
+function HasItem(character: CharacterEntry, item: string) {
+  for (const i of character.inventory) {
+    if (i.name === item && i.equipped) {
+      return true;
+    }
+  }
+}
+
 function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
   character.stats.strong.mod = 0;
   character.stats.resolute.mod = 0;
@@ -62,6 +70,10 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
       character.stats.cunning.mod += LevelValue(ability);
     }
   });
+
+  if (HasItem(character, "Wraith Crown of Eternity Legion")) {
+    character.stats.resolute.mod += 2;
+  }
 
   return character;
 }
