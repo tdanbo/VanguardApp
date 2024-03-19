@@ -22,7 +22,6 @@ import {
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
 
 import { useRef, useState } from "react";
-import InventoryEntry from "./InventoryEntry";
 import { update_session } from "../functions/SessionsFunctions";
 import {
   IsArmor,
@@ -31,6 +30,7 @@ import {
   IsTreasure,
   IsWeapon,
 } from "../functions/UtilityFunctions";
+import InventoryEntry from "./InventoryEntry";
 
 interface ContainerProps {
   height: string;
@@ -279,7 +279,10 @@ function DropsBrowser({
       let drop = false;
       let drop_chance = 0;
       const drop_roll = random(1, 100);
-      if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
+      if (["Food", "Water"].includes(item.name)) {
+        return false;
+      }
+      if (item.static.category === "resource") {
         drop_chance = 75;
       } else if (item.static.type === "normal") {
         drop_chance = 0.625 * rarity;
@@ -307,6 +310,9 @@ function DropsBrowser({
       let drop = false;
       let drop_chance = 0;
       const drop_roll = random(1, 100);
+      if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
+        return false;
+      }
       if (item.static.category === "resource") {
         drop_chance = 75;
       } else if (item.static.type === "normal") {

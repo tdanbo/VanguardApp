@@ -1,9 +1,16 @@
+import {
+  faBars,
+  faChevronRight,
+  faSkull,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { mdiRomanNumeral1, mdiRomanNumeral2, mdiRomanNumeral3 } from "@mdi/js";
+import Icon from "@mdi/react";
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import Icon from "@mdi/react";
-import { toTitleCase } from "../functions/UtilityFunctions";
 import {
   AbilityEntry,
   ActiveStateType,
@@ -12,18 +19,10 @@ import {
   RollTypeEntry,
   SessionEntry,
 } from "../Types";
-import { CheckAbility } from "../functions/ActivesFunction";
-import {
-  faBars,
-  faChevronRight,
-  faXmark,
-  faSkull,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { update_session } from "../functions/SessionsFunctions";
-import { StyledText } from "../functions/UtilityFunctions";
-import { mdiRomanNumeral1, mdiRomanNumeral2, mdiRomanNumeral3 } from "@mdi/js";
 import RollComponent from "../components_general/RollComponent";
+import { CheckAbility } from "../functions/ActivesFunction";
+import { update_session } from "../functions/SessionsFunctions";
+import { StyledText, toTitleCase } from "../functions/UtilityFunctions";
 const EntryColor = (type: string) => {
   return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.WIDGET_BORDER;
 };
@@ -153,8 +152,7 @@ const ExpandButten = styled.div`
   justify-content: center;
   font-weight: bold;
   color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-  padding-bottom: 5px;
-  font-size: 12px;
+  font-size: 16px;
 `;
 
 interface LevelContainerProps {
@@ -280,9 +278,12 @@ function AbilityEntryItem({
   setActiveState,
   setAdvantage,
 }: AbilityEntryItemProps) {
+  const [free, setFree] = useState<boolean>(false);
   const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
+
   useEffect(() => {
     setAbilityLevel(ability.level);
+    setFree(ability.free);
   });
 
   interface LevelProps {
@@ -429,10 +430,21 @@ function AbilityEntryItem({
 
   const current_level = GetCurrentLevel(ability);
 
+  const ChangeFreeHandle = () => {
+    ability.free = !free;
+    update_session(session, websocket, character, isCreature);
+  };
+
   return (
     <BaseContainer className="button-hover">
       <Container>
-        <ExpandButten className={"button-hover"}></ExpandButten>
+        <ExpandButten
+          className={"button-hover"}
+          title={free ? "Free Ability" : ""}
+          onClick={ChangeFreeHandle}
+        >
+          {free ? "F" : null}
+        </ExpandButten>
         <NameContainer
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >

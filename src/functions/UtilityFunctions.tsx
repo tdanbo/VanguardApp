@@ -1,3 +1,4 @@
+import { uniqueId } from "lodash";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
@@ -6,12 +7,11 @@ import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
+  EffectEntry,
   ItemEntry,
   SessionEntry,
-  EffectEntry,
 } from "../Types";
 import RollComponent from "../components_general/RollComponent";
-import { uniqueId } from "lodash";
 
 export function UpperFirstLetter(input: string): string {
   if (!input || typeof input !== "string") {
@@ -119,6 +119,7 @@ export function IsGeneralGood(item: ItemEntry): boolean {
     "adventuring gear",
     "tool",
     "container",
+    "resource",
   ];
   if (general_categories.includes(item.static.category)) {
     return true;

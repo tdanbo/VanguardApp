@@ -1,19 +1,18 @@
-import CharacterBox from "./CharacterBox";
-import { Socket } from "socket.io-client";
-import { SessionEntry, NewCharacterEntry } from "../Types";
-import * as Constants from "../Constants";
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { get_session } from "../functions/SessionsFunctions";
 import {
   faHatWizard,
   faPlus,
   faRightToBracket,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { update_session } from "../functions/SessionsFunctions";
-import { v4 as uuidv4 } from "uuid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { Socket } from "socket.io-client";
+import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
+import * as Constants from "../Constants";
+import { NewCharacterEntry, SessionEntry } from "../Types";
+import { get_session, update_session } from "../functions/SessionsFunctions";
+import CharacterBox from "./CharacterBox";
 type DivProps = {
   width: string;
 };
@@ -113,7 +112,7 @@ function PartySection({
   setSession,
 }: PartySectionProps) {
   const [isJoined, setIsJoined] = useState(false);
-  const [sessionName, setSessionName] = useState(""); // 0nPFPbvRss Default session name "0nPFPbvRss
+  const [sessionName, setSessionName] = useState("test"); // 0nPFPbvRss Default session name "0nPFPbvRss
 
   const handlePostCharacter = async () => {
     NewCharacterEntry.name = "Player Character";

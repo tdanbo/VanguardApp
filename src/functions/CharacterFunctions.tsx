@@ -1,12 +1,12 @@
 import axios from "axios";
 import { API } from "../Constants";
+import { GetGameData } from "../contexts/GameContent";
 import {
   CharacterEntry,
   modifiedCreature,
   NewCharacterEntry,
   SessionEntry,
 } from "../Types";
-import { GetGameData } from "../contexts/GameContent";
 export const getCreatureMovement = (creature: modifiedCreature) => {
   const movement: { [key: number]: number } = {
     5: -10,
@@ -55,7 +55,10 @@ export const getCharacterXp = (character: CharacterEntry) => {
   let xp_spent = 0;
 
   character.abilities.forEach((ability) => {
-    if (["burden", "ritual", "utility"].includes(ability.static.type)) {
+    if (
+      ["burden", "ritual", "utility"].includes(ability.static.type) ||
+      ability.free
+    ) {
       return;
     }
 
@@ -73,7 +76,7 @@ export const getCharacterXp = (character: CharacterEntry) => {
 export const getUtilityXp = (character: CharacterEntry) => {
   let xp_spent = 0;
   character.abilities.forEach((ability) => {
-    if (ability.static.type !== "utility") {
+    if (ability.static.type !== "utility" || ability.free) {
       return;
     }
     xp_spent += 10;
