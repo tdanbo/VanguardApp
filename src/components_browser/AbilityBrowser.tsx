@@ -10,12 +10,12 @@ import {
   CharacterEntry,
   SessionEntry,
 } from "../Types";
-import AbilityEntryItem from "./AbilityEntryItem";
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
+import AbilityEntryItem from "./AbilityEntryItem";
 
 import { useRef, useState } from "react";
-import EffectEntryItem from "./EffectEntryItem";
 import { GetGameData } from "../contexts/GameContent";
+import EffectEntryItem from "./EffectEntryItem";
 
 interface ContainerProps {
   height: string;
@@ -172,6 +172,8 @@ function AbilityBrowser({
           item.name.toLowerCase() +
           " " +
           item.static.type.toLowerCase() +
+          " " +
+          item.static.tradition.toLowerCase() +
           " " +
           item.static.novice.description.toLowerCase() +
           " " +

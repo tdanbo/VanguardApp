@@ -6,6 +6,7 @@ import { ItemRulesActives } from "./rules/ItemRulesActives";
 import { ManAtArms_active } from "./rules/ManAtArms";
 import { Robust_active } from "./rules/Robust";
 import { ShieldFighter_active } from "./rules/ShieldFighter";
+import { StaffFighting_active } from "./rules/StaffFighting";
 import { TwinAttack_active } from "./rules/TwinAttack";
 
 export const GetActives = (character: CharacterEntry) => {
@@ -100,6 +101,7 @@ export const GetActives = (character: CharacterEntry) => {
   ManAtArms_active(character, character_actives);
   ArmoredMystic_active(character, character_actives);
   ShieldFighter_active(character, character_actives);
+  StaffFighting_active(character, character_actives);
   Robust_active(character, character_actives);
   TwinAttack_active(character, character_actives);
   ItemRulesActives(character, character_actives);

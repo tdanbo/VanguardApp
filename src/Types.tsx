@@ -123,8 +123,9 @@ interface ItemStatic {
 export interface AbilityEntry {
   name: string;
   level: string;
-  id: string;
   static: AbilityStatic;
+  free: boolean;
+  id: string;
 }
 
 interface AbilityStatic {
