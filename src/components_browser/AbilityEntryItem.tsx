@@ -278,6 +278,7 @@ function AbilityEntryItem({
   setActiveState,
   setAdvantage,
 }: AbilityEntryItemProps) {
+  console.log(ability);
   const [free, setFree] = useState<boolean>(false);
   const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
 
@@ -407,7 +408,7 @@ function AbilityEntryItem({
     return (
       <LevelSelection
         className={"button-hover"}
-        type={ability.static.type}
+        type={ability.static.category}
         $active={isActive(abilityLevel as Level)}
         onClick={handleLevelChange}
       >
@@ -448,11 +449,11 @@ function AbilityEntryItem({
         <NameContainer
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >
-          <AbilityName type={ability.static.type} $active={true}>
+          <AbilityName type={ability.static.category} $active={true}>
             {ability.name}
             <CorruptionContainer>
-              {(ability.static.type === "mystical power" ||
-                ability.static.type === "ritual") && (
+              {(ability.static.category === "mystical power" ||
+                ability.static.category === "ritual") && (
                 <>
                   {(ability.level === "Novice" ||
                     ability.level === "Adept" ||
@@ -504,32 +505,37 @@ function AbilityEntryItem({
           </AbilityName>
           <AbilityDetail>
             {ability.static.tradition === ""
-              ? toTitleCase(ability.static.type)
-              : `${toTitleCase(ability.static.type)}, ${
+              ? toTitleCase(ability.static.category)
+              : `${toTitleCase(ability.static.category)}, ${
                   ability.static.tradition
                 }`}
           </AbilityDetail>
         </NameContainer>
 
         <RollBox color={Constants.BRIGHT_RED}>
-          {current_level.roll.map((i, index) => (
-            <RollComponent
-              session={session}
-              character={character}
-              websocket={websocket}
-              roll_type={ability.static.type as RollTypeEntry}
-              roll_source={ability.name}
-              isCreature={isCreature}
-              dice={i.dice}
-              dice_mod={i.mod}
-              color={EntryColor(i.type)}
-              key={index}
-              activeState={""}
-              advantage={""}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-            />
-          ))}
+          {current_level.roll.map(
+            (i, index) => (
+              i.type === undefined && console.log(ability),
+              (
+                <RollComponent
+                  session={session}
+                  character={character}
+                  websocket={websocket}
+                  roll_type={ability.static.category as RollTypeEntry}
+                  roll_source={ability.name}
+                  isCreature={isCreature}
+                  dice={i.dice}
+                  dice_mod={i.mod}
+                  color={EntryColor(i.type)}
+                  key={index}
+                  activeState={""}
+                  advantage={""}
+                  setActiveState={setActiveState}
+                  setAdvantage={setAdvantage}
+                />
+              )
+            ),
+          )}
         </RollBox>
         <LevelSelectionContainer>
           {ability.static.adept.description !== "" &&

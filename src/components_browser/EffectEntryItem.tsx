@@ -5,10 +5,10 @@ import * as Constants from "../Constants";
 
 import { toTitleCase } from "../functions/UtilityFunctions";
 import {
-  EffectEntry,
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
+  EffectEntry,
   SessionEntry,
 } from "../Types";
 
@@ -351,7 +351,7 @@ function EffectEntryItem({
     return (
       <LevelSelection
         className={"button-hover"}
-        type={ability.static.type}
+        type={ability.static.category}
         onClick={(e) => {
           e.preventDefault(); // Prevents the default action of the click event
           handleLevelChange(true);
@@ -373,10 +373,10 @@ function EffectEntryItem({
         <NameContainer
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >
-          <AbilityName type={ability.static.type} $active={true}>
+          <AbilityName type={ability.static.category} $active={true}>
             {ability.name}
           </AbilityName>
-          <AbilityDetail>{toTitleCase(ability.static.type)}</AbilityDetail>
+          <AbilityDetail>{toTitleCase(ability.static.category)}</AbilityDetail>
         </NameContainer>
         <LevelSelectionContainer>
           <LevelSelector ability={ability} />
@@ -421,7 +421,7 @@ function EffectEntryItem({
       </Container>
       <LevelContainer $expanded={expanded}>
         <LevelComponent
-          effect={ability.static.description}
+          effect={ability.static.effect}
           radius={Constants.BORDER_RADIUS}
         />
       </LevelContainer>

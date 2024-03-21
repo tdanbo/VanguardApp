@@ -8,10 +8,8 @@ import {
   SessionEntry,
 } from "../Types";
 import InventoryEntry from "../components_browser/InventoryEntry";
-import InventoryEntryEmpty from "./InventoryEntryEmpty";
 import { GetMaxSlots } from "../functions/RulesFunctions";
-import { UpdateStaticItem } from "../functions/UtilityFunctions";
-import { GetGameData } from "../contexts/GameContent";
+import InventoryEntryEmpty from "./InventoryEntryEmpty";
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -42,7 +40,6 @@ function InventorySection({
   setAdvantage,
 }: NavigationProps) {
   character.inventory.sort(sortInventory);
-  const { equipment } = GetGameData();
   const sortedInventory = [...character.inventory].sort(sortInventory);
 
   const totalSlots = GetMaxSlots(character) * 2;
@@ -52,7 +49,6 @@ function InventorySection({
       {Array.from({ length: totalSlots }).map((_, index) => {
         const item = sortedInventory[index];
         if (item !== undefined && !item.equipped) {
-          UpdateStaticItem(item, equipment);
           return (
             <InventoryEntry
               session={session}

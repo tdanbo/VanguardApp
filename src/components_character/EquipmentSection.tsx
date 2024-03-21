@@ -1,4 +1,5 @@
 import { Socket } from "socket.io-client";
+import styled from "styled-components";
 import * as Constants from "../Constants";
 import {
   ActiveStateType,
@@ -9,9 +10,6 @@ import {
 } from "../Types";
 import InventoryEntry from "../components_browser/InventoryEntry";
 import { GetMaxSlots } from "../functions/RulesFunctions";
-import { UpdateStaticItem } from "../functions/UtilityFunctions";
-import styled from "styled-components";
-import { GetGameData } from "../contexts/GameContent";
 const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -49,7 +47,6 @@ function EquipmentSection({
   setActiveState,
   setAdvantage,
 }: NavigationProps) {
-  const { equipment } = GetGameData();
   character.inventory.sort(sortInventory);
   const sortedInventory = [...character.inventory].sort(sortInventory);
   const totalSlots = GetMaxSlots(character) * 2;
@@ -59,7 +56,6 @@ function EquipmentSection({
       {Array.from({ length: totalSlots }).map((_, index) => {
         const item = sortedInventory[index];
         if (item !== undefined && item.equipped) {
-          UpdateStaticItem(item, equipment);
           return (
             <InventoryEntry
               session={session}

@@ -284,15 +284,15 @@ function DropsBrowser({
       }
       if (item.static.category === "resource") {
         drop_chance = 75;
-      } else if (item.static.type === "normal") {
+      } else if (item.static.rarity === "normal") {
         drop_chance = 0.625 * rarity;
-      } else if (item.static.type === "quality") {
+      } else if (item.static.rarity === "quality") {
         drop_chance = 0.418 * rarity;
-      } else if (item.static.type === "mystical") {
+      } else if (item.static.rarity === "mystical") {
         drop_chance = 0.28 * rarity;
-      } else if (item.static.type === "artifact") {
+      } else if (item.static.rarity === "artifact") {
         drop_chance = 0.187 * rarity;
-      } else if (item.static.type === "unique") {
+      } else if (item.static.rarity === "unique") {
         drop_chance = 0.125 * rarity;
       } else {
         drop_chance = 0.625 * rarity;
@@ -315,15 +315,15 @@ function DropsBrowser({
       }
       if (item.static.category === "resource") {
         drop_chance = 75;
-      } else if (item.static.type === "normal") {
+      } else if (item.static.rarity === "normal") {
         drop_chance = 5 * rarity;
-      } else if (item.static.type === "quality") {
+      } else if (item.static.rarity === "quality") {
         drop_chance = 2.36 * rarity;
-      } else if (item.static.type === "mystical") {
+      } else if (item.static.rarity === "mystical") {
         drop_chance = 1.12 * rarity;
-      } else if (item.static.type === "artifact") {
+      } else if (item.static.rarity === "artifact") {
         drop_chance = 0.53 * rarity;
-      } else if (item.static.type === "unique") {
+      } else if (item.static.rarity === "unique") {
         drop_chance = 0; // 0.25 * rarity; uniques cant be bought
       } else {
         drop_chance = 5 * rarity;
@@ -405,29 +405,27 @@ function DropsBrowser({
       <DynamicContainer>
         <ScrollColumn ref={scrollRef} width="100%">
           {session.loot.drops.sort(sortShoppingList).map((entry, index) => {
-            if (entry.static.entry === "ItemEntry") {
-              return (
-                <InventoryEntry
-                  session={session}
-                  character={character}
-                  websocket={websocket}
-                  key={`InventoryEntry${index}`}
-                  browser={true}
-                  index={index}
-                  item={entry}
-                  equipped={""}
-                  id={""}
-                  setInventoryState={setInventoryState}
-                  isCreature={isCreature}
-                  canBuy={session.state === "buy" ? true : false}
-                  isGm={isGm}
-                  advantage={advantage}
-                  activeState={activeState}
-                  setActiveState={setActiveState}
-                  setAdvantage={setAdvantage}
-                />
-              );
-            }
+            return (
+              <InventoryEntry
+                session={session}
+                character={character}
+                websocket={websocket}
+                key={`InventoryEntry${index}`}
+                browser={true}
+                index={index}
+                item={entry}
+                equipped={""}
+                id={""}
+                setInventoryState={setInventoryState}
+                isCreature={isCreature}
+                canBuy={session.state === "buy" ? true : false}
+                isGm={isGm}
+                advantage={advantage}
+                activeState={activeState}
+                setActiveState={setActiveState}
+                setAdvantage={setAdvantage}
+              />
+            );
           })}
           {Array.from({ length: 30 }).map((_, index) => {
             return <InventoryEntryEmpty key={index} />;
