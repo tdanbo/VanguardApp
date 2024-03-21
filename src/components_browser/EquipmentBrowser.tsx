@@ -119,19 +119,11 @@ function EquipmentBrowser({
 
   const sortList = (a: ItemEntry, b: ItemEntry) => {
     const categoryComparison =
-      Constants.CATEGORY_FILTER.indexOf(a.static.category) -
-      Constants.CATEGORY_FILTER.indexOf(b.static.category);
-
+      Constants.RARITY_FILTER.indexOf(b.static.rarity) -
+      Constants.RARITY_FILTER.indexOf(a.static.rarity);
     if (categoryComparison !== 0) {
       return categoryComparison;
     }
-
-    // // If categories are the same, then compare by rarity
-    // const rarityComparison =
-    //   Constants.RARITY_FILTER.indexOf(a.type) -
-    //   Constants.RARITY_FILTER.indexOf(b.type);
-
-    // return rarityComparison;
     return 0;
   };
 
