@@ -56,7 +56,7 @@ export const getCharacterXp = (character: CharacterEntry) => {
 
   character.abilities.forEach((ability) => {
     if (
-      ["burden", "ritual", "utility"].includes(ability.static.type) ||
+      ["burden", "ritual", "utility"].includes(ability.static.category) ||
       ability.free
     ) {
       return;
@@ -76,7 +76,7 @@ export const getCharacterXp = (character: CharacterEntry) => {
 export const getUtilityXp = (character: CharacterEntry) => {
   let xp_spent = 0;
   character.abilities.forEach((ability) => {
-    if (ability.static.type !== "utility" || ability.free) {
+    if (ability.static.category !== "utility" || ability.free) {
       return;
     }
     xp_spent += 10;

@@ -20,16 +20,16 @@ import {
   SessionEntry,
 } from "../Types";
 import RollComponent from "../components_general/RollComponent";
+import { CheckAbility } from "../functions/ActivesFunction";
 import { DeleteInventorySlot } from "../functions/CharacterFunctions";
 import { GetMaxSlots, RulesDiceAdjust } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-import { CheckAbility } from "../functions/ActivesFunction";
 import { IsArmor, IsWeapon, StyledText } from "../functions/UtilityFunctions";
 import { Qualities } from "../functions/rules/Qualities";
 
 import { cloneDeep } from "lodash";
-import DurabilityComponent from "./DurabilityComponent";
 import { ShuffleArray, toTitleCase } from "../functions/UtilityFunctions";
+import DurabilityComponent from "./DurabilityComponent";
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -569,9 +569,10 @@ function InventoryEntry({
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >
           <NameBox color={COLOR}>
-            {item.name}{" "}
+            {item.name}
+
             <CorruptionContainer>
-              {item.static.type === "unique" &&
+              {item.static.rarity === "unique" &&
               !CheckAbility(character, "Artifact Crafting", "novice") ? (
                 <FontAwesomeIcon icon={faSkull} style={{ fontSize: "14px" }} />
               ) : null}
@@ -580,19 +581,17 @@ function InventoryEntry({
           <Row>
             <TypeBox>
               {browser && isGm ? (
-                <CostBox>{ConvertCurrency(item.static.cost)}</CostBox>
+                <CostBox>{ConvertCurrency(item.cost)}</CostBox>
               ) : null}
-              {item.static.type !== "normal"
-                ? toTitleCase(item.static.type)
+              {item.static.rarity !== "normal"
+                ? toTitleCase(item.static.rarity)
                 : null}{" "}
               {toTitleCase(item.static.category)}
               {item.static.quality.length > 0 && ","}
               {item.static.quality.map((quality, index) => {
                 let description = "";
 
-                if (quality === "Effect") {
-                  description = item.static.description;
-                } else if (Qualities[quality]) {
+                if (Qualities[quality]) {
                   description = Qualities[quality].description;
                 } else {
                   console.warn("Missing quality:", quality);

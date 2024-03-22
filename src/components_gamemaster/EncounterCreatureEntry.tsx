@@ -16,14 +16,15 @@ import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import {
+  AbilityEntry,
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
   ItemEntry,
   RESOURCE,
   SessionEntry,
-  AbilityEntry,
 } from "../Types";
+import AbilityEntryItem from "../components_browser/AbilityEntryItem";
 import { GetActives } from "../functions/ActivesFunction";
 import {
   GetMaxToughness,
@@ -32,7 +33,6 @@ import {
 } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
-import AbilityEntryItem from "../components_browser/AbilityEntryItem";
 
 interface ColorTypeProps {
   $rgb: string;
@@ -553,8 +553,8 @@ function EncounterCreatureEntry({
 
   const sortList = (a: AbilityEntry, b: AbilityEntry) => {
     const categoryComparison =
-      Constants.TYPE_FILTER.indexOf(a.static.type) -
-      Constants.TYPE_FILTER.indexOf(b.static.type);
+      Constants.TYPE_FILTER.indexOf(a.static.category) -
+      Constants.TYPE_FILTER.indexOf(b.static.category);
 
     if (categoryComparison !== 0) {
       return categoryComparison;
@@ -689,8 +689,8 @@ function EncounterCreatureEntry({
             !Constants.INTEGRATED_ABILITIES.includes(
               ability.name.toLowerCase(),
             ) &&
-            ability.static.type.toLowerCase() !== "utility" &&
-            ability.static.type.toLowerCase() !== "ritual";
+            ability.static.category.toLowerCase() !== "utility" &&
+            ability.static.category.toLowerCase() !== "ritual";
 
           return isNotIntegratedOrUtility ? (
             <AbilityEntryItem

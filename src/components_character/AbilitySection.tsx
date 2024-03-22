@@ -8,13 +8,8 @@ import {
   SessionEntry,
 } from "../Types";
 import AbilityEntryItem from "../components_browser/AbilityEntryItem";
-import InventoryEntryEmpty from "./InventoryEntryEmpty";
-import {
-  UpdateStaticAbility,
-  UpdateStaticEffects,
-} from "../functions/UtilityFunctions";
 import EffectEntryItem from "../components_browser/EffectEntryItem";
-import { GetGameData } from "../contexts/GameContent";
+import InventoryEntryEmpty from "./InventoryEntryEmpty";
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -29,8 +24,8 @@ interface NavigationProps {
 
 function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
   return (
-    Constants.TYPE_FILTER.indexOf(a.static.type.toLowerCase()) -
-    Constants.TYPE_FILTER.indexOf(b.static.type.toLowerCase())
+    Constants.TYPE_FILTER.indexOf(a.static.category.toLowerCase()) -
+    Constants.TYPE_FILTER.indexOf(b.static.category.toLowerCase())
   );
 }
 
@@ -45,11 +40,9 @@ function AbilitySection({
   setAdvantage,
 }: NavigationProps) {
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
-  const { abilities, effects } = GetGameData();
   return (
     <>
       {character.effects.map((effect, index) => {
-        UpdateStaticEffects(effect, effects);
         return (
           <EffectEntryItem
             session={session}
@@ -67,7 +60,6 @@ function AbilitySection({
         );
       })}
       {sortedAbilities.map((ability, index) => {
-        UpdateStaticAbility(ability, abilities);
         return (
           <AbilityEntryItem
             session={session}

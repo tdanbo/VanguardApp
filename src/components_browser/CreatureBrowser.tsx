@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
-import CreatureEntryItem from "./CreatureEntryItem";
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
 import { GetGameData } from "../contexts/GameContent";
 import {
@@ -13,6 +12,7 @@ import {
   IsTroll,
   IsUndead,
 } from "../functions/UtilityFunctions";
+import CreatureEntryItem from "./CreatureEntryItem";
 
 interface ContainerProps {
   height: string;
@@ -157,23 +157,21 @@ function CreatureBrowser({
       <DynamicContainer>
         <ScrollColumn ref={scrollRef} width="100%">
           {filteredEntry.map((entry, index) => {
-            if (entry.entry === "CharacterEntry") {
-              return (
-                <CreatureEntryItem
-                  key={index}
-                  session={session}
-                  character={character}
-                  creature={entry}
-                  browser={true}
-                  gmMode={gmMode}
-                  setIsCreature={setIsCreature}
-                  websocket={websocket}
-                  setGmMode={setGmMode}
-                  setRefetch={setRefetch}
-                  setCharacterId={setCharacterId}
-                />
-              );
-            }
+            return (
+              <CreatureEntryItem
+                key={index}
+                session={session}
+                character={character}
+                creature={entry}
+                browser={true}
+                gmMode={gmMode}
+                setIsCreature={setIsCreature}
+                websocket={websocket}
+                setGmMode={setGmMode}
+                setRefetch={setRefetch}
+                setCharacterId={setCharacterId}
+              />
+            );
           })}
           {Array.from({ length: 30 }).map((_, index) => {
             return <InventoryEntryEmpty key={index} />;

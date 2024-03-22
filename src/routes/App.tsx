@@ -8,16 +8,20 @@ import { useRef, useState } from "react";
 import {
   ActiveStateType,
   AdvantageType,
-  NewCharacterEntry,
   EmptySession,
+  NewCharacterEntry,
   SessionEntry,
 } from "../Types";
-import CharacterSheet from "./CharacterSheet";
 import GameMaster from "../components_gamemaster/GameMaster";
-
+import {
+  UpdateStaticAbilities,
+  UpdateStaticEffects,
+  UpdateStaticEquipment,
+} from "../functions/UtilityFunctions";
 import useSocketIO from "../socketio";
-import CombatSection from "./CombatSection";
 import Browser from "./Browser";
+import CharacterSheet from "./CharacterSheet";
+import CombatSection from "./CombatSection";
 
 import { GetGameData } from "../contexts/GameContent";
 
@@ -30,7 +34,7 @@ const Row = styled.div`
 function App() {
   console.log("-------------------");
   console.log("RERENDERING APP");
-  const { creatures } = GetGameData();
+  const { creatures, abilities, equipment, effects } = GetGameData();
   // This function is the main function for setting the session.
   const [activeState, setActiveState] = useState<ActiveStateType>("");
   const [advantage, setAdvantage] = useState<AdvantageType>("");
@@ -50,6 +54,10 @@ function App() {
     ? creatures.find((entry) => entry.id === characterId) || NewCharacterEntry
     : session.characters.find((entry) => entry.id === characterId) ||
       NewCharacterEntry;
+
+  UpdateStaticAbilities(character.abilities, abilities);
+  UpdateStaticEquipment(character.inventory, equipment);
+  UpdateStaticEffects(character.effects, effects);
 
   return (
     <Row>

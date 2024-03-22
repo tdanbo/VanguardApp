@@ -46,11 +46,12 @@ export interface EffectEntry {
   name: string;
   level: number;
   id: string;
-  static: {
-    description: string;
-    type: string;
-    entry: "EffectEntry";
-  };
+  static: EffectStatic;
+}
+
+interface EffectStatic {
+  effect: string;
+  category: string;
 }
 
 export interface CharacterEntry {
@@ -103,6 +104,7 @@ export interface ItemEntry {
   durability: number;
   quantity: number;
   equipped: boolean;
+  cost: number;
   id: string;
   static: ItemStatic;
 }
@@ -110,14 +112,12 @@ export interface ItemEntry {
 interface ItemStatic {
   roll: Roll;
   quality: string[];
-  type: string;
+  rarity: string;
   cost: number;
   category: string;
-  description: string;
   effect: string[];
   bulk: boolean;
   slot: number;
-  entry: "ItemEntry";
 }
 
 export interface AbilityEntry {
@@ -129,15 +129,11 @@ export interface AbilityEntry {
 }
 
 interface AbilityStatic {
-  requirement: string;
   tradition: string;
-  description: string;
   novice: Ability;
   adept: Ability;
   master: Ability;
-  type: string;
-  tag: string;
-  entry: "AbilityEntry";
+  category: string;
 }
 
 export type DurabilityEntry = {
@@ -269,17 +265,16 @@ export const EmptyWeapon: ItemEntry = {
   equipped: false,
   quantity: 0,
   durability: 0,
+  cost: 0,
   id: "aaaaaaaaaa",
   static: {
     roll: { roll: true, dice: 4, mod: 0, type: "damage" },
     quality: [],
     slot: 1,
     bulk: false,
-    type: "normal",
+    rarity: "normal",
     cost: 0,
     category: "natural weapon",
-    description: "Fight with your bare hands.",
-    entry: "ItemEntry",
     effect: [],
   },
 };
@@ -289,17 +284,16 @@ export const GeneralItem: ItemEntry = {
   equipped: false,
   quantity: 0,
   durability: 0,
+  cost: 0,
   id: "",
   static: {
     roll: { roll: false, dice: 0, mod: 0, type: "" },
     quality: [],
     slot: 0,
     bulk: false,
-    type: "normal",
+    rarity: "normal",
     cost: 0,
     category: "general good",
-    description: "",
-    entry: "ItemEntry",
     effect: [],
   },
 };
@@ -309,17 +303,16 @@ export const EmptyArmor: ItemEntry = {
   equipped: false,
   quantity: 0,
   durability: 0,
+  cost: 0,
   id: "bbbbbbbbbb",
   static: {
     roll: { roll: true, dice: 4, mod: 0, type: "armor" },
     quality: [],
     slot: 0,
     bulk: false,
-    type: "normal",
+    rarity: "normal",
     cost: 0,
     category: "light armor",
-    description: "You feel robbed of your dignity.",
-    entry: "ItemEntry",
     effect: [],
   },
 };
@@ -381,17 +374,16 @@ export const RESOURCE: ItemEntry = {
   equipped: false,
   quantity: 0,
   durability: 0,
+  cost: 0,
   id: "cccccccccc",
   static: {
     category: "resource",
-    description: "",
     bulk: true,
     slot: 0,
     cost: 0,
-    type: "normal",
+    rarity: "normal",
     quality: [],
     roll: { roll: false, dice: 0, mod: 0, type: "damage" },
     effect: [],
-    entry: "ItemEntry",
   },
 };

@@ -108,8 +108,8 @@ function AbilityBrowser({
 
   const sortList = (a: AbilityEntry, b: AbilityEntry) => {
     const categoryComparison =
-      Constants.TYPE_FILTER.indexOf(a.static.type) -
-      Constants.TYPE_FILTER.indexOf(b.static.type);
+      Constants.TYPE_FILTER.indexOf(a.static.category) -
+      Constants.TYPE_FILTER.indexOf(b.static.category);
 
     if (categoryComparison !== 0) {
       return categoryComparison;
@@ -131,32 +131,32 @@ function AbilityBrowser({
     switch (LootCategory) {
       case "abilities":
         filtered_abilities = abilities.filter(
-          (item) => item.static.type === "ability",
+          (item) => item.static.category === "ability",
         );
         break;
       case "mystical powers":
         filtered_abilities = abilities.filter(
-          (item) => item.static.type === "mystical power",
+          (item) => item.static.category === "mystical power",
         );
         break;
       case "rituals":
         filtered_abilities = abilities.filter(
-          (item) => item.static.type === "ritual",
+          (item) => item.static.category === "ritual",
         );
         break;
       case "utility":
         filtered_abilities = abilities.filter(
-          (item) => item.static.type === "utility",
+          (item) => item.static.category === "utility",
         );
         break;
       case "monstrous traits":
         filtered_abilities = abilities.filter(
-          (item) => item.static.type === "monsterous trait",
+          (item) => item.static.category === "monsterous trait",
         );
         break;
       case "burden":
         filtered_abilities = abilities.filter(
-          (item) => item.static.type === "burden",
+          (item) => item.static.category === "burden",
         );
         break;
       default:
@@ -171,7 +171,7 @@ function AbilityBrowser({
         (
           item.name.toLowerCase() +
           " " +
-          item.static.type.toLowerCase() +
+          item.static.category.toLowerCase() +
           " " +
           item.static.tradition.toLowerCase() +
           " " +
@@ -193,44 +193,40 @@ function AbilityBrowser({
       <DynamicContainer>
         <ScrollColumn ref={scrollRef} width="100%">
           {filteredEntry.map((entry, index) => {
-            if (entry.static.entry === "AbilityEntry") {
-              return (
-                <AbilityEntryItem
-                  key={index}
-                  ability={entry}
-                  browser={true}
-                  setInventoryState={setInventoryState}
-                  character={character}
-                  session={session}
-                  websocket={websocket}
-                  isCreature={isCreature}
-                  activeState={activeState}
-                  advantage={advantage}
-                  setActiveState={setActiveState}
-                  setAdvantage={setAdvantage}
-                />
-              );
-            }
+            return (
+              <AbilityEntryItem
+                key={index}
+                ability={entry}
+                browser={true}
+                setInventoryState={setInventoryState}
+                character={character}
+                session={session}
+                websocket={websocket}
+                isCreature={isCreature}
+                activeState={activeState}
+                advantage={advantage}
+                setActiveState={setActiveState}
+                setAdvantage={setAdvantage}
+              />
+            );
           })}
           {effects.map((entry, index) => {
-            if (entry.static.entry === "EffectEntry") {
-              return (
-                <EffectEntryItem
-                  key={index}
-                  ability={entry}
-                  browser={true}
-                  setInventoryState={setInventoryState}
-                  character={character}
-                  session={session}
-                  websocket={websocket}
-                  isCreature={isCreature}
-                  activeState={activeState}
-                  advantage={advantage}
-                  setActiveState={setActiveState}
-                  setAdvantage={setAdvantage}
-                />
-              );
-            }
+            return (
+              <EffectEntryItem
+                key={index}
+                ability={entry}
+                browser={true}
+                setInventoryState={setInventoryState}
+                character={character}
+                session={session}
+                websocket={websocket}
+                isCreature={isCreature}
+                activeState={activeState}
+                advantage={advantage}
+                setActiveState={setActiveState}
+                setAdvantage={setAdvantage}
+              />
+            );
           })}
           {Array.from({ length: 30 }).map((_, index) => {
             return <InventoryEntryEmpty key={index} />;

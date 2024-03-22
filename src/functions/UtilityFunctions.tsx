@@ -154,7 +154,7 @@ export function IsWeapon(item: ItemEntry): boolean {
 }
 
 export function IsTreasure(item: ItemEntry): boolean {
-  const weapon_categories = ["treasure", "weapon accessory", "armor accessory"];
+  const weapon_categories = ["treasure"];
   if (weapon_categories.includes(item.static.category)) {
     return true;
   }
@@ -314,32 +314,44 @@ export const StyledText: React.FC<StyledTextProps> = ({
   return <div>{words}</div>;
 };
 
-export function UpdateStaticItem(item: ItemEntry, equipment: ItemEntry[]) {
-  // Update the static item
-  const static_item = equipment.find((entry) => entry.name === item.name);
-  if (static_item) {
-    item.static = static_item.static;
-  }
-}
-
-export function UpdateStaticAbility(
-  ability: AbilityEntry,
-  abilities: AbilityEntry[],
-) {
-  // Update the static item
-  const static_ability = abilities.find((entry) => entry.name === ability.name);
-  if (static_ability) {
-    ability.static = static_ability.static;
-  }
-}
-
 export function UpdateStaticEffects(
-  effect: EffectEntry,
   effects: EffectEntry[],
+  effects_content: EffectEntry[],
 ) {
-  // Update the static item
-  const static_ability = effects.find((entry) => entry.name === effect.name);
-  if (static_ability) {
-    effect.static = static_ability.static;
+  for (const effect of effects) {
+    const content_static_effect = effects_content.find(
+      (entry) => entry.name === effect.name,
+    );
+    if (content_static_effect) {
+      effect.static = content_static_effect.static;
+    }
+  }
+}
+
+export function UpdateStaticAbilities(
+  abilities: AbilityEntry[],
+  abilities_content: AbilityEntry[],
+) {
+  for (const ability of abilities) {
+    const content_static_ability = abilities_content.find(
+      (entry) => entry.name === ability.name,
+    );
+    if (content_static_ability) {
+      ability.static = content_static_ability.static;
+    }
+  }
+}
+
+export function UpdateStaticEquipment(
+  equipment: ItemEntry[],
+  equipment_content: ItemEntry[],
+) {
+  for (const item of equipment) {
+    const content_static_item = equipment_content.find(
+      (entry) => entry.name === item.name,
+    );
+    if (content_static_item) {
+      item.static = content_static_item.static;
+    }
   }
 }

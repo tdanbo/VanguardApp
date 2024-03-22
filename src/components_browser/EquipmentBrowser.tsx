@@ -11,7 +11,6 @@ import {
   ItemEntry,
   SessionEntry,
 } from "../Types";
-import InventoryEntry from "./InventoryEntry";
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
 import {
   IsArmor,
@@ -21,6 +20,7 @@ import {
   IsWeapon,
   toTitleCase,
 } from "../functions/UtilityFunctions";
+import InventoryEntry from "./InventoryEntry";
 
 import { GetGameData } from "../contexts/GameContent";
 
@@ -119,19 +119,11 @@ function EquipmentBrowser({
 
   const sortList = (a: ItemEntry, b: ItemEntry) => {
     const categoryComparison =
-      Constants.CATEGORY_FILTER.indexOf(a.static.category) -
-      Constants.CATEGORY_FILTER.indexOf(b.static.category);
-
+      Constants.RARITY_FILTER.indexOf(b.static.rarity) -
+      Constants.RARITY_FILTER.indexOf(a.static.rarity);
     if (categoryComparison !== 0) {
       return categoryComparison;
     }
-
-    // // If categories are the same, then compare by rarity
-    // const rarityComparison =
-    //   Constants.RARITY_FILTER.indexOf(a.type) -
-    //   Constants.RARITY_FILTER.indexOf(b.type);
-
-    // return rarityComparison;
     return 0;
   };
 
@@ -206,29 +198,27 @@ function EquipmentBrowser({
       <DynamicContainer>
         <ScrollColumn ref={scrollRef} width="100%">
           {filteredEquipment.map((entry, index) => {
-            if (entry.static.entry === "ItemEntry") {
-              return (
-                <InventoryEntry
-                  session={session}
-                  character={character}
-                  websocket={websocket}
-                  key={`InventoryEntry${index}`}
-                  browser={true}
-                  index={index}
-                  item={entry}
-                  equipped={""}
-                  id={""}
-                  setInventoryState={setInventoryState}
-                  isCreature={isCreature}
-                  canBuy={false}
-                  isGm={isGm}
-                  advantage={advantage}
-                  activeState={activeState}
-                  setActiveState={setActiveState}
-                  setAdvantage={setAdvantage}
-                />
-              );
-            }
+            return (
+              <InventoryEntry
+                session={session}
+                character={character}
+                websocket={websocket}
+                key={`InventoryEntry${index}`}
+                browser={true}
+                index={index}
+                item={entry}
+                equipped={""}
+                id={""}
+                setInventoryState={setInventoryState}
+                isCreature={isCreature}
+                canBuy={false}
+                isGm={isGm}
+                advantage={advantage}
+                activeState={activeState}
+                setActiveState={setActiveState}
+                setAdvantage={setAdvantage}
+              />
+            );
           })}
           {Array.from({ length: 30 }).map((_, index) => {
             return <InventoryEntryEmpty key={index} />;

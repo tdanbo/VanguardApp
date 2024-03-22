@@ -1,22 +1,22 @@
 import { AdvantageType, CharacterEntry, ItemEntry } from "../Types";
 import { CheckAbility } from "./ActivesFunction";
-import { ItemRulesDice } from "./rules/ItemRulesDice";
-import { NaturalWeapon_dice } from "./rules/NaturalWeapon";
-import { NaturalWarrior_dice } from "./rules/NaturalWarrior";
-import { Berserker_dice } from "./rules/Berserker";
-import { ManAtArms_dice } from "./rules/ManAtArms";
-import { SteelThrow_dice } from "./rules/SteelThrow";
-import { PolearmMastery_dice } from "./rules/PolearmMastery";
-import { ShieldFighter_dice } from "./rules/ShieldFighter";
-import { ArmoredMystic_dice } from "./rules/ArmoredMystic";
-import { Marksman_dice } from "./rules/Marksman";
-import { TwohandedForce_dice } from "./rules/TwohandedForce";
-import { Armored_dice } from "./rules/Armored";
-import { IronFist_dice } from "./rules/IronFist";
-import { Robust_dice } from "./rules/Robust";
-import { TwinAttack_dice } from "./rules/TwinAttack";
 import { AdvantageDice } from "./rules/AdvantageDice";
+import { Armored_dice } from "./rules/Armored";
+import { ArmoredMystic_dice } from "./rules/ArmoredMystic";
+import { Berserker_dice } from "./rules/Berserker";
 import { FeatOfStrength_dice } from "./rules/FeatOfStrength";
+import { IronFist_dice } from "./rules/IronFist";
+import { ItemRulesDice } from "./rules/ItemRulesDice";
+import { ManAtArms_dice } from "./rules/ManAtArms";
+import { Marksman_dice } from "./rules/Marksman";
+import { NaturalWarrior_dice } from "./rules/NaturalWarrior";
+import { NaturalWeapon_dice } from "./rules/NaturalWeapon";
+import { PolearmMastery_dice } from "./rules/PolearmMastery";
+import { Robust_dice } from "./rules/Robust";
+import { ShieldFighter_dice } from "./rules/ShieldFighter";
+import { SteelThrow_dice } from "./rules/SteelThrow";
+import { TwinAttack_dice } from "./rules/TwinAttack";
+import { TwohandedForce_dice } from "./rules/TwohandedForce";
 
 export function RulesDiceAdjust(
   character: CharacterEntry,
@@ -252,7 +252,7 @@ export function GetEquipmentCorruption(character: CharacterEntry) {
 
   for (const item of character.inventory) {
     if (
-      item.static.type === "unique" &&
+      item.static.rarity === "unique" &&
       !CheckAbility(character, "Artifact Crafting", "novice")
     ) {
       value_adjustment += 1;
@@ -275,8 +275,8 @@ export function GetAbilityCorruption(character: CharacterEntry) {
 
   for (const ability of character.abilities) {
     if (
-      ability.static.type === "mystical power" ||
-      ability.static.type === "ritual"
+      ability.static.category === "mystical power" ||
+      ability.static.category === "ritual"
     ) {
       if (
         ability.level === "Novice" ||
