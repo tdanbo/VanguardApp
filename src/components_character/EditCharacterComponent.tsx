@@ -342,9 +342,6 @@ function EditCharacterComponent({
     character.stats.strong.value = stats[6].value;
     character.stats.vigilant.value = stats[7].value;
 
-    console.log(character);
-    console.log(session);
-
     update_session(session, websocket, character, isCreature);
     setCharacterId(character.id);
     handleBack();
