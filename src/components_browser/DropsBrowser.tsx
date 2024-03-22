@@ -285,17 +285,17 @@ function DropsBrowser({
       if (item.static.category === "resource") {
         drop_chance = 75;
       } else if (item.static.rarity === "normal") {
-        drop_chance = 0.625 * rarity;
+        drop_chance = 0.6 * rarity;
       } else if (item.static.rarity === "quality") {
-        drop_chance = 0.418 * rarity;
+        drop_chance = 0.5 * rarity;
       } else if (item.static.rarity === "mystical") {
-        drop_chance = 0.28 * rarity;
+        drop_chance = 0.4 * rarity;
       } else if (item.static.rarity === "artifact") {
-        drop_chance = 0.187 * rarity;
+        drop_chance = 0.3 * rarity;
       } else if (item.static.rarity === "unique") {
-        drop_chance = 0.125 * rarity;
+        drop_chance = 0.2 * rarity;
       } else {
-        drop_chance = 0.625 * rarity;
+        drop_chance = 0.6 * rarity;
       }
 
       SetBulk(item);
@@ -316,13 +316,13 @@ function DropsBrowser({
       if (item.static.category === "resource") {
         drop_chance = 75;
       } else if (item.static.rarity === "normal") {
-        drop_chance = 5 * rarity;
+        drop_chance = 6 * rarity;
       } else if (item.static.rarity === "quality") {
-        drop_chance = 2.36 * rarity;
+        drop_chance = 5 * rarity;
       } else if (item.static.rarity === "mystical") {
-        drop_chance = 1.12 * rarity;
+        drop_chance = 4 * rarity;
       } else if (item.static.rarity === "artifact") {
-        drop_chance = 0.53 * rarity;
+        drop_chance = 3 * rarity;
       } else if (item.static.rarity === "unique") {
         drop_chance = 0; // 0.25 * rarity; uniques cant be bought
       } else {

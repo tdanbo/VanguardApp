@@ -154,7 +154,7 @@ export function IsWeapon(item: ItemEntry): boolean {
 }
 
 export function IsTreasure(item: ItemEntry): boolean {
-  const weapon_categories = ["treasure", "weapon accessory", "armor accessory"];
+  const weapon_categories = ["treasure"];
   if (weapon_categories.includes(item.static.category)) {
     return true;
   }

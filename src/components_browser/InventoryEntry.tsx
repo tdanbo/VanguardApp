@@ -581,10 +581,7 @@ function InventoryEntry({
           <Row>
             <TypeBox>
               {browser && isGm ? (
-                <CostBox>
-                  {ConvertCurrency(item.cost)} ||{" "}
-                  {ConvertCurrency(item.static.cost)}
-                </CostBox>
+                <CostBox>{ConvertCurrency(item.cost)}</CostBox>
               ) : null}
               {item.static.rarity !== "normal"
                 ? toTitleCase(item.static.rarity)
