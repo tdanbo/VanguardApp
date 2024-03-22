@@ -278,7 +278,6 @@ function AbilityEntryItem({
   setActiveState,
   setAdvantage,
 }: AbilityEntryItemProps) {
-  console.log(ability);
   const [free, setFree] = useState<boolean>(false);
   const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
 
