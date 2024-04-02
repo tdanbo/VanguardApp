@@ -685,6 +685,7 @@ function EncounterCreatureEntry({
       <AbilityContainer>
         {sorted_abilities.map((ability, index) => {
           // Ensure both conditions are correctly evaluated together
+          console.log(ability);
           const isNotIntegratedOrUtility =
             !Constants.INTEGRATED_ABILITIES.includes(
               ability.name.toLowerCase(),

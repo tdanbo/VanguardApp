@@ -42,18 +42,6 @@ type health = {
   shield: number;
 };
 
-export interface EffectEntry {
-  name: string;
-  level: number;
-  id: string;
-  static: EffectStatic;
-}
-
-interface EffectStatic {
-  effect: string;
-  category: string;
-}
-
 export interface CharacterEntry {
   name: string;
   id: string;
@@ -61,9 +49,9 @@ export interface CharacterEntry {
   details: CharacterDetails;
   health: health;
   stats: Stats;
-  effects: EffectEntry[];
-  abilities: AbilityEntry[];
-  inventory: ItemEntry[];
+  effects: EffectDynamic[];
+  abilities: AbilityDynamic[];
+  inventory: ItemDynamic[];
   rations: Rations;
   money: number;
   creature?: boolean;
@@ -99,17 +87,28 @@ export interface CreatureEntry {
   entry: "CreatureEntry";
 }
 
-export interface ItemEntry {
+export interface EffectDynamic {
+  name: string;
+  level: number;
+  id: string;
+}
+
+export interface EffectEntry {
+  name: string;
+  effect: string;
+  category: string;
+}
+
+export interface ItemDynamic {
   name: string;
   durability: number;
   quantity: number;
   equipped: boolean;
-  cost: number;
   id: string;
-  static: ItemStatic;
 }
 
-interface ItemStatic {
+export interface ItemEntry {
+  name: string;
   roll: Roll;
   quality: string[];
   rarity: string;
@@ -120,15 +119,15 @@ interface ItemStatic {
   slot: number;
 }
 
-export interface AbilityEntry {
+export interface AbilityDynamic {
   name: string;
   level: string;
-  static: AbilityStatic;
   free: boolean;
   id: string;
 }
 
-interface AbilityStatic {
+export interface AbilityEntry {
+  name: string;
   tradition: string;
   novice: Ability;
   adept: Ability;
@@ -174,7 +173,7 @@ export type LootCategory =
   | "novelty";
 
 type Loot = {
-  [key in LootCategory]: ItemEntry[];
+  [key in LootCategory]: ItemDynamic[];
 };
 
 export type state = "take" | "buy";

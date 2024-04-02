@@ -3,11 +3,13 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import {
+  AbilityDynamic,
   AbilityEntry,
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
   EffectEntry,
+  ItemDynamic,
   ItemEntry,
   SessionEntry,
 } from "../Types";
@@ -314,7 +316,7 @@ export const StyledText: React.FC<StyledTextProps> = ({
   return <div>{words}</div>;
 };
 
-export function UpdateStaticEffects(
+export function GetDatabaseEffect(
   effects: EffectEntry[],
   effects_content: EffectEntry[],
 ) {
@@ -328,30 +330,30 @@ export function UpdateStaticEffects(
   }
 }
 
-export function UpdateStaticAbilities(
-  abilities: AbilityEntry[],
+export function GetDatabaseAbility(
+  ability: AbilityDynamic,
   abilities_content: AbilityEntry[],
-) {
-  for (const ability of abilities) {
-    const content_static_ability = abilities_content.find(
-      (entry) => entry.name === ability.name,
-    );
-    if (content_static_ability) {
-      ability.static = content_static_ability.static;
-    }
+): AbilityEntry | undefined {
+  const content_static_ability = abilities_content.find(
+    (entry) => entry.name === ability.name,
+  );
+  if (content_static_ability) {
+    return content_static_ability;
+  } else {
+    return undefined;
   }
 }
 
-export function UpdateStaticEquipment(
-  equipment: ItemEntry[],
+export function GetDatabaseEquipment(
+  equipment: ItemDynamic,
   equipment_content: ItemEntry[],
-) {
-  for (const item of equipment) {
-    const content_static_item = equipment_content.find(
-      (entry) => entry.name === item.name,
-    );
-    if (content_static_item) {
-      item.static = content_static_item.static;
-    }
+): ItemEntry | undefined {
+  const content_static_item = equipment_content.find(
+    (entry) => entry.name === equipment.name,
+  );
+  if (content_static_item) {
+    return content_static_item;
+  } else {
+    return undefined;
   }
 }

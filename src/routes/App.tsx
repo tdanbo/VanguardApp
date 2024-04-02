@@ -13,11 +13,6 @@ import {
   SessionEntry,
 } from "../Types";
 import GameMaster from "../components_gamemaster/GameMaster";
-import {
-  UpdateStaticAbilities,
-  UpdateStaticEffects,
-  UpdateStaticEquipment,
-} from "../functions/UtilityFunctions";
 import useSocketIO from "../socketio";
 import Browser from "./Browser";
 import CharacterSheet from "./CharacterSheet";
@@ -55,9 +50,9 @@ function App() {
     : session.characters.find((entry) => entry.id === characterId) ||
       NewCharacterEntry;
 
-  UpdateStaticAbilities(character.abilities, abilities);
-  UpdateStaticEquipment(character.inventory, equipment);
-  UpdateStaticEffects(character.effects, effects);
+  // UpdateStaticAbilities(character.abilities, abilities);
+  // UpdateStaticEquipment(character.inventory, equipment);
+  // UpdateStaticEffects(character.effects, effects);
 
   return (
     <Row>
