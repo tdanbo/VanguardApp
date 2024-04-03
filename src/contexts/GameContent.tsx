@@ -47,6 +47,9 @@ export const GameContentProvider = ({ children }: { children: ReactNode }) => {
         const effectsPromise = axios.get(`${API}/api/effects`);
         const creaturesPromise = axios.get(`${API}/api/creatures`);
 
+        // loop through each creature in creaturesPromise
+        // and update their abilities, equipment, and effects
+
         const [
           equipmentResponse,
           abilitiesResponse,
@@ -58,6 +61,8 @@ export const GameContentProvider = ({ children }: { children: ReactNode }) => {
           effectsPromise,
           creaturesPromise,
         ]);
+
+        // console.log("Updated creatures", updatedCreatures);
 
         setEquipment(equipmentResponse.data);
         setAbilities(abilitiesResponse.data);

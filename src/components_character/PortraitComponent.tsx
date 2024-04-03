@@ -30,6 +30,7 @@ interface PortraitProps {
 }
 import EditCharacterComponent from "./EditCharacterComponent";
 import { Socket } from "socket.io-client";
+import { GetGameData } from "../contexts/GameContent";
 const Container = styled.div<PortraitProps>`
   display: flex;
   flex-direction: row;
@@ -82,10 +83,12 @@ function PortraitComponent({
   isCreature,
   setCharacterId,
 }: HealthBoxProps) {
-  const speed = GetMovementSpeed(character);
+  const { equipment } = GetGameData();
+
+  const speed = GetMovementSpeed(character, equipment);
   const pain = GetPainThreshold(character);
-  const capacity = GetMaxSlots(character) - GetUsedSlots(character);
-  const burn = GetBurnRate(character);
+  const capacity = GetMaxSlots(character, equipment) - GetUsedSlots(character);
+  const burn = GetBurnRate(character, equipment);
 
   return (
     <Container src={CharacterPortraits[character.portrait]}>

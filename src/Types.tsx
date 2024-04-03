@@ -42,18 +42,6 @@ type health = {
   shield: number;
 };
 
-export interface EffectEntry {
-  name: string;
-  level: number;
-  id: string;
-  static: EffectStatic;
-}
-
-interface EffectStatic {
-  effect: string;
-  category: string;
-}
-
 export interface CharacterEntry {
   name: string;
   id: string;
@@ -61,9 +49,9 @@ export interface CharacterEntry {
   details: CharacterDetails;
   health: health;
   stats: Stats;
-  effects: EffectEntry[];
-  abilities: AbilityEntry[];
-  inventory: ItemEntry[];
+  effects: EffectDynamic[];
+  abilities: AbilityDynamic[];
+  inventory: ItemDynamic[];
   rations: Rations;
   money: number;
   creature?: boolean;
@@ -99,17 +87,29 @@ export interface CreatureEntry {
   entry: "CreatureEntry";
 }
 
-export interface ItemEntry {
+export interface EffectDynamic {
+  name: string;
+  level: number;
+  id: string;
+}
+
+export interface EffectEntry {
+  name: string;
+  effect: string;
+  category: string;
+}
+
+export interface ItemDynamic {
   name: string;
   durability: number;
   quantity: number;
   equipped: boolean;
-  cost: number;
+  light: boolean;
   id: string;
-  static: ItemStatic;
 }
 
-interface ItemStatic {
+export interface ItemEntry {
+  name: string;
   roll: Roll;
   quality: string[];
   rarity: string;
@@ -120,15 +120,15 @@ interface ItemStatic {
   slot: number;
 }
 
-export interface AbilityEntry {
+export interface AbilityDynamic {
   name: string;
   level: string;
-  static: AbilityStatic;
   free: boolean;
   id: string;
 }
 
-interface AbilityStatic {
+export interface AbilityEntry {
+  name: string;
   tradition: string;
   novice: Ability;
   adept: Ability;
@@ -174,7 +174,7 @@ export type LootCategory =
   | "novelty";
 
 type Loot = {
-  [key in LootCategory]: ItemEntry[];
+  [key in LootCategory]: ItemDynamic[];
 };
 
 export type state = "take" | "buy";
@@ -260,61 +260,16 @@ export type TownsEntry = {
   total: number;
 };
 
-export const EmptyWeapon: ItemEntry = {
-  name: "Knuckles",
-  equipped: false,
-  quantity: 0,
-  durability: 0,
-  cost: 0,
-  id: "aaaaaaaaaa",
-  static: {
-    roll: { roll: true, dice: 4, mod: 0, type: "damage" },
-    quality: [],
-    slot: 1,
-    bulk: false,
-    rarity: "normal",
-    cost: 0,
-    category: "natural weapon",
-    effect: [],
-  },
-};
-
 export const GeneralItem: ItemEntry = {
   name: "",
-  equipped: false,
-  quantity: 0,
-  durability: 0,
+  roll: { roll: false, dice: 0, mod: 0, type: "" },
+  quality: [],
+  slot: 0,
+  bulk: false,
+  rarity: "normal",
   cost: 0,
-  id: "",
-  static: {
-    roll: { roll: false, dice: 0, mod: 0, type: "" },
-    quality: [],
-    slot: 0,
-    bulk: false,
-    rarity: "normal",
-    cost: 0,
-    category: "general good",
-    effect: [],
-  },
-};
-
-export const EmptyArmor: ItemEntry = {
-  name: "Simple Clothes",
-  equipped: false,
-  quantity: 0,
-  durability: 0,
-  cost: 0,
-  id: "bbbbbbbbbb",
-  static: {
-    roll: { roll: true, dice: 4, mod: 0, type: "armor" },
-    quality: [],
-    slot: 0,
-    bulk: false,
-    rarity: "normal",
-    cost: 0,
-    category: "light armor",
-    effect: [],
-  },
+  category: "general good",
+  effect: [],
 };
 
 export const EmptySession: SessionEntry = {
@@ -369,21 +324,11 @@ export const NewCharacterEntry: CharacterEntry = {
   entry: "CharacterEntry",
 };
 
-export const RESOURCE: ItemEntry = {
+export const RESOURCE: ItemDynamic = {
   name: "Resource",
+  light: false,
   equipped: false,
   quantity: 0,
   durability: 0,
-  cost: 0,
   id: "cccccccccc",
-  static: {
-    category: "resource",
-    bulk: true,
-    slot: 0,
-    cost: 0,
-    rarity: "normal",
-    quality: [],
-    roll: { roll: false, dice: 0, mod: 0, type: "damage" },
-    effect: [],
-  },
 };

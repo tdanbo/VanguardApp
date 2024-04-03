@@ -27,6 +27,7 @@ import {
 } from "../components_general/SelectorStyles";
 import { GetBurnRate } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
+import { GetGameData } from "../contexts/GameContent";
 export const ModalContainer = styled.div`
   background-color: ${Constants.BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -302,6 +303,8 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
   const [travelTerrain, setTravelTerrain] = useState<string>("Easy Terrain");
   const [travelLocation, setTravelLocation] = useState<string>("Ambria");
 
+  const { equipment } = GetGameData();
+
   const handleOpen = () => {
     setIsModalOpen(true);
   };
@@ -452,7 +455,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
         character.details.xp_earned += 5;
       }
 
-      const burnrate = GetBurnRate(character);
+      const burnrate = GetBurnRate(character, equipment);
       if (character.rations.food >= burnrate) {
         character.rations.food -= burnrate;
         if (character.health.damage > 0) {

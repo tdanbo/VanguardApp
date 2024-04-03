@@ -1,11 +1,12 @@
-import { ItemEntry, SessionEntry, CharacterEntry } from "../Types";
+import { ItemEntry, SessionEntry, CharacterEntry, ItemDynamic } from "../Types";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { update_session } from "../functions/SessionsFunctions";
 import { Socket } from "socket.io-client";
 import { AnvilIcon } from "../Images";
 type DurabilityBoxProps = {
-  item: ItemEntry;
+  item: ItemDynamic;
+  item_database: ItemEntry;
   session: SessionEntry;
   character: CharacterEntry;
   websocket: Socket;
@@ -66,6 +67,7 @@ const DurabilityContainer = styled.div<DurabilityRContainerProps>`
 
 function DurabilityComponent({
   item,
+  item_database,
   session,
   character,
   isCreature,
@@ -74,12 +76,12 @@ function DurabilityComponent({
 }: DurabilityBoxProps) {
   let max_durability = 0;
   if (
-    item.static.category === "weapon accessory" ||
-    item.static.category === "armor accessory"
+    item_database.category === "weapon accessory" ||
+    item_database.category === "armor accessory"
   ) {
     max_durability = 4;
   } else {
-    max_durability = item.static.roll.dice + item.static.roll.mod;
+    max_durability = item_database.roll.dice + item_database.roll.mod;
   }
 
   const handleAddDurability = () => {

@@ -12,6 +12,7 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import {
+  AbilityDynamic,
   AbilityEntry,
   ActiveStateType,
   AdvantageType,
@@ -22,7 +23,13 @@ import {
 import RollComponent from "../components_general/RollComponent";
 import { CheckAbility } from "../functions/ActivesFunction";
 import { update_session } from "../functions/SessionsFunctions";
-import { StyledText, toTitleCase } from "../functions/UtilityFunctions";
+import {
+  GetDatabaseAbility,
+  StyledText,
+  toTitleCase,
+} from "../functions/UtilityFunctions";
+import { GetGameData } from "../contexts/GameContent";
+
 const EntryColor = (type: string) => {
   return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.WIDGET_BORDER;
 };
@@ -242,7 +249,7 @@ const RollBox = styled.div<RollBoxProps>`
 `;
 
 interface AbilityEntryItemProps {
-  ability: AbilityEntry;
+  ability: AbilityDynamic;
   browser: boolean;
   setInventoryState?: (inventoryState: number) => void;
   character: CharacterEntry;
@@ -255,13 +262,16 @@ interface AbilityEntryItemProps {
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
-function GetCurrentLevel(ability: AbilityEntry) {
+function GetCurrentLevel(
+  ability: AbilityDynamic,
+  ability_database: AbilityEntry,
+) {
   if (ability.level === "Master") {
-    return ability.static.master;
+    return ability_database.master;
   } else if (ability.level === "Adept") {
-    return ability.static.adept;
+    return ability_database.adept;
   } else {
-    return ability.static.novice;
+    return ability_database.novice;
   }
 }
 
@@ -278,9 +288,17 @@ function AbilityEntryItem({
   setActiveState,
   setAdvantage,
 }: AbilityEntryItemProps) {
+  // We will get the dynamic object and look for the database entry. If it doesn't exist, we will return null.
+  const { abilities } = GetGameData();
+  const ability_database = GetDatabaseAbility(ability, abilities);
+
+  if (!ability_database) {
+    console.log(ability.name + " not found in database.");
+    return null;
+  }
+
   const [free, setFree] = useState<boolean>(false);
   const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
-
   useEffect(() => {
     setAbilityLevel(ability.level);
     setFree(ability.free);
@@ -296,7 +314,6 @@ function AbilityEntryItem({
       <LevelBaseContainer radius={radius}>
         <AbilityDescription>
           <StyledText
-            entry={ability}
             effect={effect}
             websocket={websocket}
             character={character}
@@ -320,11 +337,11 @@ function AbilityEntryItem({
 
   useEffect(() => {
     if (browser) {
-      if (ability.static.master.description !== "") {
+      if (ability_database.master.description !== "") {
         setAbilityLevel("Master");
-      } else if (ability.static.adept.description !== "") {
+      } else if (ability_database.adept.description !== "") {
         setAbilityLevel("Adept");
-      } else if (ability.static.novice.description !== "") {
+      } else if (ability_database.novice.description !== "") {
         setAbilityLevel("Novice");
       } else {
         setAbilityLevel("Novice");
@@ -348,7 +365,7 @@ function AbilityEntryItem({
     }
   };
 
-  const DeleteAbilitySlot = (ability: AbilityEntry) => {
+  const DeleteAbilitySlot = (ability: AbilityDynamic) => {
     const ability_id = ability.id;
     const new_abilities = character.abilities.filter(
       (item) => item.id !== ability_id,
@@ -360,7 +377,7 @@ function AbilityEntryItem({
   };
 
   interface LevelSelectorProps {
-    ability: AbilityEntry;
+    ability: AbilityDynamic;
   }
 
   const LevelSelector = ({ ability }: LevelSelectorProps) => {
@@ -407,7 +424,7 @@ function AbilityEntryItem({
     return (
       <LevelSelection
         className={"button-hover"}
-        type={ability.static.category}
+        type={ability_database.category}
         $active={isActive(abilityLevel as Level)}
         onClick={handleLevelChange}
       >
@@ -428,7 +445,7 @@ function AbilityEntryItem({
   const has_wizardry_adept = CheckAbility(character, "Wizardry", "adept");
   const has_wizardry_master = CheckAbility(character, "Wizardry", "master");
 
-  const current_level = GetCurrentLevel(ability);
+  const current_level = GetCurrentLevel(ability, ability_database);
 
   const ChangeFreeHandle = () => {
     ability.free = !free;
@@ -448,21 +465,21 @@ function AbilityEntryItem({
         <NameContainer
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >
-          <AbilityName type={ability.static.category} $active={true}>
+          <AbilityName type={ability_database.category} $active={true}>
             {ability.name}
             <CorruptionContainer>
-              {(ability.static.category === "mystical power" ||
-                ability.static.category === "ritual") && (
+              {(ability_database.category === "mystical power" ||
+                ability_database.category === "ritual") && (
                 <>
                   {(ability.level === "Novice" ||
                     ability.level === "Adept" ||
                     ability.level === "Master") &&
                     !(
-                      ability.static.tradition.includes("Theurgy") &&
+                      ability_database.tradition.includes("Theurgy") &&
                       has_theurgy_novice
                     ) &&
                     !(
-                      ability.static.tradition.includes("Wizardry") &&
+                      ability_database.tradition.includes("Wizardry") &&
                       has_wizardry_novice
                     ) && (
                       <FontAwesomeIcon
@@ -472,11 +489,11 @@ function AbilityEntryItem({
                     )}
                   {(ability.level === "Adept" || ability.level === "Master") &&
                     !(
-                      ability.static.tradition.includes("Theurgy") &&
+                      ability_database.tradition.includes("Theurgy") &&
                       has_theurgy_adept
                     ) &&
                     !(
-                      ability.static.tradition.includes("Wizardry") &&
+                      ability_database.tradition.includes("Wizardry") &&
                       has_wizardry_adept
                     ) && (
                       <FontAwesomeIcon
@@ -486,11 +503,11 @@ function AbilityEntryItem({
                     )}
                   {ability.level === "Master" &&
                     !(
-                      ability.static.tradition.includes("Theurgy") &&
+                      ability_database.tradition.includes("Theurgy") &&
                       has_theurgy_master
                     ) &&
                     !(
-                      ability.static.tradition.includes("Wizardry") &&
+                      ability_database.tradition.includes("Wizardry") &&
                       has_wizardry_master
                     ) && (
                       <FontAwesomeIcon
@@ -503,42 +520,42 @@ function AbilityEntryItem({
             </CorruptionContainer>
           </AbilityName>
           <AbilityDetail>
-            {ability.static.tradition === ""
-              ? toTitleCase(ability.static.category)
-              : `${toTitleCase(ability.static.category)}, ${
-                  ability.static.tradition
+            {ability_database.tradition === ""
+              ? toTitleCase(ability_database.category)
+              : `${toTitleCase(ability_database.category)}, ${
+                  ability_database.tradition
                 }`}
           </AbilityDetail>
         </NameContainer>
 
         <RollBox color={Constants.BRIGHT_RED}>
-          {current_level.roll.map(
-            (i, index) => (
-              i.type === undefined && console.log(ability),
-              (
-                <RollComponent
-                  session={session}
-                  character={character}
-                  websocket={websocket}
-                  roll_type={ability.static.category as RollTypeEntry}
-                  roll_source={ability.name}
-                  isCreature={isCreature}
-                  dice={i.dice}
-                  dice_mod={i.mod}
-                  color={EntryColor(i.type)}
-                  key={index}
-                  activeState={""}
-                  advantage={""}
-                  setActiveState={setActiveState}
-                  setAdvantage={setAdvantage}
-                />
-              )
-            ),
-          )}
+          {current_level.roll.map((i, index) => {
+            if (i.type === undefined) {
+              console.log(ability);
+            }
+            return (
+              <RollComponent
+                session={session}
+                character={character}
+                websocket={websocket}
+                roll_type={ability_database.category as RollTypeEntry}
+                roll_source={ability.name}
+                isCreature={isCreature}
+                dice={i.dice}
+                dice_mod={i.mod}
+                color={EntryColor(i.type)}
+                key={index}
+                activeState={""}
+                advantage={""}
+                setActiveState={setActiveState}
+                setAdvantage={setAdvantage}
+              />
+            );
+          })}
         </RollBox>
         <LevelSelectionContainer>
-          {ability.static.adept.description !== "" &&
-          ability.static.master.description !== "" ? (
+          {ability_database.adept.description !== "" &&
+          ability_database.master.description !== "" ? (
             <LevelSelector ability={ability} />
           ) : null}
         </LevelSelectionContainer>
@@ -582,41 +599,41 @@ function AbilityEntryItem({
         )}
       </Container>
       <LevelContainer $expanded={expanded}>
-        {ability.static.novice.description !== "" &&
+        {ability_database.novice.description !== "" &&
           abilityLevel === "Novice" && (
             <>
               <LevelComponent
-                effect={ability.static.novice.description}
+                effect={ability_database.novice.description}
                 radius={Constants.BORDER_RADIUS}
               />
             </>
           )}
-        {ability.static.adept.description !== "" &&
+        {ability_database.adept.description !== "" &&
           abilityLevel === "Adept" && (
             <>
               <LevelComponent
-                effect={ability.static.novice.description}
+                effect={ability_database.novice.description}
                 radius={"0px"}
               />
               <LevelComponent
-                effect={ability.static.adept.description}
+                effect={ability_database.adept.description}
                 radius={Constants.BORDER_RADIUS}
               />
             </>
           )}
-        {ability.static.master.description !== "" &&
+        {ability_database.master.description !== "" &&
           abilityLevel === "Master" && (
             <>
               <LevelComponent
-                effect={ability.static.novice.description}
+                effect={ability_database.novice.description}
                 radius={"0px"}
               />
               <LevelComponent
-                effect={ability.static.adept.description}
+                effect={ability_database.adept.description}
                 radius={"0px"}
               />
               <LevelComponent
-                effect={ability.static.master.description}
+                effect={ability_database.master.description}
                 radius={Constants.BORDER_RADIUS}
               />
             </>

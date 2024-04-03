@@ -1,5 +1,7 @@
-import { ActivesEntry, CharacterEntry } from "../Types";
+import { ActivesEntry, CharacterEntry, ItemEntry } from "../Types";
+import { GetGameData } from "../contexts/GameContent";
 import { GetMaxSlots, GetUsedSlots } from "./RulesFunctions";
+import { GetDatabaseEquipment } from "./UtilityFunctions";
 import { ArmoredMystic_active } from "./rules/ArmoredMystic";
 import { Berserker_active } from "./rules/Berserker";
 import { ItemRulesActives } from "./rules/ItemRulesActives";
@@ -10,6 +12,8 @@ import { StaffFighting_active } from "./rules/StaffFighting";
 import { TwinAttack_active } from "./rules/TwinAttack";
 
 export const GetActives = (character: CharacterEntry) => {
+  const { equipment } = GetGameData();
+
   const character_actives: ActivesEntry = {
     attack: { value: 0, stat: "" },
     defense: { value: 0, stat: "" },
@@ -95,15 +99,15 @@ export const GetActives = (character: CharacterEntry) => {
       character.stats.quick.value + character.stats.quick.mod;
   }
 
-  UpdateQualities(character, character_actives);
-  Overburden(character, character_actives);
+  UpdateQualities(character, character_actives, equipment);
+  Overburden(character, character_actives, equipment);
   Berserker_active(character, character_actives);
-  ManAtArms_active(character, character_actives);
-  ArmoredMystic_active(character, character_actives);
-  ShieldFighter_active(character, character_actives);
+  ManAtArms_active(character, character_actives, equipment);
+  ArmoredMystic_active(character, character_actives, equipment);
+  ShieldFighter_active(character, character_actives, equipment);
   StaffFighting_active(character, character_actives);
   Robust_active(character, character_actives);
-  TwinAttack_active(character, character_actives);
+  TwinAttack_active(character, character_actives, equipment);
   ItemRulesActives(character, character_actives);
 
   return character_actives;
@@ -112,9 +116,10 @@ export const GetActives = (character: CharacterEntry) => {
 const Overburden = (
   character: CharacterEntry,
   character_actives: ActivesEntry,
+  equipment: ItemEntry[],
 ) => {
   const used_slots = GetUsedSlots(character);
-  const max_slots = GetMaxSlots(character);
+  const max_slots = GetMaxSlots(character, equipment);
 
   if (used_slots > max_slots) {
     character_actives.defense.value -= used_slots - max_slots;
@@ -124,6 +129,7 @@ const Overburden = (
 const UpdateQualities = (
   character: CharacterEntry,
   character_actives: ActivesEntry,
+  equipment: ItemEntry[],
 ) => {
   console.log("Updating Qualities");
   const qualityModifiers = {
@@ -138,9 +144,11 @@ const UpdateQualities = (
   };
 
   character.inventory.forEach((item) => {
-    if (!item || !item.static.quality || !item.equipped) return;
+    const item_database = GetDatabaseEquipment(item, equipment);
 
-    item.static.quality.forEach((quality) => {
+    if (!item || !item_database.quality || !item.equipped) return;
+
+    item_database.quality.forEach((quality) => {
       Object.entries(qualityModifiers).forEach(([key, modifiers]) => {
         if (quality.includes(key)) {
           Object.entries(modifiers).forEach(([action, value]) => {

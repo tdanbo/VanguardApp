@@ -1,9 +1,10 @@
 import { ActivesEntry, CharacterEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
-import { IsArmor } from "../UtilityFunctions";
+import { GetDatabaseEquipment, IsArmor } from "../UtilityFunctions";
 export function ArmoredMystic_active(
   character: CharacterEntry,
   character_actives: ActivesEntry,
+  equipment: ItemEntry[],
 ) {
   const abilityNovice = CheckAbility(character, "armored mystic", "novice");
   const abilityAdept = CheckAbility(character, "armored mystic", "adept");
@@ -16,12 +17,13 @@ export function ArmoredMystic_active(
   };
 
   for (const armor of character.inventory) {
+    const armor_database = GetDatabaseEquipment(armor, equipment);
     if (
       abilityAdept &&
       armor.equipped &&
-      armor.static.category === "heavy armor"
+      armor_database.category === "heavy armor"
     ) {
-      armor.static.quality.forEach((quality: string) => {
+      armor_database.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
           character_actives.casting.value +=
@@ -31,9 +33,9 @@ export function ArmoredMystic_active(
     } else if (
       abilityNovice &&
       armor.equipped &&
-      ["medium armor", "light armor"].includes(armor.static.category)
+      ["medium armor", "light armor"].includes(armor_database.category)
     ) {
-      armor.static.quality.forEach((quality: string) => {
+      armor_database.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
           character_actives.casting.value +=

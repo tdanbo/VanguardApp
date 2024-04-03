@@ -146,6 +146,7 @@ const Minus = styled.button`
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Socket } from "socket.io-client";
+import { GetGameData } from "../contexts/GameContent";
 
 interface HealthBoxProps {
   character: CharacterEntry;
@@ -162,6 +163,8 @@ function CorruptionStatComponent({
   isCreature,
   browser,
 }: HealthBoxProps) {
+  const { equipment, abilities } = GetGameData();
+
   const handleAddCorruption = () => {
     const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
 
@@ -215,7 +218,8 @@ function CorruptionStatComponent({
   const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
   const maxCorruptionPermanent = corruptionThreshold * 3;
   const corruptionRulesAdjustment =
-    GetEquipmentCorruption(character) + GetAbilityCorruption(character);
+    GetEquipmentCorruption(character, equipment) +
+    GetAbilityCorruption(character, abilities);
 
   const remaining_corruption =
     maxCorruptionPermanent -

@@ -8,6 +8,7 @@ import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
+  EffectEntry,
   SessionEntry,
 } from "../Types";
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
@@ -108,8 +109,8 @@ function AbilityBrowser({
 
   const sortList = (a: AbilityEntry, b: AbilityEntry) => {
     const categoryComparison =
-      Constants.TYPE_FILTER.indexOf(a.static.category) -
-      Constants.TYPE_FILTER.indexOf(b.static.category);
+      Constants.TYPE_FILTER.indexOf(a.category) -
+      Constants.TYPE_FILTER.indexOf(b.category);
 
     if (categoryComparison !== 0) {
       return categoryComparison;
@@ -131,32 +132,32 @@ function AbilityBrowser({
     switch (LootCategory) {
       case "abilities":
         filtered_abilities = abilities.filter(
-          (item) => item.static.category === "ability",
+          (item) => item.category === "ability",
         );
         break;
       case "mystical powers":
         filtered_abilities = abilities.filter(
-          (item) => item.static.category === "mystical power",
+          (item) => item.category === "mystical power",
         );
         break;
       case "rituals":
         filtered_abilities = abilities.filter(
-          (item) => item.static.category === "ritual",
+          (item) => item.category === "ritual",
         );
         break;
       case "utility":
         filtered_abilities = abilities.filter(
-          (item) => item.static.category === "utility",
+          (item) => item.category === "utility",
         );
         break;
       case "monstrous traits":
         filtered_abilities = abilities.filter(
-          (item) => item.static.category === "monsterous trait",
+          (item) => item.category === "monsterous trait",
         );
         break;
       case "burden":
         filtered_abilities = abilities.filter(
-          (item) => item.static.category === "burden",
+          (item) => item.category === "burden",
         );
         break;
       default:
@@ -171,15 +172,15 @@ function AbilityBrowser({
         (
           item.name.toLowerCase() +
           " " +
-          item.static.category.toLowerCase() +
+          item.category.toLowerCase() +
           " " +
-          item.static.tradition.toLowerCase() +
+          item.tradition.toLowerCase() +
           " " +
-          item.static.novice.description.toLowerCase() +
+          item.novice.description.toLowerCase() +
           " " +
-          item.static.adept.description.toLowerCase() +
+          item.adept.description.toLowerCase() +
           " " +
-          item.static.master.description.toLowerCase()
+          item.master.description.toLowerCase()
         ).includes(search.toLowerCase()),
       );
       setFilteredEntry(searched_item);
@@ -187,6 +188,29 @@ function AbilityBrowser({
       setFilteredEntry(sorted_items);
     }
   }, [LootCategory, search]);
+
+  const generateRandomId = (length = 10) => {
+    return Math.random()
+      .toString(36)
+      .substring(2, 2 + length);
+  };
+
+  function CreateAbilityDynamic(entry: AbilityEntry) {
+    return {
+      name: entry.name,
+      level: "Novice",
+      free: false,
+      id: generateRandomId(),
+    };
+  }
+
+  function CreateEffectDynamic(entry: EffectEntry) {
+    return {
+      name: entry.name,
+      level: 1,
+      id: generateRandomId(),
+    };
+  }
 
   return (
     <>
@@ -196,7 +220,7 @@ function AbilityBrowser({
             return (
               <AbilityEntryItem
                 key={index}
-                ability={entry}
+                ability={CreateAbilityDynamic(entry)}
                 browser={true}
                 setInventoryState={setInventoryState}
                 character={character}
@@ -214,7 +238,7 @@ function AbilityBrowser({
             return (
               <EffectEntryItem
                 key={index}
-                ability={entry}
+                effect={CreateEffectDynamic(entry)}
                 browser={true}
                 setInventoryState={setInventoryState}
                 character={character}
