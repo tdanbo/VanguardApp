@@ -1,7 +1,7 @@
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
 import {
-  AbilityEntry,
+  AbilityDynamic,
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
@@ -10,6 +10,8 @@ import {
 import AbilityEntryItem from "../components_browser/AbilityEntryItem";
 import EffectEntryItem from "../components_browser/EffectEntryItem";
 import InventoryEntryEmpty from "./InventoryEntryEmpty";
+import { GetGameData } from "../contexts/GameContent";
+import { GetDatabaseAbility } from "../functions/UtilityFunctions";
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -22,13 +24,6 @@ interface NavigationProps {
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
-function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
-  return (
-    Constants.TYPE_FILTER.indexOf(a.static.category.toLowerCase()) -
-    Constants.TYPE_FILTER.indexOf(b.static.category.toLowerCase())
-  );
-}
-
 function AbilitySection({
   character,
   session,
@@ -39,6 +34,21 @@ function AbilitySection({
   setActiveState,
   setAdvantage,
 }: NavigationProps) {
+  const { abilities } = GetGameData();
+
+  function sortAbilities(a: AbilityDynamic, b: AbilityDynamic): number {
+    const a_database = GetDatabaseAbility(a, abilities);
+    const b_database = GetDatabaseAbility(b, abilities);
+
+    if (!a_database || !b_database) {
+      return 0;
+    }
+
+    return (
+      Constants.TYPE_FILTER.indexOf(a_database.category.toLowerCase()) -
+      Constants.TYPE_FILTER.indexOf(b_database.category.toLowerCase())
+    );
+  }
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
   return (
     <>
@@ -47,7 +57,7 @@ function AbilitySection({
           <EffectEntryItem
             session={session}
             key={index}
-            ability={effect}
+            effect={effect}
             browser={false}
             character={character}
             websocket={websocket}

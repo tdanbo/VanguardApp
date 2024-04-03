@@ -1,20 +1,22 @@
 import { CharacterEntry, ActivesEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
-import { IsArmor } from "../UtilityFunctions";
+import { GetDatabaseEquipment, IsArmor } from "../UtilityFunctions";
 export function ManAtArms_active(
   character: CharacterEntry,
   character_actives: ActivesEntry,
+  equipment: ItemEntry[],
 ) {
   const abilityAdept = CheckAbility(character, "man-at-arms", "adept");
   for (const item of character.inventory) {
-    if (IsArmor(item) && abilityAdept && item.equipped) {
+    const item_database = GetDatabaseEquipment(item, equipment);
+    if (IsArmor(item_database) && abilityAdept && item.equipped) {
       const negativeQualities: { [key: string]: number } = {
         "Imp 1": 1,
         "Imp 2": 2,
         "Imp 3": 3,
         "Imp 4": 4,
       };
-      item.static.quality.forEach((quality: string) => {
+      item_database.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
           character_actives.defense.value +=

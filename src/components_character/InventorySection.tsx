@@ -4,12 +4,14 @@ import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
-  ItemEntry,
+  ItemDynamic,
   SessionEntry,
 } from "../Types";
 import InventoryEntry from "../components_browser/InventoryEntry";
 import { GetMaxSlots } from "../functions/RulesFunctions";
 import InventoryEntryEmpty from "./InventoryEntryEmpty";
+import { GetGameData } from "../contexts/GameContent";
+import { GetDatabaseEquipment } from "../functions/UtilityFunctions";
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -22,13 +24,6 @@ interface NavigationProps {
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
-function sortInventory(a: ItemEntry, b: ItemEntry): number {
-  return (
-    Constants.CATEGORY_FILTER.indexOf(a.static.category) -
-    Constants.CATEGORY_FILTER.indexOf(b.static.category)
-  );
-}
-
 function InventorySection({
   character,
   session,
@@ -39,10 +34,29 @@ function InventorySection({
   setActiveState,
   setAdvantage,
 }: NavigationProps) {
+  const { equipment } = GetGameData();
+
+  function sortInventory(a: ItemDynamic, b: ItemDynamic): number {
+    const a_database = GetDatabaseEquipment(a, equipment);
+    const b_database = GetDatabaseEquipment(b, equipment);
+
+    // First sort by category
+    const categorySort =
+      Constants.CATEGORY_FILTER.indexOf(a_database.category.toLowerCase()) -
+      Constants.CATEGORY_FILTER.indexOf(b_database.category.toLowerCase());
+
+    // If categories are the same, sort by light
+    if (categorySort === 0) {
+      return a.light === b.light ? 0 : a.light ? 1 : -1;
+    }
+
+    return categorySort;
+  }
+
   character.inventory.sort(sortInventory);
   const sortedInventory = [...character.inventory].sort(sortInventory);
 
-  const totalSlots = GetMaxSlots(character) * 2;
+  const totalSlots = GetMaxSlots(character, equipment) * 2;
 
   return (
     <>

@@ -29,7 +29,7 @@ const Row = styled.div`
 function App() {
   console.log("-------------------");
   console.log("RERENDERING APP");
-  const { creatures, abilities, equipment, effects } = GetGameData();
+  const { creatures } = GetGameData();
   // This function is the main function for setting the session.
   const [activeState, setActiveState] = useState<ActiveStateType>("");
   const [advantage, setAdvantage] = useState<AdvantageType>("");

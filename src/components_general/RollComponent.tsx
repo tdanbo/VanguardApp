@@ -7,7 +7,11 @@ import {
   Dice6FillIcon,
   Dice8FillIcon,
 } from "../Images";
-import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
+import {
+  GetDatabaseEquipment,
+  IsArmor,
+  IsWeapon,
+} from "../functions/UtilityFunctions";
 
 import { random } from "lodash";
 import { Socket } from "socket.io-client";
@@ -20,6 +24,7 @@ import {
   CombatEntry,
   CriticalType,
   DurabilityEntry,
+  ItemDynamic,
   ItemEntry,
   RollEntry,
   RollTypeEntry,
@@ -29,6 +34,7 @@ import { SetDurability } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesDown, faAnglesUp } from "@fortawesome/free-solid-svg-icons";
+import { GetGameData } from "../contexts/GameContent";
 
 type RollComponentProps = {
   session: SessionEntry;
@@ -79,11 +85,18 @@ const RollContainer = styled.div<RollContainerProps>`
     props.$inactive ? "1px 1px 2px black" : "0px 0px 0px transparent;"};
 `;
 
-function PickRandomWeapon(character: CharacterEntry) {
-  const weapon_list = character.inventory.filter(
-    (item) =>
-      (IsWeapon(item) || item.static.category === "shield") && item.equipped,
-  );
+function PickRandomWeapon(character: CharacterEntry, equipment: ItemEntry[]) {
+  const weapon_list = [];
+
+  for (const item of character.inventory) {
+    const item_database = GetDatabaseEquipment(item, equipment);
+    if (
+      (IsWeapon(item_database) || item_database.category === "shield") &&
+      item.equipped
+    ) {
+      weapon_list.push(item);
+    }
+  }
 
   if (weapon_list.length === 0) {
     return null;
@@ -93,10 +106,15 @@ function PickRandomWeapon(character: CharacterEntry) {
   return weapon_list[randomIndex];
 }
 
-function PickRandomArmor(character: CharacterEntry) {
-  const armor_list = character.inventory.filter(
-    (armor) => IsArmor(armor) && armor.equipped,
-  );
+function PickRandomArmor(character: CharacterEntry, equipment: ItemEntry[]) {
+  const armor_list = [];
+
+  for (const item of character.inventory) {
+    const item_database = GetDatabaseEquipment(item, equipment);
+    if (IsArmor(item_database) && item.equipped) {
+      armor_list.push(item);
+    }
+  }
 
   if (armor_list.length === 0) {
     return null;
@@ -106,27 +124,33 @@ function PickRandomArmor(character: CharacterEntry) {
   return armor_list[randomIndex];
 }
 
-function HasAmmunition(character: CharacterEntry) {
-  for (const i of character.inventory) {
-    if (i.static.category === "projectile" && i.equipped && i.quantity > 0) {
-      i.quantity -= 1;
+function HasAmmunition(character: CharacterEntry, equipment: ItemEntry[]) {
+  for (const item of character.inventory) {
+    const item_database = GetDatabaseEquipment(item, equipment);
+    if (
+      item_database.category === "projectile" &&
+      item.equipped &&
+      item.quantity > 0
+    ) {
+      item.quantity -= 1;
       return true;
     }
   }
   return false;
 }
 
-function HasRangedWeapon(character: CharacterEntry) {
-  for (const i of character.inventory) {
-    if (i.static.category === "ranged weapon" && i.equipped) {
+function HasRangedWeapon(character: CharacterEntry, equipment: ItemEntry[]) {
+  for (const item of character.inventory) {
+    const item_database = GetDatabaseEquipment(item, equipment);
+    if (item_database.category === "ranged weapon" && item.equipped) {
       return true;
     }
   }
   return false;
 }
 
-function Ammunition(character: CharacterEntry) {
-  if (HasAmmunition(character)) {
+function Ammunition(character: CharacterEntry, equipment: ItemEntry[]) {
+  if (HasAmmunition(character, equipment)) {
     return true;
   } else {
     return false;
@@ -151,6 +175,8 @@ function RollComponent({
   setActiveState,
   setAdvantage,
 }: RollComponentProps) {
+  const { equipment } = GetGameData();
+
   let dice_icon = Dice20FillIcon;
   if (dice === 4) {
     dice_icon = Dice4FillIcon;
@@ -225,8 +251,8 @@ function RollComponent({
     //   success = false;
     // }
 
-    if (roll_type === "attack" && HasRangedWeapon(character)) {
-      if (!Ammunition(character)) {
+    if (roll_type === "attack" && HasRangedWeapon(character, equipment)) {
+      if (!Ammunition(character, equipment)) {
         return;
       }
     }
@@ -249,15 +275,15 @@ function RollComponent({
       check: random(1, 4),
     };
 
-    let random_item: null | ItemEntry = null;
+    let random_item: null | ItemDynamic = null;
     if (roll_type === "attack" && !success && durability_item.check === 4) {
-      random_item = PickRandomWeapon(character);
+      random_item = PickRandomWeapon(character, equipment);
     } else if (
       roll_type === "defense" &&
       !success &&
       durability_item.check === 4
     ) {
-      random_item = PickRandomArmor(character);
+      random_item = PickRandomArmor(character, equipment);
     }
 
     if (random_item) {

@@ -104,6 +104,7 @@ export interface ItemDynamic {
   durability: number;
   quantity: number;
   equipped: boolean;
+  light: boolean;
   id: string;
 }
 
@@ -259,61 +260,16 @@ export type TownsEntry = {
   total: number;
 };
 
-export const EmptyWeapon: ItemEntry = {
-  name: "Knuckles",
-  equipped: false,
-  quantity: 0,
-  durability: 0,
-  cost: 0,
-  id: "aaaaaaaaaa",
-  static: {
-    roll: { roll: true, dice: 4, mod: 0, type: "damage" },
-    quality: [],
-    slot: 1,
-    bulk: false,
-    rarity: "normal",
-    cost: 0,
-    category: "natural weapon",
-    effect: [],
-  },
-};
-
 export const GeneralItem: ItemEntry = {
   name: "",
-  equipped: false,
-  quantity: 0,
-  durability: 0,
+  roll: { roll: false, dice: 0, mod: 0, type: "" },
+  quality: [],
+  slot: 0,
+  bulk: false,
+  rarity: "normal",
   cost: 0,
-  id: "",
-  static: {
-    roll: { roll: false, dice: 0, mod: 0, type: "" },
-    quality: [],
-    slot: 0,
-    bulk: false,
-    rarity: "normal",
-    cost: 0,
-    category: "general good",
-    effect: [],
-  },
-};
-
-export const EmptyArmor: ItemEntry = {
-  name: "Simple Clothes",
-  equipped: false,
-  quantity: 0,
-  durability: 0,
-  cost: 0,
-  id: "bbbbbbbbbb",
-  static: {
-    roll: { roll: true, dice: 4, mod: 0, type: "armor" },
-    quality: [],
-    slot: 0,
-    bulk: false,
-    rarity: "normal",
-    cost: 0,
-    category: "light armor",
-    effect: [],
-  },
+  category: "general good",
+  effect: [],
 };
 
 export const EmptySession: SessionEntry = {
@@ -368,21 +324,11 @@ export const NewCharacterEntry: CharacterEntry = {
   entry: "CharacterEntry",
 };
 
-export const RESOURCE: ItemEntry = {
+export const RESOURCE: ItemDynamic = {
   name: "Resource",
+  light: false,
   equipped: false,
   quantity: 0,
   durability: 0,
-  cost: 0,
   id: "cccccccccc",
-  static: {
-    category: "resource",
-    bulk: true,
-    slot: 0,
-    cost: 0,
-    rarity: "normal",
-    quality: [],
-    roll: { roll: false, dice: 0, mod: 0, type: "damage" },
-    effect: [],
-  },
 };

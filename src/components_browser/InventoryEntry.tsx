@@ -294,12 +294,6 @@ function InventoryEntry({
   const { equipment } = GetGameData();
   const item_database = GetDatabaseEquipment(item, equipment);
 
-  if (!item_database) {
-    console.log(item.name + " not found in database.");
-    return null;
-  }
-
-  const [_light, setLight] = useState<boolean>(false);
   const COLOR = Constants.TYPE_COLORS[item_database.category] || "defaultColor";
   const generateRandomId = (length = 10) => {
     return Math.random()
@@ -476,10 +470,14 @@ function InventoryEntry({
   const AddInventorySlot = (buy: boolean, share: boolean) => {
     const inventory = character.inventory;
     if (
-      inventory.length === GetMaxSlots(character) * 2 ||
+      inventory.length === GetMaxSlots(character, equipment) * 2 ||
       (buy && character.money < item_database.cost)
     ) {
       return;
+    }
+
+    if (item_database.category === "general good") {
+      item.light = true;
     }
 
     if (item_database.category === "resource") {
@@ -544,12 +542,12 @@ function InventoryEntry({
   const [expanded, setExpanded] = useState<boolean>(false);
 
   // This is a big function that correct all dice rolls based on the character's abilities
-  const dice = RulesDiceAdjust(character, item_database, advantage);
+  const dice = RulesDiceAdjust(character, item, item_database, advantage);
 
   const HandleLightSetting = () => {
-    item_database.quality.includes("Light")
-      ? item_database.quality.pop() && setLight(false)
-      : item_database.quality.push("Light") && setLight(true);
+    console.log("Light setting");
+    item.light = !item.light;
+    update_session(session, websocket, character, isCreature);
   };
 
   return (
@@ -575,6 +573,23 @@ function InventoryEntry({
                 ""
               )}
             </EquipButton>
+          ) : (item_database.category === "general good" ||
+              item_database.category === "container") &&
+            !browser ? (
+            <NoEquipBox
+              key={"unequip"}
+              color={COLOR}
+              onClick={() => {
+                HandleLightSetting();
+              }}
+            >
+              {item.light ? (
+                <FontAwesomeIcon
+                  icon={faFeather}
+                  style={{ fontSize: "12px" }}
+                />
+              ) : null}
+            </NoEquipBox>
           ) : (
             <NoEquipBox
               key={"unequip"}
@@ -747,22 +762,6 @@ function InventoryEntry({
               ) : (
                 <AddButton />
               )}
-              {item_database.category === "general good" &&
-              browser &&
-              isGm &&
-              !item_database.quality.includes("Light") ? (
-                <AddButton
-                  className={"button-hover"}
-                  onClick={() => HandleLightSetting()}
-                >
-                  <FontAwesomeIcon
-                    icon={faFeather}
-                    style={{ fontSize: "12px" }}
-                    color={canBuy ? "#f5c542" : Constants.WIDGET_SECONDARY_FONT}
-                    title={canBuy ? "Buy One" : "Add One"}
-                  />
-                </AddButton>
-              ) : null}
             </>
           ) : equipped === "" ? (
             <>
@@ -806,7 +805,6 @@ function InventoryEntry({
               <React.Fragment key={effectIndex}>
                 {effectIndex > 0 && <RowDivider />}
                 <StyledText
-                  entry={item_database}
                   effect={effect}
                   websocket={websocket}
                   character={character}

@@ -6,24 +6,24 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
 import { random } from "lodash";
 import { useEffect } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import { API } from "../Constants";
 import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
+  ItemDynamic,
   ItemEntry,
   SessionEntry,
 } from "../Types";
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { update_session } from "../functions/SessionsFunctions";
 import {
+  GetDatabaseEquipment,
   IsArmor,
   IsConsumable,
   IsGeneralGood,
@@ -31,6 +31,7 @@ import {
   IsWeapon,
 } from "../functions/UtilityFunctions";
 import InventoryEntry from "./InventoryEntry";
+import { GetGameData } from "../contexts/GameContent";
 
 interface ContainerProps {
   height: string;
@@ -168,22 +169,27 @@ export const exportCreatureList = creatureList;
 
 interface CategoryButtonProps {
   category: string;
-  items: ItemEntry[];
+  items: ItemDynamic[];
   session: SessionEntry;
   websocket: Socket;
 }
 
-const sortShoppingList = (a: ItemEntry, b: ItemEntry) => {
-  const categoryComparison =
-    Constants.CATEGORY_FILTER.indexOf(a.static.category) -
-    Constants.CATEGORY_FILTER.indexOf(b.static.category);
+function generateRandomId() {
+  return Math.random()
+    .toString(36)
+    .substring(2, 2 + 10);
+}
 
-  if (categoryComparison !== 0) {
-    return categoryComparison;
-  }
-
-  return 0;
-};
+function CreateDynamicItem(item: ItemEntry): ItemDynamic {
+  return {
+    id: generateRandomId(),
+    name: item.name,
+    quantity: 1,
+    equipped: false,
+    light: false,
+    durability: item.roll.dice,
+  };
+}
 
 function CategoryButtonComponent({
   category,
@@ -191,6 +197,27 @@ function CategoryButtonComponent({
   session,
   websocket,
 }: CategoryButtonProps) {
+  const { equipment } = GetGameData();
+
+  const sortShoppingList = (a: ItemDynamic, b: ItemDynamic) => {
+    const a_database = GetDatabaseEquipment(a, equipment);
+    const b_database = GetDatabaseEquipment(b, equipment);
+
+    if (!a_database || !b_database) {
+      return 0;
+    }
+
+    const categoryComparison =
+      Constants.CATEGORY_FILTER.indexOf(a_database.category) -
+      Constants.CATEGORY_FILTER.indexOf(b_database.category);
+
+    if (categoryComparison !== 0) {
+      return categoryComparison;
+    }
+
+    return 0;
+  };
+
   const AddItemToDrops = () => {
     const sorted_items = [...items].sort(sortShoppingList);
     session.loot.drops = sorted_items;
@@ -218,22 +245,9 @@ function DropsBrowser({
   setActiveState,
   setAdvantage,
 }: BrowserSectionProps) {
-  const [equipmentList, setEquipmentList] = useState<ItemEntry[]>([]);
+  const { equipment } = GetGameData();
+
   const scrollRef = useRef(null);
-
-  useEffect(() => {
-    const fetchEquipment = async () => {
-      try {
-        const equipmentResponse = await axios.get(`${API}/api/equipment`);
-        setEquipmentList(equipmentResponse.data);
-      } catch (error) {
-        console.error("Failed to fetch equipment:", error);
-        // Handle the error appropriately
-      }
-    };
-
-    fetchEquipment();
-  }, []); // Empty dependency array to ensure it runs only once
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -248,11 +262,11 @@ function DropsBrowser({
   };
 
   const gatherEquipment = (rarity: number) => () => {
-    const SetBulk = (item: ItemEntry) => {
-      if (item.static.bulk) {
-        if (item.static.category === "resource") {
+    const SetBulk = (item: ItemDynamic, item_database: ItemEntry) => {
+      if (item_database.bulk) {
+        if (item_database.category === "resource") {
           item.quantity = random(1, 8 * rarity);
-        } else if (item.static.category === "projectile") {
+        } else if (item_database.category === "projectile") {
           item.quantity = random(1, 4 * rarity);
         } else if (
           [
@@ -262,43 +276,43 @@ function DropsBrowser({
             "artifact crafting material",
             "siege expert crafting material",
             "poisoner crafting material",
-          ].includes(item.static.category)
+          ].includes(item_database.category)
         ) {
           item.quantity = random(1, 2 * rarity);
-        } else if (item.static.category === "poison") {
+        } else if (item_database.category === "poison") {
           item.quantity = random(1, 2 * rarity);
-        } else if (item.static.category === "elixir") {
+        } else if (item_database.category === "elixir") {
           item.quantity = random(1, 2 * rarity);
-        } else if (item.static.category === "tool") {
+        } else if (item_database.category === "tool") {
           item.quantity = random(1, 1 * rarity);
         }
       }
     };
 
-    const DidItDropChest = (item: ItemEntry) => {
+    const DidItDropChest = (item: ItemDynamic, item_database: ItemEntry) => {
       let drop = false;
       let drop_chance = 0;
       const drop_roll = random(1, 100);
       if (["Food", "Water"].includes(item.name)) {
         return false;
       }
-      if (item.static.category === "resource") {
+      if (item_database.category === "resource") {
         drop_chance = 75;
-      } else if (item.static.rarity === "normal") {
+      } else if (item_database.rarity === "normal") {
         drop_chance = 0.6 * rarity;
-      } else if (item.static.rarity === "quality") {
+      } else if (item_database.rarity === "quality") {
         drop_chance = 0.5 * rarity;
-      } else if (item.static.rarity === "mystical") {
+      } else if (item_database.rarity === "mystical") {
         drop_chance = 0.4 * rarity;
-      } else if (item.static.rarity === "artifact") {
+      } else if (item_database.rarity === "artifact") {
         drop_chance = 0.3 * rarity;
-      } else if (item.static.rarity === "unique") {
+      } else if (item_database.rarity === "unique") {
         drop_chance = 0.2 * rarity;
       } else {
         drop_chance = 0.6 * rarity;
       }
 
-      SetBulk(item);
+      SetBulk(item, item_database);
 
       if (drop_roll <= drop_chance) {
         drop = true;
@@ -306,30 +320,30 @@ function DropsBrowser({
       return drop;
     };
 
-    const DidItDrop = (item: ItemEntry) => {
+    const DidItDrop = (item: ItemDynamic, item_database: ItemEntry) => {
       let drop = false;
       let drop_chance = 0;
       const drop_roll = random(1, 100);
       if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
         return false;
       }
-      if (item.static.category === "resource") {
+      if (item_database.category === "resource") {
         drop_chance = 75;
-      } else if (item.static.rarity === "normal") {
+      } else if (item_database.rarity === "normal") {
         drop_chance = 6 * rarity;
-      } else if (item.static.rarity === "quality") {
+      } else if (item_database.rarity === "quality") {
         drop_chance = 5 * rarity;
-      } else if (item.static.rarity === "mystical") {
+      } else if (item_database.rarity === "mystical") {
         drop_chance = 4 * rarity;
-      } else if (item.static.rarity === "artifact") {
+      } else if (item_database.rarity === "artifact") {
         drop_chance = 3 * rarity;
-      } else if (item.static.rarity === "unique") {
+      } else if (item_database.rarity === "unique") {
         drop_chance = 0; // 0.25 * rarity; uniques cant be bought
       } else {
         drop_chance = 5 * rarity;
       }
 
-      SetBulk(item);
+      SetBulk(item, item_database);
 
       if (drop_roll <= drop_chance) {
         drop = true;
@@ -337,57 +351,60 @@ function DropsBrowser({
       return drop;
     };
 
-    const generateRandomId = (length = 10) => {
-      return Math.random()
-        .toString(36)
-        .substring(2, 2 + length);
-    };
-
-    const addItemId = (item: ItemEntry) => ({
+    const addItemId = (item: ItemDynamic) => ({
       ...item,
       id: generateRandomId(),
     });
 
     if (session.state === "buy") {
-      session.loot.general = equipmentList
-        .filter(
-          (item) =>
-            IsGeneralGood(item) && item.static.cost > 0 && DidItDrop(item),
-        )
-        .map(addItemId);
+      session.loot.general = [];
+      session.loot.armory = [];
+      session.loot.alchemy = [];
+      session.loot.novelty = [];
 
-      session.loot.armory = equipmentList
-        .filter(
-          (item) =>
-            (IsArmor(item) ||
-              IsWeapon(item) ||
-              item.static.category === "projectile") &&
-            item.static.cost > 0 &&
-            DidItDrop(item),
-        )
-        .map(addItemId);
-
-      session.loot.alchemy = equipmentList
-        .filter(
-          (item) =>
-            (IsConsumable(item) || item.static.category === "ritual scroll") &&
-            item.static.cost > 0 &&
-            DidItDrop(item),
-        )
-        .map(addItemId);
-
-      session.loot.novelty = equipmentList
-        .filter(
-          (item) => IsTreasure(item) && item.static.cost > 0 && DidItDrop(item),
-        )
-        .map(addItemId);
+      equipment.map((item_database) => {
+        const item = CreateDynamicItem(item_database);
+        if (
+          IsGeneralGood(item_database) &&
+          item_database.cost > 0 &&
+          DidItDrop(item, item_database)
+        ) {
+          session.loot.general.push(item);
+        }
+        if (
+          (IsArmor(item_database) ||
+            IsWeapon(item_database) ||
+            item_database.category === "projectile") &&
+          item_database.cost > 0 &&
+          DidItDrop(item, item_database)
+        ) {
+          session.loot.armory.push(addItemId(item));
+        }
+        if (
+          (IsConsumable(item_database) ||
+            item_database.category === "ritual scroll") &&
+          item_database.cost > 0 &&
+          DidItDrop(item, item_database)
+        ) {
+          session.loot.alchemy.push(addItemId(item));
+        }
+        if (
+          IsTreasure(item_database) &&
+          item_database.cost > 0 &&
+          DidItDrop(item, item_database)
+        ) {
+          session.loot.novelty.push(addItemId(item));
+        }
+      });
     } else {
-      const chest_item_list = equipmentList
-        .filter((item) => item.static.cost > 0 && DidItDropChest(item))
-        .map(addItemId);
-      session.loot.drops = [...chest_item_list];
+      session.loot.drops = [];
+      equipment.map((item_database) => {
+        const item = CreateDynamicItem(item_database);
+        if (item_database.cost > 0 && DidItDropChest(item, item_database)) {
+          session.loot.drops.push(item);
+        }
+      });
     }
-
     update_session(session, websocket);
   };
 
@@ -398,6 +415,21 @@ function DropsBrowser({
       session.state = "buy";
     }
     update_session(session, websocket);
+  };
+
+  const sortShoppingList = (a: ItemDynamic, b: ItemDynamic) => {
+    const a_database = GetDatabaseEquipment(a, equipment);
+    const b_database = GetDatabaseEquipment(b, equipment);
+
+    const categoryComparison =
+      Constants.CATEGORY_FILTER.indexOf(a_database.category) -
+      Constants.CATEGORY_FILTER.indexOf(b_database.category);
+
+    if (categoryComparison !== 0) {
+      return categoryComparison;
+    }
+
+    return 0;
   };
 
   return (

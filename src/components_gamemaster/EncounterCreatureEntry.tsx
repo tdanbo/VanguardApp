@@ -16,7 +16,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import {
-  AbilityEntry,
+  AbilityDynamic,
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
@@ -26,13 +26,19 @@ import {
 } from "../Types";
 import AbilityEntryItem from "../components_browser/AbilityEntryItem";
 import { GetActives } from "../functions/ActivesFunction";
+import { GetGameData } from "../contexts/GameContent";
 import {
   GetMaxToughness,
   GetMovementSpeed,
   RulesDiceAdjust,
 } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
+import {
+  GetDatabaseAbility,
+  GetDatabaseEquipment,
+  IsArmor,
+  IsWeapon,
+} from "../functions/UtilityFunctions";
 
 interface ColorTypeProps {
   $rgb: string;
@@ -234,21 +240,24 @@ const ActiveDamageSub = styled.div`
   text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
 `;
 
-function GetWeapons(creature: CharacterEntry) {
+function GetWeapons(creature: CharacterEntry, equipment: ItemEntry[]) {
   let weapons: ItemEntry[] = [];
   creature.inventory.forEach((item) => {
-    if (IsWeapon(item) && item.equipped) {
-      weapons.push(item);
+    const item_database = GetDatabaseEquipment(item, equipment);
+
+    if (item_database && IsWeapon(item_database) && item.equipped) {
+      weapons.push(item_database);
     }
   });
   return weapons;
 }
 
-function GetArmor(creature: CharacterEntry) {
+function GetArmor(creature: CharacterEntry, equipment: ItemEntry[]) {
   let armor: ItemEntry[] = [];
   creature.inventory.forEach((item) => {
-    if (IsArmor(item) && item.equipped) {
-      armor.push(item);
+    const item_database = GetDatabaseEquipment(item, equipment);
+    if (item_database && IsArmor(item_database) && item.equipped) {
+      armor.push(item_database);
     }
   });
   return armor;
@@ -336,6 +345,8 @@ function EncounterCreatureEntry({
     creature.health.damage!,
   );
 
+  const { equipment, abilities } = GetGameData();
+
   const handleAdjustHp = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault(); // Prevent the context menu from appearing on right-click
 
@@ -392,7 +403,7 @@ function EncounterCreatureEntry({
     character_actives.initiative.value +
     "\n" +
     "Movement: " +
-    GetMovementSpeed(creatureClone) +
+    GetMovementSpeed(creatureClone, equipment) +
     "\n" +
     "\n" +
     "Attack: " +
@@ -449,8 +460,18 @@ function EncounterCreatureEntry({
     ];
 
   for (const item of creatureClone.inventory) {
-    const dice = RulesDiceAdjust(creatureClone, item, advantage);
-    item.static.roll.dice = dice;
+    const item_database = GetDatabaseEquipment(item, equipment);
+    if (item_database) {
+      const dice = RulesDiceAdjust(
+        creatureClone,
+        item,
+        item_database,
+        advantage,
+      );
+      item_database.roll.dice = dice;
+    } else {
+      console.log("Item not found in database", item);
+    }
   }
 
   const AddItemLoot = () => {
@@ -474,7 +495,6 @@ function EncounterCreatureEntry({
         food.name = "Food";
         food.quantity = creature.rations.food;
         food.id = uuidv4();
-        food.static.cost = 10;
         session.loot.drops.push(food);
       }
     }
@@ -490,7 +510,6 @@ function EncounterCreatureEntry({
         water.name = "Water";
         water.quantity = creature.rations.water;
         water.id = uuidv4();
-        water.static.cost = 10;
         session.loot.drops.push(water);
       }
     }
@@ -510,7 +529,6 @@ function EncounterCreatureEntry({
         const thaler_item = cloneDeep(RESOURCE);
         thaler_item.name = "Thaler";
         thaler_item.quantity = random(1, thaler);
-        thaler_item.static.cost = 100;
         thaler_item.id = uuidv4();
         session.loot.drops.push(thaler_item);
       }
@@ -526,7 +544,6 @@ function EncounterCreatureEntry({
         const shillings_item = cloneDeep(RESOURCE);
         shillings_item.name = "Shilling";
         shillings_item.quantity = random(1, shillings);
-        shillings_item.static.cost = 10;
         shillings_item.id = uuidv4();
         session.loot.drops.push(shillings_item);
       }
@@ -542,7 +559,6 @@ function EncounterCreatureEntry({
         const ortheg_item = cloneDeep(RESOURCE);
         ortheg_item.name = "Ortheg";
         ortheg_item.quantity = random(1, orthegs);
-        ortheg_item.static.cost = 1;
         ortheg_item.id = uuidv4();
         session.loot.drops.push(ortheg_item);
       }
@@ -551,10 +567,18 @@ function EncounterCreatureEntry({
     update_session(session, websocket);
   };
 
-  const sortList = (a: AbilityEntry, b: AbilityEntry) => {
+  const sortList = (a: AbilityDynamic, b: AbilityDynamic) => {
+    const a_ability = GetDatabaseAbility(a, abilities);
+    const b_ability = GetDatabaseAbility(b, abilities);
+
+    if (!a_ability || !b_ability) {
+      console.log("Ability not found in database", a, b);
+      return 0;
+    }
+
     const categoryComparison =
-      Constants.TYPE_FILTER.indexOf(a.static.category) -
-      Constants.TYPE_FILTER.indexOf(b.static.category);
+      Constants.TYPE_FILTER.indexOf(a_ability.category) -
+      Constants.TYPE_FILTER.indexOf(b_ability.category);
 
     if (categoryComparison !== 0) {
       return categoryComparison;
@@ -587,7 +611,7 @@ function EncounterCreatureEntry({
             HP
           </ActiveSub>
         </ActiveBox>
-        {GetArmor(creatureClone).map((armor, index) => (
+        {GetArmor(creatureClone, equipment).map((armor, index) => (
           <ActiveBox key={index}>
             <ActiveStat
               title={`When this creature is being attacked ${formatNumber(
@@ -598,7 +622,7 @@ function EncounterCreatureEntry({
             </ActiveStat>
             <ActiveArmorSub>
               <FontAwesomeIcon icon={faShield} />
-              {Math.ceil(armor.static.roll.dice / 2) + armor.static.roll.mod}
+              {Math.ceil(armor.roll.dice / 2) + armor.roll.mod}
             </ActiveArmorSub>
           </ActiveBox>
         ))}
@@ -609,7 +633,7 @@ function EncounterCreatureEntry({
             <FontAwesomeIcon icon={faCoins} title={loot} />
           </ActiveSub>
         </NameContainer>
-        {GetWeapons(creatureClone).map((weapon, index) => {
+        {GetWeapons(creatureClone, equipment).map((weapon, index) => {
           return (
             <ActiveBox key={`active-box-${index}`}>
               <ActiveStat
@@ -622,16 +646,16 @@ function EncounterCreatureEntry({
               <ActiveDamageSub>
                 <>
                   {GetAttacks(creature) > 1 &&
-                  weapon.static.category !== "ranged weapon" ? (
+                  weapon.category !== "ranged weapon" ? (
                     <>
                       <AttacksStat>2 x</AttacksStat>
                       <Icon
                         path={
-                          weapon.static.category === "ranged weapon"
+                          weapon.category === "ranged weapon"
                             ? mdiBowArrow
-                            : weapon.static.category === "long weapon"
+                            : weapon.category === "long weapon"
                             ? mdiSpear
-                            : weapon.static.category === "short weapon"
+                            : weapon.category === "short weapon"
                             ? mdiKnife
                             : mdiSword
                         }
@@ -639,21 +663,19 @@ function EncounterCreatureEntry({
                         title={weapon.name}
                         color={Constants.BRIGHT_RED}
                       />
-                      {Math.ceil(weapon.static.roll.dice / 2) +
-                        weapon.static.roll.mod}
+                      {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
                       {" / " +
-                        (Math.ceil(weapon.static.roll.dice / 2) +
-                          weapon.static.roll.mod)}
+                        (Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod)}
                     </>
                   ) : (
                     <>
                       <Icon
                         path={
-                          weapon.static.category === "ranged weapon"
+                          weapon.category === "ranged weapon"
                             ? mdiBowArrow
-                            : weapon.static.category === "long weapon"
+                            : weapon.category === "long weapon"
                             ? mdiSpear
-                            : weapon.static.category === "short weapon"
+                            : weapon.category === "short weapon"
                             ? mdiKnife
                             : mdiSword
                         }
@@ -661,8 +683,7 @@ function EncounterCreatureEntry({
                         title={weapon.name}
                         color={Constants.BRIGHT_RED}
                       />
-                      {Math.ceil(weapon.static.roll.dice / 2) +
-                        weapon.static.roll.mod}
+                      {Math.ceil(weapon.roll.dice / 2) + weapon.roll.mod}
                     </>
                   )}
                 </>
@@ -686,12 +707,17 @@ function EncounterCreatureEntry({
         {sorted_abilities.map((ability, index) => {
           // Ensure both conditions are correctly evaluated together
           console.log(ability);
+          const ability_database = GetDatabaseAbility(ability, abilities);
+          if (!ability_database) {
+            console.log("Ability not found in database", ability);
+            return null;
+          }
           const isNotIntegratedOrUtility =
             !Constants.INTEGRATED_ABILITIES.includes(
               ability.name.toLowerCase(),
             ) &&
-            ability.static.category.toLowerCase() !== "utility" &&
-            ability.static.category.toLowerCase() !== "ritual";
+            ability_database.category.toLowerCase() !== "utility" &&
+            ability_database.category.toLowerCase() !== "ritual";
 
           return isNotIntegratedOrUtility ? (
             <AbilityEntryItem

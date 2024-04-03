@@ -1,5 +1,13 @@
-import { AdvantageType, CharacterEntry, ItemEntry } from "../Types";
+import {
+  AbilityEntry,
+  AdvantageType,
+  CharacterEntry,
+  ItemDynamic,
+  ItemEntry,
+} from "../Types";
+import { GetGameData } from "../contexts/GameContent";
 import { CheckAbility } from "./ActivesFunction";
+import { GetDatabaseAbility, GetDatabaseEquipment } from "./UtilityFunctions";
 import { AdvantageDice } from "./rules/AdvantageDice";
 import { Armored_dice } from "./rules/Armored";
 import { ArmoredMystic_dice } from "./rules/ArmoredMystic";
@@ -20,31 +28,34 @@ import { TwohandedForce_dice } from "./rules/TwohandedForce";
 
 export function RulesDiceAdjust(
   character: CharacterEntry,
-  item: ItemEntry,
+  item: ItemDynamic,
+  item_database: ItemEntry,
   advantage: AdvantageType,
 ) {
-  let dice = item.static.roll.dice;
-  dice += NaturalWeapon_dice(character, item);
-  dice += NaturalWarrior_dice(character, item);
-  dice += Berserker_dice(character, item);
-  dice += ManAtArms_dice(character, item);
-  dice += SteelThrow_dice(character, item);
-  dice += PolearmMastery_dice(character, item);
-  dice += ShieldFighter_dice(character, item);
-  dice += ArmoredMystic_dice(character, item);
-  dice += Marksman_dice(character, item);
-  dice += TwohandedForce_dice(character, item);
-  dice += Armored_dice(character, item);
-  dice += IronFist_dice(character, item);
+  const { equipment } = GetGameData();
+
+  let dice = item_database.roll.dice;
+  dice += NaturalWeapon_dice(character, item_database);
+  dice += NaturalWarrior_dice(character, item_database);
+  dice += Berserker_dice(character, item_database);
+  dice += ManAtArms_dice(character, item_database);
+  dice += SteelThrow_dice(character, item_database);
+  dice += PolearmMastery_dice(character, item_database);
+  dice += ShieldFighter_dice(character, item_database, equipment);
+  dice += ArmoredMystic_dice(character, item_database);
+  dice += Marksman_dice(character, item_database);
+  dice += TwohandedForce_dice(character, item_database);
+  dice += Armored_dice(character, item_database);
+  dice += IronFist_dice(character, item_database);
   dice += Robust_dice(character);
-  dice += TwinAttack_dice(character, item);
-  dice += FeatOfStrength_dice(character, item);
-  dice += ItemRulesDice(character, item);
-  dice += AdvantageDice(item, advantage);
+  dice += TwinAttack_dice(character, item, equipment);
+  dice += FeatOfStrength_dice(character, item_database);
+  dice += ItemRulesDice(character, item_database);
+  dice += AdvantageDice(item_database, advantage);
   return dice;
 }
 
-export function GetMaxSlots(character: CharacterEntry) {
+export function GetMaxSlots(character: CharacterEntry, equipment: ItemEntry[]) {
   const strong_capacity = CheckAbility(character, "Pack-mule", "novice")
     ? character.stats.strong.value + character.stats.strong.mod * 1.5
     : character.stats.strong.value + character.stats.strong.mod;
@@ -60,17 +71,17 @@ export function GetMaxSlots(character: CharacterEntry) {
   );
 
   const storageModifiers = {
-    "Storage 3": 4,
-    "Storage 6": 7,
-    "Storage 9": 10,
-    "Storage 12": 13,
-    "Storage 15": 16,
+    "Storage 3": 3,
+    "Storage 6": 6,
+    "Storage 9": 9,
+    "Storage 12": 12,
+    "Storage 15": 15,
   };
 
   character.inventory.forEach((item) => {
-    if (!item || !item.static.quality) return;
+    const item_database = GetDatabaseEquipment(item, equipment);
 
-    item.static.quality.forEach((quality) => {
+    item_database.quality.forEach((quality) => {
       Object.entries(storageModifiers).forEach(([key, modifiers]) => {
         if (quality.includes(key)) {
           max_slots += modifiers;
@@ -100,19 +111,25 @@ export function GetPainThreshold(character: CharacterEntry) {
   );
 }
 
-export const GetMovementSpeed = (character: CharacterEntry) => {
+export const GetMovementSpeed = (
+  character: CharacterEntry,
+  equipment: ItemEntry[],
+) => {
   const total_speed = Math.ceil(
     (5 +
       character.stats.quick.value +
       character.stats.quick.mod -
-      GetImpedingValue(character) -
-      OverburdenValue(character)) /
+      GetImpedingValue(character, equipment) -
+      OverburdenValue(character, equipment)) /
       2,
   );
   return total_speed;
 };
 
-export const GetImpedingValue = (character: CharacterEntry): number => {
+export const GetImpedingValue = (
+  character: CharacterEntry,
+  equipment: ItemEntry[],
+): number => {
   let impeding = 0;
 
   if (!CheckAbility(character, "Man-at-Arms", "adept")) {
@@ -123,9 +140,10 @@ export const GetImpedingValue = (character: CharacterEntry): number => {
       "Imp 4": 4,
     };
 
-    character.inventory.forEach((item: ItemEntry) => {
-      if (item.static.category === "armor" && item.equipped) {
-        item.static.quality.forEach((quality: string) => {
+    character.inventory.forEach((item: ItemDynamic) => {
+      const item_database = GetDatabaseEquipment(item, equipment);
+      if (item_database.category === "armor" && item.equipped) {
+        item_database.quality.forEach((quality: string) => {
           if (quality in negativeQualities) {
             impeding += negativeQualities[quality];
           }
@@ -137,10 +155,13 @@ export const GetImpedingValue = (character: CharacterEntry): number => {
   return impeding;
 };
 
-export const OverburdenValue = (character: CharacterEntry) => {
+export const OverburdenValue = (
+  character: CharacterEntry,
+  equipment: ItemEntry[],
+) => {
   const overburden = Math.min(
     0,
-    GetMaxSlots(character) - GetUsedSlots(character),
+    GetMaxSlots(character, equipment) - GetUsedSlots(character),
   );
   return Math.abs(overburden);
 };
@@ -162,10 +183,10 @@ export const GetPermanentCorruption = (character: CharacterEntry) => {
   return permanent_corruption;
 };
 
-export function GetBurnRate(character: CharacterEntry) {
+export function GetBurnRate(character: CharacterEntry, equipment: ItemEntry[]) {
   let burn_rate =
     Math.ceil(character.details.xp_earned / 50) +
-    GetStorageValue(character) / 3;
+    GetStorageValue(character, equipment) / 3;
 
   if (CheckAbility(character, "Bushcraft", "novice")) {
     burn_rate -= 1;
@@ -174,7 +195,10 @@ export function GetBurnRate(character: CharacterEntry) {
   return burn_rate;
 }
 
-export function GetPreciseValue(character: CharacterEntry) {
+export function GetPreciseValue(
+  character: CharacterEntry,
+  equipment: ItemEntry[],
+) {
   let precise_value = 0;
 
   const preciseModifiers = {
@@ -182,9 +206,10 @@ export function GetPreciseValue(character: CharacterEntry) {
   };
 
   character.inventory.forEach((item) => {
-    if (!item || !item.static.quality) return;
+    const item_database = GetDatabaseEquipment(item, equipment);
+    if (!item || !item_database.quality) return;
 
-    item.static.quality.forEach((quality) => {
+    item_database.quality.forEach((quality) => {
       Object.entries(preciseModifiers).forEach(([key, modifiers]) => {
         if (quality.includes(key)) {
           precise_value += modifiers;
@@ -196,7 +221,10 @@ export function GetPreciseValue(character: CharacterEntry) {
   return precise_value;
 }
 
-export function GetStorageValue(character: CharacterEntry) {
+export function GetStorageValue(
+  character: CharacterEntry,
+  equipment: ItemEntry[],
+) {
   let storage_value = 0;
 
   const storageModifiers = {
@@ -208,9 +236,10 @@ export function GetStorageValue(character: CharacterEntry) {
   };
 
   character.inventory.forEach((item) => {
-    if (!item || !item.static.quality) return;
+    const item_database = GetDatabaseEquipment(item, equipment);
+    if (!item || !item_database.quality) return;
 
-    item.static.quality.forEach((quality) => {
+    item_database.quality.forEach((quality) => {
       Object.entries(storageModifiers).forEach(([key, modifiers]) => {
         if (quality.includes(key)) {
           storage_value += modifiers;
@@ -225,34 +254,25 @@ export function GetStorageValue(character: CharacterEntry) {
 export function GetUsedSlots(character: CharacterEntry) {
   let used_slots = character.inventory.length;
 
-  const storageModifiers = [
-    "Light",
-    "Storage 2",
-    "Storage 4",
-    "Storage 6",
-    "Storage 8",
-    "Storage 10",
-  ];
-
   character.inventory.forEach((item) => {
-    if (!item || !item.static.quality) return;
-
-    item.static.quality.forEach((quality) => {
-      if (storageModifiers.includes(quality)) {
-        used_slots -= 1;
-      }
-    });
+    if (item.light === true) {
+      used_slots -= 1;
+    }
   });
 
   return used_slots;
 }
 
-export function GetEquipmentCorruption(character: CharacterEntry) {
+export function GetEquipmentCorruption(
+  character: CharacterEntry,
+  equipment: ItemEntry[],
+) {
   let value_adjustment = 0;
 
   for (const item of character.inventory) {
+    const item_database = GetDatabaseEquipment(item, equipment);
     if (
-      item.static.rarity === "unique" &&
+      item_database.rarity === "unique" &&
       !CheckAbility(character, "Artifact Crafting", "novice")
     ) {
       value_adjustment += 1;
@@ -262,7 +282,10 @@ export function GetEquipmentCorruption(character: CharacterEntry) {
   return value_adjustment;
 }
 
-export function GetAbilityCorruption(character: CharacterEntry) {
+export function GetAbilityCorruption(
+  character: CharacterEntry,
+  abilities: AbilityEntry[],
+) {
   let value_adjustment = 0;
 
   const has_theurgy_novice = CheckAbility(character, "Theurgy", "novice");
@@ -274,9 +297,14 @@ export function GetAbilityCorruption(character: CharacterEntry) {
   const has_wizardry_master = CheckAbility(character, "Wizardry", "master");
 
   for (const ability of character.abilities) {
+    const ability_database = GetDatabaseAbility(ability, abilities);
+    if (!ability_database) {
+      console.log("No ability database found for ability", ability);
+      return 0;
+    }
     if (
-      ability.static.category === "mystical power" ||
-      ability.static.category === "ritual"
+      ability_database.category === "mystical power" ||
+      ability_database.category === "ritual"
     ) {
       if (
         ability.level === "Novice" ||
@@ -284,12 +312,12 @@ export function GetAbilityCorruption(character: CharacterEntry) {
         ability.level === "Master"
       ) {
         if (
-          ability.static.tradition.includes("Theurgy") &&
+          ability_database.tradition.includes("Theurgy") &&
           has_theurgy_novice
         ) {
           value_adjustment -= 1;
         } else if (
-          ability.static.tradition.includes("Wizardry") &&
+          ability_database.tradition.includes("Wizardry") &&
           has_wizardry_novice
         ) {
           value_adjustment -= 1;
@@ -297,10 +325,13 @@ export function GetAbilityCorruption(character: CharacterEntry) {
         value_adjustment += 1;
       }
       if (ability.level === "Adept" || ability.level === "Master") {
-        if (ability.static.tradition.includes("Theurgy") && has_theurgy_adept) {
+        if (
+          ability_database.tradition.includes("Theurgy") &&
+          has_theurgy_adept
+        ) {
           value_adjustment -= 1;
         } else if (
-          ability.static.tradition.includes("Wizardry") &&
+          ability_database.tradition.includes("Wizardry") &&
           has_wizardry_adept
         ) {
           value_adjustment -= 1;
@@ -310,12 +341,12 @@ export function GetAbilityCorruption(character: CharacterEntry) {
 
       if (ability.level === "Master") {
         if (
-          ability.static.tradition.includes("Theurgy") &&
+          ability_database.tradition.includes("Theurgy") &&
           has_theurgy_master
         ) {
           value_adjustment -= 1;
         } else if (
-          ability.static.tradition.includes("Wizardry") &&
+          ability_database.tradition.includes("Wizardry") &&
           has_wizardry_master
         ) {
           value_adjustment -= 1;

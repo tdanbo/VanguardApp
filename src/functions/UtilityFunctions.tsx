@@ -2,12 +2,14 @@ import { uniqueId } from "lodash";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
+import { GeneralItem } from "../Types";
 import {
   AbilityDynamic,
   AbilityEntry,
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
+  EffectDynamic,
   EffectEntry,
   ItemDynamic,
   ItemEntry,
@@ -63,7 +65,7 @@ export function IsArmor(item: ItemEntry): boolean {
     "heavy armor",
     "armor accessory",
   ];
-  if (armor_categories.includes(item.static.category)) {
+  if (armor_categories.includes(item.category)) {
     return true;
   }
   return false;
@@ -109,7 +111,7 @@ export function IsUndead(item: CharacterEntry): boolean {
   return false;
 }
 
-export function IsGeneralGood(item: ItemEntry): boolean {
+export function IsGeneralGood(iteM_database: ItemEntry): boolean {
   const general_categories = [
     "bushcraft crafting material",
     "alchemy crafting material",
@@ -123,21 +125,21 @@ export function IsGeneralGood(item: ItemEntry): boolean {
     "container",
     "resource",
   ];
-  if (general_categories.includes(item.static.category)) {
+  if (general_categories.includes(iteM_database.category)) {
     return true;
   }
   return false;
 }
 
-export function IsConsumable(item: ItemEntry): boolean {
+export function IsConsumable(item_database: ItemEntry): boolean {
   const general_categories = ["elixir", "poison"];
-  if (general_categories.includes(item.static.category)) {
+  if (general_categories.includes(item_database.category)) {
     return true;
   }
   return false;
 }
 
-export function IsWeapon(item: ItemEntry): boolean {
+export function IsWeapon(item_database: ItemEntry): boolean {
   const weapon_categories = [
     "natural weapon",
     "short weapon",
@@ -149,21 +151,21 @@ export function IsWeapon(item: ItemEntry): boolean {
     "weapon accessory",
     "alchemical weapon",
   ];
-  if (weapon_categories.includes(item.static.category)) {
+  if (weapon_categories.includes(item_database.category)) {
     return true;
   }
   return false;
 }
 
-export function IsTreasure(item: ItemEntry): boolean {
+export function IsTreasure(item_database: ItemEntry): boolean {
   const weapon_categories = ["treasure"];
-  if (weapon_categories.includes(item.static.category)) {
+  if (weapon_categories.includes(item_database.category)) {
     return true;
   }
   return false;
 }
 
-export function IsMeleeWeapon(item: ItemEntry): boolean {
+export function IsMeleeWeapon(item_database: ItemEntry): boolean {
   const weapon_categories = [
     "natural weapon",
     "short weapon",
@@ -171,13 +173,13 @@ export function IsMeleeWeapon(item: ItemEntry): boolean {
     "long weapon",
     "heavy weapon",
   ];
-  if (weapon_categories.includes(item.static.category)) {
+  if (weapon_categories.includes(item_database.category)) {
     return true;
   }
   return false;
 }
 
-export function IsRangedWeapon(item: ItemEntry): boolean {
+export function IsRangedWeapon(item_database: ItemEntry): boolean {
   const weapon_categories = [
     "natural weapon",
     "short weapon",
@@ -185,7 +187,7 @@ export function IsRangedWeapon(item: ItemEntry): boolean {
     "long weapon",
     "heavy weapon",
   ];
-  if (weapon_categories.includes(item.static.category)) {
+  if (weapon_categories.includes(item_database.category)) {
     return true;
   }
   return false;
@@ -221,7 +223,6 @@ export function getAdjustedColor(color: string, roll: number): string {
 }
 
 interface StyledTextProps {
-  entry: ItemEntry | AbilityEntry | EffectEntry;
   effect: string;
   websocket: Socket;
   character: CharacterEntry;
@@ -317,16 +318,16 @@ export const StyledText: React.FC<StyledTextProps> = ({
 };
 
 export function GetDatabaseEffect(
-  effects: EffectEntry[],
+  effect: EffectDynamic,
   effects_content: EffectEntry[],
-) {
-  for (const effect of effects) {
-    const content_static_effect = effects_content.find(
-      (entry) => entry.name === effect.name,
-    );
-    if (content_static_effect) {
-      effect.static = content_static_effect.static;
-    }
+): EffectEntry | undefined {
+  const content_static_effect = effects_content.find(
+    (entry) => entry.name === effect.name,
+  );
+  if (content_static_effect) {
+    return content_static_effect;
+  } else {
+    return undefined;
   }
 }
 
@@ -347,13 +348,13 @@ export function GetDatabaseAbility(
 export function GetDatabaseEquipment(
   equipment: ItemDynamic,
   equipment_content: ItemEntry[],
-): ItemEntry | undefined {
+): ItemEntry {
   const content_static_item = equipment_content.find(
     (entry) => entry.name === equipment.name,
   );
   if (content_static_item) {
     return content_static_item;
   } else {
-    return undefined;
+    return GeneralItem;
   }
 }

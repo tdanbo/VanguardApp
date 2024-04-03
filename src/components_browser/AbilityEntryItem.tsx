@@ -299,7 +299,6 @@ function AbilityEntryItem({
 
   const [free, setFree] = useState<boolean>(false);
   const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
-
   useEffect(() => {
     setAbilityLevel(ability.level);
     setFree(ability.free);
@@ -315,7 +314,6 @@ function AbilityEntryItem({
       <LevelBaseContainer radius={radius}>
         <AbilityDescription>
           <StyledText
-            entry={ability_database}
             effect={effect}
             websocket={websocket}
             character={character}
