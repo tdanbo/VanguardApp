@@ -11,6 +11,7 @@ import * as Constants from "../Constants";
 import { SessionEntry } from "../Types";
 import { GetActives } from "../functions/ActivesFunction";
 import { update_session } from "../functions/SessionsFunctions";
+import { GetGameData } from "../contexts/GameContent";
 const Navigator = styled.button`
   cursor: pointer;
   display: flex;
@@ -37,6 +38,7 @@ interface ResetEncounterProps {
 }
 
 function ResetCreatureEncounter({ session, websocket }: ResetEncounterProps) {
+  const { equipment } = GetGameData();
   const handleResetEncounter = () => {
     for (const character of session.characters) {
       character.details.initiative = 0;
@@ -47,15 +49,17 @@ function ResetCreatureEncounter({ session, websocket }: ResetEncounterProps) {
   };
 
   const RollInitiative = () => {
+    console.log("Rolling Initiative1");
     for (const character of session.characters) {
       character.details.initiative =
-        GetActives(character).initiative.value + random(1, 10);
+        GetActives(character, equipment).initiative.value + random(1, 10);
     }
-
+    console.log("Rolling Initiative2");
     for (const creature of session.encounter) {
       creature.details.initiative =
-        GetActives(creature).initiative.value + random(1, 10);
+        GetActives(creature, equipment).initiative.value + random(1, 10);
     }
+    console.log("Rolling Initiative3");
     update_session(session, websocket);
   };
 

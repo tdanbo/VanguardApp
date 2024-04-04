@@ -1,10 +1,6 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
-import {
-  GetAbilityCorruption,
-  GetEquipmentCorruption,
-} from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 interface ColumnProps {
   width: string;
@@ -146,7 +142,6 @@ const Minus = styled.button`
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Socket } from "socket.io-client";
-import { GetGameData } from "../contexts/GameContent";
 
 interface HealthBoxProps {
   character: CharacterEntry;
@@ -163,32 +158,6 @@ function CorruptionStatComponent({
   isCreature,
   browser,
 }: HealthBoxProps) {
-  const { equipment, abilities } = GetGameData();
-
-  const handleAddCorruption = () => {
-    const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
-
-    const value_step = 1;
-
-    if (character.health.corruption === corruptionThreshold * 3) {
-      console.log("Max corruption reached");
-    } else {
-      character.health.corruption += value_step;
-    }
-    update_session(session, websocket, character, isCreature);
-  };
-
-  const handleSubCorruption = () => {
-    const value_step = 1;
-
-    if (character.health.corruption === 0) {
-      console.log("Min corruption reached");
-    } else {
-      character.health.corruption -= value_step;
-    }
-    update_session(session, websocket, character, isCreature);
-  };
-
   const handleTempAddCorruption = () => {
     const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
     let value = 1;
@@ -216,52 +185,14 @@ function CorruptionStatComponent({
   };
 
   const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
-  const maxCorruptionPermanent = corruptionThreshold * 3;
-  const corruptionRulesAdjustment =
-    GetEquipmentCorruption(character, equipment) +
-    GetAbilityCorruption(character, abilities);
 
-  const remaining_corruption =
-    maxCorruptionPermanent -
-    character.health.corruption -
-    corruptionRulesAdjustment;
   const temporary_corruption = character.health.shield;
   const clean_corruption = corruptionThreshold - temporary_corruption;
 
   return (
     <Column width={browser ? "50%" : "100%"}>
       <Row height={browser ? "50%" : "75%"}>
-        <div style={{ display: "flex", minWidth: "50%" }}>
-          {[...Array(remaining_corruption)].map((_, index, array) => (
-            <TickBar
-              onClick={handleAddCorruption}
-              onContextMenu={(e) => {
-                e.preventDefault();
-                handleSubCorruption();
-              }}
-              key={index}
-              $bgcolor={Constants.TYPE_COLORS["permanent_corruption"]}
-              $isFirst={index === 0} // Apply rounded corners on the left for the first item
-              $isLast={index === array.length - 1}
-            />
-          ))}
-          {[...Array(maxCorruptionPermanent - remaining_corruption)].map(
-            (_, index, array) => (
-              <TickBar
-                onClick={handleAddCorruption}
-                onContextMenu={(e) => {
-                  e.preventDefault();
-                  handleSubCorruption();
-                }}
-                key={index}
-                $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
-                $isFirst={index === 0} // Apply rounded corners on the left for the first item
-                $isLast={index === array.length - 1}
-              />
-            ),
-          )}
-        </div>
-        <div style={{ display: "flex", minWidth: "50%" }}>
+        <div style={{ display: "flex", width: "100%" }}>
           {[...Array(clean_corruption)].map((_, index, array) => (
             <TickBar
               key={index}
@@ -284,15 +215,6 @@ function CorruptionStatComponent({
         <Minus className="button-hover" onClick={handleTempAddCorruption}>
           <FontAwesomeIcon icon={faMinus} />
         </Minus>
-        <Modifier fontSize={browser ? "16px" : "20px"}>
-          <h1>{remaining_corruption}</h1>
-          <h2>
-            {remaining_corruption}
-            <Divider></Divider>
-
-            {maxCorruptionPermanent}
-          </h2>
-        </Modifier>
         <Modifier fontSize={browser ? "16px" : "20px"}>
           <h1>{clean_corruption}</h1>
           <h2>

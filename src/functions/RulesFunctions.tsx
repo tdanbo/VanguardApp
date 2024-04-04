@@ -34,7 +34,7 @@ export function RulesDiceAdjust(
 ) {
   const { equipment } = GetGameData();
 
-  let dice = item_database.roll.dice;
+  let dice = item_database.roll.base;
   dice += NaturalWeapon_dice(character, item_database);
   dice += NaturalWarrior_dice(character, item_database);
   dice += Berserker_dice(character, item_database);

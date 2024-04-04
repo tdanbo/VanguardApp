@@ -156,6 +156,7 @@ interface Roll {
   roll: boolean;
   mod: number;
   dice: number;
+  base: number;
   type: string;
 }
 
@@ -262,7 +263,7 @@ export type TownsEntry = {
 
 export const GeneralItem: ItemEntry = {
   name: "",
-  roll: { roll: false, dice: 0, mod: 0, type: "" },
+  roll: { roll: false, dice: 0, base: 0, mod: 0, type: "" },
   quality: [],
   slot: 0,
   bulk: false,
