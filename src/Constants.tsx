@@ -27,7 +27,7 @@ export const WIDGET_GAB = "10px";
 export type ColorType = string;
 
 export const PURPLE = "#60495c";
-export const DESAT_PURPLE = "#4f2f4b";
+export const DESAT_PURPLE = "#61445c";
 export const RED = "#925833";
 export const BLUE = "#445c61";
 export const BLUE_VAR = "#60b4bf";
@@ -47,7 +47,7 @@ export const ORANGE = "rgba(205, 112, 57, 0.7)";
 // Original Palette
 export const COLOR_1 = "#923333";
 export const COLOR_2 = "#445c61";
-export const COLOR_3 = "#60495c";
+export const COLOR_3 = "#61445c";
 export const COLOR_4 = "#616647";
 export const COLOR_5 = "#926933";
 export const COLOR_6 = "#924933";

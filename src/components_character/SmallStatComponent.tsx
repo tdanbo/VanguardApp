@@ -7,6 +7,7 @@ import {
   faCarrot,
   faHeartBroken,
   faPersonRunning,
+  faSkull,
   faWeightHanging,
 } from "@fortawesome/free-solid-svg-icons";
 interface ContainerProps {
@@ -62,7 +63,7 @@ const Value = styled.div`
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
 
   color: ${Constants.WIDGET_SECONDARY_FONT};
@@ -111,12 +112,14 @@ function SmallStatComponent({ title, value, icon }: SmallStatComponentProps) {
     color = Constants.GREEN;
   } else if (icon === faWeightHanging) {
     color = Constants.BRIGHT_YELLOW;
+  } else if (icon === faSkull) {
+    color = Constants.COLOR_3;
   } else {
     color = Constants.WIDGET_SECONDARY_FONT_INACTIVE;
   }
 
   return (
-    <Container width={"23%"}>
+    <Container width={"140px"}>
       <Column width={"100%"}>
         <Row height={"70%"}>
           <Block></Block>

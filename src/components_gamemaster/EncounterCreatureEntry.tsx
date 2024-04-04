@@ -335,8 +335,10 @@ function EncounterCreatureEntry({
   setAdvantage,
   setCharacterId,
 }: EncounterBoxProps) {
+  const { equipment, abilities } = GetGameData();
+
   const creatureClone = cloneDeep(creature);
-  const character_actives = GetActives(creatureClone);
+  const character_actives = GetActives(creatureClone, equipment);
   const pain = Math.ceil(creatureClone.stats.strong.value / 2);
   const attack = ModifierConverter[character_actives.attack.value];
   const defense = ModifierConverter[character_actives.defense.value];
@@ -344,8 +346,6 @@ function EncounterCreatureEntry({
   const [currentDamage, setCurrentDamage] = useState<number>(
     creature.health.damage!,
   );
-
-  const { equipment, abilities } = GetGameData();
 
   const handleAdjustHp = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault(); // Prevent the context menu from appearing on right-click

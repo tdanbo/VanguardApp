@@ -81,7 +81,7 @@ function DurabilityComponent({
   ) {
     max_durability = 4;
   } else {
-    max_durability = item_database.roll.dice + item_database.roll.mod;
+    max_durability = item_database.roll.base;
   }
 
   const handleAddDurability = () => {

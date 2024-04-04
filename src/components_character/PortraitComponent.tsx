@@ -31,6 +31,7 @@ interface PortraitProps {
 import EditCharacterComponent from "./EditCharacterComponent";
 import { Socket } from "socket.io-client";
 import { GetGameData } from "../contexts/GameContent";
+import SmallCorruptionComponent from "./SmallCorruptionComponent";
 const Container = styled.div<PortraitProps>`
   display: flex;
   flex-direction: row;
@@ -112,6 +113,12 @@ function PortraitComponent({
           value={burn.toString()}
           title={"consumption"}
           icon={faCarrot}
+        />
+        <SmallCorruptionComponent
+          character={character}
+          session={session}
+          isCreature={isCreature}
+          websocket={websocket}
         />
       </Column>
       <RightColumn>

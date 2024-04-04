@@ -127,6 +127,7 @@ import { GetActives } from "../functions/ActivesFunction";
 import UpdateAbilityStats from "../functions/rules/UpdateAbilityStats";
 import EquipmentSection from "../components_character/EquipmentSection";
 import { ActiveStateType } from "../Types";
+import { GetGameData } from "../contexts/GameContent";
 type CharacterSheetProps = {
   websocket: Socket;
   session: SessionEntry;
@@ -176,7 +177,8 @@ function CharacterSheet({
   setCharacterId,
 }: CharacterSheetProps) {
   UpdateAbilityStats(character);
-  const character_actives = GetActives(character);
+  const { equipment } = GetGameData();
+  const character_actives = GetActives(character, equipment);
 
   function FindActive(stat: string) {
     for (const [key, value] of Object.entries(character_actives)) {

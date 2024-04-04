@@ -1,5 +1,4 @@
 import { ActivesEntry, CharacterEntry, ItemEntry } from "../Types";
-import { GetGameData } from "../contexts/GameContent";
 import { GetMaxSlots, GetUsedSlots } from "./RulesFunctions";
 import { GetDatabaseEquipment } from "./UtilityFunctions";
 import { ArmoredMystic_active } from "./rules/ArmoredMystic";
@@ -11,9 +10,10 @@ import { ShieldFighter_active } from "./rules/ShieldFighter";
 import { StaffFighting_active } from "./rules/StaffFighting";
 import { TwinAttack_active } from "./rules/TwinAttack";
 
-export const GetActives = (character: CharacterEntry) => {
-  const { equipment } = GetGameData();
-
+export const GetActives = (
+  character: CharacterEntry,
+  equipment: ItemEntry[],
+) => {
   const character_actives: ActivesEntry = {
     attack: { value: 0, stat: "" },
     defense: { value: 0, stat: "" },
