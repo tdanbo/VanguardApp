@@ -12,7 +12,6 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import {
-  AbilityDynamic,
   AbilityEntry,
   ActiveStateType,
   AdvantageType,
@@ -23,12 +22,7 @@ import {
 import RollComponent from "../components_general/RollComponent";
 import { CheckAbility } from "../functions/ActivesFunction";
 import { update_session } from "../functions/SessionsFunctions";
-import {
-  GetDatabaseAbility,
-  StyledText,
-  toTitleCase,
-} from "../functions/UtilityFunctions";
-import { GetGameData } from "../contexts/GameContent";
+import { StyledText, toTitleCase } from "../functions/UtilityFunctions";
 
 const EntryColor = (type: string) => {
   return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.WIDGET_BORDER;
@@ -249,7 +243,7 @@ const RollBox = styled.div<RollBoxProps>`
 `;
 
 interface AbilityEntryItemProps {
-  ability: AbilityDynamic;
+  ability: AbilityEntry;
   browser: boolean;
   setInventoryState?: (inventoryState: number) => void;
   character: CharacterEntry;
@@ -262,16 +256,13 @@ interface AbilityEntryItemProps {
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
-function GetCurrentLevel(
-  ability: AbilityDynamic,
-  ability_database: AbilityEntry,
-) {
+function GetCurrentLevel(ability: AbilityEntry) {
   if (ability.level === "Master") {
-    return ability_database.master;
+    return ability.static.master;
   } else if (ability.level === "Adept") {
-    return ability_database.adept;
+    return ability.static.adept;
   } else {
-    return ability_database.novice;
+    return ability.static.novice;
   }
 }
 
@@ -289,13 +280,6 @@ function AbilityEntryItem({
   setAdvantage,
 }: AbilityEntryItemProps) {
   // We will get the dynamic object and look for the database entry. If it doesn't exist, we will return null.
-  const { abilities } = GetGameData();
-  const ability_database = GetDatabaseAbility(ability, abilities);
-
-  if (!ability_database) {
-    console.log(ability.name + " not found in database.");
-    return null;
-  }
 
   const [free, setFree] = useState<boolean>(false);
   const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
@@ -337,11 +321,11 @@ function AbilityEntryItem({
 
   useEffect(() => {
     if (browser) {
-      if (ability_database.master.description !== "") {
+      if (ability.static.master.description !== "") {
         setAbilityLevel("Master");
-      } else if (ability_database.adept.description !== "") {
+      } else if (ability.static.adept.description !== "") {
         setAbilityLevel("Adept");
-      } else if (ability_database.novice.description !== "") {
+      } else if (ability.static.novice.description !== "") {
         setAbilityLevel("Novice");
       } else {
         setAbilityLevel("Novice");
@@ -365,7 +349,7 @@ function AbilityEntryItem({
     }
   };
 
-  const DeleteAbilitySlot = (ability: AbilityDynamic) => {
+  const DeleteAbilitySlot = (ability: AbilityEntry) => {
     const ability_id = ability.id;
     const new_abilities = character.abilities.filter(
       (item) => item.id !== ability_id,
@@ -377,7 +361,7 @@ function AbilityEntryItem({
   };
 
   interface LevelSelectorProps {
-    ability: AbilityDynamic;
+    ability: AbilityEntry;
   }
 
   const LevelSelector = ({ ability }: LevelSelectorProps) => {
@@ -424,7 +408,7 @@ function AbilityEntryItem({
     return (
       <LevelSelection
         className={"button-hover"}
-        type={ability_database.category}
+        type={ability.static.category}
         $active={isActive(abilityLevel as Level)}
         onClick={handleLevelChange}
       >
@@ -445,7 +429,7 @@ function AbilityEntryItem({
   const has_wizardry_adept = CheckAbility(character, "Wizardry", "adept");
   const has_wizardry_master = CheckAbility(character, "Wizardry", "master");
 
-  const current_level = GetCurrentLevel(ability, ability_database);
+  const current_level = GetCurrentLevel(ability);
 
   const ChangeFreeHandle = () => {
     ability.free = !free;
@@ -465,21 +449,21 @@ function AbilityEntryItem({
         <NameContainer
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >
-          <AbilityName type={ability_database.category} $active={true}>
+          <AbilityName type={ability.static.category} $active={true}>
             {ability.name}
             <CorruptionContainer>
-              {(ability_database.category === "mystical power" ||
-                ability_database.category === "ritual") && (
+              {(ability.static.category === "mystical power" ||
+                ability.static.category === "ritual") && (
                 <>
                   {(ability.level === "Novice" ||
                     ability.level === "Adept" ||
                     ability.level === "Master") &&
                     !(
-                      ability_database.tradition.includes("Theurgy") &&
+                      ability.static.tradition.includes("Theurgy") &&
                       has_theurgy_novice
                     ) &&
                     !(
-                      ability_database.tradition.includes("Wizardry") &&
+                      ability.static.tradition.includes("Wizardry") &&
                       has_wizardry_novice
                     ) && (
                       <FontAwesomeIcon
@@ -489,11 +473,11 @@ function AbilityEntryItem({
                     )}
                   {(ability.level === "Adept" || ability.level === "Master") &&
                     !(
-                      ability_database.tradition.includes("Theurgy") &&
+                      ability.static.tradition.includes("Theurgy") &&
                       has_theurgy_adept
                     ) &&
                     !(
-                      ability_database.tradition.includes("Wizardry") &&
+                      ability.static.tradition.includes("Wizardry") &&
                       has_wizardry_adept
                     ) && (
                       <FontAwesomeIcon
@@ -503,11 +487,11 @@ function AbilityEntryItem({
                     )}
                   {ability.level === "Master" &&
                     !(
-                      ability_database.tradition.includes("Theurgy") &&
+                      ability.static.tradition.includes("Theurgy") &&
                       has_theurgy_master
                     ) &&
                     !(
-                      ability_database.tradition.includes("Wizardry") &&
+                      ability.static.tradition.includes("Wizardry") &&
                       has_wizardry_master
                     ) && (
                       <FontAwesomeIcon
@@ -520,10 +504,10 @@ function AbilityEntryItem({
             </CorruptionContainer>
           </AbilityName>
           <AbilityDetail>
-            {ability_database.tradition === ""
-              ? toTitleCase(ability_database.category)
-              : `${toTitleCase(ability_database.category)}, ${
-                  ability_database.tradition
+            {ability.static.tradition === ""
+              ? toTitleCase(ability.static.category)
+              : `${toTitleCase(ability.static.category)}, ${
+                  ability.static.tradition
                 }`}
           </AbilityDetail>
         </NameContainer>
@@ -538,7 +522,7 @@ function AbilityEntryItem({
                 session={session}
                 character={character}
                 websocket={websocket}
-                roll_type={ability_database.category as RollTypeEntry}
+                roll_type={ability.static.category as RollTypeEntry}
                 roll_source={ability.name}
                 isCreature={isCreature}
                 dice={i.dice}
@@ -554,8 +538,8 @@ function AbilityEntryItem({
           })}
         </RollBox>
         <LevelSelectionContainer>
-          {ability_database.adept.description !== "" &&
-          ability_database.master.description !== "" ? (
+          {ability.static.adept.description !== "" &&
+          ability.static.master.description !== "" ? (
             <LevelSelector ability={ability} />
           ) : null}
         </LevelSelectionContainer>
@@ -599,41 +583,41 @@ function AbilityEntryItem({
         )}
       </Container>
       <LevelContainer $expanded={expanded}>
-        {ability_database.novice.description !== "" &&
+        {ability.static.novice.description !== "" &&
           abilityLevel === "Novice" && (
             <>
               <LevelComponent
-                effect={ability_database.novice.description}
+                effect={ability.static.novice.description}
                 radius={Constants.BORDER_RADIUS}
               />
             </>
           )}
-        {ability_database.adept.description !== "" &&
+        {ability.static.adept.description !== "" &&
           abilityLevel === "Adept" && (
             <>
               <LevelComponent
-                effect={ability_database.novice.description}
+                effect={ability.static.novice.description}
                 radius={"0px"}
               />
               <LevelComponent
-                effect={ability_database.adept.description}
+                effect={ability.static.adept.description}
                 radius={Constants.BORDER_RADIUS}
               />
             </>
           )}
-        {ability_database.master.description !== "" &&
+        {ability.static.master.description !== "" &&
           abilityLevel === "Master" && (
             <>
               <LevelComponent
-                effect={ability_database.novice.description}
+                effect={ability.static.novice.description}
                 radius={"0px"}
               />
               <LevelComponent
-                effect={ability_database.adept.description}
+                effect={ability.static.adept.description}
                 radius={"0px"}
               />
               <LevelComponent
-                effect={ability_database.master.description}
+                effect={ability.static.master.description}
                 radius={Constants.BORDER_RADIUS}
               />
             </>

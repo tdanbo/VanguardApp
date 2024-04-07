@@ -2,13 +2,11 @@ import axios from "axios";
 import { API } from "../Constants";
 import { GetGameData } from "../contexts/GameContent";
 import {
-  AbilityEntry,
   CharacterEntry,
   modifiedCreature,
   NewCharacterEntry,
   SessionEntry,
 } from "../Types";
-import { GetDatabaseAbility } from "./UtilityFunctions";
 export const getCreatureMovement = (creature: modifiedCreature) => {
   const movement: { [key: number]: number } = {
     5: -10,
@@ -35,7 +33,7 @@ export const getCreatureMovement = (creature: modifiedCreature) => {
   }
 
   let sneaking_mod = 0;
-  for (const armor of creature.armor.quality) {
+  for (const armor of creature.armor.static.quality) {
     if (armor === "Imp 1") {
       sneaking_mod += -1;
     } else if (armor === "Imp 2") {
@@ -53,20 +51,12 @@ export const getCreatureMovement = (creature: modifiedCreature) => {
   return calculated_speed / 5;
 };
 
-export const getCharacterXp = (
-  character: CharacterEntry,
-  abilities: AbilityEntry[],
-) => {
+export const getCharacterXp = (character: CharacterEntry) => {
   let xp_spent = 0;
 
   character.abilities.forEach((ability) => {
-    const ability_database = GetDatabaseAbility(ability, abilities);
-    if (!ability_database) {
-      console.log(ability.name + " not found in database");
-      return;
-    }
     if (
-      ["burden", "ritual", "utility"].includes(ability_database.category) ||
+      ["burden", "ritual", "utility"].includes(ability.static.category) ||
       ability.free
     ) {
       return;
@@ -83,18 +73,10 @@ export const getCharacterXp = (
   return xp_spent;
 };
 
-export const getUtilityXp = (
-  character: CharacterEntry,
-  abilities: AbilityEntry[],
-) => {
+export const getUtilityXp = (character: CharacterEntry) => {
   let xp_spent = 0;
   character.abilities.forEach((ability) => {
-    const ability_database = GetDatabaseAbility(ability, abilities);
-    if (!ability_database) {
-      console.log(ability.name + " not found in database");
-      return;
-    }
-    if (ability_database.category !== "utility" || ability.free) {
+    if (ability.static.category !== "utility" || ability.free) {
       return;
     }
     xp_spent += 10;

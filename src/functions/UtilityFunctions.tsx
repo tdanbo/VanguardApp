@@ -4,14 +4,11 @@ import styled from "styled-components";
 import * as Constants from "../Constants";
 import { GeneralItem } from "../Types";
 import {
-  AbilityDynamic,
   AbilityEntry,
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
-  EffectDynamic,
   EffectEntry,
-  ItemDynamic,
   ItemEntry,
   SessionEntry,
 } from "../Types";
@@ -65,7 +62,7 @@ export function IsArmor(item: ItemEntry): boolean {
     "heavy armor",
     "armor accessory",
   ];
-  if (armor_categories.includes(item.category)) {
+  if (armor_categories.includes(item.static.category)) {
     return true;
   }
   return false;
@@ -111,7 +108,7 @@ export function IsUndead(item: CharacterEntry): boolean {
   return false;
 }
 
-export function IsGeneralGood(iteM_database: ItemEntry): boolean {
+export function IsGeneralGood(item: ItemEntry): boolean {
   const general_categories = [
     "bushcraft crafting material",
     "alchemy crafting material",
@@ -125,21 +122,21 @@ export function IsGeneralGood(iteM_database: ItemEntry): boolean {
     "container",
     "resource",
   ];
-  if (general_categories.includes(iteM_database.category)) {
+  if (general_categories.includes(item.static.category)) {
     return true;
   }
   return false;
 }
 
-export function IsConsumable(item_database: ItemEntry): boolean {
+export function IsConsumable(item: ItemEntry): boolean {
   const general_categories = ["elixir", "poison"];
-  if (general_categories.includes(item_database.category)) {
+  if (general_categories.includes(item.static.category)) {
     return true;
   }
   return false;
 }
 
-export function IsWeapon(item_database: ItemEntry): boolean {
+export function IsWeapon(item: ItemEntry): boolean {
   const weapon_categories = [
     "natural weapon",
     "short weapon",
@@ -151,21 +148,21 @@ export function IsWeapon(item_database: ItemEntry): boolean {
     "weapon accessory",
     "alchemical weapon",
   ];
-  if (weapon_categories.includes(item_database.category)) {
+  if (weapon_categories.includes(item.static.category)) {
     return true;
   }
   return false;
 }
 
-export function IsTreasure(item_database: ItemEntry): boolean {
+export function IsTreasure(item: ItemEntry): boolean {
   const weapon_categories = ["treasure"];
-  if (weapon_categories.includes(item_database.category)) {
+  if (weapon_categories.includes(item.static.category)) {
     return true;
   }
   return false;
 }
 
-export function IsMeleeWeapon(item_database: ItemEntry): boolean {
+export function IsMeleeWeapon(item: ItemEntry): boolean {
   const weapon_categories = [
     "natural weapon",
     "short weapon",
@@ -173,13 +170,13 @@ export function IsMeleeWeapon(item_database: ItemEntry): boolean {
     "long weapon",
     "heavy weapon",
   ];
-  if (weapon_categories.includes(item_database.category)) {
+  if (weapon_categories.includes(item.static.category)) {
     return true;
   }
   return false;
 }
 
-export function IsRangedWeapon(item_database: ItemEntry): boolean {
+export function IsRangedWeapon(item: ItemEntry): boolean {
   const weapon_categories = [
     "natural weapon",
     "short weapon",
@@ -187,7 +184,7 @@ export function IsRangedWeapon(item_database: ItemEntry): boolean {
     "long weapon",
     "heavy weapon",
   ];
-  if (weapon_categories.includes(item_database.category)) {
+  if (weapon_categories.includes(item.static.category)) {
     return true;
   }
   return false;
@@ -318,7 +315,7 @@ export const StyledText: React.FC<StyledTextProps> = ({
 };
 
 export function GetDatabaseEffect(
-  effect: EffectDynamic,
+  effect: EffectEntry,
   effects_content: EffectEntry[],
 ): EffectEntry | undefined {
   const content_static_effect = effects_content.find(
@@ -332,7 +329,7 @@ export function GetDatabaseEffect(
 }
 
 export function GetDatabaseAbility(
-  ability: AbilityDynamic,
+  ability: AbilityEntry,
   abilities_content: AbilityEntry[],
 ): AbilityEntry | undefined {
   const content_static_ability = abilities_content.find(
@@ -346,7 +343,7 @@ export function GetDatabaseAbility(
 }
 
 export function GetDatabaseEquipment(
-  equipment: ItemDynamic,
+  equipment: ItemEntry,
   equipment_content: ItemEntry[],
 ): ItemEntry {
   const content_static_item = equipment_content.find(

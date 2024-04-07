@@ -1,4 +1,4 @@
-import { faCheck, faSkull, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import styled from "styled-components";
@@ -7,7 +7,9 @@ import { CharacterPortraits } from "../Images";
 import { CharacterEntry, SessionEntry } from "../Types";
 import { GetMaxToughness } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-import HealthStatComponent from "../components_character/HealthStatComponent";
+
+import Icon from "@mdi/react";
+import { mdiGraveStone } from "@mdi/js";
 
 const Container = styled.div`
   display: flex;
@@ -40,44 +42,13 @@ const PortraitCenter = styled.div<PortraitCenterProps>`
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 50%;
-`;
-const LeftControl = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  color: ${Constants.WIDGET_BORDER};
-`;
-
-const RightControl = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  color: ${Constants.WIDGET_BORDER};
-`;
-
-const DeadControl = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  color: ${Constants.WIDGET_BORDER};
-  border-radius: ${Constants.BORDER_RADIUS};
+  width: 100%;
 `;
 
 import { Socket } from "socket.io-client";
-import CorruptionStatComponent from "../components_character/CorruptionStatComponent";
+import SmallHealthComponent from "./SmallHealthComponent";
+import SmallCorruptionComponent from "./SmallCorruptionComponent";
+import "../layout.css";
 
 interface SessionBoxProps {
   character: CharacterEntry;
@@ -125,76 +96,77 @@ function CharacterBox({
 
   return (
     <Container>
-      {remaining_toughness === 0 ? (
-        killCharacter ? (
-          <LeftControl
+      <PortraitCenter src={CharacterPortraits[character.portrait]}>
+        {killCharacter ? (
+          <div
+            className="row opaque_color button"
+            style={{ maxWidth: "30%", gap: "0px" }}
             onClick={() => setKillCharacter(false)}
-            title={"Don't Kill " + character.name}
           >
             <FontAwesomeIcon
               icon={faXmark}
-              style={{ fontSize: "12px", color: Constants.BRIGHT_RED }}
-            />
-          </LeftControl>
-        ) : (
-          <LeftControl
-            onClick={() => setKillCharacter(true)}
-            title={"Delete " + character.name}
-          >
-            <FontAwesomeIcon icon={faSkull} style={{ fontSize: "12px" }} />
-          </LeftControl>
-        )
-      ) : (
-        <HealthStatComponent
-          character={character}
-          session={session}
-          websocket={websocket}
-          isCreature={isCreature}
-          browser={true}
-        />
-      )}
-
-      {killCharacter ? (
-        <PortraitCenter
-          onClick={handleOnClick}
-          src={CharacterPortraits[character.portrait]}
-        >
-          Confirm Delete : {character.name}
-        </PortraitCenter>
-      ) : (
-        <PortraitCenter
-          onClick={handleOnClick}
-          src={CharacterPortraits[character.portrait]}
-        >
-          {character.name}
-        </PortraitCenter>
-      )}
-      {remaining_toughness === 0 ? (
-        killCharacter ? (
-          <DeadControl onClick={handleDeleteCharacter}>
-            <FontAwesomeIcon
-              icon={faCheck}
-              style={{ fontSize: "12px", color: Constants.BRIGHT_GREEN }}
+              style={{ fontSize: "20px", color: Constants.BRIGHT_RED }}
               title={"Delete " + character.name}
             />
-          </DeadControl>
+          </div>
         ) : (
-          <RightControl
-            onClick={() => setKillCharacter(true)}
-            title={"Delete " + character.name}
+          <SmallHealthComponent
+            character={character}
+            session={session}
+            websocket={websocket}
+            isCreature={isCreature}
+            browser={true}
+          />
+        )}
+        {remaining_toughness === 0 ? (
+          <div
+            className="column opaque_color button"
+            style={{
+              gap: "0px",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onClick={() => setKillCharacter(!killCharacter)}
           >
-            <FontAwesomeIcon icon={faSkull} style={{ fontSize: "12px" }} />
-          </RightControl>
-        ) // Remove the extra curly braces here
-      ) : (
-        <CorruptionStatComponent
-          character={character}
-          session={session}
-          websocket={websocket}
-          isCreature={isCreature}
-          browser={true}
-        />
-      )}
+            <Icon path={mdiGraveStone} size={0.75} />
+            {character.name}
+          </div>
+        ) : (
+          <div
+            className="row"
+            style={{
+              gap: "0px",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onClick={handleOnClick}
+          >
+            {character.name}
+          </div>
+        )}
+
+        {killCharacter ? (
+          <div
+            className="row opaque_color button"
+            style={{ maxWidth: "30%", gap: "0px" }}
+            onClick={handleDeleteCharacter}
+          >
+            <FontAwesomeIcon
+              icon={faCheck}
+              style={{ fontSize: "20px", color: Constants.BRIGHT_GREEN }}
+              title={"Delete " + character.name}
+            />
+          </div>
+        ) : (
+          <SmallCorruptionComponent
+            character={character}
+            session={session}
+            websocket={websocket}
+            isCreature={isCreature}
+            browser={true}
+          />
+        )}
+      </PortraitCenter>
     </Container>
   );
 }

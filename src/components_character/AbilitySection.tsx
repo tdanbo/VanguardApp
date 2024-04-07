@@ -1,7 +1,7 @@
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
 import {
-  AbilityDynamic,
+  AbilityEntry,
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
@@ -10,8 +10,6 @@ import {
 import AbilityEntryItem from "../components_browser/AbilityEntryItem";
 import EffectEntryItem from "../components_browser/EffectEntryItem";
 import InventoryEntryEmpty from "./InventoryEntryEmpty";
-import { GetGameData } from "../contexts/GameContent";
-import { GetDatabaseAbility } from "../functions/UtilityFunctions";
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -34,19 +32,10 @@ function AbilitySection({
   setActiveState,
   setAdvantage,
 }: NavigationProps) {
-  const { abilities } = GetGameData();
-
-  function sortAbilities(a: AbilityDynamic, b: AbilityDynamic): number {
-    const a_database = GetDatabaseAbility(a, abilities);
-    const b_database = GetDatabaseAbility(b, abilities);
-
-    if (!a_database || !b_database) {
-      return 0;
-    }
-
+  function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
     return (
-      Constants.TYPE_FILTER.indexOf(a_database.category.toLowerCase()) -
-      Constants.TYPE_FILTER.indexOf(b_database.category.toLowerCase())
+      Constants.TYPE_FILTER.indexOf(a.static.category.toLowerCase()) -
+      Constants.TYPE_FILTER.indexOf(b.static.category.toLowerCase())
     );
   }
   const sortedAbilities = [...character.abilities].sort(sortAbilities);

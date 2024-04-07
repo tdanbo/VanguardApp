@@ -9,7 +9,7 @@ import {
   GetAbilityCorruption,
   GetEquipmentCorruption,
 } from "../functions/RulesFunctions";
-import { GetGameData } from "../contexts/GameContent";
+
 import { CharacterEntry, SessionEntry } from "../Types";
 interface ContainerProps {
   width: string;
@@ -110,13 +110,10 @@ function SmallCorruptionComponent({
   websocket,
   isCreature,
 }: CorruptionSmallComponentProps) {
-  const { abilities, equipment } = GetGameData();
-
   const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
   const maxCorruptionPermanent = corruptionThreshold * 3;
   const corruptionRulesAdjustment =
-    GetEquipmentCorruption(character, equipment) +
-    GetAbilityCorruption(character, abilities);
+    GetEquipmentCorruption(character) + GetAbilityCorruption(character);
 
   const current_corruption =
     character.health.corruption + corruptionRulesAdjustment;

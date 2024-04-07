@@ -3,12 +3,12 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 
-import { GetDatabaseEffect, toTitleCase } from "../functions/UtilityFunctions";
+import { toTitleCase } from "../functions/UtilityFunctions";
 import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
-  EffectDynamic,
+  EffectEntry,
   SessionEntry,
 } from "../Types";
 
@@ -20,7 +20,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../functions/SessionsFunctions";
 import { StyledText } from "../functions/UtilityFunctions";
-import { GetGameData } from "../contexts/GameContent";
 
 const EntryColor = (type: string) => {
   return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.WIDGET_BORDER;
@@ -222,7 +221,7 @@ const Column = styled.div`
 `;
 
 interface EffectEntryItemProps {
-  effect: EffectDynamic;
+  effect: EffectEntry;
   browser: boolean;
   setInventoryState?: (inventoryState: number) => void;
   character: CharacterEntry;
@@ -248,14 +247,6 @@ function EffectEntryItem({
   setActiveState,
   setAdvantage,
 }: EffectEntryItemProps) {
-  const { effects } = GetGameData();
-  const effect_database = GetDatabaseEffect(effect, effects);
-
-  if (!effect_database) {
-    console.log(effect.name + " not found in database.");
-    return null;
-  }
-
   const [abilityLevel, setAbilityLevel] = useState<number>(1);
   useEffect(() => {
     setAbilityLevel(effect.level);
@@ -308,7 +299,7 @@ function EffectEntryItem({
     }
   };
 
-  const DeleteAbilitySlot = (effect: EffectDynamic) => {
+  const DeleteAbilitySlot = (effect: EffectEntry) => {
     const ability_id = effect.id;
     const new_effects = character.effects.filter(
       (item) => item.id !== ability_id,
@@ -322,7 +313,7 @@ function EffectEntryItem({
   };
 
   interface LevelSelectorProps {
-    effect: EffectDynamic;
+    effect: EffectEntry;
   }
 
   const LevelSelector = ({ effect }: LevelSelectorProps) => {
@@ -359,7 +350,7 @@ function EffectEntryItem({
     return (
       <LevelSelection
         className={"button-hover"}
-        type={effect_database.category}
+        type={effect.static.category}
         onClick={(e) => {
           e.preventDefault(); // Prevents the default action of the click event
           handleLevelChange(true);
@@ -381,10 +372,10 @@ function EffectEntryItem({
         <NameContainer
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >
-          <AbilityName type={effect_database.category} $active={true}>
-            {effect_database.name}
+          <AbilityName type={effect.static.category} $active={true}>
+            {effect.name}
           </AbilityName>
-          <AbilityDetail>{toTitleCase(effect_database.category)}</AbilityDetail>
+          <AbilityDetail>{toTitleCase(effect.static.category)}</AbilityDetail>
         </NameContainer>
         <LevelSelectionContainer>
           <LevelSelector effect={effect} />
@@ -429,7 +420,7 @@ function EffectEntryItem({
       </Container>
       <LevelContainer $expanded={expanded}>
         <LevelComponent
-          effect={effect_database.effect}
+          effect={effect.static.effect}
           radius={Constants.BORDER_RADIUS}
         />
       </LevelContainer>

@@ -4,14 +4,12 @@ import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
-  ItemDynamic,
+  ItemEntry,
   SessionEntry,
 } from "../Types";
 import InventoryEntry from "../components_browser/InventoryEntry";
 import { GetMaxSlots } from "../functions/RulesFunctions";
 import InventoryEntryEmpty from "./InventoryEntryEmpty";
-import { GetGameData } from "../contexts/GameContent";
-import { GetDatabaseEquipment } from "../functions/UtilityFunctions";
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -34,16 +32,11 @@ function InventorySection({
   setActiveState,
   setAdvantage,
 }: NavigationProps) {
-  const { equipment } = GetGameData();
-
-  function sortInventory(a: ItemDynamic, b: ItemDynamic): number {
-    const a_database = GetDatabaseEquipment(a, equipment);
-    const b_database = GetDatabaseEquipment(b, equipment);
-
+  function sortInventory(a: ItemEntry, b: ItemEntry): number {
     // First sort by category
     const categorySort =
-      Constants.CATEGORY_FILTER.indexOf(a_database.category.toLowerCase()) -
-      Constants.CATEGORY_FILTER.indexOf(b_database.category.toLowerCase());
+      Constants.CATEGORY_FILTER.indexOf(a.static.category.toLowerCase()) -
+      Constants.CATEGORY_FILTER.indexOf(b.static.category.toLowerCase());
 
     // If categories are the same, sort by light
     if (categorySort === 0) {
@@ -56,7 +49,7 @@ function InventorySection({
   character.inventory.sort(sortInventory);
   const sortedInventory = [...character.inventory].sort(sortInventory);
 
-  const totalSlots = GetMaxSlots(character, equipment) * 2;
+  const totalSlots = GetMaxSlots(character) * 2;
 
   return (
     <>
