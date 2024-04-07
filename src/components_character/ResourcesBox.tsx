@@ -3,10 +3,12 @@ import styled from "styled-components";
 import * as Constants from "../Constants";
 
 import {
+  IconDefinition,
   faAngleLeft,
   faCarrot,
   faCheck,
   faCircle,
+  faCoins,
   faDroplet,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,71 +32,6 @@ const BlueColor = "rgba(96, 128, 148, 0.7)";
 const GoldColor = "rgba(189, 169, 57, 0.7)";
 const SilverColor = "rgba(185, 185, 185, 0.7)";
 const BronzeColor = "rgba(140, 110, 90, 0.7)";
-
-const Container = styled.div`
-  display: flex;
-  flex-grow: 1;
-  gap: 20px;
-  justify-content: right;
-  width: 50%;
-`;
-
-const CurrencyContainer = styled.button`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  border-radius: ${Constants.BORDER_RADIUS};
-  justify-content: center;
-  align-items: center;
-  font-size: 1.25em;
-  font-weight: bold;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  color: ${Constants.WIDGET_PRIMARY_FONT};
-`;
-
-const IconFContainer = styled.div`
-  display: flex;
-  font-size: 20px;
-  color: ${OrangeColor};
-`;
-
-const IconWContainer = styled.div`
-  display: flex;
-
-  font-size: 20px;
-  color: ${BlueColor};
-`;
-
-const IconTContainer = styled.div`
-  display: flex;
-
-  font-size: 20px;
-  color: ${GoldColor};
-`;
-
-const IconSContainer = styled.div`
-  display: flex;
-
-  font-size: 20px;
-  color: ${SilverColor};
-`;
-
-const IconOContainer = styled.div`
-  display: flex;
-
-  font-size: 20px;
-  color: ${BronzeColor};
-`;
-
-const TextContainer = styled.div`
-  display: flex;
-  flex: 1;
-  flex-grow: 1;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-`;
 
 const Overlay = styled.div`
   position: fixed;
@@ -233,7 +170,7 @@ interface ResourceChangerProps {
   value: number;
   mode: "thaler" | "shillings" | "orthegs" | "food" | "water";
   setValue: (value: number) => void;
-  icon: any;
+  icon: IconDefinition;
   color: string;
 }
 
@@ -273,7 +210,7 @@ function ResourceChanger({
       multiplier = 10;
     }
 
-    let changeAmount = input * multiplier;
+    const changeAmount = input * multiplier;
 
     newValue -= previousValue;
     newValue += changeAmount;
@@ -381,32 +318,78 @@ function ResourcesBox({
   };
   return (
     <>
-      <Container onClick={handleOpen}>
-        <CurrencyContainer className="button-hover">
-          <IconFContainer>
+      <div className="row" onClick={handleOpen}>
+        <div className="row base_color button" style={{ width: "50%" }}>
+          <div
+            className="row"
+            style={{
+              maxWidth: "30px",
+              color: Constants.ORANGE,
+              fontSize: "18px",
+            }}
+          >
             <FontAwesomeIcon icon={faCarrot} />
-          </IconFContainer>
-          <TextContainer>{character.rations.food}</TextContainer>
-        </CurrencyContainer>
-        <CurrencyContainer className="button-hover">
-          <IconWContainer>
+          </div>
+          <div className="row">{character.rations.food}</div>
+        </div>
+        <div
+          className="row button-hover base_color button"
+          style={{ width: "50%" }}
+        >
+          <div
+            className="row"
+            style={{
+              maxWidth: "30px",
+              color: Constants.BLUE,
+              fontSize: "18px",
+            }}
+          >
             <FontAwesomeIcon icon={faDroplet} />
-          </IconWContainer>
-          <TextContainer>{character.rations.water}</TextContainer>
-        </CurrencyContainer>
-        <CurrencyContainer className="button-hover">
-          <IconTContainer>T</IconTContainer>
-          <TextContainer>{thaler}</TextContainer>
-        </CurrencyContainer>
-        <CurrencyContainer className="button-hover">
-          <IconSContainer>S</IconSContainer>
-          <TextContainer>{shillings}</TextContainer>
-        </CurrencyContainer>
-        <CurrencyContainer className="button-hover">
-          <IconOContainer>O</IconOContainer>
-          <TextContainer>{orthegs}</TextContainer>
-        </CurrencyContainer>
-      </Container>
+          </div>
+          <div className="row">{character.rations.water}</div>
+        </div>
+      </div>
+      <div className="row" onClick={handleOpen}>
+        <div className="row base_color button" style={{ width: "50%" }}>
+          <div
+            className="row"
+            style={{
+              maxWidth: "30px",
+              color: GoldColor,
+              fontSize: "18px",
+            }}
+          >
+            <FontAwesomeIcon icon={faCoins} />
+          </div>
+          <div className="row">{thaler}</div>
+        </div>
+        <div className="row base_color button" style={{ width: "50%" }}>
+          <div
+            className="row"
+            style={{
+              maxWidth: "30px",
+              color: SilverColor,
+              fontSize: "18px",
+            }}
+          >
+            <FontAwesomeIcon icon={faCoins} />
+          </div>
+          <div className="row">{shillings}</div>
+        </div>
+        <div className="row base_color button" style={{ width: "50%" }}>
+          <div
+            className="row"
+            style={{
+              maxWidth: "30px",
+              color: BronzeColor,
+              fontSize: "18px",
+            }}
+          >
+            <FontAwesomeIcon icon={faCoins} />
+          </div>
+          <div className="row">{orthegs}</div>
+        </div>
+      </div>
       {isModalOpen && (
         <Overlay onClick={handleClose}>
           <MainContainer onClick={stopPropagation}>

@@ -1,4 +1,9 @@
-import { faMinus, faNotEqual, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  IconDefinition,
+  faMinus,
+  faNotEqual,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SetStateAction, useState } from "react";
 import { Socket } from "socket.io-client";
@@ -200,7 +205,7 @@ interface Props {
   stat_name: RollTypeEntry;
   stat_value: number;
   active?: boolean;
-  stat_icon: any;
+  stat_icon: IconDefinition;
   stat_color: string;
   session: SessionEntry;
   character: CharacterEntry;

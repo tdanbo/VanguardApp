@@ -1,9 +1,9 @@
 import "../App.css";
 
-import styled from "styled-components";
 import * as Constants from "../Constants";
 
 import { useRef, useState } from "react";
+import "../layout.css";
 
 import {
   ActiveStateType,
@@ -19,12 +19,6 @@ import CharacterSheet from "./CharacterSheet";
 import CombatSection from "./CombatSection";
 
 import { GetGameData } from "../contexts/GameContent";
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-`;
 
 function App() {
   console.log("-------------------");
@@ -55,7 +49,7 @@ function App() {
   // UpdateStaticEffects(character.effects, effects);
 
   return (
-    <Row>
+    <div className="row font" style={{ gap: "0px" }}>
       <Browser
         session={session}
         character={character}
@@ -127,7 +121,7 @@ function App() {
         setSession={setSession}
         setIsGm={setIsGm}
       />
-    </Row>
+    </div>
   );
 }
 

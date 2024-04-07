@@ -1,3 +1,9 @@
+.font {
+  color: #dfdfdf;
+  font-weight: 600;
+  font-size: 16px;
+}
+
 .body {
   display: flex;
   background-color: #131716;
@@ -52,15 +58,6 @@
 
 .padding {
   padding: 10px;
-}
-
-.base {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  width: 100%;
 }
 
 .base_color {

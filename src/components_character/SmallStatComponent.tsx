@@ -1,111 +1,34 @@
-import styled from "styled-components";
 import * as Constants from "../Constants";
-
+import "../layout.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import {
+  IconDefinition,
   faCarrot,
   faHeartBroken,
   faPersonRunning,
   faSkull,
   faWeightHanging,
 } from "@fortawesome/free-solid-svg-icons";
-interface ContainerProps {
-  width: string;
-}
 
 const backgroundcolor = "rgba(19, 23, 22, 0.8)";
 
-const Container = styled.div<ContainerProps>`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  gap: 2px;
-  width: ${(props) => props.width};
-  min-width: 118px;
-  background-color: ${backgroundcolor};
-  border-radius: ${Constants.BORDER_RADIUS};
-  margin: 2px;
-`;
-// background-image: url("/dist/assets/portrait1.jpeg");
-
-interface DivProps {
-  height: string;
-}
-
-interface ColumnProps {
-  width: string;
-}
-
-const Column = styled.div<ColumnProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
-  max-width: ${(props) => props.width};
-`;
-
-const Row = styled.div<DivProps>`
-    display: flex;
-    flex-grow: 1;
-    flex-basis: 0;
-    flex-direction: row;
-    border 1px solid ${Constants.WIDGET_BORDER};
-    border-radius: ${Constants.BORDER_RADIUS};
-    max-height: ${(props) => props.height};
-    height: ${(props) => props.height};
-    
-  `;
-
-const Value = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  font-weight: bold;
-
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-`;
-
-const Title = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-  height: 10%;
-`;
-
-const Block = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  align-items: top;
-  justify-content: center;
-  min-width: 30px;
-  max-width: 30px;
-  width: 30px;
-  padding-top: 5px;
-  filter: drop-shadow(1px 1px 0px ${Constants.BACKGROUND});
-`;
+type faHeartBroken = "faHeartBroken";
+type faCarrot = "faCarrot";
+type faPersonRunning = "faPersonRunning";
+type faWeightHanging = "faWeightHanging";
+type faSkull = "faSkull";
 
 interface SmallStatComponentProps {
   title: string;
   value: string;
-  icon: any;
+  icon: IconDefinition;
 }
-
-const OrangeColor = "rgba(205, 112, 57, 0.7)";
 
 function SmallStatComponent({ title, value, icon }: SmallStatComponentProps) {
   let color = Constants.WIDGET_SECONDARY_FONT_INACTIVE;
   if (icon === faCarrot) {
-    color = OrangeColor;
+    color = "rgba(205, 112, 57, 0.7)";
   } else if (icon === faHeartBroken) {
     color = Constants.BRIGHT_RED;
   } else if (icon === faPersonRunning) {
@@ -119,20 +42,47 @@ function SmallStatComponent({ title, value, icon }: SmallStatComponentProps) {
   }
 
   return (
-    <Container width={"140px"}>
-      <Column width={"100%"}>
-        <Row height={"70%"}>
-          <Block></Block>
-          <Value>{value}</Value>
-          <Block>
-            <FontAwesomeIcon icon={icon} color={color} size="sm" />
-          </Block>
-        </Row>
-        <Row height={"30%"}>
-          <Title>{toTitleCase(title)}</Title>
-        </Row>
-      </Column>
-    </Container>
+    <div
+      className="column"
+      style={{ backgroundColor: backgroundcolor, gap: "0px" }}
+    >
+      <div className="row">
+        <div className="row" style={{ width: "20px", marginLeft: "8px" }} />
+        <div
+          className="row"
+          style={{
+            fontSize: "20px",
+            alignItems: "flex-end",
+            marginTop: "2px",
+            filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
+          }}
+        >
+          {value}
+        </div>
+        <div
+          className="row"
+          style={{
+            width: "20px",
+            marginRight: "8px",
+            filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
+          }}
+        >
+          <FontAwesomeIcon icon={icon} color={color} size="sm" />
+        </div>
+      </div>
+      <div
+        className="row"
+        style={{
+          height: "auto",
+          marginBottom: "5px",
+          fontSize: "12px",
+          fontWeight: "bold",
+          color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+        }}
+      >
+        {toTitleCase(title)}
+      </div>
+    </div>
   );
 }
 
