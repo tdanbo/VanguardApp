@@ -8,7 +8,7 @@ export function NaturalWeapon_dice(character: CharacterEntry, item: ItemEntry) {
 
   let mod = 0;
 
-  if (item.category === "natural weapon") {
+  if (item.static.category === "natural weapon") {
     if (ability_master) {
       mod += 6;
     } else if (ability_adept) {

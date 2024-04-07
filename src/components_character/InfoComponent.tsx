@@ -72,7 +72,6 @@ import {
   ModalContainer,
   Title,
 } from "../components_general/SelectorStyles";
-import { GetGameData } from "../contexts/GameContent";
 
 export const MainContainer = styled.div`
   display: flex;
@@ -129,8 +128,6 @@ interface InfoComponentProps {
 }
 
 function InfoComponent({ character, actives }: InfoComponentProps) {
-  const { abilities, equipment } = GetGameData();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpen = () => {
@@ -171,12 +168,12 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
                       ( 5 + {character.stats.quick.value} -{" "}
-                      {GetImpedingValue(character, equipment)} -{" "}
-                      {OverburdenValue(character, equipment)} ) / 2 = ⌈{" "}
+                      {GetImpedingValue(character)} -{" "}
+                      {OverburdenValue(character)} ) / 2 = ⌈{" "}
                       {(5 +
                         character.stats.quick.value -
-                        GetImpedingValue(character, equipment) -
-                        OverburdenValue(character, equipment)) /
+                        GetImpedingValue(character) -
+                        OverburdenValue(character)) /
                         2}{" "}
                       ⌉
                     </RightValue>
@@ -241,9 +238,9 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
                       ( {character.details.xp_earned} / 50 ) + ({" "}
-                      {GetStorageValue(character, equipment)} / 3 ) = ⌈{" "}
+                      {GetStorageValue(character)} / 3 ) = ⌈{" "}
                       {character.details.xp_earned / 50 +
-                        GetStorageValue(character, equipment) / 3}{" "}
+                        GetStorageValue(character) / 3}{" "}
                       ⌉
                     </RightValue>
                   </Row>
@@ -264,10 +261,8 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {actives.attack.value} +{" "}
-                      {GetPreciseValue(character, equipment)} ={" "}
-                      {actives.attack.value +
-                        GetPreciseValue(character, equipment)}
+                      {actives.attack.value} + {GetPreciseValue(character)} ={" "}
+                      {actives.attack.value + GetPreciseValue(character)}
                     </RightValue>
                   </Row>
                 </Column>
@@ -287,10 +282,8 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {actives.defense.value} -{" "}
-                      {GetImpedingValue(character, equipment)} ={" "}
-                      {actives.defense.value -
-                        GetImpedingValue(character, equipment)}
+                      {actives.defense.value} - {GetImpedingValue(character)} ={" "}
+                      {actives.defense.value - GetImpedingValue(character)}
                     </RightValue>
                   </Row>
                 </Column>
@@ -310,10 +303,8 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {actives.sneaking.value} -{" "}
-                      {GetImpedingValue(character, equipment)} ={" "}
-                      {actives.sneaking.value -
-                        GetImpedingValue(character, equipment)}
+                      {actives.sneaking.value} - {GetImpedingValue(character)} ={" "}
+                      {actives.sneaking.value - GetImpedingValue(character)}
                     </RightValue>
                   </Row>
                 </Column>
@@ -333,10 +324,8 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {actives.casting.value} -{" "}
-                      {GetImpedingValue(character, equipment)} ={" "}
-                      {actives.casting.value -
-                        GetImpedingValue(character, equipment)}
+                      {actives.casting.value} - {GetImpedingValue(character)} ={" "}
+                      {actives.casting.value - GetImpedingValue(character)}
                     </RightValue>
                   </Row>
                 </Column>
@@ -377,11 +366,11 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
                       ( {character.stats.resolute.value / 2} * 3 ) -{" "}
-                      {GetEquipmentCorruption(character, equipment)} -{" "}
-                      {GetAbilityCorruption(character, abilities)} ={" "}
+                      {GetEquipmentCorruption(character)} -{" "}
+                      {GetAbilityCorruption(character)} ={" "}
                       {(character.stats.resolute.value / 2) * 3 -
-                        GetEquipmentCorruption(character, equipment) -
-                        GetAbilityCorruption(character, abilities)}
+                        GetEquipmentCorruption(character) -
+                        GetAbilityCorruption(character)}
                     </RightValue>
                   </Row>
                 </Column>

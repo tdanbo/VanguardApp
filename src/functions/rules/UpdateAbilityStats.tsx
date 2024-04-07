@@ -1,4 +1,4 @@
-import { AbilityDynamic, CharacterEntry, EffectDynamic } from "../../Types";
+import { AbilityEntry, CharacterEntry, EffectEntry } from "../../Types";
 
 function HasItem(character: CharacterEntry, item: string) {
   for (const i of character.inventory) {
@@ -20,7 +20,7 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
 
   console.log("Updating Ability Stats");
 
-  const LevelValue = (ability: AbilityDynamic) => {
+  const LevelValue = (ability: AbilityEntry) => {
     if (ability.level === "Novice") {
       return 1;
     } else if (ability.level === "Adept") {
@@ -31,7 +31,7 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
     return 0;
   };
 
-  character.effects.forEach((effect: EffectDynamic) => {
+  character.effects.forEach((effect: EffectEntry) => {
     if (effect.name === "Weakened Strong") {
       character.stats.strong.mod -= effect.level;
     } else if (effect.name === "Weakened Resolute") {
@@ -51,7 +51,7 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
     }
   });
 
-  character.abilities.forEach((ability: AbilityDynamic) => {
+  character.abilities.forEach((ability: AbilityEntry) => {
     if (ability.name === "Exceptionally Strong") {
       character.stats.strong.mod += LevelValue(ability);
     } else if (ability.name === "Exceptionally Resolute") {

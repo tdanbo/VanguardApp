@@ -8,7 +8,6 @@ import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
-  EffectEntry,
   SessionEntry,
 } from "../Types";
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
@@ -109,8 +108,8 @@ function AbilityBrowser({
 
   const sortList = (a: AbilityEntry, b: AbilityEntry) => {
     const categoryComparison =
-      Constants.TYPE_FILTER.indexOf(a.category) -
-      Constants.TYPE_FILTER.indexOf(b.category);
+      Constants.TYPE_FILTER.indexOf(a.static.category) -
+      Constants.TYPE_FILTER.indexOf(b.static.category);
 
     if (categoryComparison !== 0) {
       return categoryComparison;
@@ -132,32 +131,32 @@ function AbilityBrowser({
     switch (LootCategory) {
       case "abilities":
         filtered_abilities = abilities.filter(
-          (item) => item.category === "ability",
+          (item) => item.static.category === "ability",
         );
         break;
       case "mystical powers":
         filtered_abilities = abilities.filter(
-          (item) => item.category === "mystical power",
+          (item) => item.static.category === "mystical power",
         );
         break;
       case "rituals":
         filtered_abilities = abilities.filter(
-          (item) => item.category === "ritual",
+          (item) => item.static.category === "ritual",
         );
         break;
       case "utility":
         filtered_abilities = abilities.filter(
-          (item) => item.category === "utility",
+          (item) => item.static.category === "utility",
         );
         break;
       case "monstrous traits":
         filtered_abilities = abilities.filter(
-          (item) => item.category === "monsterous trait",
+          (item) => item.static.category === "monsterous trait",
         );
         break;
       case "burden":
         filtered_abilities = abilities.filter(
-          (item) => item.category === "burden",
+          (item) => item.static.category === "burden",
         );
         break;
       default:
@@ -172,15 +171,15 @@ function AbilityBrowser({
         (
           item.name.toLowerCase() +
           " " +
-          item.category.toLowerCase() +
+          item.static.category.toLowerCase() +
           " " +
-          item.tradition.toLowerCase() +
+          item.static.tradition.toLowerCase() +
           " " +
-          item.novice.description.toLowerCase() +
+          item.static.novice.description.toLowerCase() +
           " " +
-          item.adept.description.toLowerCase() +
+          item.static.adept.description.toLowerCase() +
           " " +
-          item.master.description.toLowerCase()
+          item.static.master.description.toLowerCase()
         ).includes(search.toLowerCase()),
       );
       setFilteredEntry(searched_item);
@@ -188,29 +187,6 @@ function AbilityBrowser({
       setFilteredEntry(sorted_items);
     }
   }, [LootCategory, search]);
-
-  const generateRandomId = (length = 10) => {
-    return Math.random()
-      .toString(36)
-      .substring(2, 2 + length);
-  };
-
-  function CreateAbilityDynamic(entry: AbilityEntry) {
-    return {
-      name: entry.name,
-      level: "Novice",
-      free: false,
-      id: generateRandomId(),
-    };
-  }
-
-  function CreateEffectDynamic(entry: EffectEntry) {
-    return {
-      name: entry.name,
-      level: 1,
-      id: generateRandomId(),
-    };
-  }
 
   return (
     <>
@@ -220,7 +196,7 @@ function AbilityBrowser({
             return (
               <AbilityEntryItem
                 key={index}
-                ability={CreateAbilityDynamic(entry)}
+                ability={entry}
                 browser={true}
                 setInventoryState={setInventoryState}
                 character={character}
@@ -238,7 +214,7 @@ function AbilityBrowser({
             return (
               <EffectEntryItem
                 key={index}
-                effect={CreateEffectDynamic(entry)}
+                effect={entry}
                 browser={true}
                 setInventoryState={setInventoryState}
                 character={character}

@@ -5,13 +5,11 @@ import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
-  ItemDynamic,
+  ItemEntry,
   SessionEntry,
 } from "../Types";
 import InventoryEntry from "../components_browser/InventoryEntry";
 import { GetMaxSlots } from "../functions/RulesFunctions";
-import { GetGameData } from "../contexts/GameContent";
-import { GetDatabaseEquipment } from "../functions/UtilityFunctions";
 const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -42,21 +40,16 @@ function EquipmentSection({
   setActiveState,
   setAdvantage,
 }: NavigationProps) {
-  const { equipment } = GetGameData();
-
-  function sortInventory(a: ItemDynamic, b: ItemDynamic): number {
-    const a_database = GetDatabaseEquipment(a, equipment);
-    const b_database = GetDatabaseEquipment(b, equipment);
-
+  function sortInventory(a: ItemEntry, b: ItemEntry): number {
     return (
-      Constants.TYPE_FILTER.indexOf(a_database.category.toLowerCase()) -
-      Constants.TYPE_FILTER.indexOf(b_database.category.toLowerCase())
+      Constants.TYPE_FILTER.indexOf(a.static.category.toLowerCase()) -
+      Constants.TYPE_FILTER.indexOf(b.static.category.toLowerCase())
     );
   }
 
   character.inventory.sort(sortInventory);
   const sortedInventory = [...character.inventory].sort(sortInventory);
-  const totalSlots = GetMaxSlots(character, equipment) * 2;
+  const totalSlots = GetMaxSlots(character) * 2;
 
   return (
     <Column>

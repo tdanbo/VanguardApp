@@ -5,7 +5,6 @@ import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
 import { getCharacterXp, getUtilityXp } from "../functions/CharacterFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-import { GetGameData } from "../contexts/GameContent";
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
@@ -64,8 +63,6 @@ function XpBox({ session, character, websocket, isCreature }: XpBoxProps) {
     update_session(session, websocket, character, isCreature);
   };
 
-  const { abilities } = GetGameData();
-
   const handleSubXp = () => {
     character.details.xp_earned -= 1;
     if (character.details.xp_earned < 0) {
@@ -87,13 +84,13 @@ function XpBox({ session, character, websocket, isCreature }: XpBoxProps) {
         <h2>COMBAT XP</h2>
 
         <h1>
-          {getCharacterXp(character, abilities)} / {character.details.xp_earned}
+          {getCharacterXp(character)} / {character.details.xp_earned}
         </h1>
       </CategoryContainerLeft>
       <CategoryContainerRight title={"Utility XP"}>
         <h2 className={".hide-div"}>UTILITY XP</h2>
         <h1>
-          {getUtilityXp(character, abilities)} /{" "}
+          {getUtilityXp(character)} /{" "}
           {Math.max(Math.round(character.details.xp_earned / 5), 10)}
         </h1>
       </CategoryContainerRight>

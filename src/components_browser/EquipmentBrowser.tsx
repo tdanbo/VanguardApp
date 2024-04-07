@@ -8,7 +8,6 @@ import {
   AdvantageType,
   CharacterEntry,
   GeneralItem,
-  ItemDynamic,
   ItemEntry,
   SessionEntry,
 } from "../Types";
@@ -120,8 +119,8 @@ function EquipmentBrowser({
 
   const sortList = (a: ItemEntry, b: ItemEntry) => {
     const categoryComparison =
-      Constants.RARITY_FILTER.indexOf(b.rarity) -
-      Constants.RARITY_FILTER.indexOf(a.rarity);
+      Constants.RARITY_FILTER.indexOf(b.static.rarity) -
+      Constants.RARITY_FILTER.indexOf(a.static.rarity);
     if (categoryComparison !== 0) {
       return categoryComparison;
     }
@@ -147,7 +146,7 @@ function EquipmentBrowser({
         break;
       case "projectile":
         filtered_equipment = equipment.filter(
-          (item) => item.category === "projectile",
+          (item) => item.static.category === "projectile",
         );
         break;
       case "consumables":
@@ -168,9 +167,11 @@ function EquipmentBrowser({
 
     if (search.length > 2) {
       const searched_item = sorted_items.filter((item) =>
-        (item.name.toLowerCase() + " " + item.category.toLowerCase()).includes(
-          search.toLowerCase(),
-        ),
+        (
+          item.name.toLowerCase() +
+          " " +
+          item.static.category.toLowerCase()
+        ).includes(search.toLowerCase()),
       );
 
       if (searched_item.length === 0) {
@@ -192,23 +193,6 @@ function EquipmentBrowser({
   //   setFilteredEquipment(searched_sorted_items);
   // }, [search, LootCategory]);
 
-  function generateRandomId() {
-    return Math.random()
-      .toString(36)
-      .substring(2, 2 + 10);
-  }
-
-  function CreateDynamicItem(item: ItemEntry): ItemDynamic {
-    return {
-      id: generateRandomId(),
-      name: item.name,
-      quantity: 1,
-      equipped: false,
-      light: false,
-      durability: item.roll.dice,
-    };
-  }
-
   return (
     <>
       <DynamicContainer>
@@ -222,7 +206,7 @@ function EquipmentBrowser({
                 key={`InventoryEntry${index}`}
                 browser={true}
                 index={index}
-                item={CreateDynamicItem(entry)}
+                item={entry}
                 equipped={""}
                 id={""}
                 setInventoryState={setInventoryState}

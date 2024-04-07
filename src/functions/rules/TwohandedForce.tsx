@@ -7,7 +7,7 @@ export function TwohandedForce_dice(
 ) {
   const ability = CheckAbility(character, "two-handed force", "novice");
   let mod = 0;
-  if (ability && item.category === "heavy weapon") {
+  if (ability && item.static.category === "heavy weapon") {
     mod += 2;
   }
 
