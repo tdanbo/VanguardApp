@@ -342,7 +342,7 @@ function DropsBrowser({
 
       equipment.map((item) => {
         if (IsGeneralGood(item) && item.static.cost > 0 && DidItDrop(item)) {
-          session.loot.general.push(item);
+          session.loot.general.push(addItemId(item));
         }
         if (
           (IsArmor(item) ||
@@ -368,7 +368,7 @@ function DropsBrowser({
       session.loot.drops = [];
       equipment.map((item) => {
         if (item.static.cost > 0 && DidItDropChest(item)) {
-          session.loot.drops.push(item);
+          session.loot.drops.push(addItemId(item));
         }
       });
     }

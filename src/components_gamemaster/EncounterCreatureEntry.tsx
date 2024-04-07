@@ -468,11 +468,11 @@ function EncounterCreatureEntry({
     if (creature.rations.food > 0) {
       const DropsFood = session.loot.drops.find((item) => item.name === "Food");
       if (DropsFood) {
-        DropsFood.quantity += creature.rations.food;
+        DropsFood.quantity += random(1, creature.rations.food);
       } else {
         const food = cloneDeep(ResourceItem);
         food.name = "Food";
-        food.quantity = creature.rations.food;
+        food.quantity = random(1, creature.rations.food);
         food.id = uuidv4();
         session.loot.drops.push(food);
       }
@@ -483,11 +483,11 @@ function EncounterCreatureEntry({
         (item) => item.name === "Water",
       );
       if (DropsWater) {
-        DropsWater.quantity += creature.rations.water;
+        DropsWater.quantity += random(1, creature.rations.water);
       } else {
         const water = cloneDeep(ResourceItem);
         water.name = "Water";
-        water.quantity = creature.rations.water;
+        water.quantity = random(1, creature.rations.water);
         water.id = uuidv4();
         session.loot.drops.push(water);
       }
@@ -497,6 +497,8 @@ function EncounterCreatureEntry({
     const remainingAfterThaler = creature.money - thaler * 100;
     const shillings = Math.floor(remainingAfterThaler / 10);
     const orthegs = remainingAfterThaler - shillings * 10;
+
+    console.log("THALER: " + thaler);
 
     if (thaler > 0) {
       const DropsThaler = session.loot.drops.find(
