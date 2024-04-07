@@ -1,7 +1,6 @@
-import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-
+import "../layout.css";
 import {
   ActiveStateType,
   ActivesEntry,
@@ -25,36 +24,10 @@ import {
   faWeightHanging,
 } from "@fortawesome/free-solid-svg-icons";
 import ActiveStateComponent from "./ActiveStateComponent";
-interface PortraitProps {
-  src: string;
-}
+
 import EditCharacterComponent from "./EditCharacterComponent";
 import { Socket } from "socket.io-client";
 import SmallCorruptionComponent from "./SmallCorruptionComponent";
-const Container = styled.div<PortraitProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  background-image: url(${(props) => props.src});
-  background-size: cover;
-  background-position: center 30%;
-  border-radius: ${Constants.BORDER_RADIUS};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-`;
-
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-`;
-
-const RightColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  justify-content: center;
-  align-items: flex-end;
-`;
 
 // background-image: url("/dist/assets/portrait1.jpeg");
 
@@ -89,8 +62,20 @@ function PortraitComponent({
   const burn = GetBurnRate(character);
 
   return (
-    <Container src={CharacterPortraits[character.portrait]}>
-      <Column>
+    <div
+      className="row"
+      style={{
+        backgroundImage: `url(${CharacterPortraits[character.portrait]})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center 30%",
+        borderRadius: Constants.BORDER_RADIUS,
+        backgroundColor: Constants.WIDGET_BACKGROUND_EMPTY,
+      }}
+    >
+      <div
+        className="column"
+        style={{ gap: "1px", width: "33%", padding: "2px" }}
+      >
         <SmallStatComponent
           value={speed.toString()}
           title={"speed"}
@@ -101,15 +86,18 @@ function PortraitComponent({
           title={"pain"}
           icon={faHeartCrack}
         />
-        <SmallStatComponent
-          value={capacity.toString()}
-          title={"capacity"}
-          icon={faWeightHanging}
-        />
+
         <SmallStatComponent
           value={burn.toString()}
           title={"consumption"}
           icon={faCarrot}
+        />
+        <SmallStatComponent
+          value={
+            capacity.toString() + " / " + GetMaxSlots(character).toString()
+          }
+          title={"capacity"}
+          icon={faWeightHanging}
         />
         <SmallCorruptionComponent
           character={character}
@@ -117,8 +105,16 @@ function PortraitComponent({
           isCreature={isCreature}
           websocket={websocket}
         />
-      </Column>
-      <RightColumn>
+      </div>
+      <div className="column" style={{ gap: "0px", width: "33%" }} />
+      <div
+        className="column"
+        style={{
+          gap: "0px",
+          width: "33%",
+          alignItems: "flex-end",
+        }}
+      >
         <InfoComponent character={character} actives={actives} />
         <EditCharacterComponent
           session={session}
@@ -133,8 +129,8 @@ function PortraitComponent({
           advantage={advantage}
           setAdvantage={setAdvantage}
         />
-      </RightColumn>
-    </Container>
+      </div>
+    </div>
   );
 }
 

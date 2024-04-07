@@ -235,7 +235,7 @@ const ActiveDamageSub = styled.div`
 `;
 
 function GetWeapons(creature: CharacterEntry) {
-  let weapons: ItemEntry[] = [];
+  const weapons: ItemEntry[] = [];
   creature.inventory.forEach((item) => {
     if (item && IsWeapon(item) && item.equipped) {
       weapons.push(item);
@@ -245,7 +245,7 @@ function GetWeapons(creature: CharacterEntry) {
 }
 
 function GetArmor(creature: CharacterEntry) {
-  let armor: ItemEntry[] = [];
+  const armor: ItemEntry[] = [];
   creature.inventory.forEach((item) => {
     if (item && IsArmor(item) && item.equipped) {
       armor.push(item);
