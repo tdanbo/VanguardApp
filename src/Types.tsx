@@ -340,7 +340,7 @@ export const ResourceItem: ItemEntry = {
     roll: { roll: false, dice: 0, base: 0, mod: 0, type: "" },
     quality: [],
     slot: 0,
-    bulk: false,
+    bulk: true,
     rarity: "normal",
     cost: 0,
     category: "resource",
