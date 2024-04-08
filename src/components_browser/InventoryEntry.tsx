@@ -19,17 +19,17 @@ import {
   ItemEntry,
   SessionEntry,
 } from "../Types";
-import RollComponent from "../components_general/RollComponent";
+import RollComponent2 from "../components_browser/RollComponent2";
 import { CheckAbility } from "../functions/ActivesFunction";
 import { DeleteInventorySlot } from "../functions/CharacterFunctions";
 import { GetMaxSlots, RulesDiceAdjust } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import { IsArmor, IsWeapon, StyledText } from "../functions/UtilityFunctions";
 import { Qualities } from "../functions/rules/Qualities";
-
 import { cloneDeep } from "lodash";
 import { ShuffleArray, toTitleCase } from "../functions/UtilityFunctions";
 import DurabilityComponent from "./DurabilityComponent";
+import QuantityComponent from "./QuantityComponent";
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -41,7 +41,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  gap: 5px;
   height: 35px;
   max-height: 35px;
 `;
@@ -126,9 +125,6 @@ const CostBox = styled.div`
 const RollContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  margin-right: 5px;
 `;
 
 interface RollBoxProps {
@@ -195,21 +191,6 @@ const NoEquipBox = styled.div<NoEquipButtonProps>`
   align-items: center;
   justify-content: center;
   color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-`;
-
-const QuantityBox = styled.button<RollBoxProps>`
-  display: flex;
-  flex-grow: 1;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  margin-left: 2px;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  width: 40px;
-  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
 `;
 
 const TypeBox = styled.div`
@@ -493,19 +474,6 @@ function InventoryEntry({
     }
   };
 
-  const handlePlusClick = () => {
-    item.quantity += 1;
-    update_session(session, websocket, character, isCreature);
-  };
-
-  const handleMinusClick = () => {
-    if (item.quantity == 0) {
-      return;
-    }
-    item.quantity -= 1;
-    update_session(session, websocket, character, isCreature);
-  };
-
   function ConvertCurrency(cost: number) {
     const thaler = Math.floor(cost / 100);
     const remainingAfterThaler = cost - thaler * 100;
@@ -646,7 +614,7 @@ function InventoryEntry({
         <RollContainer>
           {item.static.roll.roll === true && (
             <RollBox color={COLOR}>
-              <RollComponent
+              <RollComponent2
                 session={session}
                 character={character}
                 websocket={websocket}
@@ -688,17 +656,13 @@ function InventoryEntry({
             </RollBox>
           ) : null}
           {item.static.bulk === true && (
-            <QuantityBox
-              color={COLOR}
-              onClick={handleMinusClick}
-              onContextMenu={(e) => {
-                e.preventDefault();
-                handlePlusClick();
-              }}
-              className="mouse-icon-hover"
-            >
-              {item.quantity}x
-            </QuantityBox>
+            <QuantityComponent
+              item={item}
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+            />
           )}
         </RollContainer>
 
