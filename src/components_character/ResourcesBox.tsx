@@ -319,7 +319,11 @@ function ResourcesBox({
   return (
     <>
       <div className="row" onClick={handleOpen}>
-        <div className="row base_color button" style={{ width: "50%" }}>
+        <div
+          className="row base_color button"
+          style={{ width: "50%" }}
+          title={"Food"}
+        >
           <div
             className="row"
             style={{
@@ -335,6 +339,7 @@ function ResourcesBox({
         <div
           className="row button-hover base_color button"
           style={{ width: "50%" }}
+          title={"Water"}
         >
           <div
             className="row"
@@ -350,7 +355,11 @@ function ResourcesBox({
         </div>
       </div>
       <div className="row" onClick={handleOpen}>
-        <div className="row base_color button" style={{ width: "50%" }}>
+        <div
+          className="row base_color button"
+          style={{ width: "50%" }}
+          title={"Thaler"}
+        >
           <div
             className="row"
             style={{
@@ -363,7 +372,11 @@ function ResourcesBox({
           </div>
           <div className="row">{thaler}</div>
         </div>
-        <div className="row base_color button" style={{ width: "50%" }}>
+        <div
+          className="row base_color button"
+          style={{ width: "50%" }}
+          title={"Shilling"}
+        >
           <div
             className="row"
             style={{
@@ -376,7 +389,11 @@ function ResourcesBox({
           </div>
           <div className="row">{shillings}</div>
         </div>
-        <div className="row base_color button" style={{ width: "50%" }}>
+        <div
+          className="row base_color button"
+          style={{ width: "50%" }}
+          title={"Orteg"}
+        >
           <div
             className="row"
             style={{

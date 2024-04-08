@@ -61,11 +61,11 @@ function SmallCorruptionComponent({
       className="column"
       style={{ backgroundColor: backgroundcolor, gap: "0px" }}
       onClick={() => {
-        handleAddCorruption();
+        handleSubCorruption();
       }}
       onContextMenu={(event) => {
         event.preventDefault();
-        handleSubCorruption();
+        handleAddCorruption();
       }}
     >
       <div className="row">
