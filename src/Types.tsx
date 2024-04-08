@@ -224,7 +224,9 @@ export type RollTypeEntry =
   | "custom"
   | "resting"
   | "ability"
-  | "mystical power";
+  | "mystical power"
+  | "monsterous trait"
+  | "utility";
 
 export type CriticalType = {
   state: 0 | 1 | 2;

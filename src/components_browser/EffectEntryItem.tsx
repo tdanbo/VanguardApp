@@ -20,6 +20,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../functions/SessionsFunctions";
 import { StyledText } from "../functions/UtilityFunctions";
+import LevelComponent from "./LevelComponent";
 
 const EntryColor = (type: string) => {
   return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.WIDGET_BORDER;
@@ -53,7 +54,7 @@ const Container = styled.div`
   border-radius: ${Constants.BORDER_RADIUS};
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
-  gap: 5px;
+  gap: 0px;
   min-height: 35px;
   max-height: 35px;
 `;
@@ -99,8 +100,6 @@ const NameContainer = styled.div`
 const LevelSelectionContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 5px;
-  margin-bottom: 5px;
   justify-content: right;
 `;
 
@@ -185,27 +184,6 @@ const AbilityDetail = styled.div`
   font-size: 10px;
 `;
 
-interface LevelSelectionProps {
-  type: string;
-}
-
-const LevelSelection = styled.div<LevelSelectionProps>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 3px;
-  background-color: ${(props) => EntryColor(props.type)};
-  border: 1px solid #3d3d3c;
-  color: ${Constants.WIDGET_PRIMARY_FONT};
-  font-size: 12px;
-  width: 40px;
-  cursor: pointer;
-  font-weight: bold;
-  text-shadow: 1px 1px 1px ${Constants.BACKGROUND};
-  font-size: 14px;
-  user-select: none;
-`;
-
 const AbilityDescription = styled.div`
   align-items: center;
   padding: 10px;
@@ -247,7 +225,7 @@ function EffectEntryItem({
   setActiveState,
   setAdvantage,
 }: EffectEntryItemProps) {
-  const [abilityLevel, setAbilityLevel] = useState<number>(1);
+  const [_abilityLevel, setAbilityLevel] = useState<number>(1);
   useEffect(() => {
     setAbilityLevel(effect.level);
   });
@@ -257,7 +235,7 @@ function EffectEntryItem({
     radius: string;
   }
 
-  const LevelComponent = ({ effect, radius }: LevelProps) => {
+  const LevelDescriptionComponent = ({ effect, radius }: LevelProps) => {
     return (
       <LevelBaseContainer radius={radius}>
         <AbilityDescription>
@@ -312,59 +290,6 @@ function EffectEntryItem({
     update_session(session, websocket, character, isCreature);
   };
 
-  interface LevelSelectorProps {
-    effect: EffectEntry;
-  }
-
-  const LevelSelector = ({ effect }: LevelSelectorProps) => {
-    const handleLevelChange = (add: boolean) => {
-      let nextLevel = effect.level;
-      if (add) {
-        nextLevel = effect.level + 1;
-      } else {
-        nextLevel = effect.level - 1;
-      }
-
-      setAbilityLevel(nextLevel);
-
-      const id = effect.id;
-
-      const effects = character.effects.map((effect) => {
-        if (effect.id === id) {
-          return {
-            ...effect,
-            level: nextLevel,
-          };
-        } else {
-          return effect;
-        }
-      });
-
-      character.effects = effects;
-
-      // TODO: There used to be a sub traction functions for exceptional stats. But i dont think it is used.
-
-      update_session(session, websocket, character, isCreature);
-    };
-
-    return (
-      <LevelSelection
-        className={"button-hover"}
-        type={effect.static.category}
-        onClick={(e) => {
-          e.preventDefault(); // Prevents the default action of the click event
-          handleLevelChange(true);
-        }}
-        onContextMenu={(e) => {
-          e.preventDefault(); // Prevents the browser's context menu from opening
-          handleLevelChange(false);
-        }}
-      >
-        {abilityLevel}
-      </LevelSelection>
-    );
-  };
-
   return (
     <BaseContainer className="button-hover">
       <Container>
@@ -378,7 +303,13 @@ function EffectEntryItem({
           <AbilityDetail>{toTitleCase(effect.static.category)}</AbilityDetail>
         </NameContainer>
         <LevelSelectionContainer>
-          <LevelSelector effect={effect} />
+          <LevelComponent
+            ability={effect}
+            session={session}
+            character={character}
+            websocket={websocket}
+            isCreature={isCreature}
+          />
         </LevelSelectionContainer>
         {browser ? (
           <AddButton className={"button-hover"} onClick={AddAbilitySlot}>
@@ -419,7 +350,7 @@ function EffectEntryItem({
         )}
       </Container>
       <LevelContainer $expanded={expanded}>
-        <LevelComponent
+        <LevelDescriptionComponent
           effect={effect.static.effect}
           radius={Constants.BORDER_RADIUS}
         />

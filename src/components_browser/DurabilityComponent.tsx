@@ -1,9 +1,10 @@
 import { ItemEntry, SessionEntry, CharacterEntry } from "../Types";
-import styled from "styled-components";
 import * as Constants from "../Constants";
 import { update_session } from "../functions/SessionsFunctions";
 import { Socket } from "socket.io-client";
-import { AnvilIcon } from "../Images";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHammer } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 type DurabilityBoxProps = {
   item: ItemEntry;
   session: SessionEntry;
@@ -13,65 +14,14 @@ type DurabilityBoxProps = {
   inactive?: boolean;
 };
 
-type DurabilityRContainerProps = {
-  size: string;
-  $inactive: boolean;
-};
-
-const DurabilityContainer = styled.div<DurabilityRContainerProps>`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: ${(props) => props.size}; // Use props.dice_size
-  height: ${(props) => props.size}; // Use props.dice_size
-  font-weight: bold;
-  font-size: 16px;
-  color: ${(props) =>
-    props.$inactive
-      ? Constants.WIDGET_SECONDARY_FONT
-      : Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-  text-align: center;
-  background-image: url(${AnvilIcon});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: ${(props) => props.size}; // Use props.dice_size once
-  text-shadow: ${(props) =>
-    props.$inactive ? "1px 1px 2px black" : "0px 0px 0px transparent;"};
-  user-select: none;
-  h1,
-  h2 {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-  h1 {
-    font-weight: bold;
-    font-size: 16px;
-  }
-  h2 {
-    display: none;
-    font-size: 16px;
-  }
-  &:hover h1 {
-    display: none;
-  }
-  &:hover h2 {
-    display: flex;
-  }
-`;
-
 function DurabilityComponent({
   item,
   session,
   character,
   isCreature,
   websocket,
-  inactive = true,
 }: DurabilityBoxProps) {
+  const [hover, setHover] = useState(false);
   let max_durability = 0;
   if (
     item.static.category === "weapon accessory" ||
@@ -91,25 +41,62 @@ function DurabilityComponent({
   };
 
   const handleSubDurability = () => {
+    if (item.durability == 0) {
+      return;
+    }
     item.durability = item.durability - 1;
     update_session(session, websocket, character, isCreature);
   };
   return (
-    <DurabilityContainer
-      title={"Durability"}
+    <div
+      className="column button"
+      style={{
+        minWidth: "40px",
+        maxWidth: "40px",
+        borderLeft: "1px solid",
+        borderColor: "rgba(0, 0, 0, 0.25)",
+        borderRadius: "0px",
+        justifyContent: "center",
+        gap: "0px",
+      }}
       onClick={handleSubDurability}
       onContextMenu={(e) => {
         e.preventDefault();
         handleAddDurability();
       }}
-      size={"25px"}
-      $inactive={inactive}
+      onMouseEnter={() => {
+        setHover(true);
+      }}
+      onMouseLeave={() => {
+        setHover(false);
+      }}
+      title={"Durability"}
     >
-      <h1>{item.durability}</h1>
-      <h2>
-        {item.durability}/{max_durability}
-      </h2>
-    </DurabilityContainer>
+      <div
+        className="row"
+        style={{
+          color: Constants.WIDGET_SECONDARY_FONT,
+          fontSize: "14px",
+          fontWeight: "bold",
+          textShadow: "2px 2px 2px " + Constants.BACKGROUND,
+        }}
+      >
+        {hover ? `${item.durability} I ${max_durability}` : item.durability}
+      </div>
+      <div
+        className="row"
+        style={{
+          color: "rgba(255, 255, 255, 0.2)",
+          fontSize: "10px",
+        }}
+      >
+        <FontAwesomeIcon
+          icon={faHammer}
+          color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+          fontSize={"12px"}
+        />
+      </div>
+    </div>
   );
 }
 
