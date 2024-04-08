@@ -5,12 +5,11 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { mdiRomanNumeral1, mdiRomanNumeral2, mdiRomanNumeral3 } from "@mdi/js";
-import Icon from "@mdi/react";
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
+
 import {
   AbilityEntry,
   ActiveStateType,
@@ -19,10 +18,11 @@ import {
   RollTypeEntry,
   SessionEntry,
 } from "../Types";
-import RollComponent from "../components_general/RollComponent";
+import RollComponent2 from "../components_browser/RollComponent2";
 import { CheckAbility } from "../functions/ActivesFunction";
 import { update_session } from "../functions/SessionsFunctions";
 import { StyledText, toTitleCase } from "../functions/UtilityFunctions";
+import LevelComponent from "../components_browser/LevelComponent";
 
 const EntryColor = (type: string) => {
   return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.WIDGET_BORDER;
@@ -56,7 +56,7 @@ const Container = styled.div`
   border-radius: ${Constants.BORDER_RADIUS};
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
-  gap: 5px;
+  gap: 0px;
   min-height: 35px;
   max-height: 35px;
 `;
@@ -97,14 +97,6 @@ const NameContainer = styled.div`
       opacity: 1;
     }
   }
-`;
-
-const LevelSelectionContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  justify-content: right;
 `;
 
 const AddButton = styled.div`
@@ -187,20 +179,6 @@ const AbilityDetail = styled.div`
   font-size: 10px;
 `;
 
-const LevelSelection = styled.div<LevelProps>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 3px;
-  background-color: ${(props) =>
-    props.$active ? EntryColor(props.type) : Constants.WIDGET_BACKGROUND_EMPTY};
-  border: 1px solid #3d3d3c;
-  color: ${Constants.WIDGET_PRIMARY_FONT};
-  font-size: 12px;
-  width: 40px;
-  cursor: pointer;
-`;
-
 const AbilityDescription = styled.div`
   align-items: center;
   padding: 10px;
@@ -226,20 +204,9 @@ const CorruptionContainer = styled.div`
   margin-left: 5px;
 `;
 
-interface RollBoxProps {
-  color: string;
-}
-
-const RollBox = styled.div<RollBoxProps>`
+const RollContainer = styled.div`
   display: flex;
-  color: ${(props) => props.color};
-  margin-left: 2px;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: 14px;
-  gap: 15px;
-  margin-right: 15px;
+  flex-direction: row;
 `;
 
 interface AbilityEntryItemProps {
@@ -293,7 +260,7 @@ function AbilityEntryItem({
     radius: string;
   }
 
-  const LevelComponent = ({ effect, radius }: LevelProps) => {
+  const LevelDescriptionComponent = ({ effect, radius }: LevelProps) => {
     return (
       <LevelBaseContainer radius={radius}>
         <AbilityDescription>
@@ -358,67 +325,6 @@ function AbilityEntryItem({
     character.abilities = new_abilities;
 
     update_session(session, websocket, character, isCreature);
-  };
-
-  interface LevelSelectorProps {
-    ability: AbilityEntry;
-  }
-
-  const LevelSelector = ({ ability }: LevelSelectorProps) => {
-    type Level = "Novice" | "Adept" | "Master";
-
-    const levels: Level[] = ["Novice", "Adept", "Master"];
-
-    const handleLevelChange = () => {
-      const currentIndex = levels.indexOf(abilityLevel as Level);
-      const nextIndex = (currentIndex + 1) % levels.length;
-      const nextLevel = levels[nextIndex];
-
-      setAbilityLevel(nextLevel);
-
-      const id = ability.id;
-
-      const abilities = character.abilities.map((ability) => {
-        if (ability.id === id) {
-          return {
-            ...ability,
-            level: nextLevel,
-          };
-        } else {
-          return ability;
-        }
-      });
-      character.abilities = abilities;
-
-      update_session(session, websocket, character, isCreature);
-    };
-
-    const levelIcons: Record<Level, any> = {
-      Novice: mdiRomanNumeral1,
-      Adept: mdiRomanNumeral2,
-      Master: mdiRomanNumeral3,
-    };
-
-    const isActive = (level: Level) => {
-      const currentIndex = levels.indexOf(abilityLevel as Level);
-      const levelIndex = levels.indexOf(level);
-      return levelIndex <= currentIndex;
-    };
-
-    return (
-      <LevelSelection
-        className={"button-hover"}
-        type={ability.static.category}
-        $active={isActive(abilityLevel as Level)}
-        onClick={handleLevelChange}
-      >
-        <Icon
-          path={levelIcons[abilityLevel as Level]}
-          size={1.0}
-          color={Constants.WIDGET_PRIMARY_FONT}
-        />
-      </LevelSelection>
-    );
   };
 
   const has_theurgy_novice = CheckAbility(character, "Theurgy", "novice");
@@ -511,14 +417,13 @@ function AbilityEntryItem({
                 }`}
           </AbilityDetail>
         </NameContainer>
-
-        <RollBox color={Constants.BRIGHT_RED}>
+        <RollContainer>
           {current_level.roll.map((i, index) => {
             if (i.type === undefined) {
               console.log(ability);
             }
             return (
-              <RollComponent
+              <RollComponent2
                 session={session}
                 character={character}
                 websocket={websocket}
@@ -536,13 +441,17 @@ function AbilityEntryItem({
               />
             );
           })}
-        </RollBox>
-        <LevelSelectionContainer>
           {ability.static.adept.description !== "" &&
           ability.static.master.description !== "" ? (
-            <LevelSelector ability={ability} />
+            <LevelComponent
+              ability={ability}
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+            />
           ) : null}
-        </LevelSelectionContainer>
+        </RollContainer>
 
         {browser ? (
           <AddButton className={"button-hover"} onClick={AddAbilitySlot}>
@@ -586,7 +495,7 @@ function AbilityEntryItem({
         {ability.static.novice.description !== "" &&
           abilityLevel === "Novice" && (
             <>
-              <LevelComponent
+              <LevelDescriptionComponent
                 effect={ability.static.novice.description}
                 radius={Constants.BORDER_RADIUS}
               />
@@ -595,11 +504,11 @@ function AbilityEntryItem({
         {ability.static.adept.description !== "" &&
           abilityLevel === "Adept" && (
             <>
-              <LevelComponent
+              <LevelDescriptionComponent
                 effect={ability.static.novice.description}
                 radius={"0px"}
               />
-              <LevelComponent
+              <LevelDescriptionComponent
                 effect={ability.static.adept.description}
                 radius={Constants.BORDER_RADIUS}
               />
@@ -608,15 +517,15 @@ function AbilityEntryItem({
         {ability.static.master.description !== "" &&
           abilityLevel === "Master" && (
             <>
-              <LevelComponent
+              <LevelDescriptionComponent
                 effect={ability.static.novice.description}
                 radius={"0px"}
               />
-              <LevelComponent
+              <LevelDescriptionComponent
                 effect={ability.static.adept.description}
                 radius={"0px"}
               />
-              <LevelComponent
+              <LevelDescriptionComponent
                 effect={ability.static.master.description}
                 radius={Constants.BORDER_RADIUS}
               />
