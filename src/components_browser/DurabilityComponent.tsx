@@ -91,6 +91,9 @@ function DurabilityComponent({
   };
 
   const handleSubDurability = () => {
+    if (item.durability == 0) {
+      return;
+    }
     item.durability = item.durability - 1;
     update_session(session, websocket, character, isCreature);
   };

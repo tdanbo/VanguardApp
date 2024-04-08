@@ -499,6 +499,9 @@ function InventoryEntry({
   };
 
   const handleMinusClick = () => {
+    if (item.quantity == 0) {
+      return;
+    }
     item.quantity -= 1;
     update_session(session, websocket, character, isCreature);
   };
