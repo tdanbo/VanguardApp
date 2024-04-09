@@ -18,6 +18,14 @@ import { SteelThrow_dice } from "./rules/SteelThrow";
 import { TwinAttack_dice } from "./rules/TwinAttack";
 import { TwohandedForce_dice } from "./rules/TwohandedForce";
 
+function HasItem(character: CharacterEntry, item: string) {
+  for (const i of character.inventory) {
+    if (i.name === item && i.equipped) {
+      return true;
+    }
+  }
+}
+
 export function RulesDiceAdjust(
   character: CharacterEntry,
   item: ItemEntry,
@@ -99,7 +107,7 @@ export function GetPainThreshold(character: CharacterEntry) {
 }
 
 export const GetMovementSpeed = (character: CharacterEntry) => {
-  const total_speed = Math.ceil(
+  let total_speed = Math.ceil(
     (5 +
       character.stats.quick.value +
       character.stats.quick.mod -
@@ -107,6 +115,13 @@ export const GetMovementSpeed = (character: CharacterEntry) => {
       OverburdenValue(character)) /
       2,
   );
+
+  if (HasItem(character, "Right Hand of Kraghammer")) {
+    total_speed -= 2;
+  }
+  if (HasItem(character, "Left Hand of Kraghammer")) {
+    total_speed -= 2;
+  }
   return total_speed;
 };
 

@@ -75,6 +75,10 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
     character.stats.resolute.mod += 2;
   }
 
+  if (HasItem(character, "Right Hand of Kraghammer")) {
+    character.stats.vigilant.mod += 2;
+  }
+
   return character;
 }
 
