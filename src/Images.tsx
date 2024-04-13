@@ -112,6 +112,7 @@ import Ogre from "./assets/characters/Ogre.jpg";
 import Reptile from "./assets/characters/Reptile.jpeg";
 import Spider from "./assets/characters/Spider.jpeg";
 import Spirit from "./assets/characters/Spirit.jpeg";
+import Phenomenon from "./assets/characters/Phenomenon.jpg";
 import Troll from "./assets/characters/Troll.jpg";
 import Undead from "./assets/characters/Undead.jpg";
 
@@ -281,6 +282,7 @@ export const CharacterPortraits: { [key: string]: string } = {
   Reptile: Reptile,
   Spider: Spider,
   Spirit: Spirit,
+  Phenomenon: Phenomenon,
   Troll: Troll,
   Undead: Undead,
   ClericA: ClericA,

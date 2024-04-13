@@ -17,6 +17,7 @@ import { ShieldFighter_dice } from "./rules/ShieldFighter";
 import { SteelThrow_dice } from "./rules/SteelThrow";
 import { TwinAttack_dice } from "./rules/TwinAttack";
 import { TwohandedForce_dice } from "./rules/TwohandedForce";
+import { SurvivalInstinct_dice } from "./rules/SurvivalInstinct";
 
 function HasItem(character: CharacterEntry, item: string) {
   for (const i of character.inventory) {
@@ -49,6 +50,7 @@ export function RulesDiceAdjust(
   dice += FeatOfStrength_dice(character, item);
   dice += ItemRulesDice(character, item);
   dice += AdvantageDice(item, advantage);
+  dice += SurvivalInstinct_dice(character, item);
   return dice;
 }
 

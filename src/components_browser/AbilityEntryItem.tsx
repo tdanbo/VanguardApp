@@ -25,6 +25,9 @@ import { StyledText, toTitleCase } from "../functions/UtilityFunctions";
 import LevelComponent from "../components_browser/LevelComponent";
 
 const EntryColor = (type: string) => {
+  if (type === undefined) {
+    return "#FF0000";
+  }
   return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.WIDGET_BORDER;
 };
 
@@ -420,9 +423,6 @@ function AbilityEntryItem({
         </NameContainer>
         <RollContainer>
           {current_level.roll.map((i, index) => {
-            if (i.type === undefined) {
-              console.log(ability);
-            }
             return (
               <RollComponent2
                 session={session}
@@ -433,7 +433,7 @@ function AbilityEntryItem({
                 isCreature={isCreature}
                 dice={i.dice}
                 dice_mod={i.mod}
-                color={EntryColor(i.type)}
+                color={EntryColor(ability.static.category)}
                 key={index}
                 activeState={""}
                 advantage={""}

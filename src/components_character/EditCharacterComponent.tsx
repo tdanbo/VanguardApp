@@ -197,6 +197,7 @@ function EditCharacterComponent({
     "Reptile",
     "Spider",
     "Spirit",
+    "Phenomenon",
     "Troll",
     "Undead",
   ];
