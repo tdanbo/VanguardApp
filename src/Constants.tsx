@@ -244,6 +244,7 @@ export const RACE_FILTER = [
   "Spider",
   "Spirit",
   "Undead",
+  "Phenomenon",
   "Abomination",
 ];
 
