@@ -71,7 +71,7 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
     }
   });
 
-  if (HasItem(character, "Wraith Crown of Eternity Legion")) {
+  if (HasItem(character, "Wraith Legion's Crown")) {
     character.stats.resolute.mod += 2;
   }
 

@@ -2,28 +2,23 @@ import styled from "styled-components";
 import { NewCharacterEntry } from "../Types";
 import { v4 as uuidv4 } from "uuid";
 import { addNewCreature } from "../functions/CharacterFunctions";
-
+import Icon from "@mdi/react";
+import { mdiSack } from "@mdi/js";
 import {
   faBolt,
-  faChevronDown,
-  faChevronUp,
   faGhost,
+  faHatWizard,
   faPlus,
   faShield,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Constants from "../Constants";
-
-import { LootIcon } from "../Images";
-
 import { Socket } from "socket.io-client";
 import { SessionEntry } from "../Types";
-
 import { useState } from "react";
 import { cloneDeep } from "lodash";
-
 import { GetGameData } from "../contexts/GameContent";
-
 interface ContainerProps {
   height: string;
 }
@@ -51,17 +46,6 @@ const ExpandRow = styled.div<DivProps>`
   max-width: ${(props) => props.width};
 `;
 
-const Input = styled.input`
-  display: flex;
-  flex-grow: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: ${Constants.BORDER_RADIUS};
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  font-weight: bold;
-  text-align: center;
-`;
-
 interface ButtonProps {
   $isactive: string;
 }
@@ -85,54 +69,45 @@ const Button = styled.button<ButtonProps>`
   opacity: ${(props) => (props.$isactive === "true" ? 1 : 0.5)};
 `;
 
-const LootButton = styled.button<ButtonProps>`
+const Navigator = styled.button`
   display: flex;
+  flex-direction: row;
   flex-grow: 1;
-  flex: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND};
+  border-radius: ${Constants.BORDER_RADIUS};
   border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: 5px;
-  color: ${(props) =>
-    props.$isactive === "true" ? "white" : Constants.WIDGET_PRIMARY_FONT};
-  cursor: pointer;
-  font-size: 16px;
-  max-width: 40px;
-  justify-content: center;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
   align-items: center;
-  opacity: ${(props) => (props.$isactive === "true" ? 1 : 0.5)};
-  background-image: url(${LootIcon});
-  background-size: 25px;
-  background-position: top 4px center;
-  background-repeat: no-repeat;
+  justify-content: center;
   font-weight: bold;
-  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  width: 40px;
+  max-width: 40px;
+  height: 40px;
 `;
 
 interface BrowserHeaderProps {
   session: SessionEntry;
   websocket: Socket;
   isGm: boolean;
+  setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
   categorySelect: string;
   setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
-  HideBrowser: boolean;
-  setHideBrowser: React.Dispatch<React.SetStateAction<boolean>>;
   setRefetch: React.Dispatch<React.SetStateAction<number>>;
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
+  isCreature: boolean;
+  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
 }
 
 function BrowserHeader({
-  session,
-  isGm,
   categorySelect,
   setCategorySelect,
   setSearch,
-  HideBrowser,
-  setHideBrowser,
   setCharacterId,
+  setIsGm,
+  isGm,
 }: BrowserHeaderProps) {
   const { updateCreatureData } = GetGameData();
-  const [_filterType, setFilterType] = useState("all");
   const [tempSearch, setTempSearch] = useState("");
   const handlePostCreature = async () => {
     const NewCreature = cloneDeep(NewCharacterEntry);
@@ -146,81 +121,101 @@ function BrowserHeader({
 
   const HandleCategoryChange = (category: string) => {
     setCategorySelect(category);
-    setFilterType("all");
   };
 
   const handleSetSearch = (value: string) => {
     setSearch(value);
   };
 
-  // Handle changes to the input field
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTempSearch(e.target.value);
   };
 
-  const handleKeyDown = (e: any) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSetSearch(tempSearch);
     }
   };
 
+  // const HandleLeaveSession = () => {
+  //   setSession(EmptySession);
+  //   setCharacterName("");
+  //   setIsJoined(false);
+  // };
+
+  const onGmSwitch = () => {
+    setIsGm((prevMode) => !prevMode);
+  };
+
   return (
     <Container height={"40px"}>
       <ExpandRow width={"100%"}>
-        {categorySelect === "creatures" ? (
+        <Navigator onClick={onGmSwitch}>
+          {isGm ? (
+            <FontAwesomeIcon
+              icon={faHatWizard}
+              color={Constants.WIDGET_SECONDARY_FONT}
+              title={"Player Mode"}
+            />
+          ) : (
+            <FontAwesomeIcon
+              icon={faUser}
+              color={Constants.WIDGET_SECONDARY_FONT}
+              title={"Game Master Mode"}
+            />
+          )}
+        </Navigator>
+        {categorySelect === "creatures" && isGm ? (
           <Button $isactive={"false"} onClick={handlePostCreature}>
             <FontAwesomeIcon icon={faPlus} />
           </Button>
-        ) : (
-          <Button
-            $isactive={"false"}
-            onClick={() => setHideBrowser(!HideBrowser)}
-          >
-            <FontAwesomeIcon icon={HideBrowser ? faChevronDown : faChevronUp} />
-          </Button>
-        )}
-        {HideBrowser ? (
-          <>
-            <Input
-              className="flex-grow"
+        ) : null}
+        <div style={{ flexGrow: "1" }}>
+          {categorySelect !== "inventory" ? (
+            <input
+              className="row opaque_color font"
               value={tempSearch} // Use the temporary search state as the input value
               onChange={handleChange}
               onKeyDown={handleKeyDown}
               title="Hit Enter to search"
+              placeholder="Search"
+              style={{ textAlign: "center" }}
             />
-            {session.loot.drops.length > 0 || isGm ? (
-              <LootButton
-                $isactive={(categorySelect === "drops").toString()}
-                onClick={() => HandleCategoryChange("drops")}
-              >
-                {session.loot.drops.length}
-              </LootButton>
-            ) : null}
-            <Button
-              $isactive={(categorySelect === "abilities").toString()}
-              onClick={() => HandleCategoryChange("abilities")}
-            >
-              <FontAwesomeIcon icon={faBolt} />
-            </Button>
+          ) : null}
+        </div>
 
-            {isGm ? (
-              <>
-                <Button
-                  $isactive={(categorySelect === "equipment").toString()}
-                  onClick={() => HandleCategoryChange("equipment")}
-                >
-                  <FontAwesomeIcon icon={faShield} />
-                </Button>
-                <Button
-                  $isactive={(categorySelect === "creatures").toString()}
-                  onClick={() => HandleCategoryChange("creatures")}
-                >
-                  <FontAwesomeIcon icon={faGhost} />
-                </Button>
-              </>
-            ) : null}
+        {isGm ? (
+          <>
+            <Button
+              $isactive={(categorySelect === "equipment").toString()}
+              onClick={() => HandleCategoryChange("equipment")}
+              title="Equipment"
+            >
+              <FontAwesomeIcon icon={faShield} />
+            </Button>
+            <Button
+              $isactive={(categorySelect === "creatures").toString()}
+              onClick={() => HandleCategoryChange("creatures")}
+              title="Creatures"
+            >
+              <FontAwesomeIcon icon={faGhost} />
+            </Button>
           </>
         ) : null}
+        <Button
+          $isactive={(categorySelect === "abilities").toString()}
+          onClick={() => HandleCategoryChange("abilities")}
+          title="Abilities"
+        >
+          <FontAwesomeIcon icon={faBolt} />
+        </Button>
+        <Button
+          $isactive={(categorySelect === "inventory").toString()}
+          onClick={() => HandleCategoryChange("inventory")}
+          title="Inventory"
+        >
+          <Icon path={mdiSack} size={0.8} />
+        </Button>
       </ExpandRow>
     </Container>
   );

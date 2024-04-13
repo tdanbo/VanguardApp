@@ -3,6 +3,7 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { GeneralItem } from "../Types";
+import { update_session } from "../functions/SessionsFunctions";
 import {
   AbilityEntry,
   ActiveStateType,
@@ -13,7 +14,7 @@ import {
   SessionEntry,
 } from "../Types";
 import RollComponent from "../components_general/RollComponent";
-
+import { cloneDeep } from "lodash";
 export function UpperFirstLetter(input: string): string {
   if (!input || typeof input !== "string") {
     return "";
@@ -354,4 +355,32 @@ export function GetDatabaseEquipment(
   } else {
     return GeneralItem;
   }
+}
+
+const generateRandomId = (length = 10) => {
+  return Math.random()
+    .toString(36)
+    .substring(2, 2 + length);
+};
+
+export function AddToLoot(
+  item: ItemEntry,
+  session: SessionEntry,
+  websocket: Socket,
+  character: CharacterEntry,
+  isCreature: boolean,
+) {
+  const drop_item = session.loot.drops.find(
+    (drop_item) => drop_item.name === item.name && item.static.bulk === true,
+  );
+
+  if (drop_item) {
+    drop_item.quantity += 1;
+  } else {
+    const new_item = cloneDeep(item);
+    new_item.id = generateRandomId();
+    new_item.quantity = 1;
+    session.loot.drops.push(new_item);
+  }
+  update_session(session, websocket, character, isCreature);
 }

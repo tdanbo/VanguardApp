@@ -57,6 +57,7 @@ interface SessionBoxProps {
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   isCreature: boolean;
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
+  setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function CharacterBox({
@@ -66,6 +67,7 @@ function CharacterBox({
   setIsCreature,
   isCreature,
   setCharacterId,
+  setIsGm,
 }: SessionBoxProps) {
   // const { session } = useContext(SessionContext);
 
@@ -73,6 +75,7 @@ function CharacterBox({
 
   const handleOnClick = () => {
     setIsCreature(false);
+    setIsGm(false);
     setCharacterId(character.id);
   };
 

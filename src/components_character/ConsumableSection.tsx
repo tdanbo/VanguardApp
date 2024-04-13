@@ -1,6 +1,7 @@
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
+import { IsConsumable } from "../functions/UtilityFunctions";
 import {
   ActiveStateType,
   AdvantageType,
@@ -10,6 +11,7 @@ import {
 } from "../Types";
 import InventoryEntry from "../components_browser/InventoryEntry";
 import { GetMaxSlots } from "../functions/RulesFunctions";
+import InventoryEntryEmpty from "./InventoryEntryEmpty";
 const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -30,7 +32,7 @@ interface NavigationProps {
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
 
-function EquipmentSection({
+function ConsumableSection({
   character,
   session,
   websocket,
@@ -55,7 +57,7 @@ function EquipmentSection({
     <Column>
       {Array.from({ length: totalSlots }).map((_, index) => {
         const item = sortedInventory[index];
-        if (item !== undefined && item.equipped) {
+        if (item !== undefined && IsConsumable(item)) {
           return (
             <InventoryEntry
               session={session}
@@ -79,8 +81,11 @@ function EquipmentSection({
           );
         }
       })}
+      {Array.from({ length: 20 }).map((_, index) => {
+        return <InventoryEntryEmpty key={`EmptyEntry${index}`} />;
+      })}
     </Column>
   );
 }
 
-export default EquipmentSection;
+export default ConsumableSection;

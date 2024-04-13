@@ -98,12 +98,13 @@ interface AbilityEntryItemProps {
   creature: CharacterEntry;
   browser: boolean;
   setInventoryState?: (inventoryState: number) => void;
-  gmMode: boolean;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   websocket: Socket;
-  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setRefetch: React.Dispatch<React.SetStateAction<number>>;
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
+  isGm: boolean;
+  setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
+  setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function CreatureEntryItem({
@@ -112,10 +113,10 @@ function CreatureEntryItem({
   creature,
   setIsCreature,
   websocket,
-  setGmMode,
+  setIsGm,
   setCharacterId,
+  setCategorySelect,
 }: AbilityEntryItemProps) {
-  const [_expanded] = useState<boolean>(false);
   const { updateCreatureData } = GetGameData();
   const suffixLetter = () => {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -140,12 +141,13 @@ function CreatureEntryItem({
     new_encounter_creature.creature = true;
     session.encounter.push(new_encounter_creature);
     update_session(session, websocket);
-    setGmMode(true);
+    setIsGm(true);
   };
 
   const selectCreature = () => {
     setIsCreature(true);
-    setGmMode(false);
+    setIsGm(false);
+    setCategorySelect("inventory");
     setCharacterId(creature.id);
   };
 
@@ -170,7 +172,7 @@ function CreatureEntryItem({
     } else {
       setResistance("Legendary");
     }
-  }, []);
+  }, [creature.details.xp_earned]);
 
   const color = Constants.TYPE_COLORS[creature.details.race];
 

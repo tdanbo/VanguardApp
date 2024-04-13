@@ -57,8 +57,9 @@ const Container = styled.div`
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
   gap: 0px;
-  min-height: 35px;
-  max-height: 35px;
+  height: 40px;
+  max-height: 40px;
+  padding: 2px;
 `;
 
 interface ExpandedContainerProps {
@@ -168,7 +169,7 @@ const AbilityName = styled.div<LevelProps>`
   flex-grow: 1;
   color: ${(props) =>
     props.$active ? EntryColor(props.type) : Constants.WIDGET_SECONDARY_FONT};
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
 `;
 

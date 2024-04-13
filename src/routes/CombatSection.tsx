@@ -1,6 +1,13 @@
-import { RefObject, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
+import JoinSessionComponent from "../components_browser/JoinSessionComponent";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { v4 as uuidv4 } from "uuid";
+import { update_session } from "../functions/SessionsFunctions";
+import { NewCharacterEntry } from "../Types";
+
 import {
   CharacterEntry,
   CombatEntry,
@@ -60,23 +67,27 @@ const Column = styled.div<DivProps>`
 
 const SideColumn = styled.div`
   display: flex;
-  flex: 0.5; /* Default flex value for resolutions below 1080p */
+  flex: 1;
   flex-direction: column;
   background-color: ${Constants.BACKGROUND};
   height: 100%;
   gap: 25px;
-  padding: 25px;
+  padding: 25px 25px 25px 50px;
   box-sizing: border-box;
+`;
 
-  /* Media query for 1080p resolution and above */
-  @media (min-width: 1920px) {
-    flex: 0.5; /* Keep flex as 0.5 for 1080p resolution */
-  }
-
-  /* Media query for 1440p resolution and above */
-  @media (min-width: 2560px) {
-    flex: 1; /* Change flex to 1 for 1440p resolution */
-  }
+const Button = styled.button`
+  display: flex;
+  flex-grow: 1;
+  flex: 1;
+  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
+  border: 1px solid ${Constants.WIDGET_BORDER};
+  border-radius: 5px;
+  color: ${Constants.WIDGET_SECONDARY_FONT};
+  cursor: pointer;
+  font-size: 14px;
+  justify-content: center;
+  align-items: center;
 `;
 
 import {
@@ -88,7 +99,6 @@ import {
 // import { set } from "lodash";
 
 interface CombatSectionProps {
-  scrollRef: RefObject<HTMLDivElement>;
   session: SessionEntry;
   character: CharacterEntry;
   websocket: Socket;
@@ -97,10 +107,8 @@ interface CombatSectionProps {
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
-  isGm: boolean;
-  gmMode: boolean;
-  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
+  isGm: boolean;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -128,7 +136,6 @@ function deepCompareCombatEntries(
 }
 
 function CombatSection({
-  scrollRef,
   session,
   character,
   websocket,
@@ -137,13 +144,12 @@ function CombatSection({
   setIsCreature,
   setAdvantage,
   isCreature,
-  isGm,
-  gmMode,
-  setGmMode,
   setSession,
+  isGm,
   setIsGm,
 }: CombatSectionProps) {
   // const { combatlogResponse } = useWebSocket();
+  const scrollRef = useRef(null);
 
   const scrollToBottom = () => {
     if (scrollRef.current) {
@@ -157,6 +163,7 @@ function CombatSection({
   useEffect(() => {
     return () => {
       if (audioRef.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         audioRef.current.pause();
       }
     };
@@ -211,47 +218,63 @@ function CombatSection({
     scrollToBottom();
   }, [session]);
 
+  const [isJoined, setIsJoined] = useState<boolean>(false);
+
+  const handlePostCharacter = async () => {
+    NewCharacterEntry.name = "Player Character";
+    NewCharacterEntry.id = uuidv4();
+    session.characters.push(NewCharacterEntry);
+    await update_session(session, websocket, NewCharacterEntry, isCreature);
+    setCharacterId(NewCharacterEntry.id);
+  };
+
   return (
-    <>
-      <SideColumn>
-        <PartySection
-          session={session}
-          websocket={websocket}
-          setCharacterId={setCharacterId}
-          setIsCreature={setIsCreature}
-          isCreature={isCreature}
-          isGm={isGm}
-          gmMode={gmMode}
-          setGmMode={setGmMode}
-          setSession={setSession}
-          setIsGm={setIsGm}
-        />
-        <DynamicContainer>
-          <Column ref={scrollRef} width={"100%"}>
-            {session.combatlog.map((item, index) => (
-              <CombatEntryItem
-                key={index}
-                combatEntry={item}
-                index={index}
-                session={session}
-              />
-            ))}
-          </Column>
-        </DynamicContainer>
-        <Container height={"30px"}>
-          <Row width={"100%"}>
-            <DiceSection
-              character={character}
+    <SideColumn>
+      <Container height={"40px"}>
+        {!isJoined ? (
+          <JoinSessionComponent
+            setIsJoined={setIsJoined}
+            setSession={setSession}
+          />
+        ) : isGm ? (
+          <Button onClick={handlePostCharacter}>
+            <FontAwesomeIcon icon={faUserPlus} />
+          </Button>
+        ) : null}
+      </Container>
+      <PartySection
+        session={session}
+        websocket={websocket}
+        setCharacterId={setCharacterId}
+        setIsCreature={setIsCreature}
+        isCreature={isCreature}
+        setIsGm={setIsGm}
+      />
+      <DynamicContainer>
+        <Column ref={scrollRef} width={"100%"}>
+          {session.combatlog.map((item, index) => (
+            <CombatEntryItem
+              key={index}
+              combatEntry={item}
+              index={index}
               session={session}
-              websocket={websocket}
-              isCreature={isCreature}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
             />
-          </Row>
-        </Container>
-      </SideColumn>
-    </>
+          ))}
+        </Column>
+      </DynamicContainer>
+      <Container height={"30px"}>
+        <Row width={"100%"}>
+          <DiceSection
+            character={character}
+            session={session}
+            websocket={websocket}
+            isCreature={isCreature}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
+          />
+        </Row>
+      </Container>
+    </SideColumn>
   );
 }
 

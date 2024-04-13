@@ -10,6 +10,7 @@ import {
 import InventoryEntry from "../components_browser/InventoryEntry";
 import { GetMaxSlots } from "../functions/RulesFunctions";
 import InventoryEntryEmpty from "./InventoryEntryEmpty";
+import { IsConsumable } from "../functions/UtilityFunctions";
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -55,7 +56,7 @@ function InventorySection({
     <>
       {Array.from({ length: totalSlots }).map((_, index) => {
         const item = sortedInventory[index];
-        if (item !== undefined && !item.equipped) {
+        if (item !== undefined && !item.equipped && !IsConsumable(item)) {
           return (
             <InventoryEntry
               session={session}
@@ -74,11 +75,12 @@ function InventorySection({
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
+              isDrop={false}
             />
           );
         }
       })}
-      {Array.from({ length: 20 }).map((_, index) => {
+      {Array.from({ length: 30 }).map((_, index) => {
         return <InventoryEntryEmpty key={`EmptyEntry${index}`} />;
       })}
     </>

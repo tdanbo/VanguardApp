@@ -302,7 +302,7 @@ interface EncounterBoxProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
-  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   onCreatureDelete: (id: string) => void;
   activeState: ActiveStateType;
@@ -317,7 +317,7 @@ function EncounterCreatureEntry({
   session,
   websocket,
   isCreature,
-  setGmMode,
+  setIsGm,
   setIsCreature,
   onCreatureDelete,
   activeState,
@@ -383,7 +383,7 @@ function EncounterCreatureEntry({
 
   const GoToSheet = () => {
     setIsCreature(true);
-    setGmMode(false);
+    setIsGm(false);
     setCharacterId(creatureClone.id);
   };
 

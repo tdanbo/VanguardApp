@@ -4,6 +4,8 @@ import "../layout.css";
 import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
 import { Socket } from "socket.io-client";
+import { AddToLoot } from "../functions/UtilityFunctions";
+import { DeleteInventorySlot } from "../functions/CharacterFunctions";
 
 interface QuantityComponentProps {
   item: ItemEntry;
@@ -30,6 +32,12 @@ export default function QuantityComponent({
       return;
     }
     item.quantity -= 1;
+
+    if (item.quantity === 0) {
+      DeleteInventorySlot(character, item.id);
+    }
+
+    AddToLoot(item, session, websocket, character, isCreature);
     update_session(session, websocket, character, isCreature);
   };
 
