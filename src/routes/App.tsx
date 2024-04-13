@@ -2,7 +2,7 @@ import "../App.css";
 
 import * as Constants from "../Constants";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import "../layout.css";
 
 import {
@@ -30,13 +30,11 @@ function App() {
   const [session, setSession] = useState<SessionEntry>(EmptySession);
   const [isCreature, setIsCreature] = useState<boolean>(false);
   const [isGm, setIsGm] = useState<boolean>(false);
-  const [gmMode, setGmMode] = useState<boolean>(false);
   const [browserState, setBrowserState] = useState(0);
   const [inventoryState, setInventoryState] = useState(1);
 
   const [characterId, setCharacterId] = useState<string>("");
 
-  const scrollableRef = useRef(null);
   const websocket = useSocketIO(Constants.API, setSession);
 
   const character = isCreature
@@ -54,10 +52,7 @@ function App() {
         session={session}
         character={character}
         websocket={websocket}
-        isGm={isGm}
-        setGmMode={setGmMode}
         setInventoryState={setInventoryState}
-        gmMode={gmMode}
         isCreature={isCreature}
         advantage={advantage}
         activeState={activeState}
@@ -65,15 +60,18 @@ function App() {
         setIsCreature={setIsCreature}
         setAdvantage={setAdvantage}
         setCharacterId={setCharacterId}
+        setIsGm={setIsGm}
+        isGm={isGm}
+        setSession={setSession}
       />
-      {gmMode ? (
+
+      {isGm ? (
         <GameMaster
           isGm={isGm}
           session={session}
           browserState={browserState}
           setBrowserState={setBrowserState}
-          gmMode={gmMode}
-          setGmMode={setGmMode}
+          setIsGm={setIsGm}
           websocket={websocket}
           setSession={setSession}
           isCreature={isCreature}
@@ -93,10 +91,8 @@ function App() {
           character={character}
           browserState={browserState}
           setBrowserState={setBrowserState}
-          gmMode={gmMode}
           inventoryState={inventoryState}
           setInventoryState={setInventoryState}
-          setGmMode={setGmMode}
           isCreature={isCreature}
           advantage={advantage}
           setAdvantage={setAdvantage}
@@ -106,19 +102,16 @@ function App() {
         />
       )}
       <CombatSection
-        character={character}
-        scrollRef={scrollableRef}
-        session={session}
         websocket={websocket}
+        session={session}
+        character={character}
+        isCreature={isCreature}
+        setAdvantage={setAdvantage}
+        setActiveState={setActiveState}
         setCharacterId={setCharacterId}
         setIsCreature={setIsCreature}
-        isCreature={isCreature}
-        isGm={isGm}
-        gmMode={gmMode}
-        setGmMode={setGmMode}
-        setActiveState={setActiveState}
-        setAdvantage={setAdvantage}
         setSession={setSession}
+        isGm={isGm}
         setIsGm={setIsGm}
       />
     </div>

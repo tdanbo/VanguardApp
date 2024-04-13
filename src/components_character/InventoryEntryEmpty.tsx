@@ -9,6 +9,9 @@ const Container = styled.div`
   color: ${Constants.WIDGET_BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
   border-radius: ${Constants.BORDER_RADIUS};
+  min-height: 40px;
+  max-height: 40px;
+  padding: 2px;
 `;
 
 function InventoryEntryEmpty() {

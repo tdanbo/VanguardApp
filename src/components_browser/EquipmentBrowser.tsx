@@ -78,7 +78,6 @@ interface EquipmentBrowserProps {
   session: SessionEntry;
   websocket: Socket;
   setInventoryState: (state: number) => void;
-  gmMode: boolean;
   isCreature: boolean;
   search: string;
   isGm: boolean;
@@ -217,6 +216,7 @@ function EquipmentBrowser({
                 activeState={activeState}
                 setActiveState={setActiveState}
                 setAdvantage={setAdvantage}
+                isDrop={false}
               />
             );
           })}

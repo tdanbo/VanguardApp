@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
@@ -201,13 +201,13 @@ const Column = styled.div`
 interface EffectEntryItemProps {
   effect: EffectEntry;
   browser: boolean;
-  setInventoryState?: (inventoryState: number) => void;
   character: CharacterEntry;
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
   activeState: ActiveStateType;
   advantage: AdvantageType;
+  setInventoryState?: (inventoryState: number) => void;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
 }
@@ -225,11 +225,6 @@ function EffectEntryItem({
   setActiveState,
   setAdvantage,
 }: EffectEntryItemProps) {
-  const [_abilityLevel, setAbilityLevel] = useState<number>(1);
-  useEffect(() => {
-    setAbilityLevel(effect.level);
-  });
-
   interface LevelProps {
     effect: string;
     radius: string;

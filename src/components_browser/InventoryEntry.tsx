@@ -1,17 +1,20 @@
 import {
   faBars,
-  faChevronRight,
+  faChevronDown,
+  faChevronUp,
   faCoins,
   faFeather,
   faSkull,
   faUsers,
-  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import Icon from "@mdi/react";
+import { mdiSack } from "@mdi/js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
+import { AddToLoot } from "../functions/UtilityFunctions";
 import {
   ActiveStateType,
   AdvantageType,
@@ -41,8 +44,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  height: 35px;
-  max-height: 35px;
+  height: 40px;
+  max-height: 40px;
+  padding: 2px;
 `;
 
 interface EffectContainerProps {
@@ -112,8 +116,9 @@ const NameBox = styled.div`
   display: flex;
   flex: 1;
   color: ${(props) => props.color};
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
+  margin-top: 2px;
 `;
 
 const CostBox = styled.div`
@@ -200,6 +205,7 @@ const TypeBox = styled.div`
   color: rgba(255, 255, 255, 0.2);
   font-size: 10px;
   gap: 5px;
+  align-items: flex-start;
 `;
 
 const QualityBox = styled.div`
@@ -250,6 +256,7 @@ interface InventoryEntryProps {
   activeState: ActiveStateType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  isDrop: boolean;
 }
 
 function InventoryEntry({
@@ -268,6 +275,7 @@ function InventoryEntry({
   activeState,
   setActiveState,
   setAdvantage,
+  isDrop,
 }: InventoryEntryProps) {
   const COLOR = Constants.TYPE_COLORS[item.static.category] || "defaultColor";
   const generateRandomId = (length = 10) => {
@@ -283,21 +291,6 @@ function InventoryEntry({
 
   const HandleUnequip = () => {
     item.equipped = false;
-    update_session(session, websocket, character, isCreature);
-  };
-
-  const AddToLoot = () => {
-    const drop_item = session.loot.drops.find(
-      (drop_item) => drop_item.name === item.name && item.static.bulk === true,
-    );
-
-    if (drop_item) {
-      drop_item.quantity += 1;
-    } else {
-      const new_item = cloneDeep(item);
-      new_item.id = generateRandomId();
-      session.loot.drops.push(new_item);
-    }
     update_session(session, websocket, character, isCreature);
   };
 
@@ -354,7 +347,7 @@ function InventoryEntry({
   const AddResource = (item: ItemEntry, buy: boolean, share: boolean) => {
     if (share) {
       let bulk = item.quantity;
-      let character_index = ShuffleArray(
+      const character_index = ShuffleArray(
         createArray(session.characters.length),
       );
       while (bulk > 0) {
@@ -463,6 +456,10 @@ function InventoryEntry({
 
   const RemoveInventorySlot = (item_id: string) => {
     DeleteInventorySlot(character, item_id);
+    // const session_drops = [...session.loot.drops];
+    session.loot.drops.push(item);
+    // session.loot.drops = session_drops;
+
     update_session(session, websocket, character, isCreature);
   };
 
@@ -516,19 +513,17 @@ function InventoryEntry({
               color={COLOR}
               key={"2H"}
               onClick={() => {
-                browser && isGm ? AddToLoot() : equipHandler(item);
+                browser && isGm
+                  ? AddToLoot(item, session, websocket, character, isCreature)
+                  : equipHandler(item);
               }}
               $isequipped={item.equipped}
             >
-              {browser && isGm ? (
-                <FontAwesomeIcon icon={faCoins} style={{ fontSize: "12px" }} />
-              ) : item.static.slot === 1 ? (
-                "I"
-              ) : item.static.slot === 2 ? (
-                "II"
-              ) : (
-                ""
-              )}
+              {item.static.slot === 1
+                ? "I"
+                : item.static.slot === 2
+                ? "II"
+                : ""}
             </EquipButton>
           ) : (item.static.category === "general good" ||
               item.static.category === "container") &&
@@ -548,17 +543,7 @@ function InventoryEntry({
               ) : null}
             </NoEquipBox>
           ) : (
-            <NoEquipBox
-              key={"unequip"}
-              color={COLOR}
-              onClick={() => {
-                browser && isGm ? AddToLoot() : null;
-              }}
-            >
-              {browser && isGm ? (
-                <FontAwesomeIcon icon={faCoins} style={{ fontSize: "12px" }} />
-              ) : null}{" "}
-            </NoEquipBox>
+            <NoEquipBox key={"unequip"} color={COLOR}></NoEquipBox>
           )}
         </EquipContainer>
         <NameContainer
@@ -604,7 +589,7 @@ function InventoryEntry({
                   </QualityBox>
                 );
               })}
-            </TypeBox>{" "}
+            </TypeBox>
           </Row>
         </NameContainer>
         {/* {item.description !== "" && (
@@ -669,17 +654,28 @@ function InventoryEntry({
         <Column>
           {browser ? (
             <>
-              <AddButton
-                className={"button-hover"}
-                onClick={() => AddInventorySlot(canBuy, false)}
-              >
-                <FontAwesomeIcon
-                  icon={canBuy ? faCoins : faChevronRight}
-                  style={{ fontSize: "12px" }}
-                  color={canBuy ? "#f5c542" : Constants.WIDGET_SECONDARY_FONT}
-                  title={canBuy ? "Buy One" : "Add One"}
-                />
-              </AddButton>
+              {isDrop ? (
+                <AddButton
+                  className={"button-hover"}
+                  onClick={() => AddInventorySlot(canBuy, false)}
+                >
+                  <FontAwesomeIcon
+                    icon={canBuy ? faCoins : faChevronDown}
+                    style={{ fontSize: "12px" }}
+                    color={canBuy ? "#f5c542" : Constants.WIDGET_SECONDARY_FONT}
+                    title={canBuy ? "Buy One" : "Add to inventory"}
+                  />
+                </AddButton>
+              ) : (
+                <AddButton
+                  className={"button-hover"}
+                  onClick={() =>
+                    AddToLoot(item, session, websocket, character, isCreature)
+                  }
+                >
+                  <Icon path={mdiSack} size={0.6} />
+                </AddButton>
+              )}
               {item.static.category === "resource" ? (
                 <AddButton
                   className={"button-hover"}
@@ -720,8 +716,12 @@ function InventoryEntry({
               <DeleteButton
                 className={"button-hover"}
                 onClick={() => RemoveInventorySlot(id)}
+                title={"Drop item"}
               >
-                <FontAwesomeIcon icon={faXmark} style={{ fontSize: "12px" }} />
+                <FontAwesomeIcon
+                  icon={faChevronUp}
+                  style={{ fontSize: "12px" }}
+                />
               </DeleteButton>
               {Array.isArray(item.static.effect) &&
               item.static.effect.length > 0 ? (

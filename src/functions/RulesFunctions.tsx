@@ -329,7 +329,7 @@ export function GetAbilityCorruption(character: CharacterEntry) {
 }
 
 export function SetDurability(character: CharacterEntry, id: string) {
-  let durability = 0;
+  const durability = 0;
 
   character.inventory.forEach((item) => {
     if (item.id === id) {

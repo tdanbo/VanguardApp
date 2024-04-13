@@ -8,6 +8,7 @@ import {
   faCarrot,
   faCheck,
   faCircle,
+  faCoins,
   faDroplet,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -264,19 +265,19 @@ function ResourceChanger({
   );
 }
 
-interface ResourceBoxProps {
+interface MoneyBoxProps {
   character: CharacterEntry;
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
 }
 
-function ResourcesBox({
+function MoneyBox({
   character,
   session,
   websocket,
   isCreature,
-}: ResourceBoxProps) {
+}: MoneyBoxProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const stopPropagation = (e: React.MouseEvent) => {
@@ -294,6 +295,10 @@ function ResourcesBox({
       setMoney(character.money);
     }
   }, [isModalOpen]);
+
+  const thaler = ConvertCurrency(character.money, "thaler");
+  const shillings = ConvertCurrency(character.money, "shillings");
+  const orthegs = ConvertCurrency(character.money, "orthegs");
 
   const handleOpen = () => {
     setIsModalOpen(true);
@@ -317,39 +322,55 @@ function ResourcesBox({
         <div
           className="row base_color button"
           style={{ width: "50%" }}
-          title={"Food"}
+          title={"Thaler"}
         >
           <div
             className="row"
             style={{
               maxWidth: "30px",
-              color: Constants.ORANGE,
+              color: GoldColor,
               fontSize: "18px",
             }}
           >
-            <FontAwesomeIcon icon={faCarrot} />
+            <FontAwesomeIcon icon={faCoins} />
           </div>
-          <div className="row">{character.rations.food}</div>
+          <div className="row">{thaler}</div>
         </div>
         <div
-          className="row button-hover base_color button"
+          className="row base_color button"
           style={{ width: "50%" }}
-          title={"Water"}
+          title={"Shilling"}
         >
           <div
             className="row"
             style={{
               maxWidth: "30px",
-              color: Constants.BLUE,
+              color: SilverColor,
               fontSize: "18px",
             }}
           >
-            <FontAwesomeIcon icon={faDroplet} />
+            <FontAwesomeIcon icon={faCoins} />
           </div>
-          <div className="row">{character.rations.water}</div>
+          <div className="row">{shillings}</div>
+        </div>
+        <div
+          className="row base_color button"
+          style={{ width: "50%" }}
+          title={"Orteg"}
+        >
+          <div
+            className="row"
+            style={{
+              maxWidth: "30px",
+              color: BronzeColor,
+              fontSize: "18px",
+            }}
+          >
+            <FontAwesomeIcon icon={faCoins} />
+          </div>
+          <div className="row">{orthegs}</div>
         </div>
       </div>
-      <div className="row" onClick={handleOpen}></div>
       {isModalOpen && (
         <Overlay onClick={handleClose}>
           <MainContainer onClick={stopPropagation}>
@@ -421,4 +442,4 @@ function ResourcesBox({
     </>
   );
 }
-export default ResourcesBox;
+export default MoneyBox;

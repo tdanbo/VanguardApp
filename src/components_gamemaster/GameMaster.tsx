@@ -12,8 +12,7 @@ import ResetCreatureEncounter from "./ResetCreatureEncounter";
 import CreatureEncounterSection from "./CreatureEncounterSection";
 import TimeTrackBox from "../components_gamemaster/TimeTrackBox";
 import TravelBox from "../components_gamemaster/TravelBox";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faNoteSticky, faShieldAlt } from "@fortawesome/free-solid-svg-icons";
+import "../layout.css";
 
 interface ContainerProps {
   height: string;
@@ -59,42 +58,12 @@ const ScrollColumn = styled.div<DivProps>`
   overflow-y: scroll;
 `;
 
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 2;
-  background-color: ${Constants.BACKGROUND};
-  height: 100%;
-  gap: 25px;
-  padding: 25px 100px 25px 100px;
-  box-sizing: border-box;
-`;
-
-const Navigator = styled.button`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.BACKGROUND};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  width: 40px;
-  max-width: 40px;
-  height: 40px;
-`;
-
 interface GameMasterProps {
   session: SessionEntry;
   browserState: number;
   setBrowserState: (value: number) => void;
-  gmMode: boolean;
-  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   websocket: Socket;
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
-  isGm: boolean;
   isCreature: boolean;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   advantage: AdvantageType;
@@ -102,11 +71,13 @@ interface GameMasterProps {
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
+  setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
+  isGm: boolean;
 }
 
 function GameMaster({
   session,
-  setGmMode,
+  setIsGm,
   websocket,
   isCreature,
   setIsCreature,
@@ -114,8 +85,6 @@ function GameMaster({
   activeState,
   setActiveState,
   setAdvantage,
-  isGm,
-  gmMode,
   setCharacterId,
 }: GameMasterProps) {
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
@@ -135,17 +104,20 @@ function GameMaster({
   }, [session]);
 
   return (
-    <Column>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        flex: "2",
+        backgroundColor: Constants.BACKGROUND,
+        height: "100%",
+        gap: "25px",
+        boxSizing: "border-box",
+        padding: "25px 50px 25px 50px",
+      }}
+    >
       <Container height={"40px"}>
         <Row width={"100%"}>
-          {isGm && (
-            <Navigator
-              onClick={() => setGmMode((prevMode) => !prevMode)}
-              title={"GM Mode"}
-            >
-              <FontAwesomeIcon icon={gmMode ? faNoteSticky : faShieldAlt} />
-            </Navigator>
-          )}
           <TravelBox session={session} websocket={websocket} />
         </Row>
       </Container>
@@ -156,7 +128,7 @@ function GameMaster({
             websocket={websocket}
             isCreature={isCreature}
             setIsCreature={setIsCreature}
-            setGmMode={setGmMode}
+            setIsGm={setIsGm}
             characterLog={characterLog}
             advantage={advantage}
             activeState={activeState}
@@ -170,7 +142,7 @@ function GameMaster({
         <ResetCreatureEncounter session={session} websocket={websocket} />
         <TimeTrackBox session={session} websocket={websocket} />
       </Container>
-    </Column>
+    </div>
   );
 }
 

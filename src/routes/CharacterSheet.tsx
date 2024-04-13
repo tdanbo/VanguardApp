@@ -2,11 +2,10 @@ import styled from "styled-components";
 import { AdvantageType, CharacterEntry, SessionEntry } from "../Types";
 import AbilitySection from "../components_character/AbilitySection";
 import CharacterNameBox from "../components_character/CharacterNameBox";
-import InventorySection from "../components_character/InventorySection";
 import ResourcesBox from "../components_character/ResourcesBox";
 import XpBox from "../components_character/XpBox";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faNoteSticky, faShieldAlt } from "@fortawesome/free-solid-svg-icons";
+import ConsumableSection from "../components_character/ConsumableSection";
+import "../layout.css";
 
 import * as Constants from "../Constants";
 
@@ -61,53 +60,19 @@ const ScrollColumn = styled.div<DivProps>`
   gap: ${Constants.WIDGET_GAB};
   max-width: ${(props) => props.width};
   overflow-y: scroll;
-  border-top: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.BACKGROUND};
   scrollbar-width: none;
-`;
-
-const DividerVertical = styled.div`
-  height 100%;
-  width: 1px;
-  background: linear-gradient(to bottom, ${Constants.WIDGET_SECONDARY_FONT_INACTIVE} 0%, transparent 100%);
 `;
 
 const DividerHorizontal = styled.div`
   height: 1px;
   width: 100%;
   background: linear-gradient(
-    to left,
+    to right,
     ${Constants.WIDGET_SECONDARY_FONT_INACTIVE} 0%,
     transparent 100%
   );
-`;
-
-const OuterColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 2;
-  background-color: ${Constants.BACKGROUND};
-  height: 100%;
-  gap: 25px;
-  padding: 25px 100px 25px 100px;
-  box-sizing: border-box;
-`;
-
-const Navigator = styled.button`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.BACKGROUND};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  width: 40px;
-  max-width: 40px;
-  height: 40px;
+  margin-top: 5px;
 `;
 
 import { Socket } from "socket.io-client";
@@ -133,10 +98,8 @@ type CharacterSheetProps = {
   character: CharacterEntry;
   browserState: number;
   setBrowserState: (value: number) => void;
-  gmMode: boolean;
   inventoryState: number;
   setInventoryState: (value: number) => void;
-  setGmMode: React.Dispatch<React.SetStateAction<boolean>>;
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
   isGm: boolean;
   isCreature: boolean;
@@ -170,9 +133,6 @@ function CharacterSheet({
   activeState,
   setAdvantage,
   setActiveState,
-  isGm,
-  setGmMode,
-  gmMode,
   setCharacterId,
 }: CharacterSheetProps) {
   UpdateAbilityStats(character);
@@ -190,17 +150,20 @@ function CharacterSheet({
   }
 
   return (
-    <OuterColumn>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        flex: "2",
+        backgroundColor: Constants.BACKGROUND,
+        height: "100%",
+        gap: "25px",
+        boxSizing: "border-box",
+        padding: "25px 50px 25px 50px",
+      }}
+    >
       <Container height={"40px"}>
         <Row width={"50%"}>
-          {isGm && (
-            <Navigator
-              onClick={() => setGmMode((prevMode) => !prevMode)}
-              title={"GM Mode"}
-            >
-              <FontAwesomeIcon icon={gmMode ? faNoteSticky : faShieldAlt} />
-            </Navigator>
-          )}
           <CharacterNameBox character={character} />
         </Row>
         <Row width={"50%"}>
@@ -445,6 +408,17 @@ function CharacterSheet({
       </Container>
       <DynamicContainer>
         <Column width="50%">
+          <div
+            className="row"
+            style={{
+              maxHeight: "10px",
+              fontSize: "11px",
+              fontWeight: "bold",
+              color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+            }}
+          >
+            Equipment <DividerHorizontal />
+          </div>
           <EquipmentSection
             session={session}
             character={character}
@@ -455,9 +429,19 @@ function CharacterSheet({
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
           />
-          <DividerHorizontal />
+          <div
+            className="row"
+            style={{
+              maxHeight: "10px",
+              fontSize: "11px",
+              fontWeight: "bold",
+              color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+            }}
+          >
+            Consumables <DividerHorizontal />
+          </div>
           <ScrollColumn width="100%">
-            <InventorySection
+            <ConsumableSection
               session={session}
               character={character}
               websocket={websocket}
@@ -469,8 +453,19 @@ function CharacterSheet({
             />
           </ScrollColumn>
         </Column>
-        <DividerVertical />
+
         <ScrollColumn width="50%">
+          <div
+            className="row"
+            style={{
+              maxHeight: "10px",
+              fontSize: "11px",
+              fontWeight: "bold",
+              color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+            }}
+          >
+            Abilities <DividerHorizontal />
+          </div>
           <AbilitySection
             session={session}
             character={character}
@@ -493,7 +488,7 @@ function CharacterSheet({
           />
         </Row>
       </Container>
-    </OuterColumn>
+    </div>
   );
 }
 
