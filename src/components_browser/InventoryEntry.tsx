@@ -1,11 +1,11 @@
 import {
   faBars,
   faChevronDown,
-  faChevronUp,
   faCoins,
   faFeather,
   faSkull,
   faUsers,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import Icon from "@mdi/react";
 import { mdiSack } from "@mdi/js";
@@ -434,10 +434,6 @@ function InventoryEntry({
       return;
     }
 
-    if (item.static.category === "general good") {
-      item.light = true;
-    }
-
     if (item.static.category === "resource") {
       AddResource(item, buy, share);
     } else if (item.static.bulk === true) {
@@ -504,12 +500,18 @@ function InventoryEntry({
     update_session(session, websocket, character, isCreature);
   };
 
+  const RemoveSingleLoot = (item: ItemEntry) => {
+    RemoveLootItem(item);
+    update_session(session, websocket, character, isCreature);
+  };
+
   return (
     <MasterContainer>
       <Container className="button-hover">
         <EquipContainer>
           {[1, 2, 3].includes(item.static.slot) ? (
             <EquipButton
+              className="button"
               color={COLOR}
               key={"2H"}
               onClick={() => {
@@ -527,8 +529,9 @@ function InventoryEntry({
             </EquipButton>
           ) : (item.static.category === "general good" ||
               item.static.category === "container") &&
-            !browser ? (
+            isGm ? (
             <NoEquipBox
+              className="button"
               key={"unequip"}
               color={COLOR}
               onClick={() => {
@@ -543,7 +546,15 @@ function InventoryEntry({
               ) : null}
             </NoEquipBox>
           ) : (
-            <NoEquipBox key={"unequip"} color={COLOR}></NoEquipBox>
+            <NoEquipBox key={"unequip"} color={COLOR}>
+              {" "}
+              {item.light ? (
+                <FontAwesomeIcon
+                  icon={faFeather}
+                  style={{ fontSize: "12px" }}
+                />
+              ) : null}
+            </NoEquipBox>
           )}
         </EquipContainer>
         <NameContainer
@@ -655,20 +666,38 @@ function InventoryEntry({
           {browser ? (
             <>
               {isDrop ? (
-                <AddButton
-                  className={"button-hover"}
-                  onClick={() => AddInventorySlot(canBuy, false)}
-                >
-                  <FontAwesomeIcon
-                    icon={canBuy ? faCoins : faChevronDown}
-                    style={{ fontSize: "12px" }}
-                    color={canBuy ? "#f5c542" : Constants.WIDGET_SECONDARY_FONT}
-                    title={canBuy ? "Buy One" : "Add to inventory"}
-                  />
-                </AddButton>
+                <>
+                  {isGm ? (
+                    <AddButton
+                      className={"button"}
+                      onClick={() => RemoveSingleLoot(item)}
+                    >
+                      <FontAwesomeIcon
+                        icon={faXmark}
+                        style={{ fontSize: "12px" }}
+                        color={Constants.WIDGET_SECONDARY_FONT}
+                        title={"Remove loot"}
+                      />
+                    </AddButton>
+                  ) : (
+                    <AddButton
+                      className={"button"}
+                      onClick={() => AddInventorySlot(canBuy, false)}
+                    >
+                      <FontAwesomeIcon
+                        icon={canBuy ? faCoins : faChevronDown}
+                        style={{ fontSize: "12px" }}
+                        color={
+                          canBuy ? "#f5c542" : Constants.WIDGET_SECONDARY_FONT
+                        }
+                        title={canBuy ? "Buy One" : "Add to inventory"}
+                      />
+                    </AddButton>
+                  )}
+                </>
               ) : (
                 <AddButton
-                  className={"button-hover"}
+                  className={"button"}
                   onClick={() =>
                     AddToLoot(item, session, websocket, character, isCreature)
                   }
@@ -678,7 +707,7 @@ function InventoryEntry({
               )}
               {item.static.category === "resource" ? (
                 <AddButton
-                  className={"button-hover"}
+                  className={"button"}
                   title={"Distribute to group"}
                   onClick={() => AddInventorySlot(false, true)}
                 >
@@ -690,7 +719,7 @@ function InventoryEntry({
               ) : Array.isArray(item.static.effect) &&
                 item.static.effect.length > 0 ? (
                 expanded ? (
-                  <AddButton className={"button-hover"}>
+                  <AddButton className={"button"}>
                     <FontAwesomeIcon
                       icon={faBars}
                       style={{
@@ -700,7 +729,7 @@ function InventoryEntry({
                     />
                   </AddButton>
                 ) : (
-                  <AddButton className={"button-hover"}>
+                  <AddButton className={"button"}>
                     <FontAwesomeIcon
                       icon={faBars}
                       style={{ fontSize: "12px" }}
@@ -714,19 +743,16 @@ function InventoryEntry({
           ) : equipped === "" ? (
             <>
               <DeleteButton
-                className={"button-hover"}
+                className={"button"}
                 onClick={() => RemoveInventorySlot(id)}
                 title={"Drop item"}
               >
-                <FontAwesomeIcon
-                  icon={faChevronUp}
-                  style={{ fontSize: "12px" }}
-                />
+                <FontAwesomeIcon icon={faXmark} style={{ fontSize: "12px" }} />
               </DeleteButton>
               {Array.isArray(item.static.effect) &&
               item.static.effect.length > 0 ? (
                 expanded ? (
-                  <AddButton className={"button-hover"}>
+                  <AddButton className={"button"}>
                     <FontAwesomeIcon
                       icon={faBars}
                       style={{
@@ -736,7 +762,7 @@ function InventoryEntry({
                     />
                   </AddButton>
                 ) : (
-                  <AddButton className={"button-hover"}>
+                  <AddButton className={"button"}>
                     <FontAwesomeIcon
                       icon={faBars}
                       style={{ fontSize: "12px" }}

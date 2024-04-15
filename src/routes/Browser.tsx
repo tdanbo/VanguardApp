@@ -36,7 +36,6 @@ type BrowserProps = {
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
-  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
 };
 
 function Browser({
@@ -53,7 +52,6 @@ function Browser({
   setAdvantage,
   setCharacterId,
   setIsGm,
-  setSession,
 }: BrowserProps) {
   const [refetch, setRefetch] = useState(0);
   const [search, setSearch] = useState("");
@@ -62,16 +60,12 @@ function Browser({
     <SideColumn>
       <BrowserHeader
         session={session}
-        websocket={websocket}
         categorySelect={categorySelect}
         setCategorySelect={setCategorySelect}
         setSearch={setSearch}
-        setRefetch={setRefetch}
         setCharacterId={setCharacterId}
-        isCreature={isCreature}
         setIsGm={setIsGm}
         isGm={isGm}
-        setSession={setSession}
         // Add the other missing props here
       />
       {categorySelect === "equipment" ? (

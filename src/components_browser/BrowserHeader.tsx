@@ -14,7 +14,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Constants from "../Constants";
-import { Socket } from "socket.io-client";
 import { SessionEntry } from "../Types";
 import { useState } from "react";
 import { cloneDeep } from "lodash";
@@ -87,16 +86,12 @@ const Navigator = styled.button`
 
 interface BrowserHeaderProps {
   session: SessionEntry;
-  websocket: Socket;
   isGm: boolean;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
   categorySelect: string;
   setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
-  setRefetch: React.Dispatch<React.SetStateAction<number>>;
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
-  isCreature: boolean;
-  setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
 }
 
 function BrowserHeader({
@@ -106,6 +101,7 @@ function BrowserHeader({
   setCharacterId,
   setIsGm,
   isGm,
+  session,
 }: BrowserHeaderProps) {
   const { updateCreatureData } = GetGameData();
   const [tempSearch, setTempSearch] = useState("");
@@ -150,7 +146,7 @@ function BrowserHeader({
   return (
     <Container height={"40px"}>
       <ExpandRow width={"100%"}>
-        <Navigator onClick={onGmSwitch}>
+        <Navigator onClick={onGmSwitch} className="button">
           {isGm ? (
             <FontAwesomeIcon
               icon={faHatWizard}
@@ -166,7 +162,11 @@ function BrowserHeader({
           )}
         </Navigator>
         {categorySelect === "creatures" && isGm ? (
-          <Button $isactive={"false"} onClick={handlePostCreature}>
+          <Button
+            $isactive={"false"}
+            onClick={handlePostCreature}
+            className="button"
+          >
             <FontAwesomeIcon icon={faPlus} />
           </Button>
         ) : null}
@@ -190,6 +190,7 @@ function BrowserHeader({
               $isactive={(categorySelect === "equipment").toString()}
               onClick={() => HandleCategoryChange("equipment")}
               title="Equipment"
+              className="button"
             >
               <FontAwesomeIcon icon={faShield} />
             </Button>
@@ -197,6 +198,7 @@ function BrowserHeader({
               $isactive={(categorySelect === "creatures").toString()}
               onClick={() => HandleCategoryChange("creatures")}
               title="Creatures"
+              className="button"
             >
               <FontAwesomeIcon icon={faGhost} />
             </Button>
@@ -213,7 +215,19 @@ function BrowserHeader({
           $isactive={(categorySelect === "inventory").toString()}
           onClick={() => HandleCategoryChange("inventory")}
           title="Inventory"
+          className="button"
         >
+          {isGm && session.loot.drops.length > 0 ? (
+            <span
+              style={{
+                fontSize: "18px",
+                fontWeight: "bold",
+                color: Constants.BRIGHT_YELLOW,
+              }}
+            >
+              {session.loot.drops.length}
+            </span>
+          ) : null}
           <Icon path={mdiSack} size={0.8} />
         </Button>
       </ExpandRow>
