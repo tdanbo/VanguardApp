@@ -62,7 +62,6 @@ function App() {
         setCharacterId={setCharacterId}
         setIsGm={setIsGm}
         isGm={isGm}
-        setSession={setSession}
       />
 
       {isGm ? (
