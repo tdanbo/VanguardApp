@@ -128,7 +128,7 @@ export const Qualities: {
   Ensnaring: {
     name: "Ensnaring",
     description:
-      "a thin silk thread attached to the arrow make it possible to ensnare a target using this projectile. Pulling it out takes a movement action and requires a passed [Strong -Damage] test; if successful the target suffers 1d4 damage but the arrow is out. Moving around with a snaring arrow imbedded in one's flesh deals 1 damage per turn, ignoring armor.",
+      "The weapon can be used to snare a target, which is done with a passed [Attack < Defense] test. An ensnared target cannot move and gets a second chance to fail all success tests. Every attempt to get free requires spending a combat action; this forces the attacker to test [Attack < Defense] again in order to keep the target in check. Ensnaring melee weapons can be used to try to knock a target prone. The attempt counts as a combat action and requires a passed [Strong←Strong] to succeed. A fallen target cannot get up until it has been freed from the ensnaring effect. Also, note that an Ensnaring weapon may be used with the ability Ensnare to perform more advanced maneuvers.",
   },
   Snaring: {
     name: "Snaring",
