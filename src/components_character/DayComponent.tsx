@@ -3,7 +3,6 @@ import styled from "styled-components";
 import "../App.css";
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
-import { update_session } from "../functions/SessionsFunctions";
 import { toTitleCase } from "../functions/UtilityFunctions";
 const Container = styled.div`
   display: flex;
@@ -57,35 +56,10 @@ interface XpBoxProps {
   isCreature: boolean;
 }
 
-function DayComponent({
-  session,
-  character,
-  websocket,
-  isCreature,
-}: XpBoxProps) {
-  const handleAddXp = () => {
-    character.details.xp_earned += 1;
-    update_session(session, websocket, character, isCreature);
-  };
-
-  const handleSubXp = () => {
-    character.details.xp_earned -= 1;
-    if (character.details.xp_earned < 0) {
-      character.details.xp_earned = 0;
-    }
-    update_session(session, websocket, character, isCreature);
-  };
-
+function DayComponent({ session }: XpBoxProps) {
   return (
     <Container className="mouse-icon-hover">
-      <CategoryContainerLeft
-        onClick={handleSubXp}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          handleAddXp();
-        }}
-        title={"Combat XP"}
-      >
+      <CategoryContainerLeft>
         <h1>{toTitleCase(session.travel.time)}</h1>
       </CategoryContainerLeft>
       <CategoryContainerRight title={"Utility XP"}>
