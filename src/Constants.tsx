@@ -125,7 +125,6 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   rested: COLOR_4,
   normal: COLOR_4,
   tired: COLOR_4,
-  fatigued: COLOR_4,
 
   treasure: COLOR_5,
   utility: COLOR_5,
@@ -141,6 +140,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   accurate: COLOR_5,
   trait: COLOR_5,
   burden: COLOR_5,
+  fatigued: COLOR_5,
 
   permanent_corruption: DESAT_PURPLE,
 
