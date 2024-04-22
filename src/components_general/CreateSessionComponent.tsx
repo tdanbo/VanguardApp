@@ -95,7 +95,7 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
     owner: email,
     travel: {
       day: 0,
-      time: 0,
+      time: "morning",
       distance: 0,
       weather: "RAINY",
     },

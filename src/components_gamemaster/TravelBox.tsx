@@ -290,7 +290,6 @@ interface TravelBoxProps {
 
 function TravelBox({ session, websocket }: TravelBoxProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [timeOfDay, setTimeOfday] = useState<string>();
   const [tooltip, setTooltip] = useState<string>("A normal days of travel.");
   const NoTravelSpeed = "The party didn't travel during the day.";
   const NormalSpeed = "A normal days of travel.";
@@ -385,25 +384,6 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
     setDistanceTraveled(distance);
   }, [travelMethod, travelTerrain, travelLocation]);
 
-  useEffect(() => {
-    const determineTimeOfDay = () => {
-      const hour = session.travel.time;
-      if (hour >= 5 && hour < 12) {
-        return "MORNING";
-      } else if (hour >= 12 && hour < 14) {
-        return "NOON";
-      } else if (hour >= 14 && hour < 17) {
-        return "AFTERNOON";
-      } else if (hour >= 17 && hour < 20) {
-        return "EVENING";
-      } else {
-        return "NIGHT";
-      }
-    };
-
-    setTimeOfday(determineTimeOfDay());
-  }, [session.travel.time]);
-
   const handleAccept = async (forward: boolean) => {
     const weather = [
       "RAINY",
@@ -440,7 +420,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
 
     const travelEntry: TravelEntry = {
       day: newday,
-      time: 6,
+      time: "morning",
       weather: randomWeather(),
       distance: newdistance,
     };
@@ -544,12 +524,11 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
     <>
       <Container onClick={handleOpen}>
         <TravelLeftButton>
-          {session.travel.weather.toUpperCase()} {timeOfDay}
+          {session.travel.weather.toUpperCase()}{" "}
+          {session.travel.time.toUpperCase()}
         </TravelLeftButton>
         <Divider />
-        <TravelButton>
-          {session.travel.time}:00 DAY {session.travel.day}
-        </TravelButton>
+        <TravelButton>DAY {session.travel.day}</TravelButton>
         <Divider />
 
         <TravelButton>ETA {session.travel.distance} KM</TravelButton>

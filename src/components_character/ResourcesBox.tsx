@@ -314,11 +314,7 @@ function ResourcesBox({
   return (
     <>
       <div className="row" onClick={handleOpen}>
-        <div
-          className="row base_color button"
-          style={{ width: "50%" }}
-          title={"Food"}
-        >
+        <div className="row base_color button" title={"Food"}>
           <div
             className="row"
             style={{
@@ -331,11 +327,7 @@ function ResourcesBox({
           </div>
           <div className="row">{character.rations.food}</div>
         </div>
-        <div
-          className="row button-hover base_color button"
-          style={{ width: "50%" }}
-          title={"Water"}
-        >
+        <div className="row button-hover base_color button" title={"Water"}>
           <div
             className="row"
             style={{
@@ -349,7 +341,6 @@ function ResourcesBox({
           <div className="row">{character.rations.water}</div>
         </div>
       </div>
-      <div className="row" onClick={handleOpen}></div>
       {isModalOpen && (
         <Overlay onClick={handleClose}>
           <MainContainer onClick={stopPropagation}>

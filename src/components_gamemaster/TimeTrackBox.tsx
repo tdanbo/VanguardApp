@@ -2,8 +2,20 @@ import { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { NewCharacterEntry, SessionEntry } from "../Types";
+import { NewCharacterEntry, SessionEntry, TimeCategory } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
+import {
+  toTitleCase,
+  SetStatusForward,
+  SetStatusBackward,
+} from "../functions/UtilityFunctions";
+import { forEach } from "lodash";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+
 const Container = styled.div`
   display: flex;
   flex-grow: 1;
@@ -39,11 +51,6 @@ const HourContainer = styled.button<HourContainerProps>`
       ? Constants.WIDGET_BACKGROUND
       : Constants.WIDGET_BACKGROUND_EMPTY};
   border-radius: ${Constants.BORDER_RADIUS};
-  &:hover {
-    background-color: ${Constants.WIDGET_BACKGROUND};
-    color: ${Constants.WIDGET_PRIMARY_FONT};
-    border: 1px solid ${Constants.WIDGET_BORDER};
-  }
 `;
 
 interface TimeTrackBoxProps {
@@ -53,33 +60,88 @@ interface TimeTrackBoxProps {
 
 function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {
   // Ensure that the initial value is a valid hour (0-23); otherwise, set it to null
-  const [activeHour, setActiveHour] = useState<number | null>(
-    typeof session.travel.time === "number" &&
-      session.travel.time >= 0 &&
-      session.travel.time < 24
-      ? session.travel.time
-      : null,
+  const [activeHour, setActiveHour] = useState<TimeCategory>(
+    session.travel.time,
   );
 
-  const handleTimeChange = async (time: number) => {
-    setActiveHour(time); // Set the active hour
-    session.travel.time = time;
+  const passTimeForward = () => {
+    forEach(session.characters, (character) => {
+      SetStatusBackward(character);
 
+      if (session.travel.time === "night") {
+        character.details.xp_earned += 5;
+      }
+    });
+
+    if (session.travel.time === "night") {
+      session.travel.time = "morning";
+      session.travel.day += 1;
+      setActiveHour("morning");
+    } else if (session.travel.time === "morning") {
+      session.travel.time = "afternoon";
+      setActiveHour("afternoon");
+    } else if (session.travel.time === "afternoon") {
+      session.travel.time = "evening";
+      setActiveHour("evening");
+    } else if (session.travel.time === "evening") {
+      session.travel.time = "night";
+      setActiveHour("night");
+    }
     update_session(session, websocket, NewCharacterEntry, false);
   };
+
+  const passTimeBackward = () => {
+    forEach(session.characters, (character) => {
+      SetStatusForward(character);
+      if (session.travel.time === "morning") {
+        character.details.xp_earned -= 5;
+      }
+    });
+
+    if (session.travel.time === "morning") {
+      session.travel.time = "night";
+      session.travel.day -= 1;
+      setActiveHour("night");
+    } else if (session.travel.time === "afternoon") {
+      session.travel.time = "morning";
+      setActiveHour("morning");
+    } else if (session.travel.time === "evening") {
+      session.travel.time = "afternoon";
+      setActiveHour("afternoon");
+    } else if (session.travel.time === "night") {
+      session.travel.time = "evening";
+      setActiveHour("evening");
+    }
+    update_session(session, websocket, NewCharacterEntry, false);
+  };
+
+  const time = ["morning", "afternoon", "evening", "night"];
 
   return (
     <Container>
       <DayContainer>
-        {Array.from({ length: 24 }).map((_, index) => (
+        <div
+          className="row base_color button"
+          style={{ maxWidth: "50px" }}
+          onClick={() => passTimeBackward()}
+        >
+          <FontAwesomeIcon icon={faChevronLeft} />
+        </div>
+        {time.map((time, index) => (
           <HourContainer
             key={index}
-            onClick={() => handleTimeChange(index)}
-            data-isactive={index === activeHour} // Use data-isactive instead of isactive
+            data-isactive={time === activeHour} // Use data-isactive instead of isactive
           >
-            {index}
+            {toTitleCase(time)}
           </HourContainer>
         ))}
+        <div
+          className="row base_color button"
+          style={{ maxWidth: "50px" }}
+          onClick={() => passTimeForward()}
+        >
+          <FontAwesomeIcon icon={faChevronRight} />
+        </div>
       </DayContainer>
     </Container>
   );
