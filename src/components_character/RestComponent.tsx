@@ -87,10 +87,10 @@ export default function RestComponent({
             color: Constants.TYPE_COLORS[character.health.status],
             filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
           }}
-          onClick={BackwardStatus}
+          onClick={ForwardStatus}
           onContextMenu={(e) => {
             e.preventDefault();
-            ForwardStatus();
+            BackwardStatus();
           }}
         >
           {toTitleCase(character.health.status)}
