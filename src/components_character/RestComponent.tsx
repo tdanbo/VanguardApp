@@ -92,6 +92,7 @@ export default function RestComponent({
             e.preventDefault();
             BackwardStatus();
           }}
+          title={"Rested | Normal | Tired | Fatigued | Exhausted"}
         >
           {toTitleCase(character.health.status)}
         </div>
