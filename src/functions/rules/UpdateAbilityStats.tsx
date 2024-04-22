@@ -48,6 +48,15 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
       character.stats.accurate.mod -= effect.level;
     } else if (effect.name === "Weakened Cunning") {
       character.stats.cunning.mod -= effect.level;
+    } else if (effect.name === "Exhausted") {
+      character.stats.strong.mod -= effect.level;
+      character.stats.resolute.mod -= effect.level;
+      character.stats.quick.mod -= effect.level;
+      character.stats.discreet.mod -= effect.level;
+      character.stats.vigilant.mod -= effect.level;
+      character.stats.persuasive.mod -= effect.level;
+      character.stats.accurate.mod -= effect.level;
+      character.stats.cunning.mod -= effect.level;
     }
   });
 

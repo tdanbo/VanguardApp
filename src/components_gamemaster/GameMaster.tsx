@@ -118,6 +118,7 @@ function GameMaster({
     >
       <Container height={"40px"}>
         <Row width={"100%"}>
+          <ResetCreatureEncounter session={session} websocket={websocket} />
           <TravelBox session={session} websocket={websocket} />
         </Row>
       </Container>
@@ -139,7 +140,6 @@ function GameMaster({
         </ScrollColumn>
       </DynamicContainer>
       <Container height={"30px"}>
-        <ResetCreatureEncounter session={session} websocket={websocket} />
         <TimeTrackBox session={session} websocket={websocket} />
       </Container>
     </div>

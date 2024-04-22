@@ -91,6 +91,7 @@ import StatComponent from "../components_character/StatComponent";
 import { GetActives } from "../functions/ActivesFunction";
 import UpdateAbilityStats from "../functions/rules/UpdateAbilityStats";
 import EquipmentSection from "../components_character/EquipmentSection";
+import RestComponent from "../components_character/RestComponent";
 import { ActiveStateType } from "../Types";
 type CharacterSheetProps = {
   websocket: Socket;
@@ -481,6 +482,12 @@ function CharacterSheet({
       <Container height={"30px"}>
         <Row width={"100%"}>
           <ResourcesBox
+            character={character}
+            session={session}
+            websocket={websocket}
+            isCreature={isCreature}
+          />
+          <RestComponent
             character={character}
             session={session}
             websocket={websocket}

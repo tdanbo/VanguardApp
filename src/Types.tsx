@@ -40,6 +40,7 @@ type health = {
   damage: number;
   corruption: number;
   shield: number;
+  status: StatusCategory;
 };
 
 export interface CharacterEntry {
@@ -157,9 +158,27 @@ interface Roll {
   type: string;
 }
 
+export type TimeCategory = "morning" | "afternoon" | "evening" | "night";
+export type StatusCategory =
+  | "resting"
+  | "rested"
+  | "normal"
+  | "tired"
+  | "fatigued"
+  | "exhausted 1"
+  | "exhausted 2"
+  | "exhausted 3"
+  | "exhausted 4"
+  | "exhausted 5"
+  | "exhausted 6"
+  | "exhausted 7"
+  | "exhausted 8"
+  | "exhausted 9"
+  | "exhausted 10";
+
 export type TravelEntry = {
   day: number;
-  time: number;
+  time: TimeCategory;
   weather: string;
   distance: number;
 };
@@ -287,7 +306,7 @@ export const EmptySession: SessionEntry = {
   owner: "",
   travel: {
     day: 0,
-    time: 0,
+    time: "morning",
     distance: 0,
     weather: "",
   },
@@ -312,6 +331,7 @@ export const NewCharacterEntry: CharacterEntry = {
     damage: 0,
     corruption: 0,
     shield: 0,
+    status: "rested",
   },
   stats: {
     cunning: { value: 15, mod: 0 },

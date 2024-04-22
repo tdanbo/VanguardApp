@@ -2,6 +2,7 @@ import {
   faAngleDoubleDown,
   faAngleDoubleUp,
   faCheck,
+  faMoon,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -291,7 +292,9 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
         $issuccess={combatEntry.roll_entry.success}
       />
       <RollContainer>
-        <Breakdown>1d{combatEntry.roll_entry.dice}</Breakdown>
+        {combatEntry.roll_source === "Resting" ? null : (
+          <Breakdown>1d{combatEntry.roll_entry.dice}</Breakdown>
+        )}
         <ResultContainer>
           {(combatEntry.roll_state === "full" &&
             combatEntry.roll_source === "Skill Test") ||
@@ -320,7 +323,11 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
               $position={2}
               className={isRolling ? "rolling" : ""}
             >
-              {currentDisplay1}
+              {combatEntry.roll_source === "Resting" ? (
+                <FontAwesomeIcon icon={faMoon} />
+              ) : (
+                currentDisplay1
+              )}
             </Result>
           )}
         </ResultContainer>
@@ -341,11 +348,13 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
             </Active>
           )}
         </SourceContainer>
-        <FumbledSubText title={durability_title}>
-          {FumbledPerfectText() !== ""
-            ? FumbledPerfectText()
-            : combatEntry.roll_source}
-        </FumbledSubText>
+        {combatEntry.roll_source === "Resting" ? null : (
+          <FumbledSubText title={durability_title}>
+            {FumbledPerfectText() !== ""
+              ? FumbledPerfectText()
+              : combatEntry.roll_source}
+          </FumbledSubText>
+        )}
       </RollContainer>
       <RightBlock>
         {combatEntry.roll_source === "Skill Test" ? (

@@ -93,9 +93,9 @@ const Button = styled.button`
 import {
   CriticalFailureSounds,
   CriticalSuccessSounds,
-  RestingSounds,
   RollSounds,
 } from "../Images";
+import DayComponent from "../components_character/DayComponent";
 // import { set } from "lodash";
 
 interface CombatSectionProps {
@@ -203,8 +203,6 @@ function CombatSection({
         last_roll.roll_entry.critical.state === 0
       ) {
         playRandomSound(CriticalFailureSounds);
-      } else if (last_roll.roll_type === "resting") {
-        playRandomSound(RestingSounds);
       } else {
         playRandomSound(RollSounds);
       }
@@ -240,7 +238,14 @@ function CombatSection({
           <Button onClick={handlePostCharacter}>
             <FontAwesomeIcon icon={faUserPlus} />
           </Button>
-        ) : null}
+        ) : (
+          <DayComponent
+            character={character}
+            session={session}
+            websocket={websocket}
+            isCreature={isCreature}
+          />
+        )}
       </Container>
       <PartySection
         session={session}
