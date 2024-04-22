@@ -162,6 +162,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   Spirit: COLOR_3,
   Undead: COLOR_3,
   Abomination: COLOR_3,
+  Phenomenon: COLOR_3,
 
   "bushcraft crafting material": COLOR_8,
   "alchemy crafting material": COLOR_8,
