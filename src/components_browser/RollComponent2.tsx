@@ -301,25 +301,13 @@ function RollComponent({
       >
         d{dice}
         {dice_mod > 0 && roll_source !== "Skill Test" ? `+${dice_mod}` : null}
-        {activeState === "full" ? (
-          <FontAwesomeIcon
-            icon={faAnglesUp}
-            color={Constants.WIDGET_PRIMARY_FONT}
-            style={{ marginLeft: "5px", fontSize: "15px" }}
-          />
-        ) : activeState === "weak" ? (
-          <FontAwesomeIcon
-            icon={faAnglesDown}
-            color={Constants.WIDGET_PRIMARY_FONT}
-            style={{ marginLeft: "5px", fontSize: "15px" }}
-          />
-        ) : null}
       </div>
       <div
         className="row"
         style={{
           color: "rgba(255, 255, 255, 0.2)",
           fontSize: "10px",
+          gap: "3px",
         }}
       >
         {roll_type === "damage" ? (
@@ -338,6 +326,19 @@ function RollComponent({
         ) : (
           <Icon path={mdiSwordCross} size={0.6} color={Constants.COLOR_1} />
         )}
+        {activeState === "full" ? (
+          <FontAwesomeIcon
+            icon={faAnglesUp}
+            color={Constants.WIDGET_PRIMARY_FONT}
+            style={{ fontSize: "14px" }}
+          />
+        ) : activeState === "weak" ? (
+          <FontAwesomeIcon
+            icon={faAnglesDown}
+            color={Constants.WIDGET_PRIMARY_FONT}
+            style={{ fontSize: "14px" }}
+          />
+        ) : null}
       </div>
     </div>
   );

@@ -435,7 +435,7 @@ function AbilityEntryItem({
                 dice_mod={i.mod}
                 color={EntryColor(ability.static.category)}
                 key={index}
-                activeState={""}
+                activeState={activeState}
                 advantage={""}
                 setActiveState={setActiveState}
                 setAdvantage={setAdvantage}

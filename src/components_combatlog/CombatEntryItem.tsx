@@ -293,18 +293,31 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
       />
       <RollContainer>
         {combatEntry.roll_source === "Resting" ? null : (
-          <Breakdown>1d{combatEntry.roll_entry.dice}</Breakdown>
+          <Breakdown>1d{combatEntry.roll_entry.dice} </Breakdown>
         )}
         <ResultContainer>
-          {(combatEntry.roll_state === "full" &&
-            combatEntry.roll_source === "Skill Test") ||
-          (combatEntry.roll_state === "weak" &&
-            combatEntry.roll_source === "Skill Test") ? (
+          {combatEntry.roll_state === "full" ||
+          combatEntry.roll_state === "weak" ? (
             <>
               <Result
                 title={title}
                 $position={0}
                 className={isRolling ? "rolling" : ""}
+                style={{
+                  opacity:
+                    (combatEntry.roll_state === "full" &&
+                      ((combatEntry.roll_source === "Skill Test" &&
+                        currentDisplay1 <= currentDisplay2) ||
+                        (combatEntry.roll_source !== "Skill Test" &&
+                          currentDisplay1 >= currentDisplay2))) ||
+                    (combatEntry.roll_state === "weak" &&
+                      ((combatEntry.roll_source === "Skill Test" &&
+                        currentDisplay1 >= currentDisplay2) ||
+                        (combatEntry.roll_source !== "Skill Test" &&
+                          currentDisplay1 <= currentDisplay2)))
+                      ? 1
+                      : 0.1,
+                }}
               >
                 {currentDisplay1}
               </Result>
@@ -313,6 +326,21 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
                 title={title}
                 $position={1}
                 className={isRolling ? "rolling" : ""}
+                style={{
+                  opacity:
+                    (combatEntry.roll_state === "full" &&
+                      ((combatEntry.roll_source === "Skill Test" &&
+                        currentDisplay2 <= currentDisplay1) ||
+                        (combatEntry.roll_source !== "Skill Test" &&
+                          currentDisplay2 >= currentDisplay1))) ||
+                    (combatEntry.roll_state === "weak" &&
+                      ((combatEntry.roll_source === "Skill Test" &&
+                        currentDisplay2 >= currentDisplay1) ||
+                        (combatEntry.roll_source !== "Skill Test" &&
+                          currentDisplay2 <= currentDisplay1)))
+                      ? 1
+                      : 0.1,
+                }}
               >
                 {currentDisplay2}
               </Result>

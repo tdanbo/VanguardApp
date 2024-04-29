@@ -631,7 +631,7 @@ function InventoryEntry({
                 item={item}
                 inactive={item.equipped}
                 advantage={advantage}
-                activeState={""}
+                activeState={activeState}
                 setActiveState={setActiveState}
                 setAdvantage={setAdvantage}
               />
