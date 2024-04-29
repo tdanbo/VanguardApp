@@ -18,6 +18,7 @@ import { SteelThrow_dice } from "./rules/SteelThrow";
 import { TwinAttack_dice } from "./rules/TwinAttack";
 import { TwohandedForce_dice } from "./rules/TwohandedForce";
 import { SurvivalInstinct_dice } from "./rules/SurvivalInstinct";
+import { HuntersInstinct_dice } from "./rules/HuntersInstinct";
 
 function HasItem(character: CharacterEntry, item: string) {
   for (const i of character.inventory) {
@@ -42,6 +43,7 @@ export function RulesDiceAdjust(
   dice += ShieldFighter_dice(character, item);
   dice += ArmoredMystic_dice(character, item);
   dice += Marksman_dice(character, item);
+  dice += HuntersInstinct_dice(character, item);
   dice += TwohandedForce_dice(character, item);
   dice += Armored_dice(character, item);
   dice += IronFist_dice(character, item);
