@@ -20,6 +20,7 @@ interface NavigationProps {
   advantage: AdvantageType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function AbilitySection({
@@ -31,6 +32,7 @@ function AbilitySection({
   advantage,
   setActiveState,
   setAdvantage,
+  setCriticalState,
 }: NavigationProps) {
   function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
     return (
@@ -55,6 +57,7 @@ function AbilitySection({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
           />
         );
       })}
@@ -72,6 +75,7 @@ function AbilitySection({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
           />
         );
       })}

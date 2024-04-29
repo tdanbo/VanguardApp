@@ -85,6 +85,8 @@ interface EquipmentBrowserProps {
   activeState: ActiveStateType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  criticalState: boolean;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function EquipmentBrowser({
@@ -99,6 +101,8 @@ function EquipmentBrowser({
   activeState,
   setActiveState,
   setAdvantage,
+  criticalState,
+  setCriticalState,
 }: EquipmentBrowserProps) {
   const { equipment } = GetGameData();
 
@@ -217,6 +221,8 @@ function EquipmentBrowser({
                 setActiveState={setActiveState}
                 setAdvantage={setAdvantage}
                 isDrop={false}
+                criticalState={criticalState}
+                setCriticalState={setCriticalState}
               />
             );
           })}

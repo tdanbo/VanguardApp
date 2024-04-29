@@ -30,6 +30,8 @@ interface NavigationProps {
   advantage: AdvantageType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  criticalState: boolean;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function ConsumableSection({
@@ -41,6 +43,8 @@ function ConsumableSection({
   advantage,
   setActiveState,
   setAdvantage,
+  criticalState,
+  setCriticalState,
 }: NavigationProps) {
   function sortInventory(a: ItemEntry, b: ItemEntry): number {
     return (
@@ -77,6 +81,8 @@ function ConsumableSection({
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
               isDrop={false}
+              criticalState={criticalState}
+              setCriticalState={setCriticalState}
             />
           );
         }

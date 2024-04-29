@@ -215,6 +215,7 @@ interface Props {
   activeState: ActiveStateType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<SetStateAction<AdvantageType>>;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function StatComponent({
@@ -231,6 +232,7 @@ function StatComponent({
   activeState,
   setActiveState,
   setAdvantage,
+  setCriticalState,
 }: Props) {
   const [modValue, setModvalue] = useState<number>(0);
   const handleAddValue = () => {
@@ -322,6 +324,7 @@ function StatComponent({
               activeState={activeState}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
             />
           </DiceContainer>
         </DiceContainerRight>

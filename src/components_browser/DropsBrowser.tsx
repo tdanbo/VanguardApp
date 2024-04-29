@@ -24,6 +24,8 @@ interface DropsBrowserProps {
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   isGm: boolean;
+  criticalState: boolean;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function DropsBrowser({
@@ -37,6 +39,8 @@ export default function DropsBrowser({
   activeState,
   setActiveState,
   setAdvantage,
+  criticalState,
+  setCriticalState,
 }: DropsBrowserProps) {
   const scrollRef = useRef(null);
 
@@ -81,6 +85,8 @@ export default function DropsBrowser({
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
             isDrop={true}
+            criticalState={criticalState}
+            setCriticalState={setCriticalState}
           />
         );
       })}

@@ -78,6 +78,7 @@ interface AbilityBrowserProps {
   advantage: AdvantageType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function AbilityBrowser({
@@ -92,6 +93,7 @@ function AbilityBrowser({
   advantage,
   setActiveState,
   setAdvantage,
+  setCriticalState,
 }: AbilityBrowserProps) {
   type LootCategoryType =
     | "all"
@@ -207,6 +209,7 @@ function AbilityBrowser({
                 advantage={advantage}
                 setActiveState={setActiveState}
                 setAdvantage={setAdvantage}
+                setCriticalState={setCriticalState}
               />
             );
           })}
@@ -225,6 +228,7 @@ function AbilityBrowser({
                 advantage={advantage}
                 setActiveState={setActiveState}
                 setAdvantage={setAdvantage}
+                setCriticalState={setCriticalState}
               />
             );
           })}

@@ -310,6 +310,8 @@ interface EncounterBoxProps {
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
+  criticalState: boolean;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function EncounterCreatureEntry({
@@ -325,6 +327,8 @@ function EncounterCreatureEntry({
   setActiveState,
   setAdvantage,
   setCharacterId,
+  criticalState,
+  setCriticalState,
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
   const character_actives = GetActives(creatureClone);
@@ -449,7 +453,7 @@ function EncounterCreatureEntry({
     ];
 
   for (const item of creatureClone.inventory) {
-    const dice = RulesDiceAdjust(creatureClone, item, advantage);
+    const dice = RulesDiceAdjust(creatureClone, item, advantage, criticalState);
     item.static.roll.dice = dice;
   }
 
@@ -702,6 +706,7 @@ function EncounterCreatureEntry({
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
             />
           ) : null;
         })}

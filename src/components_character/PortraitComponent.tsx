@@ -42,6 +42,8 @@ interface HealthBoxProps {
   websocket: Socket;
   isCreature: boolean;
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+  criticalState: boolean;
 }
 
 function PortraitComponent({
@@ -55,6 +57,8 @@ function PortraitComponent({
   websocket,
   isCreature,
   setCharacterId,
+  setCriticalState,
+  criticalState,
 }: HealthBoxProps) {
   const speed = GetMovementSpeed(character);
   const pain = GetPainThreshold(character);
@@ -128,6 +132,8 @@ function PortraitComponent({
           setActiveState={setActiveState}
           advantage={advantage}
           setAdvantage={setAdvantage}
+          criticalState={criticalState}
+          setCriticalState={setCriticalState}
         />
       </div>
     </div>

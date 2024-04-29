@@ -26,6 +26,7 @@ function App() {
   const { creatures } = GetGameData();
   // This function is the main function for setting the session.
   const [activeState, setActiveState] = useState<ActiveStateType>("");
+  const [criticalState, setCriticalState] = useState<boolean>(false);
   const [advantage, setAdvantage] = useState<AdvantageType>("");
   const [session, setSession] = useState<SessionEntry>(EmptySession);
   const [isCreature, setIsCreature] = useState<boolean>(false);
@@ -62,6 +63,8 @@ function App() {
         setCharacterId={setCharacterId}
         setIsGm={setIsGm}
         isGm={isGm}
+        criticalState={criticalState}
+        setCriticalState={setCriticalState}
       />
 
       {isGm ? (
@@ -80,6 +83,8 @@ function App() {
           setActiveState={setActiveState}
           setAdvantage={setAdvantage}
           setCharacterId={setCharacterId}
+          criticalState={criticalState}
+          setCriticalState={setCriticalState}
         />
       ) : (
         <CharacterSheet
@@ -98,6 +103,8 @@ function App() {
           activeState={activeState}
           setActiveState={setActiveState}
           setCharacterId={setCharacterId}
+          criticalState={criticalState}
+          setCriticalState={setCriticalState}
         />
       )}
       <CombatSection
@@ -112,6 +119,7 @@ function App() {
         setSession={setSession}
         isGm={isGm}
         setIsGm={setIsGm}
+        setCriticalState={setCriticalState}
       />
     </div>
   );

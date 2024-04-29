@@ -53,6 +53,7 @@ type RollComponentProps = {
   activeState: ActiveStateType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function PickRandomWeapon(character: CharacterEntry) {
@@ -140,6 +141,7 @@ function RollComponent({
   activeState,
   setActiveState,
   setAdvantage,
+  setCriticalState,
 }: RollComponentProps) {
   const { equipment } = GetGameData();
 
@@ -261,6 +263,7 @@ function RollComponent({
 
     setActiveState("");
     setAdvantage("");
+    setCriticalState(false);
 
     update_session(session, websocket, character, isCreature);
   };

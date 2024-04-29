@@ -3,6 +3,7 @@ import {
   mdiArrowExpand,
   mdiChevronDoubleUp,
   mdiChevronDoubleDown,
+  mdiAlertRhombus,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import styled from "styled-components";
@@ -44,6 +45,8 @@ interface ActiveStateProps {
   setActiveState: (state: ActiveStateType) => void;
   advantage: AdvantageType;
   setAdvantage: (state: AdvantageType) => void;
+  criticalState: boolean;
+  setCriticalState: (state: boolean) => void;
 }
 
 function ActiveStateComponent({
@@ -51,6 +54,8 @@ function ActiveStateComponent({
   setActiveState,
   advantage,
   setAdvantage,
+  criticalState,
+  setCriticalState,
 }: ActiveStateProps) {
   const HandleActive = (state: ActiveStateType) => {
     if (activeState === state) {
@@ -70,6 +75,23 @@ function ActiveStateComponent({
 
   return (
     <Container>
+      <InfoBox
+        title={"Enable Critical Damage"}
+        onClick={() => setCriticalState(!criticalState)}
+        $active={criticalState}
+      >
+        <Icon path={mdiAlertRhombus} size={0.75} />
+      </InfoBox>
+      <div
+        style={{
+          minHeight: "2px",
+          backgroundColor: Constants.BACKGROUND,
+          marginTop: "5px",
+          marginBottom: "5px",
+          marginLeft: "3px",
+          marginRight: "3px",
+        }}
+      ></div>
       <InfoBox
         title={"Enable Full Action"}
         onClick={() => HandleActive("full")}
