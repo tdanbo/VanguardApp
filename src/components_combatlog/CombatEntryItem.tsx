@@ -274,7 +274,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
     }
     if (
       combatEntry.durability.name !== "" &&
-      combatEntry.durability.check === 4
+      combatEntry.durability.check === 3
     ) {
       message += `${combatEntry.durability.name} lost durability.`;
     } else {
@@ -420,7 +420,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
             />
           )
         ) : null}
-        {combatEntry.durability.check === 4 &&
+        {combatEntry.durability.check === 3 &&
         !combatEntry.roll_entry.success &&
         (combatEntry.roll_type === "attack" ||
           combatEntry.roll_type === "defense") ? (
