@@ -221,16 +221,16 @@ function RollComponent({
 
     const durability_item: DurabilityEntry = {
       name: "",
-      check: random(1, 4),
+      check: random(1, 3),
     };
 
     let random_item: null | ItemEntry = null;
-    if (roll_type === "attack" && !success && durability_item.check === 4) {
+    if (roll_type === "attack" && !success && durability_item.check === 3) {
       random_item = PickRandomWeapon(character);
     } else if (
       roll_type === "defense" &&
       !success &&
-      durability_item.check === 4
+      durability_item.check === 3
     ) {
       random_item = PickRandomArmor(character, equipment);
     }
