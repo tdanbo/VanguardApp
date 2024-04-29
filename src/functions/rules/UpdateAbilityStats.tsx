@@ -88,6 +88,14 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
     character.stats.vigilant.mod += 2;
   }
 
+  if (HasItem(character, "Ormol's Wyrmcape")) {
+    character.stats.discreet.mod += 2;
+  }
+
+  if (HasItem(character, "Agani's Coronet")) {
+    character.stats.persuasive.mod += 2;
+  }
+
   return character;
 }
 
