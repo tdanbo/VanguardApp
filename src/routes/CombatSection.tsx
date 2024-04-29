@@ -110,6 +110,7 @@ interface CombatSectionProps {
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
   isGm: boolean;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function deepCompareCombatEntries(
@@ -147,6 +148,7 @@ function CombatSection({
   setSession,
   isGm,
   setIsGm,
+  setCriticalState,
 }: CombatSectionProps) {
   // const { combatlogResponse } = useWebSocket();
   const scrollRef = useRef(null);
@@ -276,6 +278,7 @@ function CombatSection({
             isCreature={isCreature}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
           />
         </Row>
       </Container>

@@ -257,6 +257,8 @@ interface InventoryEntryProps {
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   isDrop: boolean;
+  criticalState: boolean;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function InventoryEntry({
@@ -276,6 +278,8 @@ function InventoryEntry({
   setActiveState,
   setAdvantage,
   isDrop,
+  criticalState,
+  setCriticalState,
 }: InventoryEntryProps) {
   const COLOR = Constants.TYPE_COLORS[item.static.category] || "defaultColor";
   const generateRandomId = (length = 10) => {
@@ -492,7 +496,7 @@ function InventoryEntry({
   const [expanded, setExpanded] = useState<boolean>(false);
 
   // This is a big function that correct all dice rolls based on the character's abilities
-  const dice = RulesDiceAdjust(character, item, advantage);
+  const dice = RulesDiceAdjust(character, item, advantage, criticalState);
 
   const HandleLightSetting = () => {
     console.log("Light setting");
@@ -634,6 +638,7 @@ function InventoryEntry({
                 activeState={activeState}
                 setActiveState={setActiveState}
                 setAdvantage={setAdvantage}
+                setCriticalState={setCriticalState}
               />
             </RollBox>
           )}
@@ -791,6 +796,7 @@ function InventoryEntry({
                 advantage={advantage}
                 setActiveState={setActiveState}
                 setAdvantage={setAdvantage}
+                setCriticalState={setCriticalState}
               />
             </React.Fragment>
           ))}

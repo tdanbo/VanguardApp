@@ -34,7 +34,7 @@ const InfoBox = styled.div`
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: ${Constants.BORDER_RADIUS};
-  width: 25px;
+  width: 27px;
   height: 25px;
   margin: 2px;
   padding-bottom: 2px;

@@ -32,6 +32,7 @@ export function RulesDiceAdjust(
   character: CharacterEntry,
   item: ItemEntry,
   advantage: AdvantageType,
+  criticalState: boolean,
 ) {
   let dice = item.static.roll.base;
   dice += NaturalWeapon_dice(character, item);
@@ -53,6 +54,7 @@ export function RulesDiceAdjust(
   dice += ItemRulesDice(character, item);
   dice += AdvantageDice(item, advantage);
   dice += SurvivalInstinct_dice(character, item);
+  dice += criticalState ? 6 : 0;
   return dice;
 }
 

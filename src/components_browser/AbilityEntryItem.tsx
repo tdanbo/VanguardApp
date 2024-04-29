@@ -225,6 +225,7 @@ interface AbilityEntryItemProps {
   advantage: AdvantageType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function GetCurrentLevel(ability: AbilityEntry) {
@@ -249,6 +250,7 @@ function AbilityEntryItem({
   advantage,
   setActiveState,
   setAdvantage,
+  setCriticalState,
 }: AbilityEntryItemProps) {
   // We will get the dynamic object and look for the database entry. If it doesn't exist, we will return null.
 
@@ -278,6 +280,7 @@ function AbilityEntryItem({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
           />
         </AbilityDescription>
       </LevelBaseContainer>
@@ -439,6 +442,7 @@ function AbilityEntryItem({
                 advantage={""}
                 setActiveState={setActiveState}
                 setAdvantage={setAdvantage}
+                setCriticalState={setCriticalState}
               />
             );
           })}

@@ -38,6 +38,7 @@ interface DiceBoxProps {
   isCreature: boolean;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function DiceSection({
@@ -47,6 +48,7 @@ function DiceSection({
   isCreature,
   setActiveState,
   setAdvantage,
+  setCriticalState,
 }: DiceBoxProps) {
   return (
     <Container>
@@ -64,6 +66,7 @@ function DiceSection({
           advantage=""
           setActiveState={setActiveState}
           setAdvantage={setAdvantage}
+          setCriticalState={setCriticalState}
         />
       </DiceContainer>
       <DiceContainer>
@@ -80,6 +83,7 @@ function DiceSection({
           advantage=""
           setActiveState={setActiveState}
           setAdvantage={setAdvantage}
+          setCriticalState={setCriticalState}
         />
       </DiceContainer>
       <DiceContainer>
@@ -96,6 +100,7 @@ function DiceSection({
           advantage=""
           setActiveState={setActiveState}
           setAdvantage={setAdvantage}
+          setCriticalState={setCriticalState}
         />
       </DiceContainer>
       <DiceContainer>
@@ -112,6 +117,7 @@ function DiceSection({
           advantage=""
           setActiveState={setActiveState}
           setAdvantage={setAdvantage}
+          setCriticalState={setCriticalState}
         />
       </DiceContainer>
       <DiceContainer>
@@ -128,6 +134,7 @@ function DiceSection({
           advantage=""
           setActiveState={setActiveState}
           setAdvantage={setAdvantage}
+          setCriticalState={setCriticalState}
         />
       </DiceContainer>
       <DiceContainer>
@@ -144,6 +151,7 @@ function DiceSection({
           advantage=""
           setActiveState={setActiveState}
           setAdvantage={setAdvantage}
+          setCriticalState={setCriticalState}
         />
       </DiceContainer>
       <DiceContainer>
@@ -160,6 +168,7 @@ function DiceSection({
           advantage=""
           setActiveState={setActiveState}
           setAdvantage={setAdvantage}
+          setCriticalState={setCriticalState}
         />
       </DiceContainer>
       {/* <DiceBox

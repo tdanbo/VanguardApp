@@ -86,6 +86,8 @@ type InventoryProps = {
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   isGm: boolean;
   setInventoryState: (state: number) => void;
+  criticalState: boolean;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function Inventory({
@@ -99,6 +101,8 @@ export default function Inventory({
   setActiveState,
   isGm,
   setInventoryState,
+  criticalState,
+  setCriticalState,
 }: InventoryProps) {
   return (
     <>
@@ -127,6 +131,8 @@ export default function Inventory({
               activeState={activeState}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
+              criticalState={criticalState}
+              setCriticalState={setCriticalState}
             />
           </ScrollDropsColumn>
         </>
@@ -153,6 +159,8 @@ export default function Inventory({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
+            criticalState={criticalState}
+            setCriticalState={setCriticalState}
           />
         </ScrollColumn>
       ) : null}

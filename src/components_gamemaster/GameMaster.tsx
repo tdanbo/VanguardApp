@@ -73,6 +73,8 @@ interface GameMasterProps {
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
   isGm: boolean;
+  criticalState: boolean;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function GameMaster({
@@ -86,6 +88,8 @@ function GameMaster({
   setActiveState,
   setAdvantage,
   setCharacterId,
+  criticalState,
+  setCriticalState,
 }: GameMasterProps) {
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
 
@@ -136,6 +140,8 @@ function GameMaster({
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
             setCharacterId={setCharacterId}
+            criticalState={criticalState}
+            setCriticalState={setCriticalState}
           />
         </ScrollColumn>
       </DynamicContainer>

@@ -109,6 +109,8 @@ type CharacterSheetProps = {
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
+  criticalState: boolean;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function GetActiveIcon(active: string) {
@@ -135,6 +137,8 @@ function CharacterSheet({
   setAdvantage,
   setActiveState,
   setCharacterId,
+  criticalState,
+  setCriticalState,
 }: CharacterSheetProps) {
   UpdateAbilityStats(character);
   const character_actives = GetActives(character);
@@ -189,6 +193,8 @@ function CharacterSheet({
             websocket={websocket}
             isCreature={isCreature}
             setCharacterId={setCharacterId}
+            criticalState={criticalState}
+            setCriticalState={setCriticalState}
           />
         </Row>
         <Column width={"100%"}>
@@ -208,6 +214,7 @@ function CharacterSheet({
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
             />
             <StatComponent
               session={session}
@@ -224,6 +231,7 @@ function CharacterSheet({
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
             />
             <StatComponent
               session={session}
@@ -241,6 +249,7 @@ function CharacterSheet({
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
             />
             <StatComponent
               session={session}
@@ -257,6 +266,7 @@ function CharacterSheet({
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
             />
           </Row>
           <Row width={"100%"}>
@@ -275,6 +285,7 @@ function CharacterSheet({
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
             />
             <StatComponent
               session={session}
@@ -291,6 +302,7 @@ function CharacterSheet({
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
             />
             <StatComponent
               session={session}
@@ -307,6 +319,7 @@ function CharacterSheet({
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
             />
             <StatComponent
               session={session}
@@ -323,6 +336,7 @@ function CharacterSheet({
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
             />
           </Row>
         </Column>
@@ -343,6 +357,7 @@ function CharacterSheet({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
           />
           <StatComponent
             session={session}
@@ -358,6 +373,7 @@ function CharacterSheet({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
           />
           <HealthStatComponent
             websocket={websocket}
@@ -389,6 +405,7 @@ function CharacterSheet({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
           />
           <StatComponent
             session={session}
@@ -404,6 +421,7 @@ function CharacterSheet({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
           />
         </Row>
       </Container>
@@ -429,6 +447,8 @@ function CharacterSheet({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
+            criticalState={criticalState}
+            setCriticalState={setCriticalState}
           />
           <div
             className="row"
@@ -451,6 +471,8 @@ function CharacterSheet({
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
+              criticalState={criticalState}
+              setCriticalState={setCriticalState}
             />
           </ScrollColumn>
         </Column>
@@ -476,6 +498,7 @@ function CharacterSheet({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
           />
         </ScrollColumn>
       </DynamicContainer>

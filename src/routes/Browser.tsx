@@ -36,6 +36,8 @@ type BrowserProps = {
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
+  criticalState: boolean;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function Browser({
@@ -52,6 +54,8 @@ function Browser({
   setAdvantage,
   setCharacterId,
   setIsGm,
+  criticalState,
+  setCriticalState,
 }: BrowserProps) {
   const [refetch, setRefetch] = useState(0);
   const [search, setSearch] = useState("");
@@ -81,6 +85,8 @@ function Browser({
           activeState={activeState}
           setActiveState={setActiveState}
           setAdvantage={setAdvantage}
+          criticalState={criticalState}
+          setCriticalState={setCriticalState}
         />
       ) : categorySelect === "abilities" ? (
         <AbilityBrowser
@@ -95,6 +101,7 @@ function Browser({
           advantage={advantage}
           setActiveState={setActiveState}
           setAdvantage={setAdvantage}
+          setCriticalState={setCriticalState}
         />
       ) : categorySelect === "creatures" ? (
         <CreatureBrowser
@@ -122,6 +129,8 @@ function Browser({
           setAdvantage={setAdvantage}
           isGm={isGm}
           setInventoryState={setInventoryState}
+          criticalState={criticalState}
+          setCriticalState={setCriticalState}
         />
       ) : null}
     </SideColumn>

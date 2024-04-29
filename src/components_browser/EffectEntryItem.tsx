@@ -210,6 +210,7 @@ interface EffectEntryItemProps {
   setInventoryState?: (inventoryState: number) => void;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function EffectEntryItem({
@@ -224,6 +225,7 @@ function EffectEntryItem({
   advantage,
   setActiveState,
   setAdvantage,
+  setCriticalState,
 }: EffectEntryItemProps) {
   interface LevelProps {
     effect: string;
@@ -244,6 +246,7 @@ function EffectEntryItem({
             advantage={advantage}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
           />
         </AbilityDescription>
       </LevelBaseContainer>
