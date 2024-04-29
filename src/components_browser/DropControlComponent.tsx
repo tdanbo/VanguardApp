@@ -213,7 +213,7 @@ export default function DropControlComponent({
         } else if (item.static.category === "elixir") {
           item.quantity = random(1, 1 * rarity);
         } else if (item.static.category === "tool") {
-          item.quantity = random(1, 1 * rarity);
+          item.quantity = random(1, 1);
         }
       }
     };
