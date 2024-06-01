@@ -10,11 +10,11 @@ export function Robust_active(
   const ability_master = CheckAbility(character, "Robust", "master");
 
   if (ability_master) {
-    actives.defense.value -= 4;
+    actives.defense.mod -= 4;
   } else if (ability_adept) {
-    actives.defense.value -= 3;
+    actives.defense.mod -= 3;
   } else if (ability) {
-    actives.defense.value -= 2;
+    actives.defense.mod -= 2;
   }
 }
 

@@ -4,32 +4,32 @@ export const Qualities: {
   "Imp 0": {
     name: "Impeding 0",
     description:
-      "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
+      "The armor hampers any agile movements and gives a penalty to your Attack/Defense/Casting and Stealth stat. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
   },
   "Imp 1": {
     name: "Impeding 1",
     description:
-      "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
+      "The armor hampers any agile movements and gives a penalty to your Attack/Defense/Casting and Stealth stat, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
   },
   "Imp 2": {
     name: "Impeding 2",
     description:
-      "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
+      "The armor hampers any agile movements and gives a penalty to your Attack/Defense/Casting and Stealth stat, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
   },
   "Imp 3": {
     name: "Impeding 3",
     description:
-      "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
+      "The armor hampers any agile movements and gives a penalty to your Attack/Defense/Casting and Stealth stat, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
   },
   "Imp 4": {
     name: "Impeding 4",
     description:
-      "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
+      "The armor hampers any agile movements and gives a penalty to your Attack/Defense/Casting and Stealth stat, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
   },
   Flexible: {
     name: "Flexible",
     description:
-      "The armor is unusually flexible and is less impeding than its protective capability would suggest. For this reason, a Flexible light armor has no penalty at all on Defense tests, sneaking, and the use of mystic powers. A Flexible medium armor has a (-1) penalty, and a Flexible heavy armor has a (-2) penalty. A Flexible shield can be carried strapped to the arm, ready to use, while at the same time allowing the bearer to use both hands for wielding a Long or Heavy weapon. Even ranged weapons can be used without a problem together with a Flexible shield.",
+      "The armor is unusually flexible and is less impeding than its protective capability would suggest. A Flexible medium armor has a (-1) penalty, and a Flexible heavy armor has a (-2) penalty. A Flexible shield can be carried strapped to the arm, ready to use, while at the same time allowing the bearer to use both hands for wielding a Long or Heavy weapon. Even ranged weapons can be used without a problem together with a Flexible shield.",
   },
   Reinforced: {
     name: "Reinforced",
@@ -39,12 +39,12 @@ export const Qualities: {
   "Balanced 1": {
     name: "Balanced 1",
     description:
-      "The item is so well balanced that it is extra effective when blocking attacks. The item provides +1 in Defense.",
+      "The item is so well balanced that it is extra effective when avoiding attacks. The item provides +1 in to your Defense Stat.",
   },
   "Balanced 2": {
     name: "Balanced 2",
     description:
-      "The item is so well balanced that it is extra effective when blocking attacks. The item provides +2 in Defense.",
+      "The item is so well balanced that it is extra effective when avoiding attacks. The item provides +2 in to your Defense Stat.",
   },
   Blunt: {
     name: "Blunt",
@@ -64,7 +64,7 @@ export const Qualities: {
   Imp: {
     name: "Impeding",
     description:
-      "The armor hampers any agile movements and gives a penalty to tests against Defense, sneaking, and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3), or heavy (-4).",
+      "The armor hampers any agile movements and gives a penalty to your Attack/Defense/Casting and Stealth stat, sneaking, and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3), or heavy (-4).",
   },
   Jointed: {
     name: "Jointed",
@@ -79,7 +79,7 @@ export const Qualities: {
   Precise: {
     name: "Precise",
     description:
-      "The weapon is designed to be easy to wield and, therefore, gives +1 to attack tests.",
+      "The weapon is designed to be easy to wield and, therefore, gives +1 to your Attack stat.",
   },
   Short: {
     name: "Short",
@@ -119,7 +119,7 @@ export const Qualities: {
   Tackle: {
     name: "Tackle",
     description:
-      "It is aimed at the target's legs or arms in order to hinder movement. Normally, it is thrown at the legs and the attack test is [Accurate &lt; Quick]; if the test succeeds, the target cannot move. It is harder to hit the arms of the target - this requires a passed [Accurate &lt; Quick+3] and if successful the target has a second chance to fail all success test involving the use of the arms. Removing the bolas counts as a combat action and requires a passed Quick test.",
+      "It is aimed at the target's legs or arms in order to hinder movement. Normally, it is thrown at the legs and the attack test is [Accurate < Quick]; if the test succeeds, the target cannot move. It is harder to hit the arms of the target - this requires a passed [Accurate &lt; Quick+3] and if successful the target has a second chance to fail all success test involving the use of the arms. Removing the bolas counts as a combat action and requires a passed Quick test.",
   },
   Repeater: {
     name: "Repeater",
@@ -128,7 +128,7 @@ export const Qualities: {
   Ensnaring: {
     name: "Ensnaring",
     description:
-      "The weapon can be used to snare a target, which is done with a passed [Attack < Defense] test. An ensnared target cannot move and gets a second chance to fail all success tests. Every attempt to get free requires spending a combat action; this forces the attacker to test [Attack < Defense] again in order to keep the target in check. Ensnaring melee weapons can be used to try to knock a target prone. The attempt counts as a combat action and requires a passed [Strong←Strong] to succeed. A fallen target cannot get up until it has been freed from the ensnaring effect. Also, note that an Ensnaring weapon may be used with the ability Ensnare to perform more advanced maneuvers.",
+      "The weapon can be used to snare a target, which is done with a passed [Accurate < Quick] test. An ensnared target cannot move and gets a second chance to fail all success tests. Every attempt to get free requires spending a combat action; this forces the attacker to test [Attack < Defense] again in order to keep the target in check. Ensnaring melee weapons can be used to try to knock a target prone. The attempt counts as a combat action and requires a passed [Strong←Strong] to succeed. A fallen target cannot get up until it has been freed from the ensnaring effect. Also, note that an Ensnaring weapon may be used with the ability Ensnare to perform more advanced maneuvers.",
   },
   Snaring: {
     name: "Snaring",
@@ -143,7 +143,7 @@ export const Qualities: {
   Cut: {
     name: "Cut",
     description:
-      "A Y-shaped tip makes it possible to cut ropes. Hitting the rope is difficult (-5 on the attack test), but a success means that the rope is cut.",
+      "A Y-shaped tip makes it possible to cut ropes. Hitting the rope is difficult (-5 on to your Attack stat on the test), but a success means that the rope is cut.",
   },
   Whistle: {
     name: "Whistle",
@@ -177,12 +177,12 @@ export const Qualities: {
   "Area Cone": {
     name: "Area Cone",
     description:
-      "The effect of the weapon affects an area and damages all who happen to be inside it. One test is made for each creature in the area; those who are hit suffer full damage while those who pass the Defense test suffer half damage. Ongoing secondary effects only affect those who suffer full damage from the initial effect. There are two types of Area Effects, radius and cone, and the former exist in two versions: Melee Range and Short.Melee Range Radius: 1–2 meters, meaning one creature and all others in its direct vicinity – those who are in melee combat with the target or who could be without having to spend a movement action.Short Radius: 10 meters, meaning all who are within a movement action from the targeted spot on the ground.Cone: Anyone present in front of the weapon is at risk of being hit when the weapon is fired. If movement by scale is used on a grid, the cone is as wide as the distance from the weapon. At melee range it is 1–2 meters wide, at short range it is approximately 10 meters wide, and at the maximum medium range it is about 20 meters wide.",
+      "The effect of the weapon affects an area and damages all who happen to be inside it. One test is made for each creature in the area; those who are hit suffer full damage while those who pass a test using their Defense stat suffer half damage. Ongoing secondary effects only affect those who suffer full damage from the initial effect. There are two types of Area Effects, radius and cone, and the former exist in two versions: Melee Range and Short.Melee Range Radius: 1-2 meters, meaning one creature and all others in its direct vicinity - those who are in melee combat with the target or who could be without having to spend a movement action.Short Radius: 10 meters, meaning all who are within a movement action from the targeted spot on the ground.Cone: Anyone present in front of the weapon is at risk of being hit when the weapon is fired. If movement by scale is used on a grid, the cone is as wide as the distance from the weapon. At melee range it is 1-2 meters wide, at short range it is approximately 10 meters wide, and at the maximum medium range it is about 20 meters wide.",
   },
   "Area Radius": {
     name: "Area Radius",
     description:
-      "The effect of the weapon affects an area and damages all who happen to be inside it. One test is made for each creature in the area; those who are hit suffer full damage while those who pass the Defense test suffer half damage. Ongoing secondary effects only affect those who suffer full damage from the initial effect. There are two types of Area Effects, radius and cone, and the former exist in two versions: Melee Range and Short.Melee Range Radius: 1–2 meters, meaning one creature and all others in its direct vicinity – those who are in melee combat with the target or who could be without having to spend a movement action.Short Radius: 10 meters, meaning all who are within a movement action from the targeted spot on the ground.Cone: Anyone present in front of the weapon is at risk of being hit when the weapon is fired. If movement by scale is used on a grid, the cone is as wide as the distance from the weapon. At melee range it is 1–2 meters wide, at short range it is approximately 10 meters wide, and at the maximum medium range it is about 20 meters wide.",
+      "The effect of the weapon affects an area and damages all who happen to be inside it. One test is made for each creature in the area; those who are hit suffer full damage while those who pass a test using their Defense stat suffer half damage. Ongoing secondary effects only affect those who suffer full damage from the initial effect. There are two types of Area Effects, radius and cone, and the former exist in two versions: Melee Range and Short.Melee Range Radius: 1-2 meters, meaning one creature and all others in its direct vicinity - those who are in melee combat with the target or who could be without having to spend a movement action.Short Radius: 10 meters, meaning all who are within a movement action from the targeted spot on the ground.Cone: Anyone present in front of the weapon is at risk of being hit when the weapon is fired. If movement by scale is used on a grid, the cone is as wide as the distance from the weapon. At melee range it is 1-2 meters wide, at short range it is approximately 10 meters wide, and at the maximum medium range it is about 20 meters wide.",
   },
   Special: {
     name: "Special",

@@ -35,7 +35,7 @@ const Container = styled.div<ContainerProps>`
 const ScrollDropsColumn = styled.div<DivDropProps>`
   display: flex;
   flex-direction: column;
-  height: ${(props) => (props.gm ? "100%" : "415px")};
+  height: ${(props) => (props.gm ? "100%" : "335px")};
   gap: ${Constants.WIDGET_GAB};
   max-width: ${(props) => props.width};
   overflow-y: scroll;

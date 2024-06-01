@@ -15,6 +15,7 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
+import { FindValueFromActive } from "../functions/CharacterFunctions";
 import {
   ActiveStateType,
   AdvantageType,
@@ -333,8 +334,14 @@ function EncounterCreatureEntry({
   const creatureClone = cloneDeep(creature);
   const character_actives = GetActives(creatureClone);
   const pain = Math.ceil(creatureClone.stats.strong.value / 2);
-  const attack = ModifierConverter[character_actives.attack.value];
-  const defense = ModifierConverter[character_actives.defense.value];
+  const attack =
+    ModifierConverter[
+      FindValueFromActive("attack", creatureClone, character_actives).value
+    ];
+  const defense =
+    ModifierConverter[
+      FindValueFromActive("defense", creatureClone, character_actives).value
+    ];
   const hp = GetMaxToughness(creatureClone);
   const [currentDamage, setCurrentDamage] = useState<number>(
     creature.health.damage!,
@@ -393,23 +400,31 @@ function EncounterCreatureEntry({
 
   const title =
     "Initiative: " +
-    character_actives.initiative.value +
+    FindValueFromActive("initiative", creatureClone, character_actives).value +
     "\n" +
     "Movement: " +
     GetMovementSpeed(creatureClone) +
     "\n" +
     "\n" +
     "Attack: " +
-    ModifierConverter[character_actives.attack.value] +
+    ModifierConverter[
+      FindValueFromActive("attack", creatureClone, character_actives).value
+    ] +
     "\n" +
     "Defense: " +
-    ModifierConverter[character_actives.defense.value] +
+    ModifierConverter[
+      FindValueFromActive("defense", creatureClone, character_actives).value
+    ] +
     "\n" +
     "Casting: " +
-    ModifierConverter[character_actives.casting.value] +
+    ModifierConverter[
+      FindValueFromActive("casting", creatureClone, character_actives).value
+    ] +
     "\n" +
     "Sneaking: " +
-    ModifierConverter[character_actives.sneaking.value] +
+    ModifierConverter[
+      FindValueFromActive("sneaking", creatureClone, character_actives).value
+    ] +
     "\n" +
     "\n" +
     "Cunning: " +

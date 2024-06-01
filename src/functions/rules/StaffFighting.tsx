@@ -33,5 +33,5 @@ export function StaffFighting_active(
       mod += 2;
     }
   }
-  actives.defense.value += mod;
+  actives.defense.mod += mod;
 }

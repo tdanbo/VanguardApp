@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API } from "../Constants";
 import { GetGameData } from "../contexts/GameContent";
+import { ActivesEntry, StatName } from "../Types";
 import {
   CharacterEntry,
   modifiedCreature,
@@ -109,3 +110,70 @@ export const FindCharacter = (
     : session.characters;
   return character_list.find((entry) => entry.id === id) || NewCharacterEntry;
 };
+
+export function FindValueFromActive(
+  type: "attack" | "defense" | "sneaking" | "casting" | "initiative",
+  character: CharacterEntry,
+  character_actives: ActivesEntry,
+) {
+  for (const [key, value] of Object.entries(character_actives)) {
+    if (key == type) {
+      return {
+        stat: value.stat,
+        value:
+          character.stats[value.stat].value +
+          character.stats[value.stat].mod +
+          value.mod,
+      };
+    } else {
+      continue;
+    }
+  }
+  return { stat: "", value: 0 };
+}
+
+export function FindActiveModFromStat(
+  stat: StatName,
+  character_actives: ActivesEntry,
+) {
+  for (const [_key, value] of Object.entries(character_actives)) {
+    console.log(_key, value.mod);
+    if (value.stat == stat) {
+      return value.mod;
+    } else {
+      continue;
+    }
+  }
+  return 0;
+}
+
+export function HasAmmunition(character: CharacterEntry) {
+  for (const item of character.inventory) {
+    if (
+      item.static.category === "projectile" &&
+      item.equipped &&
+      item.quantity > 0
+    ) {
+      item.quantity -= 1;
+      return true;
+    }
+  }
+  return false;
+}
+
+export function HasRangedWeapon(character: CharacterEntry) {
+  for (const item of character.inventory) {
+    if (item.static.category === "ranged weapon" && item.equipped) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function Ammunition(character: CharacterEntry) {
+  if (HasAmmunition(character)) {
+    return true;
+  } else {
+    return false;
+  }
+}

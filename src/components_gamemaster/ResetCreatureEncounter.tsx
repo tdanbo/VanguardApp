@@ -11,6 +11,8 @@ import * as Constants from "../Constants";
 import { SessionEntry } from "../Types";
 import { GetActives } from "../functions/ActivesFunction";
 import { update_session } from "../functions/SessionsFunctions";
+import { FindValueFromActive } from "../functions/CharacterFunctions";
+
 const Navigator = styled.button`
   cursor: pointer;
   display: flex;
@@ -50,12 +52,14 @@ function ResetCreatureEncounter({ session, websocket }: ResetEncounterProps) {
     console.log("Rolling Initiative1");
     for (const character of session.characters) {
       character.details.initiative =
-        GetActives(character).initiative.value + random(1, 10);
+        FindValueFromActive("initiative", character, GetActives(character))
+          .value + random(1, 10);
     }
     console.log("Rolling Initiative2");
     for (const creature of session.encounter) {
       creature.details.initiative =
-        GetActives(creature).initiative.value + random(1, 10);
+        FindValueFromActive("initiative", creature, GetActives(creature))
+          .value + random(1, 10);
     }
     console.log("Rolling Initiative3");
     update_session(session, websocket);

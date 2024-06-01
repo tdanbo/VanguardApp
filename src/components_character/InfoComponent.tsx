@@ -261,8 +261,8 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {actives.attack.value} + {GetPreciseValue(character)} ={" "}
-                      {actives.attack.value + GetPreciseValue(character)}
+                      {actives.attack.mod} + {GetPreciseValue(character)} ={" "}
+                      {actives.attack.mod + GetPreciseValue(character)}
                     </RightValue>
                   </Row>
                 </Column>
@@ -282,8 +282,8 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {actives.defense.value} - {GetImpedingValue(character)} ={" "}
-                      {actives.defense.value - GetImpedingValue(character)}
+                      {actives.defense.mod} - {GetImpedingValue(character)} ={" "}
+                      {actives.defense.mod - GetImpedingValue(character)}
                     </RightValue>
                   </Row>
                 </Column>
@@ -303,8 +303,8 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {actives.sneaking.value} - {GetImpedingValue(character)} ={" "}
-                      {actives.sneaking.value - GetImpedingValue(character)}
+                      {actives.sneaking.mod} - {GetImpedingValue(character)} ={" "}
+                      {actives.sneaking.mod - GetImpedingValue(character)}
                     </RightValue>
                   </Row>
                 </Column>
@@ -324,8 +324,8 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {actives.casting.value} - {GetImpedingValue(character)} ={" "}
-                      {actives.casting.value - GetImpedingValue(character)}
+                      {actives.casting.mod} - {GetImpedingValue(character)} ={" "}
+                      {actives.casting.mod - GetImpedingValue(character)}
                     </RightValue>
                   </Row>
                 </Column>

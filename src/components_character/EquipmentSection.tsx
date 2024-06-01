@@ -1,5 +1,4 @@
 import { Socket } from "socket.io-client";
-import styled from "styled-components";
 import * as Constants from "../Constants";
 import {
   ActiveStateType,
@@ -10,14 +9,7 @@ import {
 } from "../Types";
 import InventoryEntry from "../components_browser/InventoryEntry";
 import { GetMaxSlots } from "../functions/RulesFunctions";
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: 100%;
-  background-color: ${Constants.BACKGROUND};
-`;
+import InventoryEntryEmpty from "./InventoryEntryEmpty";
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -56,7 +48,7 @@ function EquipmentSection({
   const totalSlots = GetMaxSlots(character) * 2;
 
   return (
-    <Column>
+    <>
       {Array.from({ length: totalSlots }).map((_, index) => {
         const item = sortedInventory[index];
         if (item !== undefined && item.equipped) {
@@ -85,7 +77,10 @@ function EquipmentSection({
           );
         }
       })}
-    </Column>
+      {Array.from({ length: 20 }).map((_, index) => {
+        return <InventoryEntryEmpty key={index} />;
+      })}
+    </>
   );
 }
 

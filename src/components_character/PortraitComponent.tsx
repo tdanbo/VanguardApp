@@ -62,7 +62,7 @@ function PortraitComponent({
 }: HealthBoxProps) {
   const speed = GetMovementSpeed(character);
   const pain = GetPainThreshold(character);
-  const capacity = GetMaxSlots(character) - GetUsedSlots(character);
+  const capacity = GetUsedSlots(character);
   const burn = GetBurnRate(character);
 
   return (

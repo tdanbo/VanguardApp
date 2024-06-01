@@ -38,7 +38,7 @@ export function TwinAttack_active(
   }
 
   if (ability_master) {
-    actives.defense.value += 1;
+    actives.defense.mod += 1;
   }
 }
 
