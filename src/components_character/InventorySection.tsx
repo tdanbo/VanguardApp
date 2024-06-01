@@ -10,7 +10,6 @@ import {
 import InventoryEntry from "../components_browser/InventoryEntry";
 import { GetMaxSlots } from "../functions/RulesFunctions";
 import InventoryEntryEmpty from "./InventoryEntryEmpty";
-import { IsConsumable } from "../functions/UtilityFunctions";
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -60,7 +59,7 @@ function InventorySection({
     <>
       {Array.from({ length: totalSlots }).map((_, index) => {
         const item = sortedInventory[index];
-        if (item !== undefined && !item.equipped && !IsConsumable(item)) {
+        if (item !== undefined && !item.equipped) {
           return (
             <InventoryEntry
               session={session}

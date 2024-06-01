@@ -17,9 +17,8 @@ export function ManAtArms_active(
       item.static.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
-          character_actives.defense.value +=
-            negativeQualities[lowercasedQuality];
-          character_actives.sneaking.value +=
+          character_actives.defense.mod += negativeQualities[lowercasedQuality];
+          character_actives.sneaking.mod +=
             negativeQualities[lowercasedQuality];
         }
       });

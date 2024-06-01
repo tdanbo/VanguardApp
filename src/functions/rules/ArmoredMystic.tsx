@@ -24,8 +24,7 @@ export function ArmoredMystic_active(
       armor.static.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
-          character_actives.casting.value +=
-            negativeQualities[lowercasedQuality];
+          character_actives.casting.mod += negativeQualities[lowercasedQuality];
         }
       });
     } else if (
@@ -36,8 +35,7 @@ export function ArmoredMystic_active(
       armor.static.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
-          character_actives.casting.value +=
-            negativeQualities[lowercasedQuality];
+          character_actives.casting.mod += negativeQualities[lowercasedQuality];
         }
       });
     }

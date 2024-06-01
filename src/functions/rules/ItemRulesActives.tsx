@@ -13,6 +13,6 @@ export function ItemRulesActives(
   actives: ActivesEntry,
 ) {
   if (HasItem(character, "Staff Head")) {
-    actives.casting.value += 1;
+    actives.casting.mod += 1;
   }
 }

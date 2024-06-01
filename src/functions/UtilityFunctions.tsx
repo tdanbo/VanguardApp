@@ -1,4 +1,3 @@
-import { uniqueId } from "lodash";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
@@ -12,9 +11,18 @@ import {
   EffectEntry,
   ItemEntry,
   SessionEntry,
+  CriticalType,
+  DurabilityEntry,
+  RollEntry,
+  RollTypeEntry,
+  CombatEntry,
 } from "../Types";
 import RollComponent from "../components_general/RollComponent";
-import { cloneDeep } from "lodash";
+import { cloneDeep, random, uniqueId } from "lodash";
+import { HasRangedWeapon, Ammunition } from "./CharacterFunctions";
+import { SetDurability } from "./RulesFunctions";
+import { v4 as uuidv4 } from "uuid";
+
 export function UpperFirstLetter(input: string): string {
   if (!input || typeof input !== "string") {
     return "";
@@ -514,3 +522,206 @@ export const SetStatusBackward = (character: CharacterEntry) => {
     RemoveExhaustion(character);
   }
 };
+
+export function PickRandomWeapon(character: CharacterEntry) {
+  const weapon_list = [];
+
+  for (const item of character.inventory) {
+    if (
+      (IsWeapon(item) || item.static.category === "shield") &&
+      item.equipped
+    ) {
+      weapon_list.push(item);
+    }
+  }
+
+  if (weapon_list.length === 0) {
+    return null;
+  }
+  const randomIndex = Math.floor(Math.random() * weapon_list.length);
+
+  return weapon_list[randomIndex];
+}
+
+export function PickRandomArmor(
+  character: CharacterEntry,
+  equipment: ItemEntry[],
+) {
+  const armor_list = [];
+
+  for (const item of character.inventory) {
+    const item_database = GetDatabaseEquipment(item, equipment);
+    if (IsArmor(item_database) && item.equipped) {
+      armor_list.push(item);
+    }
+  }
+
+  if (armor_list.length === 0) {
+    return null;
+  }
+  const randomIndex = Math.floor(Math.random() * armor_list.length);
+
+  return armor_list[randomIndex];
+}
+
+type RollComponentProps = {
+  session: SessionEntry;
+  character: CharacterEntry;
+  websocket: Socket;
+  roll_type: RollTypeEntry;
+  roll_source: string;
+  dice: number;
+  dice_mod?: number;
+  color?: string;
+  target?: number;
+  item?: ItemEntry;
+  isCreature: boolean;
+  inactive?: boolean;
+  setModValue?: React.Dispatch<React.SetStateAction<number>>;
+  advantage: AdvantageType;
+  activeState: ActiveStateType;
+  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+  equipment: ItemEntry[];
+  modifierLock: boolean;
+};
+
+export function RollDice({
+  roll_type,
+  roll_source,
+  dice,
+  dice_mod = 0,
+  target = 0,
+  session,
+  character,
+  websocket,
+  isCreature,
+  setModValue,
+  advantage,
+  activeState,
+  setActiveState,
+  setAdvantage,
+  setCriticalState,
+  equipment,
+  modifierLock,
+}: RollComponentProps) {
+  // let roll = Math.floor(Math.random() * dice) + 1;
+
+  let roll1 = random(1, dice);
+  let roll2 = random(1, dice);
+
+  const critical_type: CriticalType = {
+    state: 1,
+    result: random(1, 6),
+  };
+
+  let result1 = roll1;
+  let result2 = roll2;
+
+  let roll_state = activeState;
+
+  if (roll_source !== "Skill Test") {
+    result1 += dice_mod;
+    result2 += dice_mod;
+  }
+
+  let success = false;
+
+  if (activeState === "full" && (result1 <= target || result2 <= target)) {
+    success = true;
+    if (roll1 === 1 || roll2 === 1) {
+      critical_type.state = 2;
+    } else if (roll1 === 20 && roll2 === 20) {
+      critical_type.state = 0;
+    }
+  } else if (activeState === "weak" && (result1 > target || result2 > target)) {
+    success = false;
+    if (roll1 === 20 || roll2 === 20) {
+      critical_type.state = 0;
+    } else if (roll1 === 1 && roll2 === 1) {
+      critical_type.state = 2;
+    }
+  } else if (result1 <= target && roll1 !== 20) {
+    success = true;
+    if (roll1 === 1) {
+      critical_type.state = 2;
+    }
+  } else {
+    success = false;
+    if (roll1 === 20) {
+      critical_type.state = 0;
+    }
+  }
+
+  // let success = true;
+  // if (target !== 0 && result > target) {
+  //   success = false;
+  // }
+
+  if (roll_type === "attack" && HasRangedWeapon(character)) {
+    if (!Ammunition(character)) {
+      return;
+    }
+  }
+
+  const roll_entry: RollEntry = {
+    result1: result1,
+    result2: result2,
+    roll1: roll1,
+    roll2: roll2,
+    critical: critical_type,
+    advantage: advantage,
+    mod: dice_mod,
+    target: target,
+    success: success,
+    dice: dice,
+  };
+
+  const durability_item: DurabilityEntry = {
+    name: "",
+    check: random(1, 3),
+  };
+
+  let random_item: null | ItemEntry = null;
+  if (roll_type === "attack" && !success && durability_item.check === 3) {
+    random_item = PickRandomWeapon(character);
+  } else if (
+    roll_type === "defense" &&
+    !success &&
+    durability_item.check === 3
+  ) {
+    random_item = PickRandomArmor(character, equipment);
+  }
+
+  if (random_item) {
+    SetDurability(character, random_item.id);
+    durability_item.name = random_item.name;
+  }
+
+  const NewCombatEntry: CombatEntry = {
+    character,
+    roll_type,
+    roll_source, // Short Sword, Medium Armor, Skill Test,
+    roll_state,
+    roll_entry,
+    uuid: uuidv4(),
+    entry: "CombatEntry",
+    durability: durability_item,
+  };
+
+  session.combatlog.push(NewCombatEntry);
+  session.combatlog = session.combatlog.slice(-20);
+
+  if (setModValue) {
+    if (!modifierLock) {
+      setModValue(0);
+    }
+  }
+
+  setActiveState("");
+  setAdvantage("");
+  setCriticalState(false);
+
+  update_session(session, websocket, character, isCreature);
+}

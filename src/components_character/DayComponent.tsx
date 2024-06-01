@@ -62,7 +62,7 @@ function DayComponent({ session }: XpBoxProps) {
       <CategoryContainerLeft>
         <h1>{toTitleCase(session.travel.time)}</h1>
       </CategoryContainerLeft>
-      <CategoryContainerRight title={"Utility XP"}>
+      <CategoryContainerRight title={"Day"}>
         <h2 className={".hide-div"}>DAY</h2>
         <h1>{session.travel.day}</h1>
       </CategoryContainerRight>

@@ -266,11 +266,11 @@ export type RollEntry = {
 };
 
 export type ActivesEntry = {
-  attack: { value: number; stat: string };
-  defense: { value: number; stat: string };
-  casting: { value: number; stat: string };
-  sneaking: { value: number; stat: string };
-  initiative: { value: number; stat: string };
+  attack: { mod: number; stat: StatName };
+  defense: { mod: number; stat: StatName };
+  casting: { mod: number; stat: StatName };
+  sneaking: { mod: number; stat: StatName };
+  initiative: { mod: number; stat: StatName };
 };
 
 export type TownsEntry = {

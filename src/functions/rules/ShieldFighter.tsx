@@ -20,7 +20,7 @@ export function ShieldFighter_active(
       mod += 1;
     }
   }
-  actives.defense.value += mod;
+  actives.defense.mod += mod;
 }
 
 export function ShieldFighter_dice(character: CharacterEntry, item: ItemEntry) {

@@ -455,12 +455,23 @@ function InventoryEntry({
   };
 
   const RemoveInventorySlot = (item_id: string) => {
-    DeleteInventorySlot(character, item_id);
-    // const session_drops = [...session.loot.drops];
-    session.loot.drops.push(item);
-    // session.loot.drops = session_drops;
+    if (item.static.bulk) {
+      if (item.quantity === 0) {
+        return;
+      }
+      item.quantity -= 1;
 
-    update_session(session, websocket, character, isCreature);
+      if (item.quantity === 0) {
+        DeleteInventorySlot(character, item.id);
+      }
+
+      AddToLoot(item, session, websocket, character, isCreature);
+      update_session(session, websocket, character, isCreature);
+    } else {
+      DeleteInventorySlot(character, item_id);
+      session.loot.drops.push(item);
+      update_session(session, websocket, character, isCreature);
+    }
   };
 
   const equipHandler = (item: ItemEntry) => {

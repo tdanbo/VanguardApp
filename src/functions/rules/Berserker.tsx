@@ -10,12 +10,16 @@ export function Berserker_active(
   const ability_adept = CheckAbility(character, ability_name, "adept");
   const ability_master = CheckAbility(character, ability_name, "master");
 
+  const defense =
+    character.stats[actives.defense.stat].value +
+    character.stats[actives.defense.stat].mod;
+
   if (ability_master) {
     return;
   } else if (ability_adept) {
-    actives.defense.value = 5;
+    actives.defense.mod = 5 - defense;
   } else if (ability) {
-    actives.defense.value = 5;
+    actives.defense.mod = 5 - defense;
   }
 }
 

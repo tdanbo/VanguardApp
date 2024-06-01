@@ -33,6 +33,7 @@ function App() {
   const [isGm, setIsGm] = useState<boolean>(false);
   const [browserState, setBrowserState] = useState(0);
   const [inventoryState, setInventoryState] = useState(1);
+  const [modifierLock, setModifierLock] = useState<boolean>(false);
 
   const [characterId, setCharacterId] = useState<string>("");
 
@@ -105,6 +106,8 @@ function App() {
           setCharacterId={setCharacterId}
           criticalState={criticalState}
           setCriticalState={setCriticalState}
+          modifierLock={modifierLock}
+          setModifierLock={setModifierLock}
         />
       )}
       <CombatSection

@@ -232,7 +232,7 @@ function RollComponent({
       } else if (roll1 === 1 && roll2 === 1) {
         critical_type.state = 2;
       }
-    } else if (result1 <= target) {
+    } else if (result1 <= target && roll1 !== 20) {
       success = true;
       if (roll1 === 1) {
         critical_type.state = 2;
