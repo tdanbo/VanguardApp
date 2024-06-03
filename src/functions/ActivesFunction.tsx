@@ -123,7 +123,6 @@ const UpdateQualities = (
   };
 
   character.inventory.forEach((item) => {
-    console.log(item);
     if (!item.static.quality || !item.equipped) {
       return;
     }

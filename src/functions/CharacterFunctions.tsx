@@ -137,7 +137,6 @@ export function FindActiveModFromStat(
   character_actives: ActivesEntry,
 ) {
   for (const [_key, value] of Object.entries(character_actives)) {
-    console.log(_key, value.mod);
     if (value.stat == stat) {
       return value.mod;
     } else {

@@ -87,7 +87,7 @@ function CorruptionStatComponent({
       <div
         className="row button-hover button_color"
         style={{ maxWidth: "30px" }}
-        onClick={handleTempSubCorruption}
+        onClick={handleTempAddCorruption}
       >
         <FontAwesomeIcon
           icon={faMinus}
@@ -130,7 +130,7 @@ function CorruptionStatComponent({
       <div
         className="row button-hover button_color"
         style={{ maxWidth: "30px" }}
-        onClick={handleTempAddCorruption}
+        onClick={handleTempSubCorruption}
       >
         <FontAwesomeIcon
           icon={faPlus}
