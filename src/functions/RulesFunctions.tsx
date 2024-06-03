@@ -290,12 +290,12 @@ export function GetAbilityCorruption(character: CharacterEntry) {
         ability.level === "Master"
       ) {
         if (
-          ability.static.tradition.includes("Theurgy") &&
+          ability.static.tradition.includes("theurgy") &&
           has_theurgy_novice
         ) {
           value_adjustment -= 1;
         } else if (
-          ability.static.tradition.includes("Wizardry") &&
+          ability.static.tradition.includes("wizardry") &&
           has_wizardry_novice
         ) {
           value_adjustment -= 1;
@@ -303,10 +303,10 @@ export function GetAbilityCorruption(character: CharacterEntry) {
         value_adjustment += 1;
       }
       if (ability.level === "Adept" || ability.level === "Master") {
-        if (ability.static.tradition.includes("Theurgy") && has_theurgy_adept) {
+        if (ability.static.tradition.includes("theurgy") && has_theurgy_adept) {
           value_adjustment -= 1;
         } else if (
-          ability.static.tradition.includes("Wizardry") &&
+          ability.static.tradition.includes("wizardry") &&
           has_wizardry_adept
         ) {
           value_adjustment -= 1;
@@ -316,12 +316,12 @@ export function GetAbilityCorruption(character: CharacterEntry) {
 
       if (ability.level === "Master") {
         if (
-          ability.static.tradition.includes("Theurgy") &&
+          ability.static.tradition.includes("theurgy") &&
           has_theurgy_master
         ) {
           value_adjustment -= 1;
         } else if (
-          ability.static.tradition.includes("Wizardry") &&
+          ability.static.tradition.includes("wizardry") &&
           has_wizardry_master
         ) {
           value_adjustment -= 1;
