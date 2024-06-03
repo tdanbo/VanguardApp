@@ -274,7 +274,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
     }
     if (
       combatEntry.durability.name !== "" &&
-      combatEntry.durability.check === 3
+      combatEntry.durability.check === 5
     ) {
       message += `${combatEntry.durability.name} lost durability.`;
     } else {
@@ -420,10 +420,10 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
             />
           )
         ) : null}
-        {combatEntry.durability.check === 3 &&
+        {combatEntry.durability.check === 5 &&
         !combatEntry.roll_entry.success &&
-        (combatEntry.roll_type === "attack" ||
-          combatEntry.roll_type === "defense") ? (
+        (combatEntry.roll_type === "damage" ||
+          combatEntry.roll_type === "armor") ? (
           <Icon path={mdiShieldOff} size={0.9} color={"#b55c5c"} />
         ) : null}
       </RightBlock>

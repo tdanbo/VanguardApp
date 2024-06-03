@@ -11,6 +11,7 @@ import styled from "styled-components";
 import * as Constants from "../Constants";
 
 import {
+  Ability,
   AbilityEntry,
   ActiveStateType,
   AdvantageType,
@@ -43,7 +44,6 @@ interface ContainerProps {
 const LevelBaseContainer = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
-
   border-left: 1px solid ${Constants.WIDGET_BORDER};
   border-right: 1px solid ${Constants.WIDGET_BORDER};
   border-bottom: 1px solid ${Constants.WIDGET_BORDER};
@@ -253,7 +253,7 @@ function AbilityEntryItem({
   setCriticalState,
 }: AbilityEntryItemProps) {
   // We will get the dynamic object and look for the database entry. If it doesn't exist, we will return null.
-
+  console.log(ability);
   const [free, setFree] = useState<boolean>(false);
   const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
   useEffect(() => {
@@ -262,16 +262,38 @@ function AbilityEntryItem({
   });
 
   interface LevelProps {
-    effect: string;
+    ability: AbilityEntry;
+    ability_level: Ability;
     radius: string;
   }
 
-  const LevelDescriptionComponent = ({ effect, radius }: LevelProps) => {
+  const LevelDescriptionComponent = ({
+    ability,
+    ability_level,
+    radius,
+  }: LevelProps) => {
     return (
       <LevelBaseContainer radius={radius}>
         <AbilityDescription>
+          {ability_level.action !== "" && (
+            <div
+              className="base_color"
+              style={{
+                display: "inline-block",
+                marginRight: "5px",
+                padding: "2px 5px 2px 5px",
+                color: Constants.WIDGET_PRIMARY_FONT,
+                fontWeight: "bold",
+                backgroundColor:
+                  Constants.TYPE_COLORS[ability.static.category] ||
+                  Constants.WIDGET_BORDER,
+              }}
+            >
+              {toTitleCase(ability_level.action)}
+            </div>
+          )}
           <StyledText
-            effect={effect}
+            effect={ability_level.description}
             websocket={websocket}
             character={character}
             session={session}
@@ -349,6 +371,22 @@ function AbilityEntryItem({
     update_session(session, websocket, character, isCreature);
   };
 
+  const GetTagNames = (ability: AbilityEntry) => {
+    if (ability.static.tags === undefined) {
+      return "";
+    }
+    let tags = ability.static.tags;
+    if (ability.level === "Novice") {
+      tags = tags.slice(0, 1);
+    } else if (ability.level === "Adept") {
+      tags = tags.slice(0, 2);
+    } else if (ability.level === "Master") {
+      tags = tags.slice(0, 3);
+    }
+
+    return toTitleCase(tags.length > 0 ? tags.join(", ") : "");
+  };
+
   return (
     <BaseContainer className="button-hover">
       <Container>
@@ -372,11 +410,11 @@ function AbilityEntryItem({
                     ability.level === "Adept" ||
                     ability.level === "Master") &&
                     !(
-                      ability.static.tradition.includes("Theurgy") &&
+                      ability.static.tradition.includes("theurgy") &&
                       has_theurgy_novice
                     ) &&
                     !(
-                      ability.static.tradition.includes("Wizardry") &&
+                      ability.static.tradition.includes("wizardry") &&
                       has_wizardry_novice
                     ) && (
                       <FontAwesomeIcon
@@ -386,11 +424,11 @@ function AbilityEntryItem({
                     )}
                   {(ability.level === "Adept" || ability.level === "Master") &&
                     !(
-                      ability.static.tradition.includes("Theurgy") &&
+                      ability.static.tradition.includes("theurgy") &&
                       has_theurgy_adept
                     ) &&
                     !(
-                      ability.static.tradition.includes("Wizardry") &&
+                      ability.static.tradition.includes("wizardry") &&
                       has_wizardry_adept
                     ) && (
                       <FontAwesomeIcon
@@ -400,11 +438,11 @@ function AbilityEntryItem({
                     )}
                   {ability.level === "Master" &&
                     !(
-                      ability.static.tradition.includes("Theurgy") &&
+                      ability.static.tradition.includes("theurgy") &&
                       has_theurgy_master
                     ) &&
                     !(
-                      ability.static.tradition.includes("Wizardry") &&
+                      ability.static.tradition.includes("wizardry") &&
                       has_wizardry_master
                     ) && (
                       <FontAwesomeIcon
@@ -416,12 +454,24 @@ function AbilityEntryItem({
               )}
             </CorruptionContainer>
           </AbilityName>
-          <AbilityDetail>
-            {ability.static.tradition === ""
+          {/* {ability.static.tradition !== []
               ? toTitleCase(ability.static.category)
               : `${toTitleCase(ability.static.category)}, ${
                   ability.static.tradition
-                }`}
+                }`} */}
+          <AbilityDetail>
+            {toTitleCase(ability.static.category)}
+            {ability.static.tradition &&
+              ability.static.tradition.length > 0 &&
+              ", " + toTitleCase(ability.static.tradition.join(", ")) + ", "}
+            <div
+              style={{
+                marginLeft: "2px",
+                color: Constants.WIDGET_SECONDARY_FONT,
+              }}
+            >
+              {GetTagNames(ability)}
+            </div>
           </AbilityDetail>
         </NameContainer>
         <RollContainer>
@@ -501,7 +551,8 @@ function AbilityEntryItem({
           abilityLevel === "Novice" && (
             <>
               <LevelDescriptionComponent
-                effect={ability.static.novice.description}
+                ability={ability}
+                ability_level={ability.static.novice}
                 radius={Constants.BORDER_RADIUS}
               />
             </>
@@ -510,11 +561,13 @@ function AbilityEntryItem({
           abilityLevel === "Adept" && (
             <>
               <LevelDescriptionComponent
-                effect={ability.static.novice.description}
+                ability={ability}
+                ability_level={ability.static.novice}
                 radius={"0px"}
               />
               <LevelDescriptionComponent
-                effect={ability.static.adept.description}
+                ability={ability}
+                ability_level={ability.static.adept}
                 radius={Constants.BORDER_RADIUS}
               />
             </>
@@ -523,15 +576,18 @@ function AbilityEntryItem({
           abilityLevel === "Master" && (
             <>
               <LevelDescriptionComponent
-                effect={ability.static.novice.description}
+                ability={ability}
+                ability_level={ability.static.novice}
                 radius={"0px"}
               />
               <LevelDescriptionComponent
-                effect={ability.static.adept.description}
+                ability={ability}
+                ability_level={ability.static.adept}
                 radius={"0px"}
               />
               <LevelDescriptionComponent
-                effect={ability.static.master.description}
+                ability={ability}
+                ability_level={ability.static.master}
                 radius={Constants.BORDER_RADIUS}
               />
             </>

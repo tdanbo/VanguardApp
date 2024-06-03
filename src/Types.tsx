@@ -126,11 +126,35 @@ export interface AbilityEntry {
   id: string;
   static: AbilityStatic;
 }
+export interface AbilityRoll {
+  dice: number;
+  type: string;
+  mod: number;
+}
+
+export type ActionType =
+  | "passive"
+  | "reaction"
+  | "active"
+  | "special"
+  | "movement"
+  | "ritual"
+  | "upgrade"
+  | "";
+
+export interface Ability {
+  description: string;
+  action: ActionType;
+  roll: AbilityRoll[];
+}
+
 export interface AbilityStatic {
-  tradition: string;
   novice: Ability;
   adept: Ability;
   master: Ability;
+  xp_requirement: number;
+  tradition: string[];
+  tags: string[];
   category: string;
 }
 
@@ -208,17 +232,6 @@ export type SessionEntry = {
   encounter: CharacterEntry[];
   loot: Loot;
 };
-
-export interface AbilityRoll {
-  dice: number;
-  type: string;
-  mod: number;
-}
-
-export interface Ability {
-  description: string;
-  roll: AbilityRoll[];
-}
 
 export type ActiveStateType = "" | "full" | "weak";
 

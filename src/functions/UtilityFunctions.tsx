@@ -1,5 +1,4 @@
 import { Socket } from "socket.io-client";
-import styled from "styled-components";
 import * as Constants from "../Constants";
 import { GeneralItem } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
@@ -17,8 +16,7 @@ import {
   RollTypeEntry,
   CombatEntry,
 } from "../Types";
-import RollComponent from "../components_general/RollComponent";
-import { cloneDeep, random, uniqueId } from "lodash";
+import { cloneDeep, random } from "lodash";
 import { HasRangedWeapon, Ammunition } from "./CharacterFunctions";
 import { SetDurability } from "./RulesFunctions";
 import { v4 as uuidv4 } from "uuid";
@@ -241,29 +239,15 @@ interface StyledTextProps {
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DiceButton = styled.button`
-  cursor: pointer;
-  font-weight: bold;
-  background-color: transparent;
-  border: 0px solid ${Constants.WIDGET_BORDER};
-`;
-
-export const StyledText: React.FC<StyledTextProps> = ({
-  effect,
-  websocket,
-  character,
-  session,
-  isCreature,
-  activeState,
-  advantage,
-  setActiveState,
-  setAdvantage,
-  setCriticalState,
-}) => {
+export const StyledText: React.FC<StyledTextProps> = ({ effect }) => {
+  if (!effect) {
+    return null; // or return a default value
+  }
   const style = { color: Constants.WIDGET_PRIMARY_FONT, fontWeight: "bold" }; // Example style
   // Updated escapeRegExp function
 
   // Updated regex
+  console.log(effect);
   const regex = new RegExp(
     `\\b(${Constants.SPECIAL_WORDS.map((word) =>
       word.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
@@ -282,38 +266,15 @@ export const StyledText: React.FC<StyledTextProps> = ({
     }
 
     return fragment.split(regex).map((part, partIndex) => {
-      const key = `${part}-${partIndex}`;
       const keyB = `${part}-${partIndex}B`;
       const isSpecialWord = Constants.SPECIAL_WORDS.includes(part);
-      const isDiceWord = ["d4", "d6", "d8", "d10", "d12", "d20"].includes(part);
-
-      if (isDiceWord) {
-        return (
-          <DiceButton key={uniqueId()}>
-            <RollComponent
-              session={session}
-              character={character}
-              websocket={websocket}
-              roll_type={"custom"}
-              roll_source={part}
-              isCreature={isCreature}
-              dice={parseInt(part.substring(1))}
-              color={Constants.TYPE_COLORS["custom"]}
-              key={key}
-              activeState={activeState}
-              advantage={advantage}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-              setCriticalState={setCriticalState}
-            />
-          </DiceButton>
-        );
-      }
 
       return (
-        <span key={keyB} style={isSpecialWord ? style : undefined}>
-          {part}
-        </span>
+        <>
+          <span key={keyB} style={isSpecialWord ? style : undefined}>
+            {part}
+          </span>
+        </>
       );
     });
   };
@@ -323,7 +284,7 @@ export const StyledText: React.FC<StyledTextProps> = ({
     return <span key={key}>{getStyledWords(word, index)}</span>;
   });
 
-  return <div>{words}</div>;
+  return <span>{words}</span>;
 };
 
 export function GetDatabaseEffect(
@@ -680,17 +641,13 @@ export function RollDice({
 
   const durability_item: DurabilityEntry = {
     name: "",
-    check: random(1, 3),
+    check: random(1, 5),
   };
 
   let random_item: null | ItemEntry = null;
-  if (roll_type === "attack" && !success && durability_item.check === 3) {
+  if (roll_type === "damage" && !success && durability_item.check === 5) {
     random_item = PickRandomWeapon(character);
-  } else if (
-    roll_type === "defense" &&
-    !success &&
-    durability_item.check === 3
-  ) {
+  } else if (roll_type === "armor" && !success && durability_item.check === 5) {
     random_item = PickRandomArmor(character, equipment);
   }
 

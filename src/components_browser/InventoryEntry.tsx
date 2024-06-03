@@ -1,8 +1,8 @@
 import {
   faBars,
-  faChevronDown,
   faCoins,
   faFeather,
+  faPlus,
   faSkull,
   faUsers,
   faXmark,
@@ -701,7 +701,7 @@ function InventoryEntry({
                       onClick={() => AddInventorySlot(canBuy, false)}
                     >
                       <FontAwesomeIcon
-                        icon={canBuy ? faCoins : faChevronDown}
+                        icon={canBuy ? faCoins : faPlus}
                         style={{ fontSize: "12px" }}
                         color={
                           canBuy ? "#f5c542" : Constants.WIDGET_SECONDARY_FONT

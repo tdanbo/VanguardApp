@@ -175,7 +175,7 @@ function AbilityBrowser({
           " " +
           item.static.category.toLowerCase() +
           " " +
-          item.static.tradition.toLowerCase() +
+          item.static.tradition.join(" ") +
           " " +
           item.static.novice.description.toLowerCase() +
           " " +
