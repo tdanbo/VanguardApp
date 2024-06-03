@@ -247,7 +247,6 @@ export const StyledText: React.FC<StyledTextProps> = ({ effect }) => {
   // Updated escapeRegExp function
 
   // Updated regex
-  console.log(effect);
   const regex = new RegExp(
     `\\b(${Constants.SPECIAL_WORDS.map((word) =>
       word.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"),
