@@ -13,6 +13,7 @@ import CreatureEncounterSection from "./CreatureEncounterSection";
 import TimeTrackBox from "../components_gamemaster/TimeTrackBox";
 import TravelBox from "../components_gamemaster/TravelBox";
 import "../layout.css";
+import { DailyDurability } from "../functions/UtilityFunctions";
 
 interface ContainerProps {
   height: string;
@@ -124,6 +125,13 @@ function GameMaster({
         <Row width={"100%"}>
           <ResetCreatureEncounter session={session} websocket={websocket} />
           <TravelBox session={session} websocket={websocket} />
+          <div
+            className="row base_color button"
+            style={{ maxWidth: "50px" }}
+            onClick={() => DailyDurability(session)}
+          >
+            a
+          </div>
         </Row>
       </Container>
       <DynamicContainer key="container">

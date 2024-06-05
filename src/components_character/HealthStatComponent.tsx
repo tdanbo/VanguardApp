@@ -35,6 +35,7 @@ const TickBar = styled.div<BgColor>`
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Socket } from "socket.io-client";
+import { useState } from "react";
 
 interface HealthBoxProps {
   character: CharacterEntry;
@@ -50,6 +51,7 @@ function HealthStatComponent({
   websocket,
   isCreature,
 }: HealthBoxProps) {
+  const [isHovered, setIsHovered] = useState(false);
   const handleAddToughness = () => {
     if (character.health.damage > 0) {
       character.health.damage -= 1;
@@ -80,17 +82,21 @@ function HealthStatComponent({
     <div
       className="row base_color"
       style={{ height: "100%", padding: "1px", gap: "1px" }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <div
-        className="row button-hover button_color"
-        style={{ maxWidth: "30px" }}
-        onClick={handleSubToughness}
-      >
-        <FontAwesomeIcon
-          icon={faMinus}
-          color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
-        />
-      </div>
+      {isHovered ? (
+        <div
+          className="row button-hover button_color"
+          style={{ maxWidth: "30px" }}
+          onClick={handleSubToughness}
+        >
+          <FontAwesomeIcon
+            icon={faMinus}
+            color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+          />
+        </div>
+      ) : null}
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
         <div className="row" style={{ gap: "0px", padding: "1px" }}>
           {Array.from({ length: remaining_toughness }).map(
@@ -116,6 +122,7 @@ function HealthStatComponent({
             );
           })}
         </div>
+
         <div
           style={{
             position: "absolute",
@@ -125,21 +132,39 @@ function HealthStatComponent({
             color: Constants.WIDGET_PRIMARY_FONT,
             textShadow: "2px 2px 2px black",
             fontSize: "18px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           {`${remaining_toughness} / ${remaining_toughness + damage_toughness}`}
+          <div
+            style={{
+              fontSize: "10px",
+              marginTop: "-2px",
+              alignItems: "center",
+              justifyContent: "center",
+              textShadow: "0px 0px 0px black",
+              color: Constants.WIDGET_SECONDARY_FONT,
+            }}
+          >
+            TOUGHNESS
+          </div>
         </div>
       </div>
-      <div
-        className="row button-hover button_color"
-        style={{ maxWidth: "30px" }}
-        onClick={handleAddToughness}
-      >
-        <FontAwesomeIcon
-          icon={faPlus}
-          color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
-        />
-      </div>
+      {isHovered ? (
+        <div
+          className="row button-hover button_color"
+          style={{ maxWidth: "30px" }}
+          onClick={handleAddToughness}
+        >
+          <FontAwesomeIcon
+            icon={faPlus}
+            color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

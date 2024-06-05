@@ -4,10 +4,12 @@ import styled from "styled-components";
 import * as Constants from "../Constants";
 import { NewCharacterEntry, SessionEntry, TimeCategory } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
+import { v4 as uuidv4 } from "uuid";
+import { CombatEntry } from "../Types";
 import {
   toTitleCase,
-  SetStatusForward,
-  SetStatusBackward,
+  LowerEnergy,
+  RaiseEnergy,
 } from "../functions/UtilityFunctions";
 import { forEach } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -66,7 +68,7 @@ function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {
 
   const passTimeForward = () => {
     forEach(session.characters, (character) => {
-      SetStatusBackward(character);
+      LowerEnergy(character);
 
       if (session.travel.time === "night") {
         character.details.xp_earned += 5;
@@ -76,6 +78,28 @@ function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {
     if (session.travel.time === "night") {
       session.travel.time = "morning";
       session.travel.day += 1;
+      const day_log: CombatEntry = {
+        character: NewCharacterEntry,
+        roll_type: "day",
+        roll_source: `Day ${session.travel.day}`,
+        roll_state: "",
+        roll_entry: {
+          result1: 0,
+          result2: 0,
+          roll1: 0,
+          roll2: 0,
+          advantage: "",
+          critical: { state: 1, result: 0 },
+          mod: 0,
+          target: 0,
+          success: true,
+          dice: 0,
+        },
+        durability: { name: "", check: 0 },
+        uuid: uuidv4(),
+        entry: "CombatEntry",
+      };
+      session.combatlog.push(day_log);
       setActiveHour("morning");
     } else if (session.travel.time === "morning") {
       session.travel.time = "afternoon";
@@ -87,12 +111,13 @@ function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {
       session.travel.time = "night";
       setActiveHour("night");
     }
+
     update_session(session, websocket, NewCharacterEntry, false);
   };
 
   const passTimeBackward = () => {
     forEach(session.characters, (character) => {
-      SetStatusForward(character);
+      RaiseEnergy(character);
       if (session.travel.time === "morning") {
         character.details.xp_earned -= 5;
       }

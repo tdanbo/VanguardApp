@@ -6,6 +6,8 @@ export const WEBSOCKET = "wss://vanguard-api.onrender.com/session/";
 
 export const VW = "5.0vw";
 
+export const MAX_ENERGY = 4;
+
 export const COMBAT_BACKGROUND = "19, 23, 22";
 
 export const BACKGROUND = "rgba(19, 23, 22, 1.0)";
@@ -85,16 +87,6 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   "alchemical weapon": COLOR_1,
   "careful aim": COLOR_1,
   "flanking careful aim": COLOR_1,
-  "exhausted 1": COLOR_1,
-  "exhausted 2": COLOR_1,
-  "exhausted 3": COLOR_1,
-  "exhausted 4": COLOR_1,
-  "exhausted 5": COLOR_1,
-  "exhausted 6": COLOR_1,
-  "exhausted 7": COLOR_1,
-  "exhausted 8": COLOR_1,
-  "exhausted 9": COLOR_1,
-  "exhausted 10": COLOR_1,
 
   "natural armor": COLOR_2,
   "light armor": COLOR_2,
@@ -107,7 +99,6 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   "flanked defense": COLOR_2,
   "flanked weak defense": COLOR_2,
   defense: COLOR_2,
-  resting: COLOR_2,
   "armor accessory": COLOR_2,
 
   casting: COLOR_3,
@@ -122,9 +113,6 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   tool: COLOR_4,
   "monsterous trait": COLOR_4,
   poison: COLOR_4,
-  rested: COLOR_4,
-  normal: COLOR_4,
-  tired: COLOR_4,
 
   treasure: COLOR_5,
   utility: COLOR_5,
@@ -140,7 +128,6 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   accurate: COLOR_5,
   trait: COLOR_5,
   burden: COLOR_5,
-  fatigued: COLOR_5,
 
   permanent_corruption: DESAT_PURPLE,
 
@@ -175,6 +162,18 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   ritual: COLOR_8,
 
   resource: "#bd8b02",
+
+  energy: COLOR_5,
+  "exhausted 1": COLOR_1,
+  "exhausted 2": COLOR_1,
+  "exhausted 3": COLOR_1,
+  "exhausted 4": COLOR_1,
+  "exhausted 5": COLOR_1,
+  "exhausted 6": COLOR_1,
+  "exhausted 7": COLOR_1,
+  "exhausted 8": COLOR_1,
+  "exhausted 9": COLOR_1,
+  "exhausted 10": COLOR_1,
 };
 
 export const CATEGORY_FILTER = [

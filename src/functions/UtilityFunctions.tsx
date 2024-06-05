@@ -18,7 +18,7 @@ import {
 } from "../Types";
 import { cloneDeep, random } from "lodash";
 import { HasRangedWeapon, Ammunition } from "./CharacterFunctions";
-import { SetDurability } from "./RulesFunctions";
+import { GetMaxToughness, SetDurability } from "./RulesFunctions";
 import { v4 as uuidv4 } from "uuid";
 
 export function UpperFirstLetter(input: string): string {
@@ -356,131 +356,47 @@ export function AddToLoot(
   update_session(session, websocket, character, isCreature);
 }
 
-export function AddExhaustion(character: CharacterEntry, level: number) {
+export function HandleExhaustion(character: CharacterEntry) {
   const HasExhausted = character.effects.find(
     (ability) => ability.name === "Exhausted",
   );
-
-  if (HasExhausted) {
-    HasExhausted.level = level;
+  if (character.health.energy < 0) {
+    const level = character.health.energy * -1;
+    if (HasExhausted) {
+      HasExhausted.level = level;
+    } else {
+      const effect: EffectEntry = {
+        name: "Exhausted",
+        level: level,
+        static: {
+          effect:
+            "Each level of exhaustion gives a -1 penalty to all stats. If a stat reaches 0, then the character dies.",
+          category: "effect",
+        },
+        id: generateRandomId(),
+      };
+      character.effects.push(effect);
+    }
   } else {
-    const effect: EffectEntry = {
-      name: "Exhausted",
-      level: level,
-      static: {
-        effect:
-          "Each level of exhaustion gives a -1 penalty to all stats. If a stat reaches 0, then the character dies.",
-        category: "effect",
-      },
-      id: generateRandomId(),
-    };
-    character.effects.push(effect);
+    if (HasExhausted) {
+      const new_effects = character.effects.filter(
+        (item) => item.id !== HasExhausted.id,
+      );
+      character.effects = new_effects;
+    }
   }
 }
 
-export const RemoveExhaustion = (character: CharacterEntry) => {
-  const exhausted = character.effects.find(
-    (effect) => effect.name === "Exhausted",
-  );
-
-  if (exhausted) {
-    const new_effects = character.effects.filter(
-      (item) => item.id !== exhausted.id,
-    );
-    character.effects = new_effects;
+export const LowerEnergy = (character: CharacterEntry) => {
+  character.health.energy -= 1;
+  if (character.health.energy < 0 && character.health.energy > -10) {
+    HandleExhaustion(character);
   }
 };
 
-export const SetStatusForward = (character: CharacterEntry) => {
-  if (character.health.status === "normal") {
-    character.health.status = "rested";
-    RemoveExhaustion(character);
-  } else if (character.health.status === "tired") {
-    character.health.status = "normal";
-    RemoveExhaustion(character);
-  } else if (character.health.status === "fatigued") {
-    character.health.status = "tired";
-    RemoveExhaustion(character);
-  } else if (character.health.status === "exhausted 1") {
-    character.health.status = "fatigued";
-    RemoveExhaustion(character);
-  } else if (character.health.status === "exhausted 2") {
-    character.health.status = "exhausted 1";
-    AddExhaustion(character, 1);
-  } else if (character.health.status === "exhausted 3") {
-    character.health.status = "exhausted 2";
-    AddExhaustion(character, 2);
-  } else if (character.health.status === "exhausted 4") {
-    character.health.status = "exhausted 3";
-    AddExhaustion(character, 3);
-  } else if (character.health.status === "exhausted 5") {
-    character.health.status = "exhausted 4";
-    AddExhaustion(character, 4);
-  } else if (character.health.status === "exhausted 6") {
-    character.health.status = "exhausted 5";
-    AddExhaustion(character, 5);
-  } else if (character.health.status === "exhausted 7") {
-    character.health.status = "exhausted 6";
-    AddExhaustion(character, 6);
-  } else if (character.health.status === "exhausted 8") {
-    character.health.status = "exhausted 7";
-    AddExhaustion(character, 7);
-  } else if (character.health.status === "exhausted 9") {
-    character.health.status = "exhausted 8";
-    AddExhaustion(character, 8);
-  } else if (character.health.status === "exhausted 10") {
-    character.health.status = "exhausted 9";
-    AddExhaustion(character, 9);
-  }
-};
-
-export const SetStatusBackward = (character: CharacterEntry) => {
-  if (character.health.status === "resting") {
-    character.health.status = "rested";
-    RemoveExhaustion(character);
-  } else if (character.health.status === "rested") {
-    character.health.status = "normal";
-    RemoveExhaustion(character);
-  } else if (character.health.status === "normal") {
-    character.health.status = "tired";
-    RemoveExhaustion(character);
-  } else if (character.health.status === "tired") {
-    character.health.status = "fatigued";
-    RemoveExhaustion(character);
-  } else if (character.health.status === "fatigued") {
-    character.health.status = "exhausted 1";
-    AddExhaustion(character, 1);
-  } else if (character.health.status === "exhausted 1") {
-    character.health.status = "exhausted 2";
-    AddExhaustion(character, 2);
-  } else if (character.health.status === "exhausted 2") {
-    character.health.status = "exhausted 3";
-    AddExhaustion(character, 3);
-  } else if (character.health.status === "exhausted 3") {
-    character.health.status = "exhausted 4";
-    AddExhaustion(character, 4);
-  } else if (character.health.status === "exhausted 4") {
-    character.health.status = "exhausted 5";
-    AddExhaustion(character, 5);
-  } else if (character.health.status === "exhausted 5") {
-    character.health.status = "exhausted 6";
-    AddExhaustion(character, 6);
-  } else if (character.health.status === "exhausted 6") {
-    character.health.status = "exhausted 7";
-    AddExhaustion(character, 7);
-  } else if (character.health.status === "exhausted 7") {
-    character.health.status = "exhausted 8";
-    AddExhaustion(character, 8);
-  } else if (character.health.status === "exhausted 8") {
-    character.health.status = "exhausted 9";
-    AddExhaustion(character, 9);
-  } else if (character.health.status === "exhausted 9") {
-    character.health.status = "exhausted 10";
-    AddExhaustion(character, 10);
-  } else if (character.health.status === "exhausted 10") {
-    character.health.status = "rested";
-    RemoveExhaustion(character);
-  }
+export const RaiseEnergy = (character: CharacterEntry) => {
+  character.health.energy += 1;
+  HandleExhaustion(character);
 };
 
 export function PickRandomWeapon(character: CharacterEntry) {
@@ -680,4 +596,31 @@ export function RollDice({
   setCriticalState(false);
 
   update_session(session, websocket, character, isCreature);
+}
+
+export function ToughnessLostPercent(session: SessionEntry) {
+  const toughness_lost = 20;
+  let total_toughness: number = 0;
+
+  for (const character of session.characters) {
+    total_toughness += GetMaxToughness(character);
+  }
+  console.log("Max Toughness: " + total_toughness);
+  return (toughness_lost / total_toughness) * 100;
+}
+
+export function DailyDurability(session: SessionEntry) {
+  const toughness_percentage_lost = ToughnessLostPercent(session);
+  console.log("Toughness Lost: " + toughness_percentage_lost + "%");
+  for (const character of session.characters) {
+    console.log("-----------------");
+    console.log(character.name);
+    const max_number = 5;
+    for (const item of character.inventory) {
+      const durability_roll = random(1, max_number);
+      if (durability_roll === max_number && item.durability > 0) {
+        console.log(item.name + " durability loss");
+      }
+    }
+  }
 }

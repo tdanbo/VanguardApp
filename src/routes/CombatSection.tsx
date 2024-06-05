@@ -96,6 +96,8 @@ import {
   RollSounds,
 } from "../Images";
 import DayComponent from "../components_character/DayComponent";
+import RestEntryItem from "../components_combatlog/RestEntryItem";
+import DayChangeEntryItem from "../components_combatlog/DayChangeEntryItem";
 // import { set } from "lodash";
 
 interface CombatSectionProps {
@@ -259,14 +261,36 @@ function CombatSection({
       />
       <DynamicContainer>
         <Column ref={scrollRef} width={"100%"}>
-          {session.combatlog.map((item, index) => (
-            <CombatEntryItem
-              key={index}
-              combatEntry={item}
-              index={index}
-              session={session}
-            />
-          ))}
+          {session.combatlog.map((item, index) => {
+            console.log(item.roll_type);
+            if (item.roll_type === "eating" || item.roll_type === "sleeping") {
+              return (
+                <RestEntryItem
+                  key={index}
+                  combatEntry={item}
+                  index={index}
+                  session={session}
+                />
+              );
+            } else if (item.roll_type === "day") {
+              return (
+                <DayChangeEntryItem
+                  key={index}
+                  combatEntry={item}
+                  index={index}
+                  session={session}
+                />
+              );
+            }
+            return (
+              <CombatEntryItem
+                key={index}
+                combatEntry={item}
+                index={index}
+                session={session}
+              />
+            ); // Return null when none of the conditions are met
+          })}
         </Column>
       </DynamicContainer>
       <Container height={"30px"}>
