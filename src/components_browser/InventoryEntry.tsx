@@ -299,8 +299,6 @@ function InventoryEntry({
   };
 
   const RemoveLootItem = (item: ItemEntry) => {
-    console.log("Removing item");
-    console.log(session.loot.armory);
     session.loot.drops = session.loot.drops.filter(
       (loot) => loot.id !== item.id,
     );
@@ -316,8 +314,6 @@ function InventoryEntry({
     session.loot.novelty = session.loot.novelty.filter(
       (loot) => loot.id !== item.id,
     );
-    console.log("After Removing item");
-    console.log(session.loot.armory);
   };
 
   const RemoveBulkItem = (item: ItemEntry) => {

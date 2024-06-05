@@ -18,8 +18,6 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
   character.stats.accurate.mod = 0;
   character.stats.cunning.mod = 0;
 
-  console.log("Updating Ability Stats");
-
   const LevelValue = (ability: AbilityEntry) => {
     if (ability.level === "Novice") {
       return 1;

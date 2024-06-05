@@ -2,12 +2,15 @@ import axios from "axios";
 import { API } from "../Constants";
 import { GetGameData } from "../contexts/GameContent";
 import { ActivesEntry, StatName } from "../Types";
+import { update_session } from "./SessionsFunctions";
 import {
   CharacterEntry,
   modifiedCreature,
   NewCharacterEntry,
   SessionEntry,
 } from "../Types";
+import { GetMaxToughness, GetTemporaryCorruption } from "./RulesFunctions";
+import { Socket } from "socket.io-client";
 export const getCreatureMovement = (creature: modifiedCreature) => {
   const movement: { [key: number]: number } = {
     5: -10,
@@ -174,5 +177,63 @@ export function Ammunition(character: CharacterEntry) {
     return true;
   } else {
     return false;
+  }
+}
+
+export function LowerToughness(
+  character: CharacterEntry,
+  session: SessionEntry,
+  websocket: Socket,
+  isCreature: boolean,
+) {
+  if (character.health.damage === GetMaxToughness(character)) {
+    console.log("Max damage reached");
+  } else {
+    character.health.damage += 1;
+    session.travel.damage_gain += 1;
+    update_session(session, websocket, character, isCreature);
+  }
+}
+
+export function RaiseToughness(
+  character: CharacterEntry,
+  session: SessionEntry,
+  websocket: Socket,
+  isCreature: boolean,
+) {
+  if (character.health.damage === 0) {
+    console.log("Already at max toughness");
+  } else {
+    character.health.damage -= 1;
+    update_session(session, websocket, character, isCreature);
+  }
+}
+
+export function LowerCorruption(
+  character: CharacterEntry,
+  session: SessionEntry,
+  websocket: Socket,
+  isCreature: boolean,
+) {
+  if (character.health.shield === GetTemporaryCorruption(character)) {
+    character.health.corruption += 1;
+  } else {
+    character.health.shield += 1;
+    session.travel.corruption_gain += 1;
+    update_session(session, websocket, character, isCreature);
+  }
+}
+
+export function RaiseCorruption(
+  character: CharacterEntry,
+  session: SessionEntry,
+  websocket: Socket,
+  isCreature: boolean,
+) {
+  if (character.health.shield === 0) {
+    console.log("Temporary Corruption is full");
+  } else {
+    character.health.shield -= 1;
+    update_session(session, websocket, character, isCreature);
   }
 }

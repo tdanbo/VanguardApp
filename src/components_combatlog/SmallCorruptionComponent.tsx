@@ -7,6 +7,10 @@ import { Socket } from "socket.io-client";
 
 import "../layout.css";
 import { useState } from "react";
+import {
+  LowerCorruption,
+  RaiseCorruption,
+} from "../functions/CharacterFunctions";
 
 interface HealthBoxProps {
   character: CharacterEntry;
@@ -22,32 +26,6 @@ function SmallCorruptionComponent({
   websocket,
   isCreature,
 }: HealthBoxProps) {
-  const handleTempAddCorruption = () => {
-    const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
-    let value = 1;
-    for (let i = 0; i < value; i++) {
-      if (character.health.shield === corruptionThreshold) {
-        if (character.health.corruption === corruptionThreshold * 3) {
-          console.log("Max corruption reached");
-        }
-        character.health.corruption += 1;
-      } else {
-        character.health.shield += 1;
-      }
-    }
-    update_session(session, websocket, character, isCreature);
-  };
-
-  const handleTempSubCorruption = () => {
-    let value = 1;
-    character.health.shield -= value;
-
-    if (character.health.shield < 0) {
-      character.health.shield = 0;
-    }
-    update_session(session, websocket, character, isCreature);
-  };
-
   const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
 
   const temporary_corruption = character.health.shield;
@@ -73,10 +51,12 @@ function SmallCorruptionComponent({
       <div
         className="row button opaque_color"
         style={{ maxWidth: "30%", fontSize: "20px" }}
-        onClick={handleTempAddCorruption}
+        onClick={() =>
+          LowerCorruption(character, session, websocket, isCreature)
+        }
         onContextMenu={(e) => {
           e.preventDefault();
-          handleTempSubCorruption();
+          RaiseCorruption(character, session, websocket, isCreature);
         }}
       >
         <FontAwesomeIcon

@@ -11,7 +11,7 @@ import styled from "styled-components";
 import "../App.css";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { CombatEntry, SessionEntry } from "../Types";
+import { CombatEntry, SessionEntry, DayReportEntry } from "../Types";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import Icon from "@mdi/react";
 import { mdiShieldOff } from "@mdi/js";
@@ -176,114 +176,13 @@ const ResultDivider = styled.div`
   margin: 10px 0px 0px 0px;
 `;
 
-function DayChangeEntryItem({ combatEntry, index }: DayChangeEntryItemProps) {
+function DayChangeEntryItem({ combatEntry }: DayChangeEntryItemProps) {
   const EntryColor = () => {
     return (
       Constants.TYPE_COLORS[combatEntry.roll_type.toLowerCase()] ||
       Constants.WIDGET_SECONDARY_FONT
     );
   };
-
-  let modifierText = "";
-  if (combatEntry.roll_entry.mod > 0) {
-    modifierText = `+${combatEntry.roll_entry.mod}`;
-  } else if (combatEntry.roll_entry.mod < 0) {
-    modifierText = `${combatEntry.roll_entry.mod}`;
-  }
-
-  let title = `Dice: d${combatEntry.roll_entry.dice}${modifierText}\nResult: ${combatEntry.roll_entry.result1}\n`;
-  let durability_title = `Dice: d4\nResult: ${combatEntry.durability.check}\nTarget: 3`;
-
-  if (combatEntry.roll_source !== "Skill Test") {
-    title += `Modifier: ${combatEntry.roll_entry.mod}\n`;
-  }
-
-  if (combatEntry.roll_entry.target > 0) {
-    title += `Target: ${combatEntry.roll_entry.target}`;
-  }
-
-  const [isRolling, setIsRolling] = useState(false);
-  const [currentDisplay1, setCurrentDisplay1] = useState<number>(0);
-  const [currentDisplay2, setCurrentDisplay2] = useState<number>(0);
-  const [_rollCycles, setRollCycles] = useState<number>(0);
-
-  useEffect(() => {
-    if (index !== 19) {
-      // Only allow the animation effect on the first item
-      setCurrentDisplay1(combatEntry.roll_entry.result1);
-      setCurrentDisplay2(combatEntry.roll_entry.result2);
-      return;
-    }
-    setIsRolling(true);
-
-    // Rapidly change the displayed roll result
-    const rollInterval = setInterval(() => {
-      setCurrentDisplay1(
-        Math.floor(Math.random() * combatEntry.roll_entry.dice) + 1,
-      ); // assuming dice values start from 1
-      setCurrentDisplay2(
-        Math.floor(Math.random() * combatEntry.roll_entry.dice) + 1,
-      ); // assuming dice values start from 1
-      setRollCycles((prev) => prev + 1);
-    }, 100); // This determines how fast the numbers change
-
-    // After certain cycles or time, finalize the result and clear the timer
-    const timer = setTimeout(() => {
-      setIsRolling(false);
-      clearInterval(rollInterval);
-      setCurrentDisplay1(combatEntry.roll_entry.result1);
-      setCurrentDisplay2(combatEntry.roll_entry.result2);
-      setRollCycles(0);
-    }, 300); // Total duration of the roll animation
-
-    return () => {
-      clearTimeout(timer);
-      clearInterval(rollInterval);
-    };
-  }, [combatEntry.uuid]);
-
-  // const RollEntryColor = getAdjustedColor(EntryColor(), combatEntry.roll_entry.roll);
-
-  const FumbledPerfectText = () => {
-    let message = "";
-
-    if (combatEntry.roll_entry.critical.state === 2) {
-      if (combatEntry.roll_type === "attack") {
-        message = "+1d6 damage.";
-      } else if (combatEntry.roll_type === "defense") {
-        message = "Free attack against the enemy.";
-      } else if (combatEntry.roll_type === "casting") {
-        message = "Double the spell effect.";
-      } else if (combatEntry.roll_type === "sneaking") {
-        message = "No detection for the entire group.";
-      } else {
-        message = "";
-      }
-    } else if (combatEntry.roll_entry.critical.state === 0) {
-      if (combatEntry.roll_type === "attack") {
-        message += "Free attack against you. ";
-      } else if (combatEntry.roll_type === "defense") {
-        message += "+3 Damage taken. ";
-      } else if (combatEntry.roll_type === "casting") {
-        message += "Your spell hit a random foe/friend.";
-      } else if (combatEntry.roll_type === "sneaking") {
-        message += "Conflict is inevitable! If attacked, you are surprised!";
-      } else {
-        message += "";
-      }
-    }
-    if (
-      combatEntry.durability.name !== "" &&
-      combatEntry.durability.check === 5
-    ) {
-      message += `${combatEntry.durability.name} lost durability.`;
-    } else {
-      message += "";
-    }
-    return message;
-  };
-
-  const roll_text = `${combatEntry.roll_entry.advantage} ${combatEntry.roll_state} ${combatEntry.roll_type}`;
 
   return (
     <Container src={CharacterPortraits[combatEntry.character.portrait]}>
@@ -300,155 +199,11 @@ function DayChangeEntryItem({ combatEntry, index }: DayChangeEntryItemProps) {
             Last adventuring day was Deadly.
           </div>
           <div>The following items lost durability</div>
-          <DurabilityComponent
-            item="Field Armor of the Pansars"
-            owner="Vikomer"
-          />
-          <DurabilityComponent item="Medium Armor" owner="B" />
-          <DurabilityComponent item="Medium Armor" owner="Wamba" />
-          <DurabilityComponent item="Heavy Armor" owner="Wamba" />
-          <DurabilityComponent
-            item="Strong Alchemical Firetube"
-            owner="Vikomer"
-          />
-          <DurabilityComponent item="Medium Armor" owner="Wamba" />
-          <DurabilityComponent item="Light Armor" owner="A" />
+          {combatEntry.durability.map((item, index) => {
+            return <DurabilityComponent item={item} key={index} />;
+          })}
         </div>
-        {/* {combatEntry.roll_source === "Resting" ? null : (
-          <Breakdown>1d{combatEntry.roll_entry.dice} </Breakdown>
-        )}
-        <ResultContainer>
-          {combatEntry.roll_state === "full" ||
-          combatEntry.roll_state === "weak" ? (
-            <>
-              <Result
-                title={title}
-                $position={0}
-                className={isRolling ? "rolling" : ""}
-                style={{
-                  opacity:
-                    (combatEntry.roll_state === "full" &&
-                      ((combatEntry.roll_source === "Skill Test" &&
-                        currentDisplay1 <= currentDisplay2) ||
-                        (combatEntry.roll_source !== "Skill Test" &&
-                          currentDisplay1 >= currentDisplay2))) ||
-                    (combatEntry.roll_state === "weak" &&
-                      ((combatEntry.roll_source === "Skill Test" &&
-                        currentDisplay1 >= currentDisplay2) ||
-                        (combatEntry.roll_source !== "Skill Test" &&
-                          currentDisplay1 <= currentDisplay2)))
-                      ? 1
-                      : 0.1,
-                }}
-              >
-                {currentDisplay1}
-              </Result>
-              <ResultDivider />
-              <Result
-                title={title}
-                $position={1}
-                className={isRolling ? "rolling" : ""}
-                style={{
-                  opacity:
-                    (combatEntry.roll_state === "full" &&
-                      ((combatEntry.roll_source === "Skill Test" &&
-                        currentDisplay2 <= currentDisplay1) ||
-                        (combatEntry.roll_source !== "Skill Test" &&
-                          currentDisplay2 >= currentDisplay1))) ||
-                    (combatEntry.roll_state === "weak" &&
-                      ((combatEntry.roll_source === "Skill Test" &&
-                        currentDisplay2 >= currentDisplay1) ||
-                        (combatEntry.roll_source !== "Skill Test" &&
-                          currentDisplay2 <= currentDisplay1)))
-                      ? 1
-                      : 0.1,
-                }}
-              >
-                {currentDisplay2}
-              </Result>
-            </>
-          ) : (
-            <Result
-              title={title}
-              $position={2}
-              className={isRolling ? "rolling" : ""}
-            >
-              {combatEntry.roll_source === "Resting" ? (
-                <FontAwesomeIcon icon={faMoon} />
-              ) : (
-                currentDisplay1
-              )}
-            </Result>
-          )}
-        </ResultContainer>
-        <SourceContainer>
-          {combatEntry.roll_source === "Skill Test" ? (
-            <Active
-              $rgb={EntryColor()}
-              $issuccess={combatEntry.roll_entry.success}
-            >
-              {modifierText} {toTitleCase(roll_text)}
-            </Active>
-          ) : (
-            <Active
-              $rgb={EntryColor()}
-              $issuccess={combatEntry.roll_entry.success}
-            >
-              {toTitleCase(roll_text)}
-            </Active>
-          )}
-        </SourceContainer>
-        {combatEntry.roll_source === "Resting" ? null : (
-          <FumbledSubText title={durability_title}>
-            {FumbledPerfectText() !== ""
-              ? FumbledPerfectText()
-              : combatEntry.roll_source}
-          </FumbledSubText>
-        )} */}
       </RollContainer>
-      {/* <RightBlock>
-        {combatEntry.roll_source === "Skill Test" ? (
-          combatEntry.roll_entry.critical.state === 2 ? (
-            <FontAwesomeIcon
-              icon={faAngleDoubleUp}
-              color="#5cb57c"
-              style={{
-                fontSize: "25px",
-              }}
-            />
-          ) : combatEntry.roll_entry.critical.state === 0 ? (
-            <FontAwesomeIcon
-              icon={faAngleDoubleDown}
-              color="#b55c5c"
-              style={{
-                fontSize: "25px",
-              }}
-            />
-          ) : combatEntry.roll_entry.success ? (
-            <FontAwesomeIcon
-              icon={faCheck}
-              color="#5cb57c"
-              style={{
-                fontSize: "25px",
-              }}
-            />
-          ) : (
-            <FontAwesomeIcon
-              icon={faXmark}
-              color="#b55c5c"
-              style={{
-                fontSize: "25px",
-              }}
-            />
-          )
-        ) : null}
-        {combatEntry.durability.check === 5 &&
-        !combatEntry.roll_entry.success &&
-        (combatEntry.roll_type === "damage" ||
-          combatEntry.roll_type === "armor") ? (
-          <Icon path={mdiShieldOff} size={0.9} color={"#b55c5c"} />
-        ) : null}
-      </RightBlock> */}
     </Container>
   );
 }

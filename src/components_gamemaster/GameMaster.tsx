@@ -5,6 +5,7 @@ import * as Constants from "../Constants";
 import {
   ActiveStateType,
   AdvantageType,
+  ChallengeEntry,
   CharacterEntry,
   SessionEntry,
 } from "../Types";
@@ -13,7 +14,10 @@ import CreatureEncounterSection from "./CreatureEncounterSection";
 import TimeTrackBox from "../components_gamemaster/TimeTrackBox";
 import TravelBox from "../components_gamemaster/TravelBox";
 import "../layout.css";
-import { DailyDurability } from "../functions/UtilityFunctions";
+import { update_session } from "../functions/SessionsFunctions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart, faSkull } from "@fortawesome/free-solid-svg-icons";
+import { ChallengeRating } from "../functions/UtilityFunctions";
 
 interface ContainerProps {
   height: string;
@@ -108,6 +112,32 @@ function GameMaster({
     setCharacterLog(combined_creatures);
   }, [session]);
 
+  const HandleAddDamageGain = () => {
+    session.travel.damage_gain += 1;
+    update_session(session, websocket);
+  };
+
+  const HandleAddCorruptionGain = () => {
+    session.travel.corruption_gain += 1;
+    update_session(session, websocket);
+  };
+
+  const HandleSubDamageGain = () => {
+    if (session.travel.damage_gain === 0) {
+      return;
+    }
+    session.travel.damage_gain -= 1;
+    update_session(session, websocket);
+  };
+
+  const HandleSubCorruptionGain = () => {
+    if (session.travel.corruption_gain === 0) {
+      return;
+    }
+    session.travel.corruption_gain -= 1;
+    update_session(session, websocket);
+  };
+
   return (
     <div
       style={{
@@ -126,12 +156,36 @@ function GameMaster({
           <ResetCreatureEncounter session={session} websocket={websocket} />
           <TravelBox session={session} websocket={websocket} />
           <div
+            className="row empty_color button"
+            style={{ maxWidth: "60px" }}
+            onClick={() => HandleSubDamageGain()}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              HandleAddDamageGain();
+            }}
+          >
+            <FontAwesomeIcon icon={faHeart} color={Constants.COLOR_1} />
+            {session.travel.damage_gain}
+          </div>
+          <div
+            className="row empty_color button"
+            style={{ maxWidth: "60px" }}
+            onClick={() => HandleSubCorruptionGain()}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              HandleAddCorruptionGain();
+            }}
+          >
+            <FontAwesomeIcon icon={faSkull} color={Constants.COLOR_3} />
+            {session.travel.corruption_gain}
+          </div>
+          {/* <div
             className="row base_color button"
             style={{ maxWidth: "50px" }}
             onClick={() => DailyDurability(session)}
           >
             a
-          </div>
+          </div> */}
         </Row>
       </Container>
       <DynamicContainer key="container">

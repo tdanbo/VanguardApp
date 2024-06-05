@@ -262,7 +262,6 @@ function CombatSection({
       <DynamicContainer>
         <Column ref={scrollRef} width={"100%"}>
           {session.combatlog.map((item, index) => {
-            console.log(item.roll_type);
             if (item.roll_type === "eating" || item.roll_type === "sleeping") {
               return (
                 <RestEntryItem

@@ -8,6 +8,10 @@ import { Socket } from "socket.io-client";
 
 import "../layout.css";
 import { useState } from "react";
+import {
+  LowerToughness,
+  RaiseToughness,
+} from "../functions/CharacterFunctions";
 
 interface HealthBoxProps {
   character: CharacterEntry;
@@ -23,27 +27,6 @@ function SmallHealthComponent({
   websocket,
   isCreature,
 }: HealthBoxProps) {
-  const handleAddToughness = () => {
-    if (character.health.damage > 0) {
-      character.health.damage -= 1;
-    }
-    update_session(session, websocket, character, isCreature);
-  };
-
-  const handleSubToughness = () => {
-    const maxToughness =
-      character.stats.strong.value < 10 ? 10 : character.stats.strong.value;
-
-    const value_step = 1;
-
-    if (character.health.damage === maxToughness) {
-      console.log("Max damage reached");
-    } else {
-      character.health.damage += value_step;
-    }
-    update_session(session, websocket, character, isCreature);
-  };
-
   const maxToughness = GetMaxToughness(character);
 
   const remaining_toughness = maxToughness - character.health.damage;
@@ -59,15 +42,16 @@ function SmallHealthComponent({
       <div
         className="row button opaque_color"
         style={{ maxWidth: "30%", fontSize: "20px" }}
-        onClick={handleSubToughness}
+        onClick={() =>
+          LowerToughness(character, session, websocket, isCreature)
+        }
         onContextMenu={(e) => {
           e.preventDefault();
-          handleAddToughness();
+          RaiseToughness(character, session, websocket, isCreature);
         }}
       >
         <FontAwesomeIcon
           icon={faHeart}
-          onClick={handleSubToughness}
           fontSize={"20px"}
           color={Constants.COLOR_1}
           opacity={1.0}

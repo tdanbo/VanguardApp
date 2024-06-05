@@ -23,7 +23,6 @@ import {
   CharacterEntry,
   CombatEntry,
   CriticalType,
-  DurabilityEntry,
   ItemEntry,
   RollEntry,
   RollTypeEntry,
@@ -268,27 +267,6 @@ function RollComponent({
       dice: dice,
     };
 
-    const durability_item: DurabilityEntry = {
-      name: "",
-      check: random(1, 5),
-    };
-
-    let random_item: null | ItemEntry = null;
-    if (roll_type === "damage" && !success && durability_item.check === 5) {
-      random_item = PickRandomWeapon(character);
-    } else if (
-      roll_type === "armor" &&
-      !success &&
-      durability_item.check === 5
-    ) {
-      random_item = PickRandomArmor(character, equipment);
-    }
-
-    if (random_item) {
-      SetDurability(character, random_item.id);
-      durability_item.name = random_item.name;
-    }
-
     const NewCombatEntry: CombatEntry = {
       character,
       roll_type,
@@ -297,7 +275,7 @@ function RollComponent({
       roll_entry,
       uuid: uuidv4(),
       entry: "CombatEntry",
-      durability: durability_item,
+      durability: [],
     };
 
     session.combatlog.push(NewCombatEntry);

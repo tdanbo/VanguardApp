@@ -106,6 +106,7 @@ export interface ItemEntry {
   equipped: boolean;
   light: boolean;
   id: string;
+  owner?: string;
   static: ItemStatic;
 }
 export interface ItemStatic {
@@ -158,11 +159,6 @@ export interface AbilityStatic {
   category: string;
 }
 
-export type DurabilityEntry = {
-  name: string;
-  check: number;
-};
-
 export type CombatEntry = {
   character: CharacterEntry;
   roll_type: RollTypeEntry;
@@ -170,7 +166,7 @@ export type CombatEntry = {
   roll_state: ActiveStateType;
   roll_entry: RollEntry;
   uuid: string;
-  durability: DurabilityEntry;
+  durability: ItemEntry[];
   entry: "CombatEntry";
 };
 
@@ -273,6 +269,19 @@ export type ActivesEntry = {
   casting: { mod: number; stat: StatName };
   sneaking: { mod: number; stat: StatName };
   initiative: { mod: number; stat: StatName };
+};
+
+export type ChallengeEntry =
+  | "slow"
+  | "quiet"
+  | "eventful"
+  | "challenging"
+  | "demanding"
+  | "deadly";
+
+export type DayReportEntry = {
+  challlenge: ChallengeEntry;
+  durability_percent: number;
 };
 
 export type TownsEntry = {

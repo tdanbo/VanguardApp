@@ -49,19 +49,16 @@ function ResetCreatureEncounter({ session, websocket }: ResetEncounterProps) {
   };
 
   const RollInitiative = () => {
-    console.log("Rolling Initiative1");
     for (const character of session.characters) {
       character.details.initiative =
         FindValueFromActive("initiative", character, GetActives(character))
           .value + random(1, 10);
     }
-    console.log("Rolling Initiative2");
     for (const creature of session.encounter) {
       creature.details.initiative =
         FindValueFromActive("initiative", creature, GetActives(creature))
           .value + random(1, 10);
     }
-    console.log("Rolling Initiative3");
     update_session(session, websocket);
   };
 

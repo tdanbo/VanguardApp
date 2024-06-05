@@ -51,7 +51,6 @@ function CreatureEncounterSection({
   // If setSortedEncounter is part of your useState declaration, it should look like this
 
   const onCreatureDelete = (name: string) => {
-    console.log("Deleting creature: ", name);
     const newEncounter = session.encounter.filter(
       (entry) => entry.name !== name,
     );

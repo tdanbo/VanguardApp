@@ -59,7 +59,7 @@ export default function RestComponent({
         success: true,
         dice: 0,
       },
-      durability: { name: "", check: 0 },
+      durability: [],
       uuid: uuidv4(),
       entry: "CombatEntry",
     };
@@ -92,7 +92,7 @@ export default function RestComponent({
         success: true,
         dice: 0,
       },
-      durability: { name: "", check: 0 },
+      durability: [],
       uuid: uuidv4(),
       entry: "CombatEntry",
     };

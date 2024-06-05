@@ -2,10 +2,17 @@ import { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { NewCharacterEntry, SessionEntry, TimeCategory } from "../Types";
+import {
+  ChallengeEntry,
+  NewCharacterEntry,
+  SessionEntry,
+  TimeCategory,
+} from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
 import { v4 as uuidv4 } from "uuid";
 import { CombatEntry } from "../Types";
+import { DurabilityReport } from "../functions/UtilityFunctions";
+
 import {
   toTitleCase,
   LowerEnergy,
@@ -95,11 +102,13 @@ function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {
           success: true,
           dice: 0,
         },
-        durability: { name: "", check: 0 },
+        durability: DurabilityReport(session),
         uuid: uuidv4(),
         entry: "CombatEntry",
       };
       session.combatlog.push(day_log);
+      session.travel.damage_gain = 0;
+      session.travel.corruption_gain = 0;
       setActiveHour("morning");
     } else if (session.travel.time === "morning") {
       session.travel.time = "afternoon";
@@ -111,7 +120,6 @@ function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {
       session.travel.time = "night";
       setActiveHour("night");
     }
-
     update_session(session, websocket, NewCharacterEntry, false);
   };
 

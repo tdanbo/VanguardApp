@@ -4,13 +4,13 @@ import { faShieldAlt, faShieldHalved } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../Constants";
 import Icon from "@mdi/react";
 import { mdiShieldOff } from "@mdi/js";
+import { ItemEntry } from "../Types";
 
 interface DurabilityComponentProps {
-  item: string;
-  owner: string;
+  item: ItemEntry;
 }
 
-export function DurabilityComponent({ item, owner }: DurabilityComponentProps) {
+export function DurabilityComponent({ item }: DurabilityComponentProps) {
   return (
     <div
       className="row base_color"
@@ -20,7 +20,7 @@ export function DurabilityComponent({ item, owner }: DurabilityComponentProps) {
         <Icon path={mdiShieldOff} size={0.8} color={Constants.BRIGHT_RED} />
       </div>
       <div className="columnm " style={{ width: "80%" }}>
-        <div className="row ">{item}</div>
+        <div className="row ">{item.name}</div>
         <div
           className="row"
           style={{
@@ -29,7 +29,7 @@ export function DurabilityComponent({ item, owner }: DurabilityComponentProps) {
             fontSize: "10px",
           }}
         >
-          Equipment
+          {item.equipped ? "Equipped" : "Inventory"}
         </div>
       </div>
       <div
@@ -41,7 +41,7 @@ export function DurabilityComponent({ item, owner }: DurabilityComponentProps) {
           alignItems: "flex-start",
         }}
       >
-        {owner}
+        {item.owner}
       </div>
     </div>
   );

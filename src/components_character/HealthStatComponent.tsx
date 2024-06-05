@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { CharacterEntry, SessionEntry } from "../Types";
+import { CharacterEntry, SessionEntry, ChallengeEntry } from "../Types";
 import { GetMaxToughness } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
+import { ChallengeRating } from "../functions/UtilityFunctions";
 
 interface BgColor {
   $bgcolor: string;
@@ -36,6 +37,10 @@ import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Socket } from "socket.io-client";
 import { useState } from "react";
+import {
+  LowerToughness,
+  RaiseToughness,
+} from "../functions/CharacterFunctions";
 
 interface HealthBoxProps {
   character: CharacterEntry;
@@ -52,29 +57,8 @@ function HealthStatComponent({
   isCreature,
 }: HealthBoxProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const handleAddToughness = () => {
-    if (character.health.damage > 0) {
-      character.health.damage -= 1;
-    }
-    update_session(session, websocket, character, isCreature);
-  };
-
-  const handleSubToughness = () => {
-    const maxToughness =
-      character.stats.strong.value < 10 ? 10 : character.stats.strong.value;
-
-    const value_step = 1;
-
-    if (character.health.damage === maxToughness) {
-      console.log("Max damage reached");
-    } else {
-      character.health.damage += value_step;
-    }
-    update_session(session, websocket, character, isCreature);
-  };
 
   const maxToughness = GetMaxToughness(character);
-
   const damage_toughness = character.health.damage;
   const remaining_toughness = maxToughness - character.health.damage;
 
@@ -89,7 +73,9 @@ function HealthStatComponent({
         <div
           className="row button-hover button_color"
           style={{ maxWidth: "30px" }}
-          onClick={handleSubToughness}
+          onClick={() =>
+            LowerToughness(character, session, websocket, isCreature)
+          }
         >
           <FontAwesomeIcon
             icon={faMinus}
@@ -157,7 +143,9 @@ function HealthStatComponent({
         <div
           className="row button-hover button_color"
           style={{ maxWidth: "30px" }}
-          onClick={handleAddToughness}
+          onClick={() =>
+            RaiseToughness(character, session, websocket, isCreature)
+          }
         >
           <FontAwesomeIcon
             icon={faPlus}

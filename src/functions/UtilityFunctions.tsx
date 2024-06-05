@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import { GeneralItem } from "../Types";
+import { GeneralItem, DayReportEntry, ChallengeEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
 import {
   AbilityEntry,
@@ -11,14 +11,17 @@ import {
   ItemEntry,
   SessionEntry,
   CriticalType,
-  DurabilityEntry,
   RollEntry,
   RollTypeEntry,
   CombatEntry,
 } from "../Types";
 import { cloneDeep, random } from "lodash";
 import { HasRangedWeapon, Ammunition } from "./CharacterFunctions";
-import { GetMaxToughness, SetDurability } from "./RulesFunctions";
+import {
+  GetMaxToughness,
+  SetDurability,
+  GetTemporaryCorruption,
+} from "./RulesFunctions";
 import { v4 as uuidv4 } from "uuid";
 
 export function UpperFirstLetter(input: string): string {
@@ -554,23 +557,6 @@ export function RollDice({
     dice: dice,
   };
 
-  const durability_item: DurabilityEntry = {
-    name: "",
-    check: random(1, 5),
-  };
-
-  let random_item: null | ItemEntry = null;
-  if (roll_type === "damage" && !success && durability_item.check === 5) {
-    random_item = PickRandomWeapon(character);
-  } else if (roll_type === "armor" && !success && durability_item.check === 5) {
-    random_item = PickRandomArmor(character, equipment);
-  }
-
-  if (random_item) {
-    SetDurability(character, random_item.id);
-    durability_item.name = random_item.name;
-  }
-
   const NewCombatEntry: CombatEntry = {
     character,
     roll_type,
@@ -579,7 +565,7 @@ export function RollDice({
     roll_entry,
     uuid: uuidv4(),
     entry: "CombatEntry",
-    durability: durability_item,
+    durability: [],
   };
 
   session.combatlog.push(NewCombatEntry);
@@ -598,29 +584,57 @@ export function RollDice({
   update_session(session, websocket, character, isCreature);
 }
 
-export function ToughnessLostPercent(session: SessionEntry) {
-  const toughness_lost = 20;
-  let total_toughness: number = 0;
+export function ChallengeRating(session: SessionEntry): ChallengeEntry {
+  let challenge: ChallengeEntry = "quiet";
+  let total_resources_spent =
+    session.travel.corruption_gain + session.travel.damage_gain;
+  let total_resources = 0;
 
   for (const character of session.characters) {
-    total_toughness += GetMaxToughness(character);
+    total_resources += GetMaxToughness(character);
+    total_resources += GetTemporaryCorruption(character);
   }
-  console.log("Max Toughness: " + total_toughness);
-  return (toughness_lost / total_toughness) * 100;
+
+  const resources_percent = (total_resources_spent / total_resources) * 100;
+
+  if (resources_percent > 50) {
+    challenge = "deadly";
+  } else if (resources_percent > 40) {
+    challenge = "demanding";
+  } else if (resources_percent > 30) {
+    challenge = "challenging";
+  } else if (resources_percent > 20) {
+    challenge = "eventful";
+  } else if (resources_percent > 10) {
+    challenge = "quiet";
+  } else {
+    challenge = "slow";
+  }
+
+  return challenge;
 }
 
-export function DailyDurability(session: SessionEntry) {
-  const toughness_percentage_lost = ToughnessLostPercent(session);
-  console.log("Toughness Lost: " + toughness_percentage_lost + "%");
+export function DurabilityReport(session: SessionEntry): ItemEntry[] {
+  const item_damaged: ItemEntry[] = [];
+  const challenge = ChallengeRating(session);
+  const durability: Record<ChallengeEntry, number> = {
+    slow: 0,
+    quiet: 10,
+    eventful: 20,
+    challenging: 30,
+    demanding: 40,
+    deadly: 50,
+  };
+
   for (const character of session.characters) {
-    console.log("-----------------");
-    console.log(character.name);
-    const max_number = 5;
     for (const item of character.inventory) {
-      const durability_roll = random(1, max_number);
-      if (durability_roll === max_number && item.durability > 0) {
+      const durability_roll = random(1, 100);
+      if (durability_roll <= durability[challenge] && item.durability > 0) {
         console.log(item.name + " durability loss");
+        item.owner = character.name;
+        item_damaged.push(item);
       }
     }
   }
+  return item_damaged;
 }

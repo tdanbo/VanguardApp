@@ -328,7 +328,6 @@ function EditCharacterComponent({
   }, [characterXp]);
 
   const handlePostCharacter = async () => {
-    console.log(isCreature);
     character.name = name;
     character.details.race = race;
     character.portrait = characterPortrait;
@@ -369,8 +368,6 @@ function EditCharacterComponent({
   };
 
   const handleOpen = () => {
-    console.log("Opening Modal");
-    console.log(character);
     setName(character.name);
     setCharacterPortrait(character.portrait);
     setRace(character.details.race);

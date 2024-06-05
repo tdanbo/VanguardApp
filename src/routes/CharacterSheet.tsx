@@ -1,5 +1,10 @@
 import styled from "styled-components";
-import { AdvantageType, CharacterEntry, SessionEntry } from "../Types";
+import {
+  AdvantageType,
+  ChallengeEntry,
+  CharacterEntry,
+  SessionEntry,
+} from "../Types";
 import AbilitySection from "../components_character/AbilitySection";
 import CharacterNameBox from "../components_character/CharacterNameBox";
 import ResourcesBox from "../components_character/ResourcesBox";
