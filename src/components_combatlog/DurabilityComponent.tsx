@@ -16,10 +16,10 @@ export function DurabilityComponent({ item }: DurabilityComponentProps) {
       className="row base_color"
       style={{ width: "90%", fontSize: "14px", padding: "8px" }}
     >
-      <div style={{ height: "100%" }}>
+      <div style={{ height: "100%", width: "20%" }}>
         <Icon path={mdiShieldOff} size={0.8} color={Constants.BRIGHT_RED} />
       </div>
-      <div className="columnm " style={{ width: "80%" }}>
+      <div className="columnm " style={{ width: "60%" }}>
         <div className="row ">{item.name}</div>
         <div
           className="row"
@@ -39,6 +39,7 @@ export function DurabilityComponent({ item }: DurabilityComponentProps) {
           height: "100%",
           width: "20%",
           alignItems: "flex-start",
+          justifyContent: "flex-end",
         }}
       >
         {item.owner}
