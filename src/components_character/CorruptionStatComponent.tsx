@@ -34,7 +34,6 @@ import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Socket } from "socket.io-client";
 import { useState } from "react";
-import { ChallengeRating } from "../functions/UtilityFunctions";
 import {
   LowerCorruption,
   RaiseCorruption,

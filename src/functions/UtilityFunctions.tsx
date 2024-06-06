@@ -584,8 +584,7 @@ export function RollDice({
   update_session(session, websocket, character, isCreature);
 }
 
-export function ChallengeRating(session: SessionEntry): ChallengeEntry {
-  let challenge: ChallengeEntry = "quiet";
+export function UsedResources(session: SessionEntry): number {
   let total_resources_spent =
     session.travel.corruption_gain + session.travel.damage_gain;
   let total_resources = 0;
@@ -597,40 +596,45 @@ export function ChallengeRating(session: SessionEntry): ChallengeEntry {
 
   const resources_percent = (total_resources_spent / total_resources) * 100;
 
-  if (resources_percent > 50) {
-    challenge = "deadly";
-  } else if (resources_percent > 40) {
-    challenge = "demanding";
-  } else if (resources_percent > 30) {
-    challenge = "challenging";
-  } else if (resources_percent > 20) {
-    challenge = "eventful";
-  } else if (resources_percent > 10) {
-    challenge = "quiet";
-  } else {
-    challenge = "slow";
-  }
+  return Math.round(resources_percent);
+}
 
-  return challenge;
+export function calculateDurabilityPercentage(usedResources: number): number {
+  const resourceUsedStart = 0; // The final value will be between this number and resourceUsedEnd.
+  const resourceUsedEnd = 75; // This is the the resource loss % which the players need to hit to reach the cap. The is a way of defining a worst case scenario.
+  const durabilityCap = 50; // The chance an items loses durability can never exceed this % number. And will be a linear transformation from resourceUsedStart to resourceUsedEnd.
+
+  // Ensure the value is within the range
+  if (usedResources < 0) usedResources = resourceUsedStart;
+  if (usedResources > resourceUsedEnd) usedResources = resourceUsedEnd;
+
+  // Calculate the slope (m) of the linear transformation
+  const m = durabilityCap / (resourceUsedEnd - resourceUsedStart);
+
+  // Calculate the percentage
+  const percentage = m * (usedResources - resourceUsedStart);
+
+  return Math.round(percentage);
 }
 
 export function DurabilityReport(session: SessionEntry): ItemEntry[] {
   const item_damaged: ItemEntry[] = [];
-  const challenge = ChallengeRating(session);
-  const durability: Record<ChallengeEntry, number> = {
-    slow: 0,
-    quiet: 10,
-    eventful: 20,
-    challenging: 30,
-    demanding: 40,
-    deadly: 50,
-  };
+
+  const usedResources = UsedResources(session); // The % of resources used by the players.
+  const durability_percentage = calculateDurabilityPercentage(usedResources);
 
   for (const character of session.characters) {
     for (const item of character.inventory) {
       const durability_roll = random(1, 100);
-      if (durability_roll <= durability[challenge] && item.durability > 0) {
-        console.log(item.name + " durability loss");
+      if (durability_roll <= durability_percentage && item.durability > 0) {
+        console.log(
+          item.name +
+            " durability loss - roll: " +
+            durability_roll +
+            "<=" +
+            durability_percentage,
+        );
+        item.durability -= 1;
         item.owner = character.name;
         item_damaged.push(item);
       }

@@ -8,7 +8,6 @@ import "../layout.css";
 import {
   ActiveStateType,
   AdvantageType,
-  ChallengeEntry,
   EmptySession,
   NewCharacterEntry,
   SessionEntry,
@@ -18,7 +17,6 @@ import useSocketIO from "../socketio";
 import Browser from "./Browser";
 import CharacterSheet from "./CharacterSheet";
 import CombatSection from "./CombatSection";
-import { ChallengeRating } from "../functions/UtilityFunctions";
 
 import { GetGameData } from "../contexts/GameContent";
 

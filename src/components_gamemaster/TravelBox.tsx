@@ -13,7 +13,6 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import {
-  ChallengeEntry,
   CombatEntry,
   NewCharacterEntry,
   SessionEntry,
@@ -28,8 +27,6 @@ import {
 } from "../components_general/SelectorStyles";
 import { GetBurnRate } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-import { toTitleCase } from "../functions/UtilityFunctions";
-import { ChallengeRating } from "../functions/UtilityFunctions";
 export const ModalContainer = styled.div`
   background-color: ${Constants.BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -524,9 +521,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
           {session.travel.time.toUpperCase()}
         </TravelLeftButton>
         <Divider />
-        <TravelButton>
-          {ChallengeRating(session).toUpperCase()} DAY {session.travel.day}
-        </TravelButton>
+        <TravelButton>DAY {session.travel.day}</TravelButton>
         <Divider />
         {/* <TravelButton>ETA {session.travel.distance} KM</TravelButton> */}
         <TravelRightButton>

@@ -3,6 +3,7 @@ import {
   faAngleDoubleUp,
   faCheck,
   faMoon,
+  faSun,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,7 +11,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import "../App.css";
 import * as Constants from "../Constants";
-import { CharacterPortraits } from "../Images";
+import { CharacterPortraits, NewDayIcon } from "../Images";
 import { CombatEntry, SessionEntry, DayReportEntry } from "../Types";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import Icon from "@mdi/react";
@@ -185,23 +186,46 @@ function DayChangeEntryItem({ combatEntry }: DayChangeEntryItemProps) {
   };
 
   return (
-    <Container src={CharacterPortraits[combatEntry.character.portrait]}>
+    <Container src={NewDayIcon}>
       <ColorBlock
         $rgb={EntryColor()}
         $issuccess={combatEntry.roll_entry.success}
       />
       <RollContainer>
         <div className="column">
+          <FontAwesomeIcon
+            icon={faSun}
+            size="xl"
+            color={Constants.BRIGHT_YELLOW}
+          />
           <div style={{ fontSize: "25px", fontWeight: "bold" }}>
             {combatEntry.roll_source}
           </div>
-          <div style={{ textAlign: "center" }}>
-            Last adventuring day was Deadly.
+          <div
+            style={{
+              fontSize: "12px",
+            }}
+          >
+            +5 Experience
           </div>
-          <div>The following items lost durability</div>
-          {combatEntry.durability.map((item, index) => {
-            return <DurabilityComponent item={item} key={index} />;
-          })}
+          <div
+            className="row"
+            style={{
+              width: "80%",
+              textAlign: "center",
+              color: Constants.WIDGET_SECONDARY_FONT,
+              fontSize: "14px",
+              marginTop: "5px",
+            }}
+          >
+            As the sun rises and sets, another day of adventuring passes. The
+            following items have lost 1 durability due to wear and tear.
+          </div>
+          <div className="column" style={{ margin: "10px" }}>
+            {combatEntry.durability.map((item, index) => {
+              return <DurabilityComponent item={item} key={index} />;
+            })}
+          </div>
         </div>
       </RollContainer>
     </Container>

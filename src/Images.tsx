@@ -152,6 +152,9 @@ import Anvil from "./assets/icons/durability.png";
 
 import Loot from "./assets/icons/loot.png";
 
+import NewDay from "./assets/background/NewDay.jpg";
+
+export const NewDayIcon = NewDay;
 export const LootIcon = Loot;
 
 export const Dice6Icon = Dice6;

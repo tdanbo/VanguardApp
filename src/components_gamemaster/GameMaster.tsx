@@ -5,7 +5,6 @@ import * as Constants from "../Constants";
 import {
   ActiveStateType,
   AdvantageType,
-  ChallengeEntry,
   CharacterEntry,
   SessionEntry,
 } from "../Types";
@@ -17,7 +16,12 @@ import "../layout.css";
 import { update_session } from "../functions/SessionsFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faSkull } from "@fortawesome/free-solid-svg-icons";
-import { ChallengeRating } from "../functions/UtilityFunctions";
+import {
+  UsedResources,
+  calculateDurabilityPercentage,
+} from "../functions/UtilityFunctions";
+import Icon from "@mdi/react";
+import { mdiShieldOff } from "@mdi/js";
 
 interface ContainerProps {
   height: string;
@@ -138,6 +142,9 @@ function GameMaster({
     update_session(session, websocket);
   };
 
+  const usedResources = UsedResources(session);
+  const durability_percentage = calculateDurabilityPercentage(usedResources);
+
   return (
     <div
       style={{
@@ -155,6 +162,16 @@ function GameMaster({
         <Row width={"100%"}>
           <ResetCreatureEncounter session={session} websocket={websocket} />
           <TravelBox session={session} websocket={websocket} />
+
+          <div className="row empty_color button" style={{ maxWidth: "125px" }}>
+            <Icon
+              path={mdiShieldOff}
+              size={0.6}
+              color={Constants.WIDGET_PRIMARY_FONT}
+            />
+            {usedResources}% | {durability_percentage}%
+          </div>
+
           <div
             className="row empty_color button"
             style={{ maxWidth: "60px" }}

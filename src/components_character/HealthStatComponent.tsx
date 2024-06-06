@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { CharacterEntry, SessionEntry, ChallengeEntry } from "../Types";
+import { CharacterEntry, SessionEntry } from "../Types";
 import { GetMaxToughness } from "../functions/RulesFunctions";
-import { update_session } from "../functions/SessionsFunctions";
-import { ChallengeRating } from "../functions/UtilityFunctions";
 
 interface BgColor {
   $bgcolor: string;
