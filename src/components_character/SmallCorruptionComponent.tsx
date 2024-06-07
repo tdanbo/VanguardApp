@@ -103,7 +103,7 @@ function SmallCorruptionComponent({
           color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
         }}
       >
-        Corruption
+        Perm. Corruption
       </div>
     </div>
   );

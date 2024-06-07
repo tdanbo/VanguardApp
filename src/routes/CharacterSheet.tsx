@@ -92,6 +92,7 @@ import UpdateAbilityStats from "../functions/rules/UpdateAbilityStats";
 import EquipmentSection from "../components_character/EquipmentSection";
 import RestComponent from "../components_character/RestComponent";
 import { ActiveStateType } from "../Types";
+import EnergyStatComponent from "../components_character/EnergyStatComponent";
 type CharacterSheetProps = {
   websocket: Socket;
   session: SessionEntry;
@@ -380,18 +381,23 @@ function CharacterSheet({
       </Container>
       <Container height={"50px"}>
         <Row width={"50%"}>
-          {
-            <HealthStatComponent
-              websocket={websocket}
-              session={session}
-              character={character}
-              isCreature={isCreature}
-              browser={false}
-            />
-          }
+          <HealthStatComponent
+            websocket={websocket}
+            session={session}
+            character={character}
+            isCreature={isCreature}
+            browser={false}
+          />
         </Row>
         <Row width={"50%"}>
           <CorruptionStatComponent
+            websocket={websocket}
+            session={session}
+            character={character}
+            isCreature={isCreature}
+            browser={false}
+          />
+          <EnergyStatComponent
             websocket={websocket}
             session={session}
             character={character}

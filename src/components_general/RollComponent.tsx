@@ -7,11 +7,6 @@ import {
   Dice6FillIcon,
   Dice8FillIcon,
 } from "../Images";
-import {
-  GetDatabaseEquipment,
-  IsArmor,
-  IsWeapon,
-} from "../functions/UtilityFunctions";
 
 import { random } from "lodash";
 import { Socket } from "socket.io-client";
@@ -23,17 +18,14 @@ import {
   CharacterEntry,
   CombatEntry,
   CriticalType,
-  DurabilityEntry,
   ItemEntry,
   RollEntry,
   RollTypeEntry,
   SessionEntry,
 } from "../Types";
-import { SetDurability } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesDown, faAnglesUp } from "@fortawesome/free-solid-svg-icons";
-import { GetGameData } from "../contexts/GameContent";
 
 type RollComponentProps = {
   session: SessionEntry;
@@ -85,44 +77,6 @@ const RollContainer = styled.div<RollContainerProps>`
     props.$inactive ? "1px 1px 2px black" : "0px 0px 0px transparent;"};
 `;
 
-function PickRandomWeapon(character: CharacterEntry) {
-  const weapon_list = [];
-
-  for (const item of character.inventory) {
-    if (
-      (IsWeapon(item) || item.static.category === "shield") &&
-      item.equipped
-    ) {
-      weapon_list.push(item);
-    }
-  }
-
-  if (weapon_list.length === 0) {
-    return null;
-  }
-  const randomIndex = Math.floor(Math.random() * weapon_list.length);
-
-  return weapon_list[randomIndex];
-}
-
-function PickRandomArmor(character: CharacterEntry, equipment: ItemEntry[]) {
-  const armor_list = [];
-
-  for (const item of character.inventory) {
-    const item_database = GetDatabaseEquipment(item, equipment);
-    if (IsArmor(item_database) && item.equipped) {
-      armor_list.push(item);
-    }
-  }
-
-  if (armor_list.length === 0) {
-    return null;
-  }
-  const randomIndex = Math.floor(Math.random() * armor_list.length);
-
-  return armor_list[randomIndex];
-}
-
 function HasAmmunition(character: CharacterEntry) {
   for (const item of character.inventory) {
     if (
@@ -173,8 +127,6 @@ function RollComponent({
   setAdvantage,
   setCriticalState,
 }: RollComponentProps) {
-  const { equipment } = GetGameData();
-
   let dice_icon = Dice20FillIcon;
   if (dice === 4) {
     dice_icon = Dice4FillIcon;
@@ -268,27 +220,6 @@ function RollComponent({
       dice: dice,
     };
 
-    const durability_item: DurabilityEntry = {
-      name: "",
-      check: random(1, 5),
-    };
-
-    let random_item: null | ItemEntry = null;
-    if (roll_type === "damage" && !success && durability_item.check === 5) {
-      random_item = PickRandomWeapon(character);
-    } else if (
-      roll_type === "armor" &&
-      !success &&
-      durability_item.check === 5
-    ) {
-      random_item = PickRandomArmor(character, equipment);
-    }
-
-    if (random_item) {
-      SetDurability(character, random_item.id);
-      durability_item.name = random_item.name;
-    }
-
     const NewCombatEntry: CombatEntry = {
       character,
       roll_type,
@@ -297,7 +228,7 @@ function RollComponent({
       roll_entry,
       uuid: uuidv4(),
       entry: "CombatEntry",
-      durability: durability_item,
+      durability: [],
     };
 
     session.combatlog.push(NewCombatEntry);

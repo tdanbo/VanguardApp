@@ -13,8 +13,6 @@ import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { CombatEntry, SessionEntry } from "../Types";
 import { toTitleCase } from "../functions/UtilityFunctions";
-import Icon from "@mdi/react";
-import { mdiShieldOff } from "@mdi/js";
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
   index: number;
@@ -192,7 +190,6 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   }
 
   let title = `Dice: d${combatEntry.roll_entry.dice}${modifierText}\nResult: ${combatEntry.roll_entry.result1}\n`;
-  let durability_title = `Dice: d4\nResult: ${combatEntry.durability.check}\nTarget: 3`;
 
   if (combatEntry.roll_source !== "Skill Test") {
     title += `Modifier: ${combatEntry.roll_entry.mod}\n`;
@@ -272,14 +269,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
         message += "";
       }
     }
-    if (
-      combatEntry.durability.name !== "" &&
-      combatEntry.durability.check === 5
-    ) {
-      message += `${combatEntry.durability.name} lost durability.`;
-    } else {
-      message += "";
-    }
+
     return message;
   };
 
@@ -377,7 +367,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
           )}
         </SourceContainer>
         {combatEntry.roll_source === "Resting" ? null : (
-          <FumbledSubText title={durability_title}>
+          <FumbledSubText>
             {FumbledPerfectText() !== ""
               ? FumbledPerfectText()
               : combatEntry.roll_source}
@@ -419,12 +409,6 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
               }}
             />
           )
-        ) : null}
-        {combatEntry.durability.check === 5 &&
-        !combatEntry.roll_entry.success &&
-        (combatEntry.roll_type === "damage" ||
-          combatEntry.roll_type === "armor") ? (
-          <Icon path={mdiShieldOff} size={0.9} color={"#b55c5c"} />
         ) : null}
       </RightBlock>
     </Container>

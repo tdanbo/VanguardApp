@@ -40,7 +40,7 @@ type health = {
   damage: number;
   corruption: number;
   shield: number;
-  status: StatusCategory;
+  energy: -10 | -9 | -8 | -7 | -6 | -5 | -3 | -2 | -1 | -1 | 0 | 1 | 2 | 3 | 4;
 };
 
 export interface CharacterEntry {
@@ -106,6 +106,7 @@ export interface ItemEntry {
   equipped: boolean;
   light: boolean;
   id: string;
+  owner?: string;
   static: ItemStatic;
 }
 export interface ItemStatic {
@@ -158,11 +159,6 @@ export interface AbilityStatic {
   category: string;
 }
 
-export type DurabilityEntry = {
-  name: string;
-  check: number;
-};
-
 export type CombatEntry = {
   character: CharacterEntry;
   roll_type: RollTypeEntry;
@@ -170,7 +166,7 @@ export type CombatEntry = {
   roll_state: ActiveStateType;
   roll_entry: RollEntry;
   uuid: string;
-  durability: DurabilityEntry;
+  durability: ItemEntry[];
   entry: "CombatEntry";
 };
 
@@ -183,28 +179,14 @@ interface Roll {
 }
 
 export type TimeCategory = "morning" | "afternoon" | "evening" | "night";
-export type StatusCategory =
-  | "resting"
-  | "rested"
-  | "normal"
-  | "tired"
-  | "fatigued"
-  | "exhausted 1"
-  | "exhausted 2"
-  | "exhausted 3"
-  | "exhausted 4"
-  | "exhausted 5"
-  | "exhausted 6"
-  | "exhausted 7"
-  | "exhausted 8"
-  | "exhausted 9"
-  | "exhausted 10";
 
 export type TravelEntry = {
   day: number;
   time: TimeCategory;
   weather: string;
   distance: number;
+  damage_gain: number;
+  corruption_gain: number;
 };
 
 export type LootCategory =
@@ -258,7 +240,10 @@ export type RollTypeEntry =
   | "ability"
   | "mystical power"
   | "monsterous trait"
-  | "utility";
+  | "utility"
+  | "eating"
+  | "sleeping"
+  | "day";
 
 export type CriticalType = {
   state: 0 | 1 | 2;
@@ -284,6 +269,19 @@ export type ActivesEntry = {
   casting: { mod: number; stat: StatName };
   sneaking: { mod: number; stat: StatName };
   initiative: { mod: number; stat: StatName };
+};
+
+export type ChallengeEntry =
+  | "slow"
+  | "quiet"
+  | "eventful"
+  | "challenging"
+  | "demanding"
+  | "deadly";
+
+export type DayReportEntry = {
+  challlenge: ChallengeEntry;
+  durability_percent: number;
 };
 
 export type TownsEntry = {
@@ -322,6 +320,8 @@ export const EmptySession: SessionEntry = {
     time: "morning",
     distance: 0,
     weather: "",
+    damage_gain: 0,
+    corruption_gain: 0,
   },
   characters: [],
   combatlog: [],
@@ -344,7 +344,7 @@ export const NewCharacterEntry: CharacterEntry = {
     damage: 0,
     corruption: 0,
     shield: 0,
-    status: "rested",
+    energy: 4,
   },
   stats: {
     cunning: { value: 15, mod: 0 },

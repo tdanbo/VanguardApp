@@ -423,6 +423,8 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
       time: "morning",
       weather: randomWeather(),
       distance: newdistance,
+      damage_gain: 0,
+      corruption_gain: 0,
     };
 
     session.travel = travelEntry;
@@ -463,7 +465,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
         success: true,
         dice: 0,
       },
-      durability: { name: "", check: 0 },
+      durability: [],
       uuid: uuidv4(),
       entry: "CombatEntry",
     };
@@ -491,17 +493,11 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
       group_xp += character.details.xp_earned;
     }
 
-    console.log("ENCOUNTER");
-    console.log(session.encounter);
-
     for (const creature of session.encounter) {
-      console.log(creature);
       enemy_xp += creature.details.xp_earned;
     }
 
     const ratio = (group_xp > 0 ? enemy_xp / group_xp : Infinity) * 12;
-    console.log(group_xp);
-    console.log(enemy_xp);
     return Math.round(ratio);
   };
 
@@ -517,9 +513,6 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
 
   const difficulty = FightDifficulty();
 
-  console.log("RERENDERING TRAVELBOX");
-  console.log(difficulty);
-
   return (
     <>
       <Container onClick={handleOpen}>
@@ -530,8 +523,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
         <Divider />
         <TravelButton>DAY {session.travel.day}</TravelButton>
         <Divider />
-
-        <TravelButton>ETA {session.travel.distance} KM</TravelButton>
+        {/* <TravelButton>ETA {session.travel.distance} KM</TravelButton> */}
         <TravelRightButton>
           {Array.from({ length: 30 }).map((_, index) => {
             if (index < difficulty) {

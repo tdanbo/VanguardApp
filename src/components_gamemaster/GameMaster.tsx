@@ -13,6 +13,15 @@ import CreatureEncounterSection from "./CreatureEncounterSection";
 import TimeTrackBox from "../components_gamemaster/TimeTrackBox";
 import TravelBox from "../components_gamemaster/TravelBox";
 import "../layout.css";
+import { update_session } from "../functions/SessionsFunctions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart, faSkull } from "@fortawesome/free-solid-svg-icons";
+import {
+  UsedResources,
+  calculateDurabilityPercentage,
+} from "../functions/UtilityFunctions";
+import Icon from "@mdi/react";
+import { mdiShieldOff } from "@mdi/js";
 
 interface ContainerProps {
   height: string;
@@ -107,6 +116,35 @@ function GameMaster({
     setCharacterLog(combined_creatures);
   }, [session]);
 
+  const HandleAddDamageGain = () => {
+    session.travel.damage_gain += 1;
+    update_session(session, websocket);
+  };
+
+  const HandleAddCorruptionGain = () => {
+    session.travel.corruption_gain += 1;
+    update_session(session, websocket);
+  };
+
+  const HandleSubDamageGain = () => {
+    if (session.travel.damage_gain === 0) {
+      return;
+    }
+    session.travel.damage_gain -= 1;
+    update_session(session, websocket);
+  };
+
+  const HandleSubCorruptionGain = () => {
+    if (session.travel.corruption_gain === 0) {
+      return;
+    }
+    session.travel.corruption_gain -= 1;
+    update_session(session, websocket);
+  };
+
+  const usedResources = UsedResources(session);
+  const durability_percentage = calculateDurabilityPercentage(usedResources);
+
   return (
     <div
       style={{
@@ -124,6 +162,47 @@ function GameMaster({
         <Row width={"100%"}>
           <ResetCreatureEncounter session={session} websocket={websocket} />
           <TravelBox session={session} websocket={websocket} />
+
+          <div className="row empty_color button" style={{ maxWidth: "125px" }}>
+            <Icon
+              path={mdiShieldOff}
+              size={0.6}
+              color={Constants.WIDGET_PRIMARY_FONT}
+            />
+            {usedResources}% | {durability_percentage}%
+          </div>
+
+          <div
+            className="row empty_color button"
+            style={{ maxWidth: "60px" }}
+            onClick={() => HandleSubDamageGain()}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              HandleAddDamageGain();
+            }}
+          >
+            <FontAwesomeIcon icon={faHeart} color={Constants.COLOR_1} />
+            {session.travel.damage_gain}
+          </div>
+          <div
+            className="row empty_color button"
+            style={{ maxWidth: "60px" }}
+            onClick={() => HandleSubCorruptionGain()}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              HandleAddCorruptionGain();
+            }}
+          >
+            <FontAwesomeIcon icon={faSkull} color={Constants.COLOR_3} />
+            {session.travel.corruption_gain}
+          </div>
+          {/* <div
+            className="row base_color button"
+            style={{ maxWidth: "50px" }}
+            onClick={() => DailyDurability(session)}
+          >
+            a
+          </div> */}
         </Row>
       </Container>
       <DynamicContainer key="container">

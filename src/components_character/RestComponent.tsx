@@ -1,15 +1,14 @@
 import "../layout.css";
 import { SessionEntry, CharacterEntry, CombatEntry } from "../Types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTent } from "@fortawesome/free-solid-svg-icons";
-import { SetStatusBackward, toTitleCase } from "../functions/UtilityFunctions";
+import { faUtensils } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../Constants";
 import { GetBurnRate } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
-import { RemoveExhaustion } from "../functions/UtilityFunctions";
-import { SetStatusForward } from "../functions/UtilityFunctions";
+import Icon from "@mdi/react";
+import { mdiSleep } from "@mdi/js";
 interface DayComponentProps {
   session: SessionEntry;
   character: CharacterEntry;
@@ -23,7 +22,7 @@ export default function RestComponent({
   websocket,
   isCreature,
 }: DayComponentProps) {
-  const HandleRest = () => {
+  const HandleEat = () => {
     const burnrate = GetBurnRate(character);
     if (
       character.rations.food >= burnrate &&
@@ -31,17 +30,18 @@ export default function RestComponent({
     ) {
       character.rations.food -= burnrate;
       character.rations.water -= burnrate;
-      if (character.health.damage > 0) {
-        character.health.damage -= 1;
-      }
-      character.health.shield = 0;
-      character.health.status = "resting";
+
+      character.effects = character.effects.filter(
+        (effect) => effect.name !== "Exhausted",
+      );
+
+      character.health.energy = Constants.MAX_ENERGY;
     }
 
-    const resting_combat: CombatEntry = {
+    const sleeping_log: CombatEntry = {
       character: character,
-      roll_type: "resting",
-      roll_source: "Resting",
+      roll_type: "eating",
+      roll_source: "Eating",
       roll_state: "",
       roll_entry: {
         result1: 0,
@@ -55,78 +55,81 @@ export default function RestComponent({
         success: true,
         dice: 0,
       },
-      durability: { name: "", check: 0 },
+      durability: [],
       uuid: uuidv4(),
       entry: "CombatEntry",
     };
 
-    session.combatlog.push(resting_combat);
+    session.combatlog.push(sleeping_log);
 
-    RemoveExhaustion(character);
     update_session(session, websocket, character, isCreature);
   };
 
-  const BackwardStatus = () => {
-    SetStatusBackward(character);
-    update_session(session, websocket, character, isCreature);
-  };
+  const HandleSleep = () => {
+    if (character.health.damage > 0) {
+      character.health.damage -= 1;
+    }
+    character.health.shield = 0;
 
-  const ForwardStatus = () => {
-    SetStatusForward(character);
+    const sleeping_log: CombatEntry = {
+      character: character,
+      roll_type: "sleeping",
+      roll_source: "Sleeping",
+      roll_state: "",
+      roll_entry: {
+        result1: 0,
+        result2: 0,
+        roll1: 0,
+        roll2: 0,
+        advantage: "",
+        critical: { state: 1, result: 0 },
+        mod: 0,
+        target: 0,
+        success: true,
+        dice: 0,
+      },
+      durability: [],
+      uuid: uuidv4(),
+      entry: "CombatEntry",
+    };
+
+    session.combatlog.push(sleeping_log);
     update_session(session, websocket, character, isCreature);
   };
 
   return (
     <div className="row">
-      <div className="row base_color">
+      <div
+        className="row button_color button"
+        style={{ fontSize: "15px", color: Constants.WIDGET_PRIMARY_FONT }}
+        title="Rest"
+        onClick={HandleSleep}
+      >
+        <Icon path={mdiSleep} size={0.9} />
+      </div>
+      {character.rations.food < GetBurnRate(character) ||
+      character.rations.water < GetBurnRate(character) ? (
         <div
-          className="row button"
+          className="row button_color button"
           style={{
             fontSize: "15px",
-            fontWeight: "bold",
-            color: Constants.TYPE_COLORS[character.health.status],
-            filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
+            color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
           }}
-          onClick={ForwardStatus}
-          onContextMenu={(e) => {
-            e.preventDefault();
-            BackwardStatus();
-          }}
-          title={"Rested | Normal | Tired | Fatigued | Exhausted"}
+          title="You don't have enough rations to eat equal to your consumption, and can't refresh your energy levels."
+          onClick={HandleEat}
         >
-          {toTitleCase(character.health.status)}
+          <FontAwesomeIcon icon={faUtensils} />
         </div>
+      ) : (
         <div
-          className="row"
-          style={{
-            backgroundColor: Constants.BACKGROUND,
-            minWidth: "1px",
-            maxWidth: "1px",
-          }}
-        />
-        {character.rations.food < GetBurnRate(character) ||
-        character.rations.water < GetBurnRate(character) ? (
-          <div
-            className="row"
-            style={{
-              fontSize: "15px",
-              color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
-            }}
-            title="Not Enough Rations"
-          >
-            <FontAwesomeIcon icon={faTent} />
-          </div>
-        ) : (
-          <div
-            className="row button"
-            style={{ fontSize: "15px" }}
-            title="Rest"
-            onClick={HandleRest}
-          >
-            <FontAwesomeIcon icon={faTent} />
-          </div>
-        )}
-      </div>
+          className="row button_color button"
+          style={{ fontSize: "15px" }}
+          title="Will eat rations equal to your consumption, and refresh your energy levels."
+          onClick={HandleEat}
+        >
+          <FontAwesomeIcon icon={faUtensils} />
+        </div>
+      )}
     </div>
   );
 }

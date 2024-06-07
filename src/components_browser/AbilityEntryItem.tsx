@@ -253,7 +253,6 @@ function AbilityEntryItem({
   setCriticalState,
 }: AbilityEntryItemProps) {
   // We will get the dynamic object and look for the database entry. If it doesn't exist, we will return null.
-  console.log(ability);
   const [free, setFree] = useState<boolean>(false);
   const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
   useEffect(() => {

@@ -517,8 +517,6 @@ function EncounterCreatureEntry({
     const shillings = Math.floor(remainingAfterThaler / 10);
     const orthegs = remainingAfterThaler - shillings * 10;
 
-    console.log("THALER: " + thaler);
-
     if (thaler > 0) {
       const DropsThaler = session.loot.drops.find(
         (item) => item.name === "Thaler",

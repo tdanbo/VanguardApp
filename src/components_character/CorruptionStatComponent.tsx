@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
-import { update_session } from "../functions/SessionsFunctions";
 
 interface BgColor {
   $bgcolor: string;
@@ -33,6 +32,11 @@ const TickBar = styled.div<BgColor>`
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Socket } from "socket.io-client";
+import { useState } from "react";
+import {
+  LowerCorruption,
+  RaiseCorruption,
+} from "../functions/CharacterFunctions";
 
 interface HealthBoxProps {
   character: CharacterEntry;
@@ -48,31 +52,7 @@ function CorruptionStatComponent({
   websocket,
   isCreature,
 }: HealthBoxProps) {
-  const handleTempAddCorruption = () => {
-    const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
-    let value = 1;
-    for (let i = 0; i < value; i++) {
-      if (character.health.shield === corruptionThreshold) {
-        if (character.health.corruption === corruptionThreshold * 3) {
-          console.log("Max corruption reached");
-        }
-        character.health.corruption += 1;
-      } else {
-        character.health.shield += 1;
-      }
-    }
-    update_session(session, websocket, character, isCreature);
-  };
-
-  const handleTempSubCorruption = () => {
-    let value = 1;
-    character.health.shield -= value;
-
-    if (character.health.shield < 0) {
-      character.health.shield = 0;
-    }
-    update_session(session, websocket, character, isCreature);
-  };
+  const [isHovered, setIsHovered] = useState(false);
 
   const corruptionThreshold = Math.ceil(character.stats.resolute.value / 2);
 
@@ -83,17 +63,23 @@ function CorruptionStatComponent({
     <div
       className="row base_color"
       style={{ height: "100%", padding: "1px", gap: "1px" }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <div
-        className="row button-hover button_color"
-        style={{ maxWidth: "30px" }}
-        onClick={handleTempAddCorruption}
-      >
-        <FontAwesomeIcon
-          icon={faMinus}
-          color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
-        />
-      </div>
+      {isHovered ? (
+        <div
+          className="row button-hover button_color"
+          style={{ maxWidth: "30px" }}
+          onClick={() =>
+            LowerCorruption(character, session, websocket, isCreature)
+          }
+        >
+          <FontAwesomeIcon
+            icon={faMinus}
+            color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+          />
+        </div>
+      ) : null}
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
         <div className="row" style={{ gap: "0px", padding: "1px" }}>
           {[...Array(clean_corruption)].map((_, index, array) => (
@@ -107,7 +93,7 @@ function CorruptionStatComponent({
           {[...Array(temporary_corruption)].map((_, index, array) => (
             <TickBar
               key={index}
-              $bgcolor={Constants.WIDGET_BACKGROUND_EMPTY}
+              $bgcolor={Constants.BACKGROUND}
               $isFirst={index === 0} // Apply rounded corners on the left for the first item
               $isLast={index === array.length - 1}
             />
@@ -122,21 +108,41 @@ function CorruptionStatComponent({
             color: Constants.WIDGET_PRIMARY_FONT,
             textShadow: "2px 2px 2px black",
             fontSize: "18px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           {`${clean_corruption} / ${corruptionThreshold}`}
+          <div
+            style={{
+              fontSize: "10px",
+              marginTop: "-2px",
+              alignItems: "center",
+              justifyContent: "center",
+              textShadow: "0px 0px 0px black",
+              color: Constants.WIDGET_SECONDARY_FONT,
+            }}
+          >
+            CORRUPTION
+          </div>
         </div>
       </div>
-      <div
-        className="row button-hover button_color"
-        style={{ maxWidth: "30px" }}
-        onClick={handleTempSubCorruption}
-      >
-        <FontAwesomeIcon
-          icon={faPlus}
-          color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
-        />
-      </div>
+      {isHovered ? (
+        <div
+          className="row button-hover button_color"
+          style={{ maxWidth: "30px" }}
+          onClick={() =>
+            RaiseCorruption(character, session, websocket, isCreature)
+          }
+        >
+          <FontAwesomeIcon
+            icon={faPlus}
+            color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

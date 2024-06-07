@@ -98,6 +98,8 @@ function CreateSessionComponent({ setSelector }: LoginProps) {
       time: "morning",
       distance: 0,
       weather: "RAINY",
+      damage_gain: 0,
+      corruption_gain: 0,
     },
     characters: [],
     combatlog: [],
