@@ -1,7 +1,6 @@
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
 import { GetMaxToughness } from "../functions/RulesFunctions";
-import { update_session } from "../functions/SessionsFunctions";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Socket } from "socket.io-client";

@@ -1,21 +1,10 @@
-import {
-  faAngleDoubleDown,
-  faAngleDoubleUp,
-  faCheck,
-  faMoon,
-  faSun,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import "../App.css";
 import * as Constants from "../Constants";
-import { CharacterPortraits, NewDayIcon } from "../Images";
-import { CombatEntry, SessionEntry, DayReportEntry } from "../Types";
-import { toTitleCase } from "../functions/UtilityFunctions";
-import Icon from "@mdi/react";
-import { mdiShieldOff } from "@mdi/js";
+import { NewDayIcon } from "../Images";
+import { CombatEntry, SessionEntry } from "../Types";
 import { DurabilityComponent } from "./DurabilityComponent";
 interface DayChangeEntryItemProps {
   combatEntry: CombatEntry;
@@ -61,18 +50,6 @@ const ColorBlock = styled.div<ColorTypeProps>`
   border-radius: ${Constants.BORDER_RADIUS} 0px 0px ${Constants.BORDER_RADIUS};
 `;
 
-const RightBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  width: 20px;
-  max-width: 20px;
-  margin: 1px 1px 1px 1px;
-  padding-right: 8px;
-  padding-top: 5px;
-  gap: 5px;
-`;
-
 const RollContainer = styled.div`
   display: flex;
   flex-grow: 1;
@@ -81,100 +58,6 @@ const RollContainer = styled.div`
   align-items: center;
   margin-top: 10px;
   margin-bottom: 10px;
-`;
-
-const ResultContainer = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-`;
-
-interface ResultProps {
-  $position: 0 | 1 | 2;
-}
-const Result = styled.div<ResultProps>`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  justify-content: ${(props) =>
-    props.$position === 0
-      ? "flex-end"
-      : props.$position === 1
-      ? "flex-start"
-      : "center"};
-
-
-  font-size: 3.5rem;
-  font-weight: bold;
-  width: 100%;
-
-  color: ${Constants.WIDGET_PRIMARY_FONT}
-  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
-`;
-
-const FumbledSubText = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  min-height: 20px;
-  max-height: 20px;
-  width: 100%;
-`;
-
-const Breakdown = styled.div`
-  display: flex;
-  flex-grow: 1;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  min-height: 20px;
-  max-height: 20px;
-`;
-
-const SourceContainer = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  font-size: 14px;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-`;
-
-const Active = styled.div<ColorTypeProps>`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
-  font-weight: bold;
-  color: ${(props) => props.$rgb};
-  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
-  width: 50%;
-`;
-
-const ResultDivider = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background-color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-  text-shadow: 2px 2px 2px ${Constants.BACKGROUND};
-  width: 1px;
-  height: 60%;
-  margin: 10px 0px 0px 0px;
 `;
 
 function DayChangeEntryItem({ combatEntry }: DayChangeEntryItemProps) {

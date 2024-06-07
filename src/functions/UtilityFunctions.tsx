@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import { GeneralItem, DayReportEntry, ChallengeEntry } from "../Types";
+import { GeneralItem } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
 import {
   AbilityEntry,
@@ -17,11 +17,7 @@ import {
 } from "../Types";
 import { cloneDeep, random } from "lodash";
 import { HasRangedWeapon, Ammunition } from "./CharacterFunctions";
-import {
-  GetMaxToughness,
-  SetDurability,
-  GetTemporaryCorruption,
-} from "./RulesFunctions";
+import { GetMaxToughness, GetTemporaryCorruption } from "./RulesFunctions";
 import { v4 as uuidv4 } from "uuid";
 
 export function UpperFirstLetter(input: string): string {
@@ -398,6 +394,9 @@ export const LowerEnergy = (character: CharacterEntry) => {
 };
 
 export const RaiseEnergy = (character: CharacterEntry) => {
+  if (character.health.energy === Constants.MAX_ENERGY) {
+    return;
+  }
   character.health.energy += 1;
   HandleExhaustion(character);
 };
@@ -482,7 +481,6 @@ export function RollDice({
   setActiveState,
   setAdvantage,
   setCriticalState,
-  equipment,
   modifierLock,
 }: RollComponentProps) {
   // let roll = Math.floor(Math.random() * dice) + 1;

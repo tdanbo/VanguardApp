@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { CharacterEntry, SessionEntry, ChallengeEntry } from "../Types";
-import { update_session } from "../functions/SessionsFunctions";
+import { CharacterEntry, SessionEntry } from "../Types";
 
 interface BgColor {
   $bgcolor: string;

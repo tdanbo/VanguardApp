@@ -1,6 +1,5 @@
 import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
-import { update_session } from "../functions/SessionsFunctions";
 import { faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Socket } from "socket.io-client";

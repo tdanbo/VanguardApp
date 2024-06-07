@@ -2,11 +2,6 @@ import "../layout.css";
 
 import Icon from "@mdi/react";
 import { mdiShield, mdiSwordCross } from "@mdi/js";
-import {
-  GetDatabaseEquipment,
-  IsArmor,
-  IsWeapon,
-} from "../functions/UtilityFunctions";
 
 import { toTitleCase } from "../functions/UtilityFunctions";
 import { random } from "lodash";
@@ -24,7 +19,6 @@ import {
   RollTypeEntry,
   SessionEntry,
 } from "../Types";
-import { SetDurability } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -32,7 +26,6 @@ import {
   faAnglesUp,
   faStarOfLife,
 } from "@fortawesome/free-solid-svg-icons";
-import { GetGameData } from "../contexts/GameContent";
 
 type RollComponentProps = {
   session: SessionEntry;
@@ -54,44 +47,6 @@ type RollComponentProps = {
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
-function PickRandomWeapon(character: CharacterEntry) {
-  const weapon_list = [];
-
-  for (const item of character.inventory) {
-    if (
-      (IsWeapon(item) || item.static.category === "shield") &&
-      item.equipped
-    ) {
-      weapon_list.push(item);
-    }
-  }
-
-  if (weapon_list.length === 0) {
-    return null;
-  }
-  const randomIndex = Math.floor(Math.random() * weapon_list.length);
-
-  return weapon_list[randomIndex];
-}
-
-function PickRandomArmor(character: CharacterEntry, equipment: ItemEntry[]) {
-  const armor_list = [];
-
-  for (const item of character.inventory) {
-    const item_database = GetDatabaseEquipment(item, equipment);
-    if (IsArmor(item_database) && item.equipped) {
-      armor_list.push(item);
-    }
-  }
-
-  if (armor_list.length === 0) {
-    return null;
-  }
-  const randomIndex = Math.floor(Math.random() * armor_list.length);
-
-  return armor_list[randomIndex];
-}
 
 function HasAmmunition(character: CharacterEntry) {
   for (const item of character.inventory) {
@@ -142,8 +97,6 @@ function RollComponent({
   setAdvantage,
   setCriticalState,
 }: RollComponentProps) {
-  const { equipment } = GetGameData();
-
   const RollDIce = () => {
     // let roll = Math.floor(Math.random() * dice) + 1;
 

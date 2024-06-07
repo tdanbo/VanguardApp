@@ -1,6 +1,3 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShieldAlt, faShieldHalved } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../Constants";
 import Icon from "@mdi/react";
 import { mdiShieldOff } from "@mdi/js";

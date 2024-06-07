@@ -2,9 +2,8 @@ import "../App.css";
 
 import * as Constants from "../Constants";
 
-import { useEffect, useState } from "react";
 import "../layout.css";
-
+import { useState } from "react";
 import {
   ActiveStateType,
   AdvantageType,

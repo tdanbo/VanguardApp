@@ -1,18 +1,12 @@
 import "../layout.css";
 import { SessionEntry, CharacterEntry, CombatEntry } from "../Types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAppleAlt,
-  faAppleWhole,
-  faTent,
-  faUtensils,
-} from "@fortawesome/free-solid-svg-icons";
+import { faUtensils } from "@fortawesome/free-solid-svg-icons";
 import * as Constants from "../Constants";
 import { GetBurnRate } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
-import { HandleExhaustion } from "../functions/UtilityFunctions";
 import Icon from "@mdi/react";
 import { mdiSleep } from "@mdi/js";
 interface DayComponentProps {
@@ -36,9 +30,11 @@ export default function RestComponent({
     ) {
       character.rations.food -= burnrate;
       character.rations.water -= burnrate;
-      if (character.health.damage > 0) {
-        character.health.damage -= 1;
-      }
+
+      character.effects = character.effects.filter(
+        (effect) => effect.name !== "Exhausted",
+      );
+
       character.health.energy = Constants.MAX_ENERGY;
     }
 

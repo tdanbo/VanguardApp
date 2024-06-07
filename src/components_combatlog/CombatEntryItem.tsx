@@ -13,8 +13,6 @@ import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { CombatEntry, SessionEntry } from "../Types";
 import { toTitleCase } from "../functions/UtilityFunctions";
-import Icon from "@mdi/react";
-import { mdiShieldOff } from "@mdi/js";
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
   index: number;

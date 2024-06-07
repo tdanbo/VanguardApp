@@ -2,12 +2,7 @@ import { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import {
-  ChallengeEntry,
-  NewCharacterEntry,
-  SessionEntry,
-  TimeCategory,
-} from "../Types";
+import { NewCharacterEntry, SessionEntry, TimeCategory } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
 import { v4 as uuidv4 } from "uuid";
 import { CombatEntry } from "../Types";
