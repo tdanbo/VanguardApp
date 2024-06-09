@@ -540,6 +540,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
               return (
                 <EmptyDifficulty
                   color={DifficultyColor(index)}
+                  key={index}
                   opacity={0.25}
                 ></EmptyDifficulty>
               );

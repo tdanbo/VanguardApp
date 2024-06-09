@@ -442,8 +442,6 @@ function InventoryEntry({
       AddRegularItem(item, buy);
     }
 
-    console.log(session.loot.general);
-
     update_session(session, websocket, character, isCreature);
     if (setInventoryState) {
       setInventoryState(1);
@@ -794,6 +792,7 @@ function InventoryEntry({
             <React.Fragment key={effectIndex}>
               {effectIndex > 0 && <RowDivider />}
               <StyledText
+                key={"effect" + effectIndex.toString()}
                 effect={effect}
                 websocket={websocket}
                 character={character}
