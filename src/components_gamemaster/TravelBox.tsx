@@ -471,6 +471,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
     };
 
     session.combatlog.push(resting_combat);
+    session.combatlog = session.combatlog.slice(-20);
 
     update_session(session, websocket, NewCharacterEntry, false);
     handleClose();

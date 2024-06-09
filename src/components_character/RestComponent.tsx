@@ -60,6 +60,7 @@ export default function RestComponent({
       };
 
       session.combatlog.push(sleeping_log);
+      session.combatlog = session.combatlog.slice(-20);
 
       update_session(session, websocket, character, isCreature);
     }
@@ -94,6 +95,8 @@ export default function RestComponent({
     };
 
     session.combatlog.push(sleeping_log);
+    session.combatlog = session.combatlog.slice(-20);
+
     update_session(session, websocket, character, isCreature);
   };
 
