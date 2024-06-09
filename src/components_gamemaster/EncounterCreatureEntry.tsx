@@ -15,7 +15,10 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { FindValueFromActive } from "../functions/CharacterFunctions";
+import {
+  FindValueFromActive,
+  GetCreatureArmor,
+} from "../functions/CharacterFunctions";
 import {
   ActiveStateType,
   AdvantageType,
@@ -33,7 +36,8 @@ import {
   RulesDiceAdjust,
 } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
+import CreatureHealthAdjuster from "./CreatureHealthAdjuster";
+import { IsWeapon } from "../functions/UtilityFunctions";
 
 interface ColorTypeProps {
   $rgb: string;
@@ -245,16 +249,6 @@ function GetWeapons(creature: CharacterEntry) {
   return weapons;
 }
 
-function GetArmor(creature: CharacterEntry) {
-  const armor: ItemEntry[] = [];
-  creature.inventory.forEach((item) => {
-    if (item && IsArmor(item) && item.equipped) {
-      armor.push(item);
-    }
-  });
-  return armor;
-}
-
 function GetAttacks(creature: CharacterEntry) {
   let attacks = 1;
   creature.abilities.forEach((ability) => {
@@ -333,7 +327,6 @@ function EncounterCreatureEntry({
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
   const character_actives = GetActives(creatureClone);
-  const pain = Math.ceil(creatureClone.stats.strong.value / 2);
   const attack =
     ModifierConverter[
       FindValueFromActive("attack", creatureClone, character_actives).value
@@ -347,22 +340,18 @@ function EncounterCreatureEntry({
     creature.health.damage!,
   );
 
-  const handleAdjustHp = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault(); // Prevent the context menu from appearing on right-click
+  const formatNumber = (num: number): string => {
+    if (num > 0) return `+${num}`;
+    return `${num}`;
+  };
 
-    // Determine the damage adjustment
-    const damageAdjustment = event.button === 0 ? 1 : -1;
+  const SubmitAdjustedHp = (damageAdjustment: number) => {
     const damage_calc = Math.max(0, currentDamage + damageAdjustment);
 
     creature.health.damage = currentDamage + damageAdjustment;
 
     setCurrentDamage(damage_calc);
     update_session(session, websocket);
-  };
-
-  const formatNumber = (num: number): string => {
-    if (num > 0) return `+${num}`;
-    return `${num}`;
   };
 
   const [resistance, setResistance] = useState<string>("Weak");
@@ -589,33 +578,30 @@ function EncounterCreatureEntry({
       <Container src={CharacterPortraits[creatureClone.portrait]}>
         <ColorBlock $rgb={Constants.BRIGHT_RED} />
         <ActiveBox>
-          <ActiveStat
-            title={`Pain Threshold ${pain}`}
-            onClick={handleAdjustHp}
-            onContextMenu={handleAdjustHp}
-          >
-            {hp - currentDamage}
-          </ActiveStat>
+          <CreatureHealthAdjuster
+            creature={creatureClone}
+            session={session}
+            websocket={websocket}
+            submit_adjust_hp={SubmitAdjustedHp}
+          />
           <ActiveSub>
             <FontAwesomeIcon icon={faHeart} />
             HP
           </ActiveSub>
         </ActiveBox>
-        {GetArmor(creatureClone).map((armor, index) => (
-          <ActiveBox key={index}>
-            <ActiveStat
-              title={`When this creature is being attacked ${formatNumber(
-                defense,
-              )} to targets attack`}
-            >
-              {formatNumber(defense)}
-            </ActiveStat>
-            <ActiveArmorSub>
-              <FontAwesomeIcon icon={faShield} />
-              {Math.ceil(armor.static.roll.dice / 2) + armor.static.roll.mod}
-            </ActiveArmorSub>
-          </ActiveBox>
-        ))}
+        <ActiveBox>
+          <ActiveStat
+            title={`When this creature is being attacked ${formatNumber(
+              defense,
+            )} to targets attack`}
+          >
+            {formatNumber(defense)}
+          </ActiveStat>
+          <ActiveArmorSub>
+            <FontAwesomeIcon icon={faShield} />
+            {GetCreatureArmor(creatureClone)}
+          </ActiveArmorSub>
+        </ActiveBox>
         <NameContainer onClick={GoToSheet}>
           <NameBox title={title}>{creature.name}</NameBox>
           <ActiveSub>

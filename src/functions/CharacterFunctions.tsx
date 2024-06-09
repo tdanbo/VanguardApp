@@ -3,6 +3,7 @@ import { API } from "../Constants";
 import { GetGameData } from "../contexts/GameContent";
 import { ActivesEntry, StatName } from "../Types";
 import { update_session } from "./SessionsFunctions";
+import { IsArmor } from "./UtilityFunctions";
 import {
   CharacterEntry,
   modifiedCreature,
@@ -236,4 +237,14 @@ export function RaiseCorruption(
     character.health.shield -= 1;
     update_session(session, websocket, character, isCreature);
   }
+}
+
+export function GetCreatureArmor(creature: CharacterEntry) {
+  let armor: number = 0;
+  creature.inventory.forEach((item) => {
+    if (item && IsArmor(item) && item.equipped) {
+      armor += Math.ceil(item.static.roll.dice / 2) + item.static.roll.mod;
+    }
+  });
+  return armor;
 }
