@@ -5,6 +5,9 @@ import { Socket } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHammer } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { useEffect } from "react";
+import { useMemo } from "react";
+import debounce from "lodash.debounce";
 type DurabilityBoxProps = {
   item: ItemEntry;
   session: SessionEntry;
@@ -22,6 +25,8 @@ function DurabilityComponent({
   websocket,
 }: DurabilityBoxProps) {
   const [hover, setHover] = useState(false);
+  const [prevDurability, setPrevDurability] = useState(item.durability);
+  const [prevItemId, setPrevItemId] = useState(item.id);
   let max_durability = 0;
   if (
     item.static.category === "weapon accessory" ||
@@ -47,9 +52,44 @@ function DurabilityComponent({
     item.durability = item.durability - 1;
     update_session(session, websocket, character, isCreature);
   };
+
+  const setPrevDurabilityDebounced = useMemo(
+    () =>
+      debounce((durability) => {
+        setPrevDurability(durability);
+      }, 1000),
+    [],
+  ); // Delay should match the transition duration in CSS
+
+  useEffect(() => {
+    if (item.id !== prevItemId) {
+      // If the item has changed, update the previous item ID and durability immediately
+      setPrevItemId(item.id);
+      setPrevDurability(item.durability);
+    } else if (item.durability !== prevDurability) {
+      // If the durability has changed, update the previous durability after a delay
+      setPrevDurabilityDebounced(item.durability);
+    }
+  }, [
+    item.id,
+    item.durability,
+    prevItemId,
+    prevDurability,
+    setPrevDurabilityDebounced,
+  ]);
+
+  const durabilityDecreased = useMemo(
+    () => item.id === prevItemId && item.durability < prevDurability,
+    [item.id, item.durability, prevItemId, prevDurability],
+  );
+
   return (
     <div
-      className="column button"
+      className={`column ${
+        durabilityDecreased
+          ? "negative_durability_color"
+          : "standard_durability_color"
+      }`}
       style={{
         minWidth: "40px",
         maxWidth: "40px",

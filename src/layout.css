@@ -72,6 +72,15 @@
   border: 1px solid #252827;
 }
 
+.standard_durability_color {
+  background-color: #252827;
+  transition: background-color 2s ease-in-out;
+}
+
+.negative_durability_color {
+  background-color: #6d0000;
+}
+
 .row_color {
   background-color: #252827;
   border-bottom: 1px solid #303332;

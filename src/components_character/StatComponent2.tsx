@@ -22,7 +22,6 @@ import {
 import { toTitleCase } from "../functions/UtilityFunctions";
 import { GetGameData } from "../contexts/GameContent";
 import { FindValueFromActive } from "../functions/CharacterFunctions";
-import { GetActives } from "../functions/ActivesFunction";
 import { mdiArrowCollapse, mdiArrowExpand } from "@mdi/js";
 import { Icon } from "@mdi/react";
 
@@ -62,7 +61,6 @@ function StatComponent2({
 }: Props) {
   const { equipment } = GetGameData();
   const [modValue, setModvalue] = useState<number>(0);
-  const character_actives = GetActives(character);
 
   const handleAddValue = () => {
     const newValue = modValue + 1;
@@ -83,14 +81,12 @@ function StatComponent2({
   let flanked = 0;
   if (
     advantage === "flanking" &&
-    stat_name ===
-      FindValueFromActive("attack", character, character_actives).stat
+    stat_name === FindValueFromActive("attack", character).stat
   ) {
     flanked += 2;
   } else if (
     advantage === "flanked" &&
-    stat_name ===
-      FindValueFromActive("defense", character, character_actives).stat
+    stat_name === FindValueFromActive("defense", character).stat
   ) {
     flanked -= 2;
   } else {
@@ -198,18 +194,14 @@ function StatComponent2({
           {toTitleCase(stat_name)}
           <div className="row" style={{ gap: "3px", maxHeight: "0px" }}>
             {advantage === "flanking" &&
-            stat_name ===
-              FindValueFromActive("attack", character, character_actives)
-                .stat ? (
+            stat_name === FindValueFromActive("attack", character).stat ? (
               <Icon
                 path={mdiArrowCollapse}
                 size={0.7}
                 style={{ marginTop: "10px" }}
               />
             ) : advantage === "flanked" &&
-              stat_name ===
-                FindValueFromActive("defense", character, character_actives)
-                  .stat ? (
+              stat_name === FindValueFromActive("defense", character).stat ? (
               <Icon
                 path={mdiArrowExpand}
                 size={0.7}

@@ -36,33 +36,33 @@ export default function RestComponent({
       );
 
       character.health.energy = Constants.MAX_ENERGY;
+
+      const sleeping_log: CombatEntry = {
+        character: character,
+        roll_type: "eating",
+        roll_source: "Eating",
+        roll_state: "",
+        roll_entry: {
+          result1: 0,
+          result2: 0,
+          roll1: 0,
+          roll2: 0,
+          advantage: "",
+          critical: { state: 1, result: 0 },
+          mod: 0,
+          target: 0,
+          success: true,
+          dice: 0,
+        },
+        durability: [],
+        uuid: uuidv4(),
+        entry: "CombatEntry",
+      };
+
+      session.combatlog.push(sleeping_log);
+
+      update_session(session, websocket, character, isCreature);
     }
-
-    const sleeping_log: CombatEntry = {
-      character: character,
-      roll_type: "eating",
-      roll_source: "Eating",
-      roll_state: "",
-      roll_entry: {
-        result1: 0,
-        result2: 0,
-        roll1: 0,
-        roll2: 0,
-        advantage: "",
-        critical: { state: 1, result: 0 },
-        mod: 0,
-        target: 0,
-        success: true,
-        dice: 0,
-      },
-      durability: [],
-      uuid: uuidv4(),
-      entry: "CombatEntry",
-    };
-
-    session.combatlog.push(sleeping_log);
-
-    update_session(session, websocket, character, isCreature);
   };
 
   const HandleSleep = () => {

@@ -12,6 +12,7 @@ import {
 } from "../Types";
 import { GetMaxToughness, GetTemporaryCorruption } from "./RulesFunctions";
 import { Socket } from "socket.io-client";
+import { GetActives } from "./ActivesFunction";
 export const getCreatureMovement = (creature: modifiedCreature) => {
   const movement: { [key: number]: number } = {
     5: -10,
@@ -118,8 +119,8 @@ export const FindCharacter = (
 export function FindValueFromActive(
   type: "attack" | "defense" | "sneaking" | "casting" | "initiative",
   character: CharacterEntry,
-  character_actives: ActivesEntry,
 ) {
+  const character_actives = GetActives(character);
   for (const [key, value] of Object.entries(character_actives)) {
     if (key == type) {
       return {

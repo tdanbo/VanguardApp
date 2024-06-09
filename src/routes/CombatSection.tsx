@@ -93,6 +93,7 @@ const Button = styled.button`
 import {
   CriticalFailureSounds,
   CriticalSuccessSounds,
+  RestingSounds,
   RollSounds,
 } from "../Images";
 import DayComponent from "../components_character/DayComponent";
@@ -207,6 +208,8 @@ function CombatSection({
         last_roll.roll_entry.critical.state === 0
       ) {
         playRandomSound(CriticalFailureSounds);
+      } else if (last_roll.roll_type === "day") {
+        playRandomSound(RestingSounds);
       } else {
         playRandomSound(RollSounds);
       }

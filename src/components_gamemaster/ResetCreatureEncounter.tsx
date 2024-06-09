@@ -9,7 +9,6 @@ import styled from "styled-components";
 import "../App.css";
 import * as Constants from "../Constants";
 import { SessionEntry } from "../Types";
-import { GetActives } from "../functions/ActivesFunction";
 import { update_session } from "../functions/SessionsFunctions";
 import { FindValueFromActive } from "../functions/CharacterFunctions";
 
@@ -51,13 +50,11 @@ function ResetCreatureEncounter({ session, websocket }: ResetEncounterProps) {
   const RollInitiative = () => {
     for (const character of session.characters) {
       character.details.initiative =
-        FindValueFromActive("initiative", character, GetActives(character))
-          .value + random(1, 10);
+        FindValueFromActive("initiative", character).value + random(1, 10);
     }
     for (const creature of session.encounter) {
       creature.details.initiative =
-        FindValueFromActive("initiative", creature, GetActives(creature))
-          .value + random(1, 10);
+        FindValueFromActive("initiative", creature).value + random(1, 10);
     }
     update_session(session, websocket);
   };
