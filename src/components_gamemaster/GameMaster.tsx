@@ -162,39 +162,66 @@ function GameMaster({
         <Row width={"100%"}>
           <ResetCreatureEncounter session={session} websocket={websocket} />
           <TravelBox session={session} websocket={websocket} />
-
-          <div className="row empty_color button" style={{ maxWidth: "125px" }}>
+          <div
+            className="row empty_color"
+            style={{ maxWidth: "210px", gap: "0px" }}
+          >
+            <div
+              className="row button"
+              onClick={() => HandleSubDamageGain()}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                HandleAddDamageGain();
+              }}
+            >
+              <FontAwesomeIcon icon={faHeart} color={Constants.COLOR_1} />
+              {session.travel.damage_gain}
+            </div>
+            <div
+              className="row"
+              style={{ maxWidth: "2px", background: Constants.BACKGROUND }}
+            />
+            <div
+              className="row button"
+              onClick={() => HandleSubCorruptionGain()}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                HandleAddCorruptionGain();
+              }}
+            >
+              <FontAwesomeIcon icon={faSkull} color={Constants.COLOR_3} />
+              {session.travel.corruption_gain}
+            </div>
+            <div
+              className="row"
+              style={{ maxWidth: "2px", background: Constants.BACKGROUND }}
+            />
+            <div
+              className="row button"
+              title={
+                "The party have used " +
+                usedResources +
+                "% of their total resources."
+              }
+            >
+              {usedResources}%
+            </div>
+          </div>
+          <div
+            className="row empty_color button"
+            style={{ maxWidth: "70px" }}
+            title={
+              "Items have a " +
+              durability_percentage +
+              "% durability loss chance"
+            }
+          >
             <Icon
               path={mdiShieldOff}
               size={0.6}
               color={Constants.WIDGET_PRIMARY_FONT}
             />
-            {usedResources}% | {durability_percentage}%
-          </div>
-
-          <div
-            className="row empty_color button"
-            style={{ maxWidth: "60px" }}
-            onClick={() => HandleSubDamageGain()}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              HandleAddDamageGain();
-            }}
-          >
-            <FontAwesomeIcon icon={faHeart} color={Constants.COLOR_1} />
-            {session.travel.damage_gain}
-          </div>
-          <div
-            className="row empty_color button"
-            style={{ maxWidth: "60px" }}
-            onClick={() => HandleSubCorruptionGain()}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              HandleAddCorruptionGain();
-            }}
-          >
-            <FontAwesomeIcon icon={faSkull} color={Constants.COLOR_3} />
-            {session.travel.corruption_gain}
+            {durability_percentage}%
           </div>
           {/* <div
             className="row base_color button"

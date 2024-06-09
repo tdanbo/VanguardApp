@@ -21,7 +21,10 @@ import {
 } from "../Types";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import { GetGameData } from "../contexts/GameContent";
-import { FindValueFromActive } from "../functions/CharacterFunctions";
+import {
+  FindActive,
+  FindValueFromActive,
+} from "../functions/CharacterFunctions";
 import { mdiArrowCollapse, mdiArrowExpand } from "@mdi/js";
 import { Icon } from "@mdi/react";
 
@@ -251,6 +254,7 @@ function StatComponent2({
             websocket: websocket,
             roll_type: stat_name,
             roll_source: "Skill Test",
+            roll_active: FindActive(stat_name, character).active,
             isCreature: isCreature,
             dice: 20,
             dice_mod: modValue,

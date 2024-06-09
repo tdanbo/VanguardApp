@@ -6,6 +6,7 @@ import ResourcesBox from "../components_character/ResourcesBox";
 import XpBox from "../components_character/XpBox";
 import StatComponent2 from "../components_character/StatComponent2";
 import { FindActiveModFromStat } from "../functions/CharacterFunctions";
+import { FindActive } from "../functions/CharacterFunctions";
 import "../layout.css";
 
 import * as Constants from "../Constants";
@@ -147,17 +148,6 @@ function CharacterSheet({
   UpdateAbilityStats(character);
   const character_actives = GetActives(character);
 
-  function FindActive(stat: string) {
-    for (const [key, value] of Object.entries(character_actives)) {
-      if (value.stat == stat) {
-        return { active: key, mod: value.mod };
-      } else {
-        continue;
-      }
-    }
-    return { active: "", mod: 0 };
-  }
-
   return (
     <div
       style={{
@@ -214,10 +204,14 @@ function CharacterSheet({
               stat_value={
                 character.stats.vigilant.value +
                 character.stats.vigilant.mod +
-                FindActiveModFromStat("vigilant", character_actives)
+                FindActiveModFromStat("vigilant", character)
               }
-              stat_icon={GetActiveIcon(FindActive("vigilant").active)}
-              stat_color={Constants.TYPE_COLORS[FindActive("vigilant").active]}
+              stat_icon={GetActiveIcon(
+                FindActive("vigilant", character).active,
+              )}
+              stat_color={
+                Constants.TYPE_COLORS[FindActive("vigilant", character).active]
+              }
               active={true}
               activeState={activeState}
               advantage={advantage}
@@ -235,10 +229,12 @@ function CharacterSheet({
               stat_value={
                 character.stats.strong.value +
                 character.stats.strong.mod +
-                FindActiveModFromStat("strong", character_actives)
+                FindActiveModFromStat("strong", character)
               }
-              stat_icon={GetActiveIcon(FindActive("strong").active)}
-              stat_color={Constants.TYPE_COLORS[FindActive("strong").active]}
+              stat_icon={GetActiveIcon(FindActive("strong", character).active)}
+              stat_color={
+                Constants.TYPE_COLORS[FindActive("strong", character).active]
+              }
               active={true}
               activeState={activeState}
               advantage={advantage}
@@ -257,10 +253,14 @@ function CharacterSheet({
               stat_value={
                 character.stats.resolute.value +
                 character.stats.resolute.mod +
-                FindActiveModFromStat("resolute", character_actives)
+                FindActiveModFromStat("resolute", character)
               }
-              stat_icon={GetActiveIcon(FindActive("resolute").active)}
-              stat_color={Constants.TYPE_COLORS[FindActive("resolute").active]}
+              stat_icon={GetActiveIcon(
+                FindActive("resolute", character).active,
+              )}
+              stat_color={
+                Constants.TYPE_COLORS[FindActive("resolute", character).active]
+              }
               active={true}
               activeState={activeState}
               advantage={advantage}
@@ -278,10 +278,14 @@ function CharacterSheet({
               stat_value={
                 character.stats.accurate.value +
                 character.stats.accurate.mod +
-                FindActiveModFromStat("accurate", character_actives)
+                FindActiveModFromStat("accurate", character)
               }
-              stat_icon={GetActiveIcon(FindActive("accurate").active)}
-              stat_color={Constants.TYPE_COLORS[FindActive("accurate").active]}
+              stat_icon={GetActiveIcon(
+                FindActive("accurate", character).active,
+              )}
+              stat_color={
+                Constants.TYPE_COLORS[FindActive("accurate", character).active]
+              }
               active={true}
               activeState={activeState}
               advantage={advantage}
@@ -301,12 +305,16 @@ function CharacterSheet({
               stat_value={
                 character.stats.persuasive.value +
                 character.stats.persuasive.mod +
-                FindActiveModFromStat("persuasive", character_actives)
+                FindActiveModFromStat("persuasive", character)
               }
               stat_color={
-                Constants.TYPE_COLORS[FindActive("persuasive").active]
+                Constants.TYPE_COLORS[
+                  FindActive("persuasive", character).active
+                ]
               }
-              stat_icon={GetActiveIcon(FindActive("persuasive").active)}
+              stat_icon={GetActiveIcon(
+                FindActive("persuasive", character).active,
+              )}
               activeState={activeState}
               advantage={advantage}
               setActiveState={setActiveState}
@@ -323,10 +331,12 @@ function CharacterSheet({
               stat_value={
                 character.stats.cunning.value +
                 character.stats.cunning.mod +
-                FindActiveModFromStat("cunning", character_actives)
+                FindActiveModFromStat("cunning", character)
               }
-              stat_color={Constants.TYPE_COLORS[FindActive("cunning").active]}
-              stat_icon={GetActiveIcon(FindActive("cunning").active)}
+              stat_color={
+                Constants.TYPE_COLORS[FindActive("cunning", character).active]
+              }
+              stat_icon={GetActiveIcon(FindActive("cunning", character).active)}
               activeState={activeState}
               advantage={advantage}
               setActiveState={setActiveState}
@@ -343,10 +353,14 @@ function CharacterSheet({
               stat_value={
                 character.stats.discreet.value +
                 character.stats.discreet.mod +
-                FindActiveModFromStat("discreet", character_actives)
+                FindActiveModFromStat("discreet", character)
               }
-              stat_color={Constants.TYPE_COLORS[FindActive("discreet").active]}
-              stat_icon={GetActiveIcon(FindActive("discreet").active)}
+              stat_color={
+                Constants.TYPE_COLORS[FindActive("discreet", character).active]
+              }
+              stat_icon={GetActiveIcon(
+                FindActive("discreet", character).active,
+              )}
               activeState={activeState}
               advantage={advantage}
               setActiveState={setActiveState}
@@ -364,10 +378,12 @@ function CharacterSheet({
               stat_value={
                 character.stats.quick.value +
                 character.stats.quick.mod +
-                FindActiveModFromStat("quick", character_actives)
+                FindActiveModFromStat("quick", character)
               }
-              stat_icon={GetActiveIcon(FindActive("quick").active)}
-              stat_color={Constants.TYPE_COLORS[FindActive("quick").active]}
+              stat_icon={GetActiveIcon(FindActive("quick", character).active)}
+              stat_color={
+                Constants.TYPE_COLORS[FindActive("quick", character).active]
+              }
               active={true}
               activeState={activeState}
               advantage={advantage}

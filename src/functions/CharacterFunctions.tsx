@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API } from "../Constants";
 import { GetGameData } from "../contexts/GameContent";
-import { ActivesEntry, StatName } from "../Types";
+import { ActiveType, StatName } from "../Types";
 import { update_session } from "./SessionsFunctions";
 import { IsArmor } from "./UtilityFunctions";
 import {
@@ -116,6 +116,21 @@ export const FindCharacter = (
   return character_list.find((entry) => entry.id === id) || NewCharacterEntry;
 };
 
+export function FindActive(
+  stat: string,
+  character: CharacterEntry,
+): { active: ActiveType; mod: number } {
+  const character_actives = GetActives(character);
+  for (const [key, value] of Object.entries(character_actives)) {
+    if (value.stat == stat) {
+      return { active: key as ActiveType, mod: value.mod };
+    } else {
+      continue;
+    }
+  }
+  return { active: "", mod: 0 };
+}
+
 export function FindValueFromActive(
   type: "attack" | "defense" | "sneaking" | "casting" | "initiative",
   character: CharacterEntry,
@@ -139,8 +154,9 @@ export function FindValueFromActive(
 
 export function FindActiveModFromStat(
   stat: StatName,
-  character_actives: ActivesEntry,
+  character: CharacterEntry,
 ) {
+  const character_actives = GetActives(character);
   for (const [_key, value] of Object.entries(character_actives)) {
     if (value.stat == stat) {
       return value.mod;
