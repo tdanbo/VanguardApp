@@ -190,13 +190,17 @@ function CombatSection({
   const prevCombatLogRef = useRef<CombatEntry[] | null>(null);
 
   useEffect(() => {
-    // Compare the current combat log with the previous one
+    // Compare the current combat log with the previous one\
+    console.log(session.combatlog);
+    console.log(prevCombatLogRef.current);
     if (
       prevCombatLogRef.current &&
       !deepCompareCombatEntries(session.combatlog, prevCombatLogRef.current)
     ) {
+      console.log("Combat log changed");
       const last_roll = session.combatlog.at(-1);
       if (!last_roll) return;
+      console.log(last_roll);
 
       if (
         last_roll.roll_source === "Skill Test" &&
@@ -209,6 +213,7 @@ function CombatSection({
       ) {
         playRandomSound(CriticalFailureSounds);
       } else if (last_roll.roll_type === "day") {
+        console.log("Day change sound");
         playRandomSound(RestingSounds);
       } else {
         playRandomSound(RollSounds);

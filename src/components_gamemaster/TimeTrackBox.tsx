@@ -102,6 +102,8 @@ function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {
         entry: "CombatEntry",
       };
       session.combatlog.push(day_log);
+      session.combatlog = session.combatlog.slice(-20);
+
       session.travel.damage_gain = 0;
       session.travel.corruption_gain = 0;
       setActiveHour("morning");
