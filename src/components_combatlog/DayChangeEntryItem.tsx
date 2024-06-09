@@ -100,8 +100,10 @@ function DayChangeEntryItem({ combatEntry }: DayChangeEntryItemProps) {
               marginTop: "5px",
             }}
           >
-            As the sun rises and sets, another day of adventuring passes. The
-            following items have lost 1 durability due to wear and tear.
+            As the sun rises and sets, another day of adventuring passes.{" "}
+            {combatEntry.durability.length > 0
+              ? "The following items have lost 1 durability due to wear and tear."
+              : "No items were damaged during the day."}
           </div>
           <div className="column" style={{ margin: "10px" }}>
             {combatEntry.durability.map((item, index) => {
