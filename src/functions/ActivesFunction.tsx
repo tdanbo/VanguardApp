@@ -110,7 +110,6 @@ const UpdateQualities = (
   character: CharacterEntry,
   character_actives: ActivesEntry,
 ) => {
-  console.log("Updating Qualities");
   const qualityModifiers = {
     "Imp 1": { sneaking: -1, defense: -1, casting: -1 },
     "Imp 2": { sneaking: -2, defense: -2, casting: -2 },

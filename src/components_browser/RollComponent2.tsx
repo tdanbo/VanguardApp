@@ -127,6 +127,11 @@ function RollComponent({
       } else if (roll1 === 20 && roll2 === 20) {
         critical_type.state = 0;
       }
+    } else if (activeState === "full" && result1 > target && result2 > target) {
+      success = false;
+      if (roll1 === 20 && roll2 === 20) {
+        critical_type.state = 0;
+      }
     } else if (
       activeState === "weak" &&
       (result1 > target || result2 > target)

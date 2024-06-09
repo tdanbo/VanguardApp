@@ -2,6 +2,7 @@ import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
 import { ActiveType, GeneralItem } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
+import React from "react";
 import {
   AbilityEntry,
   ActiveStateType,
@@ -268,11 +269,9 @@ export const StyledText: React.FC<StyledTextProps> = ({ effect }) => {
       const isSpecialWord = Constants.SPECIAL_WORDS.includes(part);
 
       return (
-        <>
-          <span key={keyB} style={isSpecialWord ? style : undefined}>
-            {part}
-          </span>
-        </>
+        <React.Fragment key={keyB}>
+          <span style={isSpecialWord ? style : undefined}>{part}</span>
+        </React.Fragment>
       );
     });
   };
@@ -512,6 +511,11 @@ export function RollDice({
     if (roll1 === 1 || roll2 === 1) {
       critical_type.state = 2;
     } else if (roll1 === 20 && roll2 === 20) {
+      critical_type.state = 0;
+    }
+  } else if (activeState === "full" && result1 > target && result2 > target) {
+    success = false;
+    if (roll1 === 20 && roll2 === 20) {
       critical_type.state = 0;
     }
   } else if (activeState === "weak" && (result1 > target || result2 > target)) {

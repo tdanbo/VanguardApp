@@ -205,12 +205,6 @@ function EditCharacterComponent({
   const [characterPortrait, setCharacterPortrait] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    return () => {
-      console.log("CreateCharacterComponent will unmount");
-    };
-  }, []);
-
   const handleNameChange = (e: any) => {
     setName(toTitleCase(e.target.value));
   };

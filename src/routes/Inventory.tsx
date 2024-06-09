@@ -14,11 +14,6 @@ interface ContainerProps {
   height: string;
 }
 
-interface DivDropProps {
-  width: string;
-  gm: boolean;
-}
-
 interface DivProps {
   width: string;
 }
@@ -32,10 +27,15 @@ const Container = styled.div<ContainerProps>`
   max-height: ${(props) => props.height};
 `;
 
+interface DivDropProps {
+  width: string;
+  $gm: boolean;
+}
+
 const ScrollDropsColumn = styled.div<DivDropProps>`
   display: flex;
   flex-direction: column;
-  height: ${(props) => (props.gm ? "100%" : "335px")};
+  height: ${(props) => (props.$gm ? "100%" : "335px")};
   gap: ${Constants.WIDGET_GAB};
   max-width: ${(props) => props.width};
   overflow-y: scroll;
@@ -108,7 +108,7 @@ export default function Inventory({
     <>
       {session.loot.drops.length > 0 || isGm ? (
         <>
-          <ScrollDropsColumn width="100%" gm={isGm}>
+          <ScrollDropsColumn width="100%" $gm={isGm}>
             <div
               className="row"
               style={{
