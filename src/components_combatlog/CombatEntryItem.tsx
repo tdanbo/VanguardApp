@@ -34,7 +34,7 @@ const Container = styled.div<PortraitProps>`
   flex-direction: row;
   border-radius: ${Constants.BORDER_RADIUS};
   max-height: 150px;
-  min-height: 153px;
+  min-height: 150px;
   color: ${Constants.WIDGET_PRIMARY_FONT};
   background: linear-gradient(
       rgba(${Constants.COMBAT_BACKGROUND}, 0.925),

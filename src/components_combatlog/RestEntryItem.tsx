@@ -25,8 +25,8 @@ const Container = styled.div<PortraitProps>`
   flex-grow: 1;
   flex-direction: row;
   border-radius: ${Constants.BORDER_RADIUS};
-  max-height: 75px;
-  min-height: 75px;
+  max-height: 150px;
+  min-height: 150px;
   color: ${Constants.WIDGET_PRIMARY_FONT};
   background: linear-gradient(
       rgba(${Constants.COMBAT_BACKGROUND}, 0.925),
@@ -79,9 +79,25 @@ function RestEntryItem({ combatEntry }: RestEntryItemProps) {
               ? mdiSilverwareForkKnife
               : mdiSleep
           }
-          size={1.0}
+          size={3.0}
         />
-        {combatEntry.roll_source}
+        <div className="row" style={{ fontSize: "25px", fontWeight: "bold" }}>
+          {combatEntry.roll_source}
+        </div>
+
+        <div
+          className="row"
+          style={{
+            textAlign: "center",
+            color: Constants.WIDGET_SECONDARY_FONT,
+            fontSize: "14px",
+            maxWidth: "80%",
+          }}
+        >
+          {combatEntry.roll_type === "eating"
+            ? "You eat your daily consumption, fully restoring your energy."
+            : "A quarter of the day passes. You restore all corruption and gain 1 toughness."}
+        </div>
       </RollContainer>
     </Container>
   );

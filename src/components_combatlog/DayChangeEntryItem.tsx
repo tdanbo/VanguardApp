@@ -26,7 +26,6 @@ const Container = styled.div<PortraitProps>`
   flex-grow: 1;
   flex-direction: row;
   border-radius: ${Constants.BORDER_RADIUS};
-
   color: ${Constants.WIDGET_PRIMARY_FONT};
   background: linear-gradient(
       rgba(${Constants.COMBAT_BACKGROUND}, 0.925),
@@ -43,7 +42,7 @@ const ColorBlock = styled.div<ColorTypeProps>`
   flex-direction: column;
   flex-grow: 1;
   background-color: ${(props) => props.$rgb};
-  width: 20px;
+  min-width: 20px;
   max-width: 20px;
   margin: 1px 1px 1px 1px;
   border: 1px solid ${Constants.WIDGET_BORDER};
