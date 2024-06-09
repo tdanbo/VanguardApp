@@ -226,6 +226,7 @@ function RollComponent({
       roll_source, // Short Sword, Medium Armor, Skill Test,
       roll_state,
       roll_entry,
+      roll_active: "",
       uuid: uuidv4(),
       entry: "CombatEntry",
       durability: [],

@@ -453,6 +453,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
       roll_type: "resting",
       roll_source: "Resting",
       roll_state: "",
+      roll_active: "",
       roll_entry: {
         result1: 0,
         result2: 0,

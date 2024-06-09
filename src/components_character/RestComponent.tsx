@@ -42,6 +42,7 @@ export default function RestComponent({
         roll_type: "eating",
         roll_source: "Eating",
         roll_state: "",
+        roll_active: "",
         roll_entry: {
           result1: 0,
           result2: 0,
@@ -77,6 +78,7 @@ export default function RestComponent({
       roll_type: "sleeping",
       roll_source: "Sleeping",
       roll_state: "",
+      roll_active: "",
       roll_entry: {
         result1: 0,
         result2: 0,

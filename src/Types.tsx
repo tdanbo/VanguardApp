@@ -159,12 +159,15 @@ export interface AbilityStatic {
   category: string;
 }
 
+export type ActiveType = "attack" | "defense" | "casting" | "sneaking" | "";
+
 export type CombatEntry = {
   character: CharacterEntry;
   roll_type: RollTypeEntry;
   roll_source: string;
   roll_state: ActiveStateType;
   roll_entry: RollEntry;
+  roll_active: ActiveType;
   uuid: string;
   durability: ItemEntry[];
   entry: "CombatEntry";

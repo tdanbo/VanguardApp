@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import { GeneralItem } from "../Types";
+import { ActiveType, GeneralItem } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
 import {
   AbilityEntry,
@@ -448,6 +448,7 @@ type RollComponentProps = {
   websocket: Socket;
   roll_type: RollTypeEntry;
   roll_source: string;
+  roll_active: ActiveType;
   dice: number;
   dice_mod?: number;
   color?: string;
@@ -468,6 +469,7 @@ type RollComponentProps = {
 export function RollDice({
   roll_type,
   roll_source,
+  roll_active,
   dice,
   dice_mod = 0,
   target = 0,
@@ -560,6 +562,7 @@ export function RollDice({
     roll_type,
     roll_source, // Short Sword, Medium Armor, Skill Test,
     roll_state,
+    roll_active,
     roll_entry,
     uuid: uuidv4(),
     entry: "CombatEntry",
