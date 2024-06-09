@@ -78,6 +78,7 @@ const RollContainer = styled.div`
   align-items: center;
   margin-top: 10px;
   margin-bottom: 10px;
+  margin-left: 20px;
 `;
 
 const ResultContainer = styled.div`
