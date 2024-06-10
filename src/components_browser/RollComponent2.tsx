@@ -62,13 +62,12 @@ function HasAmmunition(character: CharacterEntry) {
   return false;
 }
 
-function HasRangedWeapon(character: CharacterEntry) {
-  for (const item of character.inventory) {
-    if (item.static.category === "ranged weapon" && item.equipped) {
-      return true;
-    }
+function IsRangedWeapon(item: ItemEntry) {
+  if (item.static.category === "ranged weapon") {
+    return true;
+  } else {
+    return false;
   }
-  return false;
 }
 
 function Ammunition(character: CharacterEntry) {
@@ -96,6 +95,7 @@ function RollComponent({
   setActiveState,
   setAdvantage,
   setCriticalState,
+  item,
 }: RollComponentProps) {
   const RollDIce = () => {
     // let roll = Math.floor(Math.random() * dice) + 1;
@@ -159,7 +159,7 @@ function RollComponent({
     //   success = false;
     // }
 
-    if (roll_type === "damage" && HasRangedWeapon(character)) {
+    if (roll_type === "damage" && item && IsRangedWeapon(item)) {
       if (!Ammunition(character)) {
         return;
       }
