@@ -159,7 +159,7 @@ function RollComponent({
     //   success = false;
     // }
 
-    if (roll_type === "attack" && HasRangedWeapon(character)) {
+    if (roll_type === "damage" && HasRangedWeapon(character)) {
       if (!Ammunition(character)) {
         return;
       }
