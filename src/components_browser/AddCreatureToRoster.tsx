@@ -10,6 +10,7 @@ import * as Constants from "../Constants";
 import { CharacterEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
 import AddCreaturePortrait from "../components_general/AddCreaturePortrait";
+import { v4 as uuid } from "uuid";
 import {
   ButtonContainer,
   CenterContainer,
@@ -111,7 +112,7 @@ function AddCreatureToRoster({
   const handleSubmit = async () => {
     character_template.name = member;
     character_template.portrait = characterPortrait;
-    character_template.id = session.id;
+    character_template.id = uuid();
     session.characters.push(character_template);
     update_session(session, websocket, character_template, false);
     setIsModalOpen(false);
