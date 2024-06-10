@@ -325,6 +325,9 @@ export const INTEGRATED_ABILITIES = [
   "tactician",
   "man-at-arms",
   "exceptionally strong",
+  "exceptionally resolute",
+  "exceptionally vigilant",
+  "sixth sense",
   "iron fist",
   "armored",
 ];
