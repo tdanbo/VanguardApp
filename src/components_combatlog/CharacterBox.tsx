@@ -76,6 +76,7 @@ function CharacterBox({
   const handleOnClick = () => {
     setIsCreature(false);
     setIsGm(false);
+    console.log(character.id);
     setCharacterId(character.id);
   };
 
