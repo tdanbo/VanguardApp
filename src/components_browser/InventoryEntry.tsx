@@ -33,7 +33,7 @@ import { cloneDeep } from "lodash";
 import { ShuffleArray, toTitleCase } from "../functions/UtilityFunctions";
 import DurabilityComponent from "./DurabilityComponent";
 import QuantityComponent from "./QuantityComponent";
-import { GetCostToCurrency, GetItemPrice } from "../functions/UtilityFunctions";
+import { GetItemPrice } from "../functions/UtilityFunctions";
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -354,14 +354,11 @@ function InventoryEntry({
       while (bulk > 0) {
         for (const index of character_index) {
           if (bulk <= 0) break; // Stop if no more items to distribute
-          if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
-            session.characters[index].money += item.static.cost;
+          if (item.name === "Thaler") {
+            session.characters[index].coins += item.static.cost;
             bulk -= 1;
-          } else if (item.name === "Food") {
-            session.characters[index].rations.food += 1;
-            bulk -= 1;
-          } else if (item.name === "Water") {
-            session.characters[index].rations.water += 1;
+          } else if (item.name === "Ration") {
+            session.characters[index].rations += 1;
             bulk -= 1;
           }
         }
@@ -372,12 +369,10 @@ function InventoryEntry({
         return;
       }
       RemoveBulkItem(item);
-      if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
-        character.money += item.static.cost;
-      } else if (item.name === "Food") {
-        character.rations.food += 1;
-      } else if (item.name === "Water") {
-        character.rations.water += 1;
+      if (item.name === "Thaler") {
+        character.coins += item.static.cost;
+      } else if (item.name === "Ration") {
+        character.rations += 1;
       }
     }
   };
@@ -406,10 +401,10 @@ function InventoryEntry({
 
   const CheckBuy = (item: ItemEntry, buy: boolean) => {
     if (buy) {
-      if (character.money < item.static.cost) {
+      if (character.coins < item.static.cost) {
         return false;
       }
-      character.money -= item.static.cost;
+      character.coins -= item.static.cost;
       return true;
     }
     return true;
@@ -430,7 +425,7 @@ function InventoryEntry({
     const inventory = character.inventory;
     if (
       inventory.length === GetMaxSlots(character) * 2 ||
-      (buy && character.money < item.static.cost)
+      (buy && character.coins < item.static.cost)
     ) {
       return;
     }
@@ -561,7 +556,7 @@ function InventoryEntry({
           <Row>
             <TypeBox>
               {browser && isGm ? (
-                <CostBox>{GetCostToCurrency(GetItemPrice(item))}</CostBox>
+                <CostBox>{GetItemPrice(item)} Thaler</CostBox>
               ) : null}
               {item.static.rarity !== "normal"
                 ? toTitleCase(item.static.rarity)

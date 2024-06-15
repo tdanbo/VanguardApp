@@ -671,25 +671,3 @@ export function GetDropsPrice(session: SessionEntry): number {
   }
   return total_price;
 }
-
-export function GetCostToCurrency(cost: number) {
-  const thaler = Math.floor(cost / 100);
-  const remainingAfterThaler = cost - thaler * 100;
-  const shillings = Math.floor(remainingAfterThaler / 10);
-  const orthegs = remainingAfterThaler - shillings * 10;
-
-  let value = "";
-
-  if (thaler > 0) {
-    value += `${thaler} Thaler `;
-  }
-  if (shillings > 0) {
-    value += `${shillings} Shilling `;
-  }
-  if (orthegs > 0) {
-    value += `${orthegs} Orteg `;
-  }
-
-  // Trim to remove any trailing whitespace
-  return value.trim();
-}

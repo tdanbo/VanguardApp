@@ -31,11 +31,6 @@ export type CreatureStats = {
 
 export type ActiveKey = "attack" | "defense" | "casting" | "sneaking" | "";
 
-interface Rations {
-  food: number;
-  water: number;
-}
-
 type health = {
   damage: number;
   corruption: number;
@@ -53,8 +48,8 @@ export interface CharacterEntry {
   effects: EffectEntry[];
   abilities: AbilityEntry[];
   inventory: ItemEntry[];
-  rations: Rations;
-  money: number;
+  rations: number;
+  coins: number;
   creature?: boolean;
   entry: "CharacterEntry";
 }
@@ -362,8 +357,8 @@ export const NewCharacterEntry: CharacterEntry = {
   abilities: [],
   inventory: [],
   effects: [],
-  rations: { food: 0, water: 0 },
-  money: 0,
+  rations: 0,
+  coins: 0,
   entry: "CharacterEntry",
 };
 

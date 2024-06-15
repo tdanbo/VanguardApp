@@ -435,16 +435,12 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
       }
 
       const burnrate = GetBurnRate(character);
-      if (character.rations.food >= burnrate) {
-        character.rations.food -= burnrate;
+      if (character.rations >= burnrate) {
+        character.rations -= burnrate;
         if (character.health.damage > 0) {
           character.health.damage -= 1;
+          character.health.shield = 0;
         }
-      }
-
-      if (character.rations.water >= burnrate) {
-        character.rations.water -= burnrate;
-        character.health.shield = 0;
       }
     });
 
