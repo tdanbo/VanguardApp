@@ -647,3 +647,49 @@ export function DurabilityReport(session: SessionEntry): ItemEntry[] {
   }
   return item_damaged;
 }
+
+export function GetItemPrice(item: ItemEntry): number {
+  let total_price = item.static.cost;
+  console.log(item.static.roll.roll);
+  if (item.static.roll.roll) {
+    const max_durability = item.static.roll.base;
+    const current_durability = item.durability;
+    console.log("Max Durability: " + max_durability);
+    console.log("Current Durability: " + current_durability);
+
+    total_price = item.static.cost * (current_durability / max_durability);
+    console.log(total_price);
+  }
+
+  return Math.round(total_price);
+}
+
+export function GetDropsPrice(session: SessionEntry): number {
+  let total_price = 0;
+  for (const item of session.loot.drops) {
+    total_price += GetItemPrice(item);
+  }
+  return total_price;
+}
+
+export function GetCostToCurrency(cost: number) {
+  const thaler = Math.floor(cost / 100);
+  const remainingAfterThaler = cost - thaler * 100;
+  const shillings = Math.floor(remainingAfterThaler / 10);
+  const orthegs = remainingAfterThaler - shillings * 10;
+
+  let value = "";
+
+  if (thaler > 0) {
+    value += `${thaler} Thaler `;
+  }
+  if (shillings > 0) {
+    value += `${shillings} Shilling `;
+  }
+  if (orthegs > 0) {
+    value += `${orthegs} Orteg `;
+  }
+
+  // Trim to remove any trailing whitespace
+  return value.trim();
+}
