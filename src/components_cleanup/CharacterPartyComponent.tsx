@@ -90,7 +90,6 @@ function CharacterPartyComponent({
         alignItems: "center",
         height: "100%",
         width: "100%",
-        padding: "3px",
       }}
     >
       <div className="row">
