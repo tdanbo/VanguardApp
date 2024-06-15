@@ -190,7 +190,7 @@ function StatComponent({
           className="column"
           style={{
             fontSize: "14px",
-            gap: "5px",
+            gap: "0px",
             alignItems: "center",
             justifyContent: "center",
           }}
