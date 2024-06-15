@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import { AdvantageType, CharacterEntry, SessionEntry } from "../Types";
 import AbilitySection from "../components_character/AbilitySection";
-import CharacterNameBox from "../components_character/CharacterNameBox";
+import CharacterNameBox from "../components_cleanup/CharacterNameComponent";
 import ResourcesBox from "../components_character/ResourcesBox";
-import XpBox from "../components_character/XpBox";
-import StatComponent2 from "../components_character/StatComponent2";
+import DetailStatComponent from "../components_cleanup/DetailStatComponent";
+import { getCharacterXp, getUtilityXp } from "../functions/CharacterFunctions";
+import StatComponent from "../components_cleanup/StatComponent";
 import { FindActiveModFromStat } from "../functions/CharacterFunctions";
 import { FindActive } from "../functions/CharacterFunctions";
+import ModifierLockComponent from "../components_cleanup/ModifierLockComponent";
 import "../layout.css";
 
 import * as Constants from "../Constants";
@@ -166,14 +168,25 @@ function CharacterSheet({
           <CharacterNameBox character={character} />
         </Row>
         <Row width={"50%"}>
-          <XpBox
-            websocket={websocket}
-            session={session}
-            character={character}
-            isCreature={isCreature}
-            modifierLock={modifierLock}
-            setModifierLock={setModifierLock}
-          />
+          <div className="row">
+            <DetailStatComponent
+              title="COMBAT XP"
+              value={`${getCharacterXp(character)} / ${
+                character.details.xp_earned
+              }`}
+            />
+          </div>
+          <div className="row">
+            <DetailStatComponent
+              title="UTILITY XP"
+              value={`${getUtilityXp(character)} /
+            ${Math.max(Math.round(character.details.xp_earned / 5), 10)}`}
+            />
+            <ModifierLockComponent
+              modifierLock={modifierLock}
+              setModifierLock={setModifierLock}
+            />
+          </div>
         </Row>
       </Container>
       <Container height={"260px"}>
@@ -195,7 +208,7 @@ function CharacterSheet({
         </Row>
         <Row width={"100%"}>
           <Column width={"50%"}>
-            <StatComponent2
+            <StatComponent
               session={session}
               character={character}
               websocket={websocket}
@@ -220,7 +233,7 @@ function CharacterSheet({
               setCriticalState={setCriticalState}
               modifierLock={modifierLock}
             />
-            <StatComponent2
+            <StatComponent
               session={session}
               character={character}
               websocket={websocket}
@@ -244,7 +257,7 @@ function CharacterSheet({
               modifierLock={modifierLock}
             />
 
-            <StatComponent2
+            <StatComponent
               session={session}
               character={character}
               websocket={websocket}
@@ -269,7 +282,7 @@ function CharacterSheet({
               setCriticalState={setCriticalState}
               modifierLock={modifierLock}
             />
-            <StatComponent2
+            <StatComponent
               session={session}
               character={character}
               websocket={websocket}
@@ -296,7 +309,7 @@ function CharacterSheet({
             />
           </Column>
           <Column width={"50%"}>
-            <StatComponent2
+            <StatComponent
               session={session}
               character={character}
               websocket={websocket}
@@ -322,7 +335,7 @@ function CharacterSheet({
               setCriticalState={setCriticalState}
               modifierLock={modifierLock}
             />
-            <StatComponent2
+            <StatComponent
               session={session}
               character={character}
               websocket={websocket}
@@ -344,7 +357,7 @@ function CharacterSheet({
               setCriticalState={setCriticalState}
               modifierLock={modifierLock}
             />
-            <StatComponent2
+            <StatComponent
               session={session}
               character={character}
               websocket={websocket}
@@ -369,7 +382,7 @@ function CharacterSheet({
               modifierLock={modifierLock}
             />
 
-            <StatComponent2
+            <StatComponent
               session={session}
               character={character}
               websocket={websocket}

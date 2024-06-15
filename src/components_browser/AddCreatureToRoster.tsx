@@ -11,6 +11,7 @@ import { CharacterEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
 import AddCreaturePortrait from "../components_general/AddCreaturePortrait";
 import { v4 as uuid } from "uuid";
+
 import {
   ButtonContainer,
   CenterContainer,
