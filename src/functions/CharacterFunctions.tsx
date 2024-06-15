@@ -265,3 +265,21 @@ export function GetCreatureArmor(creature: CharacterEntry) {
   });
   return armor;
 }
+
+export function GetDifficultyString(character: CharacterEntry) {
+  let character_difficulty = "Weak";
+  if (character.details.xp_earned < 50) {
+    character_difficulty = "Weak";
+  } else if (character.details.xp_earned < 150) {
+    character_difficulty = "Ordinary";
+  } else if (character.details.xp_earned < 300) {
+    character_difficulty = "Challenging";
+  } else if (character.details.xp_earned <= 600) {
+    character_difficulty = "Strong";
+  } else if (character.details.xp_earned <= 1200) {
+    character_difficulty = "Mighty";
+  } else {
+    character_difficulty = "Legendary";
+  }
+  return character_difficulty;
+}

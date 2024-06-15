@@ -46,7 +46,7 @@ interface Props {
   modifierLock: boolean;
 }
 
-function StatComponent2({
+function StatComponent({
   stat_name,
   stat_value,
   stat_icon,
@@ -142,6 +142,7 @@ function StatComponent2({
     <div className="row base_color" style={{ padding: "2px", gap: "0px" }}>
       <div
         className="row base_color"
+        title="Modifier Value"
         style={{
           maxWidth: "35px",
           minWidth: "35px",
@@ -246,7 +247,7 @@ function StatComponent2({
       <div
         className="row button button_color"
         style={{ maxWidth: "30px", minWidth: "30px", fontSize: "20px" }}
-        title={isCreature ? valueTitle : ""}
+        title={isCreature ? valueTitle : "Click To Roll"}
         onClick={() =>
           RollDice({
             session: session,
@@ -274,52 +275,7 @@ function StatComponent2({
         {Math.max(stat_value + modValue + flanked, 1)}
       </div>
     </div>
-    // <Container>
-    //   <Row height={"100%"} className="first-row">
-    //     <DiceContainerLeft>
-    //       {stat_icon !== faNotEqual && (
-    //         <FontAwesomeIcon icon={stat_icon} color={stat_color} />
-    //       )}
-    //     </DiceContainerLeft>
-
-    //     <Value className="dice-icon-hover" title={isCreature ? valueTitle : ""}>
-    //       {Math.max(stat_value + modValue + flanked, 1)}
-    //     </Value>
-    //     <DiceContainerRight>
-    //       </DiceContainer>
-    //     </DiceContainerRight>
-    //   </Row>
-    //   <ActiveValue className="value-row" $active={active}>
-    //     {(() => {
-    //       if (advantage === "flanking" && stat_name === "attack") {
-    //         return toTitleCase(`${advantage} ${stat_name}`);
-    //       } else if (advantage === "flanked" && stat_name === "defense") {
-    //         return toTitleCase(`${advantage} ${stat_name}`);
-    //       } else {
-    //         return toTitleCase(stat_name);
-    //       }
-    //     })()}
-    //   </ActiveValue>
-    //   <BottomRow height={"25%"} className="second-row" $active={active}>
-    //     <Minus className="button-hover" onClick={handleSubValue}>
-    //       <FontAwesomeIcon
-    //         icon={faMinus}
-    //         color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
-    //       />
-    //     </Minus>
-    //     <Modifier className="mouse-icon-hover">
-    //       {modValue > 0 ? "+" : ""}
-    //       {modValue}
-    //     </Modifier>
-    //     <Plus className="button-hover" onClick={handleAddValue}>
-    //       <FontAwesomeIcon
-    //         icon={faPlus}
-    //         color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
-    //       />
-    //     </Plus>
-    //   </BottomRow>
-    // </Container>
   );
 }
 
-export default StatComponent2;
+export default StatComponent;

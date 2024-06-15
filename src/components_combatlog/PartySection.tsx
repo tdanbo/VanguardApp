@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { SessionEntry } from "../Types";
 import * as Constants from "../Constants";
 
-import CharacterBox from "./CharacterBox";
+import CharacterPartyComponent from "../components_cleanup/CharacterPartyComponent";
 type DivProps = {
   width: string;
 };
@@ -36,6 +36,7 @@ interface PartySectionProps {
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   isCreature: boolean;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
+  isGm: boolean;
 }
 
 function PartySection({
@@ -44,13 +45,14 @@ function PartySection({
   setCharacterId,
   setIsCreature,
   setIsGm,
+  isGm,
 }: PartySectionProps) {
   return (
     <Container height="260px">
       <Column width="100%">
         {session.characters.map((entry, index) => {
           return (
-            <CharacterBox
+            <CharacterPartyComponent
               key={index}
               character={entry}
               session={session}
@@ -59,6 +61,7 @@ function PartySection({
               isCreature={false}
               setCharacterId={setCharacterId}
               setIsGm={setIsGm}
+              isGm={isGm}
             />
           );
         })}

@@ -7,6 +7,8 @@ import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
 import { update_session } from "../functions/SessionsFunctions";
 import { NewCharacterEntry } from "../Types";
+import DetailStatComponent from "../components_cleanup/DetailStatComponent";
+import { toTitleCase } from "../functions/UtilityFunctions";
 
 import {
   CharacterEntry,
@@ -96,7 +98,6 @@ import {
   RestingSounds,
   RollSounds,
 } from "../Images";
-import DayComponent from "../components_character/DayComponent";
 import RestEntryItem from "../components_combatlog/RestEntryItem";
 import DayChangeEntryItem from "../components_combatlog/DayChangeEntryItem";
 // import { set } from "lodash";
@@ -246,12 +247,16 @@ function CombatSection({
             <FontAwesomeIcon icon={faUserPlus} />
           </Button>
         ) : (
-          <DayComponent
-            character={character}
-            session={session}
-            websocket={websocket}
-            isCreature={isCreature}
-          />
+          <>
+            <DetailStatComponent
+              title={"QUARTER"}
+              value={toTitleCase(session.travel.time)}
+            />
+            <DetailStatComponent
+              title={"DAY"}
+              value={toTitleCase(session.travel.day.toString())}
+            />
+          </>
         )}
       </Container>
       <PartySection
@@ -261,6 +266,7 @@ function CombatSection({
         setIsCreature={setIsCreature}
         isCreature={isCreature}
         setIsGm={setIsGm}
+        isGm={isGm}
       />
       <DynamicContainer>
         <Column ref={scrollRef} width={"100%"}>
