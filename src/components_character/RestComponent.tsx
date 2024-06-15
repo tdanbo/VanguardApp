@@ -24,12 +24,8 @@ export default function RestComponent({
 }: DayComponentProps) {
   const HandleEat = () => {
     const burnrate = GetBurnRate(character);
-    if (
-      character.rations.food >= burnrate &&
-      character.rations.water >= burnrate
-    ) {
-      character.rations.food -= burnrate;
-      character.rations.water -= burnrate;
+    if (character.rations >= burnrate) {
+      character.rations -= burnrate;
 
       character.effects = character.effects.filter(
         (effect) => effect.name !== "Exhausted",
@@ -112,8 +108,7 @@ export default function RestComponent({
       >
         <Icon path={mdiSleep} size={0.9} />
       </div>
-      {character.rations.food < GetBurnRate(character) ||
-      character.rations.water < GetBurnRate(character) ? (
+      {character.rations < GetBurnRate(character) ? (
         <div
           className="row button_color button"
           style={{

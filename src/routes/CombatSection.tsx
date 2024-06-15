@@ -248,14 +248,18 @@ function CombatSection({
           </Button>
         ) : (
           <>
-            <DetailStatComponent
-              title={"QUARTER"}
-              value={toTitleCase(session.travel.time)}
-            />
-            <DetailStatComponent
-              title={"DAY"}
-              value={toTitleCase(session.travel.day.toString())}
-            />
+            <div className="row outline_color">
+              <DetailStatComponent
+                title={"QUARTER"}
+                value={toTitleCase(session.travel.time)}
+              />
+            </div>
+            <div className="row outline_color">
+              <DetailStatComponent
+                title={"DAY"}
+                value={toTitleCase(session.travel.day.toString())}
+              />
+            </div>
           </>
         )}
       </Container>

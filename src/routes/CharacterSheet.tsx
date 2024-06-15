@@ -2,13 +2,13 @@ import styled from "styled-components";
 import { AdvantageType, CharacterEntry, SessionEntry } from "../Types";
 import AbilitySection from "../components_character/AbilitySection";
 import CharacterNameBox from "../components_cleanup/CharacterNameComponent";
-import ResourcesBox from "../components_character/ResourcesBox";
 import DetailStatComponent from "../components_cleanup/DetailStatComponent";
 import { getCharacterXp, getUtilityXp } from "../functions/CharacterFunctions";
 import StatComponent from "../components_cleanup/StatComponent";
 import { FindActiveModFromStat } from "../functions/CharacterFunctions";
 import { FindActive } from "../functions/CharacterFunctions";
 import ModifierLockComponent from "../components_cleanup/ModifierLockComponent";
+import ValueAdjustComponent from "../components_cleanup/ValueAdjustComponent";
 import "../layout.css";
 
 import * as Constants from "../Constants";
@@ -93,9 +93,9 @@ import PortraitComponent from "../components_character/PortraitComponent";
 import { GetActives } from "../functions/ActivesFunction";
 import UpdateAbilityStats from "../functions/rules/UpdateAbilityStats";
 import EquipmentSection from "../components_character/EquipmentSection";
-import RestComponent from "../components_character/RestComponent";
 import { ActiveStateType } from "../Types";
 import EnergyStatComponent from "../components_character/EnergyStatComponent";
+import RestComponent from "../components_character/RestComponent";
 type CharacterSheetProps = {
   websocket: Socket;
   session: SessionEntry;
@@ -168,7 +168,7 @@ function CharacterSheet({
           <CharacterNameBox character={character} />
         </Row>
         <Row width={"50%"}>
-          <div className="row">
+          <div className="row outline_color">
             <DetailStatComponent
               title="COMBAT XP"
               value={`${getCharacterXp(character)} / ${
@@ -176,12 +176,14 @@ function CharacterSheet({
               }`}
             />
           </div>
-          <div className="row">
-            <DetailStatComponent
-              title="UTILITY XP"
-              value={`${getUtilityXp(character)} /
+          <div className="row ">
+            <div className="row outline_color">
+              <DetailStatComponent
+                title="UTILITY XP"
+                value={`${getUtilityXp(character)} /
             ${Math.max(Math.round(character.details.xp_earned / 5), 10)}`}
-            />
+              />
+            </div>
             <ModifierLockComponent
               modifierLock={modifierLock}
               setModifierLock={setModifierLock}
@@ -487,20 +489,48 @@ function CharacterSheet({
         </ScrollColumn>
       </DynamicContainer>
       <Container height={"30px"}>
-        <Row width={"100%"}>
-          <ResourcesBox
-            character={character}
-            session={session}
-            websocket={websocket}
-            isCreature={isCreature}
-          />
+        <div className="row ">
+          <div
+            className="row outline_color"
+            style={{ padding: "1px", paddingLeft: "30px" }}
+          >
+            <DetailStatComponent
+              title={"THALER"}
+              value={character.coins.toString()}
+            />
+            <ValueAdjustComponent
+              type={"coins"}
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+            />
+          </div>
+          <div
+            className="row outline_color"
+            style={{ padding: "1px", paddingLeft: "30px" }}
+          >
+            <DetailStatComponent
+              title={"RATIONS"}
+              value={character.rations.toString()}
+            />
+            <ValueAdjustComponent
+              type={"rations"}
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+            />
+          </div>
+        </div>
+        <div className="row">
           <RestComponent
-            character={character}
             session={session}
+            character={character}
             websocket={websocket}
             isCreature={isCreature}
           />
-        </Row>
+        </div>
       </Container>
     </div>
   );

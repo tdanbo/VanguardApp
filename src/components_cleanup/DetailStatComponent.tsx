@@ -8,7 +8,7 @@ interface DetailStatProps {
 
 function DetailStatComponent({ title, value }: DetailStatProps) {
   return (
-    <div className="row outline_color">
+    <div className="row">
       <div
         className="row"
         style={{

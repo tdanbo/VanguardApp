@@ -459,81 +459,33 @@ function EncounterCreatureEntry({
       session.loot.drops.push(new_loot_item);
     }
 
-    if (creature.rations.food > 0) {
-      const DropsFood = session.loot.drops.find((item) => item.name === "Food");
-      if (DropsFood) {
-        DropsFood.quantity += random(1, creature.rations.food);
-      } else {
-        const food = cloneDeep(ResourceItem);
-        food.name = "Food";
-        food.quantity = random(1, creature.rations.food);
-        food.id = uuidv4();
-        session.loot.drops.push(food);
-      }
-    }
-
-    if (creature.rations.water > 0) {
-      const DropsWater = session.loot.drops.find(
-        (item) => item.name === "Water",
+    if (creature.rations > 0) {
+      const DropsRations = session.loot.drops.find(
+        (item) => item.name === "Ration",
       );
-      if (DropsWater) {
-        DropsWater.quantity += random(1, creature.rations.water);
+      if (DropsRations) {
+        DropsRations.quantity += random(1, creature.rations);
       } else {
-        const water = cloneDeep(ResourceItem);
-        water.name = "Water";
-        water.quantity = random(1, creature.rations.water);
-        water.id = uuidv4();
-        session.loot.drops.push(water);
+        const ration = cloneDeep(ResourceItem);
+        ration.name = "Ration";
+        ration.quantity = random(1, creature.rations);
+        ration.id = uuidv4();
+        session.loot.drops.push(ration);
       }
     }
 
-    const thaler = Math.floor(creature.money / 100);
-    const remainingAfterThaler = creature.money - thaler * 100;
-    const shillings = Math.floor(remainingAfterThaler / 10);
-    const orthegs = remainingAfterThaler - shillings * 10;
-
-    if (thaler > 0) {
-      const DropsThaler = session.loot.drops.find(
+    if (creature.coins > 0) {
+      const DropsCoins = session.loot.drops.find(
         (item) => item.name === "Thaler",
       );
-      if (DropsThaler) {
-        DropsThaler.quantity += thaler;
+      if (DropsCoins) {
+        DropsCoins.quantity += creature.coins;
       } else {
-        const thaler_item = cloneDeep(ResourceItem);
-        thaler_item.name = "Thaler";
-        thaler_item.quantity = random(1, thaler);
-        thaler_item.id = uuidv4();
-        session.loot.drops.push(thaler_item);
-      }
-    }
-
-    if (shillings > 0) {
-      const DropsShilling = session.loot.drops.find(
-        (item) => item.name === "Shilling",
-      );
-      if (DropsShilling) {
-        DropsShilling.quantity += shillings;
-      } else {
-        const shillings_item = cloneDeep(ResourceItem);
-        shillings_item.name = "Shilling";
-        shillings_item.quantity = random(1, shillings);
-        shillings_item.id = uuidv4();
-        session.loot.drops.push(shillings_item);
-      }
-    }
-
-    if (orthegs > 0) {
-      const DropsOrtheg = session.loot.drops.find(
-        (item) => item.name === "Orteg",
-      );
-      if (DropsOrtheg) {
-        DropsOrtheg.quantity += orthegs;
-      } else {
-        const ortheg_item = cloneDeep(ResourceItem);
-        ortheg_item.name = "Ortheg";
-        ortheg_item.quantity = random(1, orthegs);
-        ortheg_item.id = uuidv4();
-        session.loot.drops.push(ortheg_item);
+        const coins_item = cloneDeep(ResourceItem);
+        coins_item.name = "Thaler";
+        coins_item.quantity = random(1, creature.coins);
+        coins_item.id = uuidv4();
+        session.loot.drops.push(coins_item);
       }
     }
 

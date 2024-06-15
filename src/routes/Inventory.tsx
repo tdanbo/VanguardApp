@@ -3,16 +3,12 @@ import React from "react";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import InventorySection from "../components_character/InventorySection";
-import MoneyBox from "../components_character/MoneyBox";
 import { Socket } from "socket.io-client";
 import { CharacterEntry, SessionEntry } from "../Types";
 import { ActiveStateType, AdvantageType } from "../Types";
 import DropControlComponent from "../components_browser/DropControlComponent";
 import DropsBrowser from "../components_browser/DropsBrowser";
-import {
-  GetCostToCurrency,
-  GetDropsPrice,
-} from "../functions/UtilityFunctions";
+import { GetDropsPrice } from "../functions/UtilityFunctions";
 
 interface ContainerProps {
   height: string;
@@ -134,7 +130,7 @@ export default function Inventory({
                     justifyContent: "right",
                   }}
                 >
-                  {GetCostToCurrency(GetDropsPrice(session))}
+                  {GetDropsPrice(session)} Thaler
                 </div>
               ) : null}
             </div>
@@ -184,14 +180,7 @@ export default function Inventory({
       ) : null}
       <Container height={"30px"}>
         <Row width={"100%"}>
-          {!isGm ? (
-            <MoneyBox
-              character={character}
-              session={session}
-              websocket={websocket}
-              isCreature={isCreature}
-            />
-          ) : (
+          {!isGm ? null : (
             <DropControlComponent
               session={session}
               websocket={websocket}
