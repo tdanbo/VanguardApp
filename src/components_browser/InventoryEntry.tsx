@@ -33,6 +33,7 @@ import { cloneDeep } from "lodash";
 import { ShuffleArray, toTitleCase } from "../functions/UtilityFunctions";
 import DurabilityComponent from "./DurabilityComponent";
 import QuantityComponent from "./QuantityComponent";
+import { GetCostToCurrency, GetItemPrice } from "../functions/UtilityFunctions";
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -476,28 +477,6 @@ function InventoryEntry({
     }
   };
 
-  function ConvertCurrency(cost: number) {
-    const thaler = Math.floor(cost / 100);
-    const remainingAfterThaler = cost - thaler * 100;
-    const shillings = Math.floor(remainingAfterThaler / 10);
-    const orthegs = remainingAfterThaler - shillings * 10;
-
-    let value = "";
-
-    if (thaler > 0) {
-      value += `${thaler} Thaler `;
-    }
-    if (shillings > 0) {
-      value += `${shillings} Shilling `;
-    }
-    if (orthegs > 0) {
-      value += `${orthegs} Orteg `;
-    }
-
-    // Trim to remove any trailing whitespace
-    return value.trim();
-  }
-
   const [expanded, setExpanded] = useState<boolean>(false);
 
   // This is a big function that correct all dice rolls based on the character's abilities
@@ -582,7 +561,7 @@ function InventoryEntry({
           <Row>
             <TypeBox>
               {browser && isGm ? (
-                <CostBox>{ConvertCurrency(item.static.cost)}</CostBox>
+                <CostBox>{GetCostToCurrency(GetItemPrice(item))}</CostBox>
               ) : null}
               {item.static.rarity !== "normal"
                 ? toTitleCase(item.static.rarity)

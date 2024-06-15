@@ -9,6 +9,10 @@ import { CharacterEntry, SessionEntry } from "../Types";
 import { ActiveStateType, AdvantageType } from "../Types";
 import DropControlComponent from "../components_browser/DropControlComponent";
 import DropsBrowser from "../components_browser/DropsBrowser";
+import {
+  GetCostToCurrency,
+  GetDropsPrice,
+} from "../functions/UtilityFunctions";
 
 interface ContainerProps {
   height: string;
@@ -109,16 +113,30 @@ export default function Inventory({
       {session.loot.drops.length > 0 || isGm ? (
         <>
           <ScrollDropsColumn width="100%" $gm={isGm}>
-            <div
-              className="row"
-              style={{
-                maxHeight: "10px",
-                fontSize: "11px",
-                fontWeight: "bold",
-                color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
-              }}
-            >
-              Drops <DividerHorizontal />
+            <div className="row">
+              <div
+                className="row"
+                style={{
+                  width: "auto",
+                  fontSize: "11px",
+                  fontWeight: "bold",
+                  color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+                }}
+              >
+                Drops
+              </div>
+              <DividerHorizontal />
+              {session.loot.drops.length > 0 && isGm ? (
+                <div
+                  className="row"
+                  style={{
+                    fontSize: "11px",
+                    justifyContent: "right",
+                  }}
+                >
+                  {GetCostToCurrency(GetDropsPrice(session))}
+                </div>
+              ) : null}
             </div>
             <DropsBrowser
               isGm={isGm}
