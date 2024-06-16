@@ -194,7 +194,7 @@ export default function DropControlComponent({
     const SetBulk = (item: ItemEntry) => {
       if (item.static.bulk) {
         if (item.static.category === "resource") {
-          item.quantity = random(1, 8 * rarity);
+          item.quantity = random(1, 50 * rarity);
         } else if (item.static.category === "projectile") {
           item.quantity = random(1, 4 * rarity);
         } else if (
@@ -222,7 +222,7 @@ export default function DropControlComponent({
       let drop = false;
       let drop_chance = 0;
       const drop_roll = random(1, 100);
-      if (["Food", "Water"].includes(item.name)) {
+      if (["Ration"].includes(item.name)) {
         return false;
       }
       if (item.static.category === "resource") {
@@ -253,11 +253,11 @@ export default function DropControlComponent({
       let drop = false;
       let drop_chance = 0;
       const drop_roll = random(1, 100);
-      if (["Thaler", "Shilling", "Orteg"].includes(item.name)) {
+      if (["Thaler"].includes(item.name)) {
         return false;
       }
       if (item.static.category === "resource") {
-        drop_chance = 75;
+        drop_chance = 100;
       } else if (item.static.rarity === "normal") {
         drop_chance = 6 * rarity;
       } else if (item.static.rarity === "quality") {
