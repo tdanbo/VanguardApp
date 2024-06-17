@@ -195,8 +195,10 @@ export default function DropControlComponent({
       if (item.static.bulk) {
         if (item.static.category === "resource") {
           item.quantity = random(1, 50 * rarity);
+        } else if (item.name === "Arrow") {
+          item.quantity = random(1, 30 * rarity);
         } else if (item.static.category === "projectile") {
-          item.quantity = random(1, 4 * rarity);
+          item.quantity = random(1, 6 * rarity);
         } else if (
           [
             "alchemy crafting material",
@@ -258,6 +260,8 @@ export default function DropControlComponent({
       }
       if (item.static.category === "resource") {
         drop_chance = 100;
+      } else if (item.name === "Arrow") {
+        drop_chance = 100;
       } else if (item.static.rarity === "normal") {
         drop_chance = 6 * rarity;
       } else if (item.static.rarity === "quality") {
@@ -296,9 +300,7 @@ export default function DropControlComponent({
           session.loot.general.push(addItemId(item));
         }
         if (
-          (IsArmor(item) ||
-            IsWeapon(item) ||
-            item.static.category === "projectile") &&
+          (IsArmor(item) || IsWeapon(item)) &&
           item.static.cost > 0 &&
           DidItDrop(item)
         ) {

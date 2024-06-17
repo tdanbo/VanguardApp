@@ -128,6 +128,7 @@ export function IsGeneralGood(item: ItemEntry): boolean {
     "tool",
     "container",
     "resource",
+    "projectile",
   ];
   if (general_categories.includes(item.static.category)) {
     return true;
