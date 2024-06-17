@@ -664,10 +664,10 @@ export function GetItemPrice(item: ItemEntry): number {
   return Math.round(total_price);
 }
 
-export function GetDropsPrice(session: SessionEntry): number {
+export function GetItemListPrice(items: ItemEntry[]): number {
   let total_price = 0;
-  for (const item of session.loot.drops) {
-    total_price += GetItemPrice(item);
+  for (const item of items) {
+    total_price += Math.ceil(GetItemPrice(item) / 2);
   }
   return total_price;
 }

@@ -33,7 +33,6 @@ import { cloneDeep } from "lodash";
 import { ShuffleArray, toTitleCase } from "../functions/UtilityFunctions";
 import DurabilityComponent from "./DurabilityComponent";
 import QuantityComponent from "./QuantityComponent";
-import { GetItemPrice } from "../functions/UtilityFunctions";
 const MasterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -556,7 +555,7 @@ function InventoryEntry({
           <Row>
             <TypeBox>
               {browser && isGm ? (
-                <CostBox>{GetItemPrice(item)} Thaler</CostBox>
+                <CostBox>{item.static.cost} Thaler</CostBox>
               ) : null}
               {item.static.rarity !== "normal"
                 ? toTitleCase(item.static.rarity)

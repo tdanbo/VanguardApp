@@ -94,6 +94,10 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
     character.stats.persuasive.mod += 2;
   }
 
+  if (HasItem(character, "Ebonfang Warspear")) {
+    character.stats.accurate.mod += 2;
+  }
+
   return character;
 }
 
