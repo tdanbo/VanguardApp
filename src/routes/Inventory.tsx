@@ -8,7 +8,7 @@ import { CharacterEntry, SessionEntry } from "../Types";
 import { ActiveStateType, AdvantageType } from "../Types";
 import DropControlComponent from "../components_browser/DropControlComponent";
 import DropsBrowser from "../components_browser/DropsBrowser";
-import { GetDropsPrice } from "../functions/UtilityFunctions";
+import { GetItemListPrice } from "../functions/UtilityFunctions";
 
 interface ContainerProps {
   height: string;
@@ -130,7 +130,7 @@ export default function Inventory({
                     justifyContent: "right",
                   }}
                 >
-                  {GetDropsPrice(session)} Thaler
+                  {GetItemListPrice(session.loot.drops)} Thaler
                 </div>
               ) : null}
             </div>
