@@ -107,7 +107,7 @@ function ValueAdjustComponent({
             onClick={stopPropagation}
           >
             <div className="row" style={{ fontSize: "25px" }}>
-              Rations
+              {type === "coins" ? "Thaler" : "Coins"}
             </div>
             <div className="row empty_color" style={{ padding: "5px" }}>
               <div className="row">
