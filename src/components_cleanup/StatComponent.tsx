@@ -3,11 +3,11 @@ import {
   faPlus,
   faAnglesUp,
   faAnglesDown,
-  faInfo,
   faCrosshairs,
   faSkull,
   faEye,
   faShield,
+  faInfo,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SetStateAction, useEffect, useState } from "react";

@@ -26,8 +26,12 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
   character.stats.persuasive.mod = 0;
   character.stats.accurate.mod = 0;
   character.stats.cunning.mod = 0;
+
+  character.stats.attack.value = 0;
   character.stats.attack.mod = 0;
+  character.stats.defense.value = 0;
   character.stats.defense.mod = 0;
+  character.stats.initiative.value = 0;
   character.stats.initiative.mod = 0;
 
   const LevelValue = (ability: AbilityEntry) => {
@@ -67,6 +71,9 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
       character.stats.persuasive.mod -= effect.level;
       character.stats.accurate.mod -= effect.level;
       character.stats.cunning.mod -= effect.level;
+      character.stats.defense.mod -= effect.level;
+      character.stats.attack.mod -= effect.level;
+      character.stats.initiative.mod -= effect.level;
     }
   });
 
