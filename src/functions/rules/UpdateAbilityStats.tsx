@@ -1,4 +1,13 @@
 import { AbilityEntry, CharacterEntry, EffectEntry } from "../../Types";
+import { CheckAbility, UpdateQualities, Overburden } from "../ActivesFunction";
+import { GetImpedingValue } from "../RulesFunctions";
+import { ArmoredMystic_active } from "./ArmoredMystic";
+import { Berserker_active } from "./Berserker";
+import { ManAtArms_active } from "./ManAtArms";
+import { Robust_active } from "./Robust";
+import { ShieldFighter_active } from "./ShieldFighter";
+import { StaffFighting_active } from "./StaffFighting";
+import { TwinAttack_active } from "./TwinAttack";
 
 function HasItem(character: CharacterEntry, item: string) {
   for (const i of character.inventory) {
@@ -17,6 +26,9 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
   character.stats.persuasive.mod = 0;
   character.stats.accurate.mod = 0;
   character.stats.cunning.mod = 0;
+  character.stats.attack.mod = 0;
+  character.stats.defense.mod = 0;
+  character.stats.initiative.mod = 0;
 
   const LevelValue = (ability: AbilityEntry) => {
     if (ability.level === "Novice") {
@@ -82,6 +94,10 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
     character.stats.resolute.mod += 2;
   }
 
+  if (HasItem(character, "Staff Head")) {
+    character.stats.resolute.mod += 1;
+  }
+
   if (HasItem(character, "Right Hand of Kraghammer")) {
     character.stats.vigilant.mod += 2;
   }
@@ -97,6 +113,59 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
   if (HasItem(character, "Ebonfang Warspear")) {
     character.stats.accurate.mod += 2;
   }
+
+  console.log("Impeding Value: ", GetImpedingValue(character));
+
+  character.stats.accurate.mod -= GetImpedingValue(character);
+  character.stats.quick.mod -= GetImpedingValue(character);
+  character.stats.discreet.mod -= GetImpedingValue(character);
+  character.stats.resolute.mod -= GetImpedingValue(character);
+  character.stats.defense.mod -= GetImpedingValue(character);
+
+  // ATTACK STAT
+  if (CheckAbility(character, "Iron Fist", "novice")) {
+    character.stats.attack.value = character.stats["strong"].value;
+  } else if (CheckAbility(character, "Tactician", "master")) {
+    character.stats.attack.value = character.stats["cunning"].value;
+  } else if (CheckAbility(character, "Dominate", "novice")) {
+    character.stats.attack.value = character.stats["persuasive"].value;
+  } else if (CheckAbility(character, "Feint", "novice")) {
+    character.stats.attack.value = character.stats["discreet"].value;
+  } else if (CheckAbility(character, "Sixth Sense", "novice")) {
+    character.stats.attack.value = character.stats["vigilant"].value;
+  } else {
+    character.stats.attack.value = character.stats["accurate"].value;
+  }
+
+  // DEFENSE STAT
+  if (CheckAbility(character, "Tactician", "adept")) {
+    character.stats.defense.value = character.stats["cunning"].value;
+  } else if (CheckAbility(character, "Sixth Sense", "adept")) {
+    character.stats.defense.value = character.stats["vigilant"].value;
+  } else if (CheckAbility(character, "feint", "adept")) {
+    character.stats.defense.value = character.stats["discreet"].value;
+  } else {
+    character.stats.defense.value = character.stats["quick"].value;
+  }
+
+  // INITIATIVE STAT
+  if (CheckAbility(character, "Tactician", "novice")) {
+    character.stats.initiative.value = character.stats["cunning"].value;
+  } else if (CheckAbility(character, "Sixth Sense", "adept")) {
+    character.stats.initiative.value = character.stats["vigilant"].value;
+  } else {
+    character.stats.initiative.value = character.stats["quick"].value;
+  }
+
+  UpdateQualities(character);
+  Overburden(character);
+  Berserker_active(character);
+  ManAtArms_active(character);
+  ArmoredMystic_active(character);
+  ShieldFighter_active(character);
+  StaffFighting_active(character);
+  Robust_active(character);
+  TwinAttack_active(character);
 
   return character;
 }

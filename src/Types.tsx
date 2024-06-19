@@ -19,7 +19,10 @@ export type StatName =
   | "resolute"
   | "strong"
   | "vigilant"
-  | "accurate";
+  | "accurate"
+  | "attack"
+  | "defense"
+  | "initiative";
 
 type Stats = {
   [key in StatName]: Stat;
@@ -162,7 +165,6 @@ export type CombatEntry = {
   roll_source: string;
   roll_state: ActiveStateType;
   roll_entry: RollEntry;
-  roll_active: ActiveType;
   uuid: string;
   durability: ItemEntry[];
   entry: "CombatEntry";
@@ -261,14 +263,6 @@ export type RollEntry = {
   dice: number;
 };
 
-export type ActivesEntry = {
-  attack: { mod: number; stat: StatName };
-  defense: { mod: number; stat: StatName };
-  casting: { mod: number; stat: StatName };
-  sneaking: { mod: number; stat: StatName };
-  initiative: { mod: number; stat: StatName };
-};
-
 export type ChallengeEntry =
   | "slow"
   | "quiet"
@@ -353,6 +347,9 @@ export const NewCharacterEntry: CharacterEntry = {
     strong: { value: 9, mod: 0 },
     vigilant: { value: 7, mod: 0 },
     accurate: { value: 5, mod: 0 },
+    attack: { value: 0, mod: 0 },
+    defense: { value: 0, mod: 0 },
+    initiative: { value: 0, mod: 0 },
   },
   abilities: [],
   inventory: [],

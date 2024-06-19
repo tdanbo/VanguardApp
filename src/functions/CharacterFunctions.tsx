@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API } from "../Constants";
 import { GetGameData } from "../contexts/GameContent";
-import { ActiveType, StatName } from "../Types";
+import { StatName } from "../Types";
 import { update_session } from "./SessionsFunctions";
 import { IsArmor } from "./UtilityFunctions";
 import {
@@ -12,7 +12,7 @@ import {
 } from "../Types";
 import { GetMaxToughness, GetTemporaryCorruption } from "./RulesFunctions";
 import { Socket } from "socket.io-client";
-import { GetActives } from "./ActivesFunction";
+import { CheckAbility } from "./ActivesFunction";
 export const getCreatureMovement = (creature: modifiedCreature) => {
   const movement: { [key: number]: number } = {
     5: -10,
@@ -115,57 +115,6 @@ export const FindCharacter = (
     : session.characters;
   return character_list.find((entry) => entry.id === id) || NewCharacterEntry;
 };
-
-export function FindActive(
-  stat: string,
-  character: CharacterEntry,
-): { active: ActiveType; mod: number } {
-  const character_actives = GetActives(character);
-  for (const [key, value] of Object.entries(character_actives)) {
-    if (value.stat == stat) {
-      return { active: key as ActiveType, mod: value.mod };
-    } else {
-      continue;
-    }
-  }
-  return { active: "", mod: 0 };
-}
-
-export function FindValueFromActive(
-  type: "attack" | "defense" | "sneaking" | "casting" | "initiative",
-  character: CharacterEntry,
-) {
-  const character_actives = GetActives(character);
-  for (const [key, value] of Object.entries(character_actives)) {
-    if (key == type) {
-      return {
-        stat: value.stat,
-        value:
-          character.stats[value.stat].value +
-          character.stats[value.stat].mod +
-          value.mod,
-      };
-    } else {
-      continue;
-    }
-  }
-  return { stat: "", value: 0 };
-}
-
-export function FindActiveModFromStat(
-  stat: StatName,
-  character: CharacterEntry,
-) {
-  const character_actives = GetActives(character);
-  for (const [_key, value] of Object.entries(character_actives)) {
-    if (value.stat == stat) {
-      return value.mod;
-    } else {
-      continue;
-    }
-  }
-  return 0;
-}
 
 export function HasAmmunition(character: CharacterEntry) {
   for (const item of character.inventory) {
@@ -282,4 +231,37 @@ export function GetDifficultyString(character: CharacterEntry) {
     character_difficulty = "Legendary";
   }
   return character_difficulty;
+}
+
+export function GetAttackStat(character: CharacterEntry) {
+  let attack_stat: StatName = "accurate";
+
+  if (CheckAbility(character, "Iron Fist", "novice")) {
+    attack_stat = "strong";
+  } else if (CheckAbility(character, "Tactician", "master")) {
+    attack_stat = "cunning";
+  } else if (CheckAbility(character, "Dominate", "novice")) {
+    attack_stat = "persuasive";
+  } else if (CheckAbility(character, "Feint", "novice")) {
+    attack_stat = "discreet";
+  } else if (CheckAbility(character, "Sixth Sense", "novice")) {
+    attack_stat = "vigilant";
+  } else {
+    attack_stat = "accurate";
+  }
+  return attack_stat;
+}
+
+export function GetDefenseStat(character: CharacterEntry) {
+  let defense_stat = "quick";
+  if (CheckAbility(character, "Tactician", "adept")) {
+    defense_stat = "cunning";
+  } else if (CheckAbility(character, "Sixth Sense", "adept")) {
+    defense_stat = "vigilant";
+  } else if (CheckAbility(character, "feint", "adept")) {
+    defense_stat = "discreet";
+  } else {
+    defense_stat = "quick";
+  }
+  return defense_stat;
 }

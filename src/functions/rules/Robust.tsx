@@ -1,20 +1,17 @@
-import { CharacterEntry, ActivesEntry } from "../../Types";
+import { CharacterEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
-export function Robust_active(
-  character: CharacterEntry,
-  actives: ActivesEntry,
-) {
+export function Robust_active(character: CharacterEntry) {
   const ability = CheckAbility(character, "Robust", "novice");
   const ability_adept = CheckAbility(character, "Robust", "adept");
   const ability_master = CheckAbility(character, "Robust", "master");
 
   if (ability_master) {
-    actives.defense.mod -= 4;
+    character.stats.defense.mod -= 4;
   } else if (ability_adept) {
-    actives.defense.mod -= 3;
+    character.stats.defense.mod -= 3;
   } else if (ability) {
-    actives.defense.mod -= 2;
+    character.stats.defense.mod -= 2;
   }
 }
 

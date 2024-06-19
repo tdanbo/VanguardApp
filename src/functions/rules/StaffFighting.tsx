@@ -1,4 +1,4 @@
-import { ActivesEntry, CharacterEntry } from "../../Types";
+import { CharacterEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
 function hasWeakStaff(character: CharacterEntry) {
@@ -20,10 +20,7 @@ function hasStrongStaff(character: CharacterEntry) {
   }
 }
 
-export function StaffFighting_active(
-  character: CharacterEntry,
-  actives: ActivesEntry,
-) {
+export function StaffFighting_active(character: CharacterEntry) {
   const ability = CheckAbility(character, "Staff Fighting", "novice");
   let mod = 0;
   if (ability) {
@@ -33,5 +30,5 @@ export function StaffFighting_active(
       mod += 2;
     }
   }
-  actives.defense.mod += mod;
+  character.stats.defense.mod += mod;
 }

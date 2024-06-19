@@ -14,12 +14,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { ActivesEntry, CharacterEntry } from "../Types";
+import { CharacterEntry } from "../Types";
+import { GetAttackStat, GetDefenseStat } from "../functions/CharacterFunctions";
 import {
   GetAbilityCorruption,
   GetEquipmentCorruption,
   GetImpedingValue,
-  GetPreciseValue,
   GetStorageValue,
   OverburdenValue,
 } from "../functions/RulesFunctions";
@@ -124,10 +124,9 @@ const RightValue = styled.div`
 
 interface InfoComponentProps {
   character: CharacterEntry;
-  actives: ActivesEntry;
 }
 
-function InfoComponent({ character, actives }: InfoComponentProps) {
+function InfoComponent({ character }: InfoComponentProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpen = () => {
@@ -256,13 +255,15 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                   </Row>
                   <Row>
                     <LeftValue>
-                      {toTitleCase(actives.attack.stat)} Stat + Precise
+                      {toTitleCase(GetAttackStat(character))} Stat + Precise
                       Qualities = Attack
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {actives.attack.mod} + {GetPreciseValue(character)} ={" "}
-                      {actives.attack.mod + GetPreciseValue(character)}
+                      {character.stats.attack.value} +{" "}
+                      {character.stats.attack.mod} ={" "}
+                      {character.stats.attack.value +
+                        character.stats.attack.mod}
                     </RightValue>
                   </Row>
                 </Column>
@@ -277,13 +278,15 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                   </Row>
                   <Row>
                     <LeftValue>
-                      {toTitleCase(actives.defense.stat)} Stat - Impeding Value
-                      = Defense
+                      {toTitleCase(GetDefenseStat(character))} Stat - Impeding
+                      Value = Defense
                     </LeftValue>
                     <VerticalDivider></VerticalDivider>
                     <RightValue>
-                      {actives.defense.mod} - {GetImpedingValue(character)} ={" "}
-                      {actives.defense.mod - GetImpedingValue(character)}
+                      {character.stats.defense.value} -{" "}
+                      {GetImpedingValue(character)} ={" "}
+                      {character.stats.defense.mod -
+                        GetImpedingValue(character)}
                     </RightValue>
                   </Row>
                 </Column>
@@ -296,39 +299,9 @@ function InfoComponent({ character, actives }: InfoComponentProps) {
                     ></FontAwesomeIcon>
                     Sneaking
                   </Row>
-                  <Row>
-                    <LeftValue>
-                      {toTitleCase(actives.sneaking.stat)} Stat - Impeding Value
-                      = Sneaking
-                    </LeftValue>
-                    <VerticalDivider></VerticalDivider>
-                    <RightValue>
-                      {actives.sneaking.mod} - {GetImpedingValue(character)} ={" "}
-                      {actives.sneaking.mod - GetImpedingValue(character)}
-                    </RightValue>
-                  </Row>
                 </Column>
                 <Divider />
-                <Column>
-                  <Row>
-                    <FontAwesomeIcon
-                      icon={faSkull}
-                      color={Constants.PURPLE}
-                    ></FontAwesomeIcon>
-                    Casting
-                  </Row>
-                  <Row>
-                    <LeftValue>
-                      {toTitleCase(actives.casting.stat)} Stat - Impeding Value
-                      = Casting
-                    </LeftValue>
-                    <VerticalDivider></VerticalDivider>
-                    <RightValue>
-                      {actives.casting.mod} - {GetImpedingValue(character)} ={" "}
-                      {actives.casting.mod - GetImpedingValue(character)}
-                    </RightValue>
-                  </Row>
-                </Column>
+                <Column></Column>
                 <Divider />
                 <Column>
                   <Row>

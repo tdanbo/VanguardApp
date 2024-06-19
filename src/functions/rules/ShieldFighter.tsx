@@ -1,4 +1,4 @@
-import { CharacterEntry, ItemEntry, ActivesEntry } from "../../Types";
+import { CharacterEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
 function hasShield(character: CharacterEntry) {
@@ -9,10 +9,7 @@ function hasShield(character: CharacterEntry) {
   }
 }
 
-export function ShieldFighter_active(
-  character: CharacterEntry,
-  actives: ActivesEntry,
-) {
+export function ShieldFighter_active(character: CharacterEntry) {
   const ability = CheckAbility(character, "Shield Fighter", "novice");
   let mod = 0;
   if (ability) {
@@ -20,7 +17,7 @@ export function ShieldFighter_active(
       mod += 1;
     }
   }
-  actives.defense.mod += mod;
+  character.stats.defense.mod += mod;
 }
 
 export function ShieldFighter_dice(character: CharacterEntry, item: ItemEntry) {

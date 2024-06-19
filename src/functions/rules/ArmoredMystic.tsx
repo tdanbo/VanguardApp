@@ -1,10 +1,7 @@
-import { ActivesEntry, CharacterEntry, ItemEntry } from "../../Types";
+import { CharacterEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 import { IsArmor } from "../UtilityFunctions";
-export function ArmoredMystic_active(
-  character: CharacterEntry,
-  character_actives: ActivesEntry,
-) {
+export function ArmoredMystic_active(character: CharacterEntry) {
   const abilityNovice = CheckAbility(character, "armored mystic", "novice");
   const abilityAdept = CheckAbility(character, "armored mystic", "adept");
 
@@ -24,7 +21,7 @@ export function ArmoredMystic_active(
       armor.static.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
-          character_actives.casting.mod += negativeQualities[lowercasedQuality];
+          character.stats.resolute.mod += negativeQualities[lowercasedQuality];
         }
       });
     } else if (
@@ -35,7 +32,7 @@ export function ArmoredMystic_active(
       armor.static.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
-          character_actives.casting.mod += negativeQualities[lowercasedQuality];
+          character.stats.resolute.mod += negativeQualities[lowercasedQuality];
         }
       });
     }

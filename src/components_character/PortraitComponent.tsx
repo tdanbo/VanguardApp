@@ -3,7 +3,6 @@ import { CharacterPortraits } from "../Images";
 import "../layout.css";
 import {
   ActiveStateType,
-  ActivesEntry,
   AdvantageType,
   CharacterEntry,
   SessionEntry,
@@ -33,7 +32,6 @@ import SmallCorruptionComponent from "./SmallCorruptionComponent";
 
 interface HealthBoxProps {
   character: CharacterEntry;
-  actives: ActivesEntry;
   activeState: ActiveStateType;
   setActiveState: (state: ActiveStateType) => void;
   advantage: AdvantageType;
@@ -48,7 +46,6 @@ interface HealthBoxProps {
 
 function PortraitComponent({
   character,
-  actives,
   activeState,
   setActiveState,
   advantage,
@@ -119,7 +116,7 @@ function PortraitComponent({
           alignItems: "flex-end",
         }}
       >
-        <InfoComponent character={character} actives={actives} />
+        <InfoComponent character={character} />
         <EditCharacterComponent
           session={session}
           websocket={websocket}

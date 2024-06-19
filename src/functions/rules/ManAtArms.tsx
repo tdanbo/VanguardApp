@@ -1,10 +1,7 @@
-import { CharacterEntry, ActivesEntry, ItemEntry } from "../../Types";
+import { CharacterEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 import { IsArmor } from "../UtilityFunctions";
-export function ManAtArms_active(
-  character: CharacterEntry,
-  character_actives: ActivesEntry,
-) {
+export function ManAtArms_active(character: CharacterEntry) {
   const abilityAdept = CheckAbility(character, "man-at-arms", "adept");
   for (const item of character.inventory) {
     if (IsArmor(item) && abilityAdept && item.equipped) {
@@ -17,9 +14,8 @@ export function ManAtArms_active(
       item.static.quality.forEach((quality: string) => {
         const lowercasedQuality = quality;
         if (lowercasedQuality in negativeQualities) {
-          character_actives.defense.mod += negativeQualities[lowercasedQuality];
-          character_actives.sneaking.mod +=
-            negativeQualities[lowercasedQuality];
+          character.stats.defense.mod += negativeQualities[lowercasedQuality];
+          character.stats.discreet.mod += negativeQualities[lowercasedQuality];
         }
       });
     }

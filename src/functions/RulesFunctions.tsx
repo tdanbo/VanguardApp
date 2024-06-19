@@ -143,7 +143,8 @@ export const GetImpedingValue = (character: CharacterEntry): number => {
     };
 
     character.inventory.forEach((item: ItemEntry) => {
-      if (item.static.category === "armor" && item.equipped) {
+      console.log(item);
+      if (item.equipped) {
         item.static.quality.forEach((quality: string) => {
           if (quality in negativeQualities) {
             impeding += negativeQualities[quality];

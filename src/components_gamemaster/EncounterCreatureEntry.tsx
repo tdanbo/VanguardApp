@@ -15,10 +15,7 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import {
-  FindValueFromActive,
-  GetCreatureArmor,
-} from "../functions/CharacterFunctions";
+import { GetCreatureArmor } from "../functions/CharacterFunctions";
 import {
   ActiveStateType,
   AdvantageType,
@@ -326,9 +323,13 @@ function EncounterCreatureEntry({
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
   const attack =
-    ModifierConverter[FindValueFromActive("attack", creatureClone).value];
+    ModifierConverter[
+      creatureClone.stats.attack.value + creatureClone.stats.attack.mod
+    ];
   const defense =
-    ModifierConverter[FindValueFromActive("defense", creatureClone).value];
+    ModifierConverter[
+      creatureClone.stats.defense.value + creatureClone.stats.defense.mod
+    ];
   const hp = GetMaxToughness(creatureClone);
   const [currentDamage, setCurrentDamage] = useState<number>(
     creature.health.damage!,
@@ -383,23 +384,22 @@ function EncounterCreatureEntry({
 
   const title =
     "Initiative: " +
-    FindValueFromActive("initiative", creatureClone).value +
+    creatureClone.stats.initiative.value +
+    creatureClone.stats.initiative.mod +
     "\n" +
     "Movement: " +
     GetMovementSpeed(creatureClone) +
     "\n" +
     "\n" +
     "Attack: " +
-    ModifierConverter[FindValueFromActive("attack", creatureClone).value] +
+    ModifierConverter[
+      creatureClone.stats.attack.value + creatureClone.stats.attack.mod
+    ] +
     "\n" +
     "Defense: " +
-    ModifierConverter[FindValueFromActive("defense", creatureClone).value] +
-    "\n" +
-    "Casting: " +
-    ModifierConverter[FindValueFromActive("casting", creatureClone).value] +
-    "\n" +
-    "Sneaking: " +
-    ModifierConverter[FindValueFromActive("sneaking", creatureClone).value] +
+    ModifierConverter[
+      creatureClone.stats.defense.value + creatureClone.stats.defense.mod
+    ] +
     "\n" +
     "\n" +
     "Cunning: " +
