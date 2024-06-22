@@ -1,25 +1,20 @@
-import { CharacterEntry, ActivesEntry, ItemEntry } from "../../Types";
+import { CharacterEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 import { IsWeapon } from "../UtilityFunctions";
-export function Berserker_active(
-  character: CharacterEntry,
-  actives: ActivesEntry,
-) {
+export function Berserker_active(character: CharacterEntry) {
   const ability_name = "Berserker";
   const ability = CheckAbility(character, ability_name, "novice");
   const ability_adept = CheckAbility(character, ability_name, "adept");
   const ability_master = CheckAbility(character, ability_name, "master");
 
-  const defense =
-    character.stats[actives.defense.stat].value +
-    character.stats[actives.defense.stat].mod;
+  const defense = character.stats.defense.value + character.stats.defense.mod;
 
   if (ability_master) {
     return;
   } else if (ability_adept) {
-    actives.defense.mod = 5 - defense;
+    character.stats.defense.mod = 5 - defense;
   } else if (ability) {
-    actives.defense.mod = 5 - defense;
+    character.stats.defense.mod = 5 - defense;
   }
 }
 

@@ -246,25 +246,25 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
     let message = "";
 
     if (combatEntry.roll_entry.critical.state === 2) {
-      if (combatEntry.roll_active === "attack") {
+      if (combatEntry.roll_type === "attack") {
         message = "+1d6 damage.";
-      } else if (combatEntry.roll_active === "defense") {
+      } else if (combatEntry.roll_type === "defense") {
         message = "Free attack against the enemy.";
-      } else if (combatEntry.roll_active === "casting") {
+      } else if (combatEntry.roll_type === "resolute") {
         message = "Double the spell effect.";
-      } else if (combatEntry.roll_active === "sneaking") {
+      } else if (combatEntry.roll_type === "discreet") {
         message = "No detection for the entire group.";
       } else {
         message = "";
       }
     } else if (combatEntry.roll_entry.critical.state === 0) {
-      if (combatEntry.roll_active === "attack") {
+      if (combatEntry.roll_type === "attack") {
         message += "Free attack against you. ";
-      } else if (combatEntry.roll_active === "defense") {
+      } else if (combatEntry.roll_type === "defense") {
         message += "+3 Damage taken. ";
-      } else if (combatEntry.roll_active === "casting") {
+      } else if (combatEntry.roll_type === "resolute") {
         message += "Your spell hit a random foe/friend.";
-      } else if (combatEntry.roll_active === "sneaking") {
+      } else if (combatEntry.roll_type === "discreet") {
         message += "Conflict is inevitable! If attacked, you are surprised!";
       } else {
         message += "";

@@ -69,7 +69,7 @@ function CorruptionStatComponent({
       {isHovered ? (
         <div
           className="row button-hover button_color"
-          style={{ maxWidth: "30px" }}
+          style={{ maxWidth: "20px" }}
           onClick={() =>
             LowerCorruption(character, session, websocket, isCreature)
           }
@@ -132,7 +132,7 @@ function CorruptionStatComponent({
       {isHovered ? (
         <div
           className="row button-hover button_color"
-          style={{ maxWidth: "30px" }}
+          style={{ maxWidth: "20px" }}
           onClick={() =>
             RaiseCorruption(character, session, websocket, isCreature)
           }

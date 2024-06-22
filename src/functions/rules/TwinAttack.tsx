@@ -1,4 +1,4 @@
-import { CharacterEntry, ItemEntry, ActivesEntry } from "../../Types";
+import { CharacterEntry, ItemEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
 function dualWielding(character: CharacterEntry) {
@@ -26,10 +26,7 @@ function equipList(character: CharacterEntry) {
   return equipList;
 }
 
-export function TwinAttack_active(
-  character: CharacterEntry,
-  actives: ActivesEntry,
-) {
+export function TwinAttack_active(character: CharacterEntry) {
   const ability_name = "Twin Attack";
   const ability_master = CheckAbility(character, ability_name, "master");
 
@@ -38,7 +35,7 @@ export function TwinAttack_active(
   }
 
   if (ability_master) {
-    actives.defense.mod += 1;
+    character.stats.defense.mod += 1;
   }
 }
 

@@ -23,9 +23,15 @@ interface SmallStatComponentProps {
   title: string;
   value: string;
   icon: IconDefinition;
+  bad_result?: boolean;
 }
 
-function SmallStatComponent({ title, value, icon }: SmallStatComponentProps) {
+function SmallStatComponent({
+  title,
+  value,
+  icon,
+  bad_result,
+}: SmallStatComponentProps) {
   let color = Constants.WIDGET_SECONDARY_FONT_INACTIVE;
   if (icon === faCarrot) {
     color = "rgba(205, 112, 57, 0.7)";
@@ -55,6 +61,10 @@ function SmallStatComponent({ title, value, icon }: SmallStatComponentProps) {
             alignItems: "flex-end",
             marginTop: "2px",
             filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
+            fontWeight: bad_result ? "700" : "400",
+            color: bad_result
+              ? Constants.BRIGHT_RED
+              : Constants.WIDGET_PRIMARY_FONT,
           }}
         >
           {value}

@@ -70,7 +70,7 @@ function HealthStatComponent({
       {isHovered ? (
         <div
           className="row button-hover button_color"
-          style={{ maxWidth: "30px" }}
+          style={{ maxWidth: "20px" }}
           onClick={() =>
             LowerToughness(character, session, websocket, isCreature)
           }
@@ -140,7 +140,7 @@ function HealthStatComponent({
       {isHovered ? (
         <div
           className="row button-hover button_color"
-          style={{ maxWidth: "30px" }}
+          style={{ maxWidth: "20px" }}
           onClick={() =>
             RaiseToughness(character, session, websocket, isCreature)
           }

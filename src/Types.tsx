@@ -9,6 +9,7 @@ interface CharacterDetails {
 export interface Stat {
   value: number;
   mod: number;
+  base: number;
 }
 
 export type StatName =
@@ -19,7 +20,10 @@ export type StatName =
   | "resolute"
   | "strong"
   | "vigilant"
-  | "accurate";
+  | "accurate"
+  | "attack"
+  | "defense"
+  | "initiative";
 
 type Stats = {
   [key in StatName]: Stat;
@@ -162,7 +166,6 @@ export type CombatEntry = {
   roll_source: string;
   roll_state: ActiveStateType;
   roll_entry: RollEntry;
-  roll_active: ActiveType;
   uuid: string;
   durability: ItemEntry[];
   entry: "CombatEntry";
@@ -261,14 +264,6 @@ export type RollEntry = {
   dice: number;
 };
 
-export type ActivesEntry = {
-  attack: { mod: number; stat: StatName };
-  defense: { mod: number; stat: StatName };
-  casting: { mod: number; stat: StatName };
-  sneaking: { mod: number; stat: StatName };
-  initiative: { mod: number; stat: StatName };
-};
-
 export type ChallengeEntry =
   | "slow"
   | "quiet"
@@ -345,14 +340,17 @@ export const NewCharacterEntry: CharacterEntry = {
     energy: 4,
   },
   stats: {
-    cunning: { value: 15, mod: 0 },
-    discreet: { value: 13, mod: 0 },
-    persuasive: { value: 11, mod: 0 },
-    quick: { value: 10, mod: 0 },
-    resolute: { value: 10, mod: 0 },
-    strong: { value: 9, mod: 0 },
-    vigilant: { value: 7, mod: 0 },
-    accurate: { value: 5, mod: 0 },
+    cunning: { value: 15, mod: 0, base: 0 },
+    discreet: { value: 13, mod: 0, base: 0 },
+    persuasive: { value: 11, mod: 0, base: 0 },
+    quick: { value: 10, mod: 0, base: 0 },
+    resolute: { value: 10, mod: 0, base: 0 },
+    strong: { value: 9, mod: 0, base: 0 },
+    vigilant: { value: 7, mod: 0, base: 0 },
+    accurate: { value: 5, mod: 0, base: 0 },
+    attack: { value: 0, mod: 0, base: 0 },
+    defense: { value: 0, mod: 0, base: 0 },
+    initiative: { value: 0, mod: 0, base: 0 },
   },
   abilities: [],
   inventory: [],

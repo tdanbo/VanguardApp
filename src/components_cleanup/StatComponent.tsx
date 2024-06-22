@@ -1,5 +1,4 @@
 import {
-  IconDefinition,
   faMinus,
   faPlus,
   faAnglesUp,
@@ -21,18 +20,14 @@ import {
 } from "../Types";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import { GetGameData } from "../contexts/GameContent";
-import {
-  FindActive,
-  FindValueFromActive,
-} from "../functions/CharacterFunctions";
 import { mdiArrowCollapse, mdiArrowExpand } from "@mdi/js";
 import { Icon } from "@mdi/react";
 
 interface Props {
   stat_name: RollTypeEntry;
   stat_value: number;
+  stat_modifier: number;
   active?: boolean;
-  stat_icon: IconDefinition | null;
   stat_color: string;
   session: SessionEntry;
   character: CharacterEntry;
@@ -44,13 +39,13 @@ interface Props {
   setAdvantage: React.Dispatch<SetStateAction<AdvantageType>>;
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
   modifierLock: boolean;
+  impeded: boolean;
 }
 
 function StatComponent({
   stat_name,
   stat_value,
-  stat_icon,
-  stat_color,
+  stat_modifier,
   session,
   character,
   websocket,
@@ -82,15 +77,9 @@ function StatComponent({
   }, [modifierLock]);
 
   let flanked = 0;
-  if (
-    advantage === "flanking" &&
-    stat_name === FindValueFromActive("attack", character).stat
-  ) {
+  if (advantage === "flanking" && stat_name === "attack") {
     flanked += 2;
-  } else if (
-    advantage === "flanked" &&
-    stat_name === FindValueFromActive("defense", character).stat
-  ) {
+  } else if (advantage === "flanked" && stat_name === "defense") {
     flanked -= 2;
   } else {
     flanked = 0;
@@ -139,37 +128,90 @@ function StatComponent({
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="row base_color" style={{ padding: "2px", gap: "0px" }}>
+    <div
+      className="row empty_color"
+      style={{ padding: "2px", gap: "5px" }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div
-        className="row base_color"
-        title="Modifier Value"
+        className="column base_color"
+        title={isHovered ? "Dice Modifier" : "Stat Modifier"}
         style={{
           maxWidth: "35px",
           minWidth: "35px",
           fontSize: "20px",
+          alignContent: "center",
+          justifyContent: "center",
+          gap: "6px",
+          color: isHovered
+            ? Constants.WIDGET_PRIMARY_FONT
+            : Constants.WIDGET_SECONDARY_FONT_INACTIVE,
         }}
       >
-        {modValue === 0 && stat_icon ? (
-          <FontAwesomeIcon
-            icon={stat_icon}
-            color={stat_color}
-            style={{ fontSize: "20px" }}
-          />
-        ) : modValue === 0 ? (
-          <div></div>
+        {!isHovered
+          ? `${
+              stat_modifier > 0
+                ? `+${stat_modifier}`
+                : stat_modifier < 0
+                ? stat_modifier
+                : ""
+            }`
+          : `${modValue > 0 ? "+" : ""}${modValue}`}
+
+        {/* {modValue === 0 ? (
+          <>
+            {stat_name === GetAttackStat(character) ? (
+              <FontAwesomeIcon
+                icon={faCrosshairs}
+                color={stat_color}
+                style={{ fontSize: "17px" }}
+              />
+            ) : null}
+            {stat_name === GetDefenseStat(character) ? (
+              <FontAwesomeIcon
+                icon={faShield}
+                color={stat_color}
+                style={{ fontSize: "17px" }}
+              />
+            ) : null}
+            {stat_name === "resolute" ? (
+              <FontAwesomeIcon
+                icon={faSkull}
+                color={stat_color}
+                style={{ fontSize: "17px" }}
+              />
+            ) : null}
+            {stat_name === "discreet" ? (
+              <FontAwesomeIcon
+                icon={faEye}
+                color={stat_color}
+                style={{ fontSize: "17px" }}
+              />
+            ) : null}
+            {stat_name === "defense" ? (
+              <FontAwesomeIcon
+                icon={faShield}
+                color={stat_color}
+                style={{ fontSize: "17px" }}
+              />
+            ) : null}
+            {stat_name === "attack" ? (
+              <FontAwesomeIcon
+                icon={faCrosshairs}
+                color={stat_color}
+                style={{ fontSize: "17px" }}
+              />
+            ) : null}
+          </>
         ) : (
           <div>
             {modValue > 0 ? "+" : ""}
             {modValue}
           </div>
-        )}
+        )} */}
       </div>
-      <div
-        className="row"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        style={{ gap: "0px" }}
-      >
+      <div className="row" style={{ gap: "0px" }}>
         <div
           className="row"
           style={{
@@ -186,6 +228,7 @@ function StatComponent({
             style={{ fontSize: "12px" }}
           />
         </div>
+
         <div
           className="column"
           style={{
@@ -197,15 +240,13 @@ function StatComponent({
         >
           {toTitleCase(stat_name)}
           <div className="row" style={{ gap: "3px", maxHeight: "0px" }}>
-            {advantage === "flanking" &&
-            stat_name === FindValueFromActive("attack", character).stat ? (
+            {advantage === "flanking" && stat_name === "attack" ? (
               <Icon
                 path={mdiArrowCollapse}
                 size={0.7}
                 style={{ marginTop: "10px" }}
               />
-            ) : advantage === "flanked" &&
-              stat_name === FindValueFromActive("defense", character).stat ? (
+            ) : advantage === "flanked" && stat_name === "defense" ? (
               <Icon
                 path={mdiArrowExpand}
                 size={0.7}
@@ -227,11 +268,13 @@ function StatComponent({
             ) : null}
           </div>
         </div>
+
         <div
           className="row"
           style={{
             maxWidth: "30px",
             minWidth: "30px",
+
             fontSize: "20px",
             visibility: isHovered ? "visible" : "hidden",
           }}
@@ -245,8 +288,18 @@ function StatComponent({
         </div>
       </div>
       <div
-        className="row button button_color"
-        style={{ maxWidth: "30px", minWidth: "30px", fontSize: "20px" }}
+        className="column button button_color"
+        style={{
+          maxWidth: "35px",
+          minWidth: "35px",
+          fontSize: "20px",
+          alignContent: "center",
+          justifyContent: "center",
+          color: isHovered
+            ? Constants.WIDGET_PRIMARY_FONT
+            : Constants.WIDGET_SECONDARY_FONT,
+          gap: "0px",
+        }}
         title={isCreature ? valueTitle : "Click To Roll"}
         onClick={() =>
           RollDice({
@@ -255,12 +308,14 @@ function StatComponent({
             websocket: websocket,
             roll_type: stat_name,
             roll_source: "Skill Test",
-            roll_active: FindActive(stat_name, character).active,
             isCreature: isCreature,
             dice: 20,
             dice_mod: modValue,
             color: color,
-            target: Math.max(stat_value + modValue + flanked, 1),
+            target: Math.max(
+              stat_value + stat_modifier + modValue + flanked,
+              1,
+            ),
             setModValue: setModvalue,
             advantage: advantage,
             activeState: activeState,
@@ -272,7 +327,9 @@ function StatComponent({
           })
         }
       >
-        {Math.max(stat_value + modValue + flanked, 1)}
+        {isHovered
+          ? Math.max(stat_value + stat_modifier + modValue + flanked, 1)
+          : Math.max(stat_value, 1)}
       </div>
     </div>
   );

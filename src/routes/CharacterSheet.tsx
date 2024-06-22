@@ -3,10 +3,9 @@ import { AdvantageType, CharacterEntry, SessionEntry } from "../Types";
 import AbilitySection from "../components_character/AbilitySection";
 import CharacterNameBox from "../components_cleanup/CharacterNameComponent";
 import DetailStatComponent from "../components_cleanup/DetailStatComponent";
+import { CheckAbility } from "../functions/ActivesFunction";
 import { getCharacterXp, getUtilityXp } from "../functions/CharacterFunctions";
 import StatComponent from "../components_cleanup/StatComponent";
-import { FindActiveModFromStat } from "../functions/CharacterFunctions";
-import { FindActive } from "../functions/CharacterFunctions";
 import ModifierLockComponent from "../components_cleanup/ModifierLockComponent";
 import ValueAdjustComponent from "../components_cleanup/ValueAdjustComponent";
 import "../layout.css";
@@ -81,16 +80,9 @@ const DividerHorizontal = styled.div`
 
 import { Socket } from "socket.io-client";
 
-import {
-  faCrosshairs,
-  faEye,
-  faShield,
-  faSkull,
-} from "@fortawesome/free-solid-svg-icons";
 import CorruptionStatComponent from "../components_character/CorruptionStatComponent";
 import HealthStatComponent from "../components_character/HealthStatComponent";
 import PortraitComponent from "../components_character/PortraitComponent";
-import { GetActives } from "../functions/ActivesFunction";
 import UpdateAbilityStats from "../functions/rules/UpdateAbilityStats";
 import EquipmentSection from "../components_character/EquipmentSection";
 import { ActiveStateType } from "../Types";
@@ -118,20 +110,6 @@ type CharacterSheetProps = {
   setModifierLock: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function GetActiveIcon(active: string) {
-  if (active == "attack") {
-    return faCrosshairs;
-  } else if (active == "defense") {
-    return faShield;
-  } else if (active == "casting") {
-    return faSkull;
-  } else if (active == "sneaking") {
-    return faEye;
-  } else {
-    return null;
-  }
-}
-
 function CharacterSheet({
   websocket,
   session,
@@ -148,7 +126,6 @@ function CharacterSheet({
   setModifierLock,
 }: CharacterSheetProps) {
   UpdateAbilityStats(character);
-  const character_actives = GetActives(character);
 
   return (
     <div
@@ -195,7 +172,6 @@ function CharacterSheet({
         <Row width={"50%"}>
           <PortraitComponent
             character={character}
-            actives={character_actives}
             activeState={activeState}
             advantage={advantage}
             setActiveState={setActiveState}
@@ -217,23 +193,17 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"vigilant"}
               stat_value={
-                character.stats.vigilant.value +
-                character.stats.vigilant.mod +
-                FindActiveModFromStat("vigilant", character)
+                character.stats.vigilant.value + character.stats.vigilant.base
               }
-              stat_icon={GetActiveIcon(
-                FindActive("vigilant", character).active,
-              )}
-              stat_color={
-                Constants.TYPE_COLORS[FindActive("vigilant", character).active]
-              }
-              active={true}
+              stat_modifier={character.stats.vigilant.mod}
+              stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
               activeState={activeState}
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
               setCriticalState={setCriticalState}
               modifierLock={modifierLock}
+              impeded={false}
             />
             <StatComponent
               session={session}
@@ -242,14 +212,71 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"strong"}
               stat_value={
-                character.stats.strong.value +
-                character.stats.strong.mod +
-                FindActiveModFromStat("strong", character)
+                character.stats.strong.value + character.stats.strong.base
               }
-              stat_icon={GetActiveIcon(FindActive("strong", character).active)}
-              stat_color={
-                Constants.TYPE_COLORS[FindActive("strong", character).active]
+              stat_modifier={character.stats.strong.mod}
+              stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+              activeState={activeState}
+              advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
+              modifierLock={modifierLock}
+              impeded={false}
+            />
+            <StatComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+              stat_name={"cunning"}
+              stat_value={
+                character.stats.cunning.value + character.stats.cunning.base
               }
+              stat_modifier={character.stats.cunning.mod}
+              stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+              activeState={activeState}
+              advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
+              modifierLock={modifierLock}
+              impeded={false}
+            />
+
+            <StatComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+              stat_name={"persuasive"}
+              stat_value={
+                character.stats.persuasive.value +
+                character.stats.persuasive.base
+              }
+              stat_modifier={character.stats.persuasive.mod}
+              stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+              activeState={activeState}
+              advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
+              modifierLock={modifierLock}
+              impeded={false}
+            />
+          </Column>
+          <Column width={"50%"}>
+            <StatComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+              stat_name={"accurate"}
+              stat_value={
+                character.stats.accurate.value + character.stats.accurate.base
+              }
+              stat_modifier={character.stats.accurate.mod}
+              stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
               active={true}
               activeState={activeState}
               advantage={advantage}
@@ -257,6 +284,45 @@ function CharacterSheet({
               setAdvantage={setAdvantage}
               setCriticalState={setCriticalState}
               modifierLock={modifierLock}
+              impeded={!CheckAbility(character, "Man-at-Arms", "master")}
+            />
+            <StatComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+              stat_name={"quick"}
+              stat_value={
+                character.stats.quick.value + character.stats.quick.base
+              }
+              stat_modifier={character.stats.quick.mod}
+              stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+              activeState={activeState}
+              advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
+              modifierLock={modifierLock}
+              impeded={!CheckAbility(character, "Man-at-Arms", "adept")}
+            />
+            <StatComponent
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+              stat_name={"discreet"}
+              stat_value={
+                character.stats.discreet.value + character.stats.discreet.base
+              }
+              stat_modifier={character.stats.discreet.mod}
+              stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+              activeState={activeState}
+              advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
+              modifierLock={modifierLock}
+              impeded={!CheckAbility(character, "man-at-arms", "master")}
             />
 
             <StatComponent
@@ -266,152 +332,30 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"resolute"}
               stat_value={
-                character.stats.resolute.value +
-                character.stats.resolute.mod +
-                FindActiveModFromStat("resolute", character)
+                character.stats.resolute.value + character.stats.resolute.base
               }
-              stat_icon={GetActiveIcon(
-                FindActive("resolute", character).active,
-              )}
-              stat_color={
-                Constants.TYPE_COLORS[FindActive("resolute", character).active]
-              }
-              active={true}
+              stat_modifier={character.stats.resolute.mod}
+              stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
               activeState={activeState}
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
               setCriticalState={setCriticalState}
               modifierLock={modifierLock}
-            />
-            <StatComponent
-              session={session}
-              character={character}
-              websocket={websocket}
-              isCreature={isCreature}
-              stat_name={"accurate"}
-              stat_value={
-                character.stats.accurate.value +
-                character.stats.accurate.mod +
-                FindActiveModFromStat("accurate", character)
-              }
-              stat_icon={GetActiveIcon(
-                FindActive("accurate", character).active,
-              )}
-              stat_color={
-                Constants.TYPE_COLORS[FindActive("accurate", character).active]
-              }
-              active={true}
-              activeState={activeState}
-              advantage={advantage}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-              setCriticalState={setCriticalState}
-              modifierLock={modifierLock}
-            />
-          </Column>
-          <Column width={"50%"}>
-            <StatComponent
-              session={session}
-              character={character}
-              websocket={websocket}
-              isCreature={isCreature}
-              stat_name={"persuasive"}
-              stat_value={
-                character.stats.persuasive.value +
-                character.stats.persuasive.mod +
-                FindActiveModFromStat("persuasive", character)
-              }
-              stat_color={
-                Constants.TYPE_COLORS[
-                  FindActive("persuasive", character).active
-                ]
-              }
-              stat_icon={GetActiveIcon(
-                FindActive("persuasive", character).active,
-              )}
-              activeState={activeState}
-              advantage={advantage}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-              setCriticalState={setCriticalState}
-              modifierLock={modifierLock}
-            />
-            <StatComponent
-              session={session}
-              character={character}
-              websocket={websocket}
-              isCreature={isCreature}
-              stat_name={"cunning"}
-              stat_value={
-                character.stats.cunning.value +
-                character.stats.cunning.mod +
-                FindActiveModFromStat("cunning", character)
-              }
-              stat_color={
-                Constants.TYPE_COLORS[FindActive("cunning", character).active]
-              }
-              stat_icon={GetActiveIcon(FindActive("cunning", character).active)}
-              activeState={activeState}
-              advantage={advantage}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-              setCriticalState={setCriticalState}
-              modifierLock={modifierLock}
-            />
-            <StatComponent
-              session={session}
-              character={character}
-              websocket={websocket}
-              isCreature={isCreature}
-              stat_name={"discreet"}
-              stat_value={
-                character.stats.discreet.value +
-                character.stats.discreet.mod +
-                FindActiveModFromStat("discreet", character)
-              }
-              stat_color={
-                Constants.TYPE_COLORS[FindActive("discreet", character).active]
-              }
-              stat_icon={GetActiveIcon(
-                FindActive("discreet", character).active,
-              )}
-              activeState={activeState}
-              advantage={advantage}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-              setCriticalState={setCriticalState}
-              modifierLock={modifierLock}
-            />
-
-            <StatComponent
-              session={session}
-              character={character}
-              websocket={websocket}
-              isCreature={isCreature}
-              stat_name={"quick"}
-              stat_value={
-                character.stats.quick.value +
-                character.stats.quick.mod +
-                FindActiveModFromStat("quick", character)
-              }
-              stat_icon={GetActiveIcon(FindActive("quick", character).active)}
-              stat_color={
-                Constants.TYPE_COLORS[FindActive("quick", character).active]
-              }
-              active={true}
-              activeState={activeState}
-              advantage={advantage}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-              setCriticalState={setCriticalState}
-              modifierLock={modifierLock}
+              impeded={!CheckAbility(character, "armored mystic", "novice")}
             />
           </Column>
         </Row>
       </Container>
       <Container height={"50px"}>
         <Row width={"50%"}>
+          <EnergyStatComponent
+            websocket={websocket}
+            session={session}
+            character={character}
+            isCreature={isCreature}
+            browser={false}
+          />
           <HealthStatComponent
             websocket={websocket}
             session={session}
@@ -419,8 +363,6 @@ function CharacterSheet({
             isCreature={isCreature}
             browser={false}
           />
-        </Row>
-        <Row width={"50%"}>
           <CorruptionStatComponent
             websocket={websocket}
             session={session}
@@ -428,12 +370,46 @@ function CharacterSheet({
             isCreature={isCreature}
             browser={false}
           />
-          <EnergyStatComponent
-            websocket={websocket}
+        </Row>
+        <Row width={"50%"}>
+          <StatComponent
             session={session}
             character={character}
+            websocket={websocket}
             isCreature={isCreature}
-            browser={false}
+            stat_name={"attack"}
+            stat_value={
+              character.stats.attack.value + character.stats.attack.base
+            }
+            stat_modifier={character.stats.attack.mod}
+            stat_color={Constants.TYPE_COLORS["attack"]}
+            activeState={activeState}
+            advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
+            modifierLock={modifierLock}
+            impeded={false}
+          />
+
+          <StatComponent
+            session={session}
+            character={character}
+            websocket={websocket}
+            isCreature={isCreature}
+            stat_name={"defense"}
+            stat_value={
+              character.stats.defense.value + character.stats.defense.base
+            }
+            stat_modifier={character.stats.defense.mod}
+            stat_color={Constants.TYPE_COLORS["defense"]}
+            activeState={activeState}
+            advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
+            modifierLock={modifierLock}
+            impeded={!CheckAbility(character, "Man-at-Arms", "adept")}
           />
         </Row>
       </Container>

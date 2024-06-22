@@ -15,10 +15,7 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import {
-  FindValueFromActive,
-  GetCreatureArmor,
-} from "../functions/CharacterFunctions";
+import { GetCreatureArmor } from "../functions/CharacterFunctions";
 import {
   ActiveStateType,
   AdvantageType,
@@ -326,9 +323,17 @@ function EncounterCreatureEntry({
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
   const attack =
-    ModifierConverter[FindValueFromActive("attack", creatureClone).value];
+    ModifierConverter[
+      creatureClone.stats.attack.value +
+        creatureClone.stats.attack.mod +
+        creatureClone.stats.attack.base
+    ];
   const defense =
-    ModifierConverter[FindValueFromActive("defense", creatureClone).value];
+    ModifierConverter[
+      creatureClone.stats.defense.value +
+        creatureClone.stats.defense.mod +
+        creatureClone.stats.defense.base
+    ];
   const hp = GetMaxToughness(creatureClone);
   const [currentDamage, setCurrentDamage] = useState<number>(
     creature.health.damage!,
@@ -383,63 +388,83 @@ function EncounterCreatureEntry({
 
   const title =
     "Initiative: " +
-    FindValueFromActive("initiative", creatureClone).value +
+    creatureClone.stats.initiative.value +
+    creatureClone.stats.initiative.mod +
+    +creatureClone.stats.initiative.base +
     "\n" +
     "Movement: " +
     GetMovementSpeed(creatureClone) +
     "\n" +
     "\n" +
     "Attack: " +
-    ModifierConverter[FindValueFromActive("attack", creatureClone).value] +
+    ModifierConverter[
+      creatureClone.stats.attack.value +
+        creatureClone.stats.attack.mod +
+        creatureClone.stats.attack.base
+    ] +
     "\n" +
     "Defense: " +
-    ModifierConverter[FindValueFromActive("defense", creatureClone).value] +
-    "\n" +
-    "Casting: " +
-    ModifierConverter[FindValueFromActive("casting", creatureClone).value] +
-    "\n" +
-    "Sneaking: " +
-    ModifierConverter[FindValueFromActive("sneaking", creatureClone).value] +
+    ModifierConverter[
+      creatureClone.stats.defense.value +
+        creatureClone.stats.defense.mod +
+        creatureClone.stats.defense.base
+    ] +
     "\n" +
     "\n" +
     "Cunning: " +
     ModifierConverter[
-      creatureClone.stats.cunning.value + creatureClone.stats.cunning.mod
+      creatureClone.stats.cunning.value +
+        creatureClone.stats.cunning.mod +
+        creatureClone.stats.cunning.base
     ] +
     "\n" +
     "Discreet: " +
     ModifierConverter[
-      creatureClone.stats.discreet.value + creatureClone.stats.discreet.mod
+      creatureClone.stats.discreet.value +
+        creatureClone.stats.discreet.mod +
+        creatureClone.stats.discreet.base
     ] +
     "\n" +
     "Persuasive: " +
     ModifierConverter[
-      creatureClone.stats.persuasive.value + creatureClone.stats.persuasive.mod
+      creatureClone.stats.persuasive.value +
+        creatureClone.stats.persuasive.mod +
+        creatureClone.stats.persuasive.base
     ] +
     "\n" +
     "Quick: " +
     ModifierConverter[
-      creatureClone.stats.quick.value + creatureClone.stats.quick.mod
+      creatureClone.stats.quick.value +
+        creatureClone.stats.quick.mod +
+        creatureClone.stats.quick.base
     ] +
     "\n" +
     "Resolute: " +
     ModifierConverter[
-      creatureClone.stats.resolute.value + creatureClone.stats.resolute.mod
+      creatureClone.stats.resolute.value +
+        creatureClone.stats.resolute.mod +
+        creatureClone.stats.resolute.base
     ] +
     "\n" +
     "Strong: " +
     ModifierConverter[
-      creatureClone.stats.strong.value + creatureClone.stats.strong.mod
+      creatureClone.stats.strong.value +
+        creatureClone.stats.strong.mod +
+        creatureClone.stats.strong.base
     ] +
     "\n" +
     "Vigilant: " +
     ModifierConverter[
-      creatureClone.stats.vigilant.value + creatureClone.stats.vigilant.mod
+      creatureClone.stats.vigilant.value +
+        creatureClone.stats.vigilant.mod +
+        creatureClone.stats.vigilant.base
     ] +
     "\n" +
     "Accurate: " +
     ModifierConverter[
-      creatureClone.stats.accurate.value + creatureClone.stats.accurate.mod
+      creatureClone.stats.accurate.value +
+        creatureClone.stats.accurate.mod +
+        creatureClone.stats.accurate.base
     ];
 
   for (const item of creatureClone.inventory) {

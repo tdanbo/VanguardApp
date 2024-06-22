@@ -1,7 +1,7 @@
-import { CharacterEntry, ActivesEntry } from "../../Types";
+import { CharacterEntry } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
-export function Tactician(character: CharacterEntry, actives: ActivesEntry) {
+export function Tactician(character: CharacterEntry) {
   const ability_name = "Tactician";
   const ability = CheckAbility(character, ability_name, "novice");
   const ability_adept = CheckAbility(character, ability_name, "adept");
@@ -14,5 +14,5 @@ export function Tactician(character: CharacterEntry, actives: ActivesEntry) {
   } else if (ability) {
     console.log("Tactician");
   }
-  return actives;
+  return character;
 }

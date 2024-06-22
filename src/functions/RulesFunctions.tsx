@@ -60,14 +60,14 @@ export function RulesDiceAdjust(
 
 export function GetMaxSlots(character: CharacterEntry) {
   const strong_capacity = CheckAbility(character, "Pack-mule", "novice")
-    ? character.stats.strong.value + character.stats.strong.mod * 1.5
-    : character.stats.strong.value + character.stats.strong.mod;
+    ? character.stats.strong.value + character.stats.strong.base * 1.5
+    : character.stats.strong.value + character.stats.strong.base;
 
   let max_slots = Math.max(
     Math.ceil(
       (strong_capacity +
         character.stats.resolute.value +
-        character.stats.resolute.mod) /
+        character.stats.resolute.base) /
         2,
     ),
     10,
@@ -100,15 +100,15 @@ export function GetMaxToughness(character: CharacterEntry) {
     : 0;
 
   const max_toughness =
-    character.stats.strong.value + character.stats.strong.mod < 10
+    character.stats.strong.value + character.stats.strong.base < 10
       ? 10
-      : character.stats.strong.value + character.stats.strong.mod;
+      : character.stats.strong.value + character.stats.strong.base;
   return max_toughness + FeatOfStrength;
 }
 
 export function GetPainThreshold(character: CharacterEntry) {
   return Math.ceil(
-    (character.stats.strong.value + character.stats.strong.mod) / 2,
+    (character.stats.strong.value + character.stats.strong.base) / 2,
   );
 }
 
@@ -116,7 +116,7 @@ export const GetMovementSpeed = (character: CharacterEntry) => {
   let total_speed = Math.ceil(
     (5 +
       character.stats.quick.value +
-      character.stats.quick.mod -
+      character.stats.quick.base -
       GetImpedingValue(character) -
       OverburdenValue(character)) /
       2,
@@ -134,24 +134,22 @@ export const GetMovementSpeed = (character: CharacterEntry) => {
 export const GetImpedingValue = (character: CharacterEntry): number => {
   let impeding = 0;
 
-  if (!CheckAbility(character, "Man-at-Arms", "adept")) {
-    const negativeQualities: { [key: string]: number } = {
-      "Imp 1": 1,
-      "Imp 2": 2,
-      "Imp 3": 3,
-      "Imp 4": 4,
-    };
+  const negativeQualities: { [key: string]: number } = {
+    "Imp 1": 1,
+    "Imp 2": 2,
+    "Imp 3": 3,
+    "Imp 4": 4,
+  };
 
-    character.inventory.forEach((item: ItemEntry) => {
-      if (item.static.category === "armor" && item.equipped) {
-        item.static.quality.forEach((quality: string) => {
-          if (quality in negativeQualities) {
-            impeding += negativeQualities[quality];
-          }
-        });
-      }
-    });
-  }
+  character.inventory.forEach((item: ItemEntry) => {
+    if (item.equipped) {
+      item.static.quality.forEach((quality: string) => {
+        if (quality in negativeQualities) {
+          impeding += negativeQualities[quality];
+        }
+      });
+    }
+  });
 
   return impeding;
 };

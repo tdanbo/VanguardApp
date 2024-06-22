@@ -85,7 +85,6 @@ function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {
         roll_type: "day",
         roll_source: `Day ${session.travel.day}`,
         roll_state: "",
-        roll_active: "",
         roll_entry: {
           result1: 0,
           result2: 0,

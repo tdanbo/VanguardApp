@@ -76,7 +76,7 @@ function EnergyStatComponent({
         <div
           className="row button-hover button_color"
           style={{
-            maxWidth: "30px",
+            maxWidth: "20px",
           }}
           onClick={LowerEnergyStatus}
         >
@@ -163,7 +163,7 @@ function EnergyStatComponent({
         <div
           className="row button-hover button_color"
           style={{
-            maxWidth: "30px",
+            maxWidth: "20px",
             visibility: isHovered ? "visible" : "hidden",
           }}
           onClick={RaiseEnergyStatus}
