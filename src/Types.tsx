@@ -9,6 +9,7 @@ interface CharacterDetails {
 export interface Stat {
   value: number;
   mod: number;
+  base: number;
 }
 
 export type StatName =
@@ -339,17 +340,17 @@ export const NewCharacterEntry: CharacterEntry = {
     energy: 4,
   },
   stats: {
-    cunning: { value: 15, mod: 0 },
-    discreet: { value: 13, mod: 0 },
-    persuasive: { value: 11, mod: 0 },
-    quick: { value: 10, mod: 0 },
-    resolute: { value: 10, mod: 0 },
-    strong: { value: 9, mod: 0 },
-    vigilant: { value: 7, mod: 0 },
-    accurate: { value: 5, mod: 0 },
-    attack: { value: 0, mod: 0 },
-    defense: { value: 0, mod: 0 },
-    initiative: { value: 0, mod: 0 },
+    cunning: { value: 15, mod: 0, base: 0 },
+    discreet: { value: 13, mod: 0, base: 0 },
+    persuasive: { value: 11, mod: 0, base: 0 },
+    quick: { value: 10, mod: 0, base: 0 },
+    resolute: { value: 10, mod: 0, base: 0 },
+    strong: { value: 9, mod: 0, base: 0 },
+    vigilant: { value: 7, mod: 0, base: 0 },
+    accurate: { value: 5, mod: 0, base: 0 },
+    attack: { value: 0, mod: 0, base: 0 },
+    defense: { value: 0, mod: 0, base: 0 },
+    initiative: { value: 0, mod: 0, base: 0 },
   },
   abilities: [],
   inventory: [],

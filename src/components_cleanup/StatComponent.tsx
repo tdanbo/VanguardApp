@@ -3,11 +3,6 @@ import {
   faPlus,
   faAnglesUp,
   faAnglesDown,
-  faCrosshairs,
-  faSkull,
-  faEye,
-  faShield,
-  faInfo,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SetStateAction, useEffect, useState } from "react";
@@ -27,11 +22,11 @@ import { toTitleCase } from "../functions/UtilityFunctions";
 import { GetGameData } from "../contexts/GameContent";
 import { mdiArrowCollapse, mdiArrowExpand } from "@mdi/js";
 import { Icon } from "@mdi/react";
-import { GetAttackStat, GetDefenseStat } from "../functions/CharacterFunctions";
 
 interface Props {
   stat_name: RollTypeEntry;
   stat_value: number;
+  stat_modifier: number;
   active?: boolean;
   stat_color: string;
   session: SessionEntry;
@@ -50,7 +45,7 @@ interface Props {
 function StatComponent({
   stat_name,
   stat_value,
-  stat_color,
+  stat_modifier,
   session,
   character,
   websocket,
@@ -61,7 +56,6 @@ function StatComponent({
   setAdvantage,
   setCriticalState,
   modifierLock,
-  impeded,
 }: Props) {
   const { equipment } = GetGameData();
   const [modValue, setModvalue] = useState<number>(0);
@@ -134,10 +128,15 @@ function StatComponent({
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="row empty_color" style={{ padding: "2px", gap: "0px" }}>
+    <div
+      className="row empty_color"
+      style={{ padding: "2px", gap: "5px" }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div
         className="column base_color"
-        title="Modifier Value"
+        title={isHovered ? "Dice Modifier" : "Stat Modifier"}
         style={{
           maxWidth: "35px",
           minWidth: "35px",
@@ -145,9 +144,22 @@ function StatComponent({
           alignContent: "center",
           justifyContent: "center",
           gap: "6px",
+          color: isHovered
+            ? Constants.WIDGET_PRIMARY_FONT
+            : Constants.WIDGET_SECONDARY_FONT_INACTIVE,
         }}
       >
-        {modValue === 0 ? (
+        {!isHovered
+          ? `${
+              stat_modifier > 0
+                ? `+${stat_modifier}`
+                : stat_modifier < 0
+                ? stat_modifier
+                : ""
+            }`
+          : `${modValue > 0 ? "+" : ""}${modValue}`}
+
+        {/* {modValue === 0 ? (
           <>
             {stat_name === GetAttackStat(character) ? (
               <FontAwesomeIcon
@@ -197,31 +209,9 @@ function StatComponent({
             {modValue > 0 ? "+" : ""}
             {modValue}
           </div>
-        )}
+        )} */}
       </div>
-      <div
-        className="row"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        style={{ gap: "0px" }}
-      >
-        <div
-          className="row"
-          style={{
-            maxWidth: "30px",
-            minWidth: "30px",
-            fontSize: "20px",
-          }}
-          title="Impdeded Stat"
-        >
-          {impeded ? (
-            <FontAwesomeIcon
-              icon={faInfo}
-              color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
-              style={{ fontSize: "18px" }}
-            />
-          ) : null}
-        </div>
+      <div className="row" style={{ gap: "0px" }}>
         <div
           className="row"
           style={{
@@ -278,12 +268,13 @@ function StatComponent({
             ) : null}
           </div>
         </div>
+
         <div
           className="row"
           style={{
             maxWidth: "30px",
             minWidth: "30px",
-            marginRight: "30px",
+
             fontSize: "20px",
             visibility: isHovered ? "visible" : "hidden",
           }}
@@ -297,8 +288,18 @@ function StatComponent({
         </div>
       </div>
       <div
-        className="row button button_color"
-        style={{ maxWidth: "30px", minWidth: "30px", fontSize: "20px" }}
+        className="column button button_color"
+        style={{
+          maxWidth: "35px",
+          minWidth: "35px",
+          fontSize: "20px",
+          alignContent: "center",
+          justifyContent: "center",
+          color: isHovered
+            ? Constants.WIDGET_PRIMARY_FONT
+            : Constants.WIDGET_SECONDARY_FONT,
+          gap: "0px",
+        }}
         title={isCreature ? valueTitle : "Click To Roll"}
         onClick={() =>
           RollDice({
@@ -311,7 +312,10 @@ function StatComponent({
             dice: 20,
             dice_mod: modValue,
             color: color,
-            target: Math.max(stat_value + modValue + flanked, 1),
+            target: Math.max(
+              stat_value + stat_modifier + modValue + flanked,
+              1,
+            ),
             setModValue: setModvalue,
             advantage: advantage,
             activeState: activeState,
@@ -323,7 +327,9 @@ function StatComponent({
           })
         }
       >
-        {Math.max(stat_value + modValue + flanked, 1)}
+        {isHovered
+          ? Math.max(stat_value + stat_modifier + modValue + flanked, 1)
+          : Math.max(stat_value, 1)}
       </div>
     </div>
   );

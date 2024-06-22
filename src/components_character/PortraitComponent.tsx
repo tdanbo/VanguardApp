@@ -81,17 +81,20 @@ function PortraitComponent({
           value={speed.toString()}
           title={"speed"}
           icon={faPersonRunning}
+          bad_result={false}
         />
         <SmallStatComponent
           value={pain.toString()}
           title={"pain"}
           icon={faHeartCrack}
+          bad_result={false}
         />
 
         <SmallStatComponent
           value={burn.toString()}
           title={"consumption"}
           icon={faCarrot}
+          bad_result={false}
         />
         <SmallStatComponent
           value={
@@ -99,6 +102,7 @@ function PortraitComponent({
           }
           title={"capacity"}
           icon={faWeightHanging}
+          bad_result={capacity >= GetMaxSlots(character)}
         />
         <SmallCorruptionComponent
           character={character}

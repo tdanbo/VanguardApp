@@ -193,8 +193,9 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"vigilant"}
               stat_value={
-                character.stats.vigilant.value + character.stats.vigilant.mod
+                character.stats.vigilant.value + character.stats.vigilant.base
               }
+              stat_modifier={character.stats.vigilant.mod}
               stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
               activeState={activeState}
               advantage={advantage}
@@ -211,8 +212,9 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"strong"}
               stat_value={
-                character.stats.strong.value + character.stats.strong.mod
+                character.stats.strong.value + character.stats.strong.base
               }
+              stat_modifier={character.stats.strong.mod}
               stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
               activeState={activeState}
               advantage={advantage}
@@ -229,8 +231,9 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"cunning"}
               stat_value={
-                character.stats.cunning.value + character.stats.cunning.mod
+                character.stats.cunning.value + character.stats.cunning.base
               }
+              stat_modifier={character.stats.cunning.mod}
               stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
               activeState={activeState}
               advantage={advantage}
@@ -249,8 +252,9 @@ function CharacterSheet({
               stat_name={"persuasive"}
               stat_value={
                 character.stats.persuasive.value +
-                character.stats.persuasive.mod
+                character.stats.persuasive.base
               }
+              stat_modifier={character.stats.persuasive.mod}
               stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
               activeState={activeState}
               advantage={advantage}
@@ -269,8 +273,9 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"accurate"}
               stat_value={
-                character.stats.accurate.value + character.stats.accurate.mod
+                character.stats.accurate.value + character.stats.accurate.base
               }
+              stat_modifier={character.stats.accurate.mod}
               stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
               active={true}
               activeState={activeState}
@@ -288,8 +293,9 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"quick"}
               stat_value={
-                character.stats.quick.value + character.stats.quick.mod
+                character.stats.quick.value + character.stats.quick.base
               }
+              stat_modifier={character.stats.quick.mod}
               stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
               activeState={activeState}
               advantage={advantage}
@@ -306,8 +312,9 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"discreet"}
               stat_value={
-                character.stats.discreet.value + character.stats.discreet.mod
+                character.stats.discreet.value + character.stats.discreet.base
               }
+              stat_modifier={character.stats.discreet.mod}
               stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
               activeState={activeState}
               advantage={advantage}
@@ -325,8 +332,9 @@ function CharacterSheet({
               isCreature={isCreature}
               stat_name={"resolute"}
               stat_value={
-                character.stats.resolute.value + character.stats.resolute.mod
+                character.stats.resolute.value + character.stats.resolute.base
               }
+              stat_modifier={character.stats.resolute.mod}
               stat_color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
               activeState={activeState}
               advantage={advantage}
@@ -371,8 +379,9 @@ function CharacterSheet({
             isCreature={isCreature}
             stat_name={"attack"}
             stat_value={
-              character.stats.attack.value + character.stats.attack.mod
+              character.stats.attack.value + character.stats.attack.base
             }
+            stat_modifier={character.stats.attack.mod}
             stat_color={Constants.TYPE_COLORS["attack"]}
             activeState={activeState}
             advantage={advantage}
@@ -390,8 +399,9 @@ function CharacterSheet({
             isCreature={isCreature}
             stat_name={"defense"}
             stat_value={
-              character.stats.defense.value + character.stats.defense.mod
+              character.stats.defense.value + character.stats.defense.base
             }
+            stat_modifier={character.stats.defense.mod}
             stat_color={Constants.TYPE_COLORS["defense"]}
             activeState={activeState}
             advantage={advantage}
