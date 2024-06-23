@@ -4,27 +4,27 @@ export const Qualities: {
   "Imp 0": {
     name: "Impeding 0",
     description:
-      "The armor hampers any agile movements and gives a penalty to your Attack/Defense/Casting and Stealth stat. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
+      "The armor does not give a penalty to movement speed and does not add any negative modifiers to [Accurate, Quick, Discreet, Resolute, Defense].",
   },
   "Imp 1": {
     name: "Impeding 1",
     description:
-      "The armor hampers any agile movements and gives a penalty to your Attack/Defense/Casting and Stealth stat, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
+      "The armor gives a penalty to movement speed and give a -1 stat modifier to [Accurate, Quick, Discreet, Resolute, Defense].",
   },
   "Imp 2": {
     name: "Impeding 2",
     description:
-      "The armor hampers any agile movements and gives a penalty to your Attack/Defense/Casting and Stealth stat, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
+      "The armor gives a penalty to movement speed and give a -2 stat modifier to [Accurate, Quick, Discreet, Resolute, Defense].",
   },
   "Imp 3": {
     name: "Impeding 3",
     description:
-      "The armor hampers any agile movements and gives a penalty to your Attack/Defense/Casting and Stealth stat, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
+      "The armor gives a penalty to movement speed and give a -3 stat modifier to [Accurate, Quick, Discreet, Resolute, Defense].",
   },
   "Imp 4": {
     name: "Impeding 4",
     description:
-      "The armor hampers any agile movements and gives a penalty to your Attack/Defense/Casting and Stealth stat, sneaking and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3) or heavy (-4).",
+      "The armor gives a penalty to movement speed and give a -4 stat modifier to [Accurate, Quick, Discreet, Resolute, Defense].",
   },
   Flexible: {
     name: "Flexible",
@@ -39,12 +39,12 @@ export const Qualities: {
   "Balanced 1": {
     name: "Balanced 1",
     description:
-      "The item is so well balanced that it is extra effective when avoiding attacks. The item provides +1 in to your Defense Stat.",
+      "The item is so well balanced that it is extra effective when avoiding attacks. The item provides +1 Defense Modifier.",
   },
   "Balanced 2": {
     name: "Balanced 2",
     description:
-      "The item is so well balanced that it is extra effective when avoiding attacks. The item provides +2 in to your Defense Stat.",
+      "The item is so well balanced that it is extra effective when avoiding attacks. The item provides +2 Defense Modifier.",
   },
   Blunt: {
     name: "Blunt",
@@ -61,11 +61,6 @@ export const Qualities: {
     description:
       "The weapon has qualities that make it even more deadly. Maybe its blade can pierce armor more easily or the weapon itself is so massive that it gets extra crushing power. Either way, the weapon deals +1 extra damage.",
   },
-  Imp: {
-    name: "Impeding",
-    description:
-      "The armor hampers any agile movements and gives a penalty to your Attack/Defense/Casting and Stealth stat, sneaking, and the use of mystic powers. The penalty depends on whether the armor is light (-2), medium (-3), or heavy (-4).",
-  },
   Jointed: {
     name: "Jointed",
     description:
@@ -79,7 +74,7 @@ export const Qualities: {
   Precise: {
     name: "Precise",
     description:
-      "The weapon is designed to be easy to wield and, therefore, gives +1 to your Attack stat.",
+      "The weapon is designed to be easy to wield and, therefore, gives +1 Attack Modifier.",
   },
   Short: {
     name: "Short",
@@ -143,7 +138,7 @@ export const Qualities: {
   Cut: {
     name: "Cut",
     description:
-      "A Y-shaped tip makes it possible to cut ropes. Hitting the rope is difficult (-5 on to your Attack stat on the test), but a success means that the rope is cut.",
+      "A Y-shaped tip makes it possible to cut ropes. Hitting the rope is difficult (-5 on to your dice modifier on the Attack test), but a success means that the rope is cut.",
   },
   Whistle: {
     name: "Whistle",

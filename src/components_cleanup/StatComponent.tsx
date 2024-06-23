@@ -22,6 +22,7 @@ import { toTitleCase } from "../functions/UtilityFunctions";
 import { GetGameData } from "../contexts/GameContent";
 import { mdiArrowCollapse, mdiArrowExpand } from "@mdi/js";
 import { Icon } from "@mdi/react";
+import { GetAttackStat, GetDefenseStat } from "../functions/CharacterFunctions";
 
 interface Props {
   stat_name: RollTypeEntry;
@@ -151,10 +152,10 @@ function StatComponent({
       >
         {!isHovered
           ? `${
-              stat_modifier > 0
-                ? `+${stat_modifier}`
-                : stat_modifier < 0
-                ? stat_modifier
+              stat_modifier + flanked > 0
+                ? `+${stat_modifier + flanked}`
+                : stat_modifier + flanked < 0
+                ? stat_modifier + flanked
                 : ""
             }`
           : `${modValue > 0 ? "+" : ""}${modValue}`}
@@ -213,10 +214,10 @@ function StatComponent({
       </div>
       <div className="row" style={{ gap: "0px" }}>
         <div
-          className="row"
+          className="row empty_color button"
           style={{
-            maxWidth: "30px",
-            minWidth: "30px",
+            maxWidth: "25px",
+            minWidth: "25px",
             fontSize: "20px",
             visibility: isHovered ? "visible" : "hidden",
           }}
@@ -236,45 +237,40 @@ function StatComponent({
             gap: "0px",
             alignItems: "center",
             justifyContent: "center",
+            padding: "5px",
           }}
         >
-          {toTitleCase(stat_name)}
-          <div className="row" style={{ gap: "3px", maxHeight: "0px" }}>
-            {advantage === "flanking" && stat_name === "attack" ? (
-              <Icon
-                path={mdiArrowCollapse}
-                size={0.7}
-                style={{ marginTop: "10px" }}
-              />
-            ) : advantage === "flanked" && stat_name === "defense" ? (
-              <Icon
-                path={mdiArrowExpand}
-                size={0.7}
-                style={{ marginTop: "10px" }}
-              />
-            ) : null}
-            {activeState === "full" ? (
-              <FontAwesomeIcon
-                icon={faAnglesUp}
-                color={Constants.WIDGET_PRIMARY_FONT}
-                style={{ fontSize: "15px", marginTop: "10px" }}
-              />
-            ) : activeState === "weak" ? (
-              <FontAwesomeIcon
-                icon={faAnglesDown}
-                color={Constants.WIDGET_PRIMARY_FONT}
-                style={{ fontSize: "15px", marginTop: "10px" }}
-              />
-            ) : null}
+          <div
+            className="row"
+            style={{
+              color: Constants.WIDGET_PRIMARY_FONT,
+              textShadow: "2px 2px 2px black",
+              fontSize: "16px",
+            }}
+          >
+            {toTitleCase(stat_name)}
+          </div>
+          <div
+            style={{
+              fontSize: "10px",
+              marginTop: "-2px",
+              textShadow: "0px 0px 0px black",
+              color: Constants.WIDGET_SECONDARY_FONT,
+            }}
+          >
+            {stat_name === "attack"
+              ? GetAttackStat(character).toUpperCase()
+              : stat_name === "defense"
+              ? GetDefenseStat(character).toUpperCase()
+              : null}
           </div>
         </div>
 
         <div
-          className="row"
+          className="row empty_color button"
           style={{
-            maxWidth: "30px",
-            minWidth: "30px",
-
+            maxWidth: "25px",
+            minWidth: "25px",
             fontSize: "20px",
             visibility: isHovered ? "visible" : "hidden",
           }}
@@ -330,6 +326,34 @@ function StatComponent({
         {isHovered
           ? Math.max(stat_value + stat_modifier + modValue + flanked, 1)
           : Math.max(stat_value, 1)}
+        <div className="row" style={{ maxHeight: "0px", gap: "0px" }}>
+          {advantage === "flanking" && stat_name === "attack" ? (
+            <Icon
+              path={mdiArrowCollapse}
+              size={0.7}
+              style={{ fontSize: "14px", paddingTop: "20px" }}
+            />
+          ) : advantage === "flanked" && stat_name === "defense" ? (
+            <Icon
+              path={mdiArrowExpand}
+              size={0.7}
+              style={{ fontSize: "14px", paddingTop: "20px" }}
+            />
+          ) : null}
+          {activeState === "full" ? (
+            <FontAwesomeIcon
+              icon={faAnglesUp}
+              color={Constants.WIDGET_PRIMARY_FONT}
+              style={{ fontSize: "14px", paddingTop: "20px" }}
+            />
+          ) : activeState === "weak" ? (
+            <FontAwesomeIcon
+              icon={faAnglesDown}
+              color={Constants.WIDGET_PRIMARY_FONT}
+              style={{ fontSize: "14px", paddingTop: "20px" }}
+            />
+          ) : null}
+        </div>
       </div>
     </div>
   );
