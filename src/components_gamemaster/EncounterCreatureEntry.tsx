@@ -34,6 +34,7 @@ import {
 import { update_session } from "../functions/SessionsFunctions";
 import CreatureHealthAdjuster from "./CreatureHealthAdjuster";
 import { IsWeapon } from "../functions/UtilityFunctions";
+import { GetAttackStat, GetDefenseStat } from "../functions/CharacterFunctions";
 
 interface ColorTypeProps {
   $rgb: string;
@@ -322,18 +323,27 @@ function EncounterCreatureEntry({
   setCriticalState,
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
+
+  const attack_base_stat =
+    creatureClone.stats[GetAttackStat(creatureClone)].value;
+  const defense_base_stat =
+    creatureClone.stats[GetDefenseStat(creatureClone)].value;
+
   const attack =
     ModifierConverter[
-      creatureClone.stats.attack.value +
+      attack_base_stat +
         creatureClone.stats.attack.mod +
         creatureClone.stats.attack.base
     ];
   const defense =
     ModifierConverter[
-      creatureClone.stats.defense.value +
+      defense_base_stat +
         creatureClone.stats.defense.mod +
         creatureClone.stats.defense.base
     ];
+
+  console.log(attack);
+  console.log(defense);
   const hp = GetMaxToughness(creatureClone);
   const [currentDamage, setCurrentDamage] = useState<number>(
     creature.health.damage!,
