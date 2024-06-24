@@ -260,6 +260,8 @@ export function GetDefenseStat(character: CharacterEntry) {
     defense_stat = "vigilant";
   } else if (CheckAbility(character, "feint", "adept")) {
     defense_stat = "discreet";
+  } else if (CheckAbility(character, "parry mastery", "novice")) {
+    defense_stat = "accurate";
   } else {
     defense_stat = "quick";
   }
