@@ -150,17 +150,10 @@ function StatComponent({
             : Constants.WIDGET_SECONDARY_FONT_INACTIVE,
         }}
       >
-        {!isHovered
-          ? `${
-              stat_modifier + flanked > 0
-                ? `+${stat_modifier + flanked}`
-                : stat_modifier + flanked < 0
-                ? stat_modifier + flanked
-                : ""
-            }`
-          : `${modValue > 0 ? "+" : ""}${modValue}`}
+        {modValue !== 0 ? (modValue > 0 ? `+${modValue}` : modValue) : ""}
+      </div>
 
-        {/* {modValue === 0 ? (
+      {/* {modValue === 0 ? (
           <>
             {stat_name === GetAttackStat(character) ? (
               <FontAwesomeIcon
@@ -211,8 +204,9 @@ function StatComponent({
             {modValue}
           </div>
         )} */}
-      </div>
+
       <div className="row" style={{ gap: "0px" }}>
+        {!isHovered ? <div style={{ minWidth: "20px" }} /> : null}
         <div
           className="row empty_color button"
           style={{
@@ -283,6 +277,38 @@ function StatComponent({
           />
         </div>
       </div>
+      {activeState === "full" ? (
+        <FontAwesomeIcon
+          icon={faAnglesUp}
+          color={Constants.WIDGET_PRIMARY_FONT}
+          style={{ fontSize: "14px", paddingTop: "20px" }}
+        />
+      ) : activeState === "weak" ? (
+        <FontAwesomeIcon
+          icon={faAnglesDown}
+          color={Constants.WIDGET_PRIMARY_FONT}
+          style={{ fontSize: "14px", paddingTop: "20px" }}
+        />
+      ) : null}
+      {!isHovered ? (
+        <div
+          style={{
+            minWidth: "20px",
+            fontSize: "18px",
+            color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+          }}
+        >
+          {!isHovered
+            ? `${
+                stat_modifier + flanked > 0
+                  ? `+${stat_modifier + flanked}`
+                  : stat_modifier + flanked < 0
+                  ? stat_modifier + flanked
+                  : ""
+              }`
+            : `${modValue > 0 ? "+" : ""}${modValue}`}
+        </div>
+      ) : null}
       <div
         className="column button button_color"
         style={{
@@ -337,19 +363,6 @@ function StatComponent({
             <Icon
               path={mdiArrowExpand}
               size={0.7}
-              style={{ fontSize: "14px", paddingTop: "20px" }}
-            />
-          ) : null}
-          {activeState === "full" ? (
-            <FontAwesomeIcon
-              icon={faAnglesUp}
-              color={Constants.WIDGET_PRIMARY_FONT}
-              style={{ fontSize: "14px", paddingTop: "20px" }}
-            />
-          ) : activeState === "weak" ? (
-            <FontAwesomeIcon
-              icon={faAnglesDown}
-              color={Constants.WIDGET_PRIMARY_FONT}
               style={{ fontSize: "14px", paddingTop: "20px" }}
             />
           ) : null}
