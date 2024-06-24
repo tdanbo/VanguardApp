@@ -253,7 +253,7 @@ export function GetAttackStat(character: CharacterEntry) {
 }
 
 export function GetDefenseStat(character: CharacterEntry) {
-  let defense_stat = "quick";
+  let defense_stat: StatName = "quick";
   if (CheckAbility(character, "Tactician", "adept")) {
     defense_stat = "cunning";
   } else if (CheckAbility(character, "Sixth Sense", "adept")) {
