@@ -293,7 +293,7 @@ function StatComponent({
       {!isHovered ? (
         <div
           style={{
-            minWidth: "20px",
+            minWidth: "25px",
             fontSize: "18px",
             color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
           }}
