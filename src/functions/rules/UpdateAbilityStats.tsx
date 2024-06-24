@@ -109,6 +109,9 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
   } else if (CheckAbility(character, "feint", "adept")) {
     character.stats.defense.value =
       character.stats["discreet"].value + character.stats["discreet"].base;
+  } else if (CheckAbility(character, "Parry Mastery", "novice")) {
+    character.stats.defense.value =
+      character.stats["accurate"].value + character.stats["accurate"].base;
   } else {
     character.stats.defense.value =
       character.stats["quick"].value + character.stats["quick"].base;
