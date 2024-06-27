@@ -1,8 +1,6 @@
-import "../layout.css";
-
 import Icon from "@mdi/react";
 import { mdiShield, mdiSwordCross } from "@mdi/js";
-
+import "../styles.css";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import { random } from "lodash";
 import { Socket } from "socket.io-client";

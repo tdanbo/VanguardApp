@@ -8,9 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SetStateAction, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import "../App.css";
 import * as Constants from "../Constants";
-import "../Styles.css";
+import "../styles.css";
 import {
   ActiveStateType,
   AdvantageType,

@@ -1,4 +1,4 @@
-import "../App.css";
+import "../styles.css";
 import * as Constants from "../Constants";
 
 interface DetailStatProps {

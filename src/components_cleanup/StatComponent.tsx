@@ -7,9 +7,9 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SetStateAction, useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
-import "../App.css";
+
 import * as Constants from "../Constants";
-import "../Styles.css";
+
 import { RollDice } from "../functions/UtilityFunctions";
 import {
   ActiveStateType,
@@ -131,7 +131,7 @@ function StatComponent({
   return (
     <div
       className="row empty_color"
-      style={{ padding: "2px", gap: "5px" }}
+      style={{ padding: "2px", gap: "2px" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -139,8 +139,8 @@ function StatComponent({
         className="column base_color"
         title={isHovered ? "Dice Modifier" : "Stat Modifier"}
         style={{
-          maxWidth: "35px",
-          minWidth: "35px",
+          maxWidth: "30px",
+          minWidth: "30px",
           fontSize: "20px",
           alignContent: "center",
           justifyContent: "center",
@@ -206,7 +206,16 @@ function StatComponent({
         )} */}
 
       <div className="row" style={{ gap: "0px" }}>
-        {!isHovered ? <div style={{ minWidth: "20px" }} /> : null}
+        {!isHovered ? (
+          <div
+            className=" empty_color"
+            style={{
+              maxWidth: "25px",
+              minWidth: "25px",
+              border: `1px solid #191c1b`,
+            }}
+          />
+        ) : null}
         <div
           className="row empty_color button"
           style={{
@@ -235,11 +244,15 @@ function StatComponent({
           }}
         >
           <div
-            className="row"
             style={{
               color: Constants.WIDGET_PRIMARY_FONT,
               textShadow: "2px 2px 2px black",
               fontSize: "16px",
+              position: "absolute",
+              marginBottom:
+                stat_name === "defense" || stat_name === "attack"
+                  ? "15px"
+                  : "0px",
             }}
           >
             {toTitleCase(stat_name)}
@@ -247,8 +260,10 @@ function StatComponent({
           <div
             style={{
               fontSize: "10px",
-              marginTop: "-2px",
+              marginTop: "20px",
               textShadow: "0px 0px 0px black",
+              position: "absolute",
+
               color: Constants.WIDGET_SECONDARY_FONT,
             }}
           >
@@ -312,8 +327,8 @@ function StatComponent({
       <div
         className="column button button_color"
         style={{
-          maxWidth: "35px",
-          minWidth: "35px",
+          maxWidth: "30px",
+          minWidth: "30px",
           fontSize: "20px",
           alignContent: "center",
           justifyContent: "center",

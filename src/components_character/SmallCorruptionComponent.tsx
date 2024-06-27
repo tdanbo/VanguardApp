@@ -1,5 +1,5 @@
 import * as Constants from "../Constants";
-import "../layout.css";
+import "../styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../functions/SessionsFunctions";
 import { Socket } from "socket.io-client";

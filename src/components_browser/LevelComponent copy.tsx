@@ -1,5 +1,5 @@
 import * as Constants from "../Constants";
-import "../layout.css";
+import "../styles.css";
 
 import { CharacterEntry, AbilityEntry, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";

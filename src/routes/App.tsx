@@ -1,8 +1,5 @@
-import "../App.css";
-
 import * as Constants from "../Constants";
 
-import "../layout.css";
 import { useState } from "react";
 import {
   ActiveStateType,

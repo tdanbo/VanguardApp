@@ -12,7 +12,7 @@ import ResetCreatureEncounter from "./ResetCreatureEncounter";
 import CreatureEncounterSection from "./CreatureEncounterSection";
 import TimeTrackBox from "../components_gamemaster/TimeTrackBox";
 import TravelBox from "../components_gamemaster/TravelBox";
-import "../layout.css";
+
 import { update_session } from "../functions/SessionsFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faSkull } from "@fortawesome/free-solid-svg-icons";

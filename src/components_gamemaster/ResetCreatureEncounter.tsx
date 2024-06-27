@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { random } from "lodash";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import "../App.css";
+
 import * as Constants from "../Constants";
 import { SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";

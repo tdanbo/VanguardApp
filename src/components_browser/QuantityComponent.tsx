@@ -1,5 +1,5 @@
 import * as Constants from "../Constants";
-import "../layout.css";
+import "../styles.css";
 
 import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 
