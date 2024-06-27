@@ -1,7 +1,6 @@
 import * as Constants from "../Constants";
 import { SetStateAction } from "react";
 import styled from "styled-components";
-import "../App.css";
 
 import { CreatureEntry } from "../Types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

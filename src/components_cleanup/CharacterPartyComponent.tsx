@@ -17,7 +17,6 @@ import Icon from "@mdi/react";
 import { mdiGraveStone, mdiTrashCan } from "@mdi/js";
 
 import { Socket } from "socket.io-client";
-import "../layout.css";
 
 interface SessionBoxProps {
   character: CharacterEntry;

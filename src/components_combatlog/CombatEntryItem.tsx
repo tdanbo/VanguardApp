@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import "../App.css";
+import "../styles.css";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { CombatEntry, SessionEntry } from "../Types";

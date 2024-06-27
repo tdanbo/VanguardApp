@@ -8,7 +8,6 @@ import { getCharacterXp, getUtilityXp } from "../functions/CharacterFunctions";
 import StatComponent from "../components_cleanup/StatComponent";
 import ModifierLockComponent from "../components_cleanup/ModifierLockComponent";
 import ValueAdjustComponent from "../components_cleanup/ValueAdjustComponent";
-import "../layout.css";
 
 import * as Constants from "../Constants";
 
