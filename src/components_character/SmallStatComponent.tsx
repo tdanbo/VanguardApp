@@ -1,5 +1,5 @@
 import * as Constants from "../Constants";
-import "../styles.css";
+import "../Styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import {

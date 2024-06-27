@@ -9,7 +9,7 @@ import { SetStateAction, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import "../styles.css";
+import "../Styles.css";
 import {
   ActiveStateType,
   AdvantageType,
