@@ -1,4 +1,4 @@
-import "../styles.css";
+import "../Styles.css";
 import { SessionEntry, CharacterEntry, CombatEntry } from "../Types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUtensils } from "@fortawesome/free-solid-svg-icons";

@@ -1,6 +1,6 @@
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import "../styles.css";
+import "../Styles.css";
 import {
   ActiveStateType,
   AdvantageType,

@@ -1,7 +1,7 @@
 import { faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import "../styles.css";
+import "../Styles.css";
 import * as Constants from "../Constants";
 import { NewDayIcon } from "../Images";
 import { CombatEntry, SessionEntry } from "../Types";

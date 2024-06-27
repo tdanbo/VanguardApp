@@ -40,14 +40,6 @@ body::-webkit-scrollbar {
   height: 100%; /* Assuming you're using a setup like create-react-app, adjust if you have a different root */
 }
 
-:root {
-  --clr-red: #ff00aa;
-  --clr-blue: #00aaff;
-  --clr-yellow: #ffaa00;
-  --clr-purple: #aa00ff;
-  --ff-primary: "Roboto", sans-serif;
-}
-
 .upper {
   display: flex;
   background-color: rgb(255, 0, 170);
