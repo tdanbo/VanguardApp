@@ -41,10 +41,11 @@ body::-webkit-scrollbar {
 }
 
 :root {
-  --primary-color: #ff00aa;
-  --secondary-color: #ffaa00;
-  --tertiary-color: #00aaff;
-  --quaternary-color: #aaff00;
+  --clr-red: #ff00aa;
+  --clr-blue: #00aaff;
+  --clr-yellow: #ffaa00;
+  --clr-purple: #aa00ff;
+  --ff-primary: "Roboto", sans-serif;
 }
 
 .upper {
