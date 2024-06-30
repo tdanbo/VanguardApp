@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import { SessionEntry } from "../Types";
+import { DisplayType, SessionEntry } from "../Types";
 import * as Constants from "../Constants";
 
 import CharacterPartyComponent from "../components_cleanup/CharacterPartyComponent";
@@ -37,6 +37,7 @@ interface PartySectionProps {
   isCreature: boolean;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
   isGm: boolean;
+  setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 
 function PartySection({
@@ -46,27 +47,27 @@ function PartySection({
   setIsCreature,
   setIsGm,
   isGm,
+  setDisplay,
 }: PartySectionProps) {
   return (
-    <Container height="260px">
-      <Column width="100%">
-        {session.characters.map((entry, index) => {
-          return (
-            <CharacterPartyComponent
-              key={index}
-              character={entry}
-              session={session}
-              websocket={websocket}
-              setIsCreature={setIsCreature}
-              isCreature={false}
-              setCharacterId={setCharacterId}
-              setIsGm={setIsGm}
-              isGm={isGm}
-            />
-          );
-        })}
-      </Column>
-    </Container>
+    <div className="column" style={{ width: "100%", maxHeight: "260px" }}>
+      {session.characters.map((entry, index) => {
+        return (
+          <CharacterPartyComponent
+            key={index}
+            character={entry}
+            session={session}
+            websocket={websocket}
+            setIsCreature={setIsCreature}
+            isCreature={false}
+            setCharacterId={setCharacterId}
+            setIsGm={setIsGm}
+            isGm={isGm}
+            setDisplay={setDisplay}
+          />
+        );
+      })}
+    </div>
   );
 }
 

@@ -43,6 +43,17 @@ function AbilitySection({
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
   return (
     <>
+      <div
+        className="row"
+        style={{
+          maxHeight: "10px",
+          fontSize: "11px",
+          fontWeight: "bold",
+          color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+        }}
+      >
+        Abilities <div className="divider_horizontal" />
+      </div>
       {character.effects.map((effect, index) => {
         return (
           <EffectEntryItem

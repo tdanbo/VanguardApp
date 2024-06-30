@@ -8,29 +8,39 @@ interface CharacterNameBoxProps {
 
 function CharacterNameComponent({ character }: CharacterNameBoxProps) {
   return (
-    <div>
+    <div className="row outline_color" style={{ padding: "0px 10px 0px 10px" }}>
+      <div
+        style={{
+          fontSize: "10px",
+          justifyContent: "left",
+          fontWeight: "bold",
+          marginTop: "10px",
+
+          color: Constants.WIDGET_SECONDARY_FONT,
+        }}
+      >
+        {GetDifficultyString(character).toUpperCase()}
+      </div>
       <div
         className="row"
         style={{
-          fontSize: "30px",
-          justifyContent: "left",
+          fontSize: "25px",
+          justifyContent: "center",
           fontWeight: "bold",
-          marginTop: "-10px",
         }}
       >
         {character.name}
       </div>
       <div
-        className="row"
         style={{
-          fontSize: "15px",
+          fontSize: "10px",
           justifyContent: "right",
           fontWeight: "bold",
-          marginTop: "-15px",
-          color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+          marginTop: "10px",
+          color: Constants.WIDGET_SECONDARY_FONT,
         }}
       >
-        {GetDifficultyString(character)} {character.details.race}
+        {character.details.race.toUpperCase()}
       </div>
     </div>
   );

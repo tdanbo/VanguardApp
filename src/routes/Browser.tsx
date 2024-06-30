@@ -1,6 +1,6 @@
 import { ActiveStateType, AdvantageType } from "../Types";
 import AbilityBrowser from "../components_browser/AbilityBrowser";
-import BrowserHeader from "../components_browser/BrowserHeader";
+import FooterBrowserComponent from "../components_cleanup/FooterBrowserComponent";
 import CreatureBrowser from "../components_browser/CreatureBrowser";
 
 import EquipmentBrowser from "../components_browser/EquipmentBrowser";
@@ -8,16 +8,6 @@ import * as Constants from "../Constants";
 import styled from "styled-components";
 import { useState } from "react";
 import Inventory from "./Inventory";
-const SideColumn = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  background-color: ${Constants.BACKGROUND};
-  height: 100%;
-  gap: 25px;
-  padding: 25px 50px 25px 25px;
-  box-sizing: border-box;
-`;
 
 import { Socket } from "socket.io-client";
 import { CharacterEntry, SessionEntry } from "../Types";
@@ -61,17 +51,7 @@ function Browser({
   const [search, setSearch] = useState("");
   const [categorySelect, setCategorySelect] = useState<string>("inventory");
   return (
-    <SideColumn>
-      <BrowserHeader
-        session={session}
-        categorySelect={categorySelect}
-        setCategorySelect={setCategorySelect}
-        setSearch={setSearch}
-        setCharacterId={setCharacterId}
-        setIsGm={setIsGm}
-        isGm={isGm}
-        // Add the other missing props here
-      />
+    <>
       {categorySelect === "equipment" ? (
         <EquipmentBrowser
           session={session}
@@ -102,6 +82,7 @@ function Browser({
           setActiveState={setActiveState}
           setAdvantage={setAdvantage}
           setCriticalState={setCriticalState}
+          setSearch={setSearch}
         />
       ) : categorySelect === "creatures" ? (
         <CreatureBrowser
@@ -133,7 +114,7 @@ function Browser({
           setCriticalState={setCriticalState}
         />
       ) : null}
-    </SideColumn>
+    </>
   );
 }
 

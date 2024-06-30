@@ -50,15 +50,18 @@ function SmallStatComponent({
   return (
     <div
       className="column"
-      style={{ backgroundColor: backgroundcolor, gap: "0px" }}
+      style={{
+        backgroundColor: backgroundcolor,
+        gap: "0px",
+        minWidth: "120px",
+      }}
     >
       <div className="row">
-        <div className="row" style={{ width: "20px", marginLeft: "8px" }} />
         <div
           className="row"
           style={{
             fontSize: "20px",
-            alignItems: "flex-end",
+
             marginTop: "2px",
             filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
             fontWeight: bad_result ? "700" : "400",
@@ -68,16 +71,6 @@ function SmallStatComponent({
           }}
         >
           {value}
-        </div>
-        <div
-          className="row"
-          style={{
-            width: "20px",
-            marginRight: "8px",
-            filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
-          }}
-        >
-          <FontAwesomeIcon icon={icon} color={color} size="sm" />
         </div>
       </div>
       <div

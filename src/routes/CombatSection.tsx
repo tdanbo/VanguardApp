@@ -16,6 +16,7 @@ import {
   SessionEntry,
   ActiveStateType,
   AdvantageType,
+  DisplayType,
 } from "../Types";
 import DiceSection from "../components_combatlog/DiceSection";
 import CombatEntryItem from "../components_combatlog/CombatEntryItem";
@@ -74,7 +75,6 @@ const SideColumn = styled.div`
   background-color: ${Constants.BACKGROUND};
   height: 100%;
   gap: 25px;
-  padding: 25px 25px 25px 50px;
   box-sizing: border-box;
 `;
 
@@ -115,6 +115,7 @@ interface CombatSectionProps {
   isGm: boolean;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 
 function deepCompareCombatEntries(
@@ -153,6 +154,7 @@ function CombatSection({
   isGm,
   setIsGm,
   setCriticalState,
+  setDisplay,
 }: CombatSectionProps) {
   // const { combatlogResponse } = useWebSocket();
   const scrollRef = useRef(null);
@@ -235,8 +237,8 @@ function CombatSection({
   };
 
   return (
-    <SideColumn>
-      <Container height={"40px"}>
+    <>
+      <div className="header">
         {!isJoined ? (
           <JoinSessionComponent
             setIsJoined={setIsJoined}
@@ -248,6 +250,12 @@ function CombatSection({
           </Button>
         ) : (
           <>
+            <div
+              className="row button_color"
+              onClick={() => setIsJoined(false)}
+            >
+              Join New Session
+            </div>
             <div className="row outline_color">
               <DetailStatComponent
                 title={"QUARTER"}
@@ -262,7 +270,7 @@ function CombatSection({
             </div>
           </>
         )}
-      </Container>
+      </div>
       <PartySection
         session={session}
         websocket={websocket}
@@ -271,9 +279,10 @@ function CombatSection({
         isCreature={isCreature}
         setIsGm={setIsGm}
         isGm={isGm}
+        setDisplay={setDisplay}
       />
-      <DynamicContainer>
-        <Column ref={scrollRef} width={"100%"}>
+      <div className="column">
+        <div className="scroll_container" ref={scrollRef}>
           {session.combatlog.map((item, index) => {
             if (item.roll_type === "eating" || item.roll_type === "sleeping") {
               return (
@@ -303,22 +312,19 @@ function CombatSection({
               />
             ); // Return null when none of the conditions are met
           })}
-        </Column>
-      </DynamicContainer>
-      <Container height={"30px"}>
-        <Row width={"100%"}>
-          <DiceSection
-            character={character}
-            session={session}
-            websocket={websocket}
-            isCreature={isCreature}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            setCriticalState={setCriticalState}
-          />
-        </Row>
-      </Container>
-    </SideColumn>
+        </div>
+      </div>
+
+      {/* <DiceSection
+          character={character}
+          session={session}
+          websocket={websocket}
+          isCreature={isCreature}
+          setActiveState={setActiveState}
+          setAdvantage={setAdvantage}
+          setCriticalState={setCriticalState}
+        /> */}
+    </>
   );
 }
 

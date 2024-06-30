@@ -35,7 +35,7 @@ interface DivProps {
 }
 const DynamicContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-grow: 1;
   gap: ${Constants.WIDGET_GAB};
   height: 0px; /* or another fixed value */
@@ -76,6 +76,7 @@ interface AbilityBrowserProps {
   isGm: boolean;
   activeState: ActiveStateType;
   advantage: AdvantageType;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -89,6 +90,7 @@ function AbilityBrowser({
   isCreature,
   search,
   isGm,
+  setSearch,
   activeState,
   advantage,
   setActiveState,
@@ -190,9 +192,36 @@ function AbilityBrowser({
     }
   }, [LootCategory, search]);
 
+  const [tempSearch, setTempSearch] = useState("");
+
+  const handleSetSearch = (value: string) => {
+    setSearch(value);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTempSearch(e.target.value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSetSearch(tempSearch);
+    }
+  };
+
   return (
     <>
       <DynamicContainer>
+        <div className="header">
+          <input
+            className="row opaque_color font"
+            value={tempSearch} // Use the temporary search state as the input value
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            title="Hit Enter to search"
+            placeholder="Search"
+            style={{ textAlign: "center" }}
+          />
+        </div>
         <ScrollColumn ref={scrollRef} width="100%">
           {filteredEntry.map((entry, index) => {
             return (
@@ -237,23 +266,6 @@ function AbilityBrowser({
           })}
         </ScrollColumn>
       </DynamicContainer>
-      <FooterContainer height={"30px"}>
-        <Button onClick={() => setLootCategory("abilities")}>Abilities</Button>
-        <Button onClick={() => setLootCategory("mystical powers")}>
-          Mystical Powers
-        </Button>
-        <Button onClick={() => setLootCategory("utility")}>Utility</Button>
-
-        {isGm ? (
-          <>
-            <Button onClick={() => setLootCategory("rituals")}>Rituals</Button>
-            <Button onClick={() => setLootCategory("burden")}>Burden</Button>
-            <Button onClick={() => setLootCategory("monstrous traits")}>
-              Monstrous Traits
-            </Button>
-          </>
-        ) : null}
-      </FooterContainer>
     </>
   );
 }

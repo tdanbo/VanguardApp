@@ -49,6 +49,17 @@ function EquipmentSection({
 
   return (
     <>
+      <div
+        className="row"
+        style={{
+          maxHeight: "10px",
+          fontSize: "11px",
+          fontWeight: "bold",
+          color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+        }}
+      >
+        Equipment <div className="divider_horizontal" />
+      </div>
       {Array.from({ length: totalSlots }).map((_, index) => {
         const item = sortedInventory[index];
         if (item !== undefined && item.equipped) {

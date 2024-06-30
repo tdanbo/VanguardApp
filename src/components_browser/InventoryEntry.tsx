@@ -39,6 +39,7 @@ const MasterContainer = styled.div`
   border-radius: ${Constants.BORDER_RADIUS};
   border: 1px solid ${Constants.WIDGET_BORDER};
   background-color: ${Constants.WIDGET_BACKGROUND};
+  width: 100%;
 `;
 const Container = styled.div`
   display: flex;

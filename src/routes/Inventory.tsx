@@ -10,6 +10,11 @@ import DropControlComponent from "../components_browser/DropControlComponent";
 import DropsBrowser from "../components_browser/DropsBrowser";
 import { GetItemListPrice } from "../functions/UtilityFunctions";
 
+import DetailStatComponent from "../components_cleanup/DetailStatComponent";
+import EnergyStatComponent from "../components_character/EnergyStatComponent";
+import RestComponent from "../components_character/RestComponent";
+import ValueAdjustComponent from "../components_cleanup/ValueAdjustComponent";
+
 interface ContainerProps {
   height: string;
 }
@@ -108,7 +113,66 @@ export default function Inventory({
     <>
       {session.loot.drops.length > 0 || isGm ? (
         <>
-          <ScrollDropsColumn width="100%" $gm={isGm}>
+          <div className="header">
+            <div className="row" style={{ width: "100%" }}>
+              {!isGm ? (
+                <>
+                  <div className="row">
+                    <div
+                      className="row outline_color"
+                      style={{ padding: "1px", paddingLeft: "30px" }}
+                    >
+                      <DetailStatComponent
+                        title={"THALER"}
+                        value={character.coins.toString()}
+                      />
+                      <ValueAdjustComponent
+                        type={"coins"}
+                        session={session}
+                        character={character}
+                        websocket={websocket}
+                        isCreature={isCreature}
+                      />
+                    </div>
+                    <div
+                      className="row outline_color"
+                      style={{ padding: "1px", paddingLeft: "30px" }}
+                    >
+                      <DetailStatComponent
+                        title={"RATIONS"}
+                        value={character.rations.toString()}
+                      />
+                      <ValueAdjustComponent
+                        type={"rations"}
+                        session={session}
+                        character={character}
+                        websocket={websocket}
+                        isCreature={isCreature}
+                      />
+                    </div>
+                  </div>
+                  <div className="row">
+                    <RestComponent
+                      session={session}
+                      character={character}
+                      websocket={websocket}
+                      isCreature={isCreature}
+                    />
+                  </div>
+                </>
+              ) : (
+                <DropControlComponent
+                  session={session}
+                  websocket={websocket}
+                  isGm={isGm}
+                />
+              )}
+            </div>
+          </div>
+          <div
+            className="scroll_container"
+            style={{ width: "100%", maxHeight: isGm ? "100%" : "335px" }}
+          >
             <div className="row">
               <div
                 className="row"
@@ -148,11 +212,11 @@ export default function Inventory({
               criticalState={criticalState}
               setCriticalState={setCriticalState}
             />
-          </ScrollDropsColumn>
+          </div>
         </>
       ) : null}
       {!isGm ? (
-        <ScrollColumn width="100%">
+        <div className="scroll_container" style={{ width: "100%" }}>
           <div
             className="row"
             style={{
@@ -176,19 +240,8 @@ export default function Inventory({
             criticalState={criticalState}
             setCriticalState={setCriticalState}
           />
-        </ScrollColumn>
+        </div>
       ) : null}
-      <Container height={"30px"}>
-        <Row width={"100%"}>
-          {!isGm ? null : (
-            <DropControlComponent
-              session={session}
-              websocket={websocket}
-              isGm={isGm}
-            />
-          )}
-        </Row>
-      </Container>
     </>
   );
 }

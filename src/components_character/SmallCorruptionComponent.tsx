@@ -69,28 +69,15 @@ function SmallCorruptionComponent({
       }}
     >
       <div className="row">
-        <div className="row" style={{ width: "20px", marginLeft: "8px" }} />
         <div
           className="row"
           style={{
             fontSize: "20px",
-            alignItems: "flex-end",
             marginTop: "2px",
             filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
           }}
         >
           {current_corruption} / {maxCorruptionPermanent}
-        </div>
-        <div
-          className="row"
-          style={{
-            justifyContent: "right",
-            width: "20px",
-            marginRight: "8px",
-            filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
-          }}
-        >
-          <FontAwesomeIcon icon={faSkull} color={Constants.PURPLE} size="sm" />
         </div>
       </div>
       <div
