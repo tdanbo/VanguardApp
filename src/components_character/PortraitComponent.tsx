@@ -73,10 +73,7 @@ function PortraitComponent({
         backgroundColor: Constants.WIDGET_BACKGROUND_EMPTY,
       }}
     >
-      <div
-        className="column"
-        style={{ gap: "1px", width: "33%", padding: "2px" }}
-      >
+      <div className="column" style={{ gap: "1px", padding: "2px" }}>
         <SmallStatComponent
           value={speed.toString()}
           title={"speed"}
@@ -85,7 +82,7 @@ function PortraitComponent({
         />
         <SmallStatComponent
           value={pain.toString()}
-          title={"pain"}
+          title={"pain threshold"}
           icon={faHeartCrack}
           bad_result={false}
         />
@@ -111,12 +108,12 @@ function PortraitComponent({
           websocket={websocket}
         />
       </div>
-      <div className="column" style={{ gap: "0px", width: "33%" }} />
+      <div className="column" style={{ gap: "0px" }} />
       <div
         className="column"
         style={{
           gap: "0px",
-          width: "33%",
+
           alignItems: "flex-end",
         }}
       >

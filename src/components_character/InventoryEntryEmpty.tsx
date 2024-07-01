@@ -12,6 +12,7 @@ const Container = styled.div`
   min-height: 40px;
   max-height: 40px;
   padding: 2px;
+  width: 100%;
 `;
 
 function InventoryEntryEmpty() {

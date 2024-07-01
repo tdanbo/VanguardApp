@@ -1,37 +1,9 @@
 import React, { useState } from "react";
 import { get_session } from "../functions/SessionsFunctions";
-import styled from "styled-components";
 import * as Constants from "../Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { SessionEntry } from "../Types";
-
-const Navigator = styled.button`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  width: 40px;
-  max-width: 40px;
-  height: 40px;
-`;
-
-const SessionInput = styled.input`
-  display: flex;
-  flex-grow: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: ${Constants.BORDER_RADIUS};
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  font-weight: bold;
-  text-align: center;
-`;
 
 interface JoinSessionComponentProps {
   setIsJoined: React.Dispatch<React.SetStateAction<boolean>>;
@@ -61,19 +33,34 @@ export default function JoinSessionComponent({
 
   return (
     <>
-      <Navigator onClick={handleJoinSession}>
+      <div
+        className="row button button_color"
+        style={{ maxWidth: "40px" }}
+        onClick={handleJoinSession}
+      >
         <FontAwesomeIcon
           icon={faRightToBracket}
           color={Constants.WIDGET_SECONDARY_FONT}
           title={"Disconnected"}
         />
-      </Navigator>
+      </div>
 
-      <SessionInput
+      <input
+        className="empty_color"
+        style={{
+          display: "flex", // Quotes around flex
+          flexGrow: 1,
+          backgroundColor: Constants.BACKGROUND, // Correct property name
+          border: `1px solid ${Constants.WIDGET_BORDER}`, // Template literal for dynamic values
+          borderRadius: Constants.BORDER_RADIUS, // Correct property name
+          color: Constants.WIDGET_SECONDARY_FONT,
+          fontWeight: "bold", // Quotes around bold
+          textAlign: "center", // Quotes around center
+        }}
         placeholder="Session ID"
         value={sessionName}
         onChange={onSessionNameChange}
-      ></SessionInput>
+      />
     </>
   );
 }

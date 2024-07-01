@@ -20,20 +20,6 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Container = styled.div`
-  display: flex;
-  flex-grow: 1;
-  gap: 20px;
-  justify-content: right;
-`;
-
-const DayContainer = styled.div`
-  display: flex;
-  flex-grow: 1;
-  justify-content: right;
-  gap: 2px;
-`;
-
 interface HourContainerProps {
   "data-isactive": boolean;
 }
@@ -55,6 +41,7 @@ const HourContainer = styled.button<HourContainerProps>`
       ? Constants.WIDGET_BACKGROUND
       : Constants.WIDGET_BACKGROUND_EMPTY};
   border-radius: ${Constants.BORDER_RADIUS};
+  height: 100%;
 `;
 
 interface TimeTrackBoxProps {
@@ -148,32 +135,30 @@ function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {
   const time = ["morning", "afternoon", "evening", "night"];
 
   return (
-    <Container>
-      <DayContainer>
-        <div
-          className="row base_color button"
-          style={{ maxWidth: "50px" }}
-          onClick={() => passTimeBackward()}
+    <>
+      <div
+        className="row base_color button"
+        style={{ maxWidth: "50px" }}
+        onClick={() => passTimeBackward()}
+      >
+        <FontAwesomeIcon icon={faChevronLeft} />
+      </div>
+      {time.map((time, index) => (
+        <HourContainer
+          key={index}
+          data-isactive={time === activeHour} // Use data-isactive instead of isactive
         >
-          <FontAwesomeIcon icon={faChevronLeft} />
-        </div>
-        {time.map((time, index) => (
-          <HourContainer
-            key={index}
-            data-isactive={time === activeHour} // Use data-isactive instead of isactive
-          >
-            {toTitleCase(time)}
-          </HourContainer>
-        ))}
-        <div
-          className="row base_color button"
-          style={{ maxWidth: "50px" }}
-          onClick={() => passTimeForward()}
-        >
-          <FontAwesomeIcon icon={faChevronRight} />
-        </div>
-      </DayContainer>
-    </Container>
+          {toTitleCase(time)}
+        </HourContainer>
+      ))}
+      <div
+        className="row base_color button"
+        style={{ maxWidth: "50px" }}
+        onClick={() => passTimeForward()}
+      >
+        <FontAwesomeIcon icon={faChevronRight} />
+      </div>
+    </>
   );
 }
 

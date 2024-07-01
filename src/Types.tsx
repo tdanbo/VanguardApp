@@ -5,7 +5,7 @@ interface CharacterDetails {
   modifier: number;
   initiative: number;
 }
-
+export type EquipAbilityType = "abilities" | "equipment" | "all";
 export interface Stat {
   value: number;
   mod: number;
@@ -41,6 +41,15 @@ type health = {
   shield: number;
   energy: -10 | -9 | -8 | -7 | -6 | -5 | -3 | -2 | -1 | -1 | 0 | 1 | 2 | 3 | 4;
 };
+
+export type DisplayType =
+  | "character"
+  | "gamemaster"
+  | "combatlog"
+  | "inventory"
+  | "abilities"
+  | "equipment"
+  | "creatures";
 
 export interface CharacterEntry {
   name: string;

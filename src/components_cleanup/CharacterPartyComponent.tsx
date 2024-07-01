@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { CharacterEntry, SessionEntry } from "../Types";
+import { CharacterEntry, DisplayType, SessionEntry } from "../Types";
 import { GetMaxToughness } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import { faSkull, faHeart } from "@fortawesome/free-solid-svg-icons";
@@ -27,6 +27,7 @@ interface SessionBoxProps {
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
   isGm: boolean;
+  setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 
 function CharacterPartyComponent({

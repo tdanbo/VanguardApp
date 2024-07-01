@@ -1,7 +1,6 @@
 import { cloneDeep } from "lodash";
 import { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
-import styled from "styled-components";
 import * as Constants from "../Constants";
 import {
   ActiveStateType,
@@ -23,55 +22,6 @@ import {
 import InventoryEntry from "./InventoryEntry";
 
 import { GetGameData } from "../contexts/GameContent";
-
-interface ContainerProps {
-  height: string;
-}
-
-const FooterContainer = styled.div<ContainerProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: ${(props) => props.height};
-  max-height: ${(props) => props.height};
-`;
-
-interface DivProps {
-  width: string;
-}
-const DynamicContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: 0px; /* or another fixed value */
-`;
-
-const Button = styled.button`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: 5px;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  cursor: pointer;
-  font-size: 14px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ScrollColumn = styled.div<DivProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-  overflow-y: scroll;
-  scrollbar-width: none;
-`;
 
 interface EquipmentBrowserProps {
   character: CharacterEntry;
@@ -118,7 +68,7 @@ function EquipmentBrowser({
 
   const scrollRef = useRef(null);
   const [filteredEquipment, setFilteredEquipment] = useState<ItemEntry[]>([]);
-  const [LootCategory, setLootCategory] = useState<LootCategoryType>("all");
+  const [LootCategory, _setLootCategory] = useState<LootCategoryType>("all");
 
   const sortList = (a: ItemEntry, b: ItemEntry) => {
     const categoryComparison =
@@ -197,55 +147,37 @@ function EquipmentBrowser({
   // }, [search, LootCategory]);
 
   return (
-    <>
-      <DynamicContainer>
-        <ScrollColumn ref={scrollRef} width="100%">
-          {filteredEquipment.map((entry, index) => {
-            return (
-              <InventoryEntry
-                session={session}
-                character={character}
-                websocket={websocket}
-                key={`InventoryEntry${index}`}
-                browser={true}
-                index={index}
-                item={entry}
-                equipped={""}
-                id={""}
-                setInventoryState={setInventoryState}
-                isCreature={isCreature}
-                canBuy={false}
-                isGm={isGm}
-                advantage={advantage}
-                activeState={activeState}
-                setActiveState={setActiveState}
-                setAdvantage={setAdvantage}
-                isDrop={false}
-                criticalState={criticalState}
-                setCriticalState={setCriticalState}
-              />
-            );
-          })}
-          {Array.from({ length: 30 }).map((_, index) => {
-            return <InventoryEntryEmpty key={index} />;
-          })}
-        </ScrollColumn>
-      </DynamicContainer>
-      <FooterContainer height={"30px"}>
-        <Button onClick={() => setLootCategory("weapon")}>Weapons</Button>
-        <Button onClick={() => setLootCategory("armor")}>Armor</Button>
-        <Button onClick={() => setLootCategory("projectile")}>
-          Projectile
-        </Button>
-        <Button onClick={() => setLootCategory("general goods")}>
-          General Goods
-        </Button>
-        <Button onClick={() => setLootCategory("consumables")}>
-          Consumables
-        </Button>
-        <Button onClick={() => setLootCategory("treasure")}>Treasure</Button>
-      </FooterContainer>
-    </>
+    <div className="scroll_container" ref={scrollRef} style={{ width: "100%" }}>
+      {filteredEquipment.map((entry, index) => {
+        return (
+          <InventoryEntry
+            session={session}
+            character={character}
+            websocket={websocket}
+            key={`InventoryEntry${index}`}
+            browser={true}
+            index={index}
+            item={entry}
+            equipped={""}
+            id={""}
+            setInventoryState={setInventoryState}
+            isCreature={isCreature}
+            canBuy={false}
+            isGm={isGm}
+            advantage={advantage}
+            activeState={activeState}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
+            isDrop={false}
+            criticalState={criticalState}
+            setCriticalState={setCriticalState}
+          />
+        );
+      })}
+      {Array.from({ length: 30 }).map((_, index) => {
+        return <InventoryEntryEmpty key={index} />;
+      })}
+    </div>
   );
 }
 

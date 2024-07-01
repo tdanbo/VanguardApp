@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { CharacterEntry, SessionEntry } from "../Types";
+import { CharacterEntry, DisplayType, SessionEntry } from "../Types";
 import AddCreatureToRoster from "./AddCreatureToRoster";
 import { delete_creature } from "../functions/CharacterFunctions";
 const BaseContainer = styled.div`
@@ -104,7 +104,7 @@ interface AbilityEntryItemProps {
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   isGm: boolean;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
-  setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
+  setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 
 function CreatureEntryItem({
@@ -115,7 +115,7 @@ function CreatureEntryItem({
   websocket,
   setIsGm,
   setCharacterId,
-  setCategorySelect,
+  setDisplay,
 }: AbilityEntryItemProps) {
   const { updateCreatureData } = GetGameData();
   const suffixLetter = () => {
@@ -147,7 +147,7 @@ function CreatureEntryItem({
   const selectCreature = () => {
     setIsCreature(true);
     setIsGm(false);
-    setCategorySelect("inventory");
+    setDisplay("inventory");
     setCharacterId(creature.id);
   };
 

@@ -1,15 +1,15 @@
 import * as Constants from "../Constants";
 import "../Styles.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../functions/SessionsFunctions";
 import { Socket } from "socket.io-client";
-import { faSkull } from "@fortawesome/free-solid-svg-icons";
 import {
   GetAbilityCorruption,
   GetEquipmentCorruption,
 } from "../functions/RulesFunctions";
 
 import { CharacterEntry, SessionEntry } from "../Types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSkull } from "@fortawesome/free-solid-svg-icons";
 
 const backgroundcolor = "rgba(19, 23, 22, 0.8)";
 
@@ -69,28 +69,19 @@ function SmallCorruptionComponent({
       }}
     >
       <div className="row">
-        <div className="row" style={{ width: "20px", marginLeft: "8px" }} />
         <div
           className="row"
           style={{
             fontSize: "20px",
-            alignItems: "flex-end",
             marginTop: "2px",
+            marginRight: "-38px",
             filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
           }}
         >
           {current_corruption} / {maxCorruptionPermanent}
         </div>
-        <div
-          className="row"
-          style={{
-            justifyContent: "right",
-            width: "20px",
-            marginRight: "8px",
-            filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
-          }}
-        >
-          <FontAwesomeIcon icon={faSkull} color={Constants.PURPLE} size="sm" />
+        <div style={{ marginRight: "10px" }}>
+          <FontAwesomeIcon icon={faSkull} color={Constants.COLOR_3} />
         </div>
       </div>
       <div

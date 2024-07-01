@@ -1,5 +1,3 @@
-import styled from "styled-components";
-
 import { useEffect } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
@@ -17,55 +15,6 @@ import { useRef, useState } from "react";
 import { GetGameData } from "../contexts/GameContent";
 import EffectEntryItem from "./EffectEntryItem";
 
-interface ContainerProps {
-  height: string;
-}
-
-const FooterContainer = styled.div<ContainerProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: ${(props) => props.height};
-  max-height: ${(props) => props.height};
-`;
-
-interface DivProps {
-  width: string;
-}
-const DynamicContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: 0px; /* or another fixed value */
-`;
-
-const Button = styled.button`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: 5px;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  cursor: pointer;
-  font-size: 14px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ScrollColumn = styled.div<DivProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-  overflow-y: scroll;
-  scrollbar-width: none;
-`;
-
 interface AbilityBrowserProps {
   character: CharacterEntry;
   session: SessionEntry;
@@ -76,6 +25,7 @@ interface AbilityBrowserProps {
   isGm: boolean;
   activeState: ActiveStateType;
   advantage: AdvantageType;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -88,7 +38,6 @@ function AbilityBrowser({
   setInventoryState,
   isCreature,
   search,
-  isGm,
   activeState,
   advantage,
   setActiveState,
@@ -106,7 +55,7 @@ function AbilityBrowser({
   const { abilities, effects } = GetGameData();
   const scrollRef = useRef(null);
   const [filteredEntry, setFilteredEntry] = useState<AbilityEntry[]>([]);
-  const [LootCategory, setLootCategory] = useState<LootCategoryType>("all");
+  const [LootCategory, _setLootCategory] = useState<LootCategoryType>("all");
 
   const sortList = (a: AbilityEntry, b: AbilityEntry) => {
     const categoryComparison =
@@ -191,70 +140,49 @@ function AbilityBrowser({
   }, [LootCategory, search]);
 
   return (
-    <>
-      <DynamicContainer>
-        <ScrollColumn ref={scrollRef} width="100%">
-          {filteredEntry.map((entry, index) => {
-            return (
-              <AbilityEntryItem
-                key={index}
-                ability={entry}
-                browser={true}
-                setInventoryState={setInventoryState}
-                character={character}
-                session={session}
-                websocket={websocket}
-                isCreature={isCreature}
-                activeState={activeState}
-                advantage={advantage}
-                setActiveState={setActiveState}
-                setAdvantage={setAdvantage}
-                setCriticalState={setCriticalState}
-              />
-            );
-          })}
-          {effects.map((entry, index) => {
-            return (
-              <EffectEntryItem
-                key={index}
-                effect={entry}
-                browser={true}
-                setInventoryState={setInventoryState}
-                character={character}
-                session={session}
-                websocket={websocket}
-                isCreature={isCreature}
-                activeState={activeState}
-                advantage={advantage}
-                setActiveState={setActiveState}
-                setAdvantage={setAdvantage}
-                setCriticalState={setCriticalState}
-              />
-            );
-          })}
-          {Array.from({ length: 30 }).map((_, index) => {
-            return <InventoryEntryEmpty key={index} />;
-          })}
-        </ScrollColumn>
-      </DynamicContainer>
-      <FooterContainer height={"30px"}>
-        <Button onClick={() => setLootCategory("abilities")}>Abilities</Button>
-        <Button onClick={() => setLootCategory("mystical powers")}>
-          Mystical Powers
-        </Button>
-        <Button onClick={() => setLootCategory("utility")}>Utility</Button>
-
-        {isGm ? (
-          <>
-            <Button onClick={() => setLootCategory("rituals")}>Rituals</Button>
-            <Button onClick={() => setLootCategory("burden")}>Burden</Button>
-            <Button onClick={() => setLootCategory("monstrous traits")}>
-              Monstrous Traits
-            </Button>
-          </>
-        ) : null}
-      </FooterContainer>
-    </>
+    <div className="scroll_container" ref={scrollRef} style={{ width: "100%" }}>
+      {filteredEntry.map((entry, index) => {
+        return (
+          <AbilityEntryItem
+            key={index}
+            ability={entry}
+            browser={true}
+            setInventoryState={setInventoryState}
+            character={character}
+            session={session}
+            websocket={websocket}
+            isCreature={isCreature}
+            activeState={activeState}
+            advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
+          />
+        );
+      })}
+      {effects.map((entry, index) => {
+        return (
+          <EffectEntryItem
+            key={index}
+            effect={entry}
+            browser={true}
+            setInventoryState={setInventoryState}
+            character={character}
+            session={session}
+            websocket={websocket}
+            isCreature={isCreature}
+            activeState={activeState}
+            advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
+          />
+        );
+      })}
+      {Array.from({ length: 30 }).map((_, index) => {
+        return <InventoryEntryEmpty key={index} />;
+      })}
+    </div>
   );
 }
 
