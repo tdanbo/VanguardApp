@@ -14,7 +14,7 @@ export default function JoinSessionComponent({
   setIsJoined,
   setSession,
 }: JoinSessionComponentProps) {
-  const [sessionName, setSessionName] = useState("test");
+  const [sessionName, setSessionName] = useState("Session Name");
 
   const handleJoinSession = () => {
     get_session(sessionName).then((res) => {
@@ -49,7 +49,7 @@ export default function JoinSessionComponent({
         className="empty_color"
         style={{
           display: "flex", // Quotes around flex
-          fontSize: "25px", // Quotes around 14px
+          fontSize: "20px", // Quotes around 14px
           flexGrow: 1,
           backgroundColor: Constants.BACKGROUND, // Correct property name
           border: `1px solid ${Constants.WIDGET_BORDER}`, // Template literal for dynamic values
