@@ -62,11 +62,11 @@ const RightBlock = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  width: 20px;
-  max-width: 20px;
+  width: 30px;
+  max-width: 30px;
   margin: 1px 1px 1px 1px;
-  padding-right: 8px;
-  padding-top: 5px;
+  padding-right: 10px;
+  padding-top: 10px;
   gap: 5px;
 `;
 
@@ -78,7 +78,6 @@ const RollContainer = styled.div`
   align-items: center;
   margin-top: 10px;
   margin-bottom: 10px;
-  margin-left: 20px;
 `;
 
 const ResultContainer = styled.div`

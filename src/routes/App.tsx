@@ -239,7 +239,11 @@ function App() {
           className="header outline_color breakpoint show_over_breakpoint4 "
           style={{ maxWidth: "30em" }}
         >
-          <FooterBrowserComponent setLeftDisplay={setLeftDisplay} isGm={isGm} />
+          <FooterBrowserComponent
+            setLeftDisplay={setLeftDisplay}
+            isGm={isGm}
+            display={leftDisplay}
+          />
         </div>
         <div className="header outline_color breakpoint show_over_breakpoint1">
           <FooterCharacterComponent
@@ -258,6 +262,7 @@ function App() {
             setEquipmentAbilities={setEquipmentAbilities}
             setRightDisplay={setRightDisplay}
             isGm={isGm}
+            rightDisplay={rightDisplay}
           />
         </div>
       </div>
