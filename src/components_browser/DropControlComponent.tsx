@@ -339,7 +339,7 @@ export default function DropControlComponent({
 
   return (
     <>
-      <FooterContainer height={"30px"}>
+      <FooterContainer height={"100%"}>
         {isGm ? (
           <>
             <ClearButton className={"button-hover"} onClick={() => ClearLoot()}>

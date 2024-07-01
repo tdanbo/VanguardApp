@@ -45,6 +45,7 @@ const Container = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: row;
+  height: 50px;
 `;
 
 const Overlay = styled.div`

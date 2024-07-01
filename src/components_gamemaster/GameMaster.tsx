@@ -102,7 +102,7 @@ function GameMaster({
 
   return (
     <div className="column">
-      <div className="row" style={{ maxHeight: "40px" }}>
+      <div className="header">
         <div className="row">
           <ResetCreatureEncounter session={session} websocket={websocket} />
           <TravelBox session={session} websocket={websocket} />

@@ -62,7 +62,7 @@ function CorruptionStatComponent({
   return (
     <div
       className="row base_color"
-      style={{ height: "100%", padding: "1px", gap: "1px" }}
+      style={{ minHeight: "50px", padding: "1px", gap: "1px" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
