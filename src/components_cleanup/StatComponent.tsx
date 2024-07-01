@@ -131,7 +131,7 @@ function StatComponent({
   return (
     <div
       className="row empty_color"
-      style={{ padding: "2px", gap: "2px" }}
+      style={{ padding: "2px", gap: "2px", height: "50px" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

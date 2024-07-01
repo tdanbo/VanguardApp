@@ -63,6 +63,7 @@ function SmallStatComponent({
             fontSize: "20px",
             marginRight: "-38px",
             marginTop: "2px",
+
             filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
             fontWeight: bad_result ? "700" : "400",
             color: bad_result
