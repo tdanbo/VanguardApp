@@ -11,63 +11,8 @@ import DropsBrowser from "../components_browser/DropsBrowser";
 import { GetItemListPrice } from "../functions/UtilityFunctions";
 
 import DetailStatComponent from "../components_cleanup/DetailStatComponent";
-import EnergyStatComponent from "../components_character/EnergyStatComponent";
 import RestComponent from "../components_character/RestComponent";
 import ValueAdjustComponent from "../components_cleanup/ValueAdjustComponent";
-
-interface ContainerProps {
-  height: string;
-}
-
-interface DivProps {
-  width: string;
-}
-
-const Container = styled.div<ContainerProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: ${(props) => props.height};
-  max-height: ${(props) => props.height};
-`;
-
-interface DivDropProps {
-  width: string;
-  $gm: boolean;
-}
-
-const ScrollDropsColumn = styled.div<DivDropProps>`
-  display: flex;
-  flex-direction: column;
-  height: ${(props) => (props.$gm ? "100%" : "335px")};
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-  overflow-y: scroll;
-  background-color: ${Constants.BACKGROUND};
-  scrollbar-width: none;
-`;
-
-const ScrollColumn = styled.div<DivProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-  overflow-y: scroll;
-  background-color: ${Constants.BACKGROUND};
-  scrollbar-width: none;
-`;
-
-const Row = styled.div<DivProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-`;
 
 const DividerHorizontal = styled.div`
   height: 1px;
@@ -150,8 +95,6 @@ export default function Inventory({
                         isCreature={isCreature}
                       />
                     </div>
-                  </div>
-                  <div className="row">
                     <RestComponent
                       session={session}
                       character={character}

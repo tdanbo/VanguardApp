@@ -1,6 +1,6 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Constants from "../Constants";
 import "../Styles.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import {
   IconDefinition,
@@ -61,7 +61,7 @@ function SmallStatComponent({
           className="row"
           style={{
             fontSize: "20px",
-
+            marginRight: "-38px",
             marginTop: "2px",
             filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
             fontWeight: bad_result ? "700" : "400",
@@ -71,6 +71,9 @@ function SmallStatComponent({
           }}
         >
           {value}
+        </div>
+        <div style={{ marginRight: "10px" }}>
+          <FontAwesomeIcon icon={icon} color={color} />
         </div>
       </div>
       <div

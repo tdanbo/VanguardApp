@@ -1,5 +1,3 @@
-import styled from "styled-components";
-
 import { useEffect } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
@@ -16,55 +14,6 @@ import AbilityEntryItem from "./AbilityEntryItem";
 import { useRef, useState } from "react";
 import { GetGameData } from "../contexts/GameContent";
 import EffectEntryItem from "./EffectEntryItem";
-
-interface ContainerProps {
-  height: string;
-}
-
-const FooterContainer = styled.div<ContainerProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: ${(props) => props.height};
-  max-height: ${(props) => props.height};
-`;
-
-interface DivProps {
-  width: string;
-}
-const DynamicContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: 0px; /* or another fixed value */
-`;
-
-const Button = styled.button`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: 5px;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  cursor: pointer;
-  font-size: 14px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ScrollColumn = styled.div<DivProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-  overflow-y: scroll;
-  scrollbar-width: none;
-`;
 
 interface AbilityBrowserProps {
   character: CharacterEntry;
@@ -89,8 +38,6 @@ function AbilityBrowser({
   setInventoryState,
   isCreature,
   search,
-  isGm,
-  setSearch,
   activeState,
   advantage,
   setActiveState,
@@ -108,7 +55,7 @@ function AbilityBrowser({
   const { abilities, effects } = GetGameData();
   const scrollRef = useRef(null);
   const [filteredEntry, setFilteredEntry] = useState<AbilityEntry[]>([]);
-  const [LootCategory, setLootCategory] = useState<LootCategoryType>("all");
+  const [LootCategory, _setLootCategory] = useState<LootCategoryType>("all");
 
   const sortList = (a: AbilityEntry, b: AbilityEntry) => {
     const categoryComparison =
@@ -192,81 +139,50 @@ function AbilityBrowser({
     }
   }, [LootCategory, search]);
 
-  const [tempSearch, setTempSearch] = useState("");
-
-  const handleSetSearch = (value: string) => {
-    setSearch(value);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTempSearch(e.target.value);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSetSearch(tempSearch);
-    }
-  };
-
   return (
-    <>
-      <DynamicContainer>
-        <div className="header">
-          <input
-            className="row opaque_color font"
-            value={tempSearch} // Use the temporary search state as the input value
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            title="Hit Enter to search"
-            placeholder="Search"
-            style={{ textAlign: "center" }}
+    <div className="scroll_container" ref={scrollRef} style={{ width: "100%" }}>
+      {filteredEntry.map((entry, index) => {
+        return (
+          <AbilityEntryItem
+            key={index}
+            ability={entry}
+            browser={true}
+            setInventoryState={setInventoryState}
+            character={character}
+            session={session}
+            websocket={websocket}
+            isCreature={isCreature}
+            activeState={activeState}
+            advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
           />
-        </div>
-        <ScrollColumn ref={scrollRef} width="100%">
-          {filteredEntry.map((entry, index) => {
-            return (
-              <AbilityEntryItem
-                key={index}
-                ability={entry}
-                browser={true}
-                setInventoryState={setInventoryState}
-                character={character}
-                session={session}
-                websocket={websocket}
-                isCreature={isCreature}
-                activeState={activeState}
-                advantage={advantage}
-                setActiveState={setActiveState}
-                setAdvantage={setAdvantage}
-                setCriticalState={setCriticalState}
-              />
-            );
-          })}
-          {effects.map((entry, index) => {
-            return (
-              <EffectEntryItem
-                key={index}
-                effect={entry}
-                browser={true}
-                setInventoryState={setInventoryState}
-                character={character}
-                session={session}
-                websocket={websocket}
-                isCreature={isCreature}
-                activeState={activeState}
-                advantage={advantage}
-                setActiveState={setActiveState}
-                setAdvantage={setAdvantage}
-                setCriticalState={setCriticalState}
-              />
-            );
-          })}
-          {Array.from({ length: 30 }).map((_, index) => {
-            return <InventoryEntryEmpty key={index} />;
-          })}
-        </ScrollColumn>
-      </DynamicContainer>
-    </>
+        );
+      })}
+      {effects.map((entry, index) => {
+        return (
+          <EffectEntryItem
+            key={index}
+            effect={entry}
+            browser={true}
+            setInventoryState={setInventoryState}
+            character={character}
+            session={session}
+            websocket={websocket}
+            isCreature={isCreature}
+            activeState={activeState}
+            advantage={advantage}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
+          />
+        );
+      })}
+      {Array.from({ length: 30 }).map((_, index) => {
+        return <InventoryEntryEmpty key={index} />;
+      })}
+    </div>
   );
 }
 

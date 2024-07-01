@@ -1,9 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import JoinSessionComponent from "../components_browser/JoinSessionComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHatWizard,
+  faUser,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
 import { update_session } from "../functions/SessionsFunctions";
 import { NewCharacterEntry } from "../Types";
@@ -18,65 +21,9 @@ import {
   AdvantageType,
   DisplayType,
 } from "../Types";
-import DiceSection from "../components_combatlog/DiceSection";
 import CombatEntryItem from "../components_combatlog/CombatEntryItem";
 import * as Constants from "../Constants";
 import PartySection from "../components_combatlog/PartySection";
-type DivProps = {
-  width: string;
-};
-
-const DynamicContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: 0px; /* or another fixed value */
-`;
-
-interface ContainerProps {
-  height: string;
-}
-
-const Container = styled.div<ContainerProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: ${(props) => props.height};
-  max-height: ${(props) => props.height};
-`;
-
-const Row = styled.div<DivProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-`;
-
-const Column = styled.div<DivProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-  justify-content: flex-start;
-  overflow: scroll;
-  scrollbar-width: none !important;
-`;
-
-const SideColumn = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  background-color: ${Constants.BACKGROUND};
-  height: 100%;
-  gap: 25px;
-  box-sizing: border-box;
-`;
 
 const Button = styled.button`
   display: flex;
@@ -143,17 +90,12 @@ function deepCompareCombatEntries(
 
 function CombatSection({
   session,
-  character,
   websocket,
-  setActiveState,
   setCharacterId,
   setIsCreature,
-  setAdvantage,
   isCreature,
-  setSession,
   isGm,
   setIsGm,
-  setCriticalState,
   setDisplay,
 }: CombatSectionProps) {
   // const { combatlogResponse } = useWebSocket();
@@ -226,8 +168,6 @@ function CombatSection({
     scrollToBottom();
   }, [session]);
 
-  const [isJoined, setIsJoined] = useState<boolean>(false);
-
   const handlePostCharacter = async () => {
     NewCharacterEntry.name = "Player Character";
     NewCharacterEntry.id = uuidv4();
@@ -236,26 +176,19 @@ function CombatSection({
     setCharacterId(NewCharacterEntry.id);
   };
 
+  const onGmSwitch = () => {
+    setIsGm((prevMode) => !prevMode);
+  };
+
   return (
     <>
-      <div className="header">
-        {!isJoined ? (
-          <JoinSessionComponent
-            setIsJoined={setIsJoined}
-            setSession={setSession}
-          />
-        ) : isGm ? (
+      <div className="header" style={{ gap: "10px" }}>
+        {isGm ? (
           <Button onClick={handlePostCharacter}>
             <FontAwesomeIcon icon={faUserPlus} />
           </Button>
         ) : (
           <>
-            <div
-              className="row button_color"
-              onClick={() => setIsJoined(false)}
-            >
-              Join New Session
-            </div>
             <div className="row outline_color">
               <DetailStatComponent
                 title={"QUARTER"}
@@ -270,6 +203,14 @@ function CombatSection({
             </div>
           </>
         )}
+        <div
+          className="row button button_color"
+          style={{ maxWidth: "40px" }}
+          onClick={() => onGmSwitch()}
+          title={isGm ? "Switch to Player Mode" : "Switch to GM Mode"}
+        >
+          <FontAwesomeIcon icon={isGm ? faHatWizard : faUser} />
+        </div>
       </div>
       <PartySection
         session={session}

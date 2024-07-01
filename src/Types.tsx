@@ -46,7 +46,10 @@ export type DisplayType =
   | "character"
   | "gamemaster"
   | "combatlog"
-  | "inventory";
+  | "inventory"
+  | "abilities"
+  | "equipment"
+  | "creatures";
 
 export interface CharacterEntry {
   name: string;

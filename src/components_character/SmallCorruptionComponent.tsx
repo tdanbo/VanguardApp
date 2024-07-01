@@ -1,15 +1,15 @@
 import * as Constants from "../Constants";
 import "../Styles.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../functions/SessionsFunctions";
 import { Socket } from "socket.io-client";
-import { faSkull } from "@fortawesome/free-solid-svg-icons";
 import {
   GetAbilityCorruption,
   GetEquipmentCorruption,
 } from "../functions/RulesFunctions";
 
 import { CharacterEntry, SessionEntry } from "../Types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSkull } from "@fortawesome/free-solid-svg-icons";
 
 const backgroundcolor = "rgba(19, 23, 22, 0.8)";
 
@@ -74,10 +74,14 @@ function SmallCorruptionComponent({
           style={{
             fontSize: "20px",
             marginTop: "2px",
+            marginRight: "-38px",
             filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
           }}
         >
           {current_corruption} / {maxCorruptionPermanent}
+        </div>
+        <div style={{ marginRight: "10px" }}>
+          <FontAwesomeIcon icon={faSkull} color={Constants.COLOR_3} />
         </div>
       </div>
       <div

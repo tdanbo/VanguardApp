@@ -1,196 +1,75 @@
-import styled from "styled-components";
-import { NewCharacterEntry } from "../Types";
-import { v4 as uuidv4 } from "uuid";
-import { addNewCreature } from "../functions/CharacterFunctions";
-import Icon from "@mdi/react";
-import { mdiSack } from "@mdi/js";
 import {
-  faBolt,
   faGhost,
-  faHatWizard,
-  faPlus,
+  faHandSparkles,
   faShield,
-  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as Constants from "../Constants";
-import { SessionEntry } from "../Types";
-import { useState } from "react";
-import { cloneDeep } from "lodash";
-import { GetGameData } from "../contexts/GameContent";
 
-interface DivProps {
-  width: string;
-}
+import { DisplayType } from "../Types";
+import Icon from "@mdi/react";
+import { mdiSack } from "@mdi/js";
 
-const ExpandRow = styled.div<DivProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-`;
-
-interface ButtonProps {
-  $isactive: string;
-}
-
-const Button = styled.button<ButtonProps>`
-  display: flex;
-  flex-grow: 1;
-  flex: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: 5px;
-  color: ${(props) =>
-    props.$isactive === "true"
-      ? Constants.WIDGET_SECONDARY_FONT
-      : Constants.WIDGET_PRIMARY_FONT};
-  cursor: pointer;
-  font-size: 16px;
-  max-width: 40px;
-  justify-content: center;
-  align-items: center;
-  opacity: ${(props) => (props.$isactive === "true" ? 1 : 0.5)};
-`;
-
-const Navigator = styled.button`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  width: 40px;
-  max-width: 40px;
-  height: 40px;
-`;
-
-interface FooterBrowserComponent {
-  session: SessionEntry;
+interface FooterBrowserProps {
   isGm: boolean;
-  setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
-  categorySelect: string;
-  setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
-
-  setCharacterId: React.Dispatch<React.SetStateAction<string>>;
+  setLeftDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 
-function FooterBrowserComponent({
-  categorySelect,
-  setCategorySelect,
-
-  setCharacterId,
-  setIsGm,
-  isGm,
-  session,
-}: FooterBrowserComponent) {
-  const { updateCreatureData } = GetGameData();
-
-  const handlePostCreature = async () => {
-    const NewCreature = cloneDeep(NewCharacterEntry);
-    NewCreature.id = uuidv4();
-    NewCreature.name = "Creature Character";
-    await addNewCreature(NewCreature);
-    await updateCreatureData();
-    // setRefetch((prev) => prev + 1);
-    setCharacterId(NewCreature.id);
+function FooterBrowserComponent({ setLeftDisplay, isGm }: FooterBrowserProps) {
+  const onCreaturesClick = () => {
+    setLeftDisplay("creatures");
   };
 
-  const HandleCategoryChange = (category: string) => {
-    setCategorySelect(category);
+  const onEquipmentClick = () => {
+    setLeftDisplay("equipment");
   };
 
-  // const HandleLeaveSession = () => {
-  //   setSession(EmptySession);
-  //   setCharacterName("");
-  //   setIsJoined(false);
-  // };
+  const onInventoryClick = () => {
+    setLeftDisplay("inventory");
+  };
 
-  const onGmSwitch = () => {
-    setIsGm((prevMode) => !prevMode);
+  const onAbilitiesClick = () => {
+    setLeftDisplay("abilities");
   };
 
   return (
-    <div className="header">
-      <div className="header_button" onClick={onGmSwitch}>
-        {isGm ? (
-          <FontAwesomeIcon
-            icon={faHatWizard}
-            color={Constants.WIDGET_SECONDARY_FONT}
-            title={"Player Mode"}
-          />
-        ) : (
-          <FontAwesomeIcon
-            icon={faUser}
-            color={Constants.WIDGET_SECONDARY_FONT}
-            title={"Game Master Mode"}
-          />
-        )}
-      </div>
-      {categorySelect === "creatures" && isGm ? (
-        <Button
-          $isactive={"false"}
-          onClick={handlePostCreature}
-          className="button"
-        >
-          <FontAwesomeIcon icon={faPlus} />
-        </Button>
-      ) : null}
-      <div className="header_divider" />
-      {isGm ? (
+    <>
+      {isGm && (
         <>
-          <Button
-            $isactive={(categorySelect === "equipment").toString()}
-            onClick={() => HandleCategoryChange("equipment")}
-            title="Equipment"
-            className="button"
-          >
-            <FontAwesomeIcon icon={faShield} />
-          </Button>
-          <Button
-            $isactive={(categorySelect === "creatures").toString()}
-            onClick={() => HandleCategoryChange("creatures")}
-            title="Creatures"
-            className="button"
+          <div
+            className="header_button show_under_px"
+            title="creatures"
+            onClick={onCreaturesClick}
           >
             <FontAwesomeIcon icon={faGhost} />
-          </Button>
+          </div>
+          <div className="header_divider show_under_px" />
+          <div
+            className="header_button show_under_px"
+            title="equipment"
+            onClick={onEquipmentClick}
+          >
+            <FontAwesomeIcon icon={faShield} />
+          </div>
+          <div className="header_divider show_under_px" />
         </>
-      ) : null}
+      )}
 
       <div
-        className="header_button"
-        onClick={() => HandleCategoryChange("abilities")}
-        title="Abilities"
+        className="header_button show_under_px"
+        title="inventory"
+        onClick={onInventoryClick}
       >
-        <FontAwesomeIcon icon={faBolt} />
-      </div>
-      <div className="header_divider" />
-      <div
-        onClick={() => HandleCategoryChange("inventory")}
-        title="Inventory"
-        className="header_button"
-      >
-        {isGm && session.loot.drops.length > 0 ? (
-          <span
-            style={{
-              fontSize: "18px",
-              fontWeight: "bold",
-              color: Constants.BRIGHT_YELLOW,
-            }}
-          >
-            {session.loot.drops.length}
-          </span>
-        ) : null}
         <Icon path={mdiSack} size={0.8} />
       </div>
-    </div>
+      <div className="header_divider show_under_px" />
+      <div
+        className="header_button show_under_px"
+        title="abilities"
+        onClick={onAbilitiesClick}
+      >
+        <FontAwesomeIcon icon={faHandSparkles} />
+      </div>
+    </>
   );
 }
 

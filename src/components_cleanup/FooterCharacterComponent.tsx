@@ -1,5 +1,6 @@
 import {
   faHandSparkles,
+  faHatWizard,
   faShield,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
@@ -12,11 +13,13 @@ import { mdiSack, mdiSword } from "@mdi/js";
 interface FooterCharacterProps {
   setEquipmentAbilities: React.Dispatch<React.SetStateAction<EquipAbilityType>>;
   setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
+  isGm: boolean;
 }
 
 function FooterCharacterComponent({
   setEquipmentAbilities,
   setDisplay,
+  isGm,
 }: FooterCharacterProps) {
   const onEquipmentClick = () => {
     setEquipmentAbilities("equipment");
@@ -38,6 +41,10 @@ function FooterCharacterComponent({
     setDisplay("character");
   };
 
+  const onGameMasterClick = () => {
+    setDisplay("gamemaster");
+  };
+
   return (
     <>
       <div
@@ -55,6 +62,15 @@ function FooterCharacterComponent({
       >
         <FontAwesomeIcon icon={faHandSparkles} />
       </div>
+      {isGm ? (
+        <div
+          className="header_button show_under_px"
+          title="game master"
+          onClick={onGameMasterClick}
+        >
+          <FontAwesomeIcon icon={faHatWizard} />
+        </div>
+      ) : null}
       <div className="header_divider show_under_px" />
       <div
         className="header_button show_under_px"
@@ -65,7 +81,7 @@ function FooterCharacterComponent({
       </div>
       <div className="header_divider show_under_px" />
       <div
-        className="header_button show_under_px"
+        className="header_button hide_over_breakpoint3"
         title="inventory"
         onClick={onInventoryClick}
       >
@@ -73,7 +89,7 @@ function FooterCharacterComponent({
       </div>
       <div className="header_divider show_under_px" />
       <div
-        className="header_button show_under_px"
+        className="header_button  hide_over_breakpoint3"
         title="combat log"
         onClick={onCombatLogClick}
       >

@@ -7,46 +7,9 @@ import { CheckAbility } from "../functions/ActivesFunction";
 import { getCharacterXp, getUtilityXp } from "../functions/CharacterFunctions";
 import StatComponent from "../components_cleanup/StatComponent";
 import ModifierLockComponent from "../components_cleanup/ModifierLockComponent";
-import FooterCharacterComponent from "../components_cleanup/FooterCombatComponent";
-import { useState } from "react";
 import { DisplayType } from "../Types";
 
 import * as Constants from "../Constants";
-
-interface ContainerProps {
-  height: string;
-}
-
-const Container = styled.div<ContainerProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: ${(props) => props.height};
-  max-height: ${(props) => props.height};
-`;
-
-interface DivProps {
-  width: string;
-}
-
-const Row = styled.div<DivProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-`;
-
-const Column = styled.div<DivProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-`;
 
 const DynamicContainer = styled.div`
   display: flex;
@@ -55,18 +18,6 @@ const DynamicContainer = styled.div`
   gap: ${Constants.WIDGET_GAB};
   height: 0px; /* or another fixed value */
   width: 100%;
-`;
-
-const ScrollColumn = styled.div<DivProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-  overflow-y: scroll;
-  background-color: ${Constants.BACKGROUND};
-  scrollbar-width: none;
 `;
 
 import { Socket } from "socket.io-client";
@@ -78,7 +29,7 @@ import UpdateAbilityStats from "../functions/rules/UpdateAbilityStats";
 import EquipmentSection from "../components_character/EquipmentSection";
 import { ActiveStateType, EquipAbilityType } from "../Types";
 import EnergyStatComponent from "../components_character/EnergyStatComponent";
-import RestComponent from "../components_character/RestComponent";
+import JoinSessionComponent from "../components_browser/JoinSessionComponent";
 type CharacterSheetProps = {
   websocket: Socket;
   session: SessionEntry;
@@ -101,6 +52,8 @@ type CharacterSheetProps = {
   setModifierLock: React.Dispatch<React.SetStateAction<boolean>>;
   setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
   equipmentAbilities: EquipAbilityType;
+  setIsJoined: React.Dispatch<React.SetStateAction<boolean>>;
+  isJoined: boolean;
 };
 
 function CharacterSheet({
@@ -118,6 +71,9 @@ function CharacterSheet({
   modifierLock,
   setModifierLock,
   equipmentAbilities,
+  setSession,
+  setIsJoined,
+  isJoined,
 }: CharacterSheetProps) {
   UpdateAbilityStats(character);
 
@@ -132,9 +88,18 @@ function CharacterSheet({
       }}
     >
       <div className="grid">
-        <div className="row">
-          <CharacterNameBox character={character} />
-        </div>
+        {isJoined ? (
+          <div className="row">
+            <CharacterNameBox character={character} />
+          </div>
+        ) : (
+          <div className="row">
+            <JoinSessionComponent
+              setIsJoined={setIsJoined}
+              setSession={setSession}
+            />
+          </div>
+        )}
         <div className="row">
           <div className="row outline_color">
             <DetailStatComponent

@@ -1,33 +1,7 @@
 import { Socket } from "socket.io-client";
-import styled from "styled-components";
 import { DisplayType, SessionEntry } from "../Types";
-import * as Constants from "../Constants";
 
 import CharacterPartyComponent from "../components_cleanup/CharacterPartyComponent";
-type DivProps = {
-  width: string;
-};
-interface ContainerProps {
-  height: string;
-}
-
-const Container = styled.div<ContainerProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: ${(props) => props.height};
-  max-height: ${(props) => props.height};
-`;
-
-const Column = styled.div<DivProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-`;
 
 interface PartySectionProps {
   session: SessionEntry;

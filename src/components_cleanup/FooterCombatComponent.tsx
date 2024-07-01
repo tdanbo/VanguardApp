@@ -1,8 +1,4 @@
-import {
-  faHandSparkles,
-  faShield,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faGhost, faShield } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { EquipAbilityType, DisplayType } from "../Types";
@@ -12,14 +8,19 @@ import { mdiSack, mdiSword } from "@mdi/js";
 interface FooterCharacterProps {
   setEquipmentAbilities: React.Dispatch<React.SetStateAction<EquipAbilityType>>;
   setRightDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
+  isGm: boolean;
 }
 
 function FooterCombatComponent({
-  setEquipmentAbilities,
   setRightDisplay,
+  isGm,
 }: FooterCharacterProps) {
+  const onCreaturesClick = () => {
+    setRightDisplay("creatures");
+  };
+
   const onEquipmentClick = () => {
-    setEquipmentAbilities("equipment");
+    setRightDisplay("equipment");
   };
 
   const onInventoryClick = () => {
@@ -32,6 +33,27 @@ function FooterCombatComponent({
 
   return (
     <>
+      {isGm && (
+        <>
+          <div
+            className="header_button show_under_px"
+            title="creatures"
+            onClick={onCreaturesClick}
+          >
+            <FontAwesomeIcon icon={faGhost} />
+          </div>
+          <div className="header_divider show_under_px" />
+          <div
+            className="header_button show_under_px"
+            title="equipment"
+            onClick={onEquipmentClick}
+          >
+            <FontAwesomeIcon icon={faShield} />
+          </div>
+          <div className="header_divider show_under_px" />
+        </>
+      )}
+
       <div
         className="header_button show_under_px"
         title="inventory"

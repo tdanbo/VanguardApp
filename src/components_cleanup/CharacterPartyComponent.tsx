@@ -39,7 +39,6 @@ function CharacterPartyComponent({
   setCharacterId,
   setIsGm,
   isGm,
-  setDisplay,
 }: SessionBoxProps) {
   // const { session } = useContext(SessionContext);
   const [corruptionIsHovered, setCorruptionIsHovered] =
@@ -52,7 +51,6 @@ function CharacterPartyComponent({
     setIsGm(false);
     console.log(character.id);
     setCharacterId(character.id);
-    setDisplay("character");
   };
 
   const handleDeleteCharacter = async () => {

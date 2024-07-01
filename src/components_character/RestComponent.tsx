@@ -97,10 +97,14 @@ export default function RestComponent({
   };
 
   return (
-    <div className="row">
+    <>
       <div
         className="row button_color button"
-        style={{ fontSize: "15px", color: Constants.WIDGET_PRIMARY_FONT }}
+        style={{
+          fontSize: "15px",
+          color: Constants.WIDGET_PRIMARY_FONT,
+          maxWidth: "50px",
+        }}
         title="Rest"
         onClick={HandleSleep}
       >
@@ -112,6 +116,7 @@ export default function RestComponent({
           style={{
             fontSize: "15px",
             color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+            maxWidth: "50px",
           }}
           title="You don't have enough rations to eat equal to your consumption, and can't refresh your energy levels."
           onClick={HandleEat}
@@ -121,13 +126,13 @@ export default function RestComponent({
       ) : (
         <div
           className="row button_color button"
-          style={{ fontSize: "15px" }}
+          style={{ fontSize: "15px", maxWidth: "50px" }}
           title="Will eat rations equal to your consumption, and refresh your energy levels."
           onClick={HandleEat}
         >
           <FontAwesomeIcon icon={faUtensils} />
         </div>
       )}
-    </div>
+    </>
   );
 }

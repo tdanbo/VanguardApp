@@ -1,21 +1,9 @@
 import React, { useState } from "react";
 import { get_session } from "../functions/SessionsFunctions";
-import styled from "styled-components";
 import * as Constants from "../Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { SessionEntry } from "../Types";
-
-const SessionInput = styled.input`
-  display: flex;
-  flex-grow: 1;
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: ${Constants.BORDER_RADIUS};
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  font-weight: bold;
-  text-align: center;
-`;
 
 interface JoinSessionComponentProps {
   setIsJoined: React.Dispatch<React.SetStateAction<boolean>>;
@@ -45,7 +33,11 @@ export default function JoinSessionComponent({
 
   return (
     <>
-      <div className="button button_color" onClick={handleJoinSession}>
+      <div
+        className="row button button_color"
+        style={{ maxWidth: "40px" }}
+        onClick={handleJoinSession}
+      >
         <FontAwesomeIcon
           icon={faRightToBracket}
           color={Constants.WIDGET_SECONDARY_FONT}

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
-import styled from "styled-components";
 import * as Constants from "../Constants";
 import {
   ActiveStateType,
@@ -22,50 +21,6 @@ import {
 } from "../functions/UtilityFunctions";
 import Icon from "@mdi/react";
 import { mdiShieldOff } from "@mdi/js";
-
-interface ContainerProps {
-  height: string;
-}
-
-const Container = styled.div<ContainerProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: ${(props) => props.height};
-  max-height: ${(props) => props.height};
-`;
-
-interface DivProps {
-  width: string;
-}
-
-const Row = styled.div<DivProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-`;
-
-const DynamicContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: 0px; /* or another fixed value */
-`;
-
-const ScrollColumn = styled.div<DivProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-  overflow-y: scroll;
-`;
 
 interface GameMasterProps {
   session: SessionEntry;
@@ -146,20 +101,9 @@ function GameMaster({
   const durability_percentage = calculateDurabilityPercentage(usedResources);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        flex: "2",
-        backgroundColor: Constants.BACKGROUND,
-        height: "100%",
-        gap: "25px",
-        boxSizing: "border-box",
-        padding: "25px 50px 25px 50px",
-      }}
-    >
-      <Container height={"40px"}>
-        <Row width={"100%"}>
+    <div className="column">
+      <div className="row" style={{ maxHeight: "40px" }}>
+        <div className="row">
           <ResetCreatureEncounter session={session} websocket={websocket} />
           <TravelBox session={session} websocket={websocket} />
           <div
@@ -230,30 +174,28 @@ function GameMaster({
           >
             a
           </div> */}
-        </Row>
-      </Container>
-      <DynamicContainer key="container">
-        <ScrollColumn width="100%">
-          <CreatureEncounterSection
-            session={session}
-            websocket={websocket}
-            isCreature={isCreature}
-            setIsCreature={setIsCreature}
-            setIsGm={setIsGm}
-            characterLog={characterLog}
-            advantage={advantage}
-            activeState={activeState}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            setCharacterId={setCharacterId}
-            criticalState={criticalState}
-            setCriticalState={setCriticalState}
-          />
-        </ScrollColumn>
-      </DynamicContainer>
-      <Container height={"30px"}>
+        </div>
+      </div>
+      <div className="scroll_container" style={{ width: "100%" }}>
+        <CreatureEncounterSection
+          session={session}
+          websocket={websocket}
+          isCreature={isCreature}
+          setIsCreature={setIsCreature}
+          setIsGm={setIsGm}
+          characterLog={characterLog}
+          advantage={advantage}
+          activeState={activeState}
+          setActiveState={setActiveState}
+          setAdvantage={setAdvantage}
+          setCharacterId={setCharacterId}
+          criticalState={criticalState}
+          setCriticalState={setCriticalState}
+        />
+      </div>
+      <div className="row" style={{ maxHeight: "30px" }}>
         <TimeTrackBox session={session} websocket={websocket} />
-      </Container>
+      </div>
     </div>
   );
 }

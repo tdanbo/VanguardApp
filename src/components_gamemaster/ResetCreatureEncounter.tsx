@@ -29,6 +29,7 @@ const Navigator = styled.button`
     border: 1px solid ${Constants.WIDGET_BORDER};
   }
   max-width: 50px;
+  height: 100%;
 `;
 
 interface ResetEncounterProps {

@@ -1,9 +1,7 @@
-import styled from "styled-components";
-
 import { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import { CharacterEntry, SessionEntry } from "../Types";
+import { CharacterEntry, DisplayType, SessionEntry } from "../Types";
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
 import { GetGameData } from "../contexts/GameContent";
 import {
@@ -13,55 +11,6 @@ import {
   IsUndead,
 } from "../functions/UtilityFunctions";
 import CreatureEntryItem from "./CreatureEntryItem";
-
-interface ContainerProps {
-  height: string;
-}
-
-const FooterContainer = styled.div<ContainerProps>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: ${(props) => props.height};
-  max-height: ${(props) => props.height};
-`;
-
-interface DivProps {
-  width: string;
-}
-const DynamicContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: ${Constants.WIDGET_GAB};
-  height: 0px; /* or another fixed value */
-`;
-
-const Button = styled.button`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  border-radius: 5px;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  cursor: pointer;
-  font-size: 14px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ScrollColumn = styled.div<DivProps>`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
-  gap: ${Constants.WIDGET_GAB};
-  max-width: ${(props) => props.width};
-  overflow-y: scroll;
-  scrollbar-width: none;
-`;
 
 interface CreatureBrowserProps {
   character: CharacterEntry;
@@ -74,7 +23,7 @@ interface CreatureBrowserProps {
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   isGm: boolean;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
-  setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
+  setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 
 function CreatureBrowser({
@@ -88,7 +37,7 @@ function CreatureBrowser({
   setCharacterId,
   isGm,
   setIsGm,
-  setCategorySelect,
+  setDisplay,
 }: CreatureBrowserProps) {
   const { creatures, updateCreatureData } = GetGameData();
   type LootCategoryType =
@@ -100,7 +49,7 @@ function CreatureBrowser({
     | "abomination";
   const scrollRef = useRef(null);
   const [filteredEntry, setFilteredEntry] = useState<CharacterEntry[]>([]);
-  const [LootCategory, setLootCategory] = useState<LootCategoryType>("all");
+  const [LootCategory, _setLootCategory] = useState<LootCategoryType>("all");
   const sortList = (a: CharacterEntry, b: CharacterEntry) => {
     const categoryComparison =
       Constants.RACE_FILTER.indexOf(a.details.race) -
@@ -155,42 +104,29 @@ function CreatureBrowser({
   }, [LootCategory, creatures]);
 
   return (
-    <>
-      <DynamicContainer>
-        <ScrollColumn ref={scrollRef} width="100%">
-          {filteredEntry.map((entry, index) => {
-            return (
-              <CreatureEntryItem
-                key={index}
-                session={session}
-                character={character}
-                creature={entry}
-                browser={true}
-                isGm={isGm}
-                setIsCreature={setIsCreature}
-                websocket={websocket}
-                setIsGm={setIsGm}
-                setRefetch={setRefetch}
-                setCharacterId={setCharacterId}
-                setCategorySelect={setCategorySelect}
-              />
-            );
-          })}
-          {Array.from({ length: 30 }).map((_, index) => {
-            return <InventoryEntryEmpty key={index} />;
-          })}
-        </ScrollColumn>
-      </DynamicContainer>
-      <FooterContainer height={"30px"}>
-        <Button onClick={() => setLootCategory("ambrian")}>Ambrian</Button>
-        <Button onClick={() => setLootCategory("troll")}>Trolls</Button>
-        <Button onClick={() => setLootCategory("beast")}>Beasts</Button>
-        <Button onClick={() => setLootCategory("undead")}>Undead</Button>
-        <Button onClick={() => setLootCategory("abomination")}>
-          Abomination
-        </Button>
-      </FooterContainer>
-    </>
+    <div className="scroll_container" ref={scrollRef} style={{ width: "100%" }}>
+      {filteredEntry.map((entry, index) => {
+        return (
+          <CreatureEntryItem
+            key={index}
+            session={session}
+            character={character}
+            creature={entry}
+            browser={true}
+            isGm={isGm}
+            setIsCreature={setIsCreature}
+            websocket={websocket}
+            setIsGm={setIsGm}
+            setRefetch={setRefetch}
+            setCharacterId={setCharacterId}
+            setDisplay={setDisplay}
+          />
+        );
+      })}
+      {Array.from({ length: 30 }).map((_, index) => {
+        return <InventoryEntryEmpty key={index} />;
+      })}
+    </div>
   );
 }
 
