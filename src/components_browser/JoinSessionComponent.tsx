@@ -35,13 +35,13 @@ export default function JoinSessionComponent({
     <>
       <div
         className="row button button_color"
-        style={{ maxWidth: "40px" }}
+        style={{ maxWidth: "35px" }}
         onClick={handleJoinSession}
       >
         <FontAwesomeIcon
           icon={faRightToBracket}
           color={Constants.WIDGET_SECONDARY_FONT}
-          title={"Disconnected"}
+          title={"Join Session"}
         />
       </div>
 
@@ -49,6 +49,7 @@ export default function JoinSessionComponent({
         className="empty_color"
         style={{
           display: "flex", // Quotes around flex
+          fontSize: "25px", // Quotes around 14px
           flexGrow: 1,
           backgroundColor: Constants.BACKGROUND, // Correct property name
           border: `1px solid ${Constants.WIDGET_BORDER}`, // Template literal for dynamic values
@@ -56,6 +57,8 @@ export default function JoinSessionComponent({
           color: Constants.WIDGET_SECONDARY_FONT,
           fontWeight: "bold", // Quotes around bold
           textAlign: "center", // Quotes around center
+          height: "100%",
+          paddingRight: "40px", // Quotes around 5px
         }}
         placeholder="Session ID"
         value={sessionName}

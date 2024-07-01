@@ -30,6 +30,8 @@ import EquipmentSection from "../components_character/EquipmentSection";
 import { ActiveStateType, EquipAbilityType } from "../Types";
 import EnergyStatComponent from "../components_character/EnergyStatComponent";
 import JoinSessionComponent from "../components_browser/JoinSessionComponent";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHatWizard, faUser } from "@fortawesome/free-solid-svg-icons";
 type CharacterSheetProps = {
   websocket: Socket;
   session: SessionEntry;
@@ -54,6 +56,7 @@ type CharacterSheetProps = {
   equipmentAbilities: EquipAbilityType;
   setIsJoined: React.Dispatch<React.SetStateAction<boolean>>;
   isJoined: boolean;
+  setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function CharacterSheet({
@@ -74,8 +77,14 @@ function CharacterSheet({
   setSession,
   setIsJoined,
   isJoined,
+  isGm,
+  setIsGm,
 }: CharacterSheetProps) {
   UpdateAbilityStats(character);
+
+  const onGmSwitch = () => {
+    setIsGm((prevMode) => !prevMode);
+  };
 
   return (
     <div
@@ -84,23 +93,37 @@ function CharacterSheet({
         width: "100%",
         backgroundColor: Constants.BACKGROUND,
         height: "100%",
-        gap: "25px",
+        gap: "10px",
       }}
     >
       <div className="grid">
         {isJoined ? (
-          <div className="row">
+          <div
+            className="row outline_color"
+            style={{ height: "50px", padding: "0px 10px" }}
+          >
             <CharacterNameBox character={character} />
           </div>
         ) : (
-          <div className="row">
+          <div className="row" style={{ height: "50px" }}>
             <JoinSessionComponent
               setIsJoined={setIsJoined}
               setSession={setSession}
             />
           </div>
         )}
-        <div className="row">
+        <div className="row" style={{ height: "50px" }}>
+          <div
+            className="row outline_color"
+            style={{ maxWidth: "35px" }}
+            onClick={() => onGmSwitch()}
+            title={isGm ? "Switch to Player Mode" : "Switch to GM Mode"}
+          >
+            <FontAwesomeIcon
+              icon={isGm ? faHatWizard : faUser}
+              color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
+            />
+          </div>
           <div className="row outline_color">
             <DetailStatComponent
               title="COMBAT XP"
@@ -109,19 +132,17 @@ function CharacterSheet({
               }`}
             />
           </div>
-          <div className="row ">
-            <div className="row outline_color">
-              <DetailStatComponent
-                title="UTILITY XP"
-                value={`${getUtilityXp(character)} /
+          <div className="row outline_color">
+            <DetailStatComponent
+              title="UTILITY XP"
+              value={`${getUtilityXp(character)} /
             ${Math.max(Math.round(character.details.xp_earned / 5), 10)}`}
-              />
-            </div>
-            <ModifierLockComponent
-              modifierLock={modifierLock}
-              setModifierLock={setModifierLock}
             />
           </div>
+          <ModifierLockComponent
+            modifierLock={modifierLock}
+            setModifierLock={setModifierLock}
+          />
         </div>
       </div>
       <div className="grid">

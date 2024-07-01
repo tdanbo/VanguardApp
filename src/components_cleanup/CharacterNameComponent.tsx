@@ -8,7 +8,7 @@ interface CharacterNameBoxProps {
 
 function CharacterNameComponent({ character }: CharacterNameBoxProps) {
   return (
-    <div className="row outline_color" style={{ padding: "0px 10px 0px 10px" }}>
+    <>
       <div
         style={{
           fontSize: "10px",
@@ -42,7 +42,7 @@ function CharacterNameComponent({ character }: CharacterNameBoxProps) {
       >
         {character.details.race.toUpperCase()}
       </div>
-    </div>
+    </>
   );
 }
 

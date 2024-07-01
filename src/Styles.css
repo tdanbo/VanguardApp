@@ -334,8 +334,8 @@ body::-webkit-scrollbar {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  min-height: 30px;
-  max-height: 30px;
+  min-height: 50px;
+  max-height: 50px;
   width: 100%;
   justify-content: flex-end;
   border-radius: 5px;
