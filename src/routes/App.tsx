@@ -79,7 +79,7 @@ function App() {
       <div className="row" style={{ gap: "100px" }}>
         <div
           className="column breakpoint show_over_breakpoint4"
-          style={{ maxWidth: "25em" }}
+          style={{ maxWidth: "30em" }}
         >
           <Browser
             session={session}
@@ -128,6 +128,7 @@ function App() {
               equipmentAbilities={equipmentAbilities}
               setIsJoined={setIsJoined}
               isJoined={isJoined}
+              setIsGm={setIsGm}
             />
           ) : display === "combatlog" ? (
             <CombatSection
@@ -144,26 +145,6 @@ function App() {
               setIsGm={setIsGm}
               setCriticalState={setCriticalState}
               setDisplay={setDisplay}
-            />
-          ) : display === "inventory" ? (
-            <Browser
-              session={session}
-              character={character}
-              websocket={websocket}
-              setInventoryState={setInventoryState}
-              isCreature={isCreature}
-              advantage={advantage}
-              activeState={activeState}
-              setActiveState={setActiveState}
-              setIsCreature={setIsCreature}
-              setAdvantage={setAdvantage}
-              setCharacterId={setCharacterId}
-              setIsGm={setIsGm}
-              isGm={isGm}
-              criticalState={criticalState}
-              setCriticalState={setCriticalState}
-              display={leftDisplay}
-              setDisplay={setRightDisplay}
             />
           ) : display === "gamemaster" ? (
             <GameMaster
@@ -185,13 +166,31 @@ function App() {
               setCriticalState={setCriticalState}
             />
           ) : (
-            <></>
+            <Browser
+              session={session}
+              character={character}
+              websocket={websocket}
+              setInventoryState={setInventoryState}
+              isCreature={isCreature}
+              advantage={advantage}
+              activeState={activeState}
+              setActiveState={setActiveState}
+              setIsCreature={setIsCreature}
+              setAdvantage={setAdvantage}
+              setCharacterId={setCharacterId}
+              setIsGm={setIsGm}
+              isGm={isGm}
+              criticalState={criticalState}
+              setCriticalState={setCriticalState}
+              display={display}
+              setDisplay={setDisplay}
+            />
           )}
         </div>
 
         <div
           className="column breakpoint show_over_breakpoint3"
-          style={{ maxWidth: "25em" }}
+          style={{ maxWidth: "30em" }}
         >
           {rightDisplay === "combatlog" ? (
             <CombatSection
@@ -238,21 +237,22 @@ function App() {
       >
         <div
           className="header outline_color breakpoint show_over_breakpoint4 "
-          style={{ maxWidth: "25em" }}
+          style={{ maxWidth: "30em" }}
         >
           <FooterBrowserComponent setLeftDisplay={setLeftDisplay} isGm={isGm} />
         </div>
-        <div className="header outline_color breakpoint show_over_breakpoint1 hide_over_breakpoint4">
+        <div className="header outline_color breakpoint show_over_breakpoint1">
           <FooterCharacterComponent
             setEquipmentAbilities={setEquipmentAbilities}
             setDisplay={setDisplay}
             isGm={isGm}
+            display={display}
           />
         </div>
 
         <div
-          className="header outline_color breakpoint show_over_breakpoint3 hide_over_breakpoint4"
-          style={{ maxWidth: "25em" }}
+          className="header outline_color breakpoint show_over_breakpoint3 "
+          style={{ maxWidth: "30em" }}
         >
           <FooterCombatComponent
             setEquipmentAbilities={setEquipmentAbilities}

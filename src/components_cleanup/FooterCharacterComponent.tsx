@@ -3,6 +3,7 @@ import {
   faHatWizard,
   faShield,
   faUser,
+  faWandMagicSparkles,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -14,10 +15,12 @@ interface FooterCharacterProps {
   setEquipmentAbilities: React.Dispatch<React.SetStateAction<EquipAbilityType>>;
   setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
   isGm: boolean;
+  display: DisplayType;
 }
 
 function FooterCharacterComponent({
   setEquipmentAbilities,
+  display,
   setDisplay,
   isGm,
 }: FooterCharacterProps) {
@@ -27,6 +30,10 @@ function FooterCharacterComponent({
 
   const onAbilitiesClick = () => {
     setEquipmentAbilities("abilities");
+  };
+
+  const onAbilitiesClick2 = () => {
+    setDisplay("abilities");
   };
 
   const onInventoryClick = () => {
@@ -47,53 +54,67 @@ function FooterCharacterComponent({
 
   return (
     <>
+      {display === "character" ? (
+        <>
+          <div
+            className="header_button breakpoint show_under_breakpoint2"
+            title="equipment"
+            onClick={onEquipmentClick}
+            style={{ borderRight: "1px solid #252827" }}
+          >
+            <FontAwesomeIcon icon={faShield} />
+          </div>
+          <div
+            className="header_button breakpoint show_under_breakpoint2"
+            title="My Abilities"
+            onClick={onAbilitiesClick}
+            style={{ borderRight: "1px solid #252827" }}
+          >
+            <FontAwesomeIcon icon={faWandMagicSparkles} />
+          </div>
+        </>
+      ) : null}
       <div
-        className="header_button breakpoint show_under_breakpoint2"
-        title="equipment"
-        onClick={onEquipmentClick}
+        className="header_button hide_over_breakpoint3"
+        title="inventory"
+        onClick={onInventoryClick}
+        style={{ borderRight: "1px solid #252827" }}
       >
-        <FontAwesomeIcon icon={faShield} />
+        <Icon path={mdiSack} size={0.8} />
       </div>
-      <div className="header_divider breakpoint show_under_breakpoint2" />
       <div
-        className="header_button breakpoint show_under_breakpoint2"
+        className="header_button hide_over_breakpoint3"
         title="abilities"
-        onClick={onAbilitiesClick}
+        onClick={onAbilitiesClick2}
+        style={{ borderRight: "1px solid #252827" }}
       >
         <FontAwesomeIcon icon={faHandSparkles} />
+      </div>
+      <div
+        className="header_button  hide_over_breakpoint3"
+        title="combat log"
+        onClick={onCombatLogClick}
+        style={{ borderRight: "1px solid #252827" }}
+      >
+        <Icon path={mdiSword} size={0.9} />
+        {/* <TinyCombatLogComponent session={session} /> */}
       </div>
       {isGm ? (
         <div
           className="header_button show_under_px"
           title="game master"
           onClick={onGameMasterClick}
+          style={{ borderRight: "1px solid #252827" }}
         >
           <FontAwesomeIcon icon={faHatWizard} />
         </div>
       ) : null}
-      <div className="header_divider show_under_px" />
       <div
         className="header_button show_under_px"
         title="character sheet"
         onClick={onCharacterClick}
       >
         <FontAwesomeIcon icon={faUser} />
-      </div>
-      <div className="header_divider show_under_px" />
-      <div
-        className="header_button hide_over_breakpoint3"
-        title="inventory"
-        onClick={onInventoryClick}
-      >
-        <Icon path={mdiSack} size={0.8} />
-      </div>
-      <div className="header_divider show_under_px" />
-      <div
-        className="header_button  hide_over_breakpoint3"
-        title="combat log"
-        onClick={onCombatLogClick}
-      >
-        <Icon path={mdiSword} size={0.9} />
       </div>
     </>
   );

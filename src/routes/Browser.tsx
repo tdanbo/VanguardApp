@@ -89,8 +89,8 @@ function Browser({
 
   return (
     <>
-      <div className="header" style={{ gap: "10px" }}>
-        {display === "creatures" ? (
+      {display === "creatures" ? (
+        <div className="header" style={{ gap: "10px" }}>
           <div
             className="row button button_color"
             style={{ maxWidth: "50px" }}
@@ -98,8 +98,10 @@ function Browser({
           >
             <FontAwesomeIcon icon={faPlus} />
           </div>
-        ) : null}
-        {["equipment", "abilities", "creatures"].includes(display) ? (
+        </div>
+      ) : null}
+      {["equipment", "abilities", "creatures"].includes(display) ? (
+        <div className="header" style={{ gap: "10px" }}>
           <input
             className="row opaque_color font"
             value={tempSearch} // Use the temporary search state as the input value
@@ -109,8 +111,9 @@ function Browser({
             placeholder="Search"
             style={{ textAlign: "center" }}
           />
-        ) : null}
-      </div>
+        </div>
+      ) : null}
+
       {display === "equipment" ? (
         <EquipmentBrowser
           session={session}

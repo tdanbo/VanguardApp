@@ -114,7 +114,7 @@ function CharacterPartyComponent({
           >
             <div
               className="row button button_color"
-              style={{ maxWidth: "30%", fontSize: "20px" }}
+              style={{ maxWidth: "50px", fontSize: "20px" }}
               onClick={() =>
                 LowerToughness(character, session, websocket, isCreature)
               }
@@ -204,7 +204,7 @@ function CharacterPartyComponent({
             </div>
             <div
               className="row button button_color"
-              style={{ maxWidth: "30%", fontSize: "20px" }}
+              style={{ maxWidth: "50px", fontSize: "20px" }}
               onClick={() =>
                 LowerCorruption(character, session, websocket, isCreature)
               }

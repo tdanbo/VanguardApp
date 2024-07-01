@@ -2,16 +2,14 @@ import { useEffect, useRef } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHatWizard,
-  faUser,
-  faUserPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faDiceD20, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
 import { update_session } from "../functions/SessionsFunctions";
 import { NewCharacterEntry } from "../Types";
 import DetailStatComponent from "../components_cleanup/DetailStatComponent";
 import { toTitleCase } from "../functions/UtilityFunctions";
+import DiceSection from "../components_combatlog/DiceSection";
+import { useState } from "react";
 
 import {
   CharacterEntry,
@@ -97,8 +95,13 @@ function CombatSection({
   isGm,
   setIsGm,
   setDisplay,
+  setActiveState,
+  setAdvantage,
+  setCriticalState,
 }: CombatSectionProps) {
   // const { combatlogResponse } = useWebSocket();
+  const [diceTrayOpen, setDiceTrayOpen] = useState(false);
+
   const scrollRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -176,10 +179,6 @@ function CombatSection({
     setCharacterId(NewCharacterEntry.id);
   };
 
-  const onGmSwitch = () => {
-    setIsGm((prevMode) => !prevMode);
-  };
-
   return (
     <>
       <div className="header" style={{ gap: "10px" }}>
@@ -187,6 +186,16 @@ function CombatSection({
           <Button onClick={handlePostCharacter}>
             <FontAwesomeIcon icon={faUserPlus} />
           </Button>
+        ) : diceTrayOpen ? (
+          <DiceSection
+            character={NewCharacterEntry}
+            session={session}
+            websocket={websocket}
+            isCreature={isCreature}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
+          />
         ) : (
           <>
             <div className="row outline_color">
@@ -203,13 +212,14 @@ function CombatSection({
             </div>
           </>
         )}
+
         <div
           className="row button button_color"
-          style={{ maxWidth: "40px" }}
-          onClick={() => onGmSwitch()}
-          title={isGm ? "Switch to Player Mode" : "Switch to GM Mode"}
+          style={{ maxWidth: "50px" }}
+          onClick={() => setDiceTrayOpen(!diceTrayOpen)}
+          title={"Dice Tray"}
         >
-          <FontAwesomeIcon icon={isGm ? faHatWizard : faUser} />
+          <FontAwesomeIcon icon={faDiceD20} />
         </div>
       </div>
       <PartySection
