@@ -1,4 +1,5 @@
 import {
+  faArrowDown,
   faGhost,
   faHandSparkles,
   faShield,
@@ -42,12 +43,16 @@ function FooterCombatComponent({
     setRightDisplay("combatlog");
   };
 
+  const onDropsClick = () => {
+    setRightDisplay("drops");
+  };
+
   return (
     <>
       {isGm && (
         <>
           <div
-            className="header_button hide_over_breakpoint4"
+            className="header_button "
             title="creatures"
             onClick={onCreaturesClick}
             style={{
@@ -61,7 +66,7 @@ function FooterCombatComponent({
             <FontAwesomeIcon icon={faGhost} />
           </div>
           <div
-            className="header_button hide_over_breakpoint4"
+            className="header_button "
             title="equipment"
             style={{
               borderRight: "1px solid #252827",
@@ -73,6 +78,20 @@ function FooterCombatComponent({
             onClick={onEquipmentClick}
           >
             <FontAwesomeIcon icon={faShield} />
+          </div>
+          <div
+            className="header_button hide_over_breakpoint4"
+            title="drops"
+            style={{
+              borderRight: "1px solid #252827",
+              color:
+                rightDisplay === "drops"
+                  ? Constants.WIDGET_PRIMARY_FONT
+                  : Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+            }}
+            onClick={onDropsClick}
+          >
+            <FontAwesomeIcon icon={faArrowDown} size="lg" />
           </div>
         </>
       )}

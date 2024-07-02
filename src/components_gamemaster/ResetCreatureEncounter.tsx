@@ -51,12 +51,14 @@ function ResetCreatureEncounter({ session, websocket }: ResetEncounterProps) {
     for (const character of session.characters) {
       character.details.initiative =
         character.stats.initiative.value +
+        character.stats.initiative.base +
         character.stats.initiative.mod +
         random(1, 10);
     }
     for (const creature of session.encounter) {
       creature.details.initiative =
         creature.stats.initiative.value +
+        creature.stats.initiative.base +
         creature.stats.initiative.mod +
         +random(1, 10);
     }

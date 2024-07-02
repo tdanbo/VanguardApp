@@ -3,6 +3,7 @@ import React from "react";
 import * as Constants from "../Constants";
 import InventoryEntry from "../components_browser/InventoryEntry";
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
+import { GetItemListPrice } from "../functions/UtilityFunctions";
 import {
   ItemEntry,
   CharacterEntry,
@@ -12,6 +13,7 @@ import {
 } from "../Types";
 import { useRef, useEffect } from "react";
 import { Socket } from "socket.io-client";
+import DropControlComponent from "./DropControlComponent";
 
 interface DropsBrowserProps {
   character: CharacterEntry;
@@ -64,35 +66,67 @@ export default function DropsBrowser({
   };
   return (
     <>
-      {session.loot.drops.sort(sortShoppingList).map((entry, index) => {
-        return (
-          <InventoryEntry
+      {isGm ? (
+        <div className="header">
+          <DropControlComponent
             session={session}
-            character={character}
             websocket={websocket}
-            key={`InventoryEntry${index}`}
-            browser={true}
-            index={index}
-            item={entry}
-            equipped={""}
-            id={""}
-            setInventoryState={setInventoryState}
-            isCreature={isCreature}
-            canBuy={session.state === "buy" ? true : false}
             isGm={isGm}
-            advantage={advantage}
-            activeState={activeState}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            isDrop={true}
-            criticalState={criticalState}
-            setCriticalState={setCriticalState}
           />
-        );
-      })}
-      {Array.from({ length: 30 }).map((_, index) => {
-        return <InventoryEntryEmpty key={index} />;
-      })}
+        </div>
+      ) : null}
+      <div
+        className="scroll_container"
+        style={{
+          width: "100%",
+          borderTop: "1px solid " + Constants.BRIGHT_YELLOW,
+          borderBottom: "1px solid " + Constants.BRIGHT_YELLOW,
+          borderRadius: "5px",
+          paddingTop: "10px",
+          maxHeight: isGm ? "100%" : "335px",
+        }}
+      >
+        {session.loot.drops.length > 0 && isGm ? (
+          <div
+            className="row"
+            style={{
+              fontSize: "11px",
+              justifyContent: "right",
+            }}
+          >
+            {GetItemListPrice(session.loot.drops)} Thaler
+          </div>
+        ) : null}
+        {session.loot.drops.sort(sortShoppingList).map((entry, index) => {
+          return (
+            <InventoryEntry
+              session={session}
+              character={character}
+              websocket={websocket}
+              key={`InventoryEntry${index}`}
+              browser={true}
+              index={index}
+              item={entry}
+              equipped={""}
+              id={""}
+              setInventoryState={setInventoryState}
+              isCreature={isCreature}
+              canBuy={session.state === "buy" ? true : false}
+              isGm={isGm}
+              advantage={advantage}
+              activeState={activeState}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
+              isDrop={true}
+              criticalState={criticalState}
+              setCriticalState={setCriticalState}
+            />
+          );
+        })}
+        {Array.from({ length: 30 }).map((_, index) => {
+          return <InventoryEntryEmpty key={index} />;
+        })}
+      </div>
     </>
   );
 }

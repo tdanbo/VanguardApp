@@ -4,6 +4,7 @@ import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
+  DisplayType,
   SessionEntry,
 } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
@@ -31,6 +32,7 @@ interface EncounterSectionProps {
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
   criticalState: boolean;
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 
 function CreatureEncounterSection({
@@ -47,6 +49,7 @@ function CreatureEncounterSection({
   setIsGm,
   criticalState,
   setCriticalState,
+  setDisplay,
 }: EncounterSectionProps) {
   // If setSortedEncounter is part of your useState declaration, it should look like this
 
@@ -88,6 +91,7 @@ function CreatureEncounterSection({
               setCharacterId={setCharacterId}
               criticalState={criticalState}
               setCriticalState={setCriticalState}
+              setDisplay={setDisplay}
             />
           );
         }

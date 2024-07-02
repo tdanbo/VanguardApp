@@ -103,8 +103,8 @@ interface AbilityEntryItemProps {
   setRefetch: React.Dispatch<React.SetStateAction<number>>;
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   isGm: boolean;
-  setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
   setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
+  setCentralDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 
 function CreatureEntryItem({
@@ -113,9 +113,9 @@ function CreatureEntryItem({
   creature,
   setIsCreature,
   websocket,
-  setIsGm,
   setCharacterId,
   setDisplay,
+  setCentralDisplay,
 }: AbilityEntryItemProps) {
   const { updateCreatureData } = GetGameData();
   const suffixLetter = () => {
@@ -141,12 +141,11 @@ function CreatureEntryItem({
     new_encounter_creature.creature = true;
     session.encounter.push(new_encounter_creature);
     update_session(session, websocket);
-    setIsGm(true);
+    setCentralDisplay("gamemaster");
   };
 
   const selectCreature = () => {
     setIsCreature(true);
-    setIsGm(false);
     setDisplay("inventory");
     setCharacterId(creature.id);
   };

@@ -24,6 +24,7 @@ interface CreatureBrowserProps {
   isGm: boolean;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
   setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
+  setCentralDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 
 function CreatureBrowser({
@@ -36,8 +37,8 @@ function CreatureBrowser({
   setRefetch,
   setCharacterId,
   isGm,
-  setIsGm,
   setDisplay,
+  setCentralDisplay,
 }: CreatureBrowserProps) {
   const { creatures, updateCreatureData } = GetGameData();
   type LootCategoryType =
@@ -116,10 +117,10 @@ function CreatureBrowser({
             isGm={isGm}
             setIsCreature={setIsCreature}
             websocket={websocket}
-            setIsGm={setIsGm}
             setRefetch={setRefetch}
             setCharacterId={setCharacterId}
             setDisplay={setDisplay}
+            setCentralDisplay={setCentralDisplay}
           />
         );
       })}

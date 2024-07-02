@@ -49,8 +49,8 @@ export type DisplayType =
   | "inventory"
   | "abilities"
   | "equipment"
-  | "creatures";
-
+  | "creatures"
+  | "drops";
 export interface CharacterEntry {
   name: string;
   id: string;
