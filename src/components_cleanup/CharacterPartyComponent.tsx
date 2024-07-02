@@ -37,7 +37,7 @@ function CharacterPartyComponent({
   setIsCreature,
   isCreature,
   setCharacterId,
-  setIsGm,
+  setDisplay,
   isGm,
 }: SessionBoxProps) {
   // const { session } = useContext(SessionContext);
@@ -48,9 +48,9 @@ function CharacterPartyComponent({
 
   const handleOnClick = () => {
     setIsCreature(false);
-    setIsGm(false);
     console.log(character.id);
     setCharacterId(character.id);
+    setDisplay("character");
   };
 
   const handleDeleteCharacter = async () => {
@@ -131,10 +131,7 @@ function CharacterPartyComponent({
               />
             </div>
 
-            <div
-              className="row opaque_color"
-              style={{ maxWidth: "70%", fontSize: "20px" }}
-            >
+            <div className="row opaque_color" style={{ fontSize: "20px" }}>
               {toughnessIsHovered
                 ? `${remaining_toughness} / ${maxToughness}`
                 : remaining_toughness}
@@ -194,10 +191,7 @@ function CharacterPartyComponent({
             onMouseEnter={() => setCorruptionIsHovered(true)}
             onMouseLeave={() => setCorruptionIsHovered(false)}
           >
-            <div
-              className="row opaque_color "
-              style={{ maxWidth: "70%", fontSize: "20px" }}
-            >
+            <div className="row opaque_color " style={{ fontSize: "20px" }}>
               {corruptionIsHovered
                 ? `${clean_corruption} / ${corruptionThreshold}`
                 : clean_corruption}

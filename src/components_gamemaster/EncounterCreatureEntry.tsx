@@ -24,6 +24,7 @@ import {
   SessionEntry,
   ResourceItem,
   AbilityEntry,
+  DisplayType,
 } from "../Types";
 import AbilityEntryItem from "../components_browser/AbilityEntryItem";
 import {
@@ -304,6 +305,7 @@ interface EncounterBoxProps {
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   criticalState: boolean;
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 
 function EncounterCreatureEntry({
@@ -311,7 +313,6 @@ function EncounterCreatureEntry({
   session,
   websocket,
   isCreature,
-  setIsGm,
   setIsCreature,
   onCreatureDelete,
   activeState,
@@ -321,6 +322,7 @@ function EncounterCreatureEntry({
   setCharacterId,
   criticalState,
   setCriticalState,
+  setDisplay,
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
 
@@ -392,15 +394,13 @@ function EncounterCreatureEntry({
 
   const GoToSheet = () => {
     setIsCreature(true);
-    setIsGm(false);
     setCharacterId(creatureClone.id);
+    setDisplay("character");
   };
 
   const title =
     "Initiative: " +
-    creatureClone.stats.initiative.value +
-    creatureClone.stats.initiative.mod +
-    +creatureClone.stats.initiative.base +
+    creatureClone.details.initiative +
     "\n" +
     "Movement: " +
     GetMovementSpeed(creatureClone) +

@@ -17,6 +17,7 @@ import { Socket } from "socket.io-client";
 import { CharacterEntry, SessionEntry } from "../Types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import DropsBrowser from "../components_browser/DropsBrowser";
 
 type BrowserProps = {
   session: SessionEntry;
@@ -34,8 +35,10 @@ type BrowserProps = {
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
   criticalState: boolean;
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
-  display: DisplayType;
   setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
+  display: DisplayType;
+  centralDisplay: DisplayType;
+  setCentralDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 };
 
 function Browser({
@@ -56,6 +59,8 @@ function Browser({
   setCriticalState,
   display,
   setDisplay,
+  centralDisplay,
+  setCentralDisplay,
 }: BrowserProps) {
   const [refetch, setRefetch] = useState(0);
   const [search, setSearch] = useState("");
@@ -89,19 +94,17 @@ function Browser({
 
   return (
     <>
-      {display === "creatures" ? (
-        <div className="header" style={{ gap: "10px" }}>
-          <div
-            className="row button button_color"
-            style={{ maxWidth: "50px" }}
-            onClick={handlePostCreature}
-          >
-            <FontAwesomeIcon icon={faPlus} />
-          </div>
-        </div>
-      ) : null}
       {["equipment", "abilities", "creatures"].includes(display) ? (
         <div className="header" style={{ gap: "10px" }}>
+          {display === "creatures" ? (
+            <div
+              className="row button button_color"
+              style={{ maxWidth: "50px" }}
+              onClick={handlePostCreature}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </div>
+          ) : null}
           <input
             className="row opaque_color font"
             value={tempSearch} // Use the temporary search state as the input value
@@ -159,6 +162,7 @@ function Browser({
           isGm={isGm}
           setIsGm={setIsGm}
           setDisplay={setDisplay}
+          setCentralDisplay={setCentralDisplay}
         />
       ) : display === "inventory" ? (
         <Inventory
@@ -172,6 +176,22 @@ function Browser({
           setAdvantage={setAdvantage}
           isGm={isGm}
           setInventoryState={setInventoryState}
+          criticalState={criticalState}
+          setCriticalState={setCriticalState}
+          centralDisplay={centralDisplay}
+        />
+      ) : display === "drops" ? (
+        <DropsBrowser
+          isGm={isGm}
+          session={session}
+          character={character}
+          websocket={websocket}
+          setInventoryState={setInventoryState}
+          isCreature={isCreature}
+          advantage={advantage}
+          activeState={activeState}
+          setActiveState={setActiveState}
+          setAdvantage={setAdvantage}
           criticalState={criticalState}
           setCriticalState={setCriticalState}
         />

@@ -99,6 +99,8 @@ function App() {
             setCriticalState={setCriticalState}
             display={leftDisplay}
             setDisplay={setLeftDisplay}
+            centralDisplay={display}
+            setCentralDisplay={setDisplay}
           />
         </div>
 
@@ -164,6 +166,7 @@ function App() {
               setCharacterId={setCharacterId}
               criticalState={criticalState}
               setCriticalState={setCriticalState}
+              setDisplay={setDisplay}
             />
           ) : (
             <Browser
@@ -184,6 +187,8 @@ function App() {
               setCriticalState={setCriticalState}
               display={display}
               setDisplay={setDisplay}
+              centralDisplay={display}
+              setCentralDisplay={setDisplay}
             />
           )}
         </div>
@@ -206,7 +211,7 @@ function App() {
               isGm={isGm}
               setIsGm={setIsGm}
               setCriticalState={setCriticalState}
-              setDisplay={setRightDisplay}
+              setDisplay={setDisplay}
             />
           ) : (
             <Browser
@@ -227,6 +232,8 @@ function App() {
               setCriticalState={setCriticalState}
               display={rightDisplay}
               setDisplay={setRightDisplay}
+              centralDisplay={display}
+              setCentralDisplay={setDisplay}
             />
           )}
         </div>

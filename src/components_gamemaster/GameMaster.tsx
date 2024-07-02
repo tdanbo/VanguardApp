@@ -5,6 +5,7 @@ import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
+  DisplayType,
   SessionEntry,
 } from "../Types";
 import ResetCreatureEncounter from "./ResetCreatureEncounter";
@@ -39,6 +40,7 @@ interface GameMasterProps {
   isGm: boolean;
   criticalState: boolean;
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 
 function GameMaster({
@@ -54,6 +56,7 @@ function GameMaster({
   setCharacterId,
   criticalState,
   setCriticalState,
+  setDisplay,
 }: GameMasterProps) {
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
 
@@ -191,6 +194,7 @@ function GameMaster({
           setCharacterId={setCharacterId}
           criticalState={criticalState}
           setCriticalState={setCriticalState}
+          setDisplay={setDisplay}
         />
       </div>
       <div className="row" style={{ maxHeight: "30px" }}>

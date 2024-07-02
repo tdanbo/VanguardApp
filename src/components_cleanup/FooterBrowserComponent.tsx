@@ -1,8 +1,4 @@
-import {
-  faGhost,
-  faHandSparkles,
-  faShield,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown, faHandSparkles } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { DisplayType } from "../Types";
@@ -21,14 +17,6 @@ function FooterBrowserComponent({
   isGm,
   display,
 }: FooterBrowserProps) {
-  const onCreaturesClick = () => {
-    setLeftDisplay("creatures");
-  };
-
-  const onEquipmentClick = () => {
-    setLeftDisplay("equipment");
-  };
-
   const onInventoryClick = () => {
     setLeftDisplay("inventory");
   };
@@ -37,37 +25,27 @@ function FooterBrowserComponent({
     setLeftDisplay("abilities");
   };
 
+  const onDropsClick = () => {
+    setLeftDisplay("drops");
+  };
+
   return (
     <>
       {isGm && (
         <>
           <div
             className="header_button show_under_px"
-            title="creatures"
-            onClick={onCreaturesClick}
+            title="drops"
+            onClick={onDropsClick}
             style={{
               borderRight: "1px solid #252827",
               color:
-                display === "creatures"
+                display === "drops"
                   ? Constants.WIDGET_PRIMARY_FONT
                   : Constants.WIDGET_SECONDARY_FONT_INACTIVE,
             }}
           >
-            <FontAwesomeIcon icon={faGhost} />
-          </div>
-          <div
-            className="header_button show_under_px"
-            title="equipment"
-            onClick={onEquipmentClick}
-            style={{
-              borderRight: "1px solid #252827",
-              color:
-                display === "equipment"
-                  ? Constants.WIDGET_PRIMARY_FONT
-                  : Constants.WIDGET_SECONDARY_FONT_INACTIVE,
-            }}
-          >
-            <FontAwesomeIcon icon={faShield} />
+            <FontAwesomeIcon icon={faArrowDown} size="lg" />
           </div>
         </>
       )}

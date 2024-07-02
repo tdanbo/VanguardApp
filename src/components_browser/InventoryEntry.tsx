@@ -71,6 +71,7 @@ const AddButton = styled.div`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
+  height: 100%;
   width: 20px;
   max-width: 20px;
   border-right-top-radius: ${Constants.BORDER_RADIUS};
@@ -645,6 +646,22 @@ function InventoryEntry({
             />
           )}
         </RollContainer>
+
+        {browser && isGm && !isDrop ? (
+          <Column>
+            <AddButton
+              className={"button"}
+              onClick={() => AddInventorySlot(canBuy, false)}
+            >
+              <FontAwesomeIcon
+                icon={canBuy ? faCoins : faPlus}
+                style={{ fontSize: "12px" }}
+                title={canBuy ? "Buy One" : "Add to inventory"}
+              />
+            </AddButton>
+            <AddButton className={"button"}></AddButton>
+          </Column>
+        ) : null}
 
         <Column>
           {browser ? (

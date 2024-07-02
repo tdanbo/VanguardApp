@@ -1,4 +1,6 @@
 import {
+  faArrowDown,
+  faGhost,
   faHandSparkles,
   faHatWizard,
   faShield,
@@ -50,6 +52,14 @@ function FooterCharacterComponent({
 
   const onGameMasterClick = () => {
     setDisplay("gamemaster");
+  };
+
+  const onCreaturesClick = () => {
+    setDisplay("creatures");
+  };
+
+  const onDropsClick = () => {
+    setDisplay("drops");
   };
 
   return (
@@ -124,20 +134,50 @@ function FooterCharacterComponent({
         {/* <TinyCombatLogComponent session={session} /> */}
       </div>
       {isGm ? (
-        <div
-          className="header_button show_under_px"
-          title="gamemaster"
-          onClick={onGameMasterClick}
-          style={{
-            borderRight: "1px solid #252827",
-            color:
-              display === "gamemaster"
-                ? Constants.WIDGET_PRIMARY_FONT
-                : Constants.WIDGET_SECONDARY_FONT_INACTIVE,
-          }}
-        >
-          <FontAwesomeIcon icon={faHatWizard} />
-        </div>
+        <>
+          <div
+            className="header_button hide_over_breakpoint3"
+            title="creatures"
+            onClick={onCreaturesClick}
+            style={{
+              borderRight: "1px solid #252827",
+              color:
+                display === "creatures"
+                  ? Constants.WIDGET_PRIMARY_FONT
+                  : Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+            }}
+          >
+            <FontAwesomeIcon icon={faGhost} />
+          </div>
+          <div
+            className="header_button hide_over_breakpoint3"
+            title="drops"
+            onClick={onDropsClick}
+            style={{
+              borderRight: "1px solid #252827",
+              color:
+                display === "drops"
+                  ? Constants.WIDGET_PRIMARY_FONT
+                  : Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+            }}
+          >
+            <FontAwesomeIcon icon={faArrowDown} size="lg" />
+          </div>
+          <div
+            className="header_button show_under_px"
+            title="gamemaster"
+            onClick={onGameMasterClick}
+            style={{
+              borderRight: "1px solid #252827",
+              color:
+                display === "gamemaster"
+                  ? Constants.WIDGET_PRIMARY_FONT
+                  : Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+            }}
+          >
+            <FontAwesomeIcon icon={faHatWizard} />
+          </div>
+        </>
       ) : null}
       <div
         className="header_button show_under_px"
