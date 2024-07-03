@@ -61,7 +61,6 @@ export default function JoinSessionComponent({
           paddingRight: "40px", // Quotes around 5px
         }}
         placeholder="Session ID"
-        value={sessionName}
         onChange={onSessionNameChange}
       />
     </>
