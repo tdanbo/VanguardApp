@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Icon from "@mdi/react";
 import { mdiSack } from "@mdi/js";
+import ItemButtonComponent from "../components_cleanup/ItemButtonComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Socket } from "socket.io-client";
@@ -662,8 +663,20 @@ function InventoryEntry({
             <AddButton className={"button"}></AddButton>
           </Column>
         ) : null}
-
-        <Column>
+        <ItemButtonComponent state={"add"} item={item} session={session} />
+        <div
+          className="row"
+          style={{
+            maxWidth: "25px",
+            background: Constants.WIDGET_BACKGROUND_EMPTY,
+            borderRadius: "0px 5px 5px 0px",
+            borderLeft: "1px solid rgba(0, 0, 0, 0.25)",
+            color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+          }}
+        >
+          <FontAwesomeIcon icon={faBars} size="sm" />
+        </div>
+        {/* <Column>
           {browser ? (
             <>
               {isDrop ? (
@@ -775,7 +788,7 @@ function InventoryEntry({
               )}
             </>
           ) : null}
-        </Column>
+        </Column> */}
       </Container>
       {Array.isArray(item.static.effect) && item.static.effect.length > 0 && (
         <EffectContainer $expanded={expanded}>
