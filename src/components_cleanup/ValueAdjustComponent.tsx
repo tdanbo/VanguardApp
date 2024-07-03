@@ -23,7 +23,7 @@ function ValueAdjustComponent({
   character,
   isCreature,
 }: ValueAdjustComponentProps) {
-  const [value, setValue] = useState<number>(0);
+  const [inputValue, setInputValue] = useState<string>("0");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const stopPropagation = (e: React.MouseEvent) => {
@@ -31,50 +31,56 @@ function ValueAdjustComponent({
   };
 
   const handleSingleValueChange = (add: boolean) => {
-    let newValue = value;
+    let newValue = parseInt(inputValue, 10);
     if (add) {
       newValue += 1;
     } else {
       newValue -= 1;
     }
 
-    setValue(newValue);
+    setInputValue(newValue.toString());
   };
 
   const submitValueChange = () => {
-    // Determine the damage adjustment
+    const parsedValue = parseInt(inputValue, 10);
+
     if (type === "rations") {
-      character.rations += value;
+      character.rations = Math.max(0, character.rations + parsedValue);
     } else if (type === "coins") {
-      character.coins += value;
+      character.coins = Math.max(0, character.coins + parsedValue);
     }
+
     update_session(session, websocket, character, isCreature);
     setIsModalOpen(false);
   };
 
   const handleOpen = () => {
-    setValue(0);
+    setInputValue("0");
     setIsModalOpen(true);
   };
 
   const handleClose = () => {
-    setValue(0);
+    setInputValue("0");
     setIsModalOpen(false);
   };
 
   const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = parseInt(e.target.value);
+    const value = e.target.value;
 
-    if (!/^\d*$/.test(e.target.value)) {
-      // If the value is not a number, don't update the state
+    // Check if the value is a valid number or just a minus sign
+    if (!/^-?\d*$/.test(value)) {
+      // If the value is not a valid number, don't update the state
       return;
     }
 
-    if (e.target.value === "") {
-      value = 0;
-    }
+    // Update the input value state
+    setInputValue(value);
+  };
 
-    setValue(value);
+  // Convert the input value to a number when the input loses focus
+  const handleBlur = () => {
+    const numericValue = parseInt(inputValue, 10);
+    setInputValue(numericValue.toString());
   };
 
   return (
@@ -120,8 +126,9 @@ function ValueAdjustComponent({
                 <input
                   className="row empty_color"
                   type="text"
+                  value={inputValue}
                   onChange={handleValueChange}
-                  value={value}
+                  onBlur={handleBlur}
                   style={{
                     fontSize: "40px",
                     minWidth: "50%",
