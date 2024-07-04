@@ -120,6 +120,7 @@ export default function DropsBrowser({
               isDrop={true}
               criticalState={criticalState}
               setCriticalState={setCriticalState}
+              state={session.state === "buy" ? "buy" : "take"}
             />
           );
         })}

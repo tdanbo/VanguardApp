@@ -42,6 +42,8 @@ type health = {
   energy: -10 | -9 | -8 | -7 | -6 | -5 | -3 | -2 | -1 | -1 | 0 | 1 | 2 | 3 | 4;
 };
 
+export type ItemStateType = "take" | "buy" | "drop" | "give";
+
 export type DisplayType =
   | "character"
   | "gamemaster"

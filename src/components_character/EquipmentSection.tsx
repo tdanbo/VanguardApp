@@ -84,6 +84,7 @@ function EquipmentSection({
               isDrop={false}
               criticalState={criticalState}
               setCriticalState={setCriticalState}
+              state="drop"
             />
           );
         }

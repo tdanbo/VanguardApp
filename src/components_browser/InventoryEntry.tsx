@@ -22,6 +22,7 @@ import {
   CharacterEntry,
   ItemEntry,
   SessionEntry,
+  ItemStateType,
 } from "../Types";
 import RollComponent2 from "../components_browser/RollComponent2";
 import { CheckAbility } from "../functions/ActivesFunction";
@@ -262,6 +263,7 @@ interface InventoryEntryProps {
   isDrop: boolean;
   criticalState: boolean;
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+  state: ItemStateType;
 }
 
 function InventoryEntry({
@@ -270,8 +272,6 @@ function InventoryEntry({
   websocket,
   item,
   browser,
-  equipped,
-  id,
   setInventoryState,
   isCreature,
   canBuy,
@@ -283,6 +283,7 @@ function InventoryEntry({
   isDrop,
   criticalState,
   setCriticalState,
+  state,
 }: InventoryEntryProps) {
   const COLOR = Constants.TYPE_COLORS[item.static.category] || "defaultColor";
   const generateRandomId = (length = 10) => {
@@ -663,7 +664,14 @@ function InventoryEntry({
             <AddButton className={"button"}></AddButton>
           </Column>
         ) : null}
-        <ItemButtonComponent state={"add"} item={item} session={session} />
+        <ItemButtonComponent
+          state={state}
+          item={item}
+          session={session}
+          character={character}
+          websocket={websocket}
+          isCreature={isCreature}
+        />
         <div
           className="row"
           style={{

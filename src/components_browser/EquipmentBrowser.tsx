@@ -171,6 +171,7 @@ function EquipmentBrowser({
             isDrop={false}
             criticalState={criticalState}
             setCriticalState={setCriticalState}
+            state={"give"}
           />
         );
       })}

@@ -81,6 +81,7 @@ function InventorySection({
               isDrop={false}
               criticalState={criticalState}
               setCriticalState={setCriticalState}
+              state={"drop"}
             />
           );
         }
