@@ -1,14 +1,4 @@
-import {
-  faBars,
-  faCoins,
-  faFeather,
-  faPlus,
-  faSkull,
-  faUsers,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
-import Icon from "@mdi/react";
-import { mdiSack } from "@mdi/js";
+import { faBars, faFeather, faSkull } from "@fortawesome/free-solid-svg-icons";
 import ItemButtonComponent from "../components_cleanup/ItemButtonComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
@@ -26,13 +16,11 @@ import {
 } from "../Types";
 import RollComponent2 from "../components_browser/RollComponent2";
 import { CheckAbility } from "../functions/ActivesFunction";
-import { DeleteInventorySlot } from "../functions/CharacterFunctions";
-import { GetMaxSlots, RulesDiceAdjust } from "../functions/RulesFunctions";
+import { RulesDiceAdjust } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import { IsArmor, IsWeapon, StyledText } from "../functions/UtilityFunctions";
 import { Qualities } from "../functions/rules/Qualities";
-import { cloneDeep } from "lodash";
-import { ShuffleArray, toTitleCase } from "../functions/UtilityFunctions";
+import { toTitleCase } from "../functions/UtilityFunctions";
 import DurabilityComponent from "./DurabilityComponent";
 import QuantityComponent from "./QuantityComponent";
 const MasterContainer = styled.div`
@@ -66,40 +54,6 @@ const EffectContainer = styled.div<EffectContainerProps>`
   font-size: 12px;
   padding: 5px;
   color: ${Constants.WIDGET_SECONDARY_FONT};
-`;
-
-const AddButton = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  height: 100%;
-  width: 20px;
-  max-width: 20px;
-  border-right-top-radius: ${Constants.BORDER_RADIUS};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-`;
-
-const DeleteButton = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  width: 20px;
-  max-width: 20px;
-  border-right-top-radius: ${Constants.BORDER_RADIUS};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-  &:hover {
-    color: ${Constants.BRIGHT_RED};
-  }
 `;
 
 const EquipContainer = styled.div`
@@ -226,12 +180,6 @@ const Row = styled.div`
   flex-direction: row;
 `;
 
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-basis: 0;
-`;
-
 const CorruptionContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -247,20 +195,14 @@ interface InventoryEntryProps {
   character: CharacterEntry;
   session: SessionEntry;
   websocket: Socket;
-  index: number;
   browser: boolean;
-  equipped: string;
   item: ItemEntry;
-  id: string;
   isGm: boolean;
-  setInventoryState?: (inventoryState: number) => void;
   isCreature: boolean;
-  canBuy: boolean;
   advantage: AdvantageType;
   activeState: ActiveStateType;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  isDrop: boolean;
   criticalState: boolean;
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
   state: ItemStateType;
@@ -272,25 +214,17 @@ function InventoryEntry({
   websocket,
   item,
   browser,
-  setInventoryState,
   isCreature,
-  canBuy,
   isGm,
   advantage,
   activeState,
   setActiveState,
   setAdvantage,
-  isDrop,
   criticalState,
   setCriticalState,
   state,
 }: InventoryEntryProps) {
   const COLOR = Constants.TYPE_COLORS[item.static.category] || "defaultColor";
-  const generateRandomId = (length = 10) => {
-    return Math.random()
-      .toString(36)
-      .substring(2, 2 + length);
-  };
 
   const HandleEquip = (item: ItemEntry) => {
     item.equipped = true;
@@ -300,171 +234,6 @@ function InventoryEntry({
   const HandleUnequip = () => {
     item.equipped = false;
     update_session(session, websocket, character, isCreature);
-  };
-
-  const RemoveLootItem = (item: ItemEntry) => {
-    session.loot.drops = session.loot.drops.filter(
-      (loot) => loot.id !== item.id,
-    );
-    session.loot.general = session.loot.general.filter(
-      (loot) => loot.id !== item.id,
-    );
-    session.loot.armory = session.loot.armory.filter(
-      (loot) => loot.id !== item.id,
-    );
-    session.loot.alchemy = session.loot.alchemy.filter(
-      (loot) => loot.id !== item.id,
-    );
-    session.loot.novelty = session.loot.novelty.filter(
-      (loot) => loot.id !== item.id,
-    );
-  };
-
-  const RemoveBulkItem = (item: ItemEntry) => {
-    const decrementCount = (lootArray: ItemEntry[]) => {
-      return lootArray.map((loot) => {
-        if (loot.id === item.id && loot.quantity > 0) {
-          return {
-            ...loot,
-            quantity: loot.quantity - 1,
-          };
-        }
-        return loot;
-      });
-    };
-
-    if (item.static.bulk === true && item.quantity > 1) {
-      item.quantity -= 1;
-      session.loot.general = decrementCount(session.loot.general);
-      session.loot.armory = decrementCount(session.loot.armory);
-      session.loot.alchemy = decrementCount(session.loot.alchemy);
-      session.loot.novelty = decrementCount(session.loot.novelty);
-    } else {
-      RemoveLootItem(item);
-    }
-  };
-
-  const createArray = (number: number) => {
-    return Array.from({ length: number }, (_, index) => index);
-  };
-
-  const AddResource = (item: ItemEntry, buy: boolean, share: boolean) => {
-    if (share) {
-      let bulk = item.quantity;
-      const character_index = ShuffleArray(
-        createArray(session.characters.length),
-      );
-      while (bulk > 0) {
-        for (const index of character_index) {
-          if (bulk <= 0) break; // Stop if no more items to distribute
-          if (item.name === "Thaler") {
-            session.characters[index].coins += item.static.cost;
-            bulk -= 1;
-          } else if (item.name === "Ration") {
-            session.characters[index].rations += 1;
-            bulk -= 1;
-          }
-        }
-      }
-      RemoveLootItem(item);
-    } else {
-      if (!CheckBuy(item, buy)) {
-        return;
-      }
-      RemoveBulkItem(item);
-      if (item.name === "Thaler") {
-        character.coins += item.static.cost;
-      } else if (item.name === "Ration") {
-        character.rations += 1;
-      }
-    }
-  };
-
-  const AddBulkItem = (item: ItemEntry, buy: boolean) => {
-    if (!CheckBuy(item, buy)) {
-      return;
-    }
-
-    const inventoryItem = character.inventory.find(
-      (inventory_item) =>
-        inventory_item.name === item.name && item.static.bulk === true,
-    );
-
-    if (inventoryItem) {
-      RemoveBulkItem(item);
-      inventoryItem.quantity += 1;
-    } else {
-      RemoveBulkItem(item);
-      const new_item = cloneDeep(item);
-      new_item.id = generateRandomId();
-      new_item.quantity = 1;
-      character.inventory.push(new_item);
-    }
-  };
-
-  const CheckBuy = (item: ItemEntry, buy: boolean) => {
-    if (buy) {
-      if (character.coins < item.static.cost) {
-        return false;
-      }
-      character.coins -= item.static.cost;
-      return true;
-    }
-    return true;
-  };
-
-  const AddRegularItem = (item: ItemEntry, buy: boolean) => {
-    if (!CheckBuy(item, buy)) {
-      return;
-    }
-    RemoveLootItem(item);
-    const new_item = cloneDeep(item);
-    new_item.id = generateRandomId();
-    new_item.quantity = 1;
-    character.inventory.push(new_item);
-  };
-
-  const AddInventorySlot = (buy: boolean, share: boolean) => {
-    const inventory = character.inventory;
-    if (
-      inventory.length === GetMaxSlots(character) * 2 ||
-      (buy && character.coins < item.static.cost)
-    ) {
-      return;
-    }
-
-    if (item.static.category === "resource") {
-      AddResource(item, buy, share);
-    } else if (item.static.bulk === true) {
-      AddBulkItem(item, buy);
-    } else {
-      AddRegularItem(item, buy);
-    }
-
-    update_session(session, websocket, character, isCreature);
-    if (setInventoryState) {
-      setInventoryState(1);
-    }
-  };
-
-  const RemoveInventorySlot = (item_id: string) => {
-    if (item.static.bulk) {
-      if (item.quantity === 0) {
-        return;
-      }
-      item.quantity -= 1;
-
-      if (item.quantity === 0) {
-        DeleteInventorySlot(character, item.id);
-      }
-
-      AddToLoot(item, session, websocket, character, isCreature);
-      update_session(session, websocket, character, isCreature);
-    } else {
-      DeleteInventorySlot(character, item_id);
-      session.loot.drops.push(item);
-      update_session(session, websocket, character, isCreature);
-    }
   };
 
   const equipHandler = (item: ItemEntry) => {
@@ -483,11 +252,6 @@ function InventoryEntry({
   const HandleLightSetting = () => {
     console.log("Light setting");
     item.light = !item.light;
-    update_session(session, websocket, character, isCreature);
-  };
-
-  const RemoveSingleLoot = (item: ItemEntry) => {
-    RemoveLootItem(item);
     update_session(session, websocket, character, isCreature);
   };
 
@@ -648,22 +412,6 @@ function InventoryEntry({
             />
           )}
         </RollContainer>
-
-        {browser && isGm && !isDrop ? (
-          <Column>
-            <AddButton
-              className={"button"}
-              onClick={() => AddInventorySlot(canBuy, false)}
-            >
-              <FontAwesomeIcon
-                icon={canBuy ? faCoins : faPlus}
-                style={{ fontSize: "12px" }}
-                title={canBuy ? "Buy One" : "Add to inventory"}
-              />
-            </AddButton>
-            <AddButton className={"button"}></AddButton>
-          </Column>
-        ) : null}
         <ItemButtonComponent
           state={state}
           item={item}
@@ -684,119 +432,6 @@ function InventoryEntry({
         >
           <FontAwesomeIcon icon={faBars} size="sm" />
         </div>
-        {/* <Column>
-          {browser ? (
-            <>
-              {isDrop ? (
-                <>
-                  {isGm ? (
-                    <AddButton
-                      className={"button"}
-                      onClick={() => RemoveSingleLoot(item)}
-                    >
-                      <FontAwesomeIcon
-                        icon={faXmark}
-                        style={{ fontSize: "12px" }}
-                        color={Constants.WIDGET_SECONDARY_FONT}
-                        title={"Remove loot"}
-                      />
-                    </AddButton>
-                  ) : (
-                    <AddButton
-                      className={"button"}
-                      onClick={() => AddInventorySlot(canBuy, false)}
-                    >
-                      <FontAwesomeIcon
-                        icon={canBuy ? faCoins : faPlus}
-                        style={{ fontSize: "12px" }}
-                        color={
-                          canBuy ? "#f5c542" : Constants.WIDGET_SECONDARY_FONT
-                        }
-                        title={canBuy ? "Buy One" : "Add to inventory"}
-                      />
-                    </AddButton>
-                  )}
-                </>
-              ) : (
-                <AddButton
-                  className={"button"}
-                  onClick={() =>
-                    AddToLoot(item, session, websocket, character, isCreature)
-                  }
-                >
-                  <Icon path={mdiSack} size={0.6} />
-                </AddButton>
-              )}
-              {item.static.category === "resource" ? (
-                <AddButton
-                  className={"button"}
-                  title={"Distribute to group"}
-                  onClick={() => AddInventorySlot(false, true)}
-                >
-                  <FontAwesomeIcon
-                    icon={faUsers}
-                    style={{ fontSize: "12px" }}
-                  />
-                </AddButton>
-              ) : Array.isArray(item.static.effect) &&
-                item.static.effect.length > 0 ? (
-                expanded ? (
-                  <AddButton className={"button"}>
-                    <FontAwesomeIcon
-                      icon={faBars}
-                      style={{
-                        fontSize: "12px",
-                        color: Constants.WIDGET_SECONDARY_FONT,
-                      }}
-                    />
-                  </AddButton>
-                ) : (
-                  <AddButton className={"button"}>
-                    <FontAwesomeIcon
-                      icon={faBars}
-                      style={{ fontSize: "12px" }}
-                    />
-                  </AddButton>
-                )
-              ) : (
-                <AddButton />
-              )}
-            </>
-          ) : equipped === "" ? (
-            <>
-              <DeleteButton
-                className={"button"}
-                onClick={() => RemoveInventorySlot(id)}
-                title={"Drop item"}
-              >
-                <FontAwesomeIcon icon={faXmark} style={{ fontSize: "12px" }} />
-              </DeleteButton>
-              {Array.isArray(item.static.effect) &&
-              item.static.effect.length > 0 ? (
-                expanded ? (
-                  <AddButton className={"button"}>
-                    <FontAwesomeIcon
-                      icon={faBars}
-                      style={{
-                        fontSize: "12px",
-                        color: Constants.WIDGET_SECONDARY_FONT,
-                      }}
-                    />
-                  </AddButton>
-                ) : (
-                  <AddButton className={"button"}>
-                    <FontAwesomeIcon
-                      icon={faBars}
-                      style={{ fontSize: "12px" }}
-                    />
-                  </AddButton>
-                )
-              ) : (
-                <AddButton />
-              )}
-            </>
-          ) : null}
-        </Column> */}
       </Container>
       {Array.isArray(item.static.effect) && item.static.effect.length > 0 && (
         <EffectContainer $expanded={expanded}>

@@ -28,14 +28,12 @@ function CleanEmptyItems(
   item: ItemEntry,
   quantity: number,
   session: SessionEntry,
+  give: boolean,
 ) {
-  item.quantity -= quantity;
+  if (!give) {
+    item.quantity -= quantity;
+  }
 
-  //   session.loot.drops = decrementItemQuantity(
-  //     session.loot.drops,
-  //     item.id,
-  //     quantity,
-  //   );
   session.loot.alchemy = decrementItemQuantity(
     session.loot.alchemy,
     item.id,
@@ -96,6 +94,7 @@ export function TakeItem(
   websocket: Socket,
   isCreature: boolean,
   quantity: number,
+  give: boolean,
 ) {
   if (item.name === "Thaler") {
     character.coins += quantity;
@@ -112,7 +111,7 @@ export function TakeItem(
       character.inventory.push(new_item);
     }
   }
-  CleanEmptyItems(character, item, quantity, session);
+  CleanEmptyItems(character, item, quantity, session, give);
   update_session(session, websocket, character, isCreature);
 }
 
@@ -123,6 +122,7 @@ export function DropItem(
   websocket: Socket,
   isCreature: boolean,
   quantity: number,
+  give: boolean,
   destroy: boolean,
 ) {
   const bulk_item_exist = SearchItem(character, "drops", item, session);
@@ -134,10 +134,10 @@ export function DropItem(
     if (!destroy) {
       const new_item = cloneDeep(item);
       new_item.id = uniqueId();
-      new_item.quantity = 1;
+      new_item.quantity = quantity;
       session.loot.drops.push(new_item);
     }
   }
-  CleanEmptyItems(character, item, quantity, session);
+  CleanEmptyItems(character, item, quantity, session, give);
   update_session(session, websocket, character, isCreature);
 }

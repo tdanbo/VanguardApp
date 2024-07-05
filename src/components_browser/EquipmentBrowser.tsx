@@ -43,7 +43,6 @@ function EquipmentBrowser({
   character,
   session,
   websocket,
-  setInventoryState,
   isCreature,
   search,
   isGm,
@@ -156,19 +155,13 @@ function EquipmentBrowser({
             websocket={websocket}
             key={`InventoryEntry${index}`}
             browser={true}
-            index={index}
             item={entry}
-            equipped={""}
-            id={""}
-            setInventoryState={setInventoryState}
             isCreature={isCreature}
-            canBuy={false}
             isGm={isGm}
             advantage={advantage}
             activeState={activeState}
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
-            isDrop={false}
             criticalState={criticalState}
             setCriticalState={setCriticalState}
             state={"give"}
