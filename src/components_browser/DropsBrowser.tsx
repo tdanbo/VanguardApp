@@ -34,7 +34,6 @@ export default function DropsBrowser({
   character,
   session,
   websocket,
-  setInventoryState,
   isCreature,
   isGm,
   advantage,
@@ -105,21 +104,16 @@ export default function DropsBrowser({
               websocket={websocket}
               key={`InventoryEntry${index}`}
               browser={true}
-              index={index}
               item={entry}
-              equipped={""}
-              id={""}
-              setInventoryState={setInventoryState}
               isCreature={isCreature}
-              canBuy={session.state === "buy" ? true : false}
               isGm={isGm}
               advantage={advantage}
               activeState={activeState}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
-              isDrop={true}
               criticalState={criticalState}
               setCriticalState={setCriticalState}
+              state={session.state === "buy" ? "buy" : "take"}
             />
           );
         })}

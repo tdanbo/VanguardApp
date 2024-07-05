@@ -67,20 +67,16 @@ function InventorySection({
               websocket={websocket}
               key={`InventoryEntry${index}`}
               browser={false}
-              index={index}
               item={item}
-              id={item.id}
-              equipped={""}
               isCreature={isCreature}
-              canBuy={false}
               isGm={false}
               activeState={activeState}
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
-              isDrop={false}
               criticalState={criticalState}
               setCriticalState={setCriticalState}
+              state={"drop"}
             />
           );
         }

@@ -4,6 +4,7 @@ import { GetGameData } from "../contexts/GameContent";
 import { StatName } from "../Types";
 import { update_session } from "./SessionsFunctions";
 import { IsArmor } from "./UtilityFunctions";
+import { GetMaxSlots } from "./RulesFunctions";
 import {
   CharacterEntry,
   modifiedCreature,
@@ -266,4 +267,11 @@ export function GetDefenseStat(character: CharacterEntry) {
     defense_stat = "quick";
   }
   return defense_stat;
+}
+
+export function IsOverburden(character: CharacterEntry) {
+  if (character.inventory.length === GetMaxSlots(character) * 2) {
+    return true;
+  }
+  return false;
 }

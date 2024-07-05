@@ -195,6 +195,7 @@ body::-webkit-scrollbar {
 .button {
   cursor: pointer;
   transition: background-color 0.1s ease;
+  color: #dfdfdf;
 }
 
 .button:hover {
@@ -208,6 +209,12 @@ body::-webkit-scrollbar {
 .button.active {
   background-color: #737977; /* Change this to your preferred active color */
   font-weight: bold;
+}
+
+.button:disabled {
+  background-color: #252827; /* Change this to your preferred disabled color */
+  color: #737977;
+  cursor: not-allowed;
 }
 
 .red {
