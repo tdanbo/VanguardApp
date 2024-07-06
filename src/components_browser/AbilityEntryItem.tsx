@@ -1,9 +1,4 @@
-import {
-  faBars,
-  faChevronRight,
-  faSkull,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
@@ -16,6 +11,7 @@ import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
+  ItemStateType,
   RollTypeEntry,
   SessionEntry,
 } from "../Types";
@@ -24,6 +20,7 @@ import { CheckAbility } from "../functions/ActivesFunction";
 import { update_session } from "../functions/SessionsFunctions";
 import { StyledText, toTitleCase } from "../functions/UtilityFunctions";
 import LevelComponent from "../components_browser/LevelComponent";
+import AbilityButtonComponent from "../components_cleanup/AbilityButtonComponent";
 
 const EntryColor = (type: string) => {
   if (type === undefined) {
@@ -65,75 +62,11 @@ const Container = styled.div`
   padding: 2px;
 `;
 
-interface ExpandedContainerProps {
-  expanded: boolean;
-}
-
-const ExpandedContainer = styled.div<ExpandedContainerProps>`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding-right: 5px;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-
-  /* When expanded is true, always show the icon */
-  ${({ expanded }) =>
-    expanded &&
-    `
-    visibility: visible;
-    opacity: 1;
-  `}
-`;
-
 const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   margin-left: 5px;
-  &:hover {
-    ${ExpandedContainer} {
-      visibility: visible;
-      opacity: 1;
-    }
-  }
-`;
-
-const AddButton = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  width: 20px;
-  max-width: 20px;
-  border-right-top-radius: ${Constants.BORDER_RADIUS};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-`;
-
-const DeleteButton = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  width: 20px;
-  max-width: 20px;
-  border-right-top-radius: ${Constants.BORDER_RADIUS};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-  &:hover {
-    color: ${Constants.BRIGHT_RED};
-  }
 `;
 
 const ExpandButten = styled.div`
@@ -191,12 +124,6 @@ const AbilityDescription = styled.div`
   font-size: 14px;
 `;
 
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-basis: 0;
-`;
-
 const CorruptionContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -226,6 +153,7 @@ interface AbilityEntryItemProps {
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+  state: ItemStateType;
 }
 
 function GetCurrentLevel(ability: AbilityEntry) {
@@ -241,7 +169,6 @@ function GetCurrentLevel(ability: AbilityEntry) {
 function AbilityEntryItem({
   ability,
   browser,
-  setInventoryState,
   character,
   session,
   websocket,
@@ -251,8 +178,10 @@ function AbilityEntryItem({
   setActiveState,
   setAdvantage,
   setCriticalState,
+  state,
 }: AbilityEntryItemProps) {
   // We will get the dynamic object and look for the database entry. If it doesn't exist, we will return null.
+  const [isHovered, setIsHovered] = useState<boolean>(false);
   const [free, setFree] = useState<boolean>(false);
   const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
   useEffect(() => {
@@ -308,12 +237,6 @@ function AbilityEntryItem({
     );
   };
 
-  const generateRandomId = (length = 10) => {
-    return Math.random()
-      .toString(36)
-      .substring(2, 2 + length);
-  };
-
   useEffect(() => {
     if (browser) {
       if (ability.static.master.description !== "") {
@@ -329,31 +252,6 @@ function AbilityEntryItem({
   });
 
   const [expanded, setExpanded] = useState<boolean>(false);
-
-  const AddAbilitySlot = () => {
-    const abilityWithId = {
-      ...ability,
-      id: generateRandomId(),
-    };
-
-    character.abilities.push(abilityWithId);
-
-    update_session(session, websocket, character, isCreature);
-    if (setInventoryState) {
-      setInventoryState(2);
-    }
-  };
-
-  const DeleteAbilitySlot = (ability: AbilityEntry) => {
-    const ability_id = ability.id;
-    const new_abilities = character.abilities.filter(
-      (item) => item.id !== ability_id,
-    );
-
-    character.abilities = new_abilities;
-
-    update_session(session, websocket, character, isCreature);
-  };
 
   const has_theurgy_novice = CheckAbility(character, "Theurgy", "novice");
   const has_theurgy_adept = CheckAbility(character, "Theurgy", "adept");
@@ -387,10 +285,9 @@ function AbilityEntryItem({
   };
 
   return (
-    <BaseContainer className="button-hover">
+    <BaseContainer>
       <Container>
         <ExpandButten
-          className={"button-hover"}
           title={free ? "Free Ability" : ""}
           onClick={ChangeFreeHandle}
         >
@@ -398,6 +295,8 @@ function AbilityEntryItem({
         </ExpandButten>
         <NameContainer
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           <AbilityName type={ability.static.category} $active={true}>
             {ability.name}
@@ -453,11 +352,6 @@ function AbilityEntryItem({
               )}
             </CorruptionContainer>
           </AbilityName>
-          {/* {ability.static.tradition !== []
-              ? toTitleCase(ability.static.category)
-              : `${toTitleCase(ability.static.category)}, ${
-                  ability.static.tradition
-                }`} */}
           <AbilityDetail>
             {toTitleCase(ability.static.category)}
             {ability.static.tradition &&
@@ -506,44 +400,30 @@ function AbilityEntryItem({
             />
           ) : null}
         </RollContainer>
+        <AbilityButtonComponent
+          state={state}
+          ability={ability}
+          character={character}
+          session={session}
+          websocket={websocket}
+          isCreature={isCreature}
+        />
+        <div
+          className="faded_button"
+          style={{
+            minWidth: "25px",
+            borderRadius: "0px 5px 5px 0px",
+            borderLeft: "1px solid rgba(0, 0, 0, 0.25)",
 
-        {browser ? (
-          <AddButton className={"button-hover"} onClick={AddAbilitySlot}>
-            <FontAwesomeIcon
-              icon={faChevronRight}
-              style={{ fontSize: "12px" }}
-            />
-          </AddButton>
-        ) : (
-          <Column>
-            <DeleteButton
-              className={"button-hover"}
-              onClick={() => DeleteAbilitySlot(ability)}
-            >
-              <FontAwesomeIcon icon={faXmark} style={{ fontSize: "12px" }} />
-            </DeleteButton>
-            {expanded ? (
-              <AddButton className={"button-hover"}>
-                <FontAwesomeIcon
-                  icon={faBars}
-                  style={{
-                    fontSize: "12px",
-                    color: Constants.WIDGET_SECONDARY_FONT,
-                  }}
-                />
-              </AddButton>
-            ) : (
-              <AddButton className={"button-hover"}>
-                <FontAwesomeIcon
-                  icon={faBars}
-                  style={{
-                    fontSize: "12px",
-                  }}
-                />
-              </AddButton>
-            )}
-          </Column>
-        )}
+            color:
+              expanded || isHovered
+                ? Constants.WIDGET_SECONDARY_FONT
+                : Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+          }}
+          onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
+        >
+          <FontAwesomeIcon icon={faBars} size="sm" />
+        </div>
       </Container>
       <LevelContainer $expanded={expanded}>
         {ability.static.novice.description !== "" &&

@@ -224,6 +224,7 @@ function InventoryEntry({
   setCriticalState,
   state,
 }: InventoryEntryProps) {
+  const [isHovered, setIsHovered] = useState<boolean>(false);
   const COLOR = Constants.TYPE_COLORS[item.static.category] || "defaultColor";
 
   const HandleEquip = (item: ItemEntry) => {
@@ -257,7 +258,7 @@ function InventoryEntry({
 
   return (
     <MasterContainer>
-      <Container className="button-hover">
+      <Container>
         <EquipContainer>
           {[1, 2, 3].includes(item.static.slot) ? (
             <EquipButton
@@ -309,6 +310,8 @@ function InventoryEntry({
         </EquipContainer>
         <NameContainer
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           <NameBox color={COLOR}>
             {item.name}
@@ -421,16 +424,22 @@ function InventoryEntry({
           isCreature={isCreature}
         />
         <div
-          className="row"
+          className="faded_button"
           style={{
-            maxWidth: "25px",
-            background: Constants.WIDGET_BACKGROUND_EMPTY,
+            minWidth: "25px",
             borderRadius: "0px 5px 5px 0px",
             borderLeft: "1px solid rgba(0, 0, 0, 0.25)",
-            color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+
+            color:
+              expanded || isHovered
+                ? Constants.WIDGET_SECONDARY_FONT
+                : Constants.WIDGET_SECONDARY_FONT_INACTIVE,
           }}
+          onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >
-          <FontAwesomeIcon icon={faBars} size="sm" />
+          {item.static.effect.length > 0 ? (
+            <FontAwesomeIcon icon={faBars} size="sm" />
+          ) : null}
         </div>
       </Container>
       {Array.isArray(item.static.effect) && item.static.effect.length > 0 && (

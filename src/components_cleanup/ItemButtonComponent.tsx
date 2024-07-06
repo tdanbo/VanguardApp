@@ -161,13 +161,10 @@ function ItemButtonComponent({
   return (
     <>
       <div
-        className="row"
+        className="faded_button"
         style={{
           maxWidth: "40px",
-          background: Constants.WIDGET_BACKGROUND_EMPTY,
-          borderRadius: "0px",
-          borderLeft: "1px solid rgba(0, 0, 0, 0.25)",
-          color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+          minWidth: "40px",
         }}
         onClick={() => setIsModalOpen(true)}
       >
