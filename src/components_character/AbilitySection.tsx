@@ -87,6 +87,7 @@ function AbilitySection({
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
             setCriticalState={setCriticalState}
+            state="drop"
           />
         );
       })}

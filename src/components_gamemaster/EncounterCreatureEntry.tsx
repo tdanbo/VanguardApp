@@ -679,6 +679,7 @@ function EncounterCreatureEntry({
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
               setCriticalState={setCriticalState}
+              state="drop"
             />
           ) : null;
         })}

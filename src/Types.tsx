@@ -43,7 +43,6 @@ type health = {
 };
 
 export type ItemStateType = "take" | "buy" | "drop" | "give";
-
 export type DisplayType =
   | "character"
   | "gamemaster"
