@@ -188,7 +188,12 @@ function ItemButtonComponent({
         >
           <div
             className="column empty_color"
-            style={{ maxWidth: "15%", maxHeight: "20%", padding: "5px" }}
+            style={{
+              minWidth: "300px",
+              maxWidth: "15%",
+              maxHeight: "20%",
+              padding: "5px",
+            }}
             onClick={stopPropagation}
           >
             <div className="row" style={{ fontSize: "25px" }}>
