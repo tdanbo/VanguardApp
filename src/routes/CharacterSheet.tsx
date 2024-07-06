@@ -57,6 +57,8 @@ type CharacterSheetProps = {
   setIsJoined: React.Dispatch<React.SetStateAction<boolean>>;
   isJoined: boolean;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
+  setLeftDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
+  leftDisplay: DisplayType;
 };
 
 function CharacterSheet({
@@ -79,11 +81,16 @@ function CharacterSheet({
   isJoined,
   isGm,
   setIsGm,
+  setLeftDisplay,
+  leftDisplay,
 }: CharacterSheetProps) {
   UpdateAbilityStats(character);
 
   const onGmSwitch = () => {
     setIsGm((prevMode) => !prevMode);
+    if (leftDisplay === "drops") {
+      setLeftDisplay("inventory");
+    }
   };
 
   return (

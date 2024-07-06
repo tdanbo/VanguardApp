@@ -203,6 +203,7 @@ function ItemButtonComponent({
               <div className="row">
                 <div
                   className="row button_color button"
+                  style={{ fontSize: "30px", fontWeight: "bold" }}
                   onClick={() => handleSingleQuantityChange(false)}
                 >
                   -
@@ -223,6 +224,7 @@ function ItemButtonComponent({
                 />
                 <div
                   className="row button_color button"
+                  style={{ fontSize: "30px", fontWeight: "bold" }}
                   onClick={() => handleSingleQuantityChange(true)}
                 >
                   +
@@ -258,7 +260,7 @@ function ItemButtonComponent({
               ) : state === "give" ? (
                 <button
                   className="row button_color button"
-                  onClick={() => setIsModalOpen(false)}
+                  onClick={() => HandleTakeItem()}
                 >
                   {character.name}
                 </button>

@@ -131,6 +131,8 @@ function App() {
               setIsJoined={setIsJoined}
               isJoined={isJoined}
               setIsGm={setIsGm}
+              leftDisplay={leftDisplay}
+              setLeftDisplay={setLeftDisplay}
             />
           ) : display === "combatlog" ? (
             <CombatSection
