@@ -115,7 +115,6 @@ body::-webkit-scrollbar {
   gap: 10px;
   box-sizing: border-box;
   user-select: none;
-  background: var(--clr-primary);
 }
 .column {
   display: flex;
