@@ -39,6 +39,7 @@ body::-webkit-scrollbar {
     "Helvetica Neue",
     sans-serif;
   height: 100%; /* Assuming you're using a setup like create-react-app, adjust if you have a different root */
+  --clr-primary: #ff0000;
 }
 
 .upper {
@@ -114,6 +115,7 @@ body::-webkit-scrollbar {
   gap: 10px;
   box-sizing: border-box;
   user-select: none;
+  background: var(--clr-primary);
 }
 .column {
   display: flex;
