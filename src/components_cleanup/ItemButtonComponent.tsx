@@ -7,15 +7,15 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Constants from "../Constants";
 import {
-  ItemEntry,
-  SessionEntry,
   CharacterEntry,
+  ItemEntry,
   ItemStateType,
+  SessionEntry,
 } from "../Types";
 
-import { TakeItem, DropItem } from "../functions/ItemHandleFunctions";
-import { Socket } from "socket.io-client";
 import { useEffect, useState } from "react";
+import { Socket } from "socket.io-client";
+import { DropItem, TakeItem } from "../functions/ItemHandleFunctions";
 import { toTitleCase } from "../functions/UtilityFunctions";
 
 interface ItemButtonComponent {
@@ -56,6 +56,11 @@ function ItemButtonComponent({
 
   const HandleTakeItem = () => {
     TakeItem(item, character, session, websocket, isCreature, quantity, false);
+    setIsModalOpen(false);
+  };
+
+  const HandleGamemasterTakeItem = () => {
+    TakeItem(item, character, session, websocket, isCreature, quantity, true);
     setIsModalOpen(false);
   };
 
@@ -260,7 +265,7 @@ function ItemButtonComponent({
               ) : state === "give" ? (
                 <button
                   className="row button_color button"
-                  onClick={() => HandleTakeItem()}
+                  onClick={() => HandleGamemasterTakeItem()}
                 >
                   {character.name}
                 </button>

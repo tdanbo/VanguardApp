@@ -1,11 +1,16 @@
-import Icon from "@mdi/react";
+import {
+  faAnglesDown,
+  faAnglesUp,
+  faStarOfLife,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { mdiShield, mdiSwordCross } from "@mdi/js";
-import "../Styles.css";
-import { toTitleCase } from "../functions/UtilityFunctions";
+import Icon from "@mdi/react";
 import { random } from "lodash";
 import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
+import "../Styles.css";
 import {
   ActiveStateType,
   AdvantageType,
@@ -18,12 +23,7 @@ import {
   SessionEntry,
 } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAnglesDown,
-  faAnglesUp,
-  faStarOfLife,
-} from "@fortawesome/free-solid-svg-icons";
+import { toTitleCase } from "../functions/UtilityFunctions";
 
 type RollComponentProps = {
   session: SessionEntry;
@@ -45,36 +45,6 @@ type RollComponentProps = {
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
-function HasAmmunition(character: CharacterEntry) {
-  for (const item of character.inventory) {
-    if (
-      item.static.category === "projectile" &&
-      item.equipped &&
-      item.quantity > 0
-    ) {
-      item.quantity -= 1;
-      return true;
-    }
-  }
-  return false;
-}
-
-function IsRangedWeapon(item: ItemEntry) {
-  if (item.static.category === "ranged weapon") {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function Ammunition(character: CharacterEntry) {
-  if (HasAmmunition(character)) {
-    return true;
-  } else {
-    return false;
-  }
-}
 
 function RollComponent({
   roll_type,
@@ -156,12 +126,6 @@ function RollComponent({
     // if (target !== 0 && result > target) {
     //   success = false;
     // }
-
-    if (roll_type === "damage" && item && IsRangedWeapon(item)) {
-      if (!Ammunition(character)) {
-        return;
-      }
-    }
 
     const roll_entry: RollEntry = {
       result1: result1,

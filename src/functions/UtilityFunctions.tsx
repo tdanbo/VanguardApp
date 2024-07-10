@@ -1,25 +1,25 @@
-import { Socket } from "socket.io-client";
-import * as Constants from "../Constants";
-import { GeneralItem } from "../Types";
-import { update_session } from "../functions/SessionsFunctions";
+import { cloneDeep, random } from "lodash";
 import React from "react";
+import { Socket } from "socket.io-client";
+import { v4 as uuidv4 } from "uuid";
+import * as Constants from "../Constants";
 import {
   AbilityEntry,
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
-  EffectEntry,
-  ItemEntry,
-  SessionEntry,
+  CombatEntry,
   CriticalType,
+  EffectEntry,
+  GeneralItem,
+  ItemEntry,
   RollEntry,
   RollTypeEntry,
-  CombatEntry,
+  SessionEntry,
 } from "../Types";
-import { cloneDeep, random } from "lodash";
-import { HasRangedWeapon, Ammunition } from "./CharacterFunctions";
+import { update_session } from "../functions/SessionsFunctions";
+import { Ammunition, HasRangedWeapon } from "./CharacterFunctions";
 import { GetMaxToughness, GetTemporaryCorruption } from "./RulesFunctions";
-import { v4 as uuidv4 } from "uuid";
 
 export function UpperFirstLetter(input: string): string {
   if (!input || typeof input !== "string") {
