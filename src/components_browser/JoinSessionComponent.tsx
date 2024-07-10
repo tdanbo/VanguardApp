@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { get_session } from "../functions/SessionsFunctions";
-import * as Constants from "../Constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
+import * as Constants from "../Constants";
+import { get_session } from "../functions/SessionsFunctions";
 import { SessionEntry } from "../Types";
 
 interface JoinSessionComponentProps {
@@ -34,7 +34,7 @@ export default function JoinSessionComponent({
   return (
     <>
       <div
-        className="row button button--tertiary"
+        className="row button bg--primary-5"
         style={{ maxWidth: "35px" }}
         onClick={handleJoinSession}
       >

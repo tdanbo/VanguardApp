@@ -17,30 +17,34 @@ body::-webkit-scrollbar {
 /* Resetting */
 
 :root {
-  --clr-red: #ff0000;
+  --clr-bright-red: hsl(0, 48%, 39%);
   --clr-background: hsl(165, 10%, 8%);
-  --clr-primary: hsl(160, 6%, 10%);
-  --clr-secondary: hsl(160, 4%, 15%);
-  --clr-tertiary: hsl(160, 2.8%, 21.4%);
-  --clr-border: hsl(160, 3.9%, 15.1%);
-  --clr-font-primary: hsl(0, 0%, 87%);
+  --clr-primary-1: hsl(160, 3%, 10%);
+  --clr-primary-2: hsl(160, 3%, 13%);
+  --clr-primary-3: hsl(160, 3%, 16%);
+  --clr-primary-4: hsl(160, 3%, 19%);
+  --clr-primary-5: hsl(160, 3%, 22%);
+  --clr-border: hsl(160, 3%, 15.1%);
+  --clr-font-primary-1: hsl(0, 0%, 90%);
+  --clr-font-primary-2: hsl(0, 0%, 65%);
+  --clr-font-primary-3: hsl(0, 0%, 45%);
   --clr-font-secondary: #ff0000;
   --gap: 10px;
   --border-radius: 5px;
+  --font-size-large: 18px;
+  --font-size-normal: 16px;
+  --font-size-small: 12px;
+  --font-size-tiny: 10px;
 }
 
 #root {
   font-family:
     system-ui,
     -apple-system,
-    BlinkMacSystemFont,
     "Segoe UI",
     Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    "Open Sans",
     "Helvetica Neue",
+    Arial,
     sans-serif;
   height: 100%; /* Assuming you're using a setup like create-react-app, adjust if you have a different root */
   user-select: none;
@@ -82,42 +86,90 @@ body {
   width: 100%;
   height: 100%;
   gap: var(--gap);
+  border-radius: var(--border-radius);
 }
 
-.row--scroll {
-  min-height: 50px;
-  max-height: 50px;
-  padding: 2px;
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  gap: var(--gap);
   border-radius: var(--border-radius);
+}
+
+.row--card {
+  min-height: 50px;
   gap: 0px;
 }
 
-.row--primary {
-  background-color: var(--clr-primary);
-  border: 1px solid var(--clr-border);
-}
-
-.row--secondary {
-  background-color: var(--clr-secondary);
-  border: 1px solid var(--clr-border);
-}
-
 .button {
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
   transition: background-color 0.1s ease;
   border-radius: var(--border-radius);
-  padding: 10px;
+  min-height: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
-.button--primary {
-  color: var(--clr-font-primary);
-  background-color: var(--clr-primary);
-  border: 1px solid var(--clr-border);
+.font--error {
+  color: var(--clr-bright-red);
 }
 
-.button--tertiary {
-  color: var(--clr-font-primary);
-  background-color: var(--clr-tertiary);
+.font--primary-2 {
+  color: var(--clr-font-primary-2);
+}
+
+.font--primary-3 {
+  color: var(--clr-font-primary-3);
+}
+
+.font--size-large {
+  font-size: var(--font-size-large);
+}
+
+.font--size-normal {
+  font-size: var(--font-size-normal);
+}
+
+.font--size-small {
+  font-size: var(--font-size-small);
+}
+
+.font--size-tiny {
+  font-size: var(--font-size-tiny);
+}
+
+.bg--background {
+  background-color: var(--clr-background) !important;
+}
+
+.bg--primary-1 {
+  background-color: var(--clr-primary-1) !important;
+}
+
+.bg--primary-2 {
+  background-color: var(--clr-primary-2) !important;
+}
+
+.bg--primary-3 {
+  background-color: var(--clr-primary-3) !important;
+}
+
+.bg--primary-4 {
+  background-color: var(--clr-primary-4) !important;
+}
+
+.bg--primary-5 {
+  background-color: var(--clr-primary-5) !important;
+}
+
+.border {
   border: 1px solid var(--clr-border);
 }
 
@@ -129,20 +181,44 @@ body {
   background-color: #252827;
 }
 
-/* ABOVE IS THE CLEAN UP */
-
-.column {
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: top;
-  box-sizing: border-box;
-  gap: 10px;
-  user-select: none;
-  width: 100%;
-  height: 100%;
+.padding-none {
+  padding: 0;
 }
+
+.padding--small {
+  padding: 2px;
+}
+
+.padding--medium {
+  padding: 5px;
+}
+
+.gap--none none {
+  gap: 0px;
+}
+
+.gap--small {
+  gap: 5px;
+}
+
+.gap--medium {
+  gap: 10px;
+}
+
+.gap--large {
+  gap: 20px;
+}
+
+.row--divider {
+  display: flex;
+  background-color: var(--clr-background);
+  width: 100%;
+  height: 1px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/* ABOVE IS THE CLEAN UP */
 
 .padding {
   padding: 10px;

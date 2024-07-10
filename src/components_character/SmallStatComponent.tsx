@@ -1,7 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as Constants from "../Constants";
-import "../Styles.css";
-import { toTitleCase } from "../functions/UtilityFunctions";
 import {
   IconDefinition,
   faCarrot,
@@ -10,6 +6,10 @@ import {
   faSkull,
   faWeightHanging,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as Constants from "../Constants";
+import "../Styles.css";
+import { toTitleCase } from "../functions/UtilityFunctions";
 
 const backgroundcolor = "rgba(19, 23, 22, 0.8)";
 
@@ -58,17 +58,13 @@ function SmallStatComponent({
     >
       <div className="row">
         <div
-          className="row"
+          className={`row ${bad_result ? "font--error" : ""}`}
           style={{
             fontSize: "20px",
             marginRight: "-38px",
             marginTop: "2px",
-
             filter: `drop-shadow(1px 1px 0px ${Constants.BACKGROUND})`,
             fontWeight: bad_result ? "700" : "400",
-            color: bad_result
-              ? Constants.BRIGHT_RED
-              : Constants.WIDGET_PRIMARY_FONT,
           }}
         >
           {value}
@@ -78,13 +74,11 @@ function SmallStatComponent({
         </div>
       </div>
       <div
-        className="row"
+        className="row font--primary-3 font--size-small"
         style={{
           height: "auto",
           marginBottom: "5px",
-          fontSize: "12px",
           fontWeight: "bold",
-          color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
         }}
       >
         {toTitleCase(title)}

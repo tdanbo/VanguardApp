@@ -166,7 +166,7 @@ function ItemButtonComponent({
   return (
     <>
       <div
-        className="faded_button"
+        className="button bg--primary-3 font--primary-3"
         style={{
           maxWidth: "40px",
           minWidth: "40px",

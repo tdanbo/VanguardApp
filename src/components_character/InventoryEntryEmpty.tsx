@@ -1,5 +1,5 @@
-import * as Constants from "../Constants";
 import styled from "styled-components";
+import * as Constants from "../Constants";
 
 const Container = styled.div`
   display: flex;
@@ -16,6 +16,6 @@ const Container = styled.div`
 `;
 
 function InventoryEntryEmpty() {
-  return <div className="row row--scroll row--primary"></div>;
+  return <div className="row row--card bg--primary-1 border"></div>;
 }
 export default InventoryEntryEmpty;

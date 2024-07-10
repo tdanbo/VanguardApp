@@ -134,8 +134,7 @@ function StatComponent({
 
   return (
     <div
-      className="row empty_color"
-      style={{ padding: "2px", gap: "2px", height: "50px" }}
+      className="row row--card bg--primary-1 padding--small border"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -155,7 +154,7 @@ function StatComponent({
       ) : (
         <>
           <div
-            className="column base_color"
+            className="row bg--primary-2"
             title={isHovered ? "Dice Modifier" : "Stat Modifier"}
             style={{
               maxWidth: "30px",
@@ -174,19 +173,18 @@ function StatComponent({
           <div className="row" style={{ gap: "0px" }}>
             {!isHovered ? (
               <div
-                className=" empty_color"
                 style={{
                   maxWidth: "25px",
                   minWidth: "25px",
-                  border: `1px solid #191c1b`,
                 }}
               />
             ) : null}
             <div
-              className="row empty_color button"
+              className="button button--primary"
               style={{
                 maxWidth: "25px",
                 minWidth: "25px",
+                minHeight: "100%",
                 fontSize: "20px",
                 visibility: isHovered ? "visible" : "hidden",
               }}
@@ -211,7 +209,6 @@ function StatComponent({
             >
               <div
                 style={{
-                  color: Constants.WIDGET_PRIMARY_FONT,
                   textShadow: "2px 2px 2px black",
                   fontSize: "16px",
                   position: "absolute",
@@ -291,7 +288,7 @@ function StatComponent({
             </div>
           ) : null}
           <div
-            className="column button button_color"
+            className="column button bg--primary-5"
             style={{
               maxWidth: "30px",
               minWidth: "30px",
