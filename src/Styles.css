@@ -10,20 +10,24 @@
   font: inherit;
 }
 
-html,
-body {
-  height: 100%;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  background-color: rgba(19, 23, 22, 1);
-}
-
 body::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
 
 /* Resetting */
+
+:root {
+  --clr-red: #ff0000;
+  --clr-background: hsl(165, 10%, 8%);
+  --clr-primary: hsl(160, 6%, 10%);
+  --clr-secondary: hsl(160, 4%, 15%);
+  --clr-tertiary: hsl(160, 2.8%, 21.4%);
+  --clr-border: hsl(160, 3.9%, 15.1%);
+  --clr-font-primary: hsl(0, 0%, 87%);
+  --clr-font-secondary: #ff0000;
+  --gap: 10px;
+  --border-radius: 5px;
+}
 
 #root {
   font-family:
@@ -39,41 +43,21 @@ body::-webkit-scrollbar {
     "Helvetica Neue",
     sans-serif;
   height: 100%; /* Assuming you're using a setup like create-react-app, adjust if you have a different root */
-  --clr-primary: #ff0000;
+  user-select: none;
 }
 
-.upper {
-  display: flex;
-  background-color: rgb(255, 0, 170);
-  height: 75%;
-}
-
-.portrait {
-  display: flex;
-  background-color: rgb(117, 0, 10);
-  width: 70%;
-}
-
-.survivability {
-  display: flex;
-  background-color: rgb(255, 196, 0);
-  height: 25%;
-}
-
-.corruption {
-  display: flex;
-  background-color: rgb(123, 57, 150);
-  width: 70%;
+html,
+body {
+  height: 100%;
+  background-color: var(--clr-background);
+  color: var(--clr-font-primary);
+  font-weight: 600;
+  font-size: 16px;
 }
 
 /* For webkit browsers like Chrome, Safari */
 ::-webkit-scrollbar {
   display: none !important;
-}
-
-.button-hover:hover {
-  cursor: pointer;
-  background-color: rgb(50, 50, 50);
 }
 
 .fadeIn {
@@ -88,21 +72,6 @@ body::-webkit-scrollbar {
     opacity: 1;
   }
 }
-.font {
-  color: #dfdfdf;
-  font-weight: 600;
-  font-size: 16px;
-}
-
-.body {
-  display: flex;
-  background-color: #131716;
-  height: 100vh;
-  width: 100vw;
-  color: rgb(199, 199, 199);
-  padding: 20px;
-  box-sizing: border-box;
-}
 
 .row {
   display: flex;
@@ -112,10 +81,56 @@ body::-webkit-scrollbar {
   flex-grow: 1;
   width: 100%;
   height: 100%;
-  gap: 10px;
-  box-sizing: border-box;
-  user-select: none;
+  gap: var(--gap);
 }
+
+.row--scroll {
+  min-height: 50px;
+  max-height: 50px;
+  padding: 2px;
+  border-radius: var(--border-radius);
+  gap: 0px;
+}
+
+.row--primary {
+  background-color: var(--clr-primary);
+  border: 1px solid var(--clr-border);
+}
+
+.row--secondary {
+  background-color: var(--clr-secondary);
+  border: 1px solid var(--clr-border);
+}
+
+.button {
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+  border-radius: var(--border-radius);
+  padding: 10px;
+}
+
+.button--primary {
+  color: var(--clr-font-primary);
+  background-color: var(--clr-primary);
+  border: 1px solid var(--clr-border);
+}
+
+.button--tertiary {
+  color: var(--clr-font-primary);
+  background-color: var(--clr-tertiary);
+  border: 1px solid var(--clr-border);
+}
+
+.button:hover {
+  background-color: #4d4d4d;
+}
+
+.button:active {
+  background-color: #252827;
+}
+
+/* ABOVE IS THE CLEAN UP */
+
 .column {
   display: flex;
   flex-grow: 1;
@@ -127,23 +142,6 @@ body::-webkit-scrollbar {
   user-select: none;
   width: 100%;
   height: 100%;
-}
-
-.DynamicContainer {
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  gap: 10px;
-  height: 0px;
-}
-
-.scroll {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
-  overflow-y: scroll;
-  scrollbar-width: none;
 }
 
 .padding {
@@ -169,16 +167,6 @@ body::-webkit-scrollbar {
 
 .negative_durability_color {
   background-color: #6d0000;
-}
-
-.row_color {
-  background-color: #252827;
-  border-bottom: 1px solid #303332;
-}
-
-.row_color_alternate {
-  background-color: #1a1d1c;
-  border-bottom: 1px solid #252827;
 }
 
 .opaque_color {
@@ -209,20 +197,6 @@ body::-webkit-scrollbar {
 
 .faded_button:hover {
   background-color: #414141;
-}
-
-.button {
-  cursor: pointer;
-  transition: background-color 0.1s ease;
-  color: #dfdfdf;
-}
-
-.button:hover {
-  background-color: #4d4d4d;
-}
-
-.button:active {
-  background-color: #252827; /* Change this to the color you want when the button is clicked */
 }
 
 .button.active {
@@ -258,16 +232,6 @@ body::-webkit-scrollbar {
   padding-right: 10px;
 }
 
-.row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  width: 100%;
-  gap: 10px;
-  border-radius: 5px;
-}
 .column {
   display: flex;
   flex-direction: column;
@@ -280,11 +244,6 @@ body::-webkit-scrollbar {
 .base_color {
   background-color: #252827;
   border: 1px solid #303332;
-}
-
-.button_color {
-  background-color: #353837;
-  border: 1px solid #404241;
 }
 
 .base_color_no_border {
@@ -460,49 +419,3 @@ body::-webkit-scrollbar {
     display: none; /* or any other display value you need */
   }
 }
-
-/* Breakpoint 1 */
-
-/* @media (min-width: 1700px) {
-  .show_over_breakpoint1 {
-    display: flex;
-  }
-
-  .show_under_breakpoint1 {
-    display: none;
-  }
-}
-
-@media (max-width: 1700px) {
-  .show_under_breakpoint1 {
-    display: flex;
-  }
-
-  .show_over_breakpoint1 {
-    display: none;
-  }
-} */
-
-/* Breakpoint 2 */
-/* 
-
-
-@media (min-width: 1700px) {
-  .show_over_px {
-    display: flex;
-  }
-
-  .show_under_px {
-    display: none;
-  }
-}
-
-@media (max-width: 1700px) {
-  .show_under_px {
-    display: flex;
-  }
-
-  .show_over_px {
-    display: none;
-  }
-} */

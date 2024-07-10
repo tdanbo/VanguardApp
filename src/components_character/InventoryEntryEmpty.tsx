@@ -16,6 +16,6 @@ const Container = styled.div`
 `;
 
 function InventoryEntryEmpty() {
-  return <Container></Container>;
+  return <div className="row row--scroll row--primary"></div>;
 }
 export default InventoryEntryEmpty;

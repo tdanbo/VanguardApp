@@ -34,7 +34,7 @@ export default function JoinSessionComponent({
   return (
     <>
       <div
-        className="row button button_color"
+        className="row button button--tertiary"
         style={{ maxWidth: "35px" }}
         onClick={handleJoinSession}
       >

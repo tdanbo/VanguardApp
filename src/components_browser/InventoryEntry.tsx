@@ -258,7 +258,7 @@ function InventoryEntry({
 
   return (
     <MasterContainer>
-      <Container>
+      <div className="row row--scroll row--secondary">
         <EquipContainer>
           {[1, 2, 3].includes(item.static.slot) ? (
             <EquipButton
@@ -441,7 +441,7 @@ function InventoryEntry({
             <FontAwesomeIcon icon={faBars} size="sm" />
           ) : null}
         </div>
-      </Container>
+      </div>
       {Array.isArray(item.static.effect) && item.static.effect.length > 0 && (
         <EffectContainer $expanded={expanded}>
           {item.static.effect.map((effect, effectIndex) => (
