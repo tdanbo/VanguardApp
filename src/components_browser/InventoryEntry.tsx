@@ -1,5 +1,7 @@
 import { faBars, faFeather, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { mdiRomanNumeral1, mdiRomanNumeral2 } from "@mdi/js";
+import Icon from "@mdi/react";
 import React, { useState } from "react";
 import { Socket } from "socket.io-client";
 import RollComponent2 from "../components_browser/RollComponent2";
@@ -26,173 +28,6 @@ import {
 } from "../Types";
 import DurabilityComponent from "./DurabilityComponent";
 import QuantityComponent from "./QuantityComponent";
-// const MasterContainer = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   border-radius: ${Constants.BORDER_RADIUS};
-//   border: 1px solid ${Constants.WIDGET_BORDER};
-//   background-color: ${Constants.WIDGET_BACKGROUND};
-//   width: 100%;
-// `;
-// const Container = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   flex-grow: 1;
-//   height: 40px;
-//   max-height: 40px;
-//   padding: 2px;
-// `;
-
-// interface EffectContainerProps {
-//   $expanded: boolean;
-// }
-
-// const EffectContainer = styled.div<EffectContainerProps>`
-//   display: ${(props) => (props.$expanded ? "flex" : "none")};
-//   flex-direction: column;
-//   flex-grow: 1;
-//   border-radius: ${Constants.BORDER_RADIUS};
-//   border: 1px solid ${Constants.WIDGET_BORDER};
-//   background-color: #191c1b;
-//   font-size: 12px;
-//   padding: 5px;
-//   color: ${Constants.WIDGET_SECONDARY_FONT};
-// `;
-
-// const EquipContainer = styled.div`
-//   display: flex;
-//   flex-direction: column;
-// `;
-
-// const NameContainer = styled.div`
-//   display: flex;
-//   flex-grow: 1;
-//   flex-direction: column;
-//   margin-left: 5px;
-//   user-select: none;
-// `;
-
-// const NameBox = styled.div`
-//   flex-grow: 1;
-//   display: flex;
-//   flex: 1;
-//   color: ${(props) => props.color};
-//   font-size: 15px;
-//   font-weight: bold;
-//   margin-top: 2px;
-// `;
-
-// const CostBox = styled.div`
-//   color: rgba(255, 255, 255, 0.4);
-//   font-size: 10px;
-//   color: ${Constants.WIDGET_PRIMARY_FONT};
-// `;
-
-// const RollContainer = styled.div`
-//   display: flex;
-//   flex-direction: row;
-// `;
-
-// interface RollBoxProps {
-//   color: string;
-// }
-
-// const RollBox = styled.div<RollBoxProps>`
-//   display: flex;
-//   flex-grow: 1;
-//   color: ${(props) => props.color};
-//   margin-left: 2px;
-//   justify-content: center;
-//   align-items: center;
-//   font-weight: bold;
-//   width: 40px;
-//   font-size: 14px;
-// `;
-
-// const RowDivider = styled.div`
-//   display: flex;
-//   background-color: ${Constants.BACKGROUND};
-//   width: 100%;
-//   height: 1px;
-//   margin-top: 5px;
-//   margin-bottom: 5px;
-// `;
-
-// type StyledButtonProps = {
-//   $isequipped: boolean;
-//   color: string;
-// };
-
-// const EquipButton = styled.button<StyledButtonProps>`
-//   display: flex;
-//   flex-grow: 1;
-//   background-color: ${(props) =>
-//     props.$isequipped ? props.color : Constants.WIDGET_BACKGROUND};
-//   margin: 1px 0px 1px 1px;
-//   width: 20px;
-//   border: 1px solid ${Constants.WIDGET_BORDER};
-//   border-bottom-left-radius: ${Constants.BORDER_RADIUS};
-//   border-top-left-radius: ${Constants.BORDER_RADIUS};
-//   width: 20px;
-//   height: 100%;
-//   align-items: center;
-//   justify-content: center;
-//   font-weight: bold;
-//   font-size: 18px;
-//   color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-// `;
-
-// type NoEquipButtonProps = {
-//   color: string;
-// };
-
-// const NoEquipBox = styled.div<NoEquipButtonProps>`
-//   display: flex;
-//   flex-grow: 1;
-//   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-//   border-radius: ${Constants.BORDER_RADIUS} 0px 0px ${Constants.BORDER_RADIUS};
-//   width: 20px;
-//   max-width: 20px;
-//   height: 100%;
-//   align-items: center;
-//   justify-content: center;
-//   color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-// `;
-
-// const TypeBox = styled.div`
-//   display: flex;
-//   flex-grow: 1;
-//   flex: 1;
-//   color: rgba(255, 255, 255, 0.2);
-//   font-size: 10px;
-//   gap: 5px;
-//   align-items: flex-start;
-// `;
-
-// const QualityBox = styled.div`
-//   display: flex;
-//   color: ${Constants.WIDGET_SECONDARY_FONT};
-//   justify-content: center;
-//   align-items: center;
-//   font-size: 10px;
-// `;
-
-// const Row = styled.div`
-//   display: flex;
-//   flex-grow: 1;
-//   flex-direction: row;
-// `;
-
-// const CorruptionContainer = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   flex-basis: 0;
-//   align-items: center;
-//   justify-content: center;
-//   color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-//   gap: 2px;
-//   margin-left: 5px;
-// `;
 
 interface InventoryEntryProps {
   character: CharacterEntry;
@@ -228,8 +63,8 @@ function InventoryEntry({
   state,
 }: InventoryEntryProps) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  const COLOR = Constants.TYPE_COLORS[item.static.category] || "defaultColor";
-
+  const categoryColor =
+    Constants.CATEGORY_FONT_CLASSES[item.static.category] || "font--primary-1";
   const HandleEquip = (item: ItemEntry) => {
     item.equipped = true;
     update_session(session, websocket, character, isCreature);
@@ -260,19 +95,25 @@ function InventoryEntry({
   };
 
   return (
-    <div className="column">
-      <div className="row row--card bg--primary-2 padding--small">
+    <div className="column bg--primary-1 border">
+      <div className="row row--card bg--primary-2 padding--small ">
         {[1, 2, 3].includes(item.static.slot) ? (
           <div
-            className="button bg--primary-3"
-            style={{ width: "30px" }}
+            className="button bg--primary-3 border-radius--left"
+            style={{ minWidth: "25px", maxWidth: "25px" }}
             onClick={() => {
               browser && isGm
                 ? AddToLoot(item, session, websocket, character, isCreature)
                 : equipHandler(item);
             }}
           >
-            {item.static.slot === 1 ? "I" : item.static.slot === 2 ? "II" : ""}
+            {item.static.slot === 1 ? (
+              <Icon path={mdiRomanNumeral1} size={1.5} />
+            ) : item.static.slot === 2 ? (
+              <Icon path={mdiRomanNumeral2} size={1.5} />
+            ) : (
+              ""
+            )}
           </div>
         ) : (item.static.category === "general good" ||
             item.static.category === "container") &&
@@ -288,19 +129,23 @@ function InventoryEntry({
             ) : null}
           </div>
         ) : (
-          <div className="button bg--primary-3" key={"unequip"} color={COLOR}>
+          <div className="button bg--primary-3" key={"unequip"}>
             {item.light ? (
               <FontAwesomeIcon icon={faFeather} style={{ fontSize: "12px" }} />
             ) : null}
           </div>
         )}
+        <div className="horizontal-divider" />
         <div
-          className="column"
+          className={`column gap--none padding--medium ${categoryColor}`}
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="row" color={COLOR}>
+          <div
+            className="row font--bold"
+            style={{ justifyContent: "flex-start" }}
+          >
             {item.name}
 
             {item.static.rarity === "unique" &&
@@ -308,13 +153,19 @@ function InventoryEntry({
               <FontAwesomeIcon icon={faSkull} style={{ fontSize: "14px" }} />
             ) : null}
           </div>
-          <div className="row font--primary-3 font--size-tiny">
-            {browser && isGm ? <div>{item.static.cost} Thaler</div> : null}
-            {item.static.rarity !== "normal"
-              ? toTitleCase(item.static.rarity)
-              : null}{" "}
-            {toTitleCase(item.static.category)}
-            {item.static.quality.length > 0 && ","}
+          <div
+            className="row font--primary-3 font--size-tiny gap--small"
+            style={{ justifyContent: "flex-start" }}
+          >
+            <div className="font--primary-2">
+              {browser && isGm ? <div>{item.static.cost} Thaler</div> : null}
+              {item.static.rarity !== "normal"
+                ? toTitleCase(item.static.rarity)
+                : null}{" "}
+              {toTitleCase(item.static.category)}
+              {item.static.quality.length > 0 && ","}
+            </div>
+
             {item.static.quality.map((quality, index) => {
               let description = "";
 
@@ -338,48 +189,42 @@ function InventoryEntry({
           </div>
         </div>
         {item.static.roll.roll === true && (
-          <div color={COLOR}>
-            <RollComponent2
-              session={session}
-              character={character}
-              websocket={websocket}
-              roll_type={
-                IsWeapon(item)
-                  ? "damage"
-                  : item.static.category === "shield"
-                  ? "damage"
-                  : IsArmor(item)
-                  ? "armor"
-                  : "custom"
-              }
-              roll_source={item.name}
-              isCreature={isCreature}
-              dice={dice}
-              dice_mod={item.static.roll.mod}
-              color={COLOR}
-              item={item}
-              inactive={item.equipped}
-              advantage={advantage}
-              activeState={activeState}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-              setCriticalState={setCriticalState}
-            />
-          </div>
+          <RollComponent2
+            session={session}
+            character={character}
+            websocket={websocket}
+            roll_type={
+              IsWeapon(item)
+                ? "damage"
+                : item.static.category === "shield"
+                ? "damage"
+                : IsArmor(item)
+                ? "armor"
+                : "custom"
+            }
+            roll_source={item.name}
+            isCreature={isCreature}
+            dice={dice}
+            dice_mod={item.static.roll.mod}
+            item={item}
+            inactive={item.equipped}
+            advantage={advantage}
+            activeState={activeState}
+            setActiveState={setActiveState}
+            setAdvantage={setAdvantage}
+            setCriticalState={setCriticalState}
+          />
         )}
-
         {[1, 2, 3].includes(item.static.slot) &&
         item.static.category !== "projectile" ? (
-          <div color={COLOR}>
-            <DurabilityComponent
-              item={item}
-              session={session}
-              character={character}
-              websocket={websocket}
-              isCreature={isCreature}
-              inactive={item.equipped}
-            />
-          </div>
+          <DurabilityComponent
+            item={item}
+            session={session}
+            character={character}
+            websocket={websocket}
+            isCreature={isCreature}
+            inactive={item.equipped}
+          />
         ) : null}
         {item.static.bulk === true && (
           <QuantityComponent
@@ -398,13 +243,12 @@ function InventoryEntry({
           websocket={websocket}
           isCreature={isCreature}
         />
+        <div className="horizontal-divider" />
         <div
-          className="button bg--primary-3"
+          className="button bg--primary-3 border-radius--right"
           style={{
             minWidth: "25px",
-            borderRadius: "0px 5px 5px 0px",
-            borderLeft: "1px solid rgba(0, 0, 0, 0.25)",
-
+            maxWidth: "25px",
             color:
               expanded || isHovered
                 ? Constants.WIDGET_SECONDARY_FONT
@@ -421,7 +265,7 @@ function InventoryEntry({
       {Array.isArray(item.static.effect) &&
         item.static.effect.length > 0 &&
         (expanded ? (
-          <div>
+          <div className="font--size-normal font--primary-2 bg--primary-1 padding--medium">
             {item.static.effect.map((effect, effectIndex) => (
               <React.Fragment key={effectIndex}>
                 {effectIndex > 0 && <div className="row--divider" />}

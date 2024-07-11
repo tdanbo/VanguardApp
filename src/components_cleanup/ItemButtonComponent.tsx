@@ -165,12 +165,9 @@ function ItemButtonComponent({
 
   return (
     <>
+      <div className="horizontal-divider" />
       <div
-        className="button bg--primary-3 font--primary-3"
-        style={{
-          maxWidth: "40px",
-          minWidth: "40px",
-        }}
+        className="button bg--primary-3 font--primary-4 border-radius--none"
         onClick={() => setIsModalOpen(true)}
       >
         <FontAwesomeIcon icon={icon} size="sm" />

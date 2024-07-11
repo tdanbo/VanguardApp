@@ -17,7 +17,14 @@ body::-webkit-scrollbar {
 /* Resetting */
 
 :root {
-  --clr-bright-red: hsl(0, 48%, 39%);
+  --clr-error: hsl(0, 48%, 39%);
+  --clr-red: hsl(0, 48%, 39%);
+  --clr-blue: hsl(190, 18%, 32%);
+  --clr-purple: hsl(310, 14%, 33%);
+  --clr-green: hsl(70, 18%, 34%);
+  --clr-yellow: hsl(34, 48%, 39%);
+  --clr-grey: hsl(0, 0%, 50%);
+  --clr-light-green: hsl(46, 8%, 57%);
   --clr-background: hsl(165, 10%, 8%);
   --clr-primary-1: hsl(160, 3%, 10%);
   --clr-primary-2: hsl(160, 3%, 13%);
@@ -25,14 +32,15 @@ body::-webkit-scrollbar {
   --clr-primary-4: hsl(160, 3%, 19%);
   --clr-primary-5: hsl(160, 3%, 22%);
   --clr-border: hsl(160, 3%, 15.1%);
-  --clr-font-primary-1: hsl(0, 0%, 90%);
-  --clr-font-primary-2: hsl(0, 0%, 65%);
-  --clr-font-primary-3: hsl(0, 0%, 45%);
+  --clr-font-primary-1: hsl(0, 0%, 80%);
+  --clr-font-primary-2: hsl(0, 0%, 60%);
+  --clr-font-primary-3: hsl(0, 0%, 40%);
+  --clr-font-primary-4: hsl(0, 0%, 30%);
   --clr-font-secondary: #ff0000;
   --gap: 10px;
   --border-radius: 5px;
-  --font-size-large: 18px;
-  --font-size-normal: 16px;
+  --font-size-large: 16px;
+  --font-size-normal: 14px;
   --font-size-small: 12px;
   --font-size-tiny: 10px;
 }
@@ -54,9 +62,10 @@ html,
 body {
   height: 100%;
   background-color: var(--clr-background);
-  color: var(--clr-font-primary);
+  color: var(--clr-font-primary-1);
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
+  text-shadow: 1px 1px 1px var(--clr-background);
 }
 
 /* For webkit browsers like Chrome, Safari */
@@ -102,7 +111,8 @@ body {
 }
 
 .row--card {
-  min-height: 50px;
+  max-height: 45px;
+  min-height: 45px;
   gap: 0px;
 }
 
@@ -115,10 +125,16 @@ body {
   min-height: 100%;
   align-items: center;
   justify-content: center;
+  min-width: 45px;
+  max-width: 45px;
 }
 
 .font--error {
-  color: var(--clr-bright-red);
+  color: var(--clr-error);
+}
+
+.font--primary-1 {
+  color: var(--clr-font-primary-1);
 }
 
 .font--primary-2 {
@@ -127,6 +143,38 @@ body {
 
 .font--primary-3 {
   color: var(--clr-font-primary-3);
+}
+
+.font--primary-4 {
+  color: var(--clr-font-primary-4);
+}
+
+.font--red {
+  color: var(--clr-red);
+}
+
+.font--blue {
+  color: var(--clr-blue);
+}
+
+.font--purple {
+  color: var(--clr-purple);
+}
+
+.font--green {
+  color: var(--clr-green);
+}
+
+.font--yellow {
+  color: var(--clr-yellow);
+}
+
+.font--grey {
+  color: var(--clr-grey);
+}
+
+.font--light-green {
+  color: var(--clr-light-green);
 }
 
 .font--size-large {
@@ -143,6 +191,10 @@ body {
 
 .font--size-tiny {
   font-size: var(--font-size-tiny);
+}
+
+.font--bold {
+  font-weight: bold;
 }
 
 .bg--background {
@@ -193,7 +245,7 @@ body {
   padding: 5px;
 }
 
-.gap--none none {
+.gap--none {
   gap: 0px;
 }
 
@@ -209,6 +261,18 @@ body {
   gap: 20px;
 }
 
+.border-radius--none {
+  border-radius: 0px;
+}
+
+.border-radius--left {
+  border-radius: var(--border-radius) 0px 0px var(--border-radius);
+}
+
+.border-radius--right {
+  border-radius: 0px var(--border-radius) var(--border-radius) 0px;
+}
+
 .row--divider {
   display: flex;
   background-color: var(--clr-background);
@@ -216,6 +280,12 @@ body {
   height: 1px;
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+.horizontal-divider {
+  width: 1px;
+  height: 100%;
+  background-color: var(--clr-primary-1);
 }
 
 /* ABOVE IS THE CLEAN UP */
@@ -237,7 +307,6 @@ body {
 }
 
 .standard_durability_color {
-  background-color: #252827;
   transition: background-color 2s ease-in-out;
 }
 
@@ -306,15 +375,6 @@ body {
   top: 0;
   left: -5px;
   padding-right: 10px;
-}
-
-.column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: top;
-  gap: 10px;
-  border-radius: 5px;
 }
 
 .base_color {

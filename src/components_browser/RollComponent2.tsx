@@ -178,70 +178,63 @@ function RollComponent({
   }
 
   return (
-    <div
-      className="column button"
-      style={{
-        minWidth: "40px",
-        maxWidth: "40px",
-        borderLeft: "1px solid",
-        borderColor: "rgba(0, 0, 0, 0.25)",
-        borderRadius: "0px",
-        justifyContent: "center",
-        gap: "0px",
-      }}
-      onClick={is_possible ? () => RollDIce() : () => {}}
-      title={"Roll " + toTitleCase(roll_type)}
-    >
+    <>
+      <div className="horizontal-divider" />
       <div
-        className="row"
-        style={{
-          color: Constants.WIDGET_SECONDARY_FONT,
-          fontSize: "14px",
-          fontWeight: "bold",
-        }}
+        className="button border-radius--none"
+        onClick={is_possible ? () => RollDIce() : () => {}}
+        title={"Roll " + toTitleCase(roll_type)}
       >
-        d{dice}
-        {dice_mod > 0 && roll_source !== "Skill Test" ? `+${dice_mod}` : null}
+        <div
+          className="row"
+          style={{
+            fontSize: "14px",
+            fontWeight: "bold",
+          }}
+        >
+          d{dice}
+          {dice_mod > 0 && roll_source !== "Skill Test" ? `+${dice_mod}` : null}
+        </div>
+        <div
+          className="row"
+          style={{
+            color: "rgba(255, 255, 255, 0.2)",
+            fontSize: "10px",
+            gap: "3px",
+          }}
+        >
+          {roll_type === "damage" ? (
+            <Icon path={mdiSwordCross} size={0.6} color={Constants.COLOR_1} />
+          ) : roll_type === "armor" ? (
+            <Icon path={mdiShield} size={0.6} color={Constants.COLOR_2} />
+          ) : roll_type === "ability" ||
+            roll_type === "mystical power" ||
+            roll_type === "utility" ||
+            roll_type === "monsterous trait" ? (
+            <FontAwesomeIcon
+              icon={faStarOfLife}
+              color={color}
+              style={{ fontSize: "12px" }}
+            />
+          ) : (
+            <Icon path={mdiSwordCross} size={0.6} color={Constants.COLOR_1} />
+          )}
+          {activeState === "full" ? (
+            <FontAwesomeIcon
+              icon={faAnglesUp}
+              color={Constants.WIDGET_PRIMARY_FONT}
+              style={{ fontSize: "14px" }}
+            />
+          ) : activeState === "weak" ? (
+            <FontAwesomeIcon
+              icon={faAnglesDown}
+              color={Constants.WIDGET_PRIMARY_FONT}
+              style={{ fontSize: "14px" }}
+            />
+          ) : null}
+        </div>
       </div>
-      <div
-        className="row"
-        style={{
-          color: "rgba(255, 255, 255, 0.2)",
-          fontSize: "10px",
-          gap: "3px",
-        }}
-      >
-        {roll_type === "damage" ? (
-          <Icon path={mdiSwordCross} size={0.6} color={Constants.COLOR_1} />
-        ) : roll_type === "armor" ? (
-          <Icon path={mdiShield} size={0.6} color={Constants.COLOR_2} />
-        ) : roll_type === "ability" ||
-          roll_type === "mystical power" ||
-          roll_type === "utility" ||
-          roll_type === "monsterous trait" ? (
-          <FontAwesomeIcon
-            icon={faStarOfLife}
-            color={color}
-            style={{ fontSize: "12px" }}
-          />
-        ) : (
-          <Icon path={mdiSwordCross} size={0.6} color={Constants.COLOR_1} />
-        )}
-        {activeState === "full" ? (
-          <FontAwesomeIcon
-            icon={faAnglesUp}
-            color={Constants.WIDGET_PRIMARY_FONT}
-            style={{ fontSize: "14px" }}
-          />
-        ) : activeState === "weak" ? (
-          <FontAwesomeIcon
-            icon={faAnglesDown}
-            color={Constants.WIDGET_PRIMARY_FONT}
-            style={{ fontSize: "14px" }}
-          />
-        ) : null}
-      </div>
-    </div>
+    </>
   );
 }
 
