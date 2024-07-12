@@ -2,7 +2,6 @@ import { faBars, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
-import styled from "styled-components";
 import * as Constants from "../Constants";
 
 import {
@@ -21,71 +20,6 @@ import AbilityButtonComponent from "../components_cleanup/AbilityButtonComponent
 import { CheckAbility } from "../functions/ActivesFunction";
 import { update_session } from "../functions/SessionsFunctions";
 import { StyledText, toTitleCase } from "../functions/UtilityFunctions";
-
-const BaseContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-interface ContainerProps {
-  radius: string;
-}
-
-const LevelBaseContainer = styled.div<ContainerProps>`
-  display: flex;
-  flex-direction: column;
-  border-left: 1px solid ${Constants.WIDGET_BORDER};
-  border-right: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom-left-radius: ${(props) => props.radius};
-  border-bottom-right-radius: ${(props) => props.radius};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  gap: 0px;
-  height: 40px;
-  max-height: 40px;
-  padding: 2px;
-`;
-
-const NameContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  margin-left: 5px;
-`;
-
-const ExpandButten = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  width: 20px;
-  max-width: 20px;
-  border-right-top-radius: ${Constants.BORDER_RADIUS};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-  font-size: 16px;
-`;
-
-interface LevelContainerProps {
-  $expanded: boolean;
-}
-
-const LevelContainer = styled.div<LevelContainerProps>`
-  display: ${(props) => (props.$expanded ? "flex" : "none")};
-  flex-direction: column;
-`;
 
 interface AbilityEntryItemProps {
   ability: AbilityEntry;
@@ -139,13 +73,11 @@ function AbilityEntryItem({
   interface LevelProps {
     ability: AbilityEntry;
     ability_level: Ability;
-    radius: string;
   }
 
   const LevelDescriptionComponent = ({
     ability,
     ability_level,
-    radius,
   }: LevelProps) => {
     return (
       <>
@@ -393,7 +325,6 @@ function AbilityEntryItem({
             <LevelDescriptionComponent
               ability={ability}
               ability_level={ability.static.novice}
-              radius={Constants.BORDER_RADIUS}
             />
           </>
         )}
@@ -404,13 +335,11 @@ function AbilityEntryItem({
             <LevelDescriptionComponent
               ability={ability}
               ability_level={ability.static.novice}
-              radius={"0px"}
             />
             <div className="horizontal-divider bg--primary-3" />
             <LevelDescriptionComponent
               ability={ability}
               ability_level={ability.static.adept}
-              radius={Constants.BORDER_RADIUS}
             />
           </>
         )}
@@ -421,19 +350,16 @@ function AbilityEntryItem({
             <LevelDescriptionComponent
               ability={ability}
               ability_level={ability.static.novice}
-              radius={"0px"}
             />
             <div className="horizontal-divider bg--primary-3" />
             <LevelDescriptionComponent
               ability={ability}
               ability_level={ability.static.adept}
-              radius={"0px"}
             />
             <div className="horizontal-divider bg--primary-3" />
             <LevelDescriptionComponent
               ability={ability}
               ability_level={ability.static.master}
-              radius={Constants.BORDER_RADIUS}
             />
           </>
         )}

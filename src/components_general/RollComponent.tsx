@@ -95,7 +95,6 @@ function RollComponent({
   setActiveState,
   setAdvantage,
   setCriticalState,
-  item,
 }: RollComponentProps) {
   let dice_icon = Dice20FillIcon;
   if (dice === 4) {

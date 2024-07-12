@@ -22,7 +22,6 @@ function EquipComponent({
   websocket,
   character,
   isCreature,
-  isGm,
 }: EquipComponentProps) {
   const HandleEquip = (item: ItemEntry) => {
     item.equipped = true;

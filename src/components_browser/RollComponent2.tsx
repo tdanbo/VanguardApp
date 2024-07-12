@@ -63,7 +63,6 @@ function RollComponent({
   setActiveState,
   setAdvantage,
   setCriticalState,
-  item,
 }: RollComponentProps) {
   const RollDIce = () => {
     // let roll = Math.floor(Math.random() * dice) + 1;
