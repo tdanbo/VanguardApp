@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import { update_session } from "../functions/SessionsFunctions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
 import { Socket } from "socket.io-client";
-import { SessionEntry, CharacterEntry } from "../Types";
 import * as Constants from "../Constants";
+import { update_session } from "../functions/SessionsFunctions";
+import { CharacterEntry, SessionEntry } from "../Types";
 
 type AdjustmentType = "rations" | "coins";
 
@@ -86,7 +86,7 @@ function ValueAdjustComponent({
   return (
     <>
       <div
-        className="row button_color button"
+        className="button bg--primary-4 border"
         style={{ width: "30px" }}
         onClick={handleOpen}
       >
