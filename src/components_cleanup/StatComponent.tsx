@@ -134,7 +134,7 @@ function StatComponent({
 
   return (
     <div
-      className="row row--card bg--primary-1 padding--small border"
+      className="row row--card-expanding bg--primary-1 padding--small border"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

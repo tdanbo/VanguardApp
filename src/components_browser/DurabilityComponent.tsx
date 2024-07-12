@@ -83,7 +83,7 @@ function DurabilityComponent({
 
   return (
     <>
-      <div className="horizontal-divider" />
+      <div className="vertical-divider bg--primary-1" />
       <div
         className={`button border-radius--none ${
           durabilityDecreased

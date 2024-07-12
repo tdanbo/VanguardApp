@@ -1,26 +1,25 @@
-import { useEffect, useRef } from "react";
+import { faDiceD20, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDiceD20, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
-import { update_session } from "../functions/SessionsFunctions";
 import { NewCharacterEntry } from "../Types";
 import DetailStatComponent from "../components_cleanup/DetailStatComponent";
-import { toTitleCase } from "../functions/UtilityFunctions";
 import DiceSection from "../components_combatlog/DiceSection";
-import { useState } from "react";
+import { update_session } from "../functions/SessionsFunctions";
+import { toTitleCase } from "../functions/UtilityFunctions";
 
+import * as Constants from "../Constants";
 import {
-  CharacterEntry,
-  CombatEntry,
-  SessionEntry,
   ActiveStateType,
   AdvantageType,
+  CharacterEntry,
+  CombatEntry,
   DisplayType,
+  SessionEntry,
 } from "../Types";
 import CombatEntryItem from "../components_combatlog/CombatEntryItem";
-import * as Constants from "../Constants";
 import PartySection from "../components_combatlog/PartySection";
 
 const Button = styled.button`
@@ -43,8 +42,8 @@ import {
   RestingSounds,
   RollSounds,
 } from "../Images";
-import RestEntryItem from "../components_combatlog/RestEntryItem";
 import DayChangeEntryItem from "../components_combatlog/DayChangeEntryItem";
+import RestEntryItem from "../components_combatlog/RestEntryItem";
 // import { set } from "lodash";
 
 interface CombatSectionProps {
@@ -214,7 +213,7 @@ function CombatSection({
         )}
 
         <div
-          className="row button button_color"
+          className="row button bg--primary-4 border"
           style={{ maxWidth: "50px" }}
           onClick={() => setDiceTrayOpen(!diceTrayOpen)}
           title={"Dice Tray"}

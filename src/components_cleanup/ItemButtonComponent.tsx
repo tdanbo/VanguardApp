@@ -165,7 +165,7 @@ function ItemButtonComponent({
 
   return (
     <>
-      <div className="horizontal-divider" />
+      <div className="vertical-divider bg--primary-1" />
       <div
         className="button bg--primary-3 font--primary-4 border-radius--none"
         onClick={() => setIsModalOpen(true)}
@@ -189,22 +189,26 @@ function ItemButtonComponent({
           onClick={() => setIsModalOpen(false)}
         >
           <div
-            className="column empty_color"
+            className="column bg--primary-1 border-radius padding--large"
             style={{
-              minWidth: "300px",
+              minWidth: "400px",
               maxWidth: "15%",
               maxHeight: "20%",
-              padding: "5px",
             }}
             onClick={stopPropagation}
           >
             <div className="row" style={{ fontSize: "25px" }}>
-              {item.name}
+              <div>{item.name}</div>
+              <div className="font--primary-4 font--size-medium">
+                {item.quantity - quantity > 0
+                  ? `x ${item.quantity - quantity}`
+                  : ""}
+              </div>
             </div>
-            <div className="row empty_color" style={{ padding: "5px" }}>
+            <div className="row bg--primary-1 padding--large border">
               <div className="row">
                 <div
-                  className="row button_color button"
+                  className="row button bg--primary-4"
                   style={{ fontSize: "30px", fontWeight: "bold" }}
                   onClick={() => handleSingleQuantityChange(false)}
                 >
@@ -225,7 +229,7 @@ function ItemButtonComponent({
                   }}
                 />
                 <div
-                  className="row button_color button"
+                  className="row button bg--primary-4"
                   style={{ fontSize: "30px", fontWeight: "bold" }}
                   onClick={() => handleSingleQuantityChange(true)}
                 >
@@ -233,9 +237,9 @@ function ItemButtonComponent({
                 </div>
               </div>
             </div>
-            <div className="row empty_color" style={{ padding: "5px" }}>
-              <button
-                className="row button_color button"
+            <div className="row bg--primary-1 padding--large border">
+              <div
+                className="row button bg--primary-4"
                 disabled={
                   state === "buy" &&
                   character.coins < quantity * item.static.cost
@@ -251,29 +255,29 @@ function ItemButtonComponent({
                 }
               >
                 {toTitleCase(state)}
-              </button>
+              </div>
               {state === "drop" ? (
-                <button
-                  className="row button_color button"
+                <div
+                  className="row button bg--primary-4"
                   onClick={() => HandleDropItem(true)}
                 >
                   Destroy
-                </button>
+                </div>
               ) : state === "give" ? (
-                <button
-                  className="row button_color button"
+                <div
+                  className="row button bg--primary-4"
                   onClick={() => HandleGamemasterTakeItem()}
                 >
                   {character.name}
-                </button>
+                </div>
               ) : state === "take" ? (
-                <button
-                  className="row button_color button"
+                <div
+                  className="row button bg--primary-4"
                   disabled={quantity < session.characters.length}
                   onClick={() => HandleShareItem()}
                 >
                   Share
-                </button>
+                </div>
               ) : null}
             </div>
           </div>

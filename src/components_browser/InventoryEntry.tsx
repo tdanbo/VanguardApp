@@ -1,18 +1,15 @@
-import { faBars, faFeather, faSkull } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { mdiRomanNumeral1, mdiRomanNumeral2 } from "@mdi/js";
-import Icon from "@mdi/react";
 import React, { useState } from "react";
 import { Socket } from "socket.io-client";
 import RollComponent2 from "../components_browser/RollComponent2";
+import EquipComponent from "../components_cleanup/EquipComponent";
 import ItemButtonComponent from "../components_cleanup/ItemButtonComponent";
 import * as Constants from "../Constants";
 import { CheckAbility } from "../functions/ActivesFunction";
 import { Qualities } from "../functions/rules/Qualities";
 import { RulesDiceAdjust } from "../functions/RulesFunctions";
-import { update_session } from "../functions/SessionsFunctions";
 import {
-  AddToLoot,
   IsArmor,
   IsWeapon,
   StyledText,
@@ -65,77 +62,23 @@ function InventoryEntry({
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const categoryColor =
     Constants.CATEGORY_FONT_CLASSES[item.static.category] || "font--primary-1";
-  const HandleEquip = (item: ItemEntry) => {
-    item.equipped = true;
-    update_session(session, websocket, character, isCreature);
-  };
-
-  const HandleUnequip = () => {
-    item.equipped = false;
-    update_session(session, websocket, character, isCreature);
-  };
-
-  const equipHandler = (item: ItemEntry) => {
-    if (item.equipped) {
-      HandleUnequip();
-    } else {
-      HandleEquip(item);
-    }
-  };
 
   const [expanded, setExpanded] = useState<boolean>(false);
 
   // This is a big function that correct all dice rolls based on the character's abilities
   const dice = RulesDiceAdjust(character, item, advantage, criticalState);
 
-  const HandleLightSetting = () => {
-    console.log("Light setting");
-    item.light = !item.light;
-    update_session(session, websocket, character, isCreature);
-  };
-
   return (
     <div className="column bg--primary-1 border">
       <div className="row row--card bg--primary-2 padding--small ">
-        {[1, 2, 3].includes(item.static.slot) ? (
-          <div
-            className="button bg--primary-3 border-radius--left"
-            style={{ minWidth: "25px", maxWidth: "25px" }}
-            onClick={() => {
-              browser && isGm
-                ? AddToLoot(item, session, websocket, character, isCreature)
-                : equipHandler(item);
-            }}
-          >
-            {item.static.slot === 1 ? (
-              <Icon path={mdiRomanNumeral1} size={1.5} />
-            ) : item.static.slot === 2 ? (
-              <Icon path={mdiRomanNumeral2} size={1.5} />
-            ) : (
-              ""
-            )}
-          </div>
-        ) : (item.static.category === "general good" ||
-            item.static.category === "container") &&
-          isGm ? (
-          <div
-            className="button bg--primary-3"
-            onClick={() => {
-              HandleLightSetting();
-            }}
-          >
-            {item.light ? (
-              <FontAwesomeIcon icon={faFeather} style={{ fontSize: "12px" }} />
-            ) : null}
-          </div>
-        ) : (
-          <div className="button bg--primary-3" key={"unequip"}>
-            {item.light ? (
-              <FontAwesomeIcon icon={faFeather} style={{ fontSize: "12px" }} />
-            ) : null}
-          </div>
-        )}
-        <div className="horizontal-divider" />
+        <EquipComponent
+          item={item}
+          session={session}
+          character={character}
+          websocket={websocket}
+          isCreature={isCreature}
+          isGm={isGm}
+        />
         <div
           className={`column gap--none padding--medium ${categoryColor}`}
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
@@ -243,7 +186,7 @@ function InventoryEntry({
           websocket={websocket}
           isCreature={isCreature}
         />
-        <div className="horizontal-divider" />
+        <div className="vertical-divider bg--primary-1" />
         <div
           className="button bg--primary-3 border-radius--right"
           style={{
@@ -262,15 +205,20 @@ function InventoryEntry({
         </div>
       </div>
 
-      {Array.isArray(item.static.effect) &&
-        item.static.effect.length > 0 &&
-        (expanded ? (
-          <div className="font--size-normal font--primary-2 bg--primary-1 padding--medium">
-            {item.static.effect.map((effect, effectIndex) => (
-              <React.Fragment key={effectIndex}>
-                {effectIndex > 0 && <div className="row--divider" />}
+      {item.static.effect.length > 0 && expanded
+        ? item.static.effect.map((effect, effectIndex) => (
+            <>
+              {effectIndex > 0 ? (
+                <div className="horizontal-divider bg--primary-3" />
+              ) : null}
+              <div
+                className="row font--size-normal font--primary-2 padding--medium"
+                style={{
+                  justifyContent: "flex-start",
+                }}
+                key={"effect" + effectIndex.toString()} // Moved the key here for better performance and to avoid React warning
+              >
                 <StyledText
-                  key={"effect" + effectIndex.toString()}
                   effect={effect}
                   websocket={websocket}
                   character={character}
@@ -282,10 +230,10 @@ function InventoryEntry({
                   setAdvantage={setAdvantage}
                   setCriticalState={setCriticalState}
                 />
-              </React.Fragment>
-            ))}
-          </div>
-        ) : null)}
+              </div>
+            </>
+          ))
+        : null}
     </div>
   );
 }
