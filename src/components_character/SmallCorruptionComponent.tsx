@@ -1,15 +1,15 @@
+import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
 import "../Styles.css";
-import { update_session } from "../functions/SessionsFunctions";
-import { Socket } from "socket.io-client";
 import {
   GetAbilityCorruption,
   GetEquipmentCorruption,
 } from "../functions/RulesFunctions";
+import { update_session } from "../functions/SessionsFunctions";
 
-import { CharacterEntry, SessionEntry } from "../Types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSkull } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CharacterEntry, SessionEntry } from "../Types";
 
 const backgroundcolor = "rgba(19, 23, 22, 0.8)";
 
@@ -85,13 +85,11 @@ function SmallCorruptionComponent({
         </div>
       </div>
       <div
-        className="row"
+        className="row font--primary-3 font--size-small"
         style={{
           height: "auto",
           marginBottom: "5px",
-          fontSize: "12px",
           fontWeight: "bold",
-          color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
         }}
       >
         Perm. Corruption

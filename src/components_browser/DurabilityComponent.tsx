@@ -1,13 +1,11 @@
-import { ItemEntry, SessionEntry, CharacterEntry } from "../Types";
+import { faHammer } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import debounce from "lodash.debounce";
+import { useEffect, useMemo, useState } from "react";
+import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
 import { update_session } from "../functions/SessionsFunctions";
-import { Socket } from "socket.io-client";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHammer } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useMemo } from "react";
-import debounce from "lodash.debounce";
+import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 type DurabilityBoxProps = {
   item: ItemEntry;
   session: SessionEntry;
@@ -84,59 +82,47 @@ function DurabilityComponent({
   );
 
   return (
-    <div
-      className={`column ${
-        durabilityDecreased
-          ? "negative_durability_color"
-          : "standard_durability_color"
-      }`}
-      style={{
-        minWidth: "40px",
-        maxWidth: "40px",
-        borderLeft: "1px solid",
-        borderColor: "rgba(0, 0, 0, 0.25)",
-        borderRadius: "0px",
-        justifyContent: "center",
-        gap: "0px",
-      }}
-      onClick={handleSubDurability}
-      onContextMenu={(e) => {
-        e.preventDefault();
-        handleAddDurability();
-      }}
-      onMouseEnter={() => {
-        setHover(true);
-      }}
-      onMouseLeave={() => {
-        setHover(false);
-      }}
-      title={"Durability"}
-    >
+    <>
+      <div className="vertical-divider bg--primary-1" />
       <div
-        className="row"
-        style={{
-          color: Constants.WIDGET_SECONDARY_FONT,
-          fontSize: "14px",
-          fontWeight: "bold",
-          textShadow: "2px 2px 2px " + Constants.BACKGROUND,
+        className={`button border-radius--none ${
+          durabilityDecreased
+            ? "negative_durability_color"
+            : "standard_durability_color"
+        }`}
+        onClick={handleSubDurability}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          handleAddDurability();
         }}
-      >
-        {hover ? `${item.durability} I ${max_durability}` : item.durability}
-      </div>
-      <div
-        className="row"
-        style={{
-          color: "rgba(255, 255, 255, 0.2)",
-          fontSize: "10px",
+        onMouseEnter={() => {
+          setHover(true);
         }}
+        onMouseLeave={() => {
+          setHover(false);
+        }}
+        title={"Durability"}
       >
-        <FontAwesomeIcon
-          icon={faHammer}
-          color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
-          fontSize={"12px"}
-        />
+        <div
+          className="row"
+          style={{
+            fontSize: "14px",
+            fontWeight: "bold",
+            textShadow: "2px 2px 2px " + Constants.BACKGROUND,
+          }}
+        >
+          {hover ? `${item.durability} I ${max_durability}` : item.durability}
+        </div>
+        <div
+          className="row font--primary-4"
+          style={{
+            fontSize: "10px",
+          }}
+        >
+          <FontAwesomeIcon icon={faHammer} fontSize={"12px"} />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

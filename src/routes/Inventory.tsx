@@ -1,14 +1,19 @@
 import React from "react";
 
-import InventorySection from "../components_character/InventorySection";
 import { Socket } from "socket.io-client";
-import { CharacterEntry, DisplayType, SessionEntry } from "../Types";
-import { ActiveStateType, AdvantageType } from "../Types";
+import InventorySection from "../components_character/InventorySection";
+import {
+  ActiveStateType,
+  AdvantageType,
+  CharacterEntry,
+  DisplayType,
+  SessionEntry,
+} from "../Types";
 
 import DropsBrowser from "../components_browser/DropsBrowser";
 
-import DetailStatComponent from "../components_cleanup/DetailStatComponent";
 import RestComponent from "../components_character/RestComponent";
+import DetailStatComponent from "../components_cleanup/DetailStatComponent";
 import ValueAdjustComponent from "../components_cleanup/ValueAdjustComponent";
 
 type InventoryProps = {
@@ -47,10 +52,7 @@ export default function Inventory({
         <div className="row" style={{ width: "100%" }}>
           <>
             <div className="row">
-              <div
-                className="row outline_color"
-                style={{ padding: "1px", paddingLeft: "30px" }}
-              >
+              <div className="row bg--background padding--medium border">
                 <DetailStatComponent
                   title={"THALER"}
                   value={character.coins.toString()}
@@ -63,10 +65,7 @@ export default function Inventory({
                   isCreature={isCreature}
                 />
               </div>
-              <div
-                className="row outline_color"
-                style={{ padding: "1px", paddingLeft: "30px" }}
-              >
+              <div className="row bg--background padding--medium border">
                 <DetailStatComponent
                   title={"RATIONS"}
                   value={character.rations.toString()}
@@ -79,12 +78,17 @@ export default function Inventory({
                   isCreature={isCreature}
                 />
               </div>
-              <RestComponent
-                session={session}
-                character={character}
-                websocket={websocket}
-                isCreature={isCreature}
-              />
+              <div
+                className="row bg--background padding--medium border"
+                style={{ width: "auto" }}
+              >
+                <RestComponent
+                  session={session}
+                  character={character}
+                  websocket={websocket}
+                  isCreature={isCreature}
+                />
+              </div>
             </div>
           </>
         </div>

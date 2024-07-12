@@ -31,8 +31,8 @@ const TickBar = styled.div<BgColor>`
 
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Socket } from "socket.io-client";
 import { useState } from "react";
+import { Socket } from "socket.io-client";
 import {
   LowerCorruption,
   RaiseCorruption,
@@ -105,7 +105,6 @@ function CorruptionStatComponent({
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            color: Constants.WIDGET_PRIMARY_FONT,
             textShadow: "2px 2px 2px black",
             fontSize: "18px",
             display: "flex",
@@ -116,13 +115,12 @@ function CorruptionStatComponent({
         >
           {`${clean_corruption} / ${corruptionThreshold}`}
           <div
+            className="font--primary-2 font--size-tiny"
             style={{
-              fontSize: "10px",
               marginTop: "-2px",
               alignItems: "center",
               justifyContent: "center",
               textShadow: "0px 0px 0px black",
-              color: Constants.WIDGET_SECONDARY_FONT,
             }}
           >
             CORRUPTION

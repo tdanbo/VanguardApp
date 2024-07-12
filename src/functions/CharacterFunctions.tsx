@@ -1,19 +1,23 @@
 import axios from "axios";
+import { Socket } from "socket.io-client";
 import { API } from "../Constants";
 import { GetGameData } from "../contexts/GameContent";
-import { StatName } from "../Types";
-import { update_session } from "./SessionsFunctions";
-import { IsArmor } from "./UtilityFunctions";
-import { GetMaxSlots } from "./RulesFunctions";
 import {
   CharacterEntry,
+  ItemEntry,
   modifiedCreature,
   NewCharacterEntry,
   SessionEntry,
+  StatName,
 } from "../Types";
-import { GetMaxToughness, GetTemporaryCorruption } from "./RulesFunctions";
-import { Socket } from "socket.io-client";
 import { CheckAbility } from "./ActivesFunction";
+import {
+  GetMaxSlots,
+  GetMaxToughness,
+  GetTemporaryCorruption,
+} from "./RulesFunctions";
+import { update_session } from "./SessionsFunctions";
+import { IsArmor } from "./UtilityFunctions";
 export const getCreatureMovement = (creature: modifiedCreature) => {
   const movement: { [key: number]: number } = {
     5: -10,
@@ -117,20 +121,6 @@ export const FindCharacter = (
   return character_list.find((entry) => entry.id === id) || NewCharacterEntry;
 };
 
-export function HasAmmunition(character: CharacterEntry) {
-  for (const item of character.inventory) {
-    if (
-      item.static.category === "projectile" &&
-      item.equipped &&
-      item.quantity > 0
-    ) {
-      item.quantity -= 1;
-      return true;
-    }
-  }
-  return false;
-}
-
 export function HasRangedWeapon(character: CharacterEntry) {
   for (const item of character.inventory) {
     if (item.static.category === "ranged weapon" && item.equipped) {
@@ -138,14 +128,6 @@ export function HasRangedWeapon(character: CharacterEntry) {
     }
   }
   return false;
-}
-
-export function Ammunition(character: CharacterEntry) {
-  if (HasAmmunition(character)) {
-    return true;
-  } else {
-    return false;
-  }
 }
 
 export function LowerToughness(
@@ -274,4 +256,34 @@ export function IsOverburden(character: CharacterEntry) {
     return true;
   }
   return false;
+}
+
+export function HasAmmunition(character: CharacterEntry) {
+  for (const item of character.inventory) {
+    if (
+      item.static.category === "projectile" &&
+      item.equipped &&
+      item.quantity > 0
+    ) {
+      item.quantity -= 1;
+      return true;
+    }
+  }
+  return false;
+}
+
+export function IsRangedWeapon(item: ItemEntry) {
+  if (item.static.category === "ranged weapon") {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export function Ammunition(character: CharacterEntry) {
+  if (HasAmmunition(character)) {
+    return true;
+  } else {
+    return false;
+  }
 }

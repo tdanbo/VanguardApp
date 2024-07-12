@@ -1,11 +1,16 @@
-import Icon from "@mdi/react";
+import {
+  faAnglesDown,
+  faAnglesUp,
+  faStarOfLife,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { mdiShield, mdiSwordCross } from "@mdi/js";
-import "../Styles.css";
-import { toTitleCase } from "../functions/UtilityFunctions";
+import Icon from "@mdi/react";
 import { random } from "lodash";
 import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
+import "../Styles.css";
 import {
   ActiveStateType,
   AdvantageType,
@@ -18,12 +23,7 @@ import {
   SessionEntry,
 } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAnglesDown,
-  faAnglesUp,
-  faStarOfLife,
-} from "@fortawesome/free-solid-svg-icons";
+import { toTitleCase } from "../functions/UtilityFunctions";
 
 type RollComponentProps = {
   session: SessionEntry;
@@ -46,36 +46,6 @@ type RollComponentProps = {
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function HasAmmunition(character: CharacterEntry) {
-  for (const item of character.inventory) {
-    if (
-      item.static.category === "projectile" &&
-      item.equipped &&
-      item.quantity > 0
-    ) {
-      item.quantity -= 1;
-      return true;
-    }
-  }
-  return false;
-}
-
-function IsRangedWeapon(item: ItemEntry) {
-  if (item.static.category === "ranged weapon") {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function Ammunition(character: CharacterEntry) {
-  if (HasAmmunition(character)) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 function RollComponent({
   roll_type,
   roll_source,
@@ -93,7 +63,6 @@ function RollComponent({
   setActiveState,
   setAdvantage,
   setCriticalState,
-  item,
 }: RollComponentProps) {
   const RollDIce = () => {
     // let roll = Math.floor(Math.random() * dice) + 1;
@@ -157,12 +126,6 @@ function RollComponent({
     //   success = false;
     // }
 
-    if (roll_type === "damage" && item && IsRangedWeapon(item)) {
-      if (!Ammunition(character)) {
-        return;
-      }
-    }
-
     const roll_entry: RollEntry = {
       result1: result1,
       result2: result2,
@@ -214,70 +177,63 @@ function RollComponent({
   }
 
   return (
-    <div
-      className="column button"
-      style={{
-        minWidth: "40px",
-        maxWidth: "40px",
-        borderLeft: "1px solid",
-        borderColor: "rgba(0, 0, 0, 0.25)",
-        borderRadius: "0px",
-        justifyContent: "center",
-        gap: "0px",
-      }}
-      onClick={is_possible ? () => RollDIce() : () => {}}
-      title={"Roll " + toTitleCase(roll_type)}
-    >
+    <>
+      <div className="vertical-divider bg--primary-1" />
       <div
-        className="row"
-        style={{
-          color: Constants.WIDGET_SECONDARY_FONT,
-          fontSize: "14px",
-          fontWeight: "bold",
-        }}
+        className="button border-radius--none"
+        onClick={is_possible ? () => RollDIce() : () => {}}
+        title={"Roll " + toTitleCase(roll_type)}
       >
-        d{dice}
-        {dice_mod > 0 && roll_source !== "Skill Test" ? `+${dice_mod}` : null}
+        <div
+          className="row"
+          style={{
+            fontSize: "14px",
+            fontWeight: "bold",
+          }}
+        >
+          d{dice}
+          {dice_mod > 0 && roll_source !== "Skill Test" ? `+${dice_mod}` : null}
+        </div>
+        <div
+          className="row"
+          style={{
+            color: "rgba(255, 255, 255, 0.2)",
+            fontSize: "10px",
+            gap: "5px",
+          }}
+        >
+          {roll_type === "damage" ? (
+            <Icon path={mdiSwordCross} size={0.6} color={Constants.COLOR_1} />
+          ) : roll_type === "armor" ? (
+            <Icon path={mdiShield} size={0.6} color={Constants.COLOR_2} />
+          ) : roll_type === "ability" ||
+            roll_type === "mystical power" ||
+            roll_type === "utility" ||
+            roll_type === "monsterous trait" ? (
+            <FontAwesomeIcon
+              icon={faStarOfLife}
+              color={color}
+              style={{ fontSize: "12px" }}
+            />
+          ) : (
+            <Icon path={mdiSwordCross} size={0.6} color={Constants.COLOR_1} />
+          )}
+          {activeState === "full" ? (
+            <FontAwesomeIcon
+              icon={faAnglesUp}
+              color={Constants.WIDGET_PRIMARY_FONT}
+              style={{ fontSize: "14px" }}
+            />
+          ) : activeState === "weak" ? (
+            <FontAwesomeIcon
+              icon={faAnglesDown}
+              color={Constants.WIDGET_PRIMARY_FONT}
+              style={{ fontSize: "14px" }}
+            />
+          ) : null}
+        </div>
       </div>
-      <div
-        className="row"
-        style={{
-          color: "rgba(255, 255, 255, 0.2)",
-          fontSize: "10px",
-          gap: "3px",
-        }}
-      >
-        {roll_type === "damage" ? (
-          <Icon path={mdiSwordCross} size={0.6} color={Constants.COLOR_1} />
-        ) : roll_type === "armor" ? (
-          <Icon path={mdiShield} size={0.6} color={Constants.COLOR_2} />
-        ) : roll_type === "ability" ||
-          roll_type === "mystical power" ||
-          roll_type === "utility" ||
-          roll_type === "monsterous trait" ? (
-          <FontAwesomeIcon
-            icon={faStarOfLife}
-            color={color}
-            style={{ fontSize: "12px" }}
-          />
-        ) : (
-          <Icon path={mdiSwordCross} size={0.6} color={Constants.COLOR_1} />
-        )}
-        {activeState === "full" ? (
-          <FontAwesomeIcon
-            icon={faAnglesUp}
-            color={Constants.WIDGET_PRIMARY_FONT}
-            style={{ fontSize: "14px" }}
-          />
-        ) : activeState === "weak" ? (
-          <FontAwesomeIcon
-            icon={faAnglesDown}
-            color={Constants.WIDGET_PRIMARY_FONT}
-            style={{ fontSize: "14px" }}
-          />
-        ) : null}
-      </div>
-    </div>
+    </>
   );
 }
 

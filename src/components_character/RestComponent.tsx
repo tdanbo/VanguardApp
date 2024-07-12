@@ -1,14 +1,14 @@
-import "../Styles.css";
-import { SessionEntry, CharacterEntry, CombatEntry } from "../Types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUtensils } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { mdiSleep } from "@mdi/js";
+import Icon from "@mdi/react";
+import { Socket } from "socket.io-client";
+import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import { GetBurnRate } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-import { Socket } from "socket.io-client";
-import { v4 as uuidv4 } from "uuid";
-import Icon from "@mdi/react";
-import { mdiSleep } from "@mdi/js";
+import "../Styles.css";
+import { CharacterEntry, CombatEntry, SessionEntry } from "../Types";
 interface DayComponentProps {
   session: SessionEntry;
   character: CharacterEntry;
@@ -99,7 +99,7 @@ export default function RestComponent({
   return (
     <>
       <div
-        className="row button_color button"
+        className="button bg--primary-4 border"
         style={{
           fontSize: "15px",
           color: Constants.WIDGET_PRIMARY_FONT,
@@ -112,12 +112,7 @@ export default function RestComponent({
       </div>
       {character.rations < GetBurnRate(character) ? (
         <div
-          className="row button_color button"
-          style={{
-            fontSize: "15px",
-            color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
-            maxWidth: "50px",
-          }}
+          className="button bg--primary-2 font--primary-4 border"
           title="You don't have enough rations to eat equal to your consumption, and can't refresh your energy levels."
           onClick={HandleEat}
         >
@@ -125,8 +120,7 @@ export default function RestComponent({
         </div>
       ) : (
         <div
-          className="row button_color button"
-          style={{ fontSize: "15px", maxWidth: "50px" }}
+          className="button bg--primary-4 border"
           title="Will eat rations equal to your consumption, and refresh your energy levels."
           onClick={HandleEat}
         >

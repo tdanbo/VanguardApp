@@ -8,10 +8,13 @@ import {
   Dice8FillIcon,
 } from "../Images";
 
+import { faAnglesDown, faAnglesUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { random } from "lodash";
 import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
+import { update_session } from "../functions/SessionsFunctions";
 import {
   ActiveStateType,
   AdvantageType,
@@ -23,9 +26,6 @@ import {
   RollTypeEntry,
   SessionEntry,
 } from "../Types";
-import { update_session } from "../functions/SessionsFunctions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAnglesDown, faAnglesUp } from "@fortawesome/free-solid-svg-icons";
 
 type RollComponentProps = {
   session: SessionEntry;
@@ -76,37 +76,6 @@ const RollContainer = styled.div<RollContainerProps>`
   text-shadow: ${(props) =>
     props.$inactive ? "1px 1px 2px black" : "0px 0px 0px transparent;"};
 `;
-
-function HasAmmunition(character: CharacterEntry) {
-  for (const item of character.inventory) {
-    if (
-      item.static.category === "projectile" &&
-      item.equipped &&
-      item.quantity > 0
-    ) {
-      item.quantity -= 1;
-      return true;
-    }
-  }
-  return false;
-}
-
-function HasRangedWeapon(character: CharacterEntry) {
-  for (const item of character.inventory) {
-    if (item.static.category === "ranged weapon" && item.equipped) {
-      return true;
-    }
-  }
-  return false;
-}
-
-function Ammunition(character: CharacterEntry) {
-  if (HasAmmunition(character)) {
-    return true;
-  } else {
-    return false;
-  }
-}
 
 function RollComponent({
   roll_type,
@@ -200,12 +169,6 @@ function RollComponent({
     // if (target !== 0 && result > target) {
     //   success = false;
     // }
-
-    if (roll_type === "attack" && HasRangedWeapon(character)) {
-      if (!Ammunition(character)) {
-        return;
-      }
-    }
 
     const roll_entry: RollEntry = {
       result1: result1,
