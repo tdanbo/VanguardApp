@@ -1,14 +1,14 @@
 import * as Constants from "../Constants";
 import "../Styles.css";
 
+import { Socket } from "socket.io-client";
 import {
-  CharacterEntry,
   AbilityEntry,
-  SessionEntry,
+  CharacterEntry,
   EffectEntry,
+  SessionEntry,
 } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
-import { Socket } from "socket.io-client";
 
 interface LevelComponentProps {
   ability: AbilityEntry | EffectEntry;
@@ -59,50 +59,42 @@ export default function LevelComponent({
   };
 
   return (
-    <div
-      className="column button"
-      style={{
-        minWidth: "40px",
-        maxWidth: "40px",
-        borderLeft: "1px solid",
-        borderColor: "rgba(0, 0, 0, 0.25)",
-        borderRadius: "0px",
-        justifyContent: "center",
-        gap: "0px",
-      }}
-      onClick={HandleMinusLevel}
-      onContextMenu={(e) => {
-        e.preventDefault();
-        HandleAddLevel();
-      }}
-      title={"Quantity"}
-    >
+    <>
+      <div className="vertical-divider bg--primary-1" />
       <div
-        className="row"
-        style={{
-          color: Constants.WIDGET_SECONDARY_FONT,
-          fontSize: "14px",
-          fontWeight: "bold",
-          gap: "2px",
+        className="button border-radius--none"
+        onClick={HandleMinusLevel}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          HandleAddLevel();
         }}
+        title={"Quantity"}
       >
-        {ability.level === "Novice"
-          ? "1"
-          : ability.level === "Adept"
-          ? "2"
-          : ability.level === "Master"
-          ? "3"
-          : ability.level}
+        <div
+          className="row"
+          style={{
+            color: Constants.WIDGET_SECONDARY_FONT,
+            fontSize: "14px",
+            fontWeight: "bold",
+          }}
+        >
+          {ability.level === "Novice"
+            ? "1"
+            : ability.level === "Adept"
+            ? "2"
+            : ability.level === "Master"
+            ? "3"
+            : ability.level}
+        </div>
+        <div
+          className="row font--primary-4"
+          style={{
+            fontSize: "11px",
+          }}
+        >
+          Level
+        </div>
       </div>
-      <div
-        className="row"
-        style={{
-          color: "rgba(255, 255, 255, 0.2)",
-          fontSize: "10px",
-        }}
-      >
-        Level
-      </div>
-    </div>
+    </>
   );
 }

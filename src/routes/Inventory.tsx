@@ -78,7 +78,10 @@ export default function Inventory({
                   isCreature={isCreature}
                 />
               </div>
-              <div className="row bg--background padding--medium border">
+              <div
+                className="row bg--background padding--medium border"
+                style={{ width: "auto" }}
+              >
                 <RestComponent
                   session={session}
                   character={character}

@@ -80,13 +80,13 @@ function InventoryEntry({
           isGm={isGm}
         />
         <div
-          className={`column gap--none padding--medium ${categoryColor}`}
+          className="column gap--none padding--medium"
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
           <div
-            className="row font--bold"
+            className={`row font--bold ${categoryColor}`}
             style={{ justifyContent: "flex-start" }}
           >
             {item.name}

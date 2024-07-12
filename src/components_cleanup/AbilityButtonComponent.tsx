@@ -2,16 +2,16 @@ import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
-  SessionEntry,
+  AbilityEntry,
   CharacterEntry,
   ItemStateType,
-  AbilityEntry,
+  SessionEntry,
 } from "../Types";
 
 import { Socket } from "socket.io-client";
 
-import { update_session } from "../functions/SessionsFunctions";
 import { uniqueId } from "lodash";
+import { update_session } from "../functions/SessionsFunctions";
 
 interface ItemButtonComponent {
   state: ItemStateType;
@@ -52,18 +52,17 @@ function AbilityButtonComponent({
     update_session(session, websocket, character, isCreature);
   };
   return (
-    <div
-      className="faded_button"
-      style={{
-        maxWidth: "40px",
-        minWidth: "40px",
-      }}
-      onClick={() => {
-        state === "take" ? AddAbilitySlot() : DeleteAbilitySlot(ability);
-      }}
-    >
-      <FontAwesomeIcon icon={state === "drop" ? faXmark : faPlus} size="sm" />
-    </div>
+    <>
+      <div className="vertical-divider bg--primary-1" />
+      <div
+        className="button bg--primary-3 font--primary-4 border-radius--none"
+        onClick={() => {
+          state === "take" ? AddAbilitySlot() : DeleteAbilitySlot(ability);
+        }}
+      >
+        <FontAwesomeIcon icon={state === "drop" ? faXmark : faPlus} size="sm" />
+      </div>
+    </>
   );
 }
 

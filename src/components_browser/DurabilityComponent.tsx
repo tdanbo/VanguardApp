@@ -104,6 +104,7 @@ function DurabilityComponent({
         title={"Durability"}
       >
         <div
+          className="row"
           style={{
             fontSize: "14px",
             fontWeight: "bold",

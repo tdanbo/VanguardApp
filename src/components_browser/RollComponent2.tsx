@@ -200,7 +200,7 @@ function RollComponent({
           style={{
             color: "rgba(255, 255, 255, 0.2)",
             fontSize: "10px",
-            gap: "3px",
+            gap: "5px",
           }}
         >
           {roll_type === "damage" ? (

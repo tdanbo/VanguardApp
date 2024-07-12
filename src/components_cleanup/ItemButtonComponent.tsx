@@ -240,10 +240,6 @@ function ItemButtonComponent({
             <div className="row bg--primary-1 padding--large border">
               <div
                 className="row button bg--primary-4"
-                disabled={
-                  state === "buy" &&
-                  character.coins < quantity * item.static.cost
-                }
                 onClick={() =>
                   state === "buy"
                     ? HandleBuyItem()
@@ -273,7 +269,6 @@ function ItemButtonComponent({
               ) : state === "take" ? (
                 <div
                   className="row button bg--primary-4"
-                  disabled={quantity < session.characters.length}
                   onClick={() => HandleShareItem()}
                 >
                   Share

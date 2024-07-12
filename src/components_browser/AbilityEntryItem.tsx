@@ -15,19 +15,12 @@ import {
   RollTypeEntry,
   SessionEntry,
 } from "../Types";
+import LevelComponent from "../components_browser/LevelComponent";
 import RollComponent2 from "../components_browser/RollComponent2";
+import AbilityButtonComponent from "../components_cleanup/AbilityButtonComponent";
 import { CheckAbility } from "../functions/ActivesFunction";
 import { update_session } from "../functions/SessionsFunctions";
 import { StyledText, toTitleCase } from "../functions/UtilityFunctions";
-import LevelComponent from "../components_browser/LevelComponent";
-import AbilityButtonComponent from "../components_cleanup/AbilityButtonComponent";
-
-const EntryColor = (type: string) => {
-  if (type === undefined) {
-    return "#FF0000";
-  }
-  return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.WIDGET_BORDER;
-};
 
 const BaseContainer = styled.div`
   display: flex;
@@ -94,52 +87,6 @@ const LevelContainer = styled.div<LevelContainerProps>`
   flex-direction: column;
 `;
 
-interface LevelProps {
-  $active: boolean;
-  type: string;
-}
-
-const AbilityName = styled.div<LevelProps>`
-  align-items: flex;
-  display: flex;
-  flex-grow: 1;
-  color: ${(props) =>
-    props.$active ? EntryColor(props.type) : Constants.WIDGET_SECONDARY_FONT};
-  font-size: 15px;
-  font-weight: bold;
-`;
-
-const AbilityDetail = styled.div`
-  display: flex;
-  flex-grow: 1;
-  color: rgba(255, 255, 255, 0.2);
-  font-size: 10px;
-`;
-
-const AbilityDescription = styled.div`
-  align-items: center;
-  padding: 10px;
-  flex-grow: 1;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  font-size: 14px;
-`;
-
-const CorruptionContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-basis: 0;
-  align-items: center;
-  justify-content: center;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-  gap: 2px;
-  margin-left: 5px;
-`;
-
-const RollContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
 interface AbilityEntryItemProps {
   ability: AbilityEntry;
   browser: boolean;
@@ -201,8 +148,13 @@ function AbilityEntryItem({
     radius,
   }: LevelProps) => {
     return (
-      <LevelBaseContainer radius={radius}>
-        <AbilityDescription>
+      <>
+        <div
+          className="row font--size-normal font--primary-2 padding--medium"
+          style={{
+            justifyContent: "flex-start",
+          }}
+        >
           {ability_level.action !== "" && (
             <div
               className="base_color"
@@ -232,8 +184,8 @@ function AbilityEntryItem({
             setAdvantage={setAdvantage}
             setCriticalState={setCriticalState}
           />
-        </AbilityDescription>
-      </LevelBaseContainer>
+        </div>
+      </>
     );
   };
 
@@ -284,122 +236,132 @@ function AbilityEntryItem({
     return toTitleCase(tags.length > 0 ? tags.join(", ") : "");
   };
 
+  const categoryColor =
+    Constants.CATEGORY_FONT_CLASSES[ability.static.category] ||
+    "font--primary-1";
+
   return (
-    <BaseContainer>
-      <Container>
-        <ExpandButten
+    <div className="column bg--primary-1 border">
+      <div className="row row--card bg--primary-2 padding--small ">
+        <div
+          className="button border-radius--left bg--primary-3"
+          style={{ minWidth: "25px", maxWidth: "25px" }}
           title={free ? "Free Ability" : ""}
           onClick={ChangeFreeHandle}
         >
           {free ? "F" : null}
-        </ExpandButten>
-        <NameContainer
+        </div>
+        <div className="vertical-divider bg--primary-1" />
+        <div
+          className="column gap--none padding--medium"
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <AbilityName type={ability.static.category} $active={true}>
+          <div
+            className={`row font--bold ${categoryColor}`}
+            style={{ justifyContent: "flex-start" }}
+          >
             {ability.name}
-            <CorruptionContainer>
-              {(ability.static.category === "mystical power" ||
-                ability.static.category === "ritual") && (
-                <>
-                  {(ability.level === "Novice" ||
-                    ability.level === "Adept" ||
-                    ability.level === "Master") &&
-                    !(
-                      ability.static.tradition.includes("theurgy") &&
-                      has_theurgy_novice
-                    ) &&
-                    !(
-                      ability.static.tradition.includes("wizardry") &&
-                      has_wizardry_novice
-                    ) && (
-                      <FontAwesomeIcon
-                        icon={faSkull}
-                        style={{ fontSize: "14px" }}
-                      />
-                    )}
-                  {(ability.level === "Adept" || ability.level === "Master") &&
-                    !(
-                      ability.static.tradition.includes("theurgy") &&
-                      has_theurgy_adept
-                    ) &&
-                    !(
-                      ability.static.tradition.includes("wizardry") &&
-                      has_wizardry_adept
-                    ) && (
-                      <FontAwesomeIcon
-                        icon={faSkull}
-                        style={{ fontSize: "14px" }}
-                      />
-                    )}
-                  {ability.level === "Master" &&
-                    !(
-                      ability.static.tradition.includes("theurgy") &&
-                      has_theurgy_master
-                    ) &&
-                    !(
-                      ability.static.tradition.includes("wizardry") &&
-                      has_wizardry_master
-                    ) && (
-                      <FontAwesomeIcon
-                        icon={faSkull}
-                        style={{ fontSize: "14px" }}
-                      />
-                    )}
-                </>
-              )}
-            </CorruptionContainer>
-          </AbilityName>
-          <AbilityDetail>
+            {(ability.static.category === "mystical power" ||
+              ability.static.category === "ritual") && (
+              <>
+                {(ability.level === "Novice" ||
+                  ability.level === "Adept" ||
+                  ability.level === "Master") &&
+                  !(
+                    ability.static.tradition.includes("theurgy") &&
+                    has_theurgy_novice
+                  ) &&
+                  !(
+                    ability.static.tradition.includes("wizardry") &&
+                    has_wizardry_novice
+                  ) && (
+                    <FontAwesomeIcon
+                      icon={faSkull}
+                      style={{ fontSize: "14px" }}
+                    />
+                  )}
+                {(ability.level === "Adept" || ability.level === "Master") &&
+                  !(
+                    ability.static.tradition.includes("theurgy") &&
+                    has_theurgy_adept
+                  ) &&
+                  !(
+                    ability.static.tradition.includes("wizardry") &&
+                    has_wizardry_adept
+                  ) && (
+                    <FontAwesomeIcon
+                      icon={faSkull}
+                      style={{ fontSize: "14px" }}
+                    />
+                  )}
+                {ability.level === "Master" &&
+                  !(
+                    ability.static.tradition.includes("theurgy") &&
+                    has_theurgy_master
+                  ) &&
+                  !(
+                    ability.static.tradition.includes("wizardry") &&
+                    has_wizardry_master
+                  ) && (
+                    <FontAwesomeIcon
+                      icon={faSkull}
+                      style={{ fontSize: "14px" }}
+                    />
+                  )}
+              </>
+            )}
+          </div>
+          <div
+            className="row font--primary-3 font--size-tiny gap--small"
+            style={{ justifyContent: "flex-start" }}
+          >
             {toTitleCase(ability.static.category)}
             {ability.static.tradition &&
               ability.static.tradition.length > 0 &&
               ", " + toTitleCase(ability.static.tradition.join(", ")) + ", "}
             <div
+              className="font--primary-2"
               style={{
-                marginLeft: "2px",
                 color: Constants.WIDGET_SECONDARY_FONT,
               }}
             >
               {GetTagNames(ability)}
             </div>
-          </AbilityDetail>
-        </NameContainer>
-        <RollContainer>
-          {current_level.roll.map((i, index) => {
-            return (
-              <RollComponent2
-                session={session}
-                character={character}
-                websocket={websocket}
-                roll_type={ability.static.category as RollTypeEntry}
-                roll_source={ability.name}
-                isCreature={isCreature}
-                dice={i.dice}
-                dice_mod={i.mod}
-                color={EntryColor(ability.static.category)}
-                key={index}
-                activeState={activeState}
-                advantage={""}
-                setActiveState={setActiveState}
-                setAdvantage={setAdvantage}
-                setCriticalState={setCriticalState}
-              />
-            );
-          })}
-          {ability.static.adept.description !== "" &&
-          ability.static.master.description !== "" ? (
-            <LevelComponent
-              ability={ability}
+          </div>
+        </div>
+        {current_level.roll.map((i, index) => {
+          return (
+            <RollComponent2
               session={session}
               character={character}
               websocket={websocket}
+              roll_type={ability.static.category as RollTypeEntry}
+              roll_source={ability.name}
               isCreature={isCreature}
+              dice={i.dice}
+              dice_mod={i.mod}
+              color={categoryColor}
+              key={index}
+              activeState={activeState}
+              advantage={""}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
             />
-          ) : null}
-        </RollContainer>
+          );
+        })}
+        {ability.static.adept.description !== "" &&
+        ability.static.master.description !== "" ? (
+          <LevelComponent
+            ability={ability}
+            session={session}
+            character={character}
+            websocket={websocket}
+            isCreature={isCreature}
+          />
+        ) : null}
         <AbilityButtonComponent
           state={state}
           ability={ability}
@@ -408,13 +370,12 @@ function AbilityEntryItem({
           websocket={websocket}
           isCreature={isCreature}
         />
+        <div className="vertical-divider bg--primary-1" />
         <div
-          className="faded_button"
+          className="button bg--primary-3 border-radius--right"
           style={{
             minWidth: "25px",
-            borderRadius: "0px 5px 5px 0px",
-            borderLeft: "1px solid rgba(0, 0, 0, 0.25)",
-
+            maxWidth: "25px",
             color:
               expanded || isHovered
                 ? Constants.WIDGET_SECONDARY_FONT
@@ -424,55 +385,59 @@ function AbilityEntryItem({
         >
           <FontAwesomeIcon icon={faBars} size="sm" />
         </div>
-      </Container>
-      <LevelContainer $expanded={expanded}>
-        {ability.static.novice.description !== "" &&
-          abilityLevel === "Novice" && (
-            <>
-              <LevelDescriptionComponent
-                ability={ability}
-                ability_level={ability.static.novice}
-                radius={Constants.BORDER_RADIUS}
-              />
-            </>
-          )}
-        {ability.static.adept.description !== "" &&
-          abilityLevel === "Adept" && (
-            <>
-              <LevelDescriptionComponent
-                ability={ability}
-                ability_level={ability.static.novice}
-                radius={"0px"}
-              />
-              <LevelDescriptionComponent
-                ability={ability}
-                ability_level={ability.static.adept}
-                radius={Constants.BORDER_RADIUS}
-              />
-            </>
-          )}
-        {ability.static.master.description !== "" &&
-          abilityLevel === "Master" && (
-            <>
-              <LevelDescriptionComponent
-                ability={ability}
-                ability_level={ability.static.novice}
-                radius={"0px"}
-              />
-              <LevelDescriptionComponent
-                ability={ability}
-                ability_level={ability.static.adept}
-                radius={"0px"}
-              />
-              <LevelDescriptionComponent
-                ability={ability}
-                ability_level={ability.static.master}
-                radius={Constants.BORDER_RADIUS}
-              />
-            </>
-          )}
-      </LevelContainer>
-    </BaseContainer>
+      </div>
+      {ability.static.novice.description !== "" &&
+        abilityLevel === "Novice" &&
+        expanded && (
+          <>
+            <LevelDescriptionComponent
+              ability={ability}
+              ability_level={ability.static.novice}
+              radius={Constants.BORDER_RADIUS}
+            />
+          </>
+        )}
+      {ability.static.adept.description !== "" &&
+        abilityLevel === "Adept" &&
+        expanded && (
+          <>
+            <LevelDescriptionComponent
+              ability={ability}
+              ability_level={ability.static.novice}
+              radius={"0px"}
+            />
+            <div className="horizontal-divider bg--primary-3" />
+            <LevelDescriptionComponent
+              ability={ability}
+              ability_level={ability.static.adept}
+              radius={Constants.BORDER_RADIUS}
+            />
+          </>
+        )}
+      {ability.static.master.description !== "" &&
+        abilityLevel === "Master" &&
+        expanded && (
+          <>
+            <LevelDescriptionComponent
+              ability={ability}
+              ability_level={ability.static.novice}
+              radius={"0px"}
+            />
+            <div className="horizontal-divider bg--primary-3" />
+            <LevelDescriptionComponent
+              ability={ability}
+              ability_level={ability.static.adept}
+              radius={"0px"}
+            />
+            <div className="horizontal-divider bg--primary-3" />
+            <LevelDescriptionComponent
+              ability={ability}
+              ability_level={ability.static.master}
+              radius={Constants.BORDER_RADIUS}
+            />
+          </>
+        )}
+    </div>
   );
 }
 
