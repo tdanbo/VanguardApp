@@ -539,13 +539,13 @@ body {
   }
 }
 
-@media (min-width: 1900px) {
+@media (min-width: 2100px) {
   .show_over_breakpoint4 {
     display: flex; /* or any other display value you need */
   }
 }
 
-@media (min-width: 1900px) {
+@media (min-width: 2100px) {
   .hide_over_breakpoint4 {
     display: none; /* or any other display value you need */
   }

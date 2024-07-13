@@ -106,7 +106,7 @@ function Browser({
             </div>
           ) : null}
           <input
-            className="row opaque_color font"
+            className="row bg--background font--primary-1 font--size-large border"
             value={tempSearch} // Use the temporary search state as the input value
             onChange={handleChange}
             onKeyDown={handleKeyDown}
