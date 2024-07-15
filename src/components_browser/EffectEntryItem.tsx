@@ -9,27 +9,15 @@ import {
   AdvantageType,
   CharacterEntry,
   EffectEntry,
+  ItemStateType,
   SessionEntry,
 } from "../Types";
 
-import {
-  faBars,
-  faChevronRight,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../functions/SessionsFunctions";
 import { StyledText } from "../functions/UtilityFunctions";
 import LevelComponent from "./LevelComponent";
-
-const EntryColor = (type: string) => {
-  return Constants.TYPE_COLORS[type.toLowerCase()] || Constants.WIDGET_BORDER;
-};
-
-const BaseContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
 
 interface ContainerProps {
   radius: string;
@@ -47,112 +35,6 @@ const LevelBaseContainer = styled.div<ContainerProps>`
   background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
 `;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  border-radius: ${Constants.BORDER_RADIUS};
-  border: 1px solid ${Constants.WIDGET_BORDER};
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  gap: 0px;
-  min-height: 35px;
-  max-height: 35px;
-`;
-
-interface ExpandedContainerProps {
-  expanded: boolean;
-}
-
-const ExpandedContainer = styled.div<ExpandedContainerProps>`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding-right: 5px;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-
-  /* When expanded is true, always show the icon */
-  ${({ expanded }) =>
-    expanded &&
-    `
-    visibility: visible;
-    opacity: 1;
-  `}
-`;
-
-const NameContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  margin-left: 5px;
-  &:hover {
-    ${ExpandedContainer} {
-      visibility: visible;
-      opacity: 1;
-    }
-  }
-`;
-
-const LevelSelectionContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: right;
-`;
-
-const AddButton = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  width: 20px;
-  max-width: 20px;
-  border-right-top-radius: ${Constants.BORDER_RADIUS};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-`;
-
-const DeleteButton = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  width: 20px;
-  max-width: 20px;
-  border-right-top-radius: ${Constants.BORDER_RADIUS};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-  &:hover {
-    color: ${Constants.BRIGHT_RED};
-  }
-`;
-
-const ExpandButten = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  width: 20px;
-  max-width: 20px;
-  border-right-top-radius: ${Constants.BORDER_RADIUS};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-  padding-bottom: 5px;
-  font-size: 12px;
-`;
-
 interface LevelContainerProps {
   $expanded: boolean;
 }
@@ -162,40 +44,12 @@ const LevelContainer = styled.div<LevelContainerProps>`
   flex-direction: column;
 `;
 
-interface LevelProps {
-  $active: boolean;
-  type: string;
-}
-
-const AbilityName = styled.div<LevelProps>`
-  align-items: flex;
-  display: flex;
-  flex-grow: 1;
-  color: ${(props) =>
-    props.$active ? EntryColor(props.type) : Constants.WIDGET_SECONDARY_FONT};
-  font-size: 14px;
-  font-weight: bold;
-`;
-
-const AbilityDetail = styled.div`
-  display: flex;
-  flex-grow: 1;
-  color: rgba(255, 255, 255, 0.2);
-  font-size: 10px;
-`;
-
 const AbilityDescription = styled.div`
   align-items: center;
   padding: 10px;
   flex-grow: 1;
   color: ${Constants.WIDGET_SECONDARY_FONT};
   font-size: 14px;
-`;
-
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-basis: 0;
 `;
 
 interface EffectEntryItemProps {
@@ -207,6 +61,7 @@ interface EffectEntryItemProps {
   isCreature: boolean;
   activeState: ActiveStateType;
   advantage: AdvantageType;
+  state: ItemStateType;
   setInventoryState?: (inventoryState: number) => void;
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
@@ -215,7 +70,7 @@ interface EffectEntryItemProps {
 
 function EffectEntryItem({
   effect,
-  browser,
+  state,
   setInventoryState,
   character,
   session,
@@ -231,6 +86,7 @@ function EffectEntryItem({
     effect: string;
     radius: string;
   }
+  const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const LevelDescriptionComponent = ({ effect, radius }: LevelProps) => {
     return (
@@ -298,71 +154,74 @@ function EffectEntryItem({
   };
 
   return (
-    <BaseContainer className="button-hover">
-      <Container>
-        <ExpandButten className={"button-hover"}></ExpandButten>
-        <NameContainer
+    <div className="column bg--primary-1 border">
+      <div className="row row--card bg--primary-2 padding--small ">
+        <div
+          className="button border-radius--left bg--primary-3"
+          style={{ minWidth: "25px", maxWidth: "25px" }}
+        />
+        <div className="vertical-divider bg--primary-1" />
+        <div
+          className="column gap--none padding--medium"
+          onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <div
+            className="row font--bold font--primary-2"
+            style={{ justifyContent: "flex-start" }}
+          >
+            {effect.name}
+          </div>
+          <div
+            className="row font--primary-3 font--size-tiny gap--small"
+            style={{ justifyContent: "flex-start" }}
+          >
+            {toTitleCase(effect.static.category)}
+          </div>
+        </div>
+        <LevelComponent
+          ability={effect}
+          session={session}
+          character={character}
+          websocket={websocket}
+          isCreature={isCreature}
+        />
+        <div className="vertical-divider bg--primary-1" />
+        <div
+          className="button bg--primary-3 font--primary-4 border-radius--none"
+          onClick={() => {
+            state === "take" ? AddAbilitySlot() : DeleteAbilitySlot(effect);
+          }}
+        >
+          <FontAwesomeIcon
+            icon={state === "drop" ? faXmark : faPlus}
+            size="sm"
+          />
+        </div>
+        <div className="vertical-divider bg--primary-1" />
+        <div
+          className="button bg--primary-3 border-radius--right"
+          style={{
+            minWidth: "25px",
+            maxWidth: "25px",
+            color:
+              expanded || isHovered
+                ? Constants.WIDGET_SECONDARY_FONT
+                : Constants.WIDGET_SECONDARY_FONT_INACTIVE,
+          }}
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
         >
-          <AbilityName type={effect.static.category} $active={true}>
-            {effect.name}
-          </AbilityName>
-          <AbilityDetail>{toTitleCase(effect.static.category)}</AbilityDetail>
-        </NameContainer>
-        <LevelSelectionContainer>
-          <LevelComponent
-            ability={effect}
-            session={session}
-            character={character}
-            websocket={websocket}
-            isCreature={isCreature}
-          />
-        </LevelSelectionContainer>
-        {browser ? (
-          <AddButton className={"button-hover"} onClick={AddAbilitySlot}>
-            <FontAwesomeIcon
-              icon={faChevronRight}
-              style={{ fontSize: "12px" }}
-            />
-          </AddButton>
-        ) : (
-          <Column>
-            <DeleteButton
-              className={"button-hover"}
-              onClick={() => DeleteAbilitySlot(effect)}
-            >
-              <FontAwesomeIcon icon={faXmark} style={{ fontSize: "12px" }} />
-            </DeleteButton>
-            {expanded ? (
-              <AddButton className={"button-hover"}>
-                <FontAwesomeIcon
-                  icon={faBars}
-                  style={{
-                    fontSize: "12px",
-                    color: Constants.WIDGET_SECONDARY_FONT,
-                  }}
-                />
-              </AddButton>
-            ) : (
-              <AddButton className={"button-hover"}>
-                <FontAwesomeIcon
-                  icon={faBars}
-                  style={{
-                    fontSize: "12px",
-                  }}
-                />
-              </AddButton>
-            )}
-          </Column>
-        )}
-      </Container>
+          <FontAwesomeIcon icon={faBars} size="sm" />
+        </div>
+      </div>
       <LevelContainer $expanded={expanded}>
         <LevelDescriptionComponent
           effect={effect.static.effect}
           radius={Constants.BORDER_RADIUS}
         />
       </LevelContainer>
-    </BaseContainer>
+    </div>
   );
 }
 

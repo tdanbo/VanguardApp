@@ -123,6 +123,11 @@ function ItemButtonComponent({
     const value = e.target.value;
 
     // Check if the value is a valid non-negative number
+    if (value === "") {
+      setQuantity(0);
+      return;
+    }
+
     if (
       !/^\d*$/.test(value) ||
       (state === "give" && !item.static.bulk) ||
@@ -193,7 +198,7 @@ function ItemButtonComponent({
             style={{
               minWidth: "400px",
               maxWidth: "15%",
-              maxHeight: "20%",
+              maxHeight: "25%",
             }}
             onClick={stopPropagation}
           >
@@ -238,8 +243,34 @@ function ItemButtonComponent({
               </div>
             </div>
             <div className="row bg--primary-1 padding--large border">
+              {state === "drop" ? (
+                <div
+                  className="row button bg--primary-4"
+                  style={{ minHeight: "50px" }}
+                  onClick={() => HandleDropItem(true)}
+                >
+                  Destroy
+                </div>
+              ) : state === "give" ? (
+                <div
+                  className="row button bg--primary-4"
+                  style={{ minHeight: "50px" }}
+                  onClick={() => HandleGamemasterTakeItem()}
+                >
+                  {character.name}
+                </div>
+              ) : state === "take" ? (
+                <div
+                  className="row button bg--primary-4"
+                  style={{ minHeight: "50px" }}
+                  onClick={() => HandleShareItem()}
+                >
+                  Share
+                </div>
+              ) : null}
               <div
                 className="row button bg--primary-4"
+                style={{ minHeight: "50px" }}
                 onClick={() =>
                   state === "buy"
                     ? HandleBuyItem()
@@ -252,28 +283,6 @@ function ItemButtonComponent({
               >
                 {toTitleCase(state)}
               </div>
-              {state === "drop" ? (
-                <div
-                  className="row button bg--primary-4"
-                  onClick={() => HandleDropItem(true)}
-                >
-                  Destroy
-                </div>
-              ) : state === "give" ? (
-                <div
-                  className="row button bg--primary-4"
-                  onClick={() => HandleGamemasterTakeItem()}
-                >
-                  {character.name}
-                </div>
-              ) : state === "take" ? (
-                <div
-                  className="row button bg--primary-4"
-                  onClick={() => HandleShareItem()}
-                >
-                  Share
-                </div>
-              ) : null}
             </div>
           </div>
         </div>

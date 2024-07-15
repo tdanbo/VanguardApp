@@ -177,6 +177,7 @@ function AbilityBrowser({
             setActiveState={setActiveState}
             setAdvantage={setAdvantage}
             setCriticalState={setCriticalState}
+            state="take"
           />
         );
       })}

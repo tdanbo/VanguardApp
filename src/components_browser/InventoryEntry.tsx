@@ -78,6 +78,7 @@ function InventoryEntry({
           websocket={websocket}
           isCreature={isCreature}
           isGm={isGm}
+          state={state}
         />
         <div
           className="column gap--none padding--medium"

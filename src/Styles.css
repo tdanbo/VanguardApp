@@ -19,7 +19,9 @@ body::-webkit-scrollbar {
 :root {
   --clr-error: hsl(0, 48%, 39%);
   --clr-red: hsl(0, 48%, 39%);
+  --clr-red-darker: hsl(0, 48%, 32%);
   --clr-blue: hsl(190, 18%, 32%);
+  --clr-blue-darker: hsl(190, 18%, 25%);
   --clr-purple: hsl(310, 14%, 33%);
   --clr-green: hsl(70, 18%, 34%);
   --clr-yellow: hsl(34, 48%, 39%);
@@ -165,8 +167,16 @@ body {
   color: var(--clr-red);
 }
 
+.font--red-darker {
+  color: var(--clr-red-darker);
+}
+
 .font--blue {
   color: var(--clr-blue);
+}
+
+.font--blue-darker {
+  color: var(--clr-blue-darker);
 }
 
 .font--purple {

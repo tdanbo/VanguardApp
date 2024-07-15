@@ -146,6 +146,22 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
       character.stats.accurate.mod -= effect.level;
     } else if (effect.name === "Weakened Cunning") {
       character.stats.cunning.mod -= effect.level;
+    } else if (effect.name === "Enhanced Strong") {
+      character.stats.strong.mod += effect.level;
+    } else if (effect.name === "Enhanced Resolute") {
+      character.stats.resolute.mod += effect.level;
+    } else if (effect.name === "Enhanced Quick") {
+      character.stats.quick.mod += effect.level;
+    } else if (effect.name === "Enhanced Discreet") {
+      character.stats.discreet.mod += effect.level;
+    } else if (effect.name === "Enhanced Vigilant") {
+      character.stats.vigilant.mod += effect.level;
+    } else if (effect.name === "Enhanced Persuasive") {
+      character.stats.persuasive.mod += effect.level;
+    } else if (effect.name === "Enhanced Accurate") {
+      character.stats.accurate.mod += effect.level;
+    } else if (effect.name === "Enhanced Cunning") {
+      character.stats.cunning.mod += effect.level;
     } else if (effect.name === "Exhausted") {
       character.stats.strong.mod -= effect.level;
       character.stats.resolute.mod -= effect.level;
