@@ -121,16 +121,19 @@ function CreatureHealthAdjuster({
 
   return (
     <>
-      <div className="row button_color button" style={{ gap: "0px" }}>
+      <div
+        className="row bg--primary-2 border"
+        style={{ gap: "0px", maxWidth: "100px" }}
+      >
         <div
-          className="row  button"
+          className="row button"
           style={{ minWidth: "20px", height: "40px" }}
           onClick={submitLoseOneHp}
         >
           -
         </div>
         <div
-          className="row"
+          className="row "
           style={{
             minWidth: "45px",
             height: "40px",
