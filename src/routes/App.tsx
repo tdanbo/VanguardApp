@@ -70,10 +70,6 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // UpdateStaticAbilities(character.abilities, abilities);
-  // UpdateStaticEquipment(character.inventory, equipment);
-  // UpdateStaticEffects(character.effects, effects);
-
   return (
     <div className="column font padding">
       <div className="row" style={{ gap: "100px" }}>
