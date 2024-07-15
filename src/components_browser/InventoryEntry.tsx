@@ -94,7 +94,13 @@ function InventoryEntry({
 
             {item.static.rarity === "unique" &&
             !CheckAbility(character, "Artifact Crafting", "novice") ? (
-              <FontAwesomeIcon icon={faSkull} style={{ fontSize: "14px" }} />
+              <FontAwesomeIcon
+                icon={faSkull}
+                style={{
+                  fontSize: "14px",
+                  color: Constants.WIDGET_PRIMARY_FONT,
+                }}
+              />
             ) : null}
             <div className="font--size-tiny font--primary-4">
               {browser && isGm ? <div>{item.static.cost} Thaler</div> : null}

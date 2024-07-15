@@ -211,7 +211,10 @@ function AbilityEntryItem({
                   ) && (
                     <FontAwesomeIcon
                       icon={faSkull}
-                      style={{ fontSize: "14px" }}
+                      style={{
+                        fontSize: "14px",
+                        color: Constants.WIDGET_PRIMARY_FONT,
+                      }}
                     />
                   )}
                 {(ability.level === "Adept" || ability.level === "Master") &&
@@ -225,7 +228,10 @@ function AbilityEntryItem({
                   ) && (
                     <FontAwesomeIcon
                       icon={faSkull}
-                      style={{ fontSize: "14px" }}
+                      style={{
+                        fontSize: "14px",
+                        color: Constants.WIDGET_PRIMARY_FONT,
+                      }}
                     />
                   )}
                 {ability.level === "Master" &&
@@ -239,7 +245,10 @@ function AbilityEntryItem({
                   ) && (
                     <FontAwesomeIcon
                       icon={faSkull}
-                      style={{ fontSize: "14px" }}
+                      style={{
+                        fontSize: "14px",
+                        color: Constants.WIDGET_PRIMARY_FONT,
+                      }}
                     />
                   )}
               </>

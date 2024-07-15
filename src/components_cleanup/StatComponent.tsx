@@ -255,19 +255,7 @@ function StatComponent({
               />
             </div>
           </div>
-          {activeState === "full" ? (
-            <FontAwesomeIcon
-              icon={faAnglesUp}
-              color={Constants.WIDGET_PRIMARY_FONT}
-              style={{ fontSize: "14px", paddingTop: "20px" }}
-            />
-          ) : activeState === "weak" ? (
-            <FontAwesomeIcon
-              icon={faAnglesDown}
-              color={Constants.WIDGET_PRIMARY_FONT}
-              style={{ fontSize: "14px", paddingTop: "20px" }}
-            />
-          ) : null}
+
           {!isHovered ? (
             <div
               style={{
@@ -330,18 +318,44 @@ function StatComponent({
             {isHovered
               ? Math.max(stat_value + stat_modifier + modValue + flanked, 1)
               : Math.max(stat_value, 1)}
-            <div className="row" style={{ maxHeight: "0px", gap: "0px" }}>
+
+            <div
+              style={{
+                position: "absolute",
+                marginTop: "40px",
+              }}
+            >
+              {activeState === "full" ? (
+                <FontAwesomeIcon
+                  icon={faAnglesUp}
+                  color={Constants.WIDGET_PRIMARY_FONT}
+                  style={{ fontSize: "14px" }}
+                />
+              ) : activeState === "weak" ? (
+                <FontAwesomeIcon
+                  icon={faAnglesDown}
+                  color={Constants.WIDGET_PRIMARY_FONT}
+                  style={{ fontSize: "14px" }}
+                />
+              ) : null}
+            </div>
+            <div
+              style={{
+                position: "absolute",
+                marginTop: "-40px",
+              }}
+            >
               {advantage === "flanking" && stat_name === "attack" ? (
                 <Icon
                   path={mdiArrowCollapse}
-                  size={0.7}
-                  style={{ fontSize: "14px", paddingTop: "20px" }}
+                  size={0.8}
+                  color={Constants.WIDGET_PRIMARY_FONT}
                 />
               ) : advantage === "flanked" && stat_name === "defense" ? (
                 <Icon
                   path={mdiArrowExpand}
-                  size={0.7}
-                  style={{ fontSize: "14px", paddingTop: "20px" }}
+                  size={0.8}
+                  color={Constants.WIDGET_PRIMARY_FONT}
                 />
               ) : null}
             </div>

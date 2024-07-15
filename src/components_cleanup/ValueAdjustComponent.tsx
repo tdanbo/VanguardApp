@@ -113,12 +113,12 @@ function ValueAdjustComponent({
             onClick={stopPropagation}
           >
             <div className="row" style={{ fontSize: "25px" }}>
-              {type === "coins" ? "Thaler" : "Coins"}
+              {type === "coins" ? "Thaler" : "Rations"}
             </div>
             <div className="row empty_color" style={{ padding: "5px" }}>
               <div className="row">
                 <div
-                  className="row button_color button"
+                  className="row button bg--primary-4"
                   onClick={() => handleSingleValueChange(false)}
                 >
                   -
@@ -139,7 +139,7 @@ function ValueAdjustComponent({
                   }}
                 />
                 <div
-                  className="row button_color button"
+                  className="row button bg--primary-4"
                   onClick={() => handleSingleValueChange(true)}
                 >
                   +
@@ -147,11 +147,11 @@ function ValueAdjustComponent({
               </div>
             </div>
             <div className="row empty_color" style={{ padding: "5px" }}>
-              <div className="row button_color button" onClick={handleClose}>
+              <div className="row button bg--primary-4" onClick={handleClose}>
                 Cancel
               </div>
               <div
-                className="row button_color button"
+                className="row button bg--primary-4"
                 onClick={submitValueChange}
               >
                 Submit
