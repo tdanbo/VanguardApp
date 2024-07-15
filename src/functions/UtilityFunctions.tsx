@@ -155,6 +155,7 @@ export function IsWeapon(item: ItemEntry): boolean {
     "throwing weapon",
     "weapon accessory",
     "alchemical weapon",
+    "shield",
   ];
   if (weapon_categories.includes(item.static.category)) {
     return true;

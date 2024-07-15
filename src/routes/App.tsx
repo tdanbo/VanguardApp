@@ -70,16 +70,12 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // UpdateStaticAbilities(character.abilities, abilities);
-  // UpdateStaticEquipment(character.inventory, equipment);
-  // UpdateStaticEffects(character.effects, effects);
-
   return (
     <div className="column font padding">
       <div className="row" style={{ gap: "100px" }}>
         <div
           className="column breakpoint show_over_breakpoint4"
-          style={{ maxWidth: "30em" }}
+          style={{ maxWidth: "35em" }}
         >
           <Browser
             session={session}
@@ -197,7 +193,7 @@ function App() {
 
         <div
           className="column breakpoint show_over_breakpoint3"
-          style={{ maxWidth: "30em" }}
+          style={{ maxWidth: "35em" }}
         >
           {rightDisplay === "combatlog" ? (
             <CombatSection
@@ -246,7 +242,7 @@ function App() {
       >
         <div
           className="header outline_color breakpoint show_over_breakpoint4 "
-          style={{ maxWidth: "30em" }}
+          style={{ maxWidth: "35em" }}
         >
           <FooterBrowserComponent
             setLeftDisplay={setLeftDisplay}
@@ -265,7 +261,7 @@ function App() {
 
         <div
           className="header outline_color breakpoint show_over_breakpoint3 "
-          style={{ maxWidth: "30em" }}
+          style={{ maxWidth: "35em" }}
         >
           <FooterCombatComponent
             setEquipmentAbilities={setEquipmentAbilities}

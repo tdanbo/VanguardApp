@@ -95,13 +95,15 @@ function InventoryEntry({
             !CheckAbility(character, "Artifact Crafting", "novice") ? (
               <FontAwesomeIcon icon={faSkull} style={{ fontSize: "14px" }} />
             ) : null}
+            <div className="font--size-tiny font--primary-4">
+              {browser && isGm ? <div>{item.static.cost} Thaler</div> : null}
+            </div>
           </div>
           <div
             className="row font--primary-3 font--size-tiny gap--small"
             style={{ justifyContent: "flex-start" }}
           >
-            <div className="font--primary-2">
-              {browser && isGm ? <div>{item.static.cost} Thaler</div> : null}
+            <div className="font--primary-2 ">
               {item.static.rarity !== "normal"
                 ? toTitleCase(item.static.rarity)
                 : null}{" "}
