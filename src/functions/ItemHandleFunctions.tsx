@@ -135,6 +135,7 @@ export function DropItem(
       const new_item = cloneDeep(item);
       new_item.id = uniqueId();
       new_item.quantity = quantity;
+      new_item.equipped = false;
       session.loot.drops.push(new_item);
     }
   }

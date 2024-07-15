@@ -18,8 +18,9 @@ import {
   SessionEntry,
 } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
-import { Ammunition, HasRangedWeapon } from "./CharacterFunctions";
+import { HasRangedWeapon } from "./CharacterFunctions";
 import { GetMaxToughness, GetTemporaryCorruption } from "./RulesFunctions";
+import { HasAmmunition } from "./CharacterFunctions";
 
 export function UpperFirstLetter(input: string): string {
   if (!input || typeof input !== "string") {
@@ -156,6 +157,7 @@ export function IsWeapon(item: ItemEntry): boolean {
     "weapon accessory",
     "alchemical weapon",
     "shield",
+    "projectile",
   ];
   if (weapon_categories.includes(item.static.category)) {
     return true;
@@ -543,7 +545,7 @@ export function RollDice({
   // }
 
   if (roll_type === "attack" && HasRangedWeapon(character)) {
-    if (!Ammunition(character)) {
+    if (!HasAmmunition(character, true)) {
       return;
     }
   }

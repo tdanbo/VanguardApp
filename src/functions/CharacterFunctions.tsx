@@ -258,14 +258,20 @@ export function IsOverburden(character: CharacterEntry) {
   return false;
 }
 
-export function HasAmmunition(character: CharacterEntry) {
+export function HasAmmunition(
+  character: CharacterEntry,
+  take_ammu: boolean = false,
+) {
+  console.log("Checking for ammunition");
   for (const item of character.inventory) {
     if (
       item.static.category === "projectile" &&
       item.equipped &&
       item.quantity > 0
     ) {
-      item.quantity -= 1;
+      if (take_ammu) {
+        item.quantity -= 1;
+      }
       return true;
     }
   }
@@ -274,14 +280,6 @@ export function HasAmmunition(character: CharacterEntry) {
 
 export function IsRangedWeapon(item: ItemEntry) {
   if (item.static.category === "ranged weapon") {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-export function Ammunition(character: CharacterEntry) {
-  if (HasAmmunition(character)) {
     return true;
   } else {
     return false;

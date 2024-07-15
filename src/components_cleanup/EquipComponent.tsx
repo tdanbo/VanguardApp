@@ -5,7 +5,12 @@ import Icon from "@mdi/react";
 import { Socket } from "socket.io-client";
 import { update_session } from "../functions/SessionsFunctions";
 import { IsWeapon } from "../functions/UtilityFunctions";
-import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
+import {
+  CharacterEntry,
+  ItemEntry,
+  ItemStateType,
+  SessionEntry,
+} from "../Types";
 
 interface EquipComponentProps {
   item: ItemEntry;
@@ -14,6 +19,7 @@ interface EquipComponentProps {
   character: CharacterEntry;
   isCreature: boolean;
   isGm: boolean;
+  state: ItemStateType;
 }
 
 function EquipComponent({
@@ -22,34 +28,23 @@ function EquipComponent({
   websocket,
   character,
   isCreature,
+  state,
 }: EquipComponentProps) {
-  const HandleEquip = (item: ItemEntry) => {
-    item.equipped = true;
-    update_session(session, websocket, character, isCreature);
-  };
-
-  const HandleUnequip = () => {
-    item.equipped = false;
-    update_session(session, websocket, character, isCreature);
-  };
-
   const equipHandler = (item: ItemEntry) => {
-    if (item.equipped) {
-      HandleUnequip();
-    } else {
-      HandleEquip(item);
+    if (state !== "take") {
+      item.equipped = !item.equipped;
+      update_session(session, websocket, character, isCreature);
     }
   };
 
   const HandleLightSetting = () => {
-    console.log("Light setting");
     item.light = !item.light;
     update_session(session, websocket, character, isCreature);
   };
 
   const categoryBackgroundColor = IsWeapon(item)
-    ? "bg--background-red"
-    : "bg--background-blue";
+    ? "bg--background-red font--red-darker"
+    : "bg--background-blue font--blue-darker";
 
   return (
     <>
