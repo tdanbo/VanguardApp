@@ -170,6 +170,8 @@ export interface AbilityStatic {
 
 export type ActiveType = "attack" | "defense" | "casting" | "sneaking" | "";
 
+export type DiceType = 4 | 6 | 8 | 10 | 12 | 20;
+
 export type CombatEntry = {
   character: CharacterEntry;
   roll_type: RollTypeEntry;
@@ -271,7 +273,7 @@ export type RollEntry = {
   mod: number;
   target: number;
   success: boolean;
-  dice: number;
+  dice: number[];
 };
 
 export type ChallengeEntry =
@@ -296,7 +298,7 @@ export type TownsEntry = {
 export const GeneralItem: ItemEntry = {
   name: "",
   durability: 0,
-  quantity: 0,
+  quantity: 1,
   equipped: false,
   light: false,
   id: "1a1a1a1a1a",

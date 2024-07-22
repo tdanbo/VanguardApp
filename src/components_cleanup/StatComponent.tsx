@@ -12,7 +12,6 @@ import * as Constants from "../Constants";
 
 import { mdiArrowCollapse, mdiArrowExpand } from "@mdi/js";
 import { Icon } from "@mdi/react";
-import { GetGameData } from "../contexts/GameContent";
 import {
   GetAttackStat,
   GetDefenseStat,
@@ -62,7 +61,6 @@ function StatComponent({
   setCriticalState,
   modifierLock,
 }: Props) {
-  const { equipment } = GetGameData();
   const [modValue, setModvalue] = useState<number>(0);
 
   const handleAddValue = () => {
@@ -297,7 +295,7 @@ function StatComponent({
                 roll_type: stat_name,
                 roll_source: "Skill Test",
                 isCreature: isCreature,
-                dice: 20,
+                dice: [20],
                 dice_mod: modValue,
                 color: color,
                 target: Math.max(
@@ -310,7 +308,6 @@ function StatComponent({
                 setActiveState: setActiveState,
                 setAdvantage: setAdvantage,
                 setCriticalState: setCriticalState,
-                equipment,
                 modifierLock,
               })
             }

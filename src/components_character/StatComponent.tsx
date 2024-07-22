@@ -314,7 +314,7 @@ function StatComponent({
               roll_type={stat_name}
               roll_source={"Skill Test"}
               isCreature={isCreature}
-              dice={20}
+              dice={[20]}
               dice_mod={modValue}
               color={color}
               target={Math.max(stat_value + modValue + flanked, 1)}

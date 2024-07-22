@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
+import { RulesAbilityDiceAdjust } from "../functions/RulesFunctions";
 
 import {
   Ability,
@@ -65,6 +66,9 @@ function AbilityEntryItem({
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [free, setFree] = useState<boolean>(false);
   const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
+
+  const [expanded, setExpanded] = useState<boolean>(false);
+
   useEffect(() => {
     setAbilityLevel(ability.level);
     setFree(ability.free);
@@ -134,8 +138,6 @@ function AbilityEntryItem({
       }
     }
   });
-
-  const [expanded, setExpanded] = useState<boolean>(false);
 
   const has_theurgy_novice = CheckAbility(character, "Theurgy", "novice");
   const has_theurgy_adept = CheckAbility(character, "Theurgy", "adept");
@@ -273,6 +275,11 @@ function AbilityEntryItem({
           </div>
         </div>
         {current_level.roll.map((i, index) => {
+          const ability_dice_pool = RulesAbilityDiceAdjust(
+            character,
+            ability,
+            i.dice,
+          );
           return (
             <RollComponent2
               session={session}
@@ -281,7 +288,7 @@ function AbilityEntryItem({
               roll_type={ability.static.category as RollTypeEntry}
               roll_source={ability.name}
               isCreature={isCreature}
-              dice={i.dice}
+              dice={ability_dice_pool}
               dice_mod={i.mod}
               color={categoryColor}
               key={index}

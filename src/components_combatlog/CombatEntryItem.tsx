@@ -184,12 +184,14 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
 
   let modifierText = "";
   if (combatEntry.roll_entry.mod > 0) {
-    modifierText = `+${combatEntry.roll_entry.mod}`;
+    modifierText = `+ ${combatEntry.roll_entry.mod}`;
   } else if (combatEntry.roll_entry.mod < 0) {
     modifierText = `${combatEntry.roll_entry.mod}`;
   }
 
-  let title = `Dice: d${combatEntry.roll_entry.dice}${modifierText}\nResult: ${combatEntry.roll_entry.result1}\n`;
+  let title = `Dice: d${combatEntry.roll_entry.dice.join(
+    " + d",
+  )} ${modifierText}\nResult: ${combatEntry.roll_entry.result1}\n`;
 
   if (combatEntry.roll_source !== "Skill Test") {
     title += `Modifier: ${combatEntry.roll_entry.mod}\n`;
@@ -215,12 +217,8 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
 
     // Rapidly change the displayed roll result
     const rollInterval = setInterval(() => {
-      setCurrentDisplay1(
-        Math.floor(Math.random() * combatEntry.roll_entry.dice) + 1,
-      ); // assuming dice values start from 1
-      setCurrentDisplay2(
-        Math.floor(Math.random() * combatEntry.roll_entry.dice) + 1,
-      ); // assuming dice values start from 1
+      setCurrentDisplay1(Math.floor(Math.random() * 20) + 1); // assuming dice values start from 1
+      setCurrentDisplay2(Math.floor(Math.random() * 20) + 1); // assuming dice values start from 1
       setRollCycles((prev) => prev + 1);
     }, 100); // This determines how fast the numbers change
 
@@ -283,7 +281,12 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
       />
       <RollContainer>
         {combatEntry.roll_source === "Resting" ? null : (
-          <Breakdown>1d{combatEntry.roll_entry.dice} </Breakdown>
+          <Breakdown>
+            {combatEntry.roll_entry.dice
+              .map((die, index) => "1d" + die + " ")
+              .join("+ ")}
+            {modifierText}
+          </Breakdown>
         )}
         <ResultContainer>
           {combatEntry.roll_state === "full" ||

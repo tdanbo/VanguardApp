@@ -460,7 +460,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
         mod: 0,
         target: 0,
         success: true,
-        dice: 0,
+        dice: [0],
       },
       durability: [],
       uuid: uuidv4(),

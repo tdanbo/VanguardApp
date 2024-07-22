@@ -8,7 +8,7 @@ import ItemButtonComponent from "../components_cleanup/ItemButtonComponent";
 import * as Constants from "../Constants";
 import { CheckAbility } from "../functions/ActivesFunction";
 import { Qualities } from "../functions/rules/Qualities";
-import { RulesDiceAdjust } from "../functions/RulesFunctions";
+import { RulesItemDiceAdjust } from "../functions/RulesFunctions";
 import {
   IsArmor,
   IsWeapon,
@@ -66,7 +66,12 @@ function InventoryEntry({
   const [expanded, setExpanded] = useState<boolean>(false);
 
   // This is a big function that correct all dice rolls based on the character's abilities
-  const dice = RulesDiceAdjust(character, item, advantage, criticalState);
+  const dice_pool = RulesItemDiceAdjust(
+    character,
+    item,
+    advantage,
+    criticalState,
+  );
 
   return (
     <div className="column bg--primary-1 border">
@@ -156,7 +161,7 @@ function InventoryEntry({
             }
             roll_source={item.name}
             isCreature={isCreature}
-            dice={dice}
+            dice={dice_pool}
             dice_mod={item.static.roll.mod}
             item={item}
             inactive={item.equipped}

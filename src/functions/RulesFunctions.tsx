@@ -1,4 +1,9 @@
-import { AdvantageType, CharacterEntry, ItemEntry } from "../Types";
+import {
+  AbilityEntry,
+  AdvantageType,
+  CharacterEntry,
+  ItemEntry,
+} from "../Types";
 import { CheckAbility } from "./ActivesFunction";
 import { AdvantageDice } from "./rules/AdvantageDice";
 import { Armored_dice } from "./rules/Armored";
@@ -19,6 +24,7 @@ import { TwinAttack_dice } from "./rules/TwinAttack";
 import { TwohandedForce_dice } from "./rules/TwohandedForce";
 import { SurvivalInstinct_dice } from "./rules/SurvivalInstinct";
 import { HuntersInstinct_dice } from "./rules/HuntersInstinct";
+import { Theurgy_dice } from "./rules/Theurgy";
 
 function HasItem(character: CharacterEntry, item: string) {
   for (const i of character.inventory) {
@@ -28,12 +34,13 @@ function HasItem(character: CharacterEntry, item: string) {
   }
 }
 
-export function RulesDiceAdjust(
+export function RulesItemDiceAdjust(
   character: CharacterEntry,
   item: ItemEntry,
   advantage: AdvantageType,
   criticalState: boolean,
 ) {
+  const dice_pool: number[] = [];
   let dice = item.static.roll.base;
   dice += NaturalWeapon_dice(character, item);
   dice += NaturalWarrior_dice(character, item);
@@ -55,7 +62,27 @@ export function RulesDiceAdjust(
   dice += AdvantageDice(item, advantage);
   dice += SurvivalInstinct_dice(character, item);
   dice += criticalState ? 6 : 0;
-  return dice;
+
+  dice_pool.push(dice);
+
+  return dice_pool;
+}
+
+export function RulesAbilityDiceAdjust(
+  character: CharacterEntry,
+  ability: AbilityEntry,
+  base_dice: number,
+) {
+  const dice_pool: number[] = [];
+  let dice = base_dice;
+
+  const theurgy = Theurgy_dice(character, ability);
+
+  dice_pool.push(dice);
+  if (theurgy > 0) {
+    dice_pool.push(theurgy);
+  }
+  return dice_pool;
 }
 
 export function GetMaxSlots(character: CharacterEntry) {

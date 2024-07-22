@@ -82,7 +82,7 @@ function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {
           mod: 0,
           target: 0,
           success: true,
-          dice: 0,
+          dice: [0],
         },
         durability: DurabilityReport(session),
         uuid: uuidv4(),

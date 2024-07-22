@@ -1,28 +1,15 @@
 import styled from "styled-components";
-import {
-  Dice10FillIcon,
-  Dice12FillIcon,
-  Dice20FillIcon,
-  Dice4FillIcon,
-  Dice6FillIcon,
-  Dice8FillIcon,
-} from "../Images";
 
 import { faAnglesDown, faAnglesUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { random } from "lodash";
 import { Socket } from "socket.io-client";
-import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
-import { update_session } from "../functions/SessionsFunctions";
+import { RollDice } from "../functions/UtilityFunctions";
 import {
   ActiveStateType,
   AdvantageType,
   CharacterEntry,
-  CombatEntry,
-  CriticalType,
   ItemEntry,
-  RollEntry,
   RollTypeEntry,
   SessionEntry,
 } from "../Types";
@@ -33,7 +20,7 @@ type RollComponentProps = {
   websocket: Socket;
   roll_type: RollTypeEntry;
   roll_source: string;
-  dice: number;
+  dice: number[];
   dice_mod?: number;
   color?: string;
   target?: number;
@@ -53,7 +40,6 @@ const dice_size = "25px";
 type RollContainerProps = {
   color: string;
   $inactive: boolean;
-  $dice_icon: string;
   $dice_size: string;
 };
 
@@ -69,10 +55,6 @@ const RollContainer = styled.div<RollContainerProps>`
   color: ${(props) =>
     props.$inactive ? props.color : Constants.WIDGET_SECONDARY_FONT_INACTIVE};
   text-align: center;
-  background-image: url(${(props) => props.$dice_icon});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: ${(props) => props.$dice_size}; // Use props.dice_size once
   text-shadow: ${(props) =>
     props.$inactive ? "1px 1px 2px black" : "0px 0px 0px transparent;"};
 `;
@@ -83,7 +65,6 @@ function RollComponent({
   dice,
   dice_mod = 0,
   color = Constants.WIDGET_SECONDARY_FONT,
-  target = 0,
   session,
   character,
   websocket,
@@ -96,119 +77,6 @@ function RollComponent({
   setAdvantage,
   setCriticalState,
 }: RollComponentProps) {
-  let dice_icon = Dice20FillIcon;
-  if (dice === 4) {
-    dice_icon = Dice4FillIcon;
-  } else if (dice === 6) {
-    dice_icon = Dice6FillIcon;
-  } else if (dice === 8) {
-    dice_icon = Dice8FillIcon;
-  } else if (dice === 10) {
-    dice_icon = Dice10FillIcon;
-  } else if (dice === 12) {
-    dice_icon = Dice12FillIcon;
-  } else if (dice === 20) {
-    dice_icon = Dice20FillIcon;
-  } else if (dice === 100) {
-    dice_icon = Dice20FillIcon;
-  }
-
-  const RollDIce = () => {
-    // let roll = Math.floor(Math.random() * dice) + 1;
-
-    let roll1 = random(1, dice);
-    let roll2 = random(1, dice);
-
-    const critical_type: CriticalType = {
-      state: 1,
-      result: random(1, 6),
-    };
-
-    let result1 = roll1;
-    let result2 = roll2;
-
-    let roll_state = activeState;
-
-    if (roll_source !== "Skill Test") {
-      result1 += dice_mod;
-      result2 += dice_mod;
-    }
-
-    let success = false;
-
-    if (activeState === "full" && (result1 <= target || result2 <= target)) {
-      success = true;
-      if (roll1 === 1 || roll2 === 1) {
-        critical_type.state = 2;
-      } else if (roll1 === 20 && roll2 === 20) {
-        critical_type.state = 0;
-      }
-    } else if (
-      activeState === "weak" &&
-      (result1 > target || result2 > target)
-    ) {
-      success = false;
-      if (roll1 === 20 || roll2 === 20) {
-        critical_type.state = 0;
-      } else if (roll1 === 1 && roll2 === 1) {
-        critical_type.state = 2;
-      }
-    } else if (result1 <= target && roll1 !== 20) {
-      success = true;
-      if (roll1 === 1) {
-        critical_type.state = 2;
-      }
-    } else {
-      success = false;
-      if (roll1 === 20) {
-        critical_type.state = 0;
-      }
-    }
-
-    // let success = true;
-    // if (target !== 0 && result > target) {
-    //   success = false;
-    // }
-
-    const roll_entry: RollEntry = {
-      result1: result1,
-      result2: result2,
-      roll1: roll1,
-      roll2: roll2,
-      critical: critical_type,
-      advantage: advantage,
-      mod: dice_mod,
-      target: target,
-      success: success,
-      dice: dice,
-    };
-
-    const NewCombatEntry: CombatEntry = {
-      character,
-      roll_type,
-      roll_source, // Short Sword, Medium Armor, Skill Test,
-      roll_state,
-      roll_entry,
-      uuid: uuidv4(),
-      entry: "CombatEntry",
-      durability: [],
-    };
-
-    session.combatlog.push(NewCombatEntry);
-    session.combatlog = session.combatlog.slice(-20);
-
-    if (setModValue) {
-      if (!["attack", "defense", "casting", "sneaking"].includes(roll_type))
-        setModValue(0);
-    }
-
-    setActiveState("");
-    setAdvantage("");
-    setCriticalState(false);
-
-    update_session(session, websocket, character, isCreature);
-  };
-
   const is_possible =
     (advantage === "flanked" &&
       (roll_type === "defense" || roll_type === "armor")) ||
@@ -222,11 +90,31 @@ function RollComponent({
 
   return (
     <RollContainer
-      $dice_icon={dice_icon}
       $dice_size={dice_size}
       color={color}
       title={`Roll d${dice}`}
-      onClick={is_possible ? () => RollDIce() : () => {}}
+      onClick={
+        is_possible
+          ? () =>
+              RollDice({
+                roll_type,
+                roll_source,
+                dice,
+                dice_mod,
+                session,
+                character,
+                websocket,
+                isCreature,
+                setModValue,
+                advantage,
+                activeState,
+                setActiveState,
+                setAdvantage,
+                setCriticalState,
+                modifierLock: false,
+              })
+          : () => {}
+      }
       $inactive={inactive}
     >
       d{dice}

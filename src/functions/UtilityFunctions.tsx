@@ -451,7 +451,7 @@ type RollComponentProps = {
   websocket: Socket;
   roll_type: RollTypeEntry;
   roll_source: string;
-  dice: number;
+  dice: number[];
   dice_mod?: number;
   color?: string;
   target?: number;
@@ -464,7 +464,6 @@ type RollComponentProps = {
   setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
   setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
-  equipment: ItemEntry[];
   modifierLock: boolean;
 };
 
@@ -487,9 +486,13 @@ export function RollDice({
   modifierLock,
 }: RollComponentProps) {
   // let roll = Math.floor(Math.random() * dice) + 1;
+  let roll1 = 0;
+  let roll2 = 0;
 
-  let roll1 = random(1, dice);
-  let roll2 = random(1, dice);
+  for (const die of dice) {
+    roll1 += random(1, die);
+    roll2 += random(1, die);
+  }
 
   const critical_type: CriticalType = {
     state: 1,
@@ -539,11 +542,6 @@ export function RollDice({
     }
   }
 
-  // let success = true;
-  // if (target !== 0 && result > target) {
-  //   success = false;
-  // }
-
   if (roll_type === "attack" && HasRangedWeapon(character)) {
     if (!HasAmmunition(character, true)) {
       return;
@@ -579,7 +577,8 @@ export function RollDice({
 
   if (setModValue) {
     if (!modifierLock) {
-      setModValue(0);
+      if (!["attack", "defense", "casting", "sneaking"].includes(roll_type))
+        setModValue(0);
     }
   }
 

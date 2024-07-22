@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { mdiBowArrow, mdiKnife, mdiSpear, mdiSword } from "@mdi/js";
 import Icon from "@mdi/react";
-import { cloneDeep, random } from "lodash";
+import { cloneDeep, random, sum } from "lodash";
 import { memo, useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { GetCreatureArmor } from "../functions/CharacterFunctions";
+
 import {
   ActiveStateType,
   AdvantageType,
@@ -30,7 +31,7 @@ import AbilityEntryItem from "../components_browser/AbilityEntryItem";
 import {
   GetMaxToughness,
   GetMovementSpeed,
-  RulesDiceAdjust,
+  RulesItemDiceAdjust,
 } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import CreatureHealthAdjuster from "./CreatureHealthAdjuster";
@@ -478,8 +479,13 @@ function EncounterCreatureEntry({
     ];
 
   for (const item of creatureClone.inventory) {
-    const dice = RulesDiceAdjust(creatureClone, item, advantage, criticalState);
-    item.static.roll.dice = dice;
+    const dice = RulesItemDiceAdjust(
+      creatureClone,
+      item,
+      advantage,
+      criticalState,
+    );
+    item.static.roll.dice = sum(dice);
   }
 
   const AddItemLoot = () => {

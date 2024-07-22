@@ -60,7 +60,7 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d4"}
           isCreature={isCreature}
-          dice={4}
+          dice={[4]}
           color={Constants.TYPE_COLORS["custom"]}
           activeState=""
           advantage=""
@@ -77,7 +77,7 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d6"}
           isCreature={isCreature}
-          dice={6}
+          dice={[6]}
           color={Constants.TYPE_COLORS["custom"]}
           activeState=""
           advantage=""
@@ -94,7 +94,7 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d8"}
           isCreature={isCreature}
-          dice={8}
+          dice={[8]}
           color={Constants.TYPE_COLORS["custom"]}
           activeState=""
           advantage=""
@@ -111,7 +111,7 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d10"}
           isCreature={isCreature}
-          dice={10}
+          dice={[10]}
           color={Constants.TYPE_COLORS["custom"]}
           activeState=""
           advantage=""
@@ -128,7 +128,7 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d4"}
           isCreature={isCreature}
-          dice={12}
+          dice={[12]}
           color={Constants.TYPE_COLORS["custom"]}
           activeState=""
           advantage=""
@@ -145,7 +145,7 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d20"}
           isCreature={isCreature}
-          dice={20}
+          dice={[20]}
           color={Constants.TYPE_COLORS["custom"]}
           activeState=""
           advantage=""
@@ -162,7 +162,7 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d100"}
           isCreature={isCreature}
-          dice={100}
+          dice={[100]}
           color={Constants.TYPE_COLORS["custom"]}
           activeState=""
           advantage=""
