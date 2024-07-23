@@ -33,8 +33,7 @@ export const Qualities: {
   },
   Reinforced: {
     name: "Reinforced",
-    description:
-      "The armor is tougher than other armor in the same category (light, medium, heavy), meaning that the wearer may add +1 to his or her armor rolls.",
+    description: "Increases the armor roll by 2.",
   },
   "Balanced 1": {
     name: "Balanced 1",
@@ -58,8 +57,7 @@ export const Qualities: {
   },
   Impact: {
     name: "Deep Impact",
-    description:
-      "The weapon has qualities that make it even more deadly. Maybe its blade can pierce armor more easily or the weapon itself is so massive that it gets extra crushing power. Either way, the weapon deals +1 extra damage.",
+    description: "Increases the damage roll by 2.",
   },
   Jointed: {
     name: "Jointed",

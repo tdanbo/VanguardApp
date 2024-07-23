@@ -256,7 +256,8 @@ export type RollTypeEntry =
   | "utility"
   | "eating"
   | "sleeping"
-  | "day";
+  | "day"
+  | "buff";
 
 export type CriticalType = {
   state: 0 | 1 | 2;

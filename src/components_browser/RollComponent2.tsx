@@ -4,7 +4,7 @@ import {
   faStarOfLife,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { mdiShield, mdiSwordCross } from "@mdi/js";
+import { mdiShield, mdiSwordCross, mdiPlusThick } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
@@ -105,7 +105,7 @@ function RollComponent({
             fontWeight: "bold",
           }}
         >
-          {dice.map((die, index) => "d" + die).join("+")}
+          {dice.map((die, index) => die).join("+")}
           {dice_mod > 0 && roll_source !== "Skill Test" ? `+${dice_mod}` : null}
         </div>
         <div
@@ -117,7 +117,11 @@ function RollComponent({
           }}
         >
           {roll_type === "damage" ? (
-            <Icon path={mdiSwordCross} size={0.6} color={Constants.COLOR_1} />
+            <FontAwesomeIcon
+              icon={faStarOfLife}
+              color={Constants.COLOR_1}
+              style={{ fontSize: "12px" }}
+            />
           ) : roll_type === "armor" ? (
             <Icon path={mdiShield} size={0.6} color={Constants.COLOR_2} />
           ) : roll_type === "ability" ||
@@ -128,6 +132,12 @@ function RollComponent({
               icon={faStarOfLife}
               color={color}
               style={{ fontSize: "12px" }}
+            />
+          ) : roll_type === "buff" ? (
+            <Icon
+              path={mdiPlusThick}
+              size={0.75}
+              color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
             />
           ) : (
             <Icon path={mdiSwordCross} size={0.6} color={Constants.COLOR_1} />

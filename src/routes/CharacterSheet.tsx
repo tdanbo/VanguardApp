@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { AdvantageType, CharacterEntry, SessionEntry } from "../Types";
 import AbilitySection from "../components_character/AbilitySection";
+import EffectSection from "../components_character/EffectSection";
 import CharacterNameBox from "../components_cleanup/CharacterNameComponent";
 import DetailStatComponent from "../components_cleanup/DetailStatComponent";
 import { CheckAbility } from "../functions/ActivesFunction";
@@ -272,6 +273,25 @@ function CharacterSheet({
                 modifierLock={modifierLock}
                 impeded={false}
               />
+              <StatComponent
+                session={session}
+                character={character}
+                websocket={websocket}
+                isCreature={isCreature}
+                stat_name={"attack"}
+                stat_value={
+                  character.stats.attack.value + character.stats.attack.base
+                }
+                stat_modifier={character.stats.attack.mod}
+                stat_color={Constants.TYPE_COLORS["attack"]}
+                activeState={activeState}
+                advantage={advantage}
+                setActiveState={setActiveState}
+                setAdvantage={setAdvantage}
+                setCriticalState={setCriticalState}
+                modifierLock={modifierLock}
+                impeded={false}
+              />
             </div>
             <div className="column">
               <StatComponent
@@ -352,47 +372,41 @@ function CharacterSheet({
                 modifierLock={modifierLock}
                 impeded={!CheckAbility(character, "armored mystic", "novice")}
               />
+              <StatComponent
+                session={session}
+                character={character}
+                websocket={websocket}
+                isCreature={isCreature}
+                stat_name={"defense"}
+                stat_value={
+                  character.stats.defense.value + character.stats.defense.base
+                }
+                stat_modifier={character.stats.defense.mod}
+                stat_color={Constants.TYPE_COLORS["defense"]}
+                activeState={activeState}
+                advantage={advantage}
+                setActiveState={setActiveState}
+                setAdvantage={setAdvantage}
+                setCriticalState={setCriticalState}
+                modifierLock={modifierLock}
+                impeded={!CheckAbility(character, "Man-at-Arms", "adept")}
+              />
             </div>
           </div>
-          <div className="row" style={{ height: "50px", marginTop: "10px" }}>
-            <StatComponent
+          <div
+            className="row bg--primary-1 padding--medium border "
+            style={{ maxHeight: "50px", marginTop: "10px" }}
+          >
+            <EffectSection
               session={session}
               character={character}
               websocket={websocket}
               isCreature={isCreature}
-              stat_name={"attack"}
-              stat_value={
-                character.stats.attack.value + character.stats.attack.base
-              }
-              stat_modifier={character.stats.attack.mod}
-              stat_color={Constants.TYPE_COLORS["attack"]}
               activeState={activeState}
               advantage={advantage}
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
               setCriticalState={setCriticalState}
-              modifierLock={modifierLock}
-              impeded={false}
-            />
-
-            <StatComponent
-              session={session}
-              character={character}
-              websocket={websocket}
-              isCreature={isCreature}
-              stat_name={"defense"}
-              stat_value={
-                character.stats.defense.value + character.stats.defense.base
-              }
-              stat_modifier={character.stats.defense.mod}
-              stat_color={Constants.TYPE_COLORS["defense"]}
-              activeState={activeState}
-              advantage={advantage}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-              setCriticalState={setCriticalState}
-              modifierLock={modifierLock}
-              impeded={!CheckAbility(character, "Man-at-Arms", "adept")}
             />
           </div>
         </div>

@@ -285,7 +285,7 @@ function AbilityEntryItem({
               session={session}
               character={character}
               websocket={websocket}
-              roll_type={ability.static.category as RollTypeEntry}
+              roll_type={i.type as RollTypeEntry}
               roll_source={ability.name}
               isCreature={isCreature}
               dice={ability_dice_pool}

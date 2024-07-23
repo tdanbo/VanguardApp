@@ -10,6 +10,7 @@ import {
 import AbilityEntryItem from "../components_browser/AbilityEntryItem";
 import EffectEntryItem from "../components_browser/EffectEntryItem";
 import InventoryEntryEmpty from "./InventoryEntryEmpty";
+import EffectCompactEntryItem from "../components_browser/EffectCompactEntryItem";
 
 interface NavigationProps {
   character: CharacterEntry;
@@ -23,7 +24,7 @@ interface NavigationProps {
   setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function AbilitySection({
+function EffectSection({
   character,
   session,
   websocket,
@@ -34,32 +35,14 @@ function AbilitySection({
   setAdvantage,
   setCriticalState,
 }: NavigationProps) {
-  function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
-    return (
-      Constants.TYPE_FILTER.indexOf(a.static.category.toLowerCase()) -
-      Constants.TYPE_FILTER.indexOf(b.static.category.toLowerCase())
-    );
-  }
-  const sortedAbilities = [...character.abilities].sort(sortAbilities);
   return (
     <>
-      <div
-        className="row"
-        style={{
-          maxHeight: "10px",
-          fontSize: "11px",
-          fontWeight: "bold",
-          color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
-        }}
-      >
-        Abilities <div className="divider_horizontal" />
-      </div>
-      {sortedAbilities.map((ability, index) => {
+      {character.effects.map((effect, index) => {
         return (
-          <AbilityEntryItem
+          <EffectCompactEntryItem
             session={session}
             key={index}
-            ability={ability}
+            effect={effect}
             browser={false}
             character={character}
             websocket={websocket}
@@ -73,11 +56,8 @@ function AbilitySection({
           />
         );
       })}
-      {Array.from({ length: 20 }).map((_, index) => {
-        return <InventoryEntryEmpty key={index} />;
-      })}
     </>
   );
 }
 
-export default AbilitySection;
+export default EffectSection;

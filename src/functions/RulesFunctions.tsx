@@ -25,6 +25,7 @@ import { TwohandedForce_dice } from "./rules/TwohandedForce";
 import { SurvivalInstinct_dice } from "./rules/SurvivalInstinct";
 import { HuntersInstinct_dice } from "./rules/HuntersInstinct";
 import { Theurgy_dice } from "./rules/Theurgy";
+import { Quality_dice } from "./rules/QualityDice";
 
 function HasItem(character: CharacterEntry, item: string) {
   for (const i of character.inventory) {
@@ -61,6 +62,7 @@ export function RulesItemDiceAdjust(
   dice += ItemRulesDice(character, item);
   dice += AdvantageDice(item, advantage);
   dice += SurvivalInstinct_dice(character, item);
+  dice += Quality_dice(item);
   dice += criticalState ? 6 : 0;
 
   dice_pool.push(dice);
