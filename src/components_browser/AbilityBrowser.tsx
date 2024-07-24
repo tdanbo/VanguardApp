@@ -23,12 +23,8 @@ interface AbilityBrowserProps {
   isCreature: boolean;
   search: string;
   isGm: boolean;
-  activeState: ActiveStateType;
-  advantage: AdvantageType;
+
   setSearch: React.Dispatch<React.SetStateAction<string>>;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function AbilityBrowser({

@@ -104,12 +104,14 @@ export interface EffectEntry {
   active: boolean;
   static: EffectStatic;
 }
+
+export type ResetType = "rest" | "roll" | "never";
 export interface EffectStatic {
   description: string;
   base_amount: number;
   level_amount: number;
   type: "positive" | "negative";
-  reset: "rest" | "roll" | "never";
+  reset: ResetType;
   category: string;
 }
 
@@ -177,11 +179,13 @@ export type ActiveType = "attack" | "defense" | "casting" | "sneaking" | "";
 
 export type DiceType = 4 | 6 | 8 | 10 | 12 | 20;
 
+export type FocusedStateType = "focused" | "unfocused" | "normal";
+
 export type CombatEntry = {
   character: CharacterEntry;
   roll_type: RollTypeEntry;
   roll_source: string;
-  roll_state: ActiveStateType;
+  roll_state: FocusedStateType;
   roll_entry: RollEntry;
   uuid: string;
   durability: ItemEntry[];
@@ -233,10 +237,6 @@ export type SessionEntry = {
   loot: Loot;
 };
 
-export type ActiveStateType = "" | "full" | "weak";
-
-export type AdvantageType = "" | "flanking" | "flanked";
-
 export type RollTypeEntry =
   | "damage"
   | "armor"
@@ -274,7 +274,6 @@ export type RollEntry = {
   result2: number;
   roll1: number;
   roll2: number;
-  advantage: AdvantageType;
   critical: CriticalType;
   mod: number;
   target: number;

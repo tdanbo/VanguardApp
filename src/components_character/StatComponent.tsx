@@ -210,11 +210,8 @@ interface Props {
   character: CharacterEntry;
   websocket: Socket;
   isCreature: boolean;
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+
   setAdvantage: React.Dispatch<SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function StatComponent({

@@ -21,14 +21,10 @@ type InventoryProps = {
   session: SessionEntry;
   character: CharacterEntry;
   isCreature: boolean;
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
+
   isGm: boolean;
   setInventoryState: (state: number) => void;
-  criticalState: boolean;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+
   centralDisplay: DisplayType;
 };
 

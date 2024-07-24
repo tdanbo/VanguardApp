@@ -165,16 +165,16 @@ export const CATEGORY_FONT_CLASSES: Record<ColorType, string> = {
   "ritual scroll": "font--light-green",
   ritual: "font--light-green",
 
-  "exhausted 1": "font--light-red",
-  "exhausted 2": "font--light-red",
-  "exhausted 3": "font--light-red",
-  "exhausted 4": "font--light-red",
-  "exhausted 5": "font--light-red",
-  "exhausted 6": "font--light-red",
-  "exhausted 7": "font--light-red",
-  "exhausted 8": "font--light-red",
-  "exhausted 9": "font--light-red",
-  "exhausted 10": "font--light-red",
+  "starving 1": "font--light-red",
+  "starving 2": "font--light-red",
+  "starving 3": "font--light-red",
+  "starving 4": "font--light-red",
+  "starving 5": "font--light-red",
+  "starving 6": "font--light-red",
+  "starving 7": "font--light-red",
+  "starving 8": "font--light-red",
+  "starving 9": "font--light-red",
+  "starving 10": "font--light-red",
 };
 
 export const TYPE_COLORS: Record<ColorType, string> = {
@@ -276,16 +276,16 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   resource: "#bd8b02",
 
   energy: COLOR_5,
-  "exhausted 1": COLOR_1,
-  "exhausted 2": COLOR_1,
-  "exhausted 3": COLOR_1,
-  "exhausted 4": COLOR_1,
-  "exhausted 5": COLOR_1,
-  "exhausted 6": COLOR_1,
-  "exhausted 7": COLOR_1,
-  "exhausted 8": COLOR_1,
-  "exhausted 9": COLOR_1,
-  "exhausted 10": COLOR_1,
+  "starving 1": COLOR_1,
+  "starving 2": COLOR_1,
+  "starving 3": COLOR_1,
+  "starving 4": COLOR_1,
+  "starving 5": COLOR_1,
+  "starving 6": COLOR_1,
+  "starving 7": COLOR_1,
+  "starving 8": COLOR_1,
+  "starving 9": COLOR_1,
+  "starving 10": COLOR_1,
 };
 
 export const CATEGORY_FILTER = [

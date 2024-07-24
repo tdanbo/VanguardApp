@@ -24,14 +24,10 @@ interface EncounterSectionProps {
   isCreature: boolean;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   characterLog: CharacterEntry[];
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
-  criticalState: boolean;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+
   setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 

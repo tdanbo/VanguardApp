@@ -8,8 +8,6 @@ import { RulesAbilityDiceAdjust } from "../functions/RulesFunctions";
 import {
   Ability,
   AbilityEntry,
-  ActiveStateType,
-  AdvantageType,
   CharacterEntry,
   ItemStateType,
   RollTypeEntry,
@@ -30,11 +28,7 @@ interface AbilityEntryItemProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
-  activeState: ActiveStateType;
-  advantage: AdvantageType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+
   state: ItemStateType;
 }
 
@@ -55,11 +49,6 @@ function AbilityEntryItem({
   session,
   websocket,
   isCreature,
-  activeState,
-  advantage,
-  setActiveState,
-  setAdvantage,
-  setCriticalState,
   state,
 }: AbilityEntryItemProps) {
   // We will get the dynamic object and look for the database entry. If it doesn't exist, we will return null.
@@ -114,11 +103,6 @@ function AbilityEntryItem({
             character={character}
             session={session}
             isCreature={isCreature}
-            activeState={activeState}
-            advantage={advantage}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            setCriticalState={setCriticalState}
           />
         </div>
       </>
@@ -292,11 +276,6 @@ function AbilityEntryItem({
               dice_mod={i.mod}
               color={categoryColor}
               key={index}
-              activeState={activeState}
-              advantage={""}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-              setCriticalState={setCriticalState}
             />
           );
         })}

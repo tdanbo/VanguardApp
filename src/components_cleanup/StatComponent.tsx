@@ -19,13 +19,7 @@ import {
   HasRangedWeapon,
 } from "../functions/CharacterFunctions";
 import { RollDice, toTitleCase } from "../functions/UtilityFunctions";
-import {
-  ActiveStateType,
-  AdvantageType,
-  CharacterEntry,
-  RollTypeEntry,
-  SessionEntry,
-} from "../Types";
+import { CharacterEntry, RollTypeEntry, SessionEntry } from "../Types";
 
 interface Props {
   stat_name: RollTypeEntry;
@@ -37,11 +31,6 @@ interface Props {
   character: CharacterEntry;
   websocket: Socket;
   isCreature: boolean;
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
   modifierLock: boolean;
   impeded: boolean;
 }
@@ -54,11 +43,6 @@ function StatComponent({
   character,
   websocket,
   isCreature,
-  advantage,
-  activeState,
-  setActiveState,
-  setAdvantage,
-  setCriticalState,
   modifierLock,
 }: Props) {
   const [modValue, setModvalue] = useState<number>(0);
@@ -79,14 +63,6 @@ function StatComponent({
     }
   }, [modifierLock]);
 
-  let flanked = 0;
-  if (advantage === "flanking" && stat_name === "attack") {
-    flanked += 2;
-  } else if (advantage === "flanked" && stat_name === "defense") {
-    flanked -= 2;
-  } else {
-    flanked = 0;
-  }
   let color = Constants.WIDGET_SECONDARY_FONT;
   if (["attack", "defense", "casting", "sneaking"].includes(stat_name)) {
     color = Constants.TYPE_COLORS[stat_name];
@@ -126,7 +102,7 @@ function StatComponent({
   };
 
   const valueTitle: string =
-    ModifierConverter[Math.max(stat_value + modValue + flanked, 1)].toString();
+    ModifierConverter[Math.max(stat_value + modValue, 1)].toString();
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -264,10 +240,10 @@ function StatComponent({
             >
               {!isHovered
                 ? `${
-                    stat_modifier + flanked > 0
-                      ? `+${stat_modifier + flanked}`
-                      : stat_modifier + flanked < 0
-                      ? stat_modifier + flanked
+                    stat_modifier > 0
+                      ? `+${stat_modifier}`
+                      : stat_modifier < 0
+                      ? stat_modifier
                       : ""
                   }`
                 : `${modValue > 0 ? "+" : ""}${modValue}`}
@@ -298,64 +274,15 @@ function StatComponent({
                 dice: [20],
                 dice_mod: modValue,
                 color: color,
-                target: Math.max(
-                  stat_value + stat_modifier + modValue + flanked,
-                  1,
-                ),
+                target: Math.max(stat_value + stat_modifier + modValue, 1),
                 setModValue: setModvalue,
-                advantage: advantage,
-                activeState: activeState,
-                setActiveState: setActiveState,
-                setAdvantage: setAdvantage,
-                setCriticalState: setCriticalState,
                 modifierLock,
               })
             }
           >
             {isHovered
-              ? Math.max(stat_value + stat_modifier + modValue + flanked, 1)
+              ? Math.max(stat_value + stat_modifier + modValue, 1)
               : Math.max(stat_value, 1)}
-
-            <div
-              style={{
-                position: "absolute",
-                marginTop: "40px",
-              }}
-            >
-              {activeState === "full" ? (
-                <FontAwesomeIcon
-                  icon={faAnglesUp}
-                  color={Constants.WIDGET_PRIMARY_FONT}
-                  style={{ fontSize: "14px" }}
-                />
-              ) : activeState === "weak" ? (
-                <FontAwesomeIcon
-                  icon={faAnglesDown}
-                  color={Constants.WIDGET_PRIMARY_FONT}
-                  style={{ fontSize: "14px" }}
-                />
-              ) : null}
-            </div>
-            <div
-              style={{
-                position: "absolute",
-                marginTop: "-40px",
-              }}
-            >
-              {advantage === "flanking" && stat_name === "attack" ? (
-                <Icon
-                  path={mdiArrowCollapse}
-                  size={0.8}
-                  color={Constants.WIDGET_PRIMARY_FONT}
-                />
-              ) : advantage === "flanked" && stat_name === "defense" ? (
-                <Icon
-                  path={mdiArrowExpand}
-                  size={0.8}
-                  color={Constants.WIDGET_PRIMARY_FONT}
-                />
-              ) : null}
-            </div>
           </div>
         </>
       )}

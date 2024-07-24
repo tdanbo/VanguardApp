@@ -1,5 +1,10 @@
 import { AbilityEntry, CharacterEntry, EffectEntry } from "../../Types";
-import { CheckAbility, UpdateQualities, Overburden } from "../ActivesFunction";
+import {
+  CheckAbility,
+  UpdateQualities,
+  Overburden,
+  CheckEffect,
+} from "../ActivesFunction";
 import { GetImpedingValue } from "../RulesFunctions";
 import { ArmoredMystic_active } from "./ArmoredMystic";
 import { Berserker_active } from "./Berserker";
@@ -129,52 +134,120 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
       character.stats["quick"].value + character.stats["quick"].base;
   }
 
-  character.effects.forEach((effect: EffectEntry) => {
-    if (effect.name === "Weakened Strong") {
-      character.stats.strong.mod -= effect.level;
-    } else if (effect.name === "Weakened Resolute") {
-      character.stats.resolute.mod -= effect.level;
-    } else if (effect.name === "Weakened Quick") {
-      character.stats.quick.mod -= effect.level;
-    } else if (effect.name === "Weakened Discreet") {
-      character.stats.discreet.mod -= effect.level;
-    } else if (effect.name === "Weakened Vigilant") {
-      character.stats.vigilant.mod -= effect.level;
-    } else if (effect.name === "Weakened Persuasive") {
-      character.stats.persuasive.mod -= effect.level;
-    } else if (effect.name === "Weakened Accurate") {
-      character.stats.accurate.mod -= effect.level;
-    } else if (effect.name === "Weakened Cunning") {
-      character.stats.cunning.mod -= effect.level;
-    } else if (effect.name === "Enhanced Strong") {
-      character.stats.strong.mod += effect.level;
-    } else if (effect.name === "Enhanced Resolute") {
-      character.stats.resolute.mod += effect.level;
-    } else if (effect.name === "Enhanced Quick") {
-      character.stats.quick.mod += effect.level;
-    } else if (effect.name === "Enhanced Discreet") {
-      character.stats.discreet.mod += effect.level;
-    } else if (effect.name === "Enhanced Vigilant") {
-      character.stats.vigilant.mod += effect.level;
-    } else if (effect.name === "Enhanced Persuasive") {
-      character.stats.persuasive.mod += effect.level;
-    } else if (effect.name === "Enhanced Accurate") {
-      character.stats.accurate.mod += effect.level;
-    } else if (effect.name === "Enhanced Cunning") {
-      character.stats.cunning.mod += effect.level;
-    } else if (effect.name === "Exhausted") {
-      character.stats.strong.mod -= effect.level;
-      character.stats.resolute.mod -= effect.level;
-      character.stats.quick.mod -= effect.level;
-      character.stats.discreet.mod -= effect.level;
-      character.stats.vigilant.mod -= effect.level;
-      character.stats.persuasive.mod -= effect.level;
-      character.stats.accurate.mod -= effect.level;
-      character.stats.cunning.mod -= effect.level;
-      character.stats.attack.mod -= effect.level;
-      character.stats.defense.mod -= effect.level;
-    }
-  });
+  // EFFECTS
+  const weakened_strong = CheckEffect(character, "Weakened Strong");
+  if (weakened_strong) {
+    character.stats.strong.mod -= weakened_strong.level;
+  }
+
+  const weakened_resolute = CheckEffect(character, "Weakened Resolute");
+  if (weakened_resolute) {
+    character.stats.resolute.mod -= weakened_resolute.level;
+  }
+
+  const weakened_quick = CheckEffect(character, "Weakened Quick");
+  if (weakened_quick) {
+    character.stats.quick.mod -= weakened_quick.level;
+  }
+
+  const weakened_discreet = CheckEffect(character, "Weakened Discreet");
+  if (weakened_discreet) {
+    character.stats.discreet.mod -= weakened_discreet.level;
+  }
+
+  const weakened_vigilant = CheckEffect(character, "Weakened Vigilant");
+  if (weakened_vigilant) {
+    character.stats.vigilant.mod -= weakened_vigilant.level;
+  }
+
+  const weakened_persuasive = CheckEffect(character, "Weakened Persuasive");
+  if (weakened_persuasive) {
+    character.stats.persuasive.mod -= weakened_persuasive.level;
+  }
+
+  const weakened_accurate = CheckEffect(character, "Weakened Accurate");
+  if (weakened_accurate) {
+    character.stats.accurate.mod -= weakened_accurate.level;
+  }
+
+  const weakened_cunning = CheckEffect(character, "Weakened Cunning");
+  if (weakened_cunning) {
+    character.stats.cunning.mod -= weakened_cunning.level;
+  }
+
+  const enhanced_strong = CheckEffect(character, "Enhanced Strong");
+  if (enhanced_strong) {
+    character.stats.strong.mod += enhanced_strong.level;
+  }
+
+  const enhanced_resolute = CheckEffect(character, "Enhanced Resolute");
+  if (enhanced_resolute) {
+    character.stats.resolute.mod += enhanced_resolute.level;
+  }
+
+  const enhanced_quick = CheckEffect(character, "Enhanced Quick");
+  if (enhanced_quick) {
+    character.stats.quick.mod += enhanced_quick.level;
+  }
+
+  const enhanced_discreet = CheckEffect(character, "Enhanced Discreet");
+  if (enhanced_discreet) {
+    character.stats.discreet.mod += enhanced_discreet.level;
+  }
+
+  const enhanced_vigilant = CheckEffect(character, "Enhanced Vigilant");
+  if (enhanced_vigilant) {
+    character.stats.vigilant.mod += enhanced_vigilant.level;
+  }
+
+  const enhanced_persuasive = CheckEffect(character, "Enhanced Persuasive");
+  if (enhanced_persuasive) {
+    character.stats.persuasive.mod += enhanced_persuasive.level;
+  }
+
+  const enhanced_accurate = CheckEffect(character, "Enhanced Accurate");
+  if (enhanced_accurate) {
+    character.stats.accurate.mod += enhanced_accurate.level;
+  }
+
+  const enhanced_cunning = CheckEffect(character, "Enhanced Cunning");
+  if (enhanced_cunning) {
+    character.stats.cunning.mod += enhanced_cunning.level;
+  }
+
+  const flanking = CheckEffect(character, "Flanking");
+  if (flanking) {
+    character.stats.attack.mod += 2;
+  }
+
+  const flanked = CheckEffect(character, "Flanked");
+  if (flanked) {
+    character.stats.defense.mod -= 2;
+  }
+
+  const starving = CheckEffect(character, "Starving");
+  if (starving) {
+    character.stats.strong.mod -= starving.level;
+    character.stats.resolute.mod -= starving.level;
+    character.stats.quick.mod -= starving.level;
+    character.stats.discreet.mod -= starving.level;
+    character.stats.vigilant.mod -= starving.level;
+    character.stats.persuasive.mod -= starving.level;
+    character.stats.accurate.mod -= starving.level;
+    character.stats.cunning.mod -= starving.level;
+    character.stats.attack.mod -= starving.level;
+    character.stats.defense.mod -= starving.level;
+  }
+
+  const overburdened = CheckEffect(character, "Overburdened");
+  if (overburdened) {
+    character.stats.strong.mod -= overburdened.level;
+    character.stats.quick.mod -= overburdened.level;
+    character.stats.discreet.mod -= overburdened.level;
+    character.stats.accurate.mod -= overburdened.level;
+    character.stats.attack.mod -= overburdened.level;
+    character.stats.defense.mod -= overburdened.level;
+  }
 
   if (HasItem(character, "Wraith Legion's Crown")) {
     character.stats.resolute.mod += 2;
@@ -205,6 +278,8 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
   character.stats.discreet.mod -= GetImpedingValue(character);
   character.stats.resolute.mod -= GetImpedingValue(character);
   character.stats.defense.mod -= GetImpedingValue(character);
+
+  // effects
 
   UpdateQualities(character);
   Overburden(character);

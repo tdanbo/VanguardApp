@@ -16,8 +16,6 @@ import {
   toTitleCase,
 } from "../functions/UtilityFunctions";
 import {
-  ActiveStateType,
-  AdvantageType,
   CharacterEntry,
   ItemEntry,
   ItemStateType,
@@ -34,12 +32,7 @@ interface InventoryEntryProps {
   item: ItemEntry;
   isGm: boolean;
   isCreature: boolean;
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  criticalState: boolean;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+
   state: ItemStateType;
 }
 
@@ -51,12 +44,6 @@ function InventoryEntry({
   browser,
   isCreature,
   isGm,
-  advantage,
-  activeState,
-  setActiveState,
-  setAdvantage,
-  criticalState,
-  setCriticalState,
   state,
 }: InventoryEntryProps) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -66,12 +53,7 @@ function InventoryEntry({
   const [expanded, setExpanded] = useState<boolean>(false);
 
   // This is a big function that correct all dice rolls based on the character's abilities
-  const dice_pool = RulesItemDiceAdjust(
-    character,
-    item,
-    advantage,
-    criticalState,
-  );
+  const dice_pool = RulesItemDiceAdjust(character, item);
 
   return (
     <div className="column bg--primary-1 border">
@@ -165,11 +147,6 @@ function InventoryEntry({
             dice_mod={item.static.roll.mod}
             item={item}
             inactive={item.equipped}
-            advantage={advantage}
-            activeState={activeState}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            setCriticalState={setCriticalState}
           />
         )}
         {[1, 2, 3].includes(item.static.slot) &&
@@ -238,11 +215,6 @@ function InventoryEntry({
                   character={character}
                   session={session}
                   isCreature={isCreature}
-                  activeState={activeState}
-                  advantage={advantage}
-                  setActiveState={setActiveState}
-                  setAdvantage={setAdvantage}
-                  setCriticalState={setCriticalState}
                 />
               </div>
             </>

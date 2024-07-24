@@ -10,8 +10,6 @@ import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
 import "../Styles.css";
 import {
-  ActiveStateType,
-  AdvantageType,
   CharacterEntry,
   ItemEntry,
   RollTypeEntry,
@@ -34,11 +32,6 @@ type RollComponentProps = {
   isCreature: boolean;
   inactive?: boolean;
   setModValue?: React.Dispatch<React.SetStateAction<number>>;
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function RollComponent({
@@ -52,49 +45,25 @@ function RollComponent({
   websocket,
   isCreature,
   setModValue,
-  advantage,
-  activeState,
-  setActiveState,
-  setAdvantage,
-  setCriticalState,
 }: RollComponentProps) {
-  const is_possible =
-    (advantage === "flanked" &&
-      (roll_type === "defense" || roll_type === "armor")) ||
-    (advantage === "flanking" &&
-      (roll_type === "attack" || roll_type === "damage")) ||
-    advantage === "";
-
-  if (!is_possible) {
-    console.log("RollComponent: advantage not possible", advantage, roll_type);
-  }
-
   return (
     <>
       <div className="vertical-divider bg--primary-1" />
       <div
         className="button border-radius--none"
-        onClick={
-          is_possible
-            ? () =>
-                RollDice({
-                  roll_type,
-                  roll_source,
-                  dice,
-                  dice_mod,
-                  session,
-                  character,
-                  websocket,
-                  isCreature,
-                  setModValue,
-                  advantage,
-                  activeState,
-                  setActiveState,
-                  setAdvantage,
-                  setCriticalState,
-                  modifierLock: false,
-                })
-            : () => {}
+        onClick={() =>
+          RollDice({
+            roll_type,
+            roll_source,
+            dice,
+            dice_mod,
+            session,
+            character,
+            websocket,
+            isCreature,
+            setModValue,
+            modifierLock: false,
+          })
         }
         title={"Roll " + toTitleCase(roll_type)}
       >
@@ -142,19 +111,6 @@ function RollComponent({
           ) : (
             <Icon path={mdiSwordCross} size={0.6} color={Constants.COLOR_1} />
           )}
-          {activeState === "full" ? (
-            <FontAwesomeIcon
-              icon={faAnglesUp}
-              color={Constants.WIDGET_PRIMARY_FONT}
-              style={{ fontSize: "14px" }}
-            />
-          ) : activeState === "weak" ? (
-            <FontAwesomeIcon
-              icon={faAnglesDown}
-              color={Constants.WIDGET_PRIMARY_FONT}
-              style={{ fontSize: "14px" }}
-            />
-          ) : null}
         </div>
       </div>
     </>

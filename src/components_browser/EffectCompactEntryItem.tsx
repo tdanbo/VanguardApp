@@ -1,34 +1,17 @@
-import { useState } from "react";
 import { Socket } from "socket.io-client";
-import styled from "styled-components";
-import * as Constants from "../Constants";
 
-import { toTitleCase } from "../functions/UtilityFunctions";
 import {
-  ActiveStateType,
-  AdvantageType,
   CharacterEntry,
   EffectEntry,
   ItemStateType,
   SessionEntry,
 } from "../Types";
 
-import {
-  faBars,
-  faPlus,
-  faQuestion,
-  faShield,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faQuestion } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../functions/SessionsFunctions";
-import { StyledText } from "../functions/UtilityFunctions";
-import LevelComponent from "./LevelComponent";
-import { EffectsIcons } from "../Effects";
 
-interface ContainerProps {
-  radius: string;
-}
+import { EffectsIcons } from "../Effects";
 
 interface EffectCompactEntryItemProps {
   effect: EffectEntry;
@@ -37,30 +20,18 @@ interface EffectCompactEntryItemProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
-  activeState: ActiveStateType;
-  advantage: AdvantageType;
+
   state: ItemStateType;
   setInventoryState?: (inventoryState: number) => void;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function EffectCompactEntryItem({
   effect,
-  state,
-  setInventoryState,
   character,
   session,
   websocket,
   isCreature,
-  activeState,
-  advantage,
-  setActiveState,
-  setAdvantage,
-  setCriticalState,
 }: EffectCompactEntryItemProps) {
-  const [isHovered, setIsHovered] = useState<boolean>(false);
   const bonus =
     effect.static.base_amount + effect.static.level_amount * (effect.level - 1);
 
@@ -77,16 +48,6 @@ function EffectCompactEntryItem({
     character.effects.find((effect) => {
       if (effect.id === effect_id) {
         effect.active = !effect.active;
-      }
-    });
-
-    character.effects.sort((a, b) => {
-      if (a.active && !b.active) {
-        return -1;
-      } else if (!a.active && b.active) {
-        return 1;
-      } else {
-        return 0;
       }
     });
 

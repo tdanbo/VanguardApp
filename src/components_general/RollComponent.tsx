@@ -28,11 +28,6 @@ type RollComponentProps = {
   isCreature: boolean;
   inactive?: boolean;
   setModValue?: React.Dispatch<React.SetStateAction<number>>;
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const dice_size = "25px";

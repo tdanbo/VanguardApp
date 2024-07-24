@@ -36,9 +36,6 @@ interface DiceBoxProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function DiceSection({

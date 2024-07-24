@@ -271,7 +271,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
     return message;
   };
 
-  const roll_text = `${combatEntry.roll_entry.advantage} ${combatEntry.roll_state} ${combatEntry.roll_type}`;
+  const roll_text = `${combatEntry.roll_state} ${combatEntry.roll_type}`;
 
   return (
     <Container src={CharacterPortraits[combatEntry.character.portrait]}>
@@ -289,8 +289,8 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
           </Breakdown>
         )}
         <ResultContainer>
-          {combatEntry.roll_state === "full" ||
-          combatEntry.roll_state === "weak" ? (
+          {combatEntry.roll_state === "focused" ||
+          combatEntry.roll_state === "unfocused" ? (
             <>
               <Result
                 title={title}
@@ -298,12 +298,12 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
                 className={isRolling ? "rolling" : ""}
                 style={{
                   opacity:
-                    (combatEntry.roll_state === "full" &&
+                    (combatEntry.roll_state === "focused" &&
                       ((combatEntry.roll_source === "Skill Test" &&
                         currentDisplay1 <= currentDisplay2) ||
                         (combatEntry.roll_source !== "Skill Test" &&
                           currentDisplay1 >= currentDisplay2))) ||
-                    (combatEntry.roll_state === "weak" &&
+                    (combatEntry.roll_state === "unfocused" &&
                       ((combatEntry.roll_source === "Skill Test" &&
                         currentDisplay1 >= currentDisplay2) ||
                         (combatEntry.roll_source !== "Skill Test" &&
@@ -321,12 +321,12 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
                 className={isRolling ? "rolling" : ""}
                 style={{
                   opacity:
-                    (combatEntry.roll_state === "full" &&
+                    (combatEntry.roll_state === "focused" &&
                       ((combatEntry.roll_source === "Skill Test" &&
                         currentDisplay2 <= currentDisplay1) ||
                         (combatEntry.roll_source !== "Skill Test" &&
                           currentDisplay2 >= currentDisplay1))) ||
-                    (combatEntry.roll_state === "weak" &&
+                    (combatEntry.roll_state === "unfocused" &&
                       ((combatEntry.roll_source === "Skill Test" &&
                         currentDisplay2 >= currentDisplay1) ||
                         (combatEntry.roll_source !== "Skill Test" &&

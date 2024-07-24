@@ -98,7 +98,7 @@ function EnergyStatComponent({
                 fontWeight: "bold",
               }}
             >
-              Exhausted
+              Starving
             </div>
           ) : (
             <>

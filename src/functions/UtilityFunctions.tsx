@@ -3,14 +3,14 @@ import React from "react";
 import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
+import { CheckEffect, ResetEffects } from "./ActivesFunction";
 import {
   AbilityEntry,
-  ActiveStateType,
-  AdvantageType,
   CharacterEntry,
   CombatEntry,
   CriticalType,
   EffectEntry,
+  FocusedStateType,
   GeneralItem,
   ItemEntry,
   RollEntry,
@@ -236,11 +236,6 @@ interface StyledTextProps {
   character: CharacterEntry;
   session: SessionEntry;
   isCreature: boolean;
-  activeState: ActiveStateType;
-  advantage: AdvantageType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const StyledText: React.FC<StyledTextProps> = ({ effect }) => {
@@ -360,7 +355,7 @@ export function AddToLoot(
 
 export function HandleExhaustion(character: CharacterEntry) {
   const HasExhausted = character.effects.find(
-    (ability) => ability.name === "Exhausted",
+    (ability) => ability.name === "Starving",
   );
   if (character.health.energy < 0) {
     const level = character.health.energy * -1;
@@ -368,14 +363,19 @@ export function HandleExhaustion(character: CharacterEntry) {
       HasExhausted.level = level;
     } else {
       const effect: EffectEntry = {
-        name: "Exhausted",
+        name: "Starving",
         level: level,
+        active: true,
+        id: generateRandomId(),
         static: {
-          effect:
+          description:
             "Each level of exhaustion gives a -1 penalty to all stats. If a stat reaches 0, then the character dies.",
+          base_amount: 1,
+          level_amount: 1,
+          reset: "rest",
+          type: "negative",
           category: "effect",
         },
-        id: generateRandomId(),
       };
       character.effects.push(effect);
     }
@@ -459,11 +459,7 @@ type RollComponentProps = {
   isCreature: boolean;
   inactive?: boolean;
   setModValue?: React.Dispatch<React.SetStateAction<number>>;
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+
   modifierLock: boolean;
 };
 
@@ -478,14 +474,19 @@ export function RollDice({
   websocket,
   isCreature,
   setModValue,
-  advantage,
-  activeState,
-  setActiveState,
-  setAdvantage,
-  setCriticalState,
   modifierLock,
 }: RollComponentProps) {
   // let roll = Math.floor(Math.random() * dice) + 1;
+
+  const focused =
+    CheckEffect(character, "Focused") ||
+    (CheckEffect(character, "Hunter's Instinct") &&
+      HasRangedWeapon(character) &&
+      roll_type === "attack")
+      ? true
+      : false;
+  const unfocused = CheckEffect(character, "Unfocused") ? true : false;
+
   let roll1 = 0;
   let roll2 = 0;
 
@@ -502,7 +503,11 @@ export function RollDice({
   let result1 = roll1;
   let result2 = roll2;
 
-  let roll_state = activeState;
+  let roll_state: FocusedStateType = focused
+    ? "focused"
+    : unfocused
+    ? "unfocused"
+    : "normal";
 
   if (roll_source !== "Skill Test") {
     result1 += dice_mod;
@@ -511,19 +516,19 @@ export function RollDice({
 
   let success = false;
 
-  if (activeState === "full" && (result1 <= target || result2 <= target)) {
+  if (focused && (result1 <= target || result2 <= target)) {
     success = true;
     if (roll1 === 1 || roll2 === 1) {
       critical_type.state = 2;
     } else if (roll1 === 20 && roll2 === 20) {
       critical_type.state = 0;
     }
-  } else if (activeState === "full" && result1 > target && result2 > target) {
+  } else if (focused && result1 > target && result2 > target) {
     success = false;
     if (roll1 === 20 && roll2 === 20) {
       critical_type.state = 0;
     }
-  } else if (activeState === "weak" && (result1 > target || result2 > target)) {
+  } else if (unfocused && (result1 > target || result2 > target)) {
     success = false;
     if (roll1 === 20 || roll2 === 20) {
       critical_type.state = 0;
@@ -554,7 +559,6 @@ export function RollDice({
     roll1: roll1,
     roll2: roll2,
     critical: critical_type,
-    advantage: advantage,
     mod: dice_mod,
     target: target,
     success: success,
@@ -582,10 +586,7 @@ export function RollDice({
     }
   }
 
-  setActiveState("");
-  setAdvantage("");
-  setCriticalState(false);
-
+  ResetEffects(character, "roll");
   update_session(session, websocket, character, isCreature);
 }
 

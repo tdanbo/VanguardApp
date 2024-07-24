@@ -31,15 +31,11 @@ interface GameMasterProps {
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
   isCreature: boolean;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
   isGm: boolean;
-  criticalState: boolean;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+
   setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 

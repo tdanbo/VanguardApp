@@ -1,11 +1,7 @@
-import {
-  AbilityEntry,
-  AdvantageType,
-  CharacterEntry,
-  ItemEntry,
-} from "../Types";
+import { AbilityEntry, CharacterEntry, ItemEntry } from "../Types";
 import { CheckAbility } from "./ActivesFunction";
-import { AdvantageDice } from "./rules/AdvantageDice";
+import { FlankingEffect } from "./effects/FlankingEffect";
+import { FlankedEffect } from "./effects/FlankedEffect";
 import { Armored_dice } from "./rules/Armored";
 import { ArmoredMystic_dice } from "./rules/ArmoredMystic";
 import { Berserker_dice } from "./rules/Berserker";
@@ -28,6 +24,7 @@ import { Theurgy_dice } from "./rules/Theurgy";
 import { Quality_dice } from "./rules/QualityDice";
 import { WitchHammerEffect } from "./effects/WitchHammerEffect";
 import { BlessedShieldEffect } from "./effects/BlessedShieldEffect";
+import { CriticalStrikeEffect } from "./effects/CriticalStrikeEffect";
 
 function HasItem(character: CharacterEntry, item: string) {
   for (const i of character.inventory) {
@@ -40,8 +37,6 @@ function HasItem(character: CharacterEntry, item: string) {
 export function RulesItemDiceAdjust(
   character: CharacterEntry,
   item: ItemEntry,
-  advantage: AdvantageType,
-  criticalState: boolean,
 ) {
   const dice_pool: number[] = [];
   let dice = item.static.roll.base;
@@ -62,16 +57,15 @@ export function RulesItemDiceAdjust(
   dice += TwinAttack_dice(character, item);
   dice += FeatOfStrength_dice(character, item);
   dice += ItemRulesDice(character, item);
-  dice += AdvantageDice(item, advantage);
   dice += SurvivalInstinct_dice(character, item);
   dice += Quality_dice(item);
 
   // effects
   dice += WitchHammerEffect(character, item);
   dice += BlessedShieldEffect(character, item);
-  // stats
-
-  dice += criticalState ? 6 : 0;
+  dice += FlankingEffect(character, item);
+  dice += FlankedEffect(character, item);
+  dice += CriticalStrikeEffect(character, item);
 
   dice_pool.push(dice);
 

@@ -18,8 +18,6 @@ import { CharacterPortraits } from "../Images";
 import { GetCreatureArmor } from "../functions/CharacterFunctions";
 
 import {
-  ActiveStateType,
-  AdvantageType,
   CharacterEntry,
   ItemEntry,
   SessionEntry,
@@ -299,13 +297,9 @@ interface EncounterBoxProps {
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   onCreatureDelete: (id: string) => void;
-  activeState: ActiveStateType;
-  advantage: AdvantageType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
-  criticalState: boolean;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+
   setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 
@@ -316,13 +310,7 @@ function EncounterCreatureEntry({
   isCreature,
   setIsCreature,
   onCreatureDelete,
-  activeState,
-  advantage,
-  setActiveState,
-  setAdvantage,
   setCharacterId,
-  criticalState,
-  setCriticalState,
   setDisplay,
 }: EncounterBoxProps) {
   const creatureClone = cloneDeep(creature);
@@ -479,12 +467,7 @@ function EncounterCreatureEntry({
     ];
 
   for (const item of creatureClone.inventory) {
-    const dice = RulesItemDiceAdjust(
-      creatureClone,
-      item,
-      advantage,
-      criticalState,
-    );
+    const dice = RulesItemDiceAdjust(creatureClone, item);
     item.static.roll.dice = sum(dice);
   }
 
@@ -680,11 +663,6 @@ function EncounterCreatureEntry({
               ability={ability}
               browser={false}
               isCreature={isCreature}
-              activeState={activeState}
-              advantage={advantage}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-              setCriticalState={setCriticalState}
               state="drop"
             />
           ) : null;

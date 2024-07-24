@@ -28,7 +28,7 @@ export default function RestComponent({
       character.rations -= burnrate;
 
       character.effects = character.effects.filter(
-        (effect) => effect.name !== "Exhausted",
+        (effect) => effect.name !== "Starving",
       );
 
       character.health.energy = Constants.MAX_ENERGY;
@@ -37,13 +37,12 @@ export default function RestComponent({
         character: character,
         roll_type: "eating",
         roll_source: "Eating",
-        roll_state: "",
+        roll_state: "normal",
         roll_entry: {
           result1: 0,
           result2: 0,
           roll1: 0,
           roll2: 0,
-          advantage: "",
           critical: { state: 1, result: 0 },
           mod: 0,
           target: 0,
@@ -72,13 +71,12 @@ export default function RestComponent({
       character: character,
       roll_type: "sleeping",
       roll_source: "Sleeping",
-      roll_state: "",
+      roll_state: "normal",
       roll_entry: {
         result1: 0,
         result2: 0,
         roll1: 0,
         roll2: 0,
-        advantage: "",
         critical: { state: 1, result: 0 },
         mod: 0,
         target: 0,

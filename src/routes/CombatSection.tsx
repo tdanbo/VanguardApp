@@ -12,8 +12,6 @@ import { toTitleCase } from "../functions/UtilityFunctions";
 
 import * as Constants from "../Constants";
 import {
-  ActiveStateType,
-  AdvantageType,
   CharacterEntry,
   CombatEntry,
   DisplayType,
@@ -51,14 +49,13 @@ interface CombatSectionProps {
   character: CharacterEntry;
   websocket: Socket;
   isCreature: boolean;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   setSession: React.Dispatch<React.SetStateAction<SessionEntry>>;
   isGm: boolean;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+
   setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 
@@ -94,9 +91,6 @@ function CombatSection({
   isGm,
   setIsGm,
   setDisplay,
-  setActiveState,
-  setAdvantage,
-  setCriticalState,
 }: CombatSectionProps) {
   // const { combatlogResponse } = useWebSocket();
   const [diceTrayOpen, setDiceTrayOpen] = useState(false);
@@ -191,9 +185,6 @@ function CombatSection({
             session={session}
             websocket={websocket}
             isCreature={isCreature}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            setCriticalState={setCriticalState}
           />
         ) : (
           <>

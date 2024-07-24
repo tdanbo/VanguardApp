@@ -1,4 +1,4 @@
-import { CharacterEntry, EffectEntry } from "../Types";
+import { CharacterEntry, EffectEntry, ResetType } from "../Types";
 import { GetMaxSlots, GetUsedSlots } from "./RulesFunctions";
 
 export const Overburden = (character: CharacterEntry) => {
@@ -64,4 +64,10 @@ export function CheckEffect(
   return character.effects.find(
     (effect) => effect.active && effect.name === name,
   );
+}
+
+export function ResetEffects(character: CharacterEntry, reset: ResetType) {
+  for (const effect of character.effects) {
+    effect.static.reset === reset ? (effect.active = false) : null;
+  }
 }
