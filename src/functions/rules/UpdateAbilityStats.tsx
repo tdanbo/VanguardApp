@@ -1,4 +1,4 @@
-import { AbilityEntry, CharacterEntry, EffectEntry } from "../../Types";
+import { AbilityEntry, CharacterEntry } from "../../Types";
 import {
   CheckAbility,
   UpdateQualities,
@@ -227,16 +227,14 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
 
   const starving = CheckEffect(character, "Starving");
   if (starving) {
-    character.stats.strong.mod -= starving.level;
-    character.stats.resolute.mod -= starving.level;
-    character.stats.quick.mod -= starving.level;
-    character.stats.discreet.mod -= starving.level;
-    character.stats.vigilant.mod -= starving.level;
-    character.stats.persuasive.mod -= starving.level;
-    character.stats.accurate.mod -= starving.level;
-    character.stats.cunning.mod -= starving.level;
-    character.stats.attack.mod -= starving.level;
-    character.stats.defense.mod -= starving.level;
+    character.stats.strong.base -= starving.level;
+    character.stats.resolute.base -= starving.level;
+    character.stats.quick.base -= starving.level;
+    character.stats.discreet.base -= starving.level;
+    character.stats.vigilant.base -= starving.level;
+    character.stats.persuasive.base -= starving.level;
+    character.stats.accurate.base -= starving.level;
+    character.stats.cunning.base -= starving.level;
   }
 
   const overburdened = CheckEffect(character, "Overburdened");

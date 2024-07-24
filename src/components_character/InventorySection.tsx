@@ -1,12 +1,6 @@
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import {
-  ActiveStateType,
-  AdvantageType,
-  CharacterEntry,
-  ItemEntry,
-  SessionEntry,
-} from "../Types";
+import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import InventoryEntry from "../components_browser/InventoryEntry";
 import { GetMaxSlots } from "../functions/RulesFunctions";
 import InventoryEntryEmpty from "./InventoryEntryEmpty";
@@ -23,12 +17,6 @@ function InventorySection({
   session,
   websocket,
   isCreature,
-  activeState,
-  advantage,
-  setActiveState,
-  setAdvantage,
-  criticalState,
-  setCriticalState,
 }: NavigationProps) {
   function sortInventory(a: ItemEntry, b: ItemEntry): number {
     // First sort by category
@@ -64,12 +52,6 @@ function InventorySection({
               item={item}
               isCreature={isCreature}
               isGm={false}
-              activeState={activeState}
-              advantage={advantage}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-              criticalState={criticalState}
-              setCriticalState={setCriticalState}
               state={"drop"}
             />
           );

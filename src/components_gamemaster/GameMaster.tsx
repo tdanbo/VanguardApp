@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import {
-  ActiveStateType,
-  AdvantageType,
-  CharacterEntry,
-  DisplayType,
-  SessionEntry,
-} from "../Types";
+import { CharacterEntry, DisplayType, SessionEntry } from "../Types";
 import ResetCreatureEncounter from "./ResetCreatureEncounter";
 import CreatureEncounterSection from "./CreatureEncounterSection";
 import TimeTrackBox from "../components_gamemaster/TimeTrackBox";
@@ -45,13 +39,9 @@ function GameMaster({
   websocket,
   isCreature,
   setIsCreature,
-  advantage,
-  activeState,
-  setActiveState,
-  setAdvantage,
+
   setCharacterId,
-  criticalState,
-  setCriticalState,
+
   setDisplay,
 }: GameMasterProps) {
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
@@ -183,13 +173,7 @@ function GameMaster({
           setIsCreature={setIsCreature}
           setIsGm={setIsGm}
           characterLog={characterLog}
-          advantage={advantage}
-          activeState={activeState}
-          setActiveState={setActiveState}
-          setAdvantage={setAdvantage}
           setCharacterId={setCharacterId}
-          criticalState={criticalState}
-          setCriticalState={setCriticalState}
           setDisplay={setDisplay}
         />
       </div>

@@ -25,6 +25,7 @@ import { Quality_dice } from "./rules/QualityDice";
 import { WitchHammerEffect } from "./effects/WitchHammerEffect";
 import { BlessedShieldEffect } from "./effects/BlessedShieldEffect";
 import { CriticalStrikeEffect } from "./effects/CriticalStrikeEffect";
+import { IronFistEffect } from "./effects/IronFistEffect";
 
 function HasItem(character: CharacterEntry, item: string) {
   for (const i of character.inventory) {
@@ -66,6 +67,7 @@ export function RulesItemDiceAdjust(
   dice += FlankingEffect(character, item);
   dice += FlankedEffect(character, item);
   dice += CriticalStrikeEffect(character, item);
+  dice += IronFistEffect(character, item);
 
   dice_pool.push(dice);
 

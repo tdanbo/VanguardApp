@@ -1,13 +1,7 @@
 import { useEffect } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import {
-  AbilityEntry,
-  ActiveStateType,
-  AdvantageType,
-  CharacterEntry,
-  SessionEntry,
-} from "../Types";
+import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
 import AbilityEntryItem from "./AbilityEntryItem";
 
@@ -34,11 +28,6 @@ function AbilityBrowser({
   setInventoryState,
   isCreature,
   search,
-  activeState,
-  advantage,
-  setActiveState,
-  setAdvantage,
-  setCriticalState,
 }: AbilityBrowserProps) {
   type LootCategoryType =
     | "all"
@@ -148,11 +137,6 @@ function AbilityBrowser({
             session={session}
             websocket={websocket}
             isCreature={isCreature}
-            activeState={activeState}
-            advantage={advantage}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            setCriticalState={setCriticalState}
             state="take"
           />
         );
@@ -168,11 +152,6 @@ function AbilityBrowser({
             session={session}
             websocket={websocket}
             isCreature={isCreature}
-            activeState={activeState}
-            advantage={advantage}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            setCriticalState={setCriticalState}
             state="take"
           />
         );

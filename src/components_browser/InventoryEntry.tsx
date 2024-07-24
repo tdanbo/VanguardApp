@@ -1,6 +1,6 @@
 import { faBars, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Socket } from "socket.io-client";
 import RollComponent2 from "../components_browser/RollComponent2";
 import EquipComponent from "../components_cleanup/EquipComponent";

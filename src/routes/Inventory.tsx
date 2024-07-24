@@ -1,14 +1,6 @@
-import React from "react";
-
 import { Socket } from "socket.io-client";
 import InventorySection from "../components_character/InventorySection";
-import {
-  ActiveStateType,
-  AdvantageType,
-  CharacterEntry,
-  DisplayType,
-  SessionEntry,
-} from "../Types";
+import { CharacterEntry, DisplayType, SessionEntry } from "../Types";
 
 import DropsBrowser from "../components_browser/DropsBrowser";
 
@@ -33,14 +25,9 @@ export default function Inventory({
   session,
   character,
   isCreature,
-  advantage,
-  activeState,
-  setAdvantage,
-  setActiveState,
+
   isGm,
   setInventoryState,
-  criticalState,
-  setCriticalState,
 }: InventoryProps) {
   return (
     <>
@@ -97,12 +84,6 @@ export default function Inventory({
           websocket={websocket}
           setInventoryState={setInventoryState}
           isCreature={isCreature}
-          advantage={advantage}
-          activeState={activeState}
-          setActiveState={setActiveState}
-          setAdvantage={setAdvantage}
-          criticalState={criticalState}
-          setCriticalState={setCriticalState}
         />
       ) : null}
 
@@ -112,12 +93,6 @@ export default function Inventory({
           character={character}
           websocket={websocket}
           isCreature={isCreature}
-          activeState={activeState}
-          advantage={advantage}
-          setActiveState={setActiveState}
-          setAdvantage={setAdvantage}
-          criticalState={criticalState}
-          setCriticalState={setCriticalState}
         />
       </div>
     </>

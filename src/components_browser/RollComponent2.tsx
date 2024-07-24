@@ -1,8 +1,4 @@
-import {
-  faAnglesDown,
-  faAnglesUp,
-  faStarOfLife,
-} from "@fortawesome/free-solid-svg-icons";
+import { faStarOfLife } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { mdiShield, mdiSwordCross, mdiPlusThick } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -74,7 +70,7 @@ function RollComponent({
             fontWeight: "bold",
           }}
         >
-          {dice.map((die, index) => die).join("+")}
+          {dice.map((die, _index) => die).join("+")}
           {dice_mod > 0 && roll_source !== "Skill Test" ? `+${dice_mod}` : null}
         </div>
         <div

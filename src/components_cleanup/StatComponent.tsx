@@ -1,17 +1,10 @@
-import {
-  faAnglesDown,
-  faAnglesUp,
-  faMinus,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 
 import * as Constants from "../Constants";
 
-import { mdiArrowCollapse, mdiArrowExpand } from "@mdi/js";
-import { Icon } from "@mdi/react";
 import {
   GetAttackStat,
   GetDefenseStat,

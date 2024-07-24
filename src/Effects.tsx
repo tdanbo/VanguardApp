@@ -2,6 +2,7 @@ import {
   IconDefinition,
   faAnglesDown,
   faAnglesUp,
+  faCarrot,
   faCrosshairs,
   faDownLeftAndUpRightToCenter,
   faHammer,
@@ -9,10 +10,8 @@ import {
   faHeartCrack,
   faShield,
   faUpRightAndDownLeftFromCenter,
-  faWeight,
   faWeightHanging,
 } from "@fortawesome/free-solid-svg-icons";
-import { Overburden } from "./functions/ActivesFunction";
 
 export const EffectsIcons: {
   [key: string]: { icon: IconDefinition };
@@ -46,5 +45,8 @@ export const EffectsIcons: {
   },
   "Critical Strike": {
     icon: faHeartCrack,
+  },
+  Starving: {
+    icon: faCarrot,
   },
 };

@@ -1,5 +1,3 @@
-import React from "react";
-
 import * as Constants from "../Constants";
 import InventoryEntry from "../components_browser/InventoryEntry";
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";

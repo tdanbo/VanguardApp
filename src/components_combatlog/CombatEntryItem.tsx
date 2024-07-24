@@ -271,7 +271,9 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
     return message;
   };
 
-  const roll_text = `${combatEntry.roll_state} ${combatEntry.roll_type}`;
+  const roll_text = `${
+    combatEntry.roll_state !== "normal" ? combatEntry.roll_state : ""
+  } ${combatEntry.roll_type}`;
 
   return (
     <Container src={CharacterPortraits[combatEntry.character.portrait]}>
@@ -283,7 +285,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
         {combatEntry.roll_source === "Resting" ? null : (
           <Breakdown>
             {combatEntry.roll_entry.dice
-              .map((die, index) => "1d" + die + " ")
+              .map((die, _index) => "1d" + die + " ")
               .join("+ ")}
             {modifierText}
           </Breakdown>
