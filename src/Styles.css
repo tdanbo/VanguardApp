@@ -227,6 +227,10 @@ body {
   background-color: var(--clr-blue) !important;
 }
 
+.bg--background-green {
+  background-color: var(--clr-green) !important;
+}
+
 .bg--background {
   background-color: var(--clr-background) !important;
 }
@@ -256,7 +260,7 @@ body {
 }
 
 .padding-none {
-  padding: 0;
+  padding: 0px;
 }
 
 .padding--small {
@@ -276,7 +280,7 @@ body {
 }
 
 .gap--small {
-  gap: 5px;
+  gap: 3px;
 }
 
 .gap--medium {
@@ -450,6 +454,17 @@ body {
   width: 100%;
   background: linear-gradient(
     to right,
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 100%
+  );
+  margin-top: 3px;
+}
+
+.divider_horizontal_right {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    to left,
     rgba(255, 255, 255, 0.2) 0%,
     transparent 100%
   );

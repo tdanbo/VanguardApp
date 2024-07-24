@@ -16,6 +16,7 @@ import {
 import {
   faBars,
   faPlus,
+  faQuestion,
   faShield,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
@@ -23,39 +24,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../functions/SessionsFunctions";
 import { StyledText } from "../functions/UtilityFunctions";
 import LevelComponent from "./LevelComponent";
+import { EffectsIcons } from "../Effects";
 
 interface ContainerProps {
   radius: string;
 }
-
-const LevelBaseContainer = styled.div<ContainerProps>`
-  display: flex;
-  flex-direction: column;
-
-  border-left: 1px solid ${Constants.WIDGET_BORDER};
-  border-right: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
-  border-bottom-left-radius: ${(props) => props.radius};
-  border-bottom-right-radius: ${(props) => props.radius};
-  background-color: ${Constants.WIDGET_BACKGROUND_EMPTY};
-`;
-
-interface LevelContainerProps {
-  $expanded: boolean;
-}
-
-const LevelContainer = styled.div<LevelContainerProps>`
-  display: ${(props) => (props.$expanded ? "flex" : "none")};
-  flex-direction: column;
-`;
-
-const AbilityDescription = styled.div`
-  align-items: center;
-  padding: 10px;
-  flex-grow: 1;
-  color: ${Constants.WIDGET_SECONDARY_FONT};
-  font-size: 14px;
-`;
 
 interface EffectCompactEntryItemProps {
   effect: EffectEntry;
@@ -87,92 +60,57 @@ function EffectCompactEntryItem({
   setAdvantage,
   setCriticalState,
 }: EffectCompactEntryItemProps) {
-  interface LevelProps {
-    effect: string;
-    radius: string;
-  }
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const bonus =
+    effect.static.base_amount + effect.static.level_amount * (effect.level - 1);
 
-  const LevelDescriptionComponent = ({ effect, radius }: LevelProps) => {
-    return (
-      <LevelBaseContainer radius={radius}>
-        <AbilityDescription>
-          <StyledText
-            effect={effect}
-            websocket={websocket}
-            character={character}
-            session={session}
-            isCreature={isCreature}
-            activeState={activeState}
-            advantage={advantage}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            setCriticalState={setCriticalState}
-          />
-        </AbilityDescription>
-      </LevelBaseContainer>
-    );
-  };
+  const title = `${effect.name} Effect\n${effect.static.description} ${
+    bonus > 0 ? `${bonus}.` : ""
+  }`;
 
-  const generateRandomId = (length = 10) => {
-    return Math.random()
-      .toString(36)
-      .substring(2, 2 + length);
-  };
+  const icon = EffectsIcons[effect.name]
+    ? EffectsIcons[effect.name].icon
+    : faQuestion;
 
-  const [expanded, setExpanded] = useState<boolean>(false);
+  const SetActiveEffect = () => {
+    const effect_id = effect.id;
+    character.effects.find((effect) => {
+      if (effect.id === effect_id) {
+        effect.active = !effect.active;
+      }
+    });
 
-  const AddAbilitySlot = () => {
-    const abilityWithId = {
-      ...effect,
-      id: generateRandomId(),
-    };
-
-    character.effects.push(abilityWithId);
-
-    update_session(session, websocket, character, isCreature);
-    if (setInventoryState) {
-      setInventoryState(2);
-    }
-  };
-
-  const DeleteAbilitySlot = (effect: EffectEntry) => {
-    const ability_id = effect.id;
-    const new_effects = character.effects.filter(
-      (item) => item.id !== ability_id,
-    );
-
-    console.log(effect.name);
-
-    if (effect.name === "Exhausted") {
-      console.log("Resetting");
-      character.health.energy = 0;
-    }
-
-    character.effects = new_effects;
-
-    console.log(character.health.energy);
-
-    // TODO: There used to be a sub traction functions for exceptional stats. But i dont think it is used.
+    character.effects.sort((a, b) => {
+      if (a.active && !b.active) {
+        return -1;
+      } else if (!a.active && b.active) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
 
     update_session(session, websocket, character, isCreature);
   };
 
   return (
     <div
-      className="row row--card bg--primary-2 padding--small "
-      style={{ maxWidth: "100px" }}
+      className={`column ${effect.active ? "bg--primary-5" : "bg--primary-1"}`}
+      onClick={() => SetActiveEffect()}
+      style={{ gap: "2px" }}
+      title={title}
     >
-      <div className="button border-radius--left bg--primary-3">
-        <FontAwesomeIcon icon={faShield} size="lg" />
-      </div>
-      <LevelComponent
+      <span style={{ fontSize: "15px" }}>
+        <FontAwesomeIcon icon={icon} />
+      </span>
+      <span className="font--size-small font--primary-3">{effect.level}</span>
+      {/* <LevelComponent
         ability={effect}
         session={session}
         character={character}
         websocket={websocket}
         isCreature={isCreature}
-      />
+      /> */}
       {/* <div className="vertical-divider bg--primary-1" />
         <div
           className="button bg--primary-3 font--primary-4 border-radius--none"

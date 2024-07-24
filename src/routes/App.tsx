@@ -43,6 +43,9 @@ function App() {
   const [characterId, setCharacterId] = useState<string>("");
   const [equipmentAbilities, setEquipmentAbilities] =
     useState<EquipAbilityType>("equipment");
+  const [effectAbilities, setEffectAbilities] = useState<
+    "abilities" | "effects"
+  >("abilities");
 
   const websocket = useSocketIO(Constants.API, setSession);
 
@@ -129,6 +132,8 @@ function App() {
               setIsGm={setIsGm}
               leftDisplay={leftDisplay}
               setLeftDisplay={setLeftDisplay}
+              effectAbilities={effectAbilities}
+              setEffectAbilities={setEffectAbilities}
             />
           ) : display === "combatlog" ? (
             <CombatSection

@@ -29,7 +29,7 @@ interface NavigationProps {
   >;
 }
 
-function AbilitySection({
+function EffectsSection({
   character,
   session,
   websocket,
@@ -41,13 +41,13 @@ function AbilitySection({
   setCriticalState,
   setEffectAbilities,
 }: NavigationProps) {
-  function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
+  function sortEffects(a: EffectEntry, b: EffectEntry): number {
     return (
       Constants.TYPE_FILTER.indexOf(a.static.category.toLowerCase()) -
       Constants.TYPE_FILTER.indexOf(b.static.category.toLowerCase())
     );
   }
-  const sortedAbilities = [...character.abilities].sort(sortAbilities);
+  const sortedEffects = [...character.effects].sort(sortEffects);
 
   return (
     <>
@@ -60,20 +60,20 @@ function AbilitySection({
           color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
         }}
       >
-        <span className="font--primary-1 button">Abilities</span>{" "}
-        <div className="divider_horizontal" />
         <span
           className="font--primary-4 button"
-          onClick={() => setEffectAbilities("effects")}
+          onClick={() => setEffectAbilities("abilities")}
         >
-          Effects
-        </span>
+          Abilities
+        </span>{" "}
+        <div className="divider_horizontal_right" />
+        <span className="font--primary-1 button">Effects</span>
       </div>
-      {sortedAbilities.map((ability, index) => (
-        <AbilityEntryItem
+      {sortedEffects.map((effect, index) => (
+        <EffectEntryItem
           session={session}
-          key={ability.id || index} // Assuming `ability.id` is a stable identifier
-          ability={ability}
+          key={effect.id || index} // Assuming `effect.id` is a stable identifier
+          effect={effect}
           browser={false}
           character={character}
           websocket={websocket}
@@ -93,4 +93,4 @@ function AbilitySection({
   );
 }
 
-export default AbilitySection;
+export default EffectsSection;

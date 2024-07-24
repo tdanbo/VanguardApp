@@ -101,10 +101,15 @@ export interface EffectEntry {
   name: string;
   level: number;
   id: string;
+  active: boolean;
   static: EffectStatic;
 }
 export interface EffectStatic {
-  effect: string;
+  description: string;
+  base_amount: number;
+  level_amount: number;
+  type: "positive" | "negative";
+  reset: "rest" | "roll" | "never";
   category: string;
 }
 

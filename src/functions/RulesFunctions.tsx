@@ -26,6 +26,8 @@ import { SurvivalInstinct_dice } from "./rules/SurvivalInstinct";
 import { HuntersInstinct_dice } from "./rules/HuntersInstinct";
 import { Theurgy_dice } from "./rules/Theurgy";
 import { Quality_dice } from "./rules/QualityDice";
+import { WitchHammerEffect } from "./effects/WitchHammerEffect";
+import { BlessedShieldEffect } from "./effects/BlessedShieldEffect";
 
 function HasItem(character: CharacterEntry, item: string) {
   for (const i of character.inventory) {
@@ -63,6 +65,12 @@ export function RulesItemDiceAdjust(
   dice += AdvantageDice(item, advantage);
   dice += SurvivalInstinct_dice(character, item);
   dice += Quality_dice(item);
+
+  // effects
+  dice += WitchHammerEffect(character, item);
+  dice += BlessedShieldEffect(character, item);
+  // stats
+
   dice += criticalState ? 6 : 0;
 
   dice_pool.push(dice);

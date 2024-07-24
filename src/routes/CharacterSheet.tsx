@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { AdvantageType, CharacterEntry, SessionEntry } from "../Types";
 import AbilitySection from "../components_character/AbilitySection";
-import EffectSection from "../components_character/EffectSection";
+import EffectControlSection from "../components_character/EffectControlSection";
 import CharacterNameBox from "../components_cleanup/CharacterNameComponent";
 import DetailStatComponent from "../components_cleanup/DetailStatComponent";
 import { CheckAbility } from "../functions/ActivesFunction";
@@ -33,6 +33,7 @@ import EnergyStatComponent from "../components_character/EnergyStatComponent";
 import JoinSessionComponent from "../components_browser/JoinSessionComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHatWizard, faUser } from "@fortawesome/free-solid-svg-icons";
+import EffectsSection from "../components_character/EffectsSection";
 type CharacterSheetProps = {
   websocket: Socket;
   session: SessionEntry;
@@ -60,6 +61,10 @@ type CharacterSheetProps = {
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
   setLeftDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
   leftDisplay: DisplayType;
+  effectAbilities: "effects" | "abilities";
+  setEffectAbilities: React.Dispatch<
+    React.SetStateAction<"effects" | "abilities">
+  >;
 };
 
 function CharacterSheet({
@@ -84,6 +89,8 @@ function CharacterSheet({
   setIsGm,
   setLeftDisplay,
   leftDisplay,
+  effectAbilities,
+  setEffectAbilities,
 }: CharacterSheetProps) {
   UpdateAbilityStats(character);
 
@@ -394,10 +401,10 @@ function CharacterSheet({
             </div>
           </div>
           <div
-            className="row bg--primary-1 padding--medium border "
-            style={{ maxHeight: "50px", marginTop: "10px" }}
+            className="row "
+            style={{ minHeight: "50px", marginTop: "10px" }}
           >
-            <EffectSection
+            <EffectControlSection
               session={session}
               character={character}
               websocket={websocket}
@@ -430,6 +437,38 @@ function CharacterSheet({
           </div>
         ) : (
           <div className="scroll_container breakpoint show_over_breakpoint1">
+            {effectAbilities === "abilities" ? (
+              <AbilitySection
+                session={session}
+                character={character}
+                websocket={websocket}
+                isCreature={isCreature}
+                activeState={activeState}
+                advantage={advantage}
+                setActiveState={setActiveState}
+                setAdvantage={setAdvantage}
+                setCriticalState={setCriticalState}
+                setEffectAbilities={setEffectAbilities}
+              />
+            ) : (
+              <EffectsSection
+                session={session}
+                character={character}
+                websocket={websocket}
+                isCreature={isCreature}
+                activeState={activeState}
+                advantage={advantage}
+                setActiveState={setActiveState}
+                setAdvantage={setAdvantage}
+                setCriticalState={setCriticalState}
+                setEffectAbilities={setEffectAbilities}
+              />
+            )}
+          </div>
+        )}
+
+        <div className="scroll_container breakpoint show_over_breakpoint2">
+          {effectAbilities === "abilities" ? (
             <AbilitySection
               session={session}
               character={character}
@@ -440,22 +479,22 @@ function CharacterSheet({
               setActiveState={setActiveState}
               setAdvantage={setAdvantage}
               setCriticalState={setCriticalState}
+              setEffectAbilities={setEffectAbilities}
             />
-          </div>
-        )}
-
-        <div className="scroll_container breakpoint show_over_breakpoint2">
-          <AbilitySection
-            session={session}
-            character={character}
-            websocket={websocket}
-            isCreature={isCreature}
-            activeState={activeState}
-            advantage={advantage}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            setCriticalState={setCriticalState}
-          />
+          ) : (
+            <EffectsSection
+              session={session}
+              character={character}
+              websocket={websocket}
+              isCreature={isCreature}
+              activeState={activeState}
+              advantage={advantage}
+              setActiveState={setActiveState}
+              setAdvantage={setAdvantage}
+              setCriticalState={setCriticalState}
+              setEffectAbilities={setEffectAbilities}
+            />
+          )}
         </div>
       </DynamicContainer>
     </div>

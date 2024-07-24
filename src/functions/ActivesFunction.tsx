@@ -1,4 +1,4 @@
-import { CharacterEntry } from "../Types";
+import { CharacterEntry, EffectEntry } from "../Types";
 import { GetMaxSlots, GetUsedSlots } from "./RulesFunctions";
 
 export const Overburden = (character: CharacterEntry) => {
@@ -54,5 +54,14 @@ export function CheckAbility(
     (ability) =>
       ability.name.toLowerCase() === name.toLowerCase() &&
       approved_levels.includes(ability.level.toLowerCase()),
+  );
+}
+
+export function CheckEffect(
+  character: CharacterEntry,
+  name: string,
+): EffectEntry | undefined {
+  return character.effects.find(
+    (effect) => effect.active && effect.name === name,
   );
 }
