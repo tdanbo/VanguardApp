@@ -5,8 +5,6 @@ import * as Constants from "../Constants";
 
 import { toTitleCase } from "../functions/UtilityFunctions";
 import {
-  ActiveStateType,
-  AdvantageType,
   CharacterEntry,
   EffectEntry,
   ItemStateType,
@@ -59,13 +57,9 @@ interface EffectEntryItemProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
-  activeState: ActiveStateType;
-  advantage: AdvantageType;
+
   state: ItemStateType;
   setInventoryState?: (inventoryState: number) => void;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function EffectEntryItem({
@@ -76,11 +70,6 @@ function EffectEntryItem({
   session,
   websocket,
   isCreature,
-  activeState,
-  advantage,
-  setActiveState,
-  setAdvantage,
-  setCriticalState,
 }: EffectEntryItemProps) {
   interface LevelProps {
     effect: string;
@@ -98,11 +87,6 @@ function EffectEntryItem({
             character={character}
             session={session}
             isCreature={isCreature}
-            activeState={activeState}
-            advantage={advantage}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            setCriticalState={setCriticalState}
           />
         </AbilityDescription>
       </LevelBaseContainer>
@@ -137,16 +121,11 @@ function EffectEntryItem({
       (item) => item.id !== ability_id,
     );
 
-    console.log(effect.name);
-
-    if (effect.name === "Exhausted") {
-      console.log("Resetting");
+    if (effect.name === "Starving") {
       character.health.energy = 0;
     }
 
     character.effects = new_effects;
-
-    console.log(character.health.energy);
 
     // TODO: There used to be a sub traction functions for exceptional stats. But i dont think it is used.
 
@@ -217,7 +196,7 @@ function EffectEntryItem({
       </div>
       <LevelContainer $expanded={expanded}>
         <LevelDescriptionComponent
-          effect={effect.static.effect}
+          effect={effect.static.description}
           radius={Constants.BORDER_RADIUS}
         />
       </LevelContainer>

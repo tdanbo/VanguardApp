@@ -25,18 +25,9 @@ function DurabilityComponent({
   const [hover, setHover] = useState(false);
   const [prevDurability, setPrevDurability] = useState(item.durability);
   const [prevItemId, setPrevItemId] = useState(item.id);
-  let max_durability = 0;
-  if (
-    item.static.category === "weapon accessory" ||
-    item.static.category === "armor accessory"
-  ) {
-    max_durability = 4;
-  } else {
-    max_durability = item.static.roll.base;
-  }
 
   const handleAddDurability = () => {
-    if (item.durability >= max_durability) {
+    if (item.durability >= item.static.max_durability) {
       return;
     }
     item.durability = item.durability + 1;
@@ -111,7 +102,9 @@ function DurabilityComponent({
             textShadow: "2px 2px 2px " + Constants.BACKGROUND,
           }}
         >
-          {hover ? `${item.durability} I ${max_durability}` : item.durability}
+          {hover
+            ? `${item.durability} I ${item.static.max_durability}`
+            : item.durability}
         </div>
         <div
           className="row font--primary-4"

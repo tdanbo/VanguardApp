@@ -1,14 +1,8 @@
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import {
-  AbilityEntry,
-  ActiveStateType,
-  AdvantageType,
-  CharacterEntry,
-  SessionEntry,
-} from "../Types";
+import { AbilityEntry, CharacterEntry, SessionEntry } from "../Types";
 import AbilityEntryItem from "../components_browser/AbilityEntryItem";
-import EffectEntryItem from "../components_browser/EffectEntryItem";
+
 import InventoryEntryEmpty from "./InventoryEntryEmpty";
 
 interface NavigationProps {
@@ -16,11 +10,10 @@ interface NavigationProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
-  activeState: ActiveStateType;
-  advantage: AdvantageType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+
+  setEffectAbilities: React.Dispatch<
+    React.SetStateAction<"effects" | "abilities">
+  >;
 }
 
 function AbilitySection({
@@ -28,11 +21,7 @@ function AbilitySection({
   session,
   websocket,
   isCreature,
-  activeState,
-  advantage,
-  setActiveState,
-  setAdvantage,
-  setCriticalState,
+  setEffectAbilities,
 }: NavigationProps) {
   function sortAbilities(a: AbilityEntry, b: AbilityEntry): number {
     return (
@@ -41,6 +30,7 @@ function AbilitySection({
     );
   }
   const sortedAbilities = [...character.abilities].sort(sortAbilities);
+
   return (
     <>
       <div
@@ -52,49 +42,30 @@ function AbilitySection({
           color: Constants.WIDGET_SECONDARY_FONT_INACTIVE,
         }}
       >
-        Abilities <div className="divider_horizontal" />
+        <span className="font--primary-1 button">Abilities</span>{" "}
+        <div className="divider_horizontal" />
+        <span
+          className="font--primary-4 button"
+          onClick={() => setEffectAbilities("effects")}
+        >
+          Effects
+        </span>
       </div>
-      {character.effects.map((effect, index) => {
-        return (
-          <EffectEntryItem
-            session={session}
-            key={index}
-            effect={effect}
-            browser={false}
-            character={character}
-            websocket={websocket}
-            isCreature={isCreature}
-            activeState={activeState}
-            advantage={advantage}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            setCriticalState={setCriticalState}
-            state="drop"
-          />
-        );
-      })}
-      {sortedAbilities.map((ability, index) => {
-        return (
-          <AbilityEntryItem
-            session={session}
-            key={index}
-            ability={ability}
-            browser={false}
-            character={character}
-            websocket={websocket}
-            isCreature={isCreature}
-            activeState={activeState}
-            advantage={advantage}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            setCriticalState={setCriticalState}
-            state="drop"
-          />
-        );
-      })}
-      {Array.from({ length: 20 }).map((_, index) => {
-        return <InventoryEntryEmpty key={index} />;
-      })}
+      {sortedAbilities.map((ability, index) => (
+        <AbilityEntryItem
+          session={session}
+          key={ability.id || index} // Assuming `ability.id` is a stable identifier
+          ability={ability}
+          browser={false}
+          character={character}
+          websocket={websocket}
+          isCreature={isCreature}
+          state="drop"
+        />
+      ))}
+      {Array.from({ length: 20 }).map((_, index) => (
+        <InventoryEntryEmpty key={index} />
+      ))}
     </>
   );
 }

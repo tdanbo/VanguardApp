@@ -1,4 +1,4 @@
-import { CharacterEntry, ItemEntry } from "../../Types";
+import { CharacterEntry, ItemEntry, RollValueType } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 import { IsArmor } from "../UtilityFunctions";
 export function ArmoredMystic_active(character: CharacterEntry) {
@@ -39,12 +39,25 @@ export function ArmoredMystic_active(character: CharacterEntry) {
   }
 }
 
-export function ArmoredMystic_dice(character: CharacterEntry, item: ItemEntry) {
-  const abilityMaster = CheckAbility(character, "armored mystic", "master");
+export function ArmoredMystic_dice(
+  character: CharacterEntry,
+  item: ItemEntry,
+): RollValueType {
+  const name = "armored mystic";
+  const roll_value_type: RollValueType = {
+    source: name,
+    type: "buff",
+    value: 0,
+  };
+
+  const abilityMaster = CheckAbility(character, name, "master");
 
   let mod = 0;
   if (abilityMaster && IsArmor(item)) {
     mod += 4;
   }
-  return mod;
+
+  roll_value_type.value = mod;
+
+  return roll_value_type;
 }

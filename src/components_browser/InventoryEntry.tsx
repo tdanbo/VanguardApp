@@ -1,14 +1,14 @@
 import { faBars, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Socket } from "socket.io-client";
-import RollComponent2 from "../components_browser/RollComponent2";
+import RollComponent2 from "./RollComponent2";
 import EquipComponent from "../components_cleanup/EquipComponent";
 import ItemButtonComponent from "../components_cleanup/ItemButtonComponent";
 import * as Constants from "../Constants";
 import { CheckAbility } from "../functions/ActivesFunction";
 import { Qualities } from "../functions/rules/Qualities";
-import { RulesDiceAdjust } from "../functions/RulesFunctions";
+import { RulesItemDiceAdjust } from "../functions/RulesFunctions";
 import {
   IsArmor,
   IsWeapon,
@@ -16,8 +16,6 @@ import {
   toTitleCase,
 } from "../functions/UtilityFunctions";
 import {
-  ActiveStateType,
-  AdvantageType,
   CharacterEntry,
   ItemEntry,
   ItemStateType,
@@ -25,6 +23,7 @@ import {
 } from "../Types";
 import DurabilityComponent from "./DurabilityComponent";
 import QuantityComponent from "./QuantityComponent";
+import { IsFocusedItem } from "../functions/CharacterFunctions";
 
 interface InventoryEntryProps {
   character: CharacterEntry;
@@ -34,13 +33,8 @@ interface InventoryEntryProps {
   item: ItemEntry;
   isGm: boolean;
   isCreature: boolean;
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  criticalState: boolean;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
   state: ItemStateType;
+  tag: string;
 }
 
 function InventoryEntry({
@@ -51,12 +45,6 @@ function InventoryEntry({
   browser,
   isCreature,
   isGm,
-  advantage,
-  activeState,
-  setActiveState,
-  setAdvantage,
-  criticalState,
-  setCriticalState,
   state,
 }: InventoryEntryProps) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -66,8 +54,6 @@ function InventoryEntry({
   const [expanded, setExpanded] = useState<boolean>(false);
 
   // This is a big function that correct all dice rolls based on the character's abilities
-  const dice = RulesDiceAdjust(character, item, advantage, criticalState);
-
   return (
     <div className="column bg--primary-1 border">
       <div className="row row--card bg--primary-2 padding--small ">
@@ -140,7 +126,7 @@ function InventoryEntry({
             })}
           </div>
         </div>
-        {item.static.roll.roll === true && (
+        {item.static.roll.length > 0 && (
           <RollComponent2
             session={session}
             character={character}
@@ -156,15 +142,9 @@ function InventoryEntry({
             }
             roll_source={item.name}
             isCreature={isCreature}
-            dice={dice}
-            dice_mod={item.static.roll.mod}
-            item={item}
+            roll_values={RulesItemDiceAdjust(character, item)}
+            is_focused={IsFocusedItem(character, item)}
             inactive={item.equipped}
-            advantage={advantage}
-            activeState={activeState}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            setCriticalState={setCriticalState}
           />
         )}
         {[1, 2, 3].includes(item.static.slot) &&
@@ -233,11 +213,6 @@ function InventoryEntry({
                   character={character}
                   session={session}
                   isCreature={isCreature}
-                  activeState={activeState}
-                  advantage={advantage}
-                  setActiveState={setActiveState}
-                  setAdvantage={setAdvantage}
-                  setCriticalState={setCriticalState}
                 />
               </div>
             </>

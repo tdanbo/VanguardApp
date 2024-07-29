@@ -1,12 +1,6 @@
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
-import {
-  ActiveStateType,
-  AdvantageType,
-  CharacterEntry,
-  DisplayType,
-  SessionEntry,
-} from "../Types";
+import { CharacterEntry, DisplayType, SessionEntry } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
 import EncounterCharacterEntry from "./EncounterCharacterEntry";
 import EncounterCreatureEntry from "./EncounterCreatureEntry";
@@ -24,14 +18,10 @@ interface EncounterSectionProps {
   isCreature: boolean;
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   characterLog: CharacterEntry[];
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
-  criticalState: boolean;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+
   setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
 }
 
@@ -41,14 +31,10 @@ function CreatureEncounterSection({
   isCreature,
   setIsCreature,
   characterLog,
-  activeState,
-  advantage,
-  setActiveState,
-  setAdvantage,
+
   setCharacterId,
   setIsGm,
-  criticalState,
-  setCriticalState,
+
   setDisplay,
 }: EncounterSectionProps) {
   // If setSortedEncounter is part of your useState declaration, it should look like this
@@ -84,13 +70,7 @@ function CreatureEncounterSection({
               isCreature={isCreature}
               setIsGm={setIsGm}
               setIsCreature={setIsCreature}
-              activeState={activeState}
-              advantage={advantage}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
               setCharacterId={setCharacterId}
-              criticalState={criticalState}
-              setCriticalState={setCriticalState}
               setDisplay={setDisplay}
             />
           );

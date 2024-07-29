@@ -1,4 +1,4 @@
-import { CharacterEntry, ItemEntry } from "../../Types";
+import { CharacterEntry, ItemEntry, RollValueType } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 import { IsArmor } from "../UtilityFunctions";
 
@@ -45,11 +45,24 @@ export function ManAtArms_active(character: CharacterEntry) {
   }
 }
 
-export function ManAtArms_dice(character: CharacterEntry, item: ItemEntry) {
-  const abilityNovice = CheckAbility(character, "man-at-arms", "novice");
+export function ManAtArms_dice(
+  character: CharacterEntry,
+  item: ItemEntry,
+): RollValueType {
+  const name = "man-at-arms";
+  const roll_value_type: RollValueType = {
+    source: name,
+    type: "buff",
+    value: 0,
+  };
+
+  const abilityNovice = CheckAbility(character, name, "novice");
   let mod = 0;
   if (abilityNovice && IsArmor(item)) {
     mod += 2;
   }
-  return mod;
+
+  roll_value_type.value = mod;
+
+  return roll_value_type;
 }

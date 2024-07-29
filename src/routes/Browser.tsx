@@ -5,7 +5,7 @@ import { addNewCreature } from "../functions/CharacterFunctions";
 import { cloneDeep } from "lodash";
 import { GetGameData } from "../contexts/GameContent";
 
-import { ActiveStateType, AdvantageType, DisplayType } from "../Types";
+import { DisplayType } from "../Types";
 import AbilityBrowser from "../components_browser/AbilityBrowser";
 import CreatureBrowser from "../components_browser/CreatureBrowser";
 
@@ -26,15 +26,11 @@ type BrowserProps = {
   isGm: boolean;
   setInventoryState: React.Dispatch<React.SetStateAction<number>>;
   isCreature: boolean;
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
+
   setIsCreature: React.Dispatch<React.SetStateAction<boolean>>;
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
   setIsGm: React.Dispatch<React.SetStateAction<boolean>>;
-  criticalState: boolean;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
+
   setDisplay: React.Dispatch<React.SetStateAction<DisplayType>>;
   display: DisplayType;
   centralDisplay: DisplayType;
@@ -48,15 +44,9 @@ function Browser({
   isGm,
   setInventoryState,
   isCreature,
-  advantage,
-  activeState,
-  setActiveState,
   setIsCreature,
-  setAdvantage,
   setCharacterId,
   setIsGm,
-  criticalState,
-  setCriticalState,
   display,
   setDisplay,
   centralDisplay,
@@ -126,12 +116,6 @@ function Browser({
           isCreature={isCreature}
           search={search}
           isGm={isGm}
-          advantage={advantage}
-          activeState={activeState}
-          setActiveState={setActiveState}
-          setAdvantage={setAdvantage}
-          criticalState={criticalState}
-          setCriticalState={setCriticalState}
         />
       ) : display === "abilities" ? (
         <AbilityBrowser
@@ -142,11 +126,6 @@ function Browser({
           isCreature={isCreature}
           search={search}
           isGm={isGm}
-          activeState={activeState}
-          advantage={advantage}
-          setActiveState={setActiveState}
-          setAdvantage={setAdvantage}
-          setCriticalState={setCriticalState}
           setSearch={setSearch}
         />
       ) : display === "creatures" ? (
@@ -170,14 +149,8 @@ function Browser({
           character={character}
           websocket={websocket}
           isCreature={isCreature}
-          activeState={activeState}
-          advantage={advantage}
-          setActiveState={setActiveState}
-          setAdvantage={setAdvantage}
           isGm={isGm}
           setInventoryState={setInventoryState}
-          criticalState={criticalState}
-          setCriticalState={setCriticalState}
           centralDisplay={centralDisplay}
         />
       ) : display === "drops" ? (
@@ -188,12 +161,6 @@ function Browser({
           websocket={websocket}
           setInventoryState={setInventoryState}
           isCreature={isCreature}
-          advantage={advantage}
-          activeState={activeState}
-          setActiveState={setActiveState}
-          setAdvantage={setAdvantage}
-          criticalState={criticalState}
-          setCriticalState={setCriticalState}
         />
       ) : null}
     </>

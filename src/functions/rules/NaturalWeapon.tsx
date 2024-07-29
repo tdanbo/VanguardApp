@@ -1,10 +1,20 @@
-import { CharacterEntry, ItemEntry } from "../../Types";
+import { CharacterEntry, ItemEntry, RollValueType } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
-export function NaturalWeapon_dice(character: CharacterEntry, item: ItemEntry) {
-  const ability = CheckAbility(character, "Natural Weapon", "novice");
-  const ability_adept = CheckAbility(character, "Natural Weapon", "adept");
-  const ability_master = CheckAbility(character, "Natural Weapon", "master");
+export function NaturalWeapon_dice(
+  character: CharacterEntry,
+  item: ItemEntry,
+): RollValueType {
+  const name = "natural weapon";
+  const roll_value_type: RollValueType = {
+    source: name,
+    type: "buff",
+    value: 0,
+  };
+
+  const ability = CheckAbility(character, name, "novice");
+  const ability_adept = CheckAbility(character, name, "adept");
+  const ability_master = CheckAbility(character, name, "master");
 
   let mod = 0;
 
@@ -18,5 +28,6 @@ export function NaturalWeapon_dice(character: CharacterEntry, item: ItemEntry) {
     }
   }
 
-  return mod;
+  roll_value_type.value = mod;
+  return roll_value_type;
 }

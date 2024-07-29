@@ -1,4 +1,4 @@
-import { CharacterEntry, ItemEntry } from "../../Types";
+import { CharacterEntry, ItemEntry, RollValueType } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
 function hasShield(character: CharacterEntry) {
@@ -20,8 +20,18 @@ export function ShieldFighter_active(character: CharacterEntry) {
   character.stats.defense.mod += mod;
 }
 
-export function ShieldFighter_dice(character: CharacterEntry, item: ItemEntry) {
-  const ability = CheckAbility(character, "Shield Fighter", "novice");
+export function ShieldFighter_dice(
+  character: CharacterEntry,
+  item: ItemEntry,
+): RollValueType {
+  const name = "shield fighter";
+  const roll_value_type: RollValueType = {
+    source: name,
+    type: "buff",
+    value: 0,
+  };
+
+  const ability = CheckAbility(character, name, "novice");
   let mod = 0;
   if (ability) {
     if (
@@ -31,5 +41,8 @@ export function ShieldFighter_dice(character: CharacterEntry, item: ItemEntry) {
       mod += 2;
     }
   }
-  return mod;
+
+  roll_value_type.value = mod;
+
+  return roll_value_type;
 }

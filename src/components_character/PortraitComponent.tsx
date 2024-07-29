@@ -1,12 +1,7 @@
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import "../Styles.css";
-import {
-  ActiveStateType,
-  AdvantageType,
-  CharacterEntry,
-  SessionEntry,
-} from "../Types";
+import { CharacterEntry, SessionEntry } from "../Types";
 import {
   GetBurnRate,
   GetMaxSlots,
@@ -22,7 +17,6 @@ import {
   faPersonRunning,
   faWeightHanging,
 } from "@fortawesome/free-solid-svg-icons";
-import ActiveStateComponent from "./ActiveStateComponent";
 
 import EditCharacterComponent from "./EditCharacterComponent";
 import { Socket } from "socket.io-client";
@@ -32,30 +26,19 @@ import SmallCorruptionComponent from "./SmallCorruptionComponent";
 
 interface HealthBoxProps {
   character: CharacterEntry;
-  activeState: ActiveStateType;
-  setActiveState: (state: ActiveStateType) => void;
-  advantage: AdvantageType;
-  setAdvantage: (state: AdvantageType) => void;
+
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
   setCharacterId: React.Dispatch<React.SetStateAction<string>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
-  criticalState: boolean;
 }
 
 function PortraitComponent({
   character,
-  activeState,
-  setActiveState,
-  advantage,
-  setAdvantage,
   session,
   websocket,
   isCreature,
   setCharacterId,
-  setCriticalState,
-  criticalState,
 }: HealthBoxProps) {
   const speed = GetMovementSpeed(character);
   const pain = GetPainThreshold(character);
@@ -99,7 +82,7 @@ function PortraitComponent({
           }
           title={"capacity"}
           icon={faWeightHanging}
-          bad_result={capacity >= GetMaxSlots(character)}
+          bad_result={capacity > GetMaxSlots(character)}
         />
         <SmallCorruptionComponent
           character={character}
@@ -115,6 +98,7 @@ function PortraitComponent({
           gap: "0px",
 
           alignItems: "flex-end",
+          justifyContent: "flex-start",
         }}
       >
         <InfoComponent character={character} />
@@ -124,14 +108,6 @@ function PortraitComponent({
           isCreature={isCreature}
           character={character}
           setCharacterId={setCharacterId}
-        />
-        <ActiveStateComponent
-          activeState={activeState}
-          setActiveState={setActiveState}
-          advantage={advantage}
-          setAdvantage={setAdvantage}
-          criticalState={criticalState}
-          setCriticalState={setCriticalState}
         />
       </div>
     </div>

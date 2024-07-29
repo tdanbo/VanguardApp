@@ -5,19 +5,13 @@ import {
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
 import "../Styles.css";
-import {
-  ActiveStateType,
-  AdvantageType,
-  CharacterEntry,
-  RollTypeEntry,
-  SessionEntry,
-} from "../Types";
-import { toTitleCase } from "../functions/UtilityFunctions";
+import { CharacterEntry, RollTypeEntry, SessionEntry } from "../Types";
+
 import RollComponent from "../components_general/RollComponent";
 
 const Container = styled.div`
@@ -80,30 +74,6 @@ const Value = styled.button`
   }
 
   width: 26px;
-`;
-
-type ActiveProps = {
-  $active: boolean;
-};
-
-const ActiveValue = styled.div<ActiveProps>`
-  display: flex;
-  align-items: top;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: bold;
-  color: ${Constants.WIDGET_SECONDARY_FONT_INACTIVE};
-  letter-spacing: 1px;
-  padding-bottom: 5px;
-  background-color: ${Constants.WIDGET_BACKGROUND};
-  border-bottom-left-radius: ${Constants.BORDER_RADIUS};
-  border-bottom-right-radius: ${Constants.BORDER_RADIUS};
-  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
-  border-top: 0px solid ${Constants.WIDGET_BORDER};
-  border-bottom: 1px solid ${Constants.WIDGET_BORDER};
-  border-left: 1px solid ${Constants.WIDGET_BORDER};
-  border-right: 1px solid ${Constants.WIDGET_BORDER};
-  height: ${(props) => (props.$active ? "20%" : "50%")};
 `;
 
 const Modifier = styled.button`
@@ -210,11 +180,6 @@ interface Props {
   character: CharacterEntry;
   websocket: Socket;
   isCreature: boolean;
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function StatComponent({
@@ -227,11 +192,6 @@ function StatComponent({
   character,
   websocket,
   isCreature,
-  advantage,
-  activeState,
-  setActiveState,
-  setAdvantage,
-  setCriticalState,
 }: Props) {
   const [modValue, setModvalue] = useState<number>(0);
   const handleAddValue = () => {
@@ -244,14 +204,6 @@ function StatComponent({
     setModvalue(newValue);
   };
 
-  let flanked = 0;
-  if (advantage === "flanking" && stat_name === "attack") {
-    flanked += 2;
-  } else if (advantage === "flanked" && stat_name === "defense") {
-    flanked -= 2;
-  } else {
-    flanked = 0;
-  }
   let color = Constants.WIDGET_SECONDARY_FONT;
   if (["attack", "defense", "casting", "sneaking"].includes(stat_name)) {
     color = Constants.TYPE_COLORS[stat_name];
@@ -291,7 +243,7 @@ function StatComponent({
   };
 
   const valueTitle: string =
-    ModifierConverter[Math.max(stat_value + modValue + flanked, 1)].toString();
+    ModifierConverter[Math.max(stat_value + modValue, 1)].toString();
 
   return (
     <Container>
@@ -303,7 +255,7 @@ function StatComponent({
         </DiceContainerLeft>
 
         <Value className="dice-icon-hover" title={isCreature ? valueTitle : ""}>
-          {Math.max(stat_value + modValue + flanked, 1)}
+          {Math.max(stat_value + modValue, 1)}
         </Value>
         <DiceContainerRight>
           <DiceContainer className="second-row" $active={active}>
@@ -314,31 +266,15 @@ function StatComponent({
               roll_type={stat_name}
               roll_source={"Skill Test"}
               isCreature={isCreature}
-              dice={20}
+              roll_values={[{ source: "base", type: "test", value: 20 }]}
               dice_mod={modValue}
               color={color}
-              target={Math.max(stat_value + modValue + flanked, 1)}
+              target={Math.max(stat_value + modValue, 1)}
               setModValue={setModvalue}
-              advantage={advantage}
-              activeState={activeState}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-              setCriticalState={setCriticalState}
             />
           </DiceContainer>
         </DiceContainerRight>
       </Row>
-      <ActiveValue className="value-row" $active={active}>
-        {(() => {
-          if (advantage === "flanking" && stat_name === "attack") {
-            return toTitleCase(`${advantage} ${stat_name}`);
-          } else if (advantage === "flanked" && stat_name === "defense") {
-            return toTitleCase(`${advantage} ${stat_name}`);
-          } else {
-            return toTitleCase(stat_name);
-          }
-        })()}
-      </ActiveValue>
       <BottomRow height={"25%"} className="second-row" $active={active}>
         <Minus className="button-hover" onClick={handleSubValue}>
           <FontAwesomeIcon

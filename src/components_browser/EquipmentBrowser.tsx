@@ -2,14 +2,7 @@ import { cloneDeep } from "lodash";
 import { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import {
-  ActiveStateType,
-  AdvantageType,
-  CharacterEntry,
-  GeneralItem,
-  ItemEntry,
-  SessionEntry,
-} from "../Types";
+import { CharacterEntry, GeneralItem, ItemEntry, SessionEntry } from "../Types";
 import InventoryEntryEmpty from "../components_character/InventoryEntryEmpty";
 import {
   IsArmor,
@@ -31,12 +24,6 @@ interface EquipmentBrowserProps {
   isCreature: boolean;
   search: string;
   isGm: boolean;
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  criticalState: boolean;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function EquipmentBrowser({
@@ -46,12 +33,6 @@ function EquipmentBrowser({
   isCreature,
   search,
   isGm,
-  advantage,
-  activeState,
-  setActiveState,
-  setAdvantage,
-  criticalState,
-  setCriticalState,
 }: EquipmentBrowserProps) {
   const { equipment } = GetGameData();
 
@@ -158,13 +139,8 @@ function EquipmentBrowser({
             item={entry}
             isCreature={isCreature}
             isGm={isGm}
-            advantage={advantage}
-            activeState={activeState}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            criticalState={criticalState}
-            setCriticalState={setCriticalState}
             state={"give"}
+            tag={"EQUIPMENT BROWSER"}
           />
         );
       })}

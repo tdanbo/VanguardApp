@@ -8,6 +8,11 @@ import {
 import axios from "axios";
 import { API } from "../Constants";
 import { EffectEntry, ItemEntry, AbilityEntry, CharacterEntry } from "../Types";
+import {
+  GetAbilitiesContent,
+  GetEffectsContent,
+  GetEquipmentContent,
+} from "../functions/ContentFunctions";
 
 // Updated GameContentContextType with separated data fields
 interface GameContentContextType {
@@ -40,41 +45,60 @@ export const GameContentProvider = ({ children }: { children: ReactNode }) => {
   const [creatures, setCreatures] = useState<CharacterEntry[]>([]);
 
   useEffect(() => {
+    setEquipment(GetEquipmentContent());
+    setAbilities(GetAbilitiesContent());
+    setEffects(GetEffectsContent());
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const equipmentPromise = axios.get(`${API}/api/equipment`);
-        const abilitiesPromise = axios.get(`${API}/api/abilities`);
-        const effectsPromise = axios.get(`${API}/api/effects`);
-        const creaturesPromise = axios.get(`${API}/api/creatures`);
-
-        // loop through each creature in creaturesPromise
-        // and update their abilities, equipment, and effects
-
-        const [
-          equipmentResponse,
-          abilitiesResponse,
-          effectsResponse,
-          creatureResponse,
-        ] = await Promise.all([
-          equipmentPromise,
-          abilitiesPromise,
-          effectsPromise,
-          creaturesPromise,
-        ]);
-
-        // console.log("Updated creatures", updatedCreatures);
-
-        setEquipment(equipmentResponse.data);
-        setAbilities(abilitiesResponse.data);
-        setEffects(effectsResponse.data);
+        const creatureResponse = await axios.get(`${API}/api/creatures`);
         setCreatures(creatureResponse.data);
       } catch (error) {
-        console.error("Failed to fetch data", error);
+        console.error("Failed to fetch creatures", error);
       }
     };
 
     fetchData();
   }, []);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const equipmentPromise = axios.get(`${API}/api/equipment`);
+  //       const abilitiesPromise = axios.get(`${API}/api/abilities`);
+  //       const effectsPromise = axios.get(`${API}/api/effects`);
+  //       const creaturesPromise = axios.get(`${API}/api/creatures`);
+
+  //       // loop through each creature in creaturesPromise
+  //       // and update their abilities, equipment, and effects
+
+  //       const [
+  //         equipmentResponse,
+  //         abilitiesResponse,
+  //         effectsResponse,
+  //         creatureResponse,
+  //       ] = await Promise.all([
+  //         equipmentPromise,
+  //         abilitiesPromise,
+  //         effectsPromise,
+  //         creaturesPromise,
+  //       ]);
+
+  //       // console.log("Updated creatures", updatedCreatures);
+
+  //       setEquipment(equipmentResponse.data);
+  //       setAbilities(abilitiesResponse.data);
+  //       setEffects(effectsResponse.data);
+  //       setCreatures(creatureResponse.data);
+  //     } catch (error) {
+  //       console.error("Failed to fetch data", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
 
   const updateCreatureData = async () => {
     try {

@@ -1,15 +1,24 @@
-import { CharacterEntry, ItemEntry } from "../../Types";
+import { CharacterEntry, ItemEntry, RollValueType } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
-export function Armored_dice(character: CharacterEntry, item: ItemEntry) {
-  const ability_name = "Armored";
-  const ability = CheckAbility(character, ability_name, "novice");
-  const ability_adept = CheckAbility(character, ability_name, "adept");
-  const ability_master = CheckAbility(character, ability_name, "master");
+export function Armored_dice(
+  character: CharacterEntry,
+  item: ItemEntry,
+): RollValueType {
+  const name = "armored";
+  const roll_value_type: RollValueType = {
+    source: name,
+    type: "buff",
+    value: 0,
+  };
+
+  const ability = CheckAbility(character, name, "novice");
+  const ability_adept = CheckAbility(character, name, "adept");
+  const ability_master = CheckAbility(character, name, "master");
 
   let mod = 0;
   if (item.static.category !== "natural armor") {
-    return mod;
+    return roll_value_type;
   }
 
   if (ability_master) {
@@ -19,5 +28,6 @@ export function Armored_dice(character: CharacterEntry, item: ItemEntry) {
   } else if (ability) {
     mod += 4;
   }
-  return mod;
+  roll_value_type.value = mod;
+  return roll_value_type;
 }

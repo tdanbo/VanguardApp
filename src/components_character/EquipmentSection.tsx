@@ -1,12 +1,6 @@
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
-import {
-  ActiveStateType,
-  AdvantageType,
-  CharacterEntry,
-  ItemEntry,
-  SessionEntry,
-} from "../Types";
+import { CharacterEntry, ItemEntry, SessionEntry } from "../Types";
 import InventoryEntry from "../components_browser/InventoryEntry";
 import { GetMaxSlots } from "../functions/RulesFunctions";
 import InventoryEntryEmpty from "./InventoryEntryEmpty";
@@ -16,12 +10,6 @@ interface NavigationProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
-  activeState: ActiveStateType;
-  advantage: AdvantageType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  criticalState: boolean;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function EquipmentSection({
@@ -29,12 +17,6 @@ function EquipmentSection({
   session,
   websocket,
   isCreature,
-  activeState,
-  advantage,
-  setActiveState,
-  setAdvantage,
-  criticalState,
-  setCriticalState,
 }: NavigationProps) {
   function sortInventory(a: ItemEntry, b: ItemEntry): number {
     return (
@@ -73,13 +55,8 @@ function EquipmentSection({
               item={item}
               isCreature={isCreature}
               isGm={false}
-              activeState={activeState}
-              advantage={advantage}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-              criticalState={criticalState}
-              setCriticalState={setCriticalState}
               state="drop"
+              tag="CHARACTER EQUIPMENT"
             />
           );
         }

@@ -1,14 +1,4 @@
-import { CharacterEntry } from "../Types";
-import { GetMaxSlots, GetUsedSlots } from "./RulesFunctions";
-
-export const Overburden = (character: CharacterEntry) => {
-  const used_slots = GetUsedSlots(character);
-  const max_slots = GetMaxSlots(character);
-
-  if (used_slots > max_slots) {
-    character.stats.defense.mod -= used_slots - max_slots;
-  }
-};
+import { CharacterEntry, EffectEntry } from "../Types";
 
 export const UpdateQualities = (character: CharacterEntry) => {
   const qualityModifiers = {
@@ -55,4 +45,25 @@ export function CheckAbility(
       ability.name.toLowerCase() === name.toLowerCase() &&
       approved_levels.includes(ability.level.toLowerCase()),
   );
+}
+
+export function CheckEffect(
+  character: CharacterEntry,
+  name: string,
+): EffectEntry | undefined {
+  return character.effects.find(
+    (effect) => effect.active && effect.name === name,
+  );
+}
+
+export function ResetEffects(character: CharacterEntry, reset_type: string) {
+  let reset = "roll";
+
+  if (["sleeping", "eating", "armor", "damage", "never"].includes(reset_type)) {
+    reset = reset_type;
+  }
+
+  for (const effect of character.effects) {
+    effect.static.reset === reset ? (effect.active = false) : null;
+  }
 }

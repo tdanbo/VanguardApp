@@ -3,23 +3,32 @@ import React from "react";
 import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
+import { ResetEffects } from "./ActivesFunction";
 import {
   AbilityEntry,
-  ActiveStateType,
-  AdvantageType,
   CharacterEntry,
   CombatEntry,
   CriticalType,
   EffectEntry,
+  FocusedStateType,
   GeneralItem,
   ItemEntry,
   RollEntry,
   RollTypeEntry,
+  RollValueType,
   SessionEntry,
 } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
-import { HasRangedWeapon } from "./CharacterFunctions";
-import { GetMaxToughness, GetTemporaryCorruption } from "./RulesFunctions";
+import {
+  GetDiceSum,
+  HasRangedWeapon,
+  IsOverburden,
+} from "./CharacterFunctions";
+import {
+  GetMaxToughness,
+  GetTemporaryCorruption,
+  OverburdenValue,
+} from "./RulesFunctions";
 import { HasAmmunition } from "./CharacterFunctions";
 
 export function UpperFirstLetter(input: string): string {
@@ -236,11 +245,6 @@ interface StyledTextProps {
   character: CharacterEntry;
   session: SessionEntry;
   isCreature: boolean;
-  activeState: ActiveStateType;
-  advantage: AdvantageType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const StyledText: React.FC<StyledTextProps> = ({ effect }) => {
@@ -358,9 +362,50 @@ export function AddToLoot(
   update_session(session, websocket, character, isCreature);
 }
 
+export function HandleOverburdened(character: CharacterEntry) {
+  console.log("Handle Overburdened");
+
+  const HasOverburdened = character.effects.find(
+    (effect) => effect.name === "Overburdened",
+  );
+
+  console.log(IsOverburden(character));
+
+  if (OverburdenValue(character) > 0) {
+    const level = OverburdenValue(character);
+    if (HasOverburdened) {
+      HasOverburdened.level = level;
+    } else {
+      const effect: EffectEntry = {
+        name: "Overburdened",
+        level: level,
+        active: true,
+        id: generateRandomId(),
+        static: {
+          description:
+            "Decreases the stat modifier of attack, defense, accurate, quick, discreet and strong by",
+          base_amount: 1,
+          level_amount: 1,
+          reset: "never",
+          type: "negative",
+          category: "effect",
+        },
+      };
+      character.effects.push(effect);
+    }
+  } else {
+    if (HasOverburdened) {
+      const new_effects = character.effects.filter(
+        (item) => item.id !== HasOverburdened.id,
+      );
+      character.effects = new_effects;
+    }
+  }
+}
+
 export function HandleExhaustion(character: CharacterEntry) {
   const HasExhausted = character.effects.find(
-    (ability) => ability.name === "Exhausted",
+    (ability) => ability.name === "Starving",
   );
   if (character.health.energy < 0) {
     const level = character.health.energy * -1;
@@ -368,14 +413,19 @@ export function HandleExhaustion(character: CharacterEntry) {
       HasExhausted.level = level;
     } else {
       const effect: EffectEntry = {
-        name: "Exhausted",
+        name: "Starving",
         level: level,
+        active: true,
+        id: generateRandomId(),
         static: {
-          effect:
+          description:
             "Each level of exhaustion gives a -1 penalty to all stats. If a stat reaches 0, then the character dies.",
+          base_amount: 1,
+          level_amount: 1,
+          reset: "rest",
+          type: "negative",
           category: "effect",
         },
-        id: generateRandomId(),
       };
       character.effects.push(effect);
     }
@@ -451,45 +501,43 @@ type RollComponentProps = {
   websocket: Socket;
   roll_type: RollTypeEntry;
   roll_source: string;
-  dice: number;
-  dice_mod?: number;
+  roll_values: RollValueType[];
   color?: string;
   target?: number;
-  item?: ItemEntry;
+  difficulty: number;
   isCreature: boolean;
   inactive?: boolean;
   setModValue?: React.Dispatch<React.SetStateAction<number>>;
-  advantage: AdvantageType;
-  activeState: ActiveStateType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
-  equipment: ItemEntry[];
   modifierLock: boolean;
+  is_focused: FocusedStateType;
 };
+
+export function isItemEntry(source: any): source is ItemEntry {
+  return (source as ItemEntry).static.quality !== undefined;
+}
+
+export function isAbilityEntry(source: any): source is AbilityEntry {
+  return (source as AbilityEntry).static.tradition !== undefined;
+}
 
 export function RollDice({
   roll_type,
   roll_source,
-  dice,
-  dice_mod = 0,
+  roll_values,
+  difficulty,
   target = 0,
   session,
   character,
   websocket,
   isCreature,
   setModValue,
-  advantage,
-  activeState,
-  setActiveState,
-  setAdvantage,
-  setCriticalState,
   modifierLock,
+  is_focused,
 }: RollComponentProps) {
   // let roll = Math.floor(Math.random() * dice) + 1;
 
-  let roll1 = random(1, dice);
-  let roll2 = random(1, dice);
+  let roll1 = random(1, GetDiceSum(roll_values));
+  let roll2 = random(1, GetDiceSum(roll_values));
 
   const critical_type: CriticalType = {
     state: 1,
@@ -499,28 +547,24 @@ export function RollDice({
   let result1 = roll1;
   let result2 = roll2;
 
-  let roll_state = activeState;
-
-  if (roll_source !== "Skill Test") {
-    result1 += dice_mod;
-    result2 += dice_mod;
-  }
-
   let success = false;
 
-  if (activeState === "full" && (result1 <= target || result2 <= target)) {
+  if (is_focused === "focused" && (result1 <= target || result2 <= target)) {
     success = true;
     if (roll1 === 1 || roll2 === 1) {
       critical_type.state = 2;
     } else if (roll1 === 20 && roll2 === 20) {
       critical_type.state = 0;
     }
-  } else if (activeState === "full" && result1 > target && result2 > target) {
+  } else if (is_focused === "focused" && result1 > target && result2 > target) {
     success = false;
     if (roll1 === 20 && roll2 === 20) {
       critical_type.state = 0;
     }
-  } else if (activeState === "weak" && (result1 > target || result2 > target)) {
+  } else if (
+    is_focused === "unfocused" &&
+    (result1 > target || result2 > target)
+  ) {
     success = false;
     if (roll1 === 20 || roll2 === 20) {
       critical_type.state = 0;
@@ -539,11 +583,6 @@ export function RollDice({
     }
   }
 
-  // let success = true;
-  // if (target !== 0 && result > target) {
-  //   success = false;
-  // }
-
   if (roll_type === "attack" && HasRangedWeapon(character)) {
     if (!HasAmmunition(character, true)) {
       return;
@@ -556,18 +595,17 @@ export function RollDice({
     roll1: roll1,
     roll2: roll2,
     critical: critical_type,
-    advantage: advantage,
-    mod: dice_mod,
     target: target,
     success: success,
-    dice: dice,
+    difficulty: difficulty,
+    roll_values: roll_values,
   };
 
   const NewCombatEntry: CombatEntry = {
     character,
     roll_type,
     roll_source, // Short Sword, Medium Armor, Skill Test,
-    roll_state,
+    is_focused,
     roll_entry,
     uuid: uuidv4(),
     entry: "CombatEntry",
@@ -583,9 +621,7 @@ export function RollDice({
     }
   }
 
-  setActiveState("");
-  setAdvantage("");
-  setCriticalState(false);
+  ResetEffects(character, roll_type);
 
   update_session(session, websocket, character, isCreature);
 }
@@ -651,14 +687,16 @@ export function DurabilityReport(session: SessionEntry): ItemEntry[] {
 
 export function GetItemPrice(item: ItemEntry): number {
   let total_price = item.static.cost;
-  console.log(item.static.roll.roll);
-  if (item.static.roll.roll) {
-    const max_durability = item.static.roll.base;
+  const max_durability = item.static.roll.find(
+    (roll) => roll.source === "base",
+  );
+  if (max_durability) {
     const current_durability = item.durability;
     console.log("Max Durability: " + max_durability);
     console.log("Current Durability: " + current_durability);
 
-    total_price = item.static.cost * (current_durability / max_durability);
+    total_price =
+      item.static.cost * (current_durability / max_durability.value);
     console.log(total_price);
   }
 

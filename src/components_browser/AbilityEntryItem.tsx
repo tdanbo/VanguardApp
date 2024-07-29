@@ -3,23 +3,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
+import { RulesAbilityDiceAdjust } from "../functions/RulesFunctions";
 
 import {
-  Ability,
   AbilityEntry,
-  ActiveStateType,
-  AdvantageType,
+  AbilityLevelType,
   CharacterEntry,
   ItemStateType,
-  RollTypeEntry,
   SessionEntry,
 } from "../Types";
 import LevelComponent from "../components_browser/LevelComponent";
-import RollComponent2 from "../components_browser/RollComponent2";
+import RollComponent2 from "./RollComponent2";
 import AbilityButtonComponent from "../components_cleanup/AbilityButtonComponent";
 import { CheckAbility } from "../functions/ActivesFunction";
 import { update_session } from "../functions/SessionsFunctions";
 import { StyledText, toTitleCase } from "../functions/UtilityFunctions";
+import {
+  GetAbilityLevel,
+  IsFocusedAbility,
+} from "../functions/CharacterFunctions";
 
 interface AbilityEntryItemProps {
   ability: AbilityEntry;
@@ -29,22 +31,8 @@ interface AbilityEntryItemProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
-  activeState: ActiveStateType;
-  advantage: AdvantageType;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
-  state: ItemStateType;
-}
 
-function GetCurrentLevel(ability: AbilityEntry) {
-  if (ability.level === "Master") {
-    return ability.static.master;
-  } else if (ability.level === "Adept") {
-    return ability.static.adept;
-  } else {
-    return ability.static.novice;
-  }
+  state: ItemStateType;
 }
 
 function AbilityEntryItem({
@@ -54,17 +42,16 @@ function AbilityEntryItem({
   session,
   websocket,
   isCreature,
-  activeState,
-  advantage,
-  setActiveState,
-  setAdvantage,
-  setCriticalState,
   state,
 }: AbilityEntryItemProps) {
   // We will get the dynamic object and look for the database entry. If it doesn't exist, we will return null.
+
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [free, setFree] = useState<boolean>(false);
   const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
+
+  const [expanded, setExpanded] = useState<boolean>(false);
+
   useEffect(() => {
     setAbilityLevel(ability.level);
     setFree(ability.free);
@@ -72,7 +59,7 @@ function AbilityEntryItem({
 
   interface LevelProps {
     ability: AbilityEntry;
-    ability_level: Ability;
+    ability_level: AbilityLevelType;
   }
 
   const LevelDescriptionComponent = ({
@@ -110,11 +97,6 @@ function AbilityEntryItem({
             character={character}
             session={session}
             isCreature={isCreature}
-            activeState={activeState}
-            advantage={advantage}
-            setActiveState={setActiveState}
-            setAdvantage={setAdvantage}
-            setCriticalState={setCriticalState}
           />
         </div>
       </>
@@ -135,8 +117,6 @@ function AbilityEntryItem({
     }
   });
 
-  const [expanded, setExpanded] = useState<boolean>(false);
-
   const has_theurgy_novice = CheckAbility(character, "Theurgy", "novice");
   const has_theurgy_adept = CheckAbility(character, "Theurgy", "adept");
   const has_theurgy_master = CheckAbility(character, "Theurgy", "master");
@@ -144,8 +124,6 @@ function AbilityEntryItem({
   const has_wizardry_novice = CheckAbility(character, "Wizardry", "novice");
   const has_wizardry_adept = CheckAbility(character, "Wizardry", "adept");
   const has_wizardry_master = CheckAbility(character, "Wizardry", "master");
-
-  const current_level = GetCurrentLevel(ability);
 
   const ChangeFreeHandle = () => {
     ability.free = !free;
@@ -272,27 +250,19 @@ function AbilityEntryItem({
             </div>
           </div>
         </div>
-        {current_level.roll.map((i, index) => {
-          return (
-            <RollComponent2
-              session={session}
-              character={character}
-              websocket={websocket}
-              roll_type={ability.static.category as RollTypeEntry}
-              roll_source={ability.name}
-              isCreature={isCreature}
-              dice={i.dice}
-              dice_mod={i.mod}
-              color={categoryColor}
-              key={index}
-              activeState={activeState}
-              advantage={""}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
-              setCriticalState={setCriticalState}
-            />
-          );
-        })}
+        {GetAbilityLevel(ability).roll.length > 0 && (
+          <RollComponent2
+            session={session}
+            character={character}
+            websocket={websocket}
+            roll_type={"ability"}
+            roll_source={ability.name}
+            isCreature={isCreature}
+            color={categoryColor}
+            roll_values={RulesAbilityDiceAdjust(character, ability)}
+            is_focused={IsFocusedAbility(character)}
+          />
+        )}
         {ability.static.adept.description !== "" &&
         ability.static.master.description !== "" ? (
           <LevelComponent

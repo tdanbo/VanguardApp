@@ -101,10 +101,16 @@ export interface EffectEntry {
   name: string;
   level: number;
   id: string;
+  active: boolean;
   static: EffectStatic;
 }
+
 export interface EffectStatic {
-  effect: string;
+  description: string;
+  base_amount: number;
+  level_amount: number;
+  type: "positive" | "negative";
+  reset: string;
   category: string;
 }
 
@@ -118,8 +124,17 @@ export interface ItemEntry {
   owner?: string;
   static: ItemStatic;
 }
+
+type RollNameType = "damage" | "armor" | "buff" | "healing" | "test";
+
+export interface RollValueType {
+  value: number;
+  type: RollNameType;
+  source: string;
+}
+
 export interface ItemStatic {
-  roll: Roll;
+  roll: RollValueType[];
   quality: string[];
   rarity: string;
   cost: number;
@@ -127,6 +142,7 @@ export interface ItemStatic {
   effect: string[];
   bulk: boolean;
   slot: number;
+  max_durability: number;
 }
 
 export interface AbilityEntry {
@@ -150,18 +166,19 @@ export type ActionType =
   | "movement"
   | "ritual"
   | "upgrade"
+  | "free"
   | "";
 
-export interface Ability {
+export interface AbilityLevelType {
   description: string;
   action: ActionType;
-  roll: AbilityRoll[];
+  roll: RollValueType[];
 }
 
 export interface AbilityStatic {
-  novice: Ability;
-  adept: Ability;
-  master: Ability;
+  novice: AbilityLevelType;
+  adept: AbilityLevelType;
+  master: AbilityLevelType;
   xp_requirement: number;
   tradition: string[];
   tags: string[];
@@ -170,24 +187,20 @@ export interface AbilityStatic {
 
 export type ActiveType = "attack" | "defense" | "casting" | "sneaking" | "";
 
+export type DiceType = 4 | 6 | 8 | 10 | 12 | 20;
+
+export type FocusedStateType = "focused" | "unfocused" | "normal";
+
 export type CombatEntry = {
   character: CharacterEntry;
   roll_type: RollTypeEntry;
   roll_source: string;
-  roll_state: ActiveStateType;
+  is_focused: FocusedStateType;
   roll_entry: RollEntry;
   uuid: string;
   durability: ItemEntry[];
   entry: "CombatEntry";
 };
-
-interface Roll {
-  roll: boolean;
-  mod: number;
-  dice: number;
-  base: number;
-  type: string;
-}
 
 export type TimeCategory = "morning" | "afternoon" | "evening" | "night";
 
@@ -226,10 +239,6 @@ export type SessionEntry = {
   loot: Loot;
 };
 
-export type ActiveStateType = "" | "full" | "weak";
-
-export type AdvantageType = "" | "flanking" | "flanked";
-
 export type RollTypeEntry =
   | "damage"
   | "armor"
@@ -254,7 +263,8 @@ export type RollTypeEntry =
   | "utility"
   | "eating"
   | "sleeping"
-  | "day";
+  | "day"
+  | "buff";
 
 export type CriticalType = {
   state: 0 | 1 | 2;
@@ -266,12 +276,11 @@ export type RollEntry = {
   result2: number;
   roll1: number;
   roll2: number;
-  advantage: AdvantageType;
   critical: CriticalType;
-  mod: number;
   target: number;
   success: boolean;
-  dice: number;
+  difficulty: number;
+  roll_values: RollValueType[];
 };
 
 export type ChallengeEntry =
@@ -296,18 +305,19 @@ export type TownsEntry = {
 export const GeneralItem: ItemEntry = {
   name: "",
   durability: 0,
-  quantity: 0,
+  quantity: 1,
   equipped: false,
   light: false,
   id: "1a1a1a1a1a",
   static: {
-    roll: { roll: false, dice: 0, base: 0, mod: 0, type: "" },
+    roll: [],
     quality: [],
     slot: 0,
     bulk: false,
     rarity: "normal",
     cost: 0,
     category: "general good",
+    max_durability: 0,
     effect: [],
   },
 };
@@ -378,13 +388,14 @@ export const ResourceItem: ItemEntry = {
   light: false,
   id: "1a1a1a1a1a",
   static: {
-    roll: { roll: false, dice: 0, base: 0, mod: 0, type: "" },
+    roll: [],
     quality: [],
     slot: 0,
     bulk: true,
     rarity: "normal",
     cost: 0,
     category: "resource",
+    max_durability: 0,
     effect: [],
   },
 };

@@ -2,8 +2,6 @@ import * as Constants from "../Constants";
 
 import { useState } from "react";
 import {
-  ActiveStateType,
-  AdvantageType,
   EmptySession,
   NewCharacterEntry,
   SessionEntry,
@@ -21,15 +19,16 @@ import FooterCombatComponent from "../components_cleanup/FooterCombatComponent";
 import FooterBrowserComponent from "../components_cleanup/FooterBrowserComponent";
 
 import { useEffect } from "react";
+import { UpdateCharacterStatics } from "../functions/ContentFunctions";
 
 function App() {
   console.log("-------------------");
   console.log("RERENDERING APP");
   const { creatures } = GetGameData();
   // This function is the main function for setting the session.
-  const [activeState, setActiveState] = useState<ActiveStateType>("");
-  const [criticalState, setCriticalState] = useState<boolean>(false);
-  const [advantage, setAdvantage] = useState<AdvantageType>("");
+  // const [activeState, setActiveState] = useState<ActiveStateType>("");
+  // const [criticalState, setCriticalState] = useState<boolean>(false);
+  // const [advantage, setAdvantage] = useState<AdvantageType>("");
   const [session, setSession] = useState<SessionEntry>(EmptySession);
   const [isCreature, setIsCreature] = useState<boolean>(false);
   const [isGm, setIsGm] = useState<boolean>(false);
@@ -43,13 +42,20 @@ function App() {
   const [characterId, setCharacterId] = useState<string>("");
   const [equipmentAbilities, setEquipmentAbilities] =
     useState<EquipAbilityType>("equipment");
+  const [effectAbilities, setEffectAbilities] = useState<
+    "abilities" | "effects"
+  >("abilities");
 
   const websocket = useSocketIO(Constants.API, setSession);
 
-  const character = isCreature
+  console.log("Session: ", session);
+
+  const fetch_character = isCreature
     ? creatures.find((entry) => entry.id === characterId) || NewCharacterEntry
     : session.characters.find((entry) => entry.id === characterId) ||
       NewCharacterEntry;
+
+  const character = UpdateCharacterStatics(fetch_character);
 
   useEffect(() => {
     const handleResize = () => {
@@ -83,16 +89,10 @@ function App() {
             websocket={websocket}
             setInventoryState={setInventoryState}
             isCreature={isCreature}
-            advantage={advantage}
-            activeState={activeState}
-            setActiveState={setActiveState}
             setIsCreature={setIsCreature}
-            setAdvantage={setAdvantage}
             setCharacterId={setCharacterId}
             setIsGm={setIsGm}
             isGm={isGm}
-            criticalState={criticalState}
-            setCriticalState={setCriticalState}
             display={leftDisplay}
             setDisplay={setLeftDisplay}
             centralDisplay={display}
@@ -113,13 +113,7 @@ function App() {
               inventoryState={inventoryState}
               setInventoryState={setInventoryState}
               isCreature={isCreature}
-              advantage={advantage}
-              setAdvantage={setAdvantage}
-              activeState={activeState}
-              setActiveState={setActiveState}
               setCharacterId={setCharacterId}
-              criticalState={criticalState}
-              setCriticalState={setCriticalState}
               modifierLock={modifierLock}
               setModifierLock={setModifierLock}
               setDisplay={setDisplay}
@@ -129,6 +123,8 @@ function App() {
               setIsGm={setIsGm}
               leftDisplay={leftDisplay}
               setLeftDisplay={setLeftDisplay}
+              effectAbilities={effectAbilities}
+              setEffectAbilities={setEffectAbilities}
             />
           ) : display === "combatlog" ? (
             <CombatSection
@@ -136,14 +132,11 @@ function App() {
               session={session}
               character={character}
               isCreature={isCreature}
-              setAdvantage={setAdvantage}
-              setActiveState={setActiveState}
               setCharacterId={setCharacterId}
               setIsCreature={setIsCreature}
               setSession={setSession}
               isGm={isGm}
               setIsGm={setIsGm}
-              setCriticalState={setCriticalState}
               setDisplay={setDisplay}
             />
           ) : display === "gamemaster" ? (
@@ -157,13 +150,7 @@ function App() {
               setSession={setSession}
               isCreature={isCreature}
               setIsCreature={setIsCreature}
-              advantage={advantage}
-              activeState={activeState}
-              setActiveState={setActiveState}
-              setAdvantage={setAdvantage}
               setCharacterId={setCharacterId}
-              criticalState={criticalState}
-              setCriticalState={setCriticalState}
               setDisplay={setDisplay}
             />
           ) : (
@@ -173,16 +160,10 @@ function App() {
               websocket={websocket}
               setInventoryState={setInventoryState}
               isCreature={isCreature}
-              advantage={advantage}
-              activeState={activeState}
-              setActiveState={setActiveState}
               setIsCreature={setIsCreature}
-              setAdvantage={setAdvantage}
               setCharacterId={setCharacterId}
               setIsGm={setIsGm}
               isGm={isGm}
-              criticalState={criticalState}
-              setCriticalState={setCriticalState}
               display={display}
               setDisplay={setDisplay}
               centralDisplay={display}
@@ -201,14 +182,11 @@ function App() {
               session={session}
               character={character}
               isCreature={isCreature}
-              setAdvantage={setAdvantage}
-              setActiveState={setActiveState}
               setCharacterId={setCharacterId}
               setIsCreature={setIsCreature}
               setSession={setSession}
               isGm={isGm}
               setIsGm={setIsGm}
-              setCriticalState={setCriticalState}
               setDisplay={setDisplay}
             />
           ) : (
@@ -218,16 +196,10 @@ function App() {
               websocket={websocket}
               setInventoryState={setInventoryState}
               isCreature={isCreature}
-              advantage={advantage}
-              activeState={activeState}
-              setActiveState={setActiveState}
               setIsCreature={setIsCreature}
-              setAdvantage={setAdvantage}
               setCharacterId={setCharacterId}
               setIsGm={setIsGm}
               isGm={isGm}
-              criticalState={criticalState}
-              setCriticalState={setCriticalState}
               display={rightDisplay}
               setDisplay={setRightDisplay}
               centralDisplay={display}

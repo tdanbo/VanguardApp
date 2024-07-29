@@ -1,12 +1,7 @@
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import {
-  CharacterEntry,
-  SessionEntry,
-  ActiveStateType,
-  AdvantageType,
-} from "../Types";
+import { CharacterEntry, SessionEntry } from "../Types";
 import RollComponent from "../components_general/RollComponent";
 const Container = styled.div`
   display: flex;
@@ -36,9 +31,6 @@ interface DiceBoxProps {
   session: SessionEntry;
   websocket: Socket;
   isCreature: boolean;
-  setActiveState: React.Dispatch<React.SetStateAction<ActiveStateType>>;
-  setAdvantage: React.Dispatch<React.SetStateAction<AdvantageType>>;
-  setCriticalState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function DiceSection({
@@ -46,9 +38,6 @@ function DiceSection({
   session,
   websocket,
   isCreature,
-  setActiveState,
-  setAdvantage,
-  setCriticalState,
 }: DiceBoxProps) {
   return (
     <Container>
@@ -60,13 +49,8 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d4"}
           isCreature={isCreature}
-          dice={4}
+          roll_values={[{ source: "base", type: "test", value: 4 }]}
           color={Constants.TYPE_COLORS["custom"]}
-          activeState=""
-          advantage=""
-          setActiveState={setActiveState}
-          setAdvantage={setAdvantage}
-          setCriticalState={setCriticalState}
         />
       </DiceContainer>
       <DiceContainer>
@@ -77,13 +61,8 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d6"}
           isCreature={isCreature}
-          dice={6}
+          roll_values={[{ source: "base", type: "test", value: 6 }]}
           color={Constants.TYPE_COLORS["custom"]}
-          activeState=""
-          advantage=""
-          setActiveState={setActiveState}
-          setAdvantage={setAdvantage}
-          setCriticalState={setCriticalState}
         />
       </DiceContainer>
       <DiceContainer>
@@ -94,13 +73,8 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d8"}
           isCreature={isCreature}
-          dice={8}
+          roll_values={[{ source: "base", type: "test", value: 8 }]}
           color={Constants.TYPE_COLORS["custom"]}
-          activeState=""
-          advantage=""
-          setActiveState={setActiveState}
-          setAdvantage={setAdvantage}
-          setCriticalState={setCriticalState}
         />
       </DiceContainer>
       <DiceContainer>
@@ -111,13 +85,8 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d10"}
           isCreature={isCreature}
-          dice={10}
+          roll_values={[{ source: "base", type: "test", value: 10 }]}
           color={Constants.TYPE_COLORS["custom"]}
-          activeState=""
-          advantage=""
-          setActiveState={setActiveState}
-          setAdvantage={setAdvantage}
-          setCriticalState={setCriticalState}
         />
       </DiceContainer>
       <DiceContainer>
@@ -128,13 +97,8 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d4"}
           isCreature={isCreature}
-          dice={12}
+          roll_values={[{ source: "base", type: "test", value: 12 }]}
           color={Constants.TYPE_COLORS["custom"]}
-          activeState=""
-          advantage=""
-          setActiveState={setActiveState}
-          setAdvantage={setAdvantage}
-          setCriticalState={setCriticalState}
         />
       </DiceContainer>
       <DiceContainer>
@@ -145,13 +109,8 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d20"}
           isCreature={isCreature}
-          dice={20}
+          roll_values={[{ source: "base", type: "test", value: 20 }]}
           color={Constants.TYPE_COLORS["custom"]}
-          activeState=""
-          advantage=""
-          setActiveState={setActiveState}
-          setAdvantage={setAdvantage}
-          setCriticalState={setCriticalState}
         />
       </DiceContainer>
       <DiceContainer>
@@ -162,13 +121,8 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d100"}
           isCreature={isCreature}
-          dice={100}
+          roll_values={[{ source: "base", type: "test", value: 100 }]}
           color={Constants.TYPE_COLORS["custom"]}
-          activeState=""
-          advantage=""
-          setActiveState={setActiveState}
-          setAdvantage={setAdvantage}
-          setCriticalState={setCriticalState}
         />
       </DiceContainer>
     </Container>

@@ -3,14 +3,19 @@ import { Socket } from "socket.io-client";
 import { API } from "../Constants";
 import { GetGameData } from "../contexts/GameContent";
 import {
+  AbilityEntry,
+  AbilityLevelType,
   CharacterEntry,
+  FocusedStateType,
   ItemEntry,
   modifiedCreature,
   NewCharacterEntry,
+  RollTypeEntry,
+  RollValueType,
   SessionEntry,
   StatName,
 } from "../Types";
-import { CheckAbility } from "./ActivesFunction";
+import { CheckAbility, CheckEffect } from "./ActivesFunction";
 import {
   GetMaxSlots,
   GetMaxToughness,
@@ -192,7 +197,9 @@ export function GetCreatureArmor(creature: CharacterEntry) {
   let armor: number = 0;
   creature.inventory.forEach((item) => {
     if (item && IsArmor(item) && item.equipped) {
-      armor += Math.ceil(item.static.roll.dice / 2) + item.static.roll.mod;
+      item.static.roll.forEach((roll) => {
+        armor += Math.ceil(roll.value / 2);
+      });
     }
   });
   return armor;
@@ -262,7 +269,6 @@ export function HasAmmunition(
   character: CharacterEntry,
   take_ammu: boolean = false,
 ) {
-  console.log("Checking for ammunition");
   for (const item of character.inventory) {
     if (
       item.static.category === "projectile" &&
@@ -283,5 +289,80 @@ export function IsRangedWeapon(item: ItemEntry) {
     return true;
   } else {
     return false;
+  }
+}
+
+export function GetDiceSum(roll_values: RollValueType[]) {
+  let sum = 0;
+  roll_values.forEach((roll) => {
+    sum += roll.value;
+  });
+  return sum;
+}
+
+export function GetDiceTitle(roll_values: RollValueType[]) {
+  let title = "";
+  roll_values.forEach((roll) => {
+    title += `+${roll.value} ${roll.source}\n`;
+  });
+  return title;
+}
+
+export function IsFocusedItem(
+  character: CharacterEntry,
+  item: ItemEntry,
+): FocusedStateType {
+  let is_focused: FocusedStateType = "normal";
+  const has_massive = item.static.quality.includes("Massive");
+
+  if (CheckEffect(character, "Focused") || has_massive) {
+    is_focused = "focused";
+  } else if (CheckEffect(character, "Unfocused")) {
+    is_focused = "unfocused";
+  }
+
+  return is_focused;
+}
+
+export function IsFocusedAbility(character: CharacterEntry): FocusedStateType {
+  let is_focused: FocusedStateType = "normal";
+  if (CheckEffect(character, "Focused")) {
+    is_focused = "focused";
+  } else if (CheckEffect(character, "Unfocused")) {
+    is_focused = "unfocused";
+  }
+  return is_focused;
+}
+
+export function IsFocusedSkill(
+  character: CharacterEntry,
+  roll_type: RollTypeEntry,
+): FocusedStateType {
+  let is_focused: FocusedStateType = "normal";
+  const has_hunters_instinct = CheckEffect(character, "Hunter's Instinct");
+  if (
+    CheckEffect(character, "Focused") ||
+    (has_hunters_instinct &&
+      HasRangedWeapon(character) &&
+      roll_type === "attack")
+  ) {
+    is_focused = "focused";
+  } else if (CheckEffect(character, "Unfocused")) {
+    is_focused = "unfocused";
+  }
+  return is_focused;
+}
+
+export function GetAbilityLevel(ability: AbilityEntry): AbilityLevelType {
+  const ability_level = ability.level;
+
+  if (ability_level === "Novice") {
+    return ability.static.novice;
+  } else if (ability_level === "Adept") {
+    return ability.static.adept;
+  } else if (ability_level === "Master") {
+    return ability.static.master;
+  } else {
+    return ability.static.novice;
   }
 }
