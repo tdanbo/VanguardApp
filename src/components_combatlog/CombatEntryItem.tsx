@@ -261,7 +261,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
     return message;
   };
 
-  const roll_text = `${
+  const roll_text = ` ${
     combatEntry.is_focused !== "normal" ? combatEntry.is_focused : ""
   } ${combatEntry.roll_type}`;
 
@@ -348,7 +348,9 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
               $issuccess={combatEntry.roll_entry.success}
             >
               {combatEntry.roll_entry.difficulty !== 0
-                ? combatEntry.roll_entry.difficulty
+                ? `${combatEntry.roll_entry.difficulty > 0 ? "+" : ""}${
+                    combatEntry.roll_entry.difficulty
+                  }`
                 : ""}
               {toTitleCase(roll_text)}
             </Active>
