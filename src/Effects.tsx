@@ -10,6 +10,8 @@ import {
   faHeartCrack,
   faShield,
   faUpRightAndDownLeftFromCenter,
+  faUserMinus,
+  faUserPlus,
   faWeightHanging,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -28,7 +30,7 @@ export const EffectsIcons: {
   Unfocused: {
     icon: faAnglesDown,
   },
-  Overburden: {
+  Overburdened: {
     icon: faWeightHanging,
   },
   "Iron Fist": {
@@ -48,5 +50,53 @@ export const EffectsIcons: {
   },
   Starving: {
     icon: faCarrot,
+  },
+  "Enhanced Accurate": {
+    icon: faUserPlus,
+  },
+  "Enhanced Strong": {
+    icon: faUserPlus,
+  },
+  "Enchanced Vigilant": {
+    icon: faUserPlus,
+  },
+  "Enchanced Quick": {
+    icon: faUserPlus,
+  },
+  "Enchanced Cunning": {
+    icon: faUserPlus,
+  },
+  "Enchanced Discreet": {
+    icon: faUserPlus,
+  },
+  "Enchanced Persuasive": {
+    icon: faUserPlus,
+  },
+  "Enchanced Resolute": {
+    icon: faUserPlus,
+  },
+  "Weakened Accurate": {
+    icon: faUserMinus,
+  },
+  "Weakened Strong": {
+    icon: faUserMinus,
+  },
+  "Weakened Vigilant": {
+    icon: faUserMinus,
+  },
+  "Weakened Quick": {
+    icon: faUserMinus,
+  },
+  "Weakened Cunning": {
+    icon: faUserMinus,
+  },
+  "Weakened Discreet": {
+    icon: faUserMinus,
+  },
+  "Weakened Persuasive": {
+    icon: faUserMinus,
+  },
+  "Weakened Resolute": {
+    icon: faUserMinus,
   },
 };

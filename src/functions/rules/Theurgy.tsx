@@ -7,7 +7,7 @@ export function Theurgy_dice(character: CharacterEntry, ability: AbilityEntry) {
   let mod = 0;
 
   if (ability_master && ability.static.tradition.includes("theurgy")) {
-    mod += 4;
+    mod += 5;
   }
   return mod;
 }

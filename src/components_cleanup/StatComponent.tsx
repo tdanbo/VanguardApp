@@ -264,7 +264,7 @@ function StatComponent({
                 roll_type: stat_name,
                 roll_source: "Skill Test",
                 isCreature: isCreature,
-                dice: [20],
+                roll_values: [{ value: 20, source: stat_name }],
                 dice_mod: modValue,
                 color: color,
                 target: Math.max(stat_value + stat_modifier + modValue, 1),

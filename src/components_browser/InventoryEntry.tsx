@@ -2,7 +2,7 @@ import { faBars, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { Socket } from "socket.io-client";
-import RollComponent2 from "../components_browser/RollComponent2";
+import RollComponent2 from "./RollComponent2";
 import EquipComponent from "../components_cleanup/EquipComponent";
 import ItemButtonComponent from "../components_cleanup/ItemButtonComponent";
 import * as Constants from "../Constants";
@@ -23,6 +23,7 @@ import {
 } from "../Types";
 import DurabilityComponent from "./DurabilityComponent";
 import QuantityComponent from "./QuantityComponent";
+import { IsFocusedItem } from "../functions/CharacterFunctions";
 
 interface InventoryEntryProps {
   character: CharacterEntry;
@@ -53,7 +54,6 @@ function InventoryEntry({
   const [expanded, setExpanded] = useState<boolean>(false);
 
   // This is a big function that correct all dice rolls based on the character's abilities
-  const dice_pool = RulesItemDiceAdjust(character, item);
 
   return (
     <div className="column bg--primary-1 border">
@@ -127,7 +127,7 @@ function InventoryEntry({
             })}
           </div>
         </div>
-        {item.static.roll.roll === true && (
+        {item.static.roll && (
           <RollComponent2
             session={session}
             character={character}
@@ -143,9 +143,8 @@ function InventoryEntry({
             }
             roll_source={item.name}
             isCreature={isCreature}
-            dice={dice_pool}
-            dice_mod={item.static.roll.mod}
-            item={item}
+            roll_values={RulesItemDiceAdjust(character, item)}
+            is_focused={IsFocusedItem(character, item)}
             inactive={item.equipped}
           />
         )}

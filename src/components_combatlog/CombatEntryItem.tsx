@@ -182,20 +182,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
     );
   };
 
-  let modifierText = "";
-  if (combatEntry.roll_entry.mod > 0) {
-    modifierText = `+ ${combatEntry.roll_entry.mod}`;
-  } else if (combatEntry.roll_entry.mod < 0) {
-    modifierText = `${combatEntry.roll_entry.mod}`;
-  }
-
-  let title = `Dice: d${combatEntry.roll_entry.dice.join(
-    " + d",
-  )} ${modifierText}\nResult: ${combatEntry.roll_entry.result1}\n`;
-
-  if (combatEntry.roll_source !== "Skill Test") {
-    title += `Modifier: ${combatEntry.roll_entry.mod}\n`;
-  }
+  let title = `Result: ${combatEntry.roll_entry.result1}\n`;
 
   if (combatEntry.roll_entry.target > 0) {
     title += `Target: ${combatEntry.roll_entry.target}`;
@@ -272,7 +259,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   };
 
   const roll_text = `${
-    combatEntry.roll_state !== "normal" ? combatEntry.roll_state : ""
+    combatEntry.is_focused !== "normal" ? combatEntry.is_focused : ""
   } ${combatEntry.roll_type}`;
 
   return (
@@ -291,8 +278,8 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
           </Breakdown>
         )}
         <ResultContainer>
-          {combatEntry.roll_state === "focused" ||
-          combatEntry.roll_state === "unfocused" ? (
+          {combatEntry.is_focused === "focused" ||
+          combatEntry.is_focused === "unfocused" ? (
             <>
               <Result
                 title={title}
@@ -300,12 +287,12 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
                 className={isRolling ? "rolling" : ""}
                 style={{
                   opacity:
-                    (combatEntry.roll_state === "focused" &&
+                    (combatEntry.is_focused === "focused" &&
                       ((combatEntry.roll_source === "Skill Test" &&
                         currentDisplay1 <= currentDisplay2) ||
                         (combatEntry.roll_source !== "Skill Test" &&
                           currentDisplay1 >= currentDisplay2))) ||
-                    (combatEntry.roll_state === "unfocused" &&
+                    (combatEntry.is_focused === "unfocused" &&
                       ((combatEntry.roll_source === "Skill Test" &&
                         currentDisplay1 >= currentDisplay2) ||
                         (combatEntry.roll_source !== "Skill Test" &&
@@ -323,12 +310,12 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
                 className={isRolling ? "rolling" : ""}
                 style={{
                   opacity:
-                    (combatEntry.roll_state === "focused" &&
+                    (combatEntry.is_focused === "focused" &&
                       ((combatEntry.roll_source === "Skill Test" &&
                         currentDisplay2 <= currentDisplay1) ||
                         (combatEntry.roll_source !== "Skill Test" &&
                           currentDisplay2 >= currentDisplay1))) ||
-                    (combatEntry.roll_state === "unfocused" &&
+                    (combatEntry.is_focused === "unfocused" &&
                       ((combatEntry.roll_source === "Skill Test" &&
                         currentDisplay2 >= currentDisplay1) ||
                         (combatEntry.roll_source !== "Skill Test" &&

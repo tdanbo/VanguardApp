@@ -105,13 +105,12 @@ export interface EffectEntry {
   static: EffectStatic;
 }
 
-export type ResetType = "rest" | "roll" | "never";
 export interface EffectStatic {
   description: string;
   base_amount: number;
   level_amount: number;
   type: "positive" | "negative";
-  reset: ResetType;
+  reset: string;
   category: string;
 }
 
@@ -125,8 +124,14 @@ export interface ItemEntry {
   owner?: string;
   static: ItemStatic;
 }
+
+export interface RollValueType {
+  value: number;
+  source: string;
+}
+
 export interface ItemStatic {
-  roll: Roll;
+  roll: RollValueType[];
   quality: string[];
   rarity: string;
   cost: number;
@@ -159,16 +164,16 @@ export type ActionType =
   | "upgrade"
   | "";
 
-export interface Ability {
+export interface AbilityLevelType {
   description: string;
   action: ActionType;
-  roll: AbilityRoll[];
+  roll: RollValueType[];
 }
 
 export interface AbilityStatic {
-  novice: Ability;
-  adept: Ability;
-  master: Ability;
+  novice: AbilityLevelType;
+  adept: AbilityLevelType;
+  master: AbilityLevelType;
   xp_requirement: number;
   tradition: string[];
   tags: string[];
@@ -185,20 +190,12 @@ export type CombatEntry = {
   character: CharacterEntry;
   roll_type: RollTypeEntry;
   roll_source: string;
-  roll_state: FocusedStateType;
+  is_focused: FocusedStateType;
   roll_entry: RollEntry;
   uuid: string;
   durability: ItemEntry[];
   entry: "CombatEntry";
 };
-
-interface Roll {
-  roll: boolean;
-  mod: number;
-  dice: number;
-  base: number;
-  type: string;
-}
 
 export type TimeCategory = "morning" | "afternoon" | "evening" | "night";
 
@@ -275,10 +272,8 @@ export type RollEntry = {
   roll1: number;
   roll2: number;
   critical: CriticalType;
-  mod: number;
   target: number;
   success: boolean;
-  dice: number[];
 };
 
 export type ChallengeEntry =
@@ -308,7 +303,7 @@ export const GeneralItem: ItemEntry = {
   light: false,
   id: "1a1a1a1a1a",
   static: {
-    roll: { roll: false, dice: 0, base: 0, mod: 0, type: "" },
+    roll: [],
     quality: [],
     slot: 0,
     bulk: false,
@@ -385,7 +380,7 @@ export const ResourceItem: ItemEntry = {
   light: false,
   id: "1a1a1a1a1a",
   static: {
-    roll: { roll: false, dice: 0, base: 0, mod: 0, type: "" },
+    roll: [],
     quality: [],
     slot: 0,
     bulk: true,

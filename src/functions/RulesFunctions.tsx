@@ -1,4 +1,9 @@
-import { AbilityEntry, CharacterEntry, ItemEntry } from "../Types";
+import {
+  AbilityEntry,
+  CharacterEntry,
+  ItemEntry,
+  RollValueType,
+} from "../Types";
 import { CheckAbility } from "./ActivesFunction";
 import { FlankingEffect } from "./effects/FlankingEffect";
 import { FlankedEffect } from "./effects/FlankedEffect";
@@ -19,13 +24,13 @@ import { SteelThrow_dice } from "./rules/SteelThrow";
 import { TwinAttack_dice } from "./rules/TwinAttack";
 import { TwohandedForce_dice } from "./rules/TwohandedForce";
 import { SurvivalInstinct_dice } from "./rules/SurvivalInstinct";
-import { HuntersInstinct_dice } from "./rules/HuntersInstinct";
-import { Theurgy_dice } from "./rules/Theurgy";
-import { Quality_dice } from "./rules/QualityDice";
+import { Impact_dice } from "./rules/ImpactDice";
+import { Reinforced_dice } from "./rules/ReinforcedDice";
 import { WitchHammerEffect } from "./effects/WitchHammerEffect";
 import { BlessedShieldEffect } from "./effects/BlessedShieldEffect";
 import { CriticalStrikeEffect } from "./effects/CriticalStrikeEffect";
 import { IronFistEffect } from "./effects/IronFistEffect";
+import { HuntersInstinctEffect } from "./effects/HuntersInstinctEffect";
 
 function HasItem(character: CharacterEntry, item: string) {
   for (const i of character.inventory) {
@@ -38,57 +43,53 @@ function HasItem(character: CharacterEntry, item: string) {
 export function RulesItemDiceAdjust(
   character: CharacterEntry,
   item: ItemEntry,
-) {
-  const dice_pool: number[] = [];
-  let dice = item.static.roll.base;
-  dice += NaturalWeapon_dice(character, item);
-  dice += NaturalWarrior_dice(character, item);
-  dice += Berserker_dice(character, item);
-  dice += ManAtArms_dice(character, item);
-  dice += SteelThrow_dice(character, item);
-  dice += PolearmMastery_dice(character, item);
-  dice += ShieldFighter_dice(character, item);
-  dice += ArmoredMystic_dice(character, item);
-  dice += Marksman_dice(character, item);
-  dice += HuntersInstinct_dice(character, item);
-  dice += TwohandedForce_dice(character, item);
-  dice += Armored_dice(character, item);
-  dice += IronFist_dice(character, item);
-  dice += Robust_dice(character);
-  dice += TwinAttack_dice(character, item);
-  dice += FeatOfStrength_dice(character, item);
-  dice += ItemRulesDice(character, item);
-  dice += SurvivalInstinct_dice(character, item);
-  dice += Quality_dice(item);
+): RollValueType[] {
+  // items
+  item.static.roll.push(NaturalWeapon_dice(character, item));
+  item.static.roll.push(NaturalWarrior_dice(character, item));
+  item.static.roll.push(Berserker_dice(character, item));
+  item.static.roll.push(ManAtArms_dice(character, item));
+  item.static.roll.push(SteelThrow_dice(character, item));
+  item.static.roll.push(PolearmMastery_dice(character, item));
+  item.static.roll.push(ShieldFighter_dice(character, item));
+  item.static.roll.push(ArmoredMystic_dice(character, item));
+  item.static.roll.push(Marksman_dice(character, item));
+  item.static.roll.push(TwohandedForce_dice(character, item));
+  item.static.roll.push(Armored_dice(character, item));
+  item.static.roll.push(IronFist_dice(character, item));
+  item.static.roll.push(Robust_dice(character));
+  item.static.roll.push(TwinAttack_dice(character, item));
+  item.static.roll.push(FeatOfStrength_dice(character, item));
+  item.static.roll.push(ItemRulesDice(character, item));
+  item.static.roll.push(SurvivalInstinct_dice(character, item));
+  item.static.roll.push(Impact_dice(item));
+  item.static.roll.push(Reinforced_dice(item));
 
   // effects
-  dice += WitchHammerEffect(character, item);
-  dice += BlessedShieldEffect(character, item);
-  dice += FlankingEffect(character, item);
-  dice += FlankedEffect(character, item);
-  dice += CriticalStrikeEffect(character, item);
-  dice += IronFistEffect(character, item);
+  item.static.roll.push(WitchHammerEffect(character, item));
+  item.static.roll.push(BlessedShieldEffect(character, item));
+  item.static.roll.push(FlankingEffect(character, item));
+  item.static.roll.push(FlankedEffect(character, item));
+  item.static.roll.push(CriticalStrikeEffect(character, item));
+  item.static.roll.push(IronFistEffect(character, item));
+  item.static.roll.push(HuntersInstinctEffect(character, item));
 
-  dice_pool.push(dice);
+  // abilities
 
-  return dice_pool;
+  item.static.roll.filter((roll) => roll.value !== 0);
+
+  return item.static.roll;
 }
 
 export function RulesAbilityDiceAdjust(
   character: CharacterEntry,
   ability: AbilityEntry,
-  base_dice: number,
-) {
-  const dice_pool: number[] = [];
-  let dice = base_dice;
+): RollValueType[] {
+  // ability.static.roll.push(Theurgy_dice(character, ability));
 
-  const theurgy = Theurgy_dice(character, ability);
+  // ability.static.roll.filter((roll) => roll.value !== 0);
 
-  dice_pool.push(dice);
-  if (theurgy > 0) {
-    dice_pool.push(theurgy);
-  }
-  return dice_pool;
+  return ability.static.master.roll;
 }
 
 export function GetMaxSlots(character: CharacterEntry) {

@@ -82,7 +82,7 @@ function PortraitComponent({
           }
           title={"capacity"}
           icon={faWeightHanging}
-          bad_result={capacity >= GetMaxSlots(character)}
+          bad_result={capacity > GetMaxSlots(character)}
         />
         <SmallCorruptionComponent
           character={character}

@@ -6,19 +6,19 @@ import * as Constants from "../Constants";
 import { RulesAbilityDiceAdjust } from "../functions/RulesFunctions";
 
 import {
-  Ability,
   AbilityEntry,
+  AbilityLevelType,
   CharacterEntry,
   ItemStateType,
-  RollTypeEntry,
   SessionEntry,
 } from "../Types";
 import LevelComponent from "../components_browser/LevelComponent";
-import RollComponent2 from "../components_browser/RollComponent2";
+import RollComponent2 from "./RollComponent2";
 import AbilityButtonComponent from "../components_cleanup/AbilityButtonComponent";
 import { CheckAbility } from "../functions/ActivesFunction";
 import { update_session } from "../functions/SessionsFunctions";
 import { StyledText, toTitleCase } from "../functions/UtilityFunctions";
+import { IsFocusedAbility } from "../functions/CharacterFunctions";
 
 interface AbilityEntryItemProps {
   ability: AbilityEntry;
@@ -52,6 +52,7 @@ function AbilityEntryItem({
   state,
 }: AbilityEntryItemProps) {
   // We will get the dynamic object and look for the database entry. If it doesn't exist, we will return null.
+
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [free, setFree] = useState<boolean>(false);
   const [abilityLevel, setAbilityLevel] = useState<string>("Novice");
@@ -65,7 +66,7 @@ function AbilityEntryItem({
 
   interface LevelProps {
     ability: AbilityEntry;
-    ability_level: Ability;
+    ability_level: AbilityLevelType;
   }
 
   const LevelDescriptionComponent = ({
@@ -259,23 +260,18 @@ function AbilityEntryItem({
           </div>
         </div>
         {current_level.roll.map((i, index) => {
-          const ability_dice_pool = RulesAbilityDiceAdjust(
-            character,
-            ability,
-            i.dice,
-          );
           return (
             <RollComponent2
               session={session}
               character={character}
               websocket={websocket}
-              roll_type={i.type as RollTypeEntry}
+              roll_type={"ability"}
               roll_source={ability.name}
               isCreature={isCreature}
-              dice={ability_dice_pool}
-              dice_mod={i.mod}
               color={categoryColor}
               key={index}
+              roll_values={RulesAbilityDiceAdjust(character, ability)}
+              is_focused={IsFocusedAbility(character)}
             />
           );
         })}

@@ -1,11 +1,7 @@
 import { AbilityEntry, CharacterEntry } from "../../Types";
-import {
-  CheckAbility,
-  UpdateQualities,
-  Overburden,
-  CheckEffect,
-} from "../ActivesFunction";
+import { CheckAbility, UpdateQualities, CheckEffect } from "../ActivesFunction";
 import { GetImpedingValue } from "../RulesFunctions";
+import { HandleOverburdened } from "../UtilityFunctions";
 import { ArmoredMystic_active } from "./ArmoredMystic";
 import { Berserker_active } from "./Berserker";
 import { ManAtArms_active } from "./ManAtArms";
@@ -280,7 +276,6 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
   // effects
 
   UpdateQualities(character);
-  Overburden(character);
   Berserker_active(character);
   ManAtArms_active(character);
   ArmoredMystic_active(character);
@@ -288,6 +283,8 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
   StaffFighting_active(character);
   Robust_active(character);
   TwinAttack_active(character);
+
+  HandleOverburdened(character);
 
   console.log(character.stats);
 

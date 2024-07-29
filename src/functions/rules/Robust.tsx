@@ -1,4 +1,4 @@
-import { CharacterEntry } from "../../Types";
+import { CharacterEntry, RollValueType } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 
 export function Robust_active(character: CharacterEntry) {
@@ -15,10 +15,16 @@ export function Robust_active(character: CharacterEntry) {
   }
 }
 
-export function Robust_dice(character: CharacterEntry) {
-  const ability = CheckAbility(character, "Robust", "novice");
-  const ability_adept = CheckAbility(character, "Robust", "adept");
-  const ability_master = CheckAbility(character, "Robust", "master");
+export function Robust_dice(character: CharacterEntry): RollValueType {
+  const name = "robust";
+  const roll_value_type: RollValueType = {
+    source: name,
+    value: 0,
+  };
+
+  const ability = CheckAbility(character, name, "novice");
+  const ability_adept = CheckAbility(character, name, "adept");
+  const ability_master = CheckAbility(character, name, "master");
 
   let mod = 0;
   if (ability_master) {
@@ -29,5 +35,7 @@ export function Robust_dice(character: CharacterEntry) {
     mod += 4;
   }
 
-  return mod;
+  roll_value_type.value = mod;
+
+  return roll_value_type;
 }

@@ -1,4 +1,4 @@
-import { CharacterEntry, ItemEntry } from "../../Types";
+import { CharacterEntry, ItemEntry, RollValueType } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 import { GetMaxToughness } from "../RulesFunctions";
 import { IsMeleeWeapon } from "../UtilityFunctions";
@@ -6,7 +6,13 @@ import { IsMeleeWeapon } from "../UtilityFunctions";
 export function FeatOfStrength_dice(
   character: CharacterEntry,
   item: ItemEntry,
-) {
+): RollValueType {
+  const name = "feat of strength";
+  const roll_value_type: RollValueType = {
+    source: name,
+    value: 0,
+  };
+
   const ability = CheckAbility(character, "feat of strength", "master");
   let mod = 0;
   if (
@@ -17,6 +23,8 @@ export function FeatOfStrength_dice(
     mod += 4;
   }
 
-  return mod;
+  roll_value_type.value = mod;
+
+  return roll_value_type;
 }
 //

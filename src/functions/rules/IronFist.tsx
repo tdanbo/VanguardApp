@@ -1,21 +1,31 @@
-import { CharacterEntry, ItemEntry } from "../../Types";
+import { CharacterEntry, ItemEntry, RollValueType } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 import { IsMeleeWeapon } from "../UtilityFunctions";
-export function IronFist_dice(character: CharacterEntry, item: ItemEntry) {
-  const ability_name = "Iron Fist";
-  const ability = CheckAbility(character, ability_name, "novice");
-  const ability_adept = CheckAbility(character, ability_name, "adept");
+export function IronFist_dice(
+  character: CharacterEntry,
+  item: ItemEntry,
+): RollValueType {
+  const name = "iron fist";
+  const roll_value_type: RollValueType = {
+    source: name,
+    value: 0,
+  };
+
+  const ability = CheckAbility(character, name, "novice");
+  const ability_adept = CheckAbility(character, name, "adept");
 
   let mod = 0;
   if (!IsMeleeWeapon(item)) {
-    return mod;
+    return roll_value_type;
   }
 
   if (ability_adept) {
     mod += 4;
   } else if (ability) {
-    return mod;
+    return roll_value_type;
   }
 
-  return mod;
+  roll_value_type.value = mod;
+
+  return roll_value_type;
 }

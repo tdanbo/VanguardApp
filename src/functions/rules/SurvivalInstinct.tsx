@@ -1,15 +1,20 @@
-import { CharacterEntry, ItemEntry } from "../../Types";
+import { CharacterEntry, ItemEntry, RollValueType } from "../../Types";
 import { CheckAbility } from "../ActivesFunction";
 import { IsArmor } from "../UtilityFunctions";
 
 export function SurvivalInstinct_dice(
   character: CharacterEntry,
   item: ItemEntry,
-) {
-  const ability_name = "Survival Instinct";
-  const ability = CheckAbility(character, ability_name, "novice");
-  const ability_adept = CheckAbility(character, ability_name, "adept");
-  const ability_master = CheckAbility(character, ability_name, "master");
+): RollValueType {
+  const name = "survival instinct";
+  const roll_value_type: RollValueType = {
+    source: name,
+    value: 0,
+  };
+
+  const ability = CheckAbility(character, name, "novice");
+  const ability_adept = CheckAbility(character, name, "adept");
+  const ability_master = CheckAbility(character, name, "master");
 
   let mod = 0;
 
@@ -23,5 +28,8 @@ export function SurvivalInstinct_dice(
       console.log("Survival Instinct");
     }
   }
-  return mod;
+
+  roll_value_type.value = mod;
+
+  return roll_value_type;
 }

@@ -7,12 +7,15 @@ import * as Constants from "../Constants";
 import "../Styles.css";
 import {
   CharacterEntry,
-  ItemEntry,
+  FocusedStateType,
   RollTypeEntry,
+  RollValueType,
   SessionEntry,
 } from "../Types";
-import { toTitleCase } from "../functions/UtilityFunctions";
+
 import { RollDice } from "../functions/UtilityFunctions";
+
+import { GetDiceSum, GetDiceTitle } from "../functions/CharacterFunctions";
 
 type RollComponentProps = {
   session: SessionEntry;
@@ -20,28 +23,30 @@ type RollComponentProps = {
   websocket: Socket;
   roll_type: RollTypeEntry;
   roll_source: string;
-  dice: number[];
-  dice_mod?: number;
   color?: string;
   target?: number;
-  item?: ItemEntry;
+  roll_values: RollValueType[];
   isCreature: boolean;
   inactive?: boolean;
   setModValue?: React.Dispatch<React.SetStateAction<number>>;
+  is_focused: FocusedStateType;
 };
 
-function RollComponent({
+function RollComponent2({
   roll_type,
   roll_source,
-  dice,
-  dice_mod = 0,
   color = Constants.WIDGET_SECONDARY_FONT,
   session,
   character,
   websocket,
   isCreature,
   setModValue,
+  roll_values,
+  is_focused,
 }: RollComponentProps) {
+  // Usage example
+
+  const dice = GetDiceSum(roll_values);
   return (
     <>
       <div className="vertical-divider bg--primary-1" />
@@ -51,17 +56,17 @@ function RollComponent({
           RollDice({
             roll_type,
             roll_source,
-            dice,
-            dice_mod,
+            roll_values,
             session,
             character,
             websocket,
             isCreature,
             setModValue,
             modifierLock: false,
+            is_focused,
           })
         }
-        title={"Roll " + toTitleCase(roll_type)}
+        title={GetDiceTitle(roll_values)}
       >
         <div
           className="row"
@@ -70,8 +75,7 @@ function RollComponent({
             fontWeight: "bold",
           }}
         >
-          {dice.map((die, _index) => die).join("+")}
-          {dice_mod > 0 && roll_source !== "Skill Test" ? `+${dice_mod}` : null}
+          {dice}
         </div>
         <div
           className="row"
@@ -113,4 +117,4 @@ function RollComponent({
   );
 }
 
-export default RollComponent;
+export default RollComponent2;

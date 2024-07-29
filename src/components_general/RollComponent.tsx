@@ -7,8 +7,10 @@ import {
   CharacterEntry,
   ItemEntry,
   RollTypeEntry,
+  RollValueType,
   SessionEntry,
 } from "../Types";
+import { IsFocusedAbility } from "../functions/CharacterFunctions";
 
 type RollComponentProps = {
   session: SessionEntry;
@@ -16,7 +18,7 @@ type RollComponentProps = {
   websocket: Socket;
   roll_type: RollTypeEntry;
   roll_source: string;
-  dice: number[];
+  roll_values: RollValueType[];
   dice_mod?: number;
   color?: string;
   target?: number;
@@ -53,7 +55,7 @@ const RollContainer = styled.div<RollContainerProps>`
 function RollComponent({
   roll_type,
   roll_source,
-  dice,
+  roll_values,
   dice_mod = 0,
   color = Constants.WIDGET_SECONDARY_FONT,
   session,
@@ -67,19 +69,19 @@ function RollComponent({
     <RollContainer
       $dice_size={dice_size}
       color={color}
-      title={`Roll d${dice}`}
+      title={`Roll d20`}
       onClick={() =>
         RollDice({
           roll_type,
           roll_source,
-          dice,
-          dice_mod,
           session,
           character,
           websocket,
           isCreature,
           setModValue,
           modifierLock: false,
+          is_focused: IsFocusedAbility(character),
+          roll_values: roll_values,
         })
       }
       $inactive={inactive}

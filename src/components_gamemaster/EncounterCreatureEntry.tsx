@@ -15,7 +15,10 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import { GetCreatureArmor } from "../functions/CharacterFunctions";
+import {
+  GetCreatureArmor,
+  GetItemDiceSum,
+} from "../functions/CharacterFunctions";
 
 import {
   CharacterEntry,
@@ -468,7 +471,6 @@ function EncounterCreatureEntry({
 
   for (const item of creatureClone.inventory) {
     const dice = RulesItemDiceAdjust(creatureClone, item);
-    item.static.roll.dice = sum(dice);
   }
 
   const AddItemLoot = () => {
@@ -601,11 +603,8 @@ function EncounterCreatureEntry({
                         title={weapon.name}
                         color={Constants.BRIGHT_RED}
                       />
-                      {Math.ceil(weapon.static.roll.dice / 2) +
-                        weapon.static.roll.mod}
-                      {" / " +
-                        (Math.ceil(weapon.static.roll.dice / 2) +
-                          weapon.static.roll.mod)}
+                      {Math.ceil(GetItemDiceSum(weapon) / 2)} + {" / "} +
+                      {Math.ceil(GetItemDiceSum(weapon) / 2)}
                     </>
                   ) : (
                     <>
@@ -623,8 +622,7 @@ function EncounterCreatureEntry({
                         title={weapon.name}
                         color={Constants.BRIGHT_RED}
                       />
-                      {Math.ceil(weapon.static.roll.dice / 2) +
-                        weapon.static.roll.mod}
+                      {Math.ceil(GetItemDiceSum(weapon) / 2)}
                     </>
                   )}
                 </>

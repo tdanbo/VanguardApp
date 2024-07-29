@@ -1,15 +1,24 @@
-import { CharacterEntry, ItemEntry } from "../../Types";
+import { CharacterEntry, ItemEntry, RollValueType } from "../../Types";
 import { IsWeapon } from "../UtilityFunctions";
 import { CheckEffect } from "../ActivesFunction";
 
 export function CriticalStrikeEffect(
   character: CharacterEntry,
   item: ItemEntry,
-) {
+): RollValueType {
+  const name = "Critical Strike";
+  const roll_value_type: RollValueType = {
+    source: name,
+    value: 0,
+  };
+
   let mod = 0;
   const found_effect = CheckEffect(character, "Critical Strike");
   if (found_effect && IsWeapon(item)) {
     mod += 6;
   }
-  return mod;
+
+  roll_value_type.value = mod;
+
+  return roll_value_type;
 }
