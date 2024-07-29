@@ -121,16 +121,11 @@ function EffectEntryItem({
       (item) => item.id !== ability_id,
     );
 
-    console.log(effect.name);
-
     if (effect.name === "Starving") {
-      console.log("Resetting");
       character.health.energy = 0;
     }
 
     character.effects = new_effects;
-
-    console.log(character.health.energy);
 
     // TODO: There used to be a sub traction functions for exceptional stats. But i dont think it is used.
 

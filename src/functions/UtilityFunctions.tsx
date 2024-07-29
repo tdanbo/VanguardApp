@@ -401,8 +401,6 @@ export function HandleOverburdened(character: CharacterEntry) {
       character.effects = new_effects;
     }
   }
-
-  console.log(character.effects);
 }
 
 export function HandleExhaustion(character: CharacterEntry) {
@@ -506,6 +504,7 @@ type RollComponentProps = {
   roll_values: RollValueType[];
   color?: string;
   target?: number;
+  difficulty: number;
   isCreature: boolean;
   inactive?: boolean;
   setModValue?: React.Dispatch<React.SetStateAction<number>>;
@@ -525,6 +524,7 @@ export function RollDice({
   roll_type,
   roll_source,
   roll_values,
+  difficulty,
   target = 0,
   session,
   character,
@@ -597,6 +597,8 @@ export function RollDice({
     critical: critical_type,
     target: target,
     success: success,
+    difficulty: difficulty,
+    roll_values: roll_values,
   };
 
   const NewCombatEntry: CombatEntry = {
@@ -615,8 +617,7 @@ export function RollDice({
 
   if (setModValue) {
     if (!modifierLock) {
-      if (!["attack", "defense", "casting", "sneaking"].includes(roll_type))
-        setModValue(0);
+      setModValue(0);
     }
   }
 
@@ -686,7 +687,6 @@ export function DurabilityReport(session: SessionEntry): ItemEntry[] {
 
 export function GetItemPrice(item: ItemEntry): number {
   let total_price = item.static.cost;
-  console.log(item.static.roll);
   const max_durability = item.static.roll.find(
     (roll) => roll.source === "base",
   );

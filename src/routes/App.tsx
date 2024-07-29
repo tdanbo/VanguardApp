@@ -19,6 +19,7 @@ import FooterCombatComponent from "../components_cleanup/FooterCombatComponent";
 import FooterBrowserComponent from "../components_cleanup/FooterBrowserComponent";
 
 import { useEffect } from "react";
+import { UpdateCharacterStatics } from "../functions/ContentFunctions";
 
 function App() {
   console.log("-------------------");
@@ -47,10 +48,14 @@ function App() {
 
   const websocket = useSocketIO(Constants.API, setSession);
 
-  const character = isCreature
+  console.log("Session: ", session);
+
+  const fetch_character = isCreature
     ? creatures.find((entry) => entry.id === characterId) || NewCharacterEntry
     : session.characters.find((entry) => entry.id === characterId) ||
       NewCharacterEntry;
+
+  const character = UpdateCharacterStatics(fetch_character);
 
   useEffect(() => {
     const handleResize = () => {

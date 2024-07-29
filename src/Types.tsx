@@ -125,8 +125,11 @@ export interface ItemEntry {
   static: ItemStatic;
 }
 
+type RollNameType = "damage" | "armor" | "buff" | "healing" | "test";
+
 export interface RollValueType {
   value: number;
+  type: RollNameType;
   source: string;
 }
 
@@ -139,6 +142,7 @@ export interface ItemStatic {
   effect: string[];
   bulk: boolean;
   slot: number;
+  max_durability: number;
 }
 
 export interface AbilityEntry {
@@ -162,6 +166,7 @@ export type ActionType =
   | "movement"
   | "ritual"
   | "upgrade"
+  | "free"
   | "";
 
 export interface AbilityLevelType {
@@ -274,6 +279,8 @@ export type RollEntry = {
   critical: CriticalType;
   target: number;
   success: boolean;
+  difficulty: number;
+  roll_values: RollValueType[];
 };
 
 export type ChallengeEntry =
@@ -310,6 +317,7 @@ export const GeneralItem: ItemEntry = {
     rarity: "normal",
     cost: 0,
     category: "general good",
+    max_durability: 0,
     effect: [],
   },
 };
@@ -387,6 +395,7 @@ export const ResourceItem: ItemEntry = {
     rarity: "normal",
     cost: 0,
     category: "resource",
+    max_durability: 0,
     effect: [],
   },
 };

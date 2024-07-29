@@ -10,6 +10,7 @@ import {
   GetDefenseStat,
   HasAmmunition,
   HasRangedWeapon,
+  IsFocusedSkill,
 } from "../functions/CharacterFunctions";
 import { RollDice, toTitleCase } from "../functions/UtilityFunctions";
 import { CharacterEntry, RollTypeEntry, SessionEntry } from "../Types";
@@ -264,12 +265,13 @@ function StatComponent({
                 roll_type: stat_name,
                 roll_source: "Skill Test",
                 isCreature: isCreature,
-                roll_values: [{ value: 20, source: stat_name }],
-                dice_mod: modValue,
+                roll_values: [{ value: 20, type: "test", source: stat_name }],
+                difficulty: modValue,
                 color: color,
                 target: Math.max(stat_value + stat_modifier + modValue, 1),
                 setModValue: setModvalue,
                 modifierLock,
+                is_focused: IsFocusedSkill(character, stat_name),
               })
             }
           >

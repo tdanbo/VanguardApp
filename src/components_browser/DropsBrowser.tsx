@@ -90,6 +90,7 @@ export default function DropsBrowser({
               isCreature={isCreature}
               isGm={isGm}
               state={session.state === "buy" ? "buy" : "take"}
+              tag={"DROPS BROWSER"}
             />
           );
         })}

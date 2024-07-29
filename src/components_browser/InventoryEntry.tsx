@@ -33,8 +33,8 @@ interface InventoryEntryProps {
   item: ItemEntry;
   isGm: boolean;
   isCreature: boolean;
-
   state: ItemStateType;
+  tag: string;
 }
 
 function InventoryEntry({
@@ -54,7 +54,6 @@ function InventoryEntry({
   const [expanded, setExpanded] = useState<boolean>(false);
 
   // This is a big function that correct all dice rolls based on the character's abilities
-
   return (
     <div className="column bg--primary-1 border">
       <div className="row row--card bg--primary-2 padding--small ">
@@ -127,7 +126,7 @@ function InventoryEntry({
             })}
           </div>
         </div>
-        {item.static.roll && (
+        {item.static.roll.length > 0 && (
           <RollComponent2
             session={session}
             character={character}

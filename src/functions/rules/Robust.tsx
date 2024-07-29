@@ -19,6 +19,7 @@ export function Robust_dice(character: CharacterEntry): RollValueType {
   const name = "robust";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

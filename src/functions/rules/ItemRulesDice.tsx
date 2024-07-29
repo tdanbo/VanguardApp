@@ -15,6 +15,7 @@ export function ItemRulesDice(
   const name = "the haganor skin";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

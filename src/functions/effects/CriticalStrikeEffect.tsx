@@ -9,6 +9,7 @@ export function CriticalStrikeEffect(
   const name = "Critical Strike";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

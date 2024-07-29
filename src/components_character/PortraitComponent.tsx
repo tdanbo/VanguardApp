@@ -98,6 +98,7 @@ function PortraitComponent({
           gap: "0px",
 
           alignItems: "flex-end",
+          justifyContent: "flex-start",
         }}
       >
         <InfoComponent character={character} />

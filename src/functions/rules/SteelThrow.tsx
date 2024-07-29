@@ -5,6 +5,7 @@ export function SteelThrow_dice(character: CharacterEntry, item: ItemEntry) {
   const name = "steel throw";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

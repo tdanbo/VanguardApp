@@ -46,6 +46,7 @@ export function ArmoredMystic_dice(
   const name = "armored mystic";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

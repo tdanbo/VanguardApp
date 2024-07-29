@@ -56,6 +56,7 @@ function EquipmentSection({
               isCreature={isCreature}
               isGm={false}
               state="drop"
+              tag="CHARACTER EQUIPMENT"
             />
           );
         }

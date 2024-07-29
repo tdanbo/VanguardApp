@@ -27,6 +27,7 @@ export function ShieldFighter_dice(
   const name = "shield fighter";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

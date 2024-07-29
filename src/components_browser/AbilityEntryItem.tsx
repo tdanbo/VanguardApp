@@ -18,7 +18,10 @@ import AbilityButtonComponent from "../components_cleanup/AbilityButtonComponent
 import { CheckAbility } from "../functions/ActivesFunction";
 import { update_session } from "../functions/SessionsFunctions";
 import { StyledText, toTitleCase } from "../functions/UtilityFunctions";
-import { IsFocusedAbility } from "../functions/CharacterFunctions";
+import {
+  GetAbilityLevel,
+  IsFocusedAbility,
+} from "../functions/CharacterFunctions";
 
 interface AbilityEntryItemProps {
   ability: AbilityEntry;
@@ -30,16 +33,6 @@ interface AbilityEntryItemProps {
   isCreature: boolean;
 
   state: ItemStateType;
-}
-
-function GetCurrentLevel(ability: AbilityEntry) {
-  if (ability.level === "Master") {
-    return ability.static.master;
-  } else if (ability.level === "Adept") {
-    return ability.static.adept;
-  } else {
-    return ability.static.novice;
-  }
 }
 
 function AbilityEntryItem({
@@ -131,8 +124,6 @@ function AbilityEntryItem({
   const has_wizardry_novice = CheckAbility(character, "Wizardry", "novice");
   const has_wizardry_adept = CheckAbility(character, "Wizardry", "adept");
   const has_wizardry_master = CheckAbility(character, "Wizardry", "master");
-
-  const current_level = GetCurrentLevel(ability);
 
   const ChangeFreeHandle = () => {
     ability.free = !free;
@@ -259,22 +250,19 @@ function AbilityEntryItem({
             </div>
           </div>
         </div>
-        {current_level.roll.map((i, index) => {
-          return (
-            <RollComponent2
-              session={session}
-              character={character}
-              websocket={websocket}
-              roll_type={"ability"}
-              roll_source={ability.name}
-              isCreature={isCreature}
-              color={categoryColor}
-              key={index}
-              roll_values={RulesAbilityDiceAdjust(character, ability)}
-              is_focused={IsFocusedAbility(character)}
-            />
-          );
-        })}
+        {GetAbilityLevel(ability).roll.length > 0 && (
+          <RollComponent2
+            session={session}
+            character={character}
+            websocket={websocket}
+            roll_type={"ability"}
+            roll_source={ability.name}
+            isCreature={isCreature}
+            color={categoryColor}
+            roll_values={RulesAbilityDiceAdjust(character, ability)}
+            is_focused={IsFocusedAbility(character)}
+          />
+        )}
         {ability.static.adept.description !== "" &&
         ability.static.master.description !== "" ? (
           <LevelComponent

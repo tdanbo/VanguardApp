@@ -10,7 +10,7 @@ import {
   RollValueType,
   SessionEntry,
 } from "../Types";
-import { IsFocusedAbility } from "../functions/CharacterFunctions";
+import { GetDiceSum, IsFocusedAbility } from "../functions/CharacterFunctions";
 
 type RollComponentProps = {
   session: SessionEntry;
@@ -81,12 +81,13 @@ function RollComponent({
           setModValue,
           modifierLock: false,
           is_focused: IsFocusedAbility(character),
+          difficulty: 0,
           roll_values: roll_values,
         })
       }
       $inactive={inactive}
     >
-      d{dice}
+      d{GetDiceSum(roll_values)}
       {dice_mod > 0 && roll_source !== "Skill Test" ? `+${dice_mod}` : null}
     </RollContainer>
   );

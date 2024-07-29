@@ -8,6 +8,7 @@ export function PolearmMastery_dice(
   const name = "polearm mastery";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

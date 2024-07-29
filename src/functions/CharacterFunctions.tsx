@@ -3,11 +3,14 @@ import { Socket } from "socket.io-client";
 import { API } from "../Constants";
 import { GetGameData } from "../contexts/GameContent";
 import {
+  AbilityEntry,
+  AbilityLevelType,
   CharacterEntry,
   FocusedStateType,
   ItemEntry,
   modifiedCreature,
   NewCharacterEntry,
+  RollTypeEntry,
   RollValueType,
   SessionEntry,
   StatName,
@@ -266,7 +269,6 @@ export function HasAmmunition(
   character: CharacterEntry,
   take_ammu: boolean = false,
 ) {
-  console.log("Checking for ammunition");
   for (const item of character.inventory) {
     if (
       item.static.category === "projectile" &&
@@ -330,4 +332,37 @@ export function IsFocusedAbility(character: CharacterEntry): FocusedStateType {
     is_focused = "unfocused";
   }
   return is_focused;
+}
+
+export function IsFocusedSkill(
+  character: CharacterEntry,
+  roll_type: RollTypeEntry,
+): FocusedStateType {
+  let is_focused: FocusedStateType = "normal";
+  const has_hunters_instinct = CheckEffect(character, "Hunter's Instinct");
+  if (
+    CheckEffect(character, "Focused") ||
+    (has_hunters_instinct &&
+      HasRangedWeapon(character) &&
+      roll_type === "attack")
+  ) {
+    is_focused = "focused";
+  } else if (CheckEffect(character, "Unfocused")) {
+    is_focused = "unfocused";
+  }
+  return is_focused;
+}
+
+export function GetAbilityLevel(ability: AbilityEntry): AbilityLevelType {
+  const ability_level = ability.level;
+
+  if (ability_level === "Novice") {
+    return ability.static.novice;
+  } else if (ability_level === "Adept") {
+    return ability.static.adept;
+  } else if (ability_level === "Master") {
+    return ability.static.master;
+  } else {
+    return ability.static.novice;
+  }
 }

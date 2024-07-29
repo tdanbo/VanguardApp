@@ -13,6 +13,7 @@ import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
 import { CombatEntry, SessionEntry } from "../Types";
 import { toTitleCase } from "../functions/UtilityFunctions";
+import { GetDiceSum } from "../functions/CharacterFunctions";
 interface CombatEntryItemProps {
   combatEntry: CombatEntry;
   index: number;
@@ -183,7 +184,9 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   };
 
   let title = `Result: ${combatEntry.roll_entry.result1}\n`;
-
+  if (combatEntry.roll_source === "Skill Test") {
+    title += `Difficulty: ${combatEntry.roll_entry.difficulty}\n`;
+  }
   if (combatEntry.roll_entry.target > 0) {
     title += `Target: ${combatEntry.roll_entry.target}`;
   }
@@ -271,10 +274,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
       <RollContainer>
         {combatEntry.roll_source === "Resting" ? null : (
           <Breakdown>
-            {combatEntry.roll_entry.dice
-              .map((die, _index) => "1d" + die + " ")
-              .join("+ ")}
-            {modifierText}
+            d{GetDiceSum(combatEntry.roll_entry.roll_values)}
           </Breakdown>
         )}
         <ResultContainer>
@@ -347,7 +347,10 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
               $rgb={EntryColor()}
               $issuccess={combatEntry.roll_entry.success}
             >
-              {modifierText} {toTitleCase(roll_text)}
+              {combatEntry.roll_entry.difficulty !== 0
+                ? combatEntry.roll_entry.difficulty
+                : ""}
+              {toTitleCase(roll_text)}
             </Active>
           ) : (
             <Active

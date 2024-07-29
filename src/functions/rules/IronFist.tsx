@@ -8,6 +8,7 @@ export function IronFist_dice(
   const name = "iron fist";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

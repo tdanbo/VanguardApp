@@ -286,8 +286,6 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
 
   HandleOverburdened(character);
 
-  console.log(character.stats);
-
   return character;
 }
 

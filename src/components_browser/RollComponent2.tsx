@@ -1,4 +1,4 @@
-import { faStarOfLife } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faStarOfLife } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { mdiShield, mdiSwordCross, mdiPlusThick } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -14,7 +14,7 @@ import {
 } from "../Types";
 
 import { RollDice } from "../functions/UtilityFunctions";
-
+import { toTitleCase } from "../functions/UtilityFunctions";
 import { GetDiceSum, GetDiceTitle } from "../functions/CharacterFunctions";
 
 type RollComponentProps = {
@@ -35,7 +35,6 @@ type RollComponentProps = {
 function RollComponent2({
   roll_type,
   roll_source,
-  color = Constants.WIDGET_SECONDARY_FONT,
   session,
   character,
   websocket,
@@ -47,6 +46,9 @@ function RollComponent2({
   // Usage example
 
   const dice = GetDiceSum(roll_values);
+  const roll_base_type =
+    roll_values.find((rv) => rv.source === "base")?.type ?? "damage";
+
   return (
     <>
       <div className="vertical-divider bg--primary-1" />
@@ -64,9 +66,10 @@ function RollComponent2({
             setModValue,
             modifierLock: false,
             is_focused,
+            difficulty: 0,
           })
         }
-        title={GetDiceTitle(roll_values)}
+        title={toTitleCase(GetDiceTitle(roll_values))}
       >
         <div
           className="row"
@@ -85,24 +88,21 @@ function RollComponent2({
             gap: "5px",
           }}
         >
-          {roll_type === "damage" ? (
+          {roll_base_type === "damage" ? (
             <FontAwesomeIcon
               icon={faStarOfLife}
               color={Constants.COLOR_1}
               style={{ fontSize: "12px" }}
             />
-          ) : roll_type === "armor" ? (
+          ) : roll_base_type === "armor" ? (
             <Icon path={mdiShield} size={0.6} color={Constants.COLOR_2} />
-          ) : roll_type === "ability" ||
-            roll_type === "mystical power" ||
-            roll_type === "utility" ||
-            roll_type === "monsterous trait" ? (
+          ) : roll_base_type === "healing" ? (
             <FontAwesomeIcon
-              icon={faStarOfLife}
-              color={color}
+              icon={faHeart}
+              color={Constants.COLOR_3}
               style={{ fontSize: "12px" }}
             />
-          ) : roll_type === "buff" ? (
+          ) : roll_base_type === "buff" ? (
             <Icon
               path={mdiPlusThick}
               size={0.75}

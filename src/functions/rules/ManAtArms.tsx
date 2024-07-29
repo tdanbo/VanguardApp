@@ -52,6 +52,7 @@ export function ManAtArms_dice(
   const name = "man-at-arms";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

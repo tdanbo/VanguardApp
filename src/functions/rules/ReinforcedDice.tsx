@@ -5,6 +5,7 @@ export function Reinforced_dice(item: ItemEntry): RollValueType {
   const name = "Reinforced";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

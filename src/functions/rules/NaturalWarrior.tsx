@@ -8,6 +8,7 @@ export function NaturalWarrior_dice(
   const name = "natural warrior";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

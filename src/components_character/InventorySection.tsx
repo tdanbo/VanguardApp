@@ -53,6 +53,7 @@ function InventorySection({
               isCreature={isCreature}
               isGm={false}
               state={"drop"}
+              tag={"CHARACTER INVENTORY"}
             />
           );
         }

@@ -8,6 +8,7 @@ export function TwohandedForce_dice(
   const name = "two-handed force";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

@@ -3,8 +3,10 @@ import {
   faAnglesDown,
   faAnglesUp,
   faCarrot,
+  faCross,
   faCrosshairs,
   faDownLeftAndUpRightToCenter,
+  faGavel,
   faHammer,
   faHandFist,
   faHeartCrack,
@@ -23,6 +25,12 @@ export const EffectsIcons: {
   },
   "Witch Hammer": {
     icon: faHammer,
+  },
+  "Witch Hammer Undead": {
+    icon: faGavel,
+  },
+  Theurgy: {
+    icon: faCross,
   },
   Focused: {
     icon: faAnglesUp,

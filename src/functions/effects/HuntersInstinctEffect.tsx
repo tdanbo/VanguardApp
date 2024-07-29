@@ -9,6 +9,7 @@ export function HuntersInstinctEffect(
   const name = "Hunter's Instinct";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

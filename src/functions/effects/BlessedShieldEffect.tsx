@@ -8,6 +8,7 @@ export function BlessedShieldEffect(
   const name = "Blessed Shield";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

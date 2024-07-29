@@ -46,6 +46,7 @@ export function TwinAttack_dice(
   const name = "twin attack";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
 

@@ -8,17 +8,14 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { mdiBowArrow, mdiKnife, mdiSpear, mdiSword } from "@mdi/js";
 import Icon from "@mdi/react";
-import { cloneDeep, random, sum } from "lodash";
+import { cloneDeep, random } from "lodash";
 import { memo, useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
 import { CharacterPortraits } from "../Images";
-import {
-  GetCreatureArmor,
-  GetItemDiceSum,
-} from "../functions/CharacterFunctions";
+import { GetDiceSum } from "../functions/CharacterFunctions";
 
 import {
   CharacterEntry,
@@ -27,6 +24,7 @@ import {
   ResourceItem,
   AbilityEntry,
   DisplayType,
+  RollValueType,
 } from "../Types";
 import AbilityEntryItem from "../components_browser/AbilityEntryItem";
 import {
@@ -36,7 +34,7 @@ import {
 } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import CreatureHealthAdjuster from "./CreatureHealthAdjuster";
-import { IsWeapon } from "../functions/UtilityFunctions";
+import { IsArmor, IsWeapon } from "../functions/UtilityFunctions";
 import { GetAttackStat, GetDefenseStat } from "../functions/CharacterFunctions";
 
 interface ColorTypeProps {
@@ -242,11 +240,33 @@ const ActiveDamageSub = styled.div`
 function GetWeapons(creature: CharacterEntry) {
   const weapons: ItemEntry[] = [];
   creature.inventory.forEach((item) => {
-    if (item && IsWeapon(item) && item.equipped) {
+    if (
+      item &&
+      IsWeapon(item) &&
+      item.equipped &&
+      item.static.category !== "projectile"
+    ) {
       weapons.push(item);
     }
   });
+
   return weapons;
+}
+
+function GetArmor(creature: CharacterEntry) {
+  const armor_values: RollValueType[] = [];
+  creature.inventory.forEach((item) => {
+    if (item && IsArmor(item) && item.equipped) {
+      const armor_value = RulesItemDiceAdjust(creature, item);
+      armor_value.forEach((roll_value) => {
+        armor_values.push(roll_value);
+      });
+    }
+  });
+
+  const total_value = Math.ceil(GetDiceSum(armor_values) / 2);
+
+  return total_value;
 }
 
 function GetAttacks(creature: CharacterEntry) {
@@ -336,8 +356,6 @@ function EncounterCreatureEntry({
         creatureClone.stats.defense.base
     ];
 
-  console.log(attack);
-  console.log(defense);
   const hp = GetMaxToughness(creatureClone);
   const [currentDamage, setCurrentDamage] = useState<number>(
     creature.health.damage!,
@@ -469,10 +487,6 @@ function EncounterCreatureEntry({
         creatureClone.stats.accurate.base
     ];
 
-  for (const item of creatureClone.inventory) {
-    const dice = RulesItemDiceAdjust(creatureClone, item);
-  }
-
   const AddItemLoot = () => {
     for (const item of creature.inventory) {
       const did_it_drop = random(1, 2);
@@ -563,7 +577,7 @@ function EncounterCreatureEntry({
           </ActiveStat>
           <ActiveArmorSub>
             <FontAwesomeIcon icon={faShield} />
-            {GetCreatureArmor(creatureClone)}
+            {GetArmor(creatureClone)}
           </ActiveArmorSub>
         </ActiveBox>
         <NameContainer onClick={GoToSheet}>
@@ -574,6 +588,9 @@ function EncounterCreatureEntry({
           </ActiveSub>
         </NameContainer>
         {GetWeapons(creatureClone).map((weapon, index) => {
+          const weapon_dice = Math.ceil(
+            GetDiceSum(RulesItemDiceAdjust(creatureClone, weapon)) / 2,
+          );
           return (
             <ActiveBox key={`active-box-${index}`}>
               <ActiveStat
@@ -603,8 +620,9 @@ function EncounterCreatureEntry({
                         title={weapon.name}
                         color={Constants.BRIGHT_RED}
                       />
-                      {Math.ceil(GetItemDiceSum(weapon) / 2)} + {" / "} +
-                      {Math.ceil(GetItemDiceSum(weapon) / 2)}
+                      {weapon_dice}
+                      {" / "}
+                      {weapon_dice}
                     </>
                   ) : (
                     <>
@@ -622,7 +640,7 @@ function EncounterCreatureEntry({
                         title={weapon.name}
                         color={Constants.BRIGHT_RED}
                       />
-                      {Math.ceil(GetItemDiceSum(weapon) / 2)}
+                      {weapon_dice}
                     </>
                   )}
                 </>

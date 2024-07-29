@@ -9,6 +9,7 @@ export function FlankedEffect(
   const name = "Flanked";
   const roll_value_type: RollValueType = {
     source: name,
+    type: "buff",
     value: 0,
   };
   let mod = 0;

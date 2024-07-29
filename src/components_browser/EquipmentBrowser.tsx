@@ -140,6 +140,7 @@ function EquipmentBrowser({
             isCreature={isCreature}
             isGm={isGm}
             state={"give"}
+            tag={"EQUIPMENT BROWSER"}
           />
         );
       })}
