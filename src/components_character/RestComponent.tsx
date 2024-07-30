@@ -5,6 +5,7 @@ import Icon from "@mdi/react";
 import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
+import { ResetEffects } from "../functions/ActivesFunction";
 import { GetBurnRate } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
 import "../Styles.css";
@@ -56,7 +57,7 @@ export default function RestComponent({
 
       session.combatlog.push(sleeping_log);
       session.combatlog = session.combatlog.slice(-20);
-
+      ResetEffects(character, "eating");
       update_session(session, websocket, character, isCreature);
     }
   };
@@ -90,7 +91,7 @@ export default function RestComponent({
 
     session.combatlog.push(sleeping_log);
     session.combatlog = session.combatlog.slice(-20);
-
+    ResetEffects(character, "sleeping");
     update_session(session, websocket, character, isCreature);
   };
 
