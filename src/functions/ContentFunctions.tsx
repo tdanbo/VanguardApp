@@ -27,6 +27,16 @@ import { effects_content } from "../content/effects/effects";
 
 import { price_list } from "../content/cost";
 
+function generateID(): string {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < 10; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
+
 import {
   AbilityEntry,
   AbilityStatic,
@@ -36,7 +46,6 @@ import {
   ItemEntry,
   ItemStatic,
 } from "../Types";
-import { uniqueId } from "lodash";
 
 export const all_abilities: Record<string, AbilityStatic> = {
   ...abilities_content,
@@ -79,7 +88,7 @@ export function GetEquipmentContent(): ItemEntry[] {
 
     const new_equipment: ItemEntry = {
       name: equipment,
-      id: uniqueId(),
+      id: generateID(),
       durability: static_equipment.max_durability,
       quantity: 1,
       equipped: false,
@@ -100,7 +109,7 @@ export function GetAbilitiesContent(): AbilityEntry[] {
     const static_ability = all_abilities[ability];
     const new_ability: AbilityEntry = {
       name: ability,
-      id: uniqueId(),
+      id: generateID(),
       level: "Novice",
       free: false,
       static: static_ability,
@@ -116,7 +125,7 @@ export function GetEffectsContent(): EffectEntry[] {
     const static_effect = all_effects[effect];
     const new_effect: EffectEntry = {
       name: effect,
-      id: uniqueId(),
+      id: generateID(),
       level: 1,
       active: false,
       static: static_effect,

@@ -1,7 +1,17 @@
-import { cloneDeep, uniqueId } from "lodash";
+import { cloneDeep } from "lodash";
 import { Socket } from "socket.io-client";
 import { update_session } from "./SessionsFunctions";
 import { CharacterEntry, SessionEntry, ItemEntry } from "../Types";
+
+function generateID(): string {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < 10; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
 
 function filterItemsWithQuantity(items: ItemEntry[]): ItemEntry[] {
   return items.filter((item) => item.quantity > 0);
@@ -107,7 +117,7 @@ export function TakeItem(
     } else {
       const new_item = cloneDeep(item);
       new_item.quantity = quantity;
-      new_item.id = uniqueId();
+      new_item.id = generateID();
       character.inventory.push(new_item);
     }
   }
@@ -133,7 +143,7 @@ export function DropItem(
   } else {
     if (!destroy) {
       const new_item = cloneDeep(item);
-      new_item.id = uniqueId();
+      new_item.id = generateID();
       new_item.quantity = quantity;
       new_item.equipped = false;
       session.loot.drops.push(new_item);
