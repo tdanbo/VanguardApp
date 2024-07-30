@@ -2,7 +2,13 @@ import { ItemStatic } from "../../Types";
 
 export const armor_content: Record<string, ItemStatic> = {
   "Natural Armor": {
-    roll: [],
+    roll: [
+      {
+        source: "base",
+        type: "armor",
+        value: 0,
+      },
+    ],
     quality: ["Imp 0"],
     rarity: "normal",
     cost: 0,

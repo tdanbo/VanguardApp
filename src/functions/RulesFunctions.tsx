@@ -84,7 +84,11 @@ export function RulesItemDiceAdjust(
 
   // abilities
 
-  const filtered_rolls = base_roll.filter((roll) => roll.value !== 0);
+  const filtered_rolls = base_roll.filter(
+    (roll) =>
+      roll.source === "base" || (roll.value !== 0 && roll.source !== "base"),
+  );
+
   filtered_rolls.sort((a, b) => (a.value > b.value ? -1 : 1));
 
   return filtered_rolls;

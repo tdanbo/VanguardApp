@@ -10,8 +10,17 @@ import {
 
 import { Socket } from "socket.io-client";
 
-import { uniqueId } from "lodash";
 import { update_session } from "../functions/SessionsFunctions";
+
+function generateID(): string {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < 10; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
 
 interface ItemButtonComponent {
   state: ItemStateType;
@@ -33,7 +42,7 @@ function AbilityButtonComponent({
   const AddAbilitySlot = () => {
     const abilityWithId = {
       ...ability,
-      id: uniqueId(),
+      id: generateID(),
     };
 
     character.abilities.push(abilityWithId);
