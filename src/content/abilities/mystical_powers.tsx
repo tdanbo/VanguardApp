@@ -63,7 +63,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 4,
         },
       ],
@@ -75,13 +75,13 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
-          value: 8,
+          type: "damage",
+          value: 4,
         },
         {
           source: "base",
-          type: "buff",
-          value: 4,
+          type: "damage",
+          value: 8,
         },
       ],
     },
@@ -432,12 +432,12 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
   "Draining Glyph": {
     novice: {
       description:
-        "Trigger affects enemies within sight of the glyph. Enemies each test [Resolute\u2190Strong], dealing 1d4 damage, ignore Armor. Effect maintained with a [Resolute] test each turn. Concentration loss ends effect.",
+        "Trigger affects enemies within sight of the glyph. Enemies each test [Resolute > Strong], dealing 1d4 damage, ignore Armor. Effect maintained with a [Resolute] test each turn. Concentration loss ends effect.",
       action: "active",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 4,
         },
       ],
@@ -454,7 +454,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 4,
         },
       ],
@@ -467,7 +467,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
   "Entangling Vines": {
     novice: {
       description:
-        "Test [Resolute] to ensnare a target. Ensnared targets are limited to only ranged abilities. Targets may attempt to escape the vines with a [Resolute\u2190Strong] test each turn.",
+        "Test [Resolute] to ensnare a target. Ensnared targets are limited to only ranged abilities. Targets may attempt to escape the vines with a [Resolute > Strong] test each turn.",
       action: "active",
       roll: [],
     },
@@ -501,7 +501,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 4,
         },
       ],
@@ -510,18 +510,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       description:
         "Effect now ongoing, targets must now test [Resolute] each turn to return. If banish fails can prevent daemon with [Resolute] test. For each turn rift is open, must test [Resolute] to stop daemon summons.",
       action: "passive",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
-        },
-      ],
+      roll: [],
     },
     master: {
       description:
@@ -543,17 +532,12 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
   "Fire Soul": {
     novice: {
       description:
-        "Flames retaliate against melee attackers, inflicting 1d6 damage. And gain +1d6 Armor against fire damage.",
+        "Increases armor roll by +7 against fire damage. Flames retaliate against melee attackers.",
       action: "reaction",
       roll: [
         {
           source: "base",
-          type: "buff",
-          value: 6,
-        },
-        {
-          source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -564,13 +548,8 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
-          value: 8,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 6,
+          type: "damage",
+          value: 10,
         },
       ],
     },
@@ -578,13 +557,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       description:
         "Immune to fire and convert half of potential fire damage to heal Toughness. Retaliatory flames now effect ranged attackers. Does not react to purely mental powers.",
       action: "upgrade",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-      ],
+      roll: [],
     },
     xp_requirement: 0,
     tradition: ["wizardry"],
@@ -599,7 +572,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 12,
         },
       ],
@@ -702,7 +675,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 10,
         },
       ],
@@ -738,24 +711,24 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
   "Inherit Wound": {
     novice: {
       description:
-        "Test [Resolute] to transfer 1D6 damage from a target to yourself, healing them equivalently.",
+        "Test [Resolute] to transfer 1d6 damage from a target to yourself, healing them equivalently.",
       action: "free",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
     },
     adept: {
       description:
-        "Now transfers 1D8 Toughness and also absorbs poison and bleeding and you only suffer half the transferred damage.",
+        "Now transfers 1d8 Toughness and also absorbs poison and bleeding and you only suffer half the transferred damage.",
       action: "upgrade",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 8,
         },
       ],
@@ -767,7 +740,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 8,
         },
       ],
@@ -785,7 +758,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 4,
         },
       ],
@@ -796,7 +769,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -807,7 +780,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 8,
         },
       ],
@@ -867,7 +840,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -903,7 +876,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 4,
         },
       ],
@@ -915,7 +888,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 4,
         },
       ],
@@ -927,7 +900,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 4,
         },
       ],
@@ -940,7 +913,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
   "Mind-throw": {
     novice: {
       description:
-        "Test [Resolute\u2190Quick] to hurl an object to deal 1d8 damage.\nOr use an object as a shield. Test [Resolute\u2190Accurate] for physical attacks, [\u2190Resolute] for magic attacks. Object is destroyed after 1 block/hit.",
+        "Test [Resolute < Quick] to hurl an object to deal 1d8 damage.\nOr use an object as a shield. Test [Resolute < Accurate] for physical attacks, [ < Resolute] for magic attacks. Object is destroyed after 1 block/hit.",
       action: "active",
       roll: [
         {
@@ -952,7 +925,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
     },
     adept: {
       description:
-        "Test [Resolute\u2190Strong] to lift and throw an enemy, causing 1d8 damage. Target lands a Movement Action away, and tests [Quick] else lands prone on their back.",
+        "Test [Resolute < Strong] to lift and throw an enemy, causing 1d8 damage. Target lands a Movement Action away, and tests [Quick] else lands prone on their back.",
       action: "active",
       roll: [
         {
