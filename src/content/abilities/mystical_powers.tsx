@@ -121,7 +121,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -133,7 +133,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -144,7 +144,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -157,12 +157,12 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
   "Black Breath": {
     novice: {
       description:
-        "If you are permanently corrupt you can spew darkness at a target. They roll 1d4 against their total corruption. If the roll \u2264 total corruption, it heals equal to the roll; if the roll > total corruption, they suffer that much temporary corruption.",
+        "The mystic rolls 1d4. If the result is below the targets permanent corruption, then the target is healed by the result; if the roll is above, the target suffer that much temporary corruption.",
       action: "active",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "corruption",
           value: 4,
         },
       ],
@@ -173,14 +173,14 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "corruption",
           value: 6,
         },
       ],
     },
     master: {
       description:
-        "Can now strike multiple targets in a chain effect causing temporary corruption until a target is healed by the effect.",
+        "Can now strike multiple targets in a chain effect causing temporary corruption until a target is healed by the effect. A target can only receive temporary corruption once per cast.",
       action: "passive",
       roll: [],
     },
@@ -263,12 +263,12 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 12,
         },
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -280,18 +280,13 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 12,
         },
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 12,
         },
       ],
     },
@@ -302,12 +297,12 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 12,
         },
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -337,7 +332,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 6,
         },
       ],
@@ -355,7 +350,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "general",
           value: 6,
         },
       ],
@@ -483,7 +478,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -584,7 +579,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 12,
         },
       ],
@@ -596,7 +591,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 12,
         },
       ],
@@ -626,7 +621,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "corruption",
           value: 4,
         },
       ],
@@ -837,25 +832,13 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       description:
         "Test [Resolute] to levitate, can move 1 stride per turn, immune to melee but vulnerable to ranged/flying attacks. Concentration fail ends effect forcing a fall, causing 1d6 damage ignoring armor.",
       action: "active",
-      roll: [
-        {
-          source: "base",
-          type: "damage",
-          value: 6,
-        },
-      ],
+      roll: [],
     },
     adept: {
       description:
         "Test [Resolute < Strong] to levitate an ally. Same conditions and limitations as self-levitation apply.",
       action: "active",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 6,
-        },
-      ],
+      roll: [],
     },
     master: {
       description:
@@ -913,12 +896,12 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
   "Mind-throw": {
     novice: {
       description:
-        "Test [Resolute < Quick] to hurl an object to deal 1d8 damage.\nOr use an object as a shield. Test [Resolute < Accurate] for physical attacks, [ < Resolute] for magic attacks. Object is destroyed after 1 block/hit.",
+        "Test [Resolute < Quick] to hurl an object to deal 1d8 damage. Or use an object as a shield. Test [Resolute < Accurate] for physical attacks, [ < Resolute] for magic attacks. Object is destroyed after 1 block/hit.",
       action: "active",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 8,
         },
       ],
@@ -960,7 +943,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "general",
           value: 4,
         },
       ],
@@ -972,7 +955,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "general",
           value: 6,
         },
       ],
@@ -984,7 +967,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "general",
           value: 8,
         },
       ],
@@ -1026,12 +1009,12 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 8,
         },
       ],
@@ -1043,12 +1026,12 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 8,
         },
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 12,
         },
       ],
@@ -1060,12 +1043,12 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 8,
         },
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 12,
         },
       ],
@@ -1226,7 +1209,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -1465,7 +1448,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "corruption",
           value: 4,
         },
       ],
@@ -1690,7 +1673,7 @@ export const mystical_powers_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 20,
         },
       ],

@@ -125,7 +125,13 @@ export interface ItemEntry {
   static: ItemStatic;
 }
 
-type RollNameType = "damage" | "armor" | "buff" | "healing" | "test";
+type RollNameType =
+  | "damage"
+  | "armor"
+  | "buff"
+  | "healing"
+  | "corruption"
+  | "general";
 
 export interface RollValueType {
   value: number;

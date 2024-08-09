@@ -348,12 +348,12 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [],
     },
     master: {
-      description: "Charge damage increases to +1d10.",
+      description: "Charge damage increases to 1d10.",
       action: "passive",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 10,
         },
       ],
@@ -572,13 +572,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       description:
         "Increases melee damage roll by +5 when at half or less Toughness.",
       action: "upgrade",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
-        },
-      ],
+      roll: [],
     },
     xp_requirement: 0,
     tradition: ["support"],
@@ -765,13 +759,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       description:
         "Nominate a target as a focus for allies. Allies increases damage roll by +5 when attacking the target. Changing target requires a new action.",
       action: "free",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
-        },
-      ],
+      roll: [],
     },
     master: {
       description:
