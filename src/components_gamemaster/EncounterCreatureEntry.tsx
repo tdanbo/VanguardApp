@@ -14,7 +14,7 @@ import { Socket } from "socket.io-client";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
-import { CharacterPortraits } from "../Images";
+import { CharacterImages } from "../Images";
 import { GetDiceSum } from "../functions/CharacterFunctions";
 
 import {
@@ -553,7 +553,7 @@ function EncounterCreatureEntry({
           <FontAwesomeIcon icon={faSkull} />
         </DeadOverlay>
       )}
-      <Container src={CharacterPortraits[creatureClone.portrait]}>
+      <Container src={CharacterImages(creatureClone.portrait)}>
         <ColorBlock $rgb={Constants.BRIGHT_RED} />
         <ActiveBox>
           <CreatureHealthAdjuster

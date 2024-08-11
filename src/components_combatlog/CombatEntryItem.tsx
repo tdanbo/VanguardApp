@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import "../Styles.css";
 import * as Constants from "../Constants";
-import { CharacterPortraits } from "../Images";
+import { CharacterImages } from "../Images";
 import { CombatEntry, SessionEntry } from "../Types";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import { GetDiceSum } from "../functions/CharacterFunctions";
@@ -266,7 +266,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   } ${combatEntry.roll_type}`;
 
   return (
-    <Container src={CharacterPortraits[combatEntry.character.portrait]}>
+    <Container src={CharacterImages(combatEntry.character.portrait)}>
       <ColorBlock
         $rgb={EntryColor()}
         $issuccess={combatEntry.roll_entry.success}

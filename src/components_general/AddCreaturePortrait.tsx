@@ -1,7 +1,7 @@
 import * as Constants from "../Constants";
 import styled from "styled-components";
 import { useState } from "react";
-import { CharacterPortraits } from "../Images";
+import { CharacterImages } from "../Images";
 import {
   MainContainer,
   ModalContainer,
@@ -103,7 +103,7 @@ function AddCreaturePortrait({
     <>
       <PortraitSelect
         onClick={handleOpen}
-        src={CharacterPortraits[characterPortrait]}
+        src={CharacterImages(characterPortrait)}
       >
         +
       </PortraitSelect>
@@ -113,7 +113,7 @@ function AddCreaturePortrait({
             <Title>Select Portrait</Title>
             <ModalContainer>
               <GridContainer>
-                {Object.entries(CharacterPortraits).map(
+                {Object.entries(character_images).map(
                   ([key, src]: [string, string], index: number) => (
                     <ImageContainer
                       key={index}
