@@ -265,7 +265,9 @@ function StatComponent({
                 roll_type: stat_name,
                 roll_source: "Skill Test",
                 isCreature: isCreature,
-                roll_values: [{ value: 20, type: "test", source: stat_name }],
+                roll_values: [
+                  { value: 20, type: "general", source: stat_name },
+                ],
                 difficulty: modValue,
                 color: color,
                 target: Math.max(stat_value + stat_modifier + modValue, 1),

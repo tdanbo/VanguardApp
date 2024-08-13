@@ -9,7 +9,7 @@ import {
 
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { CharacterImages } from "../Images";
+import { AllImages } from "../Images";
 interface LoginProps {
   setSelector: (selector: string) => void;
   setCharacterPortrait: (portrait: string) => void;
@@ -42,12 +42,12 @@ function SelectPortraitComponent({
   setSelector,
   setCharacterPortrait,
 }: LoginProps) {
-  const character_images = CharacterImages();
-
   const handleImageSelect = (src: string) => () => {
     setCharacterPortrait(src);
     setSelector("createCharacter");
   };
+
+  const character_images = AllImages();
 
   return (
     <MainContainer>

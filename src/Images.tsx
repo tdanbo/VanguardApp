@@ -1,20 +1,4 @@
 // Race images
-import Abomination from "./assets/characters/Abomination.jpg";
-import Ambrian from "./assets/characters/Ambrian.jpg";
-import Barbarian from "./assets/characters/Barbarian.jpg";
-import Bear from "./assets/characters/Bear.jpg";
-import Boar from "./assets/characters/Boar.jpg";
-import Cat from "./assets/characters/Cat.jpg";
-import Elf from "./assets/characters/Elf.jpeg";
-import Goblin from "./assets/characters/Goblin.jpg";
-import Ogre from "./assets/characters/Ogre.jpg";
-import Reptile from "./assets/characters/Reptile.jpeg";
-import Spider from "./assets/characters/Spider.jpeg";
-import Spirit from "./assets/characters/Spirit.jpeg";
-import Phenomenon from "./assets/characters/Phenomenon.jpg";
-import Troll from "./assets/characters/Troll.jpg";
-import Undead from "./assets/characters/Undead.jpg";
-
 import RollA from "./assets/sounds/RollA.wav";
 import RollB from "./assets/sounds/RollB.wav";
 import RollC from "./assets/sounds/RollC.wav";
@@ -93,3 +77,21 @@ export const CriticalFailureSounds = [FailureA, FailureB, FailureC];
 export function CharacterImages(portrait: string) {
   return `/characters/${portrait}.png`;
 }
+
+// Function to dynamically import all images from the characters directory
+export function AllImages() {
+  const images: { [key: string]: string } = {};
+  const context = import.meta.glob("../public/characters/*.{png,jpg,jpeg,svg}");
+
+  for (const path in context) {
+    const imageName = path
+      .replace("../public/characters/", "")
+      .replace(/\.(png|jpe?g|svg)$/, "");
+    images[imageName] = path.replace("../public", ""); // Adjust the path to be relative to the public directory
+  }
+
+  return images;
+}
+// Example usage
+const allImages = AllImages();
+console.log(allImages);

@@ -266,7 +266,7 @@ function StatComponent({
               roll_type={stat_name}
               roll_source={"Skill Test"}
               isCreature={isCreature}
-              roll_values={[{ source: "base", type: "test", value: 20 }]}
+              roll_values={[{ source: "base", type: "general", value: 20 }]}
               dice_mod={modValue}
               color={color}
               target={Math.max(stat_value + modValue, 1)}

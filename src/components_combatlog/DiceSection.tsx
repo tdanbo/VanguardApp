@@ -49,7 +49,7 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d4"}
           isCreature={isCreature}
-          roll_values={[{ source: "base", type: "test", value: 4 }]}
+          roll_values={[{ source: "base", type: "general", value: 4 }]}
           color={Constants.TYPE_COLORS["custom"]}
         />
       </DiceContainer>
@@ -61,7 +61,7 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d6"}
           isCreature={isCreature}
-          roll_values={[{ source: "base", type: "test", value: 6 }]}
+          roll_values={[{ source: "base", type: "general", value: 6 }]}
           color={Constants.TYPE_COLORS["custom"]}
         />
       </DiceContainer>
@@ -73,7 +73,7 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d8"}
           isCreature={isCreature}
-          roll_values={[{ source: "base", type: "test", value: 8 }]}
+          roll_values={[{ source: "base", type: "general", value: 8 }]}
           color={Constants.TYPE_COLORS["custom"]}
         />
       </DiceContainer>
@@ -85,7 +85,7 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d10"}
           isCreature={isCreature}
-          roll_values={[{ source: "base", type: "test", value: 10 }]}
+          roll_values={[{ source: "base", type: "general", value: 10 }]}
           color={Constants.TYPE_COLORS["custom"]}
         />
       </DiceContainer>
@@ -97,7 +97,7 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d4"}
           isCreature={isCreature}
-          roll_values={[{ source: "base", type: "test", value: 12 }]}
+          roll_values={[{ source: "base", type: "general", value: 12 }]}
           color={Constants.TYPE_COLORS["custom"]}
         />
       </DiceContainer>
@@ -109,7 +109,7 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d20"}
           isCreature={isCreature}
-          roll_values={[{ source: "base", type: "test", value: 20 }]}
+          roll_values={[{ source: "base", type: "general", value: 20 }]}
           color={Constants.TYPE_COLORS["custom"]}
         />
       </DiceContainer>
@@ -121,7 +121,7 @@ function DiceSection({
           roll_type={"custom"}
           roll_source={"d100"}
           isCreature={isCreature}
-          roll_values={[{ source: "base", type: "test", value: 100 }]}
+          roll_values={[{ source: "base", type: "general", value: 100 }]}
           color={Constants.TYPE_COLORS["custom"]}
         />
       </DiceContainer>

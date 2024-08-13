@@ -2,6 +2,7 @@ import * as Constants from "../Constants";
 import styled from "styled-components";
 import { useState } from "react";
 import { CharacterImages } from "../Images";
+import { AllImages } from "../Images";
 import {
   MainContainer,
   ModalContainer,
@@ -98,6 +99,8 @@ function AddCreaturePortrait({
     setCharacterPortrait(src);
     setIsModalOpen(false);
   };
+
+  const character_images = AllImages();
 
   return (
     <>
