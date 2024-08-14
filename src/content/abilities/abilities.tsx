@@ -995,18 +995,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
     novice: {
       description: "Increases the damage roll of long weapons by +2.",
       action: "passive",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-      ],
+      roll: [],
     },
     adept: {
       description:
@@ -1033,7 +1022,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 4,
         },
       ],
@@ -1045,25 +1034,20 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 4,
         },
       ],
     },
     master: {
       description:
-        "Throw Thunder Ball: Affects all in 5-meter radius with 1d12 damage (ignores armor) and blinds. Test [Accurate\u2194Quick] to halve damage and avoid blindness.",
+        "Throw Thunder Ball: Affects all in 5-meter radius with 1d12 damage (ignores armor) and blinds. Test [Accurate < Quick] to halve damage and avoid blindness.",
       action: "active",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 12,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
         },
       ],
     },
@@ -1176,7 +1160,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 4,
         },
       ],
@@ -1198,7 +1182,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 8,
         },
       ],
@@ -1213,13 +1197,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       description:
         "Activating your rune increases armor roll by +5. Each successful hit grants 1 temporary corruption per attack. This reaction must be made before armor rolls.",
       action: "reaction",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 5,
-        },
-      ],
+      roll: [],
     },
     adept: {
       description: "Heal 1 Toughness/turn, incur 1 temporary corruption/turn.",
@@ -1230,13 +1208,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       description:
         "Increases damage roll by +5, but grants 1 temporary corruption.",
       action: "reaction",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 5,
-        },
-      ],
+      roll: [],
     },
     xp_requirement: 0,
     tradition: ["arcana"],
@@ -1363,18 +1335,13 @@ export const abilities_content: Record<string, AbilityStatic> = {
   "Staff Magic": {
     novice: {
       description:
-        "Absorb all permanent corruption from existing and future Staff Magic rituals and Novice mystical powers. Reduces existing permanent corruption by (1d6) once. Temporary corruption still applies  Permanent corruption from Adept Staff Magic powers also absorbed. Gain rerolls on temporary corruption tests for Staff Magic powers. Activate an elemental rune (choose fire, lightning, cold, acid) to add (+1d4) damage to attacks or powers with the staff.",
+        "Absorb all permanent corruption from existing and future Staff Magic rituals and Novice mystical powers. Reduces existing permanent corruption by (1d6) once. Temporary corruption still applies  Permanent corruption from Adept Staff Magic powers also absorbed. Gain rerolls on temporary corruption tests for Staff Magic powers. Activate an elemental rune (choose fire, lightning, cold, acid) to add +4 damage roll to attacks or powers with the staff.",
       action: "special",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "corruption",
           value: 6,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
         },
       ],
     },
@@ -1534,20 +1501,9 @@ export const abilities_content: Record<string, AbilityStatic> = {
   "Sword Saint": {
     novice: {
       description:
-        "Increases fencing sword damage to 1d10 when used with a parrying dagger. Twin Attack does not increase this damage further.",
+        "Increases the damge roll when using a fencing sword with a parrying dagger by +2. Twin Attack does not increase this damage further.",
       action: "passive",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-      ],
+      roll: [],
     },
     adept: {
       description:
@@ -1557,15 +1513,9 @@ export const abilities_content: Record<string, AbilityStatic> = {
     },
     master: {
       description:
-        "Allows unlimited Free Attacks after each successful Defense. Fencing sword damage now 1d12.",
+        "Increases the damge roll when using a fencing sword with a parrying dagger by +4. Allows unlimited Free Attacks after each successful Defense.",
       action: "passive",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 12,
-        },
-      ],
+      roll: [],
     },
     xp_requirement: 0,
     tradition: ["melee"],
@@ -1736,34 +1686,19 @@ export const abilities_content: Record<string, AbilityStatic> = {
   "Twin Attack": {
     novice: {
       description:
-        "You can perform two attacks while dual wielding. Make two attacks against the same target at 1d8 main and 1d6 offhand base damage.+1 to Defense if dual wielding.",
+        "The base damage of your main hand is now 8 and off hand is 6. You can perform two attacks while dual wielding. +1 to Defense if dual wielding.",
       action: "active",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 6,
-        },
-      ],
+      roll: [],
     },
     adept: {
-      description: "Attacks now both deal 1d8.",
+      description:
+        "The base damage of your main hand is now 8 and off hand is 8. ",
       action: "passive",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-      ],
+      roll: [],
     },
     master: {
-      description: "Attacks now deal 1d10 main and 1d8 offhand respectively.",
+      description:
+        "The base damage of your main hand is now 10 and off hand is 8. ",
       action: "passive",
       roll: [
         {

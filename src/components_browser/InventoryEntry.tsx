@@ -131,16 +131,9 @@ function InventoryEntry({
             session={session}
             character={character}
             websocket={websocket}
-            roll_type={
-              IsWeapon(item)
-                ? "damage"
-                : item.static.category === "shield"
-                ? "damage"
-                : IsArmor(item)
-                ? "armor"
-                : "custom"
-            }
+            roll_type={item.static.roll[0].type}
             roll_source={item.name}
+            roll_color={Constants.TYPE_COLORS[item.static.category]}
             isCreature={isCreature}
             roll_values={RulesItemDiceAdjust(character, item)}
             is_focused={IsFocusedItem(character, item)}

@@ -37,6 +37,8 @@ import { SurvivalInstinct_dice } from "./rules/SurvivalInstinct";
 import { Theurgy_dice } from "./rules/Theurgy";
 import { TwinAttack_dice } from "./rules/TwinAttack";
 import { TwohandedForce_dice } from "./rules/TwohandedForce";
+import { Flailer_dice } from "./rules/Flailer";
+import { Medicus_dice } from "./rules/Medicus";
 
 function HasItem(character: CharacterEntry, item: string) {
   for (const i of character.inventory) {
@@ -64,6 +66,7 @@ export function RulesItemDiceAdjust(
   base_roll.push(ArmoredMystic_dice(character, item));
   base_roll.push(Marksman_dice(character, item));
   base_roll.push(TwohandedForce_dice(character, item));
+  base_roll.push(Flailer_dice(character, item));
   base_roll.push(Armored_dice(character, item));
   base_roll.push(IronFist_dice(character, item));
   base_roll.push(Robust_dice(character));
@@ -73,6 +76,7 @@ export function RulesItemDiceAdjust(
   base_roll.push(SurvivalInstinct_dice(character, item));
   base_roll.push(Impact_dice(item));
   base_roll.push(Reinforced_dice(item));
+  base_roll.push(Medicus_dice(character, item));
 
   // effects
   base_roll.push(WitchHammerEffect(character, item));

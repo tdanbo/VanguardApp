@@ -1,4 +1,9 @@
-import { faBurst, faHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBurst,
+  faDice,
+  faHeart,
+  faSkull,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { mdiPlusThick, mdiShield, mdiSwordCross } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -8,7 +13,7 @@ import "../Styles.css";
 import {
   CharacterEntry,
   FocusedStateType,
-  RollTypeEntry,
+  RollNameType,
   RollValueType,
   SessionEntry,
 } from "../Types";
@@ -20,8 +25,9 @@ type RollComponentProps = {
   session: SessionEntry;
   character: CharacterEntry;
   websocket: Socket;
-  roll_type: RollTypeEntry;
+  roll_type: RollNameType;
   roll_source: string;
+  roll_color: string;
   color?: string;
   target?: number;
   roll_values: RollValueType[];
@@ -34,6 +40,7 @@ type RollComponentProps = {
 function RollComponent2({
   roll_type,
   roll_source,
+  roll_color,
   session,
   character,
   websocket,
@@ -90,15 +97,15 @@ function RollComponent2({
           {roll_base_type === "damage" ? (
             <FontAwesomeIcon
               icon={faBurst}
-              color={Constants.COLOR_1}
+              color={roll_color}
               style={{ fontSize: "12px" }}
             />
           ) : roll_base_type === "armor" ? (
-            <Icon path={mdiShield} size={0.6} color={Constants.COLOR_2} />
+            <Icon path={mdiShield} size={0.6} color={roll_color} />
           ) : roll_base_type === "healing" ? (
             <FontAwesomeIcon
               icon={faHeart}
-              color={Constants.COLOR_3}
+              color={roll_color}
               style={{ fontSize: "12px" }}
             />
           ) : roll_base_type === "buff" ? (
@@ -107,8 +114,20 @@ function RollComponent2({
               size={0.75}
               color={Constants.WIDGET_SECONDARY_FONT_INACTIVE}
             />
+          ) : roll_base_type === "corruption" ? (
+            <FontAwesomeIcon
+              icon={faSkull}
+              color={roll_color}
+              style={{ fontSize: "12px" }}
+            />
+          ) : roll_base_type === "general" ? (
+            <FontAwesomeIcon
+              icon={faDice}
+              color={roll_color}
+              style={{ fontSize: "12px" }}
+            />
           ) : (
-            <Icon path={mdiSwordCross} size={0.6} color={Constants.COLOR_1} />
+            <Icon path={mdiSwordCross} size={0.6} color={roll_color} />
           )}
         </div>
       </div>

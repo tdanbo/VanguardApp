@@ -309,13 +309,7 @@ export const monsterous_traits_content: Record<string, AbilityStatic> = {
       description:
         "Passive. The creature's attack oozes corruption and taints all who are wounded by its attacks. A victim that suffers at least 1 point of damage from the attack also suffers d4 temporary Corruption.",
       action: "",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
-        },
-      ],
+      roll: [],
     },
     adept: {
       description:
@@ -675,47 +669,19 @@ export const monsterous_traits_content: Record<string, AbilityStatic> = {
       description:
         "Reaction. In order to infest the victim, the creature must deal damage with an attack. After this, it needs a whole turn to penetrate the body of the host, during which the victim or an ally can use a combat action to remove the parasite. Removal inflicts d8 damage on the host, or d4 with a successful Cunning test. To remove a parasite after it has penetrated the body requires a passed Cunning test with the Medicus ability; each attempt deals d10 damage, ignoring Armor.",
       action: "",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-      ],
+      roll: [],
     },
     adept: {
       description:
         "Reaction. The parasite invades the host directly after an attack that deals damage. Removing it requires a passed Cunning test with the Medicus ability; each attempt deals d12 damage, ignoring Armor.",
       action: "",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 12,
-        },
-      ],
+      roll: [],
     },
     master: {
       description:
         "Reaction. As adept, but each attempt to remove the parasite deals d20 damage to the victim, ignoring Armor.",
       action: "",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 20,
-        },
-      ],
+      roll: [],
     },
     xp_requirement: 0,
     tradition: [],

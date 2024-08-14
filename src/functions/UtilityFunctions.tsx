@@ -13,6 +13,7 @@ import {
   GeneralItem,
   ItemEntry,
   RollEntry,
+  RollNameType,
   RollTypeEntry,
   RollValueType,
   SessionEntry,
@@ -499,7 +500,7 @@ type RollComponentProps = {
   session: SessionEntry;
   character: CharacterEntry;
   websocket: Socket;
-  roll_type: RollTypeEntry;
+  roll_type: RollNameType;
   roll_source: string;
   roll_values: RollValueType[];
   color?: string;
