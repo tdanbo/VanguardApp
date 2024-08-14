@@ -993,8 +993,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
   },
   "Polearm mastery": {
     novice: {
-      description:
-        "Increases Long weapon damage to 1d10 for spears/halberds, 1d8 for staves.",
+      description: "Increases the damage roll of long weapons by +2.",
       action: "passive",
       roll: [
         {
