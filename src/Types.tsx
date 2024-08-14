@@ -102,6 +102,7 @@ export interface EffectEntry {
   level: number;
   id: string;
   active: boolean;
+  reset: "never" | "roll" | "sleeping" | "eating" | "armor" | "damage";
   static: EffectStatic;
 }
 
@@ -110,7 +111,6 @@ export interface EffectStatic {
   base_amount: number;
   level_amount: number;
   type: "positive" | "negative";
-  reset: string;
   category: string;
 }
 

@@ -11,11 +11,18 @@ import {
   SessionEntry,
 } from "../Types";
 
-import { faBars, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faPlus,
+  faSortDown,
+  faSortUp,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../functions/SessionsFunctions";
 import { StyledText } from "../functions/UtilityFunctions";
-import LevelComponent from "./LevelComponent";
+import ModifyComponent from "./ModifyComponent";
+import ResetComponent from "./ResetComponent";
 
 interface ContainerProps {
   radius: string;
@@ -115,6 +122,30 @@ function EffectEntryItem({
     }
   };
 
+  const HandleMoveEffect = (move: "up" | "down") => {
+    const ability_id = effect.id;
+    const currentIndex = character.effects.findIndex(
+      (item) => item.id === ability_id,
+    );
+
+    if (currentIndex === -1) return; // Effect not found
+
+    // Determine the new index
+    let newIndex = move === "up" ? currentIndex - 1 : currentIndex + 1;
+
+    // Ensure the new index is within bounds
+    if (newIndex < 0 || newIndex >= character.effects.length) return;
+
+    // Remove the effect from its current position
+    const [movedEffect] = character.effects.splice(currentIndex, 1);
+
+    // Insert the effect at the new position
+    character.effects.splice(newIndex, 0, movedEffect);
+
+    // Update the session
+    update_session(session, websocket, character, isCreature);
+  };
+
   const DeleteAbilitySlot = (effect: EffectEntry) => {
     const ability_id = effect.id;
     const new_effects = character.effects.filter(
@@ -136,9 +167,24 @@ function EffectEntryItem({
     <div className="column bg--primary-1 border">
       <div className="row row--card bg--primary-2 padding--small ">
         <div
-          className="button border-radius--left bg--primary-3"
+          className="column gap--none"
           style={{ minWidth: "25px", maxWidth: "25px" }}
-        />
+        >
+          <div
+            className="button border-radius--left bg--primary-3 font--primary-4"
+            style={{ minWidth: "25px", maxWidth: "25px" }}
+            onClick={() => HandleMoveEffect("up")}
+          >
+            <FontAwesomeIcon icon={faSortUp} />
+          </div>
+          <div
+            className="button border-radius--left bg--primary-3 font--primary-4"
+            style={{ minWidth: "25px", maxWidth: "25px" }}
+            onClick={() => HandleMoveEffect("down")}
+          >
+            <FontAwesomeIcon icon={faSortDown} />
+          </div>
+        </div>
         <div className="vertical-divider bg--primary-1" />
         <div
           className="column gap--none padding--medium"
@@ -159,8 +205,15 @@ function EffectEntryItem({
             {toTitleCase(effect.static.category)}
           </div>
         </div>
-        <LevelComponent
-          ability={effect}
+        <ResetComponent
+          effect={effect}
+          session={session}
+          character={character}
+          websocket={websocket}
+          isCreature={isCreature}
+        />
+        <ModifyComponent
+          effect={effect}
           session={session}
           character={character}
           websocket={websocket}

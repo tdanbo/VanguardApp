@@ -3,7 +3,6 @@ import React from "react";
 import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import * as Constants from "../Constants";
-import { ResetEffects } from "./ActivesFunction";
 import {
   AbilityEntry,
   CharacterEntry,
@@ -19,8 +18,10 @@ import {
   SessionEntry,
 } from "../Types";
 import { update_session } from "../functions/SessionsFunctions";
+import { ResetEffects } from "./ActivesFunction";
 import {
   GetDiceSum,
+  HasAmmunition,
   HasRangedWeapon,
   IsOverburden,
 } from "./CharacterFunctions";
@@ -29,7 +30,6 @@ import {
   GetTemporaryCorruption,
   OverburdenValue,
 } from "./RulesFunctions";
-import { HasAmmunition } from "./CharacterFunctions";
 
 export function UpperFirstLetter(input: string): string {
   if (!input || typeof input !== "string") {
@@ -381,14 +381,14 @@ export function HandleOverburdened(character: CharacterEntry) {
         level: level,
         active: true,
         id: generateRandomId(),
+        reset: "never",
         static: {
           description:
             "Decreases the stat modifier of attack, defense, accurate, quick, discreet and strong by",
           base_amount: 1,
           level_amount: 1,
-          reset: "never",
           type: "negative",
-          category: "effect",
+          category: "effeact",
         },
       };
       character.effects.push(effect);
@@ -417,12 +417,12 @@ export function HandleExhaustion(character: CharacterEntry) {
         level: level,
         active: true,
         id: generateRandomId(),
+        reset: "sleeping",
         static: {
           description:
             "Each level of exhaustion gives a -1 penalty to all stats. If a stat reaches 0, then the character dies.",
           base_amount: 1,
           level_amount: 1,
-          reset: "rest",
           type: "negative",
           category: "effect",
         },

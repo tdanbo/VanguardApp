@@ -273,7 +273,7 @@ function StatComponent({
                 target: Math.max(stat_value + stat_modifier + modValue, 1),
                 setModValue: setModvalue,
                 modifierLock,
-                is_focused: IsFocusedSkill(character, stat_name),
+                is_focused: IsFocusedSkill(character),
               })
             }
           >

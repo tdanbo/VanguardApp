@@ -129,6 +129,7 @@ export function GetEffectsContent(): EffectEntry[] {
       level: 1,
       active: false,
       static: static_effect,
+      reset: "never",
     };
     effects_content_list.push(new_effect);
   }

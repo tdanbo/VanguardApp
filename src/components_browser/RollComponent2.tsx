@@ -1,6 +1,6 @@
-import { faHeart, faStarOfLife } from "@fortawesome/free-solid-svg-icons";
+import { faBurst, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { mdiShield, mdiSwordCross, mdiPlusThick } from "@mdi/js";
+import { mdiPlusThick, mdiShield, mdiSwordCross } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Socket } from "socket.io-client";
 import * as Constants from "../Constants";
@@ -13,9 +13,8 @@ import {
   SessionEntry,
 } from "../Types";
 
-import { RollDice } from "../functions/UtilityFunctions";
-import { toTitleCase } from "../functions/UtilityFunctions";
 import { GetDiceSum, GetDiceTitle } from "../functions/CharacterFunctions";
+import { RollDice, toTitleCase } from "../functions/UtilityFunctions";
 
 type RollComponentProps = {
   session: SessionEntry;
@@ -90,7 +89,7 @@ function RollComponent2({
         >
           {roll_base_type === "damage" ? (
             <FontAwesomeIcon
-              icon={faStarOfLife}
+              icon={faBurst}
               color={Constants.COLOR_1}
               style={{ fontSize: "12px" }}
             />

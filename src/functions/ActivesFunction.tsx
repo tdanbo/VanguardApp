@@ -28,7 +28,7 @@ export const UpdateQualities = (character: CharacterEntry) => {
 export function CheckAbility(
   character: CharacterEntry,
   name: string,
-  level: string,
+  level: "novice" | "adept" | "master",
 ): boolean {
   const abilities = character.abilities;
 
@@ -64,6 +64,6 @@ export function ResetEffects(character: CharacterEntry, reset_type: string) {
   }
 
   for (const effect of character.effects) {
-    effect.static.reset === reset ? (effect.active = false) : null;
+    effect.reset === reset ? (effect.active = false) : null;
   }
 }

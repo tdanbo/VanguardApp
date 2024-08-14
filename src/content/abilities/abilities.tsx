@@ -76,7 +76,13 @@ export const abilities_content: Record<string, AbilityStatic> = {
       description:
         "If the jab attack hits, the character gains a Free Attack with the bow. After stabbing with the projectile, they can load the bow for a normal ranged attack. If using a crossbow, it must already be loaded or the initial stab made with another bolt, or the character should possess a repeating crossbow.",
       action: "reaction",
-      roll: [],
+      roll: [
+        {
+          source: "base",
+          type: "damage",
+          value: 8,
+        },
+      ],
     },
     xp_requirement: 0,
     tradition: ["ranged"],
@@ -98,15 +104,27 @@ export const abilities_content: Record<string, AbilityStatic> = {
     },
     adept: {
       description:
-        "Lowers damage rolls by -2 but ou can perfrom two attacks in a single combat action.",
+        "Lowers damage rolls by -2 but you can perfrom two attacks in a single combat action.",
       action: "active",
-      roll: [],
+      roll: [
+        {
+          source: "base",
+          type: "damage",
+          value: 6,
+        },
+      ],
     },
     master: {
       description:
         "Increases melee damage roll by +5 - this only applies to a single axe hit per combat action.",
       action: "passive",
-      roll: [],
+      roll: [
+        {
+          source: "base",
+          type: "damage",
+          value: 6,
+        },
+      ],
     },
     xp_requirement: 0,
     tradition: ["melee"],
@@ -136,7 +154,13 @@ export const abilities_content: Record<string, AbilityStatic> = {
       description:
         "Increases damage roll by +9 and allows unlimited Backstabs per turn, provided Advantage conditions are met.",
       action: "passive",
-      roll: [],
+      roll: [
+        {
+          source: "base",
+          type: "damage",
+          value: 4,
+        },
+      ],
     },
     xp_requirement: 0,
     tradition: ["melee", "ranged"],
@@ -254,7 +278,13 @@ export const abilities_content: Record<string, AbilityStatic> = {
       description:
         "If a normal melee attack deals damage, can add a trip or tackle on the target. Test [Cunning < Quick] to knock the target down.",
       action: "reaction",
-      roll: [],
+      roll: [
+        {
+          source: "base",
+          type: "damage",
+          value: 6,
+        },
+      ],
     },
     master: {
       description:
@@ -337,7 +367,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
   Equestrian: {
     novice: {
       description:
-        "Can handle, soothe and quieten farm, domesticated and similar animals. Increases damage by +7 after a movement action while mounted.",
+        "Increases damage by +7 after a movement action while mounted. You also have the ability to handle, soothe and quieten animals.",
       action: "reaction",
       roll: [],
     },
@@ -348,15 +378,10 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [],
     },
     master: {
-      description: "Charge damage increases to 1d10.",
+      description:
+        "Increases the damage roll by +11 after a movement action while mounted.",
       action: "passive",
-      roll: [
-        {
-          source: "base",
-          type: "damage",
-          value: 10,
-        },
-      ],
+      roll: [],
     },
     xp_requirement: 0,
     tradition: ["melee"],
@@ -610,7 +635,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [],
     },
     adept: {
-      description: "Increases base damage of jointed weapons to 1D8.",
+      description: "Increases the damage roll of jointed weapons by +2.",
       action: "passive",
       roll: [],
     },
@@ -640,15 +665,27 @@ export const abilities_content: Record<string, AbilityStatic> = {
     },
     adept: {
       description:
-        "On a defended hammer attack, a successful [Strong < Strong] test rams and Launch two hammer attacks on the same target in one action. Only one Adept level pushes the enemy back, allowing a Free Attack in the newfound space.",
+        "When an enemy successfully defends against a hammer attack, make a [Strong←Strong] test. If you succeed, the opponent is pushed back one step, allowing the hammer fighter to make a Free Attack.",
       action: "reaction",
-      roll: [],
+      roll: [
+        {
+          source: "base",
+          type: "damage",
+          value: 6,
+        },
+      ],
     },
     master: {
       description:
-        "Launch two hammer attacks on the same target in one action. Only one Adept level pushes the enemy back, allowing a Free Attack in the newfound space.reactive hammer ram is allowed even if both attacks are defended.",
+        "Launch two hammer attacks against the same target in one action. If either attack is defended, the master may perform a hammer ram as described at the adept level. The ram can only be executed once per action.",
       action: "active",
-      roll: [],
+      roll: [
+        {
+          source: "base",
+          type: "damage",
+          value: 6,
+        },
+      ],
     },
     xp_requirement: 0,
     tradition: ["melee"],
@@ -821,7 +858,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
   },
   Marksman: {
     novice: {
-      description: "Increases base bow damage to 1d10 and crossbow to 1d12.",
+      description: "Increases the damage roll of bows and crossbows by +2.",
       action: "passive",
       roll: [],
     },
@@ -845,7 +882,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
   Medicus: {
     novice: {
       description:
-        "Diagnose and cure diseases, identify poisons by symptoms. Gain a coroner's point of view for examining crime scenes or bodies. Test [Cunning] to heal 1d4 Toughness, 1d6 with herbal cure. Once per patient per day.",
+        "Test [Cunning] to heal 1d4 Toughness once per patient per day. Increases the healing roll of herbal cures by +2 and gives you the ability to diagnose diseases, poisons and experience in examining crime scenes or bodies.",
       action: "active",
       roll: [
         {
@@ -853,53 +890,29 @@ export const abilities_content: Record<string, AbilityStatic> = {
           type: "healing",
           value: 4,
         },
-        {
-          source: "base",
-          type: "healing",
-          value: 6,
-        },
       ],
     },
     adept: {
-      description: "Now heal 1d6 Toughness (1d8 with herbal cure).",
+      description:
+        "Test [Cunning] to heal 1d6 Toughness once per patient per day.",
       action: "upgrade",
       roll: [
         {
           source: "base",
           type: "healing",
           value: 6,
-        },
-        {
-          source: "base",
-          type: "healing",
-          value: 8,
         },
       ],
     },
     master: {
       description:
-        "Now heal 1d8 Toughness (1d10 with herbal cure). A failed test heals 1d4 and 1d6 with herbal cure.",
+        "Test [Cunning] to heal 1d8 Toughness once per patient per day - will still heal half the roll rounded up if you fail the cunning test.",
       action: "upgrade",
       roll: [
         {
           source: "base",
           type: "healing",
-          value: 4,
-        },
-        {
-          source: "base",
-          type: "healing",
-          value: 6,
-        },
-        {
-          source: "base",
-          type: "healing",
           value: 8,
-        },
-        {
-          source: "base",
-          type: "healing",
-          value: 10,
         },
       ],
     },
