@@ -9,6 +9,7 @@ import styled from "styled-components";
 
 import * as Constants from "../Constants";
 import { SessionEntry } from "../Types";
+import { SurvivalRate } from "../functions/EncounterFunction";
 import { update_session } from "../functions/SessionsFunctions";
 
 const Navigator = styled.button`
@@ -76,6 +77,12 @@ function ResetCreatureEncounter({ session, websocket }: ResetEncounterProps) {
       <Navigator
         className="mouse-icon-hover button-hover"
         onClick={RollInitiative}
+      >
+        <FontAwesomeIcon icon={faArrowDownShortWide} />
+      </Navigator>
+      <Navigator
+        className="mouse-icon-hover button-hover"
+        onClick={() => SurvivalRate(session.characters, session.encounter)}
       >
         <FontAwesomeIcon icon={faArrowDownShortWide} />
       </Navigator>

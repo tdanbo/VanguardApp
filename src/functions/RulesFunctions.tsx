@@ -21,11 +21,13 @@ import { Armored_dice } from "./rules/Armored";
 import { ArmoredMystic_dice } from "./rules/ArmoredMystic";
 import { Berserker_dice } from "./rules/Berserker";
 import { FeatOfStrength_dice } from "./rules/FeatOfStrength";
+import { Flailer_dice } from "./rules/Flailer";
 import { Impact_dice } from "./rules/ImpactDice";
 import { IronFist_dice } from "./rules/IronFist";
 import { ItemRulesDice } from "./rules/ItemRulesDice";
 import { ManAtArms_dice } from "./rules/ManAtArms";
 import { Marksman_dice } from "./rules/Marksman";
+import { Medicus_dice } from "./rules/Medicus";
 import { NaturalWarrior_dice } from "./rules/NaturalWarrior";
 import { NaturalWeapon_dice } from "./rules/NaturalWeapon";
 import { PolearmMastery_dice } from "./rules/PolearmMastery";
@@ -37,8 +39,6 @@ import { SurvivalInstinct_dice } from "./rules/SurvivalInstinct";
 import { Theurgy_dice } from "./rules/Theurgy";
 import { TwinAttack_dice } from "./rules/TwinAttack";
 import { TwohandedForce_dice } from "./rules/TwohandedForce";
-import { Flailer_dice } from "./rules/Flailer";
-import { Medicus_dice } from "./rules/Medicus";
 
 function HasItem(character: CharacterEntry, item: string) {
   for (const i of character.inventory) {
@@ -399,4 +399,41 @@ export function SetDurability(character: CharacterEntry, id: string) {
   });
 
   return durability;
+}
+
+export function ConvertStatValue(value: number) {
+  const ModifierConverter: Record<number, number> = {
+    30: -20,
+    29: -19,
+    28: -18,
+    27: -17,
+    26: -16,
+    25: -15,
+    24: -14,
+    23: -13,
+    22: -12,
+    21: -11,
+    20: -10,
+    19: -9,
+    18: -8,
+    17: -7,
+    16: -6,
+    15: -5,
+    14: -4,
+    13: -3,
+    12: -2,
+    11: -1,
+    10: 0,
+    9: 1,
+    8: 2,
+    7: 3,
+    6: 4,
+    5: 5,
+    4: 6,
+    3: 7,
+    2: 8,
+    1: 9,
+  };
+
+  return ModifierConverter[value];
 }
