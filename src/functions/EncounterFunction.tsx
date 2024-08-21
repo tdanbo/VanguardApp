@@ -22,8 +22,8 @@ export function SurvivalRate(
     ),
   );
 
-  let winner_found = false;
-  while (!winner_found) {
+  let players_won = false;
+  while (!players_won) {
     const attacker = initiative_encounter[0];
     const defender = find_defender(attacker, initiative_encounter);
 
@@ -91,7 +91,21 @@ export function SurvivalRate(
       }
     } else {
       console.log("Winner Found");
-      winner_found = true;
+      let character_health = 0;
+      let creature_health = 0;
+
+      combined_encounter.forEach((character) => {
+        if (character.creature) {
+          creature_health += GetMaxToughness(character) - character.health.damage;
+        } else {
+          character_health += GetMaxToughness(character) - character.health.damage 
+        }
+      });
+
+      console.log("Character Health", character_health);
+      console.log("Creature Health", creature_health);
+
+      players_won = true;
     }
 
     initiative_encounter = [...initiative_encounter.slice(1), attacker];
@@ -114,6 +128,6 @@ function find_defender(
       new_defender = character;
     }
   });
-
+  console.log("Defender", new_defender?.name);
   return new_defender;
 }
