@@ -1,4 +1,4 @@
-import { cloneDeep, forEach, random } from "lodash";
+import { cloneDeep, random } from "lodash";
 import { CharacterEntry } from "../Types";
 import {
   ConvertStatValue,
@@ -157,7 +157,7 @@ function find_defender(
 ): CharacterEntry | undefined {
   let new_defender: CharacterEntry | undefined;
   let lowest_damage = 1;
-
+  console.log(lowest_damage)
   if (!attacker) {
     return undefined
   }

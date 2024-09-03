@@ -14,7 +14,6 @@ import {
   ItemEntry,
   RollEntry,
   RollNameType,
-  RollTypeEntry,
   RollValueType,
   SessionEntry,
 } from "../Types";

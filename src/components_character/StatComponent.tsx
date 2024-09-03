@@ -263,8 +263,8 @@ function StatComponent({
               session={session}
               character={character}
               websocket={websocket}
-              roll_type={stat_name}
-              roll_source={"Skill Test"}
+              roll_type={"skill test"}
+              roll_source={stat_name}
               isCreature={isCreature}
               roll_values={[{ source: "base", type: "general", value: 20 }]}
               dice_mod={modValue}

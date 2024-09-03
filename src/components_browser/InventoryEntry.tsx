@@ -10,8 +10,6 @@ import { CheckAbility } from "../functions/ActivesFunction";
 import { Qualities } from "../functions/rules/Qualities";
 import { RulesItemDiceAdjust } from "../functions/RulesFunctions";
 import {
-  IsArmor,
-  IsWeapon,
   StyledText,
   toTitleCase,
 } from "../functions/UtilityFunctions";

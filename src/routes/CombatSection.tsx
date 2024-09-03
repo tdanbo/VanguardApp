@@ -140,16 +140,16 @@ function CombatSection({
       if (!last_roll) return;
 
       if (
-        last_roll.roll_source === "Skill Test" &&
+        last_roll.roll_type === "skill test" &&
         last_roll.roll_entry.critical.state === 2
       ) {
         playRandomSound(CriticalSuccessSounds);
       } else if (
-        last_roll.roll_source === "Skill Test" &&
+        last_roll.roll_type === "skill test" &&
         last_roll.roll_entry.critical.state === 0
       ) {
         playRandomSound(CriticalFailureSounds);
-      } else if (last_roll.roll_type === "day") {
+      } else if (last_roll.roll_type === "day change") {
         playRandomSound(RestingSounds);
       } else {
         playRandomSound(RollSounds);
@@ -234,7 +234,7 @@ function CombatSection({
                   session={session}
                 />
               );
-            } else if (item.roll_type === "day") {
+            } else if (item.roll_type === "day change") {
               return (
                 <DayChangeEntryItem
                   key={index}

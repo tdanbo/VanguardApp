@@ -134,7 +134,12 @@ export type RollNameType =
   | "general"
   | "attack"
   | "defense"
-  | "skill test";
+  | "skill test"
+  | "day change"
+  | "sleeping"
+  | "eating"
+  | "dice"
+  ;
 
 export interface RollValueType {
   value: number;

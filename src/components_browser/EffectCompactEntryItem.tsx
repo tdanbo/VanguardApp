@@ -8,11 +8,7 @@ import {
 } from "../Types";
 
 import {
-  faDice,
-  faMoon,
   faQuestion,
-  faRotate,
-  faUtensils,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../functions/SessionsFunctions";
@@ -58,24 +54,6 @@ function EffectCompactEntryItem({
     });
 
     update_session(session, websocket, character, isCreature);
-  };
-
-  const ResetIcon = () => {
-    if (effect.reset === "never") {
-      return faRotate;
-    } else if (effect.reset === "roll") {
-      return faDice;
-    } else if (effect.reset === "damage") {
-      return faDice;
-    } else if (effect.reset === "armor") {
-      return faDice;
-    } else if (effect.reset === "eating") {
-      return faUtensils;
-    } else if (effect.reset === "sleeping") {
-      return faMoon;
-    } else {
-      return faQuestion;
-    }
   };
 
   return (

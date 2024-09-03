@@ -27,7 +27,6 @@ import {
 } from "../components_general/SelectorStyles";
 import { GetBurnRate } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
-import { SurvivalRate } from "../functions/EncounterFunction";
 export const ModalContainer = styled.div`
   background-color: ${Constants.BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};

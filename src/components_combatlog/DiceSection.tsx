@@ -46,7 +46,7 @@ function DiceSection({
           session={session}
           character={character}
           websocket={websocket}
-          roll_type={"custom"}
+          roll_type={"dice"}
           roll_source={"d4"}
           isCreature={isCreature}
           roll_values={[{ source: "base", type: "general", value: 4 }]}
@@ -58,7 +58,7 @@ function DiceSection({
           session={session}
           character={character}
           websocket={websocket}
-          roll_type={"custom"}
+          roll_type={"dice"}
           roll_source={"d6"}
           isCreature={isCreature}
           roll_values={[{ source: "base", type: "general", value: 6 }]}
@@ -70,7 +70,7 @@ function DiceSection({
           session={session}
           character={character}
           websocket={websocket}
-          roll_type={"custom"}
+          roll_type={"dice"}
           roll_source={"d8"}
           isCreature={isCreature}
           roll_values={[{ source: "base", type: "general", value: 8 }]}
@@ -82,7 +82,7 @@ function DiceSection({
           session={session}
           character={character}
           websocket={websocket}
-          roll_type={"custom"}
+          roll_type={"dice"}
           roll_source={"d10"}
           isCreature={isCreature}
           roll_values={[{ source: "base", type: "general", value: 10 }]}
@@ -94,7 +94,7 @@ function DiceSection({
           session={session}
           character={character}
           websocket={websocket}
-          roll_type={"custom"}
+          roll_type={"dice"}
           roll_source={"d4"}
           isCreature={isCreature}
           roll_values={[{ source: "base", type: "general", value: 12 }]}
@@ -106,7 +106,7 @@ function DiceSection({
           session={session}
           character={character}
           websocket={websocket}
-          roll_type={"custom"}
+          roll_type={"dice"}
           roll_source={"d20"}
           isCreature={isCreature}
           roll_values={[{ source: "base", type: "general", value: 20 }]}
@@ -118,7 +118,7 @@ function DiceSection({
           session={session}
           character={character}
           websocket={websocket}
-          roll_type={"custom"}
+          roll_type={"dice"}
           roll_source={"d100"}
           isCreature={isCreature}
           roll_values={[{ source: "base", type: "general", value: 100 }]}

@@ -6,7 +6,7 @@ import { RollDice } from "../functions/UtilityFunctions";
 import {
   CharacterEntry,
   ItemEntry,
-  RollTypeEntry,
+  RollNameType,
   RollValueType,
   SessionEntry,
 } from "../Types";
@@ -16,7 +16,7 @@ type RollComponentProps = {
   session: SessionEntry;
   character: CharacterEntry;
   websocket: Socket;
-  roll_type: RollTypeEntry;
+  roll_type: RollNameType;
   roll_source: string;
   roll_values: RollValueType[];
   dice_mod?: number;
