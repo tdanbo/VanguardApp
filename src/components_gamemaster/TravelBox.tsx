@@ -27,6 +27,7 @@ import {
 } from "../components_general/SelectorStyles";
 import { GetBurnRate } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
+import { SurvivalRate } from "../functions/EncounterFunction";
 export const ModalContainer = styled.div`
   background-color: ${Constants.BACKGROUND};
   border: 1px solid ${Constants.WIDGET_BORDER};
@@ -287,9 +288,10 @@ const DifficultyRatio = styled.div`
 interface TravelBoxProps {
   session: SessionEntry;
   websocket: Socket;
+  survivalRate: number; 
 }
 
-function TravelBox({ session, websocket }: TravelBoxProps) {
+function TravelBox({ session, websocket, survivalRate }: TravelBoxProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tooltip, setTooltip] = useState<string>("A normal days of travel.");
   const NoTravelSpeed = "The party didn't travel during the day.";
@@ -301,6 +303,8 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
   const [travelMethod, setTravelMethod] = useState<string>("Normal March");
   const [travelTerrain, setTravelTerrain] = useState<string>("Easy Terrain");
   const [travelLocation, setTravelLocation] = useState<string>("Ambria");
+
+  
 
   const handleOpen = () => {
     setIsModalOpen(true);
@@ -447,7 +451,7 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
 
     const resting_combat: CombatEntry = {
       character: NewCharacterEntry,
-      roll_type: "resting",
+      roll_type: "general",
       roll_source: "Resting",
       is_focused: "normal",
       roll_entry: {
@@ -482,33 +486,15 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
     handleClose();
   };
 
-  const FightDifficulty = (): number => {
-    let group_xp = 0;
-    let enemy_xp = 0;
-
-    for (const character of session.characters) {
-      group_xp += character.details.xp_earned;
-    }
-
-    for (const creature of session.encounter) {
-      enemy_xp += creature.details.xp_earned;
-    }
-
-    const ratio = (group_xp > 0 ? enemy_xp / group_xp : Infinity) * 12;
-    return Math.round(ratio);
-  };
-
-  const DifficultyColor = (index: number): string => {
-    if (index <= 9) {
-      return Constants.COLOR_4;
-    } else if (index < 20) {
+  const DifficultyColor = (): string => {
+    if (survivalRate <= 33) {
+      return Constants.COLOR_1;
+    } else if (survivalRate < 66) {
       return Constants.COLOR_5;
     } else {
-      return Constants.COLOR_1;
+      return Constants.COLOR_4;
     }
   };
-
-  const difficulty = FightDifficulty();
 
   return (
     <>
@@ -522,25 +508,25 @@ function TravelBox({ session, websocket }: TravelBoxProps) {
         <Divider />
         {/* <TravelButton>ETA {session.travel.distance} KM</TravelButton> */}
         <TravelRightButton>
-          {Array.from({ length: 30 }).map((_, index) => {
-            if (index < difficulty) {
+          {Array.from({ length: 100 }).map((_, index) => {
+            if (index < survivalRate) {
               return (
                 <FilledDifficulty
                   key={index}
-                  color={DifficultyColor(index)}
+                  color={DifficultyColor()}
                   opacity={1.0}
                 ></FilledDifficulty>
               );
             } else
               return (
                 <EmptyDifficulty
-                  color={DifficultyColor(index)}
+                  color={DifficultyColor()}
                   key={index}
                   opacity={0.25}
                 ></EmptyDifficulty>
               );
           })}
-          <DifficultyRatio>{Math.round(difficulty)}</DifficultyRatio>
+          <DifficultyRatio>{Math.round(survivalRate)}</DifficultyRatio>
         </TravelRightButton>
       </Container>
       {isModalOpen && (

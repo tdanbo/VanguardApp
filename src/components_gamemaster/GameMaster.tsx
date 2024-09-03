@@ -45,7 +45,7 @@ function GameMaster({
   setDisplay,
 }: GameMasterProps) {
   const [characterLog, setCharacterLog] = useState<CharacterEntry[]>([]);
-
+  const [survivalRate, setSurvivalRate] = useState<number>(0)
   useEffect(() => {
     const combined_creatures = [...session.characters, ...session.encounter];
     combined_creatures.sort((a, b) => {
@@ -93,8 +93,8 @@ function GameMaster({
     <div className="column">
       <div className="header">
         <div className="row">
-          <ResetCreatureEncounter session={session} websocket={websocket} />
-          <TravelBox session={session} websocket={websocket} />
+          <ResetCreatureEncounter session={session} websocket={websocket} setSurvivalRate={setSurvivalRate} />
+          <TravelBox session={session} websocket={websocket} survivalRate={survivalRate}/>
           <div
             className="row empty_color"
             style={{ maxWidth: "210px", gap: "0px" }}

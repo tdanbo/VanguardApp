@@ -13,8 +13,9 @@ import { CheckAbility } from "./ActivesFunction";
 export function SurvivalRate(
   character: CharacterEntry[],
   creatures: CharacterEntry[],
-): number {
-  let rounds = 50;
+  setSurvivalRate: React.Dispatch<React.SetStateAction<number>>
+) {
+  let rounds = 100;
   let survival_rate = 0;
 
   for (let i = 0; i < rounds; i++) {
@@ -27,11 +28,7 @@ export function SurvivalRate(
 
     let round = 0;
 
-    let initiative_encounter: CharacterEntry[] = cloneDeep(
-      combined_encounter.sort(
-        (a, b) => b.details.initiative - a.details.initiative,
-      ),
-    );
+    let initiative_encounter: CharacterEntry[] = SetInitiative(combined_encounter)
 
     let winner_found = false;
     while (!winner_found) {
@@ -72,7 +69,8 @@ export function SurvivalRate(
   }
   console.log("---");
   console.log("Survival Rate", (survival_rate / rounds) * 100, "%");
-  return (survival_rate / rounds) * 100;
+
+  setSurvivalRate((survival_rate / rounds) * 100)
 }
 
 function attack_target(attacker: CharacterEntry, defender: CharacterEntry, advantage: number) {
@@ -107,20 +105,12 @@ function attack_target(attacker: CharacterEntry, defender: CharacterEntry, advan
   if (attack_success) {
     console.log("Attack Success");
     let attacker_damage_value = GetAttackerDamage(attacker)
-    let defender_armor_value = 0;
+    let defender_armor_value = GetDefenderArmor(defender);
     let attacker_damage = 0;
     let defender_armor = 0;
 
 
 
-    defender.inventory.forEach((item) => {
-      if (item.equipped && IsArmor(item)) {
-        const item_dice_adjust = RulesItemDiceAdjust(defender, item);
-        item_dice_adjust.forEach((roll) => {
-          defender_armor_value += roll.value;
-        });
-      }
-    });
 
     console.log("Attacker Damage Value", attacker_damage_value);
     console.log("Defender Armor Value", defender_armor_value);
@@ -238,4 +228,36 @@ function GetAttackerDamage(attacker: CharacterEntry): number {
   });
 
   return attacker_damage_value;
+}
+
+function GetDefenderArmor(defender: CharacterEntry) : number {
+  let defender_armor_value = 0
+
+  defender.inventory.some((item) => {
+    if (item.equipped && IsArmor(item)) {
+      const item_dice_adjust = RulesItemDiceAdjust(defender, item);
+      item_dice_adjust.forEach((roll) => {
+        defender_armor_value += roll.value;
+      });
+      return true;
+    }
+    return false;
+  });
+  return defender_armor_value
+}
+
+function SetInitiative(encounter: CharacterEntry[]): CharacterEntry[] {
+  return cloneDeep(encounter)
+    .map((character) => ({
+      ...character,
+      details: {
+        ...character.details,
+        initiative:
+          character.stats.initiative.value +
+          character.stats.initiative.base +
+          character.stats.initiative.mod +
+          random(1, 10),
+      },
+    }))
+    .sort((a, b) => b.details.initiative - a.details.initiative);
 }

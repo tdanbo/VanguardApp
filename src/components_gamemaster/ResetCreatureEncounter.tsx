@@ -1,5 +1,6 @@
 import {
   faArrowDownShortWide,
+  faSkull,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -36,9 +37,10 @@ const Navigator = styled.button`
 interface ResetEncounterProps {
   session: SessionEntry;
   websocket: Socket;
+  setSurvivalRate: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function ResetCreatureEncounter({ session, websocket }: ResetEncounterProps) {
+function ResetCreatureEncounter({ session, websocket, setSurvivalRate }: ResetEncounterProps) {
   const handleResetEncounter = () => {
     for (const character of session.characters) {
       character.details.initiative = 0;
@@ -82,9 +84,9 @@ function ResetCreatureEncounter({ session, websocket }: ResetEncounterProps) {
       </Navigator>
       <Navigator
         className="mouse-icon-hover button-hover"
-        onClick={() => SurvivalRate(session.characters, session.encounter)}
+        onClick={() => SurvivalRate(session.characters, session.encounter, setSurvivalRate)}
       >
-        <FontAwesomeIcon icon={faArrowDownShortWide} />
+        <FontAwesomeIcon icon={faSkull} />
       </Navigator>
     </>
   );
