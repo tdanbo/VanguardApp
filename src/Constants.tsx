@@ -218,6 +218,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   corruption: COLOR_3,
   temporary_corruption: COLOR_3,
   elixir: COLOR_3,
+  healing: COLOR_3,
 
   accessory: COLOR_4,
   container: COLOR_4,
@@ -240,6 +241,7 @@ export const TYPE_COLORS: Record<ColorType, string> = {
   accurate: COLOR_5,
   trait: COLOR_5,
   burden: COLOR_5,
+  "skill test": COLOR_5,
 
   permanent_corruption: DESAT_PURPLE,
 
