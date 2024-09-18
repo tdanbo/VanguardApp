@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import "../Styles.css";
 import * as Constants from "../Constants";
-import { CharacterPortraits } from "../Images";
+import { CharacterImages } from "../Images";
 import { CombatEntry, SessionEntry } from "../Types";
 import { toTitleCase } from "../functions/UtilityFunctions";
 import { GetDiceSum } from "../functions/CharacterFunctions";
@@ -184,7 +184,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   };
 
   let title = `Result: ${combatEntry.roll_entry.result1}\n`;
-  if (combatEntry.roll_source === "Skill Test") {
+  if (combatEntry.roll_type === "skill test") {
     title += `Difficulty: ${combatEntry.roll_entry.difficulty}\n`;
   }
   if (combatEntry.roll_entry.target > 0) {
@@ -233,25 +233,25 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
     let message = "";
 
     if (combatEntry.roll_entry.critical.state === 2) {
-      if (combatEntry.roll_type === "attack") {
+      if (combatEntry.roll_source === "attack") {
         message = "+1d6 damage.";
-      } else if (combatEntry.roll_type === "defense") {
+      } else if (combatEntry.roll_source === "defense") {
         message = "Free attack against the enemy.";
-      } else if (combatEntry.roll_type === "resolute") {
+      } else if (combatEntry.roll_source === "resolute") {
         message = "Double the spell effect.";
-      } else if (combatEntry.roll_type === "discreet") {
+      } else if (combatEntry.roll_source === "discreet") {
         message = "No detection for the entire group.";
       } else {
         message = "";
       }
     } else if (combatEntry.roll_entry.critical.state === 0) {
-      if (combatEntry.roll_type === "attack") {
+      if (combatEntry.roll_source === "attack") {
         message += "Free attack against you. ";
       } else if (combatEntry.roll_type === "defense") {
         message += "+3 Damage taken. ";
-      } else if (combatEntry.roll_type === "resolute") {
+      } else if (combatEntry.roll_source === "resolute") {
         message += "Your spell hit a random foe/friend.";
-      } else if (combatEntry.roll_type === "discreet") {
+      } else if (combatEntry.roll_source === "discreet") {
         message += "Conflict is inevitable! If attacked, you are surprised!";
       } else {
         message += "";
@@ -266,7 +266,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   } ${combatEntry.roll_type}`;
 
   return (
-    <Container src={CharacterPortraits[combatEntry.character.portrait]}>
+    <Container src={CharacterImages(combatEntry.character.portrait)}>
       <ColorBlock
         $rgb={EntryColor()}
         $issuccess={combatEntry.roll_entry.success}
@@ -288,14 +288,14 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
                 style={{
                   opacity:
                     (combatEntry.is_focused === "focused" &&
-                      ((combatEntry.roll_source === "Skill Test" &&
+                      ((combatEntry.roll_type === "skill test" &&
                         currentDisplay1 <= currentDisplay2) ||
-                        (combatEntry.roll_source !== "Skill Test" &&
+                        (combatEntry.roll_type !== "skill test" &&
                           currentDisplay1 >= currentDisplay2))) ||
                     (combatEntry.is_focused === "unfocused" &&
-                      ((combatEntry.roll_source === "Skill Test" &&
+                      ((combatEntry.roll_type === "skill test" &&
                         currentDisplay1 >= currentDisplay2) ||
-                        (combatEntry.roll_source !== "Skill Test" &&
+                        (combatEntry.roll_type !== "skill test" &&
                           currentDisplay1 <= currentDisplay2)))
                       ? 1
                       : 0.1,
@@ -311,14 +311,14 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
                 style={{
                   opacity:
                     (combatEntry.is_focused === "focused" &&
-                      ((combatEntry.roll_source === "Skill Test" &&
+                      ((combatEntry.roll_type === "skill test" &&
                         currentDisplay2 <= currentDisplay1) ||
-                        (combatEntry.roll_source !== "Skill Test" &&
+                        (combatEntry.roll_type !== "skill test" &&
                           currentDisplay2 >= currentDisplay1))) ||
                     (combatEntry.is_focused === "unfocused" &&
-                      ((combatEntry.roll_source === "Skill Test" &&
+                      ((combatEntry.roll_type === "skill test" &&
                         currentDisplay2 >= currentDisplay1) ||
-                        (combatEntry.roll_source !== "Skill Test" &&
+                        (combatEntry.roll_type !== "skill test" &&
                           currentDisplay2 <= currentDisplay1)))
                       ? 1
                       : 0.1,
@@ -342,7 +342,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
           )}
         </ResultContainer>
         <SourceContainer>
-          {combatEntry.roll_source === "Skill Test" ? (
+          {combatEntry.roll_type === "skill test" ? (
             <Active
               $rgb={EntryColor()}
               $issuccess={combatEntry.roll_entry.success}
@@ -367,12 +367,12 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
           <FumbledSubText>
             {FumbledPerfectText() !== ""
               ? FumbledPerfectText()
-              : combatEntry.roll_source}
+              : toTitleCase(combatEntry.roll_source)}
           </FumbledSubText>
         )}
       </RollContainer>
       <RightBlock>
-        {combatEntry.roll_source === "Skill Test" ? (
+        {combatEntry.roll_type === "skill test" ? (
           combatEntry.roll_entry.critical.state === 2 ? (
             <FontAwesomeIcon
               icon={faAngleDoubleUp}

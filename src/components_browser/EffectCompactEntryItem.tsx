@@ -7,7 +7,9 @@ import {
   SessionEntry,
 } from "../Types";
 
-import { faQuestion } from "@fortawesome/free-solid-svg-icons";
+import {
+  faQuestion,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { update_session } from "../functions/SessionsFunctions";
 
@@ -64,7 +66,18 @@ function EffectCompactEntryItem({
       <span style={{ fontSize: "15px" }}>
         <FontAwesomeIcon icon={icon} />
       </span>
-      <span className="font--size-small font--primary-3">{effect.level}</span>
+      {effect.static.category === "effect" ? (
+        <span
+          className="font--size-medium font--primary-3"
+          style={{ marginRight: "8px" }}
+        >
+          {effect.level >= 0 ? "+" : ""}
+          {effect.level}
+        </span>
+      ) : null}
+      {/* <span className="font--primary-4" style={{ fontSize: "15px" }}>
+        <FontAwesomeIcon icon={ResetIcon()} />
+      </span> */}
       {/* <LevelComponent
         ability={effect}
         session={session}

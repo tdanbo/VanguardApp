@@ -1,5 +1,6 @@
 import {
   faArrowDownShortWide,
+  faSkull,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +10,7 @@ import styled from "styled-components";
 
 import * as Constants from "../Constants";
 import { SessionEntry } from "../Types";
+import { SurvivalRate } from "../functions/EncounterFunction";
 import { update_session } from "../functions/SessionsFunctions";
 
 const Navigator = styled.button`
@@ -35,9 +37,10 @@ const Navigator = styled.button`
 interface ResetEncounterProps {
   session: SessionEntry;
   websocket: Socket;
+  setSurvivalRate: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function ResetCreatureEncounter({ session, websocket }: ResetEncounterProps) {
+function ResetCreatureEncounter({ session, websocket, setSurvivalRate }: ResetEncounterProps) {
   const handleResetEncounter = () => {
     for (const character of session.characters) {
       character.details.initiative = 0;
@@ -78,6 +81,12 @@ function ResetCreatureEncounter({ session, websocket }: ResetEncounterProps) {
         onClick={RollInitiative}
       >
         <FontAwesomeIcon icon={faArrowDownShortWide} />
+      </Navigator>
+      <Navigator
+        className="mouse-icon-hover button-hover"
+        onClick={() => SurvivalRate(session.characters, session.encounter, setSurvivalRate)}
+      >
+        <FontAwesomeIcon icon={faSkull} />
       </Navigator>
     </>
   );

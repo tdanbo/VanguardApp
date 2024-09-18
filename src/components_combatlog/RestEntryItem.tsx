@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import "../Styles.css";
 import * as Constants from "../Constants";
-import { CharacterPortraits } from "../Images";
+import { CharacterImages } from "../Images";
 import { CombatEntry, SessionEntry } from "../Types";
 import Icon from "@mdi/react";
 import { mdiSilverwareForkKnife, mdiSleep } from "@mdi/js";
@@ -63,7 +63,7 @@ const RollContainer = styled.div`
 
 function RestEntryItem({ combatEntry }: RestEntryItemProps) {
   return (
-    <Container src={CharacterPortraits[combatEntry.character.portrait]}>
+    <Container src={CharacterImages(combatEntry.character.portrait)}>
       <ColorBlock
         $rgb={
           combatEntry.roll_type === "eating"

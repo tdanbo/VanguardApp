@@ -69,7 +69,7 @@ function TimeTrackBox({ session, websocket }: TimeTrackBoxProps) {
       session.travel.day += 1;
       const day_log: CombatEntry = {
         character: NewCharacterEntry,
-        roll_type: "day",
+        roll_type: "day change",
         roll_source: `Day ${session.travel.day}`,
         is_focused: "normal",
         roll_entry: {

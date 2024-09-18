@@ -2,7 +2,7 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import * as Constants from "../Constants";
-import { CharacterPortraits } from "../Images";
+import { CharacterImages } from "../Images";
 import { CharacterEntry, DisplayType, SessionEntry } from "../Types";
 import { GetMaxToughness } from "../functions/RulesFunctions";
 import { update_session } from "../functions/SessionsFunctions";
@@ -77,9 +77,9 @@ function CharacterPartyComponent({
       style={{
         background: `linear-gradient(rgba(${
           Constants.COMBAT_BACKGROUND
-        }, 0.925), rgba(${Constants.COMBAT_BACKGROUND}, 0.925)), url(${
-          CharacterPortraits[character.portrait]
-        })`,
+        }, 0.925), rgba(${
+          Constants.COMBAT_BACKGROUND
+        }, 0.925)), url(${CharacterImages(character.portrait)})`,
         flexDirection: "row",
         fontSize: 14,
         fontWeight: "bold",

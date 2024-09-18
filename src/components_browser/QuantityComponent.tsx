@@ -18,8 +18,8 @@ export default function QuantityComponent({ item }: QuantityComponentProps) {
     <div
       className="column"
       style={{
-        minWidth: "40px",
-        maxWidth: "40px",
+        minWidth: "45px",
+        maxWidth: "45px",
         borderLeft: "1px solid",
         borderColor: "rgba(0, 0, 0, 0.25)",
         borderRadius: "0px",

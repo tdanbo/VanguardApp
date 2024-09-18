@@ -1,8 +1,8 @@
 import { CharacterEntry, ItemEntry, RollValueType } from "../../Types";
-import { CheckEffect } from "../ActivesFunction";
+import { CheckAbility } from "../ActivesFunction";
 import { IsRangedWeapon } from "../CharacterFunctions";
 
-export function HuntersInstinctEffect(
+export function HuntersInstinct_dice(
   character: CharacterEntry,
   item: ItemEntry,
 ): RollValueType {
@@ -14,8 +14,8 @@ export function HuntersInstinctEffect(
   };
 
   let mod = 0;
-  const found_effect = CheckEffect(character, name);
-  if (found_effect && found_effect.level > 1 && IsRangedWeapon(item)) {
+  const found_ability = CheckAbility(character, name, "adept");
+  if (found_ability && IsRangedWeapon(item)) {
     mod += 5;
   }
 

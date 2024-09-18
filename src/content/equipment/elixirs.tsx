@@ -313,41 +313,71 @@ export const elixirs_content: Record<string, ItemStatic> = {
     slot: 0,
     max_durability: 0,
   },
-  "Life Potion Weak": {
-    roll: [],
+  "Herbal Cure Weak": {
+    roll: [
+      {
+        source: "base",
+        type: "healing",
+        value: 4,
+      },
+    ],
     quality: [],
     rarity: "normal",
     cost: 200,
     category: "elixir",
-    effect: ["Consuming an potion of life heal 1d6 points of Toughness."],
+    effect: [
+      "Consuming a herbal cure heal 1d4 points of Toughness. +2 to the healing roll if used with medicus",
+    ],
     bulk: true,
     slot: 0,
     max_durability: 0,
   },
-  "Life Potion Moderate": {
-    roll: [],
+  "Herbal Cure Moderate": {
+    roll: [
+      {
+        source: "base",
+        type: "healing",
+        value: 6,
+      },
+    ],
     quality: [],
     rarity: "quality",
     cost: 200,
     category: "elixir",
-    effect: ["Consuming an potion of life heal 1d8 points of Toughness."],
+    effect: [
+      "Consuming a herbal cure heal 1d6 points of Toughness. +2 to the healing roll if used with medicus",
+    ],
     bulk: true,
     slot: 0,
     max_durability: 0,
   },
-  "Life Potion Strong": {
-    roll: [],
+  "Herbal Cure Strong": {
+    roll: [
+      {
+        source: "base",
+        type: "healing",
+        value: 8,
+      },
+    ],
     quality: [],
     rarity: "mystical",
     cost: 200,
     category: "elixir",
-    effect: ["Consuming an potion of life heal 1d10 points of Toughness."],
+    effect: [
+      "Consuming a herbal cure heal 1d8 points of Toughness. +2 to the healing roll if used with medicus",
+    ],
     bulk: true,
     slot: 0,
     max_durability: 0,
   },
   "Elixir of Life Weak": {
-    roll: [],
+    roll: [
+      {
+        source: "base",
+        type: "healing",
+        value: 4,
+      },
+    ],
     quality: [],
     rarity: "normal",
     cost: 200,
@@ -360,7 +390,13 @@ export const elixirs_content: Record<string, ItemStatic> = {
     max_durability: 0,
   },
   "Elixir of Life Moderate": {
-    roll: [],
+    roll: [
+      {
+        source: "base",
+        type: "healing",
+        value: 6,
+      },
+    ],
     quality: [],
     rarity: "quality",
     cost: 400,
@@ -373,7 +409,13 @@ export const elixirs_content: Record<string, ItemStatic> = {
     max_durability: 0,
   },
   "Elixir of Life Strong": {
-    roll: [],
+    roll: [
+      {
+        source: "base",
+        type: "healing",
+        value: 8,
+      },
+    ],
     quality: [],
     rarity: "mystical",
     cost: 600,
@@ -424,79 +466,58 @@ export const elixirs_content: Record<string, ItemStatic> = {
     slot: 0,
     max_durability: 0,
   },
-  "Herbal Cure Weak": {
-    roll: [],
-    quality: [],
-    rarity: "normal",
-    cost: 200,
-    category: "elixir",
-    effect: [
-      "An herbal cure consists of an alchemical poultice coupled with bandages. It smells vile but heals 1 point of Toughness. The herbal cure has greater effect if used by a character with the Medicus ability.",
-    ],
-    bulk: true,
-    slot: 0,
-    max_durability: 0,
-  },
-  "Herbal Cure Moderate": {
-    roll: [],
-    quality: [],
-    rarity: "quality",
-    cost: 400,
-    category: "elixir",
-    effect: [
-      "An herbal cure consists of an alchemical poultice coupled with bandages. It smells vile but heals 2 point of Toughness, if used with Medicus the moderate herbal cure will add +2 to the healing roll.",
-    ],
-    bulk: true,
-    slot: 0,
-    max_durability: 0,
-  },
-  "Herbal Cure Strong": {
-    roll: [],
-    quality: [],
-    rarity: "mystical",
-    cost: 600,
-    category: "elixir",
-    effect: [
-      "An herbal cure consists of an alchemical poultice coupled with bandages. It smells vile but heals 2 point of Toughness, if used with Medicus the moderate herbal cure will add +3 to the healing roll.",
-    ],
-    bulk: true,
-    slot: 0,
-    max_durability: 0,
-  },
   "Holy Water Weak": {
-    roll: [],
+    roll: [
+      {
+        source: "base",
+        type: "healing",
+        value: 4,
+      },
+    ],
     quality: [],
     rarity: "normal",
     cost: 200,
     category: "elixir",
     effect: [
-      "Holy water, instilled with the light of Prios, can heal wounds and sooth souls. Consuming a holy water will heal 2 points of toughness and remove 2 temporary corruption.",
+      "Holy water, instilled with the light of Prios, can heal wounds and sooth souls. Consuming a holy water will heal d4 points of toughness and temporary corruption.",
     ],
     bulk: true,
     slot: 0,
     max_durability: 0,
   },
   "Holy Water Moderate": {
-    roll: [],
+    roll: [
+      {
+        source: "base",
+        type: "healing",
+        value: 6,
+      },
+    ],
     quality: [],
     rarity: "quality",
     cost: 400,
     category: "elixir",
     effect: [
-      "Holy water, instilled with the light of Prios, can heal wounds and sooth souls. Consuming a holy water will heal 3 points of toughness and remove 3 temporary corruption.",
+      "Holy water, instilled with the light of Prios, can heal wounds and sooth souls. Consuming a holy water will heal d6 points of toughness and temporary corruption.",
     ],
     bulk: true,
     slot: 0,
     max_durability: 0,
   },
   "Holy Water Strong": {
-    roll: [],
+    roll: [
+      {
+        source: "base",
+        type: "healing",
+        value: 8,
+      },
+    ],
     quality: [],
     rarity: "mystical",
     cost: 600,
     category: "elixir",
     effect: [
-      "Holy water, instilled with the light of Prios, can heal wounds and sooth souls. Consuming a holy water will heal 4 points of toughness and remove 4 temporary corruption.",
+      "Holy water, instilled with the light of Prios, can heal wounds and sooth souls. Consuming a holy water will heal d8 points of toughness and temporary corruption.",
     ],
     bulk: true,
     slot: 0,

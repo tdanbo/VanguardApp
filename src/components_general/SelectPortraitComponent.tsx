@@ -9,7 +9,7 @@ import {
 
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { CharacterPortraits } from "../Images";
+import { AllImages } from "../Images";
 interface LoginProps {
   setSelector: (selector: string) => void;
   setCharacterPortrait: (portrait: string) => void;
@@ -47,12 +47,14 @@ function SelectPortraitComponent({
     setSelector("createCharacter");
   };
 
+  const character_images = AllImages();
+
   return (
     <MainContainer>
       <Title>Select Portrait</Title>
       <ModalContainer>
         <GridContainer>
-          {Object.entries(CharacterPortraits).map(
+          {Object.entries(character_images).map(
             ([key, src]: [string, string], index: number) => (
               <ImageContainer
                 key={index}

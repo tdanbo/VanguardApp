@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import * as Constants from "../Constants";
-import { CharacterPortraits } from "../Images";
+import { CharacterImages } from "../Images";
 import { CharacterEntry } from "../Types";
 import { GetMovementSpeed } from "../functions/RulesFunctions";
 interface ColorTypeProps {
@@ -160,7 +160,7 @@ function EncounterCharacterEntry({ character }: EncounterBoxProps) {
         character.stats.accurate.base
     ];
   return (
-    <Container src={CharacterPortraits[character.portrait]} title={title}>
+    <Container src={CharacterImages(character.portrait)} title={title}>
       <ColorBlock $rgb={Constants.BLUE} />
       <NameBox>{character.name}</NameBox>
     </Container>

@@ -262,16 +262,18 @@ function StatComponent({
                 session: session,
                 character: character,
                 websocket: websocket,
-                roll_type: stat_name,
-                roll_source: "Skill Test",
+                roll_type: "skill test",
+                roll_source: stat_name,
                 isCreature: isCreature,
-                roll_values: [{ value: 20, type: "test", source: stat_name }],
+                roll_values: [
+                  { value: 20, type: "general", source: stat_name },
+                ],
                 difficulty: modValue,
                 color: color,
                 target: Math.max(stat_value + stat_modifier + modValue, 1),
                 setModValue: setModvalue,
                 modifierLock,
-                is_focused: IsFocusedSkill(character, stat_name),
+                is_focused: IsFocusedSkill(character),
               })
             }
           >

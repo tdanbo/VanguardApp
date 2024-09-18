@@ -1,5 +1,5 @@
 import * as Constants from "../Constants";
-import { CharacterPortraits } from "../Images";
+import { CharacterImages } from "../Images";
 import "../Styles.css";
 import { CharacterEntry, SessionEntry } from "../Types";
 import {
@@ -44,12 +44,11 @@ function PortraitComponent({
   const pain = GetPainThreshold(character);
   const capacity = GetUsedSlots(character);
   const burn = GetBurnRate(character);
-
   return (
     <div
       className="row"
       style={{
-        backgroundImage: `url(${CharacterPortraits[character.portrait]})`,
+        backgroundImage: `url(${CharacterImages(character.portrait)})`,
         backgroundSize: "cover",
         backgroundPosition: "center 30%",
         borderRadius: Constants.BORDER_RADIUS,

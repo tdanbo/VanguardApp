@@ -39,16 +39,9 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [],
     },
     master: {
-      description:
-        "The armored mystic has transcended the limitations of the armor, and may instead benefit from it. A +d4 bonus is added to the armor's protection value when the mystic wears it, since mystical energies flow through the steel.",
+      description: "Increases armor roll by +5.",
       action: "upgrade",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
-        },
-      ],
+      roll: [],
     },
     xp_requirement: 0,
     tradition: [],
@@ -63,7 +56,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -74,7 +67,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 8,
         },
       ],
@@ -83,7 +76,13 @@ export const abilities_content: Record<string, AbilityStatic> = {
       description:
         "If the jab attack hits, the character gains a Free Attack with the bow. After stabbing with the projectile, they can load the bow for a normal ranged attack. If using a crossbow, it must already be loaded or the initial stab made with another bolt, or the character should possess a repeating crossbow.",
       action: "reaction",
-      roll: [],
+      roll: [
+        {
+          source: "base",
+          type: "damage",
+          value: 8,
+        },
+      ],
     },
     xp_requirement: 0,
     tradition: ["ranged"],
@@ -98,37 +97,32 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
     },
     adept: {
       description:
-        "Perform a double-strike in a single combat action, each attack at one dice tier lower than usual, 1d10 then 1d8.",
+        "Lowers damage rolls by -2 but you can perfrom two attacks in a single combat action.",
       action: "active",
       roll: [
         {
           source: "base",
-          type: "buff",
-          value: 8,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
+          type: "damage",
+          value: 6,
         },
       ],
     },
     master: {
       description:
-        "Each axe hit increases damage by +1d4, limit one hit per combat action.",
+        "Increases melee damage roll by +5 - this only applies to a single axe hit per combat action.",
       action: "passive",
       roll: [
         {
           source: "base",
-          type: "buff",
-          value: 4,
+          type: "damage",
+          value: 6,
         },
       ],
     },
@@ -140,15 +134,9 @@ export const abilities_content: Record<string, AbilityStatic> = {
   Backstab: {
     novice: {
       description:
-        "Gain +1d4 damage for one attack per turn when at Advantage. Can use [Discreet] instead of [Accurate] when at Advantage.",
+        "Increases damage roll by +5 for one attack per turn when at advantage. Can use [Discreet] instead of [Accurate] when at Advantage.",
       action: "reaction",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
-        },
-      ],
+      roll: [],
     },
     adept: {
       description:
@@ -157,20 +145,20 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 4,
         },
       ],
     },
     master: {
       description:
-        "Allows unlimited Backstabs per turn, provided Advantage conditions are met. Increases extra damage to +1d8.",
+        "Increases damage roll by +9 and allows unlimited Backstabs per turn, provided Advantage conditions are met.",
       action: "passive",
       roll: [
         {
           source: "base",
-          type: "buff",
-          value: 8,
+          type: "damage",
+          value: 4,
         },
       ],
     },
@@ -182,27 +170,14 @@ export const abilities_content: Record<string, AbilityStatic> = {
   Berserker: {
     novice: {
       description:
-        "Enter a frenzy, gaining +1d6 to melee damage, but limits your maximum Defense to 5.",
+        "Increases melee damage roll by +7 - but limits your maximum Defense to 5.",
       action: "free",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 6,
-        },
-      ],
+      roll: [],
     },
     adept: {
-      description:
-        "While in a frenzied rage reduces each hit's damage by 1d4 after armour calculations.",
+      description: "Increases armor by +5 - while frenzied.",
       action: "reaction",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
-        },
-      ],
+      roll: [],
     },
     master: {
       description:
@@ -218,26 +193,20 @@ export const abilities_content: Record<string, AbilityStatic> = {
   "Blood Combat": {
     novice: {
       description:
-        "Reaction. The character draws strength from the blood it spills. When his or her Toughness has been halved, the character gains a second chance to succeed with all attack tests in melee combat.",
-      action: "",
+        "The character draws strength from the blood it spills. When his or her Toughness has been halved, the character gains a second chance to succeed with all attack tests in melee combat.",
+      action: "passive",
       roll: [],
     },
     adept: {
       description:
-        "Reaction. The character's hits grow more powerful the more damaged he or she is; when Toughness has been more than halved, all attacks made by the character in melee combat deal an additional +d8 in damage",
-      action: "",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-      ],
+        "Increases melee damage roll by +9 when toughness has been more than halved.",
+      action: "passive",
+      roll: [],
     },
     master: {
       description:
-        "Reaction. The warrior is healed by the blood spilled by the enemy; half of the damage that the character deals in melee combat is added to the character's Toughness, rounded down.",
-      action: "",
+        "The warrior is healed by the blood spilled by the enemy; half of the damage that the character deals in melee combat is added to the character's Toughness, rounded down.",
+      action: "reaction",
       roll: [],
     },
     xp_requirement: 0,
@@ -300,7 +269,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -309,7 +278,13 @@ export const abilities_content: Record<string, AbilityStatic> = {
       description:
         "If a normal melee attack deals damage, can add a trip or tackle on the target. Test [Cunning < Quick] to knock the target down.",
       action: "reaction",
-      roll: [],
+      roll: [
+        {
+          source: "base",
+          type: "damage",
+          value: 6,
+        },
+      ],
     },
     master: {
       description:
@@ -318,7 +293,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -374,12 +349,12 @@ export const abilities_content: Record<string, AbilityStatic> = {
     },
     master: {
       description:
-        "When using an ensnaring weapon, attacks hit the target\u2019s neck, causing a strangling effect. Besides ensnaring and the chance to bring down the enemy, the target suffers 1D6 damage per turn (ignoring armor). If the target reaches 0 Toughness, choose to make it unconscious instead of dead/dying.",
+        "When using an ensnaring weapon, attacks hit the target's neck, causing a strangling effect. Besides ensnaring and the chance to bring down the enemy, the target suffers 1d6 damage per turn (ignoring armor). If the target reaches 0 Toughness, choose to make it unconscious instead of dead/dying.",
       action: "reaction",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -392,15 +367,9 @@ export const abilities_content: Record<string, AbilityStatic> = {
   Equestrian: {
     novice: {
       description:
-        "Can handle, soothe and quieten farm, domesticated and similar animals.On melee attacks after a movement action while mounted, gain +1d6 to damage.",
+        "Increases damage by +7 after a movement action while mounted. You also have the ability to handle, soothe and quieten animals.",
       action: "reaction",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 6,
-        },
-      ],
+      roll: [],
     },
     adept: {
       description:
@@ -409,15 +378,10 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [],
     },
     master: {
-      description: "Charge damage increases to +1d10.",
+      description:
+        "Increases the damage roll by +11 after a movement action while mounted.",
       action: "passive",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 10,
-        },
-      ],
+      roll: [],
     },
     xp_requirement: 0,
     tradition: ["melee"],
@@ -631,15 +595,9 @@ export const abilities_content: Record<string, AbilityStatic> = {
     },
     master: {
       description:
-        "Now also add +1d4 damage to melee attacks when at half or less Toughness.",
+        "Increases melee damage roll by +5 when at half or less Toughness.",
       action: "upgrade",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
-        },
-      ],
+      roll: [],
     },
     xp_requirement: 0,
     tradition: ["support"],
@@ -677,7 +635,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [],
     },
     adept: {
-      description: "Increases base damage of jointed weapons to 1D8.",
+      description: "Increases the damage roll of jointed weapons by +2.",
       action: "passive",
       roll: [],
     },
@@ -700,22 +658,34 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
     },
     adept: {
       description:
-        "On a defended hammer attack, a successful [Strong < Strong] test rams and Launch two hammer attacks on the same target in one action. Only one Adept level pushes the enemy back, allowing a Free Attack in the newfound space.",
+        "When an enemy successfully defends against a hammer attack, make a [Strong←Strong] test. If you succeed, the opponent is pushed back one step, allowing the hammer fighter to make a Free Attack.",
       action: "reaction",
-      roll: [],
+      roll: [
+        {
+          source: "base",
+          type: "damage",
+          value: 6,
+        },
+      ],
     },
     master: {
       description:
-        "Launch two hammer attacks on the same target in one action. Only one Adept level pushes the enemy back, allowing a Free Attack in the newfound space.reactive hammer ram is allowed even if both attacks are defended.",
+        "Launch two hammer attacks against the same target in one action. If either attack is defended, the master may perform a hammer ram as described at the adept level. The ram can only be executed once per action.",
       action: "active",
-      roll: [],
+      roll: [
+        {
+          source: "base",
+          type: "damage",
+          value: 6,
+        },
+      ],
     },
     xp_requirement: 0,
     tradition: ["melee"],
@@ -824,15 +794,9 @@ export const abilities_content: Record<string, AbilityStatic> = {
     },
     adept: {
       description:
-        "Nominate a target as a focus for allies. Allies deal +1d4 damage when attacking the target. Changing target requires a new action.",
+        "Nominate a target as a focus for allies. Allies increases damage roll by +5 when attacking the target. Changing target requires a new action.",
       action: "free",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
-        },
-      ],
+      roll: [],
     },
     master: {
       description:
@@ -894,7 +858,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
   },
   Marksman: {
     novice: {
-      description: "Increases base bow damage to 1d10 and crossbow to 1d12.",
+      description: "Increases the damage roll of bows and crossbows by +2.",
       action: "passive",
       roll: [],
     },
@@ -918,61 +882,37 @@ export const abilities_content: Record<string, AbilityStatic> = {
   Medicus: {
     novice: {
       description:
-        "Diagnose and cure diseases, identify poisons by symptoms. Gain a coroner\u2019s point of view for examining crime scenes or bodies. Test [Cunning] to heal 1d4 Toughness, 1d6 with herbal cure. Once per patient per day.",
+        "Test [Cunning] to heal 1d4 Toughness once per patient per day. Increases the healing roll of herbal cures by +2 and gives you the ability to diagnose diseases, poisons and experience in examining crime scenes or bodies.",
       action: "active",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 4,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 6,
         },
       ],
     },
     adept: {
-      description: "Now heal 1d6 Toughness (1d8 with herbal cure).",
+      description:
+        "Test [Cunning] to heal 1d6 Toughness once per patient per day.",
       action: "upgrade",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 6,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
         },
       ],
     },
     master: {
       description:
-        "Now heal 1d8 Toughness (1d10 with herbal cure). A failed test heals 1d4 and 1d6 with herbal cure.",
+        "Test [Cunning] to heal 1d8 Toughness once per patient per day - will still heal half the roll rounded up if you fail the cunning test.",
       action: "upgrade",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 8,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 6,
         },
       ],
     },
@@ -983,16 +923,9 @@ export const abilities_content: Record<string, AbilityStatic> = {
   },
   "Natural Warrior": {
     novice: {
-      description:
-        "Unarmed attacks now deal 1d6 base damage. Stacks with the Natural Weapon trait, further increasing damage by tiers relative to the trait's level.",
+      description: "Increases damage roll by +2 while unarmed.",
       action: "passive",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 6,
-        },
-      ],
+      roll: [],
     },
     adept: {
       description:
@@ -1001,15 +934,9 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [],
     },
     master: {
-      description: "All unarmed strikes gain an additional +1d6 to damage.",
+      description: "Increases damage roll by +7 while unarmed.",
       action: "passive",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 6,
-        },
-      ],
+      roll: [],
     },
     xp_requirement: 0,
     tradition: ["melee"],
@@ -1066,21 +993,9 @@ export const abilities_content: Record<string, AbilityStatic> = {
   },
   "Polearm mastery": {
     novice: {
-      description:
-        "Increases Long weapon damage to 1d10 for spears/halberds, 1d8 for staves.",
+      description: "Increases the damage roll of long weapons by +2.",
       action: "passive",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-      ],
+      roll: [],
     },
     adept: {
       description:
@@ -1102,12 +1017,12 @@ export const abilities_content: Record<string, AbilityStatic> = {
   Pyrotechnics: {
     novice: {
       description:
-        "[Accurate\u2194Quick] to use Flash Powder in melee. Deals 1d4 damage ignoring armor and blinds for 1d4 turns.",
+        "[Accurate > Quick] to use Flash Powder in melee. Deals 1d4 damage ignoring armor and blinds for 1d4 turns.",
       action: "active",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 4,
         },
       ],
@@ -1119,25 +1034,20 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 4,
         },
       ],
     },
     master: {
       description:
-        "Throw Thunder Ball: Affects all in 5-meter radius with 1d12 damage (ignores armor) and blinds. Test [Accurate\u2194Quick] to halve damage and avoid blindness.",
+        "Throw Thunder Ball: Affects all in 5-meter radius with 1d12 damage (ignores armor) and blinds. Test [Accurate < Quick] to halve damage and avoid blindness.",
       action: "active",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 12,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
         },
       ],
     },
@@ -1250,7 +1160,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 4,
         },
       ],
@@ -1261,7 +1171,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 6,
         },
       ],
@@ -1272,7 +1182,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "healing",
           value: 8,
         },
       ],
@@ -1285,15 +1195,9 @@ export const abilities_content: Record<string, AbilityStatic> = {
   "Rune Tattoo": {
     novice: {
       description:
-        "The rune protects from weather and wind like a full set of clothes. Rune activates gaining +1d4 armor bonus, incurring 1 temporary corruption per hit attack. Must decide to use before armor rolls.",
+        "Activating your rune increases armor roll by +5. Each successful hit grants 1 temporary corruption per attack. This reaction must be made before armor rolls.",
       action: "reaction",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
-        },
-      ],
+      roll: [],
     },
     adept: {
       description: "Heal 1 Toughness/turn, incur 1 temporary corruption/turn.",
@@ -1302,15 +1206,9 @@ export const abilities_content: Record<string, AbilityStatic> = {
     },
     master: {
       description:
-        "Enhance a combat action with +1d4 damage, incur 1 temporary corruption.",
+        "Increases damage roll by +5, but grants 1 temporary corruption.",
       action: "reaction",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
-        },
-      ],
+      roll: [],
     },
     xp_requirement: 0,
     tradition: ["arcana"],
@@ -1413,12 +1311,12 @@ export const abilities_content: Record<string, AbilityStatic> = {
     },
     adept: {
       description:
-        "If your attack is defended against, gain a Free Attack using the Long weapon's back end at 1d6 damage. With a wooden or rune staff, also riposte after each successful Defense you make against a melee attack.",
+        "If your attack is defended against, you gain a Free Attack using the back end of the Long weapon, dealing 1d6 damage. Additionally, if you have a wooden or rune staff, you can riposte after each successful Defense against a melee attack.",
       action: "reaction",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -1437,18 +1335,13 @@ export const abilities_content: Record<string, AbilityStatic> = {
   "Staff Magic": {
     novice: {
       description:
-        "Absorb all permanent corruption from existing and future Staff Magic rituals and Novice mystical powers. Reduces existing permanent corruption by (1d6) once. Temporary corruption still applies  Permanent corruption from Adept Staff Magic powers also absorbed. Gain rerolls on temporary corruption tests for Staff Magic powers. Activate an elemental rune (choose fire, lightning, cold, acid) to add (+1d4) damage to attacks or powers with the staff.",
+        "Absorb all permanent corruption from existing and future Staff Magic rituals and Novice mystical powers. Reduces existing permanent corruption by (1d6) once. Temporary corruption still applies  Permanent corruption from Adept Staff Magic powers also absorbed. Gain rerolls on temporary corruption tests for Staff Magic powers. Activate an elemental rune (choose fire, lightning, cold, acid) to add +4 damage roll to attacks or powers with the staff.",
       action: "special",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "corruption",
           value: 6,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 4,
         },
       ],
     },
@@ -1484,12 +1377,12 @@ export const abilities_content: Record<string, AbilityStatic> = {
     },
     master: {
       description:
-        "Failed mental attacks against you (attacks modified by [Resolute]) now cause a counterattack of 1D6 damage to attacker (ignores Armor).",
+        "Failed mental attacks against you (attacks modified by [Resolute]) now cause a counterattack of 1d6 damage to attacker (ignores Armor).",
       action: "upgrade",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -1531,25 +1424,25 @@ export const abilities_content: Record<string, AbilityStatic> = {
   Strangler: {
     novice: {
       description:
-        "Attack when at advantage, dealing 1d6 damage/turn ignoring armour. Ongoing, test [Cunning\u2194Cunning] to maintain. Target immobilized until hold breaks.",
+        "Attack when at advantage, dealing 1d6 damage/turn ignoring armour. Ongoing, test [Cunning > Cunning] to maintain. Target immobilized until hold breaks.",
       action: "active",
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
     },
     adept: {
       description:
-        "Test [Cunning\u2194Quick] to throw choking spores at a target. Deals 1d4 damage/turn, ignores armour for 1d4 turns.",
+        "Test [Cunning > Quick] to throw choking spores at a target. Deals 1d4 damage/turn, ignores armour for 1d4 turns.",
       action: "active",
       roll: [
         {
           source: "base",
-          type: "buff",
-          value: 6,
+          type: "damage",
+          value: 4,
         },
       ],
     },
@@ -1608,20 +1501,9 @@ export const abilities_content: Record<string, AbilityStatic> = {
   "Sword Saint": {
     novice: {
       description:
-        "Increases fencing sword damage to 1d10 when used with a parrying dagger. Twin Attack does not increase this damage further.",
+        "Increases the damge roll when using a fencing sword with a parrying dagger by +2. Twin Attack does not increase this damage further.",
       action: "passive",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-      ],
+      roll: [],
     },
     adept: {
       description:
@@ -1631,15 +1513,9 @@ export const abilities_content: Record<string, AbilityStatic> = {
     },
     master: {
       description:
-        "Allows unlimited Free Attacks after each successful Defense. Fencing sword damage now 1d12.",
+        "Increases the damge roll when using a fencing sword with a parrying dagger by +4. Allows unlimited Free Attacks after each successful Defense.",
       action: "passive",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 12,
-        },
-      ],
+      roll: [],
     },
     xp_requirement: 0,
     tradition: ["melee"],
@@ -1725,7 +1601,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -1810,34 +1686,19 @@ export const abilities_content: Record<string, AbilityStatic> = {
   "Twin Attack": {
     novice: {
       description:
-        "Make two attacks against the same target at 1d8 main and 1d6 offhand base damage.+1 to Defense if dual wielding.",
+        "The base damage of your main hand is now 8 and off hand is 6. You can perform two attacks while dual wielding. +1 to Defense if dual wielding.",
       action: "active",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-        {
-          source: "base",
-          type: "buff",
-          value: 6,
-        },
-      ],
+      roll: [],
     },
     adept: {
-      description: "Attacks now both deal 1d8.",
+      description:
+        "The base damage of your main hand is now 8 and off hand is 8. ",
       action: "passive",
-      roll: [
-        {
-          source: "base",
-          type: "buff",
-          value: 8,
-        },
-      ],
+      roll: [],
     },
     master: {
-      description: "Attacks now deal 1d10 main and 1d8 offhand respectively.",
+      description:
+        "The base damage of your main hand is now 10 and off hand is 8. ",
       action: "passive",
       roll: [
         {
@@ -1971,7 +1832,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 4,
         },
       ],
@@ -1989,7 +1850,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
       roll: [
         {
           source: "base",
-          type: "buff",
+          type: "damage",
           value: 6,
         },
       ],
@@ -2011,13 +1872,12 @@ export const abilities_content: Record<string, AbilityStatic> = {
     novice: {
       description:
         "Free. Thanks to its explosive survival instinct, the character may perform one extra Movement Action once per scene.",
-      action: "",
+      action: "free",
       roll: [],
     },
     adept: {
-      description:
-        "Reaction. The character trusts its instincts and has learned that rolling with the punches often saves your life. The character's finely honed survival instinct provides it with a permanent +d4 to Armor.",
-      action: "",
+      description: "Increases armor roll by +5",
+      action: "passive",
       roll: [
         {
           source: "base",
@@ -2029,7 +1889,7 @@ export const abilities_content: Record<string, AbilityStatic> = {
     master: {
       description:
         "Free. There resides a powerful fighting spirit within each member of the character's race, and that spirit can show itself when the character is backed into a corner. The character has nurtured this hot-tempered aggression and may sacrifice a Movement Action once per scene to perform an extra Combat Action.",
-      action: "",
+      action: "free",
       roll: [],
     },
     xp_requirement: 0,

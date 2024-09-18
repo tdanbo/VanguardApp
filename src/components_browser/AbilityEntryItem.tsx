@@ -255,8 +255,9 @@ function AbilityEntryItem({
             session={session}
             character={character}
             websocket={websocket}
-            roll_type={"ability"}
+            roll_type={GetAbilityLevel(ability).roll[0].type}
             roll_source={ability.name}
+            roll_color={Constants.TYPE_COLORS[ability.static.category]}
             isCreature={isCreature}
             color={categoryColor}
             roll_values={RulesAbilityDiceAdjust(character, ability)}

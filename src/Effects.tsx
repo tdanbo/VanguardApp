@@ -2,17 +2,11 @@ import {
   IconDefinition,
   faAnglesDown,
   faAnglesUp,
+  faBurst,
   faCarrot,
-  faCross,
-  faCrosshairs,
   faDownLeftAndUpRightToCenter,
-  faGavel,
-  faHammer,
-  faHandFist,
-  faHeartCrack,
   faShield,
   faUpRightAndDownLeftFromCenter,
-  faUserMinus,
   faUserPlus,
   faWeightHanging,
 } from "@fortawesome/free-solid-svg-icons";
@@ -20,18 +14,6 @@ import {
 export const EffectsIcons: {
   [key: string]: { icon: IconDefinition };
 } = {
-  "Blessed Shield": {
-    icon: faShield,
-  },
-  "Witch Hammer": {
-    icon: faHammer,
-  },
-  "Witch Hammer Undead": {
-    icon: faGavel,
-  },
-  Theurgy: {
-    icon: faCross,
-  },
   Focused: {
     icon: faAnglesUp,
   },
@@ -41,70 +23,43 @@ export const EffectsIcons: {
   Overburdened: {
     icon: faWeightHanging,
   },
-  "Iron Fist": {
-    icon: faHandFist,
-  },
-  "Hunter's Instinct": {
-    icon: faCrosshairs,
-  },
   Flanked: {
     icon: faUpRightAndDownLeftFromCenter,
   },
   Flanking: {
     icon: faDownLeftAndUpRightToCenter,
   },
-  "Critical Strike": {
-    icon: faHeartCrack,
-  },
   Starving: {
     icon: faCarrot,
   },
-  "Enhanced Accurate": {
+  Accurate: {
     icon: faUserPlus,
   },
-  "Enhanced Strong": {
+  Strong: {
     icon: faUserPlus,
   },
-  "Enchanced Vigilant": {
+  Vigilant: {
     icon: faUserPlus,
   },
-  "Enchanced Quick": {
+  Quick: {
     icon: faUserPlus,
   },
-  "Enchanced Cunning": {
+  Cunning: {
     icon: faUserPlus,
   },
-  "Enchanced Discreet": {
+  Discreet: {
     icon: faUserPlus,
   },
-  "Enchanced Persuasive": {
+  Persuasive: {
     icon: faUserPlus,
   },
-  "Enchanced Resolute": {
+  Resolute: {
     icon: faUserPlus,
   },
-  "Weakened Accurate": {
-    icon: faUserMinus,
+  Damage: {
+    icon: faBurst,
   },
-  "Weakened Strong": {
-    icon: faUserMinus,
-  },
-  "Weakened Vigilant": {
-    icon: faUserMinus,
-  },
-  "Weakened Quick": {
-    icon: faUserMinus,
-  },
-  "Weakened Cunning": {
-    icon: faUserMinus,
-  },
-  "Weakened Discreet": {
-    icon: faUserMinus,
-  },
-  "Weakened Persuasive": {
-    icon: faUserMinus,
-  },
-  "Weakened Resolute": {
-    icon: faUserMinus,
+  Armor: {
+    icon: faShield,
   },
 };

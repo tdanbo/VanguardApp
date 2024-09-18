@@ -102,6 +102,7 @@ export interface EffectEntry {
   level: number;
   id: string;
   active: boolean;
+  reset: "never" | "roll" | "sleeping" | "eating" | "armor" | "damage";
   static: EffectStatic;
 }
 
@@ -110,7 +111,6 @@ export interface EffectStatic {
   base_amount: number;
   level_amount: number;
   type: "positive" | "negative";
-  reset: string;
   category: string;
 }
 
@@ -125,7 +125,21 @@ export interface ItemEntry {
   static: ItemStatic;
 }
 
-type RollNameType = "damage" | "armor" | "buff" | "healing" | "test";
+export type RollNameType =
+  | "damage"
+  | "armor"
+  | "buff"
+  | "healing"
+  | "corruption"
+  | "general"
+  | "attack"
+  | "defense"
+  | "skill test"
+  | "day change"
+  | "sleeping"
+  | "eating"
+  | "dice"
+  ;
 
 export interface RollValueType {
   value: number;
@@ -182,7 +196,7 @@ export interface AbilityStatic {
   xp_requirement: number;
   tradition: string[];
   tags: string[];
-  category: string;
+  category: RollTypeEntry;
 }
 
 export type ActiveType = "attack" | "defense" | "casting" | "sneaking" | "";
@@ -193,7 +207,7 @@ export type FocusedStateType = "focused" | "unfocused" | "normal";
 
 export type CombatEntry = {
   character: CharacterEntry;
-  roll_type: RollTypeEntry;
+  roll_type: RollNameType;
   roll_source: string;
   is_focused: FocusedStateType;
   roll_entry: RollEntry;
@@ -264,7 +278,9 @@ export type RollTypeEntry =
   | "eating"
   | "sleeping"
   | "day"
-  | "buff";
+  | "buff"
+  | "ritual"
+  | "burden";
 
 export type CriticalType = {
   state: 0 | 1 | 2;

@@ -10,7 +10,6 @@ import {
   ItemEntry,
   modifiedCreature,
   NewCharacterEntry,
-  RollTypeEntry,
   RollValueType,
   SessionEntry,
   StatName,
@@ -334,18 +333,10 @@ export function IsFocusedAbility(character: CharacterEntry): FocusedStateType {
   return is_focused;
 }
 
-export function IsFocusedSkill(
-  character: CharacterEntry,
-  roll_type: RollTypeEntry,
-): FocusedStateType {
+export function IsFocusedSkill(character: CharacterEntry): FocusedStateType {
   let is_focused: FocusedStateType = "normal";
-  const has_hunters_instinct = CheckEffect(character, "Hunter's Instinct");
-  if (
-    CheckEffect(character, "Focused") ||
-    (has_hunters_instinct &&
-      HasRangedWeapon(character) &&
-      roll_type === "attack")
-  ) {
+
+  if (CheckEffect(character, "Focused")) {
     is_focused = "focused";
   } else if (CheckEffect(character, "Unfocused")) {
     is_focused = "unfocused";

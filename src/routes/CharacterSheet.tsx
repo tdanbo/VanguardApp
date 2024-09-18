@@ -130,19 +130,33 @@ function CharacterSheet({
             />
           </div>
           <div className="row outline_color">
-            <DetailStatComponent
-              title="COMBAT XP"
-              value={`${getCharacterXp(character)} / ${
-                character.details.xp_earned
-              }`}
-            />
+            {isCreature ? (
+              <DetailStatComponent
+                title="COMBAT XP"
+                value={`${getCharacterXp(character)}`}
+              />
+            ) : (
+              <DetailStatComponent
+                title="COMBAT XP"
+                value={`${getCharacterXp(character)} / ${
+                  character.details.xp_earned
+                }`}
+              />
+            )}
           </div>
           <div className="row outline_color">
-            <DetailStatComponent
-              title="UTILITY XP"
-              value={`${getUtilityXp(character)} /
+            {isCreature ? (
+              <DetailStatComponent
+                title="UTILITY XP"
+                value={`${getUtilityXp(character)}`}
+              />
+            ) : (
+              <DetailStatComponent
+                title="UTILITY XP"
+                value={`${getUtilityXp(character)} /
             ${Math.max(Math.round(character.details.xp_earned / 5), 10)}`}
-            />
+              />
+            )}
           </div>
           <ModifierLockComponent
             modifierLock={modifierLock}

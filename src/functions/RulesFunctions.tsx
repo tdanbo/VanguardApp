@@ -5,36 +5,40 @@ import {
   RollValueType,
 } from "../Types";
 import { CheckAbility } from "./ActivesFunction";
-import { FlankingEffect } from "./effects/FlankingEffect";
+import { GetAbilityLevel } from "./CharacterFunctions";
+import { ArmorEffect } from "./effects/ArmorEffect";
+import { BlessedShieldEffect } from "./effects/BlessedShieldEffect";
+import { CriticalStrikeEffect } from "./effects/CriticalStrikeEffect";
+import { DamageEffect } from "./effects/DamageEffect";
 import { FlankedEffect } from "./effects/FlankedEffect";
+import { FlankingEffect } from "./effects/FlankingEffect";
+import { HuntersInstinct_dice } from "./effects/HuntersInstinctEffect";
+import { IronFistEffect } from "./effects/IronFistEffect";
+import { TheurgyEffect } from "./effects/TheurgyEffect";
+import { WitchHammerEffect } from "./effects/WitchHammerEffect";
+import { WitchHammerUndeadEffect } from "./effects/WitchHammerUndeadEffect";
 import { Armored_dice } from "./rules/Armored";
 import { ArmoredMystic_dice } from "./rules/ArmoredMystic";
 import { Berserker_dice } from "./rules/Berserker";
 import { FeatOfStrength_dice } from "./rules/FeatOfStrength";
+import { Flailer_dice } from "./rules/Flailer";
+import { Impact_dice } from "./rules/ImpactDice";
 import { IronFist_dice } from "./rules/IronFist";
 import { ItemRulesDice } from "./rules/ItemRulesDice";
 import { ManAtArms_dice } from "./rules/ManAtArms";
 import { Marksman_dice } from "./rules/Marksman";
+import { Medicus_dice } from "./rules/Medicus";
 import { NaturalWarrior_dice } from "./rules/NaturalWarrior";
 import { NaturalWeapon_dice } from "./rules/NaturalWeapon";
 import { PolearmMastery_dice } from "./rules/PolearmMastery";
+import { Reinforced_dice } from "./rules/ReinforcedDice";
 import { Robust_dice } from "./rules/Robust";
 import { ShieldFighter_dice } from "./rules/ShieldFighter";
 import { SteelThrow_dice } from "./rules/SteelThrow";
+import { SurvivalInstinct_dice } from "./rules/SurvivalInstinct";
+import { Theurgy_dice } from "./rules/Theurgy";
 import { TwinAttack_dice } from "./rules/TwinAttack";
 import { TwohandedForce_dice } from "./rules/TwohandedForce";
-import { SurvivalInstinct_dice } from "./rules/SurvivalInstinct";
-import { Impact_dice } from "./rules/ImpactDice";
-import { Reinforced_dice } from "./rules/ReinforcedDice";
-import { WitchHammerEffect } from "./effects/WitchHammerEffect";
-import { WitchHammerUndeadEffect } from "./effects/WitchHammerUndeadEffect";
-import { TheurgyEffect } from "./effects/TheurgyEffect";
-import { BlessedShieldEffect } from "./effects/BlessedShieldEffect";
-import { CriticalStrikeEffect } from "./effects/CriticalStrikeEffect";
-import { IronFistEffect } from "./effects/IronFistEffect";
-import { HuntersInstinctEffect } from "./effects/HuntersInstinctEffect";
-import { GetAbilityLevel } from "./CharacterFunctions";
-import { Theurgy_dice } from "./rules/Theurgy";
 
 function HasItem(character: CharacterEntry, item: string) {
   for (const i of character.inventory) {
@@ -57,10 +61,12 @@ export function RulesItemDiceAdjust(
   base_roll.push(ManAtArms_dice(character, item));
   base_roll.push(SteelThrow_dice(character, item));
   base_roll.push(PolearmMastery_dice(character, item));
+  base_roll.push(HuntersInstinct_dice(character, item));
   base_roll.push(ShieldFighter_dice(character, item));
   base_roll.push(ArmoredMystic_dice(character, item));
   base_roll.push(Marksman_dice(character, item));
   base_roll.push(TwohandedForce_dice(character, item));
+  base_roll.push(Flailer_dice(character, item));
   base_roll.push(Armored_dice(character, item));
   base_roll.push(IronFist_dice(character, item));
   base_roll.push(Robust_dice(character));
@@ -70,6 +76,7 @@ export function RulesItemDiceAdjust(
   base_roll.push(SurvivalInstinct_dice(character, item));
   base_roll.push(Impact_dice(item));
   base_roll.push(Reinforced_dice(item));
+  base_roll.push(Medicus_dice(character, item));
 
   // effects
   base_roll.push(WitchHammerEffect(character, item));
@@ -80,7 +87,8 @@ export function RulesItemDiceAdjust(
   base_roll.push(FlankedEffect(character, item));
   base_roll.push(CriticalStrikeEffect(character, item));
   base_roll.push(IronFistEffect(character, item));
-  base_roll.push(HuntersInstinctEffect(character, item));
+  base_roll.push(DamageEffect(character, item));
+  base_roll.push(ArmorEffect(character, item));
 
   // abilities
 
@@ -391,4 +399,41 @@ export function SetDurability(character: CharacterEntry, id: string) {
   });
 
   return durability;
+}
+
+export function ConvertStatValue(value: number) {
+  const ModifierConverter: Record<number, number> = {
+    30: -20,
+    29: -19,
+    28: -18,
+    27: -17,
+    26: -16,
+    25: -15,
+    24: -14,
+    23: -13,
+    22: -12,
+    21: -11,
+    20: -10,
+    19: -9,
+    18: -8,
+    17: -7,
+    16: -6,
+    15: -5,
+    14: -4,
+    13: -3,
+    12: -2,
+    11: -1,
+    10: 0,
+    9: 1,
+    8: 2,
+    7: 3,
+    6: 4,
+    5: 5,
+    4: 6,
+    3: 7,
+    2: 8,
+    1: 9,
+  };
+
+  return ModifierConverter[value];
 }
