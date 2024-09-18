@@ -184,7 +184,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
   };
 
   let title = `Result: ${combatEntry.roll_entry.result1}\n`;
-  if (combatEntry.roll_source === "Skill Test") {
+  if (combatEntry.roll_type === "skill test") {
     title += `Difficulty: ${combatEntry.roll_entry.difficulty}\n`;
   }
   if (combatEntry.roll_entry.target > 0) {
@@ -288,14 +288,14 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
                 style={{
                   opacity:
                     (combatEntry.is_focused === "focused" &&
-                      ((combatEntry.roll_source === "Skill Test" &&
+                      ((combatEntry.roll_type === "skill test" &&
                         currentDisplay1 <= currentDisplay2) ||
-                        (combatEntry.roll_source !== "Skill Test" &&
+                        (combatEntry.roll_type !== "skill test" &&
                           currentDisplay1 >= currentDisplay2))) ||
                     (combatEntry.is_focused === "unfocused" &&
-                      ((combatEntry.roll_source === "Skill Test" &&
+                      ((combatEntry.roll_type === "skill test" &&
                         currentDisplay1 >= currentDisplay2) ||
-                        (combatEntry.roll_source !== "Skill Test" &&
+                        (combatEntry.roll_type !== "skill test" &&
                           currentDisplay1 <= currentDisplay2)))
                       ? 1
                       : 0.1,
@@ -311,14 +311,14 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
                 style={{
                   opacity:
                     (combatEntry.is_focused === "focused" &&
-                      ((combatEntry.roll_source === "Skill Test" &&
+                      ((combatEntry.roll_type === "skill test" &&
                         currentDisplay2 <= currentDisplay1) ||
-                        (combatEntry.roll_source !== "Skill Test" &&
+                        (combatEntry.roll_type !== "skill test" &&
                           currentDisplay2 >= currentDisplay1))) ||
                     (combatEntry.is_focused === "unfocused" &&
-                      ((combatEntry.roll_source === "Skill Test" &&
+                      ((combatEntry.roll_type === "skill test" &&
                         currentDisplay2 >= currentDisplay1) ||
-                        (combatEntry.roll_source !== "Skill Test" &&
+                        (combatEntry.roll_type !== "skill test" &&
                           currentDisplay2 <= currentDisplay1)))
                       ? 1
                       : 0.1,
@@ -342,7 +342,7 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
           )}
         </ResultContainer>
         <SourceContainer>
-          {combatEntry.roll_source === "Skill Test" ? (
+          {combatEntry.roll_type === "skill test" ? (
             <Active
               $rgb={EntryColor()}
               $issuccess={combatEntry.roll_entry.success}
@@ -367,12 +367,12 @@ function CombatEntryItem({ combatEntry, index }: CombatEntryItemProps) {
           <FumbledSubText>
             {FumbledPerfectText() !== ""
               ? FumbledPerfectText()
-              : combatEntry.roll_source}
+              : toTitleCase(combatEntry.roll_source)}
           </FumbledSubText>
         )}
       </RollContainer>
       <RightBlock>
-        {combatEntry.roll_source === "Skill Test" ? (
+        {combatEntry.roll_type === "skill test" ? (
           combatEntry.roll_entry.critical.state === 2 ? (
             <FontAwesomeIcon
               icon={faAngleDoubleUp}
