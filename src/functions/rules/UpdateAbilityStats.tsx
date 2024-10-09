@@ -131,82 +131,42 @@ function UpdateStatModifiers(character: CharacterEntry): CharacterEntry {
   }
 
   // EFFECTS
-  const weakened_strong = CheckEffect(character, "Weakened Strong");
-  if (weakened_strong) {
-    character.stats.strong.mod -= weakened_strong.level;
-  }
-
-  const weakened_resolute = CheckEffect(character, "Weakened Resolute");
-  if (weakened_resolute) {
-    character.stats.resolute.mod -= weakened_resolute.level;
-  }
-
-  const weakened_quick = CheckEffect(character, "Weakened Quick");
-  if (weakened_quick) {
-    character.stats.quick.mod -= weakened_quick.level;
-  }
-
-  const weakened_discreet = CheckEffect(character, "Weakened Discreet");
-  if (weakened_discreet) {
-    character.stats.discreet.mod -= weakened_discreet.level;
-  }
-
-  const weakened_vigilant = CheckEffect(character, "Weakened Vigilant");
-  if (weakened_vigilant) {
-    character.stats.vigilant.mod -= weakened_vigilant.level;
-  }
-
-  const weakened_persuasive = CheckEffect(character, "Weakened Persuasive");
-  if (weakened_persuasive) {
-    character.stats.persuasive.mod -= weakened_persuasive.level;
-  }
-
-  const weakened_accurate = CheckEffect(character, "Weakened Accurate");
-  if (weakened_accurate) {
-    character.stats.accurate.mod -= weakened_accurate.level;
-  }
-
-  const weakened_cunning = CheckEffect(character, "Weakened Cunning");
-  if (weakened_cunning) {
-    character.stats.cunning.mod -= weakened_cunning.level;
-  }
-
-  const enhanced_strong = CheckEffect(character, "Enhanced Strong");
+  const enhanced_strong = CheckEffect(character, "Strong");
   if (enhanced_strong) {
     character.stats.strong.mod += enhanced_strong.level;
   }
 
-  const enhanced_resolute = CheckEffect(character, "Enhanced Resolute");
+  const enhanced_resolute = CheckEffect(character, "Resolute");
   if (enhanced_resolute) {
     character.stats.resolute.mod += enhanced_resolute.level;
   }
 
-  const enhanced_quick = CheckEffect(character, "Enhanced Quick");
+  const enhanced_quick = CheckEffect(character, "Quick");
   if (enhanced_quick) {
     character.stats.quick.mod += enhanced_quick.level;
   }
 
-  const enhanced_discreet = CheckEffect(character, "Enhanced Discreet");
+  const enhanced_discreet = CheckEffect(character, "Discreet");
   if (enhanced_discreet) {
     character.stats.discreet.mod += enhanced_discreet.level;
   }
 
-  const enhanced_vigilant = CheckEffect(character, "Enhanced Vigilant");
+  const enhanced_vigilant = CheckEffect(character, "Vigilant");
   if (enhanced_vigilant) {
     character.stats.vigilant.mod += enhanced_vigilant.level;
   }
 
-  const enhanced_persuasive = CheckEffect(character, "Enhanced Persuasive");
+  const enhanced_persuasive = CheckEffect(character, "Persuasive");
   if (enhanced_persuasive) {
     character.stats.persuasive.mod += enhanced_persuasive.level;
   }
 
-  const enhanced_accurate = CheckEffect(character, "Enhanced Accurate");
+  const enhanced_accurate = CheckEffect(character, "Accurate");
   if (enhanced_accurate) {
     character.stats.accurate.mod += enhanced_accurate.level;
   }
 
-  const enhanced_cunning = CheckEffect(character, "Enhanced Cunning");
+  const enhanced_cunning = CheckEffect(character, "Cunning");
   if (enhanced_cunning) {
     character.stats.cunning.mod += enhanced_cunning.level;
   }
