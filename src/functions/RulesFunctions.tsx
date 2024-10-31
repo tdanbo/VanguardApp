@@ -116,19 +116,40 @@ export function RulesAbilityDiceAdjust(
 }
 
 export function GetMaxSlots(character: CharacterEntry) {
-  const strong_capacity = CheckAbility(character, "Pack-mule", "novice")
-    ? character.stats.strong.value + character.stats.strong.base * 1.5
-    : character.stats.strong.value + character.stats.strong.base;
+  console.log(CheckAbility(character, "Pack-mule", "novice"));
+
+  const multipliter = CheckAbility(character, "Pack-mule", "novice") ? 1.5 : 1;
+
+  const strong_capacity =
+    character.stats.strong.value + character.stats.strong.base;
+  const resolute_capacity =
+    character.stats.resolute.value + character.stats.resolute.base;
 
   let max_slots = Math.max(
-    Math.ceil(
-      (strong_capacity +
-        character.stats.resolute.value +
-        character.stats.resolute.base) /
-        2,
-    ),
+    Math.ceil(((strong_capacity + resolute_capacity) / 2) * multipliter),
     10,
   );
+
+  // const strong_capacity = CheckAbility(character, "Pack-mule", "novice")
+  //   ? character.stats.strong.value + character.stats.strong.base * 1.5
+  //   : character.stats.strong.value + character.stats.strong.base;
+
+  // let max_slots = Math.max(
+  //   Math.ceil(
+  //     (strong_capacity +
+  //       character.stats.resolute.value +
+  //       character.stats.resolute.base) /
+  //       2,
+  //   ),
+  //   10,
+  // );
+
+  console.log({
+    hasParkMule: CheckAbility(character, "Pack-mule", "novice"),
+    strongValue: character.stats.strong.value,
+    strongBase: character.stats.strong.base,
+    resolute: character.stats.resolute,
+  });
 
   const storageModifiers = {
     "Storage 3": 3,

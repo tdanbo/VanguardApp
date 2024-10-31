@@ -6,7 +6,9 @@ function dualWielding(character: CharacterEntry) {
   for (const item of character.inventory) {
     if (
       item.equipped &&
-      ["short weapon", "one-hand weapon"].includes(item.static.category)
+      ["short weapon", "one-hand weapon", "unique one-hand weapon"].includes(
+        item.static.category,
+      )
     ) {
       count += 1;
     }
@@ -28,13 +30,13 @@ function equipList(character: CharacterEntry) {
 
 export function TwinAttack_active(character: CharacterEntry) {
   const ability_name = "Twin Attack";
-  const ability_master = CheckAbility(character, ability_name, "master");
+  const ability_novice = CheckAbility(character, ability_name, "novice");
 
   if (!dualWielding(character)) {
     return;
   }
 
-  if (ability_master) {
+  if (ability_novice) {
     character.stats.defense.mod += 1;
   }
 }
