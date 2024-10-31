@@ -708,7 +708,7 @@ export const utility_content: Record<string, AbilityStatic> = {
   "Pack-mule": {
     novice: {
       description:
-        "The character excels at bearing heavy burdens, with their carrying capacity calculated at 1.5 times their Strong.",
+        "The character excels at bearing heavy burdens. Their carrying capacity is calculated using Resolute and Strong, with Strong being multiplied by 1.5.",
       action: "special",
       roll: [],
     },
